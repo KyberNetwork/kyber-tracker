@@ -29558,6 +29558,7 @@ var _network2 = _interopRequireDefault(_network);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_bignumber2.default.config({ DECIMAL_PLACES: 6 });
 var tokens = _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol');
 
 var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -29617,7 +29618,7 @@ exports.default = {
 
     var bigNumber = new _bignumber2.default(amount.toString());
     var result = bigNumber.div(Math.pow(10, decimal));
-    return result.precision(precision).toString();
+    return result.toFormat().toString();
   }
 
 };
@@ -84484,7 +84485,7 @@ exports = module.exports = __webpack_require__(7)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -84499,6 +84500,17 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _AppRequest = __webpack_require__(410);
+
+var _AppRequest2 = _interopRequireDefault(_AppRequest);
+
+var _util = __webpack_require__(35);
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -84545,9 +84557,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   data: function data() {
     return {
-      networkVolume: '$150,324,756.34',
-      networkFee: '$3,257.23',
-      tradeCount: '477'
+      networkVolume: '',
+      networkFee: '',
+      tradeCount: ''
     };
   },
 
@@ -84556,10 +84568,21 @@ exports.default = {
     changeLanguage: function changeLanguage(locale) {
       localStorage.setItem('locale', locale);
       window.i18n.locale = locale;
+    },
+    refresh: function refresh() {
+      var _this = this;
+
+      _AppRequest2.default.getStats24h().then(function (stats) {
+        _this.networkVolume = stats.networkVolume;
+        _this.networkFee = stats.networkFee;
+        _this.tradeCount = stats.tradeCount;
+      });
     }
   },
 
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.refresh();
+  }
 };
 
 /***/ }),
@@ -84649,7 +84672,7 @@ var render = function() {
               _c("b-nav-item", [
                 _vm._v("\n        TRADES (24H)"),
                 _c("br"),
-                _vm._v("\n        " + _vm._s(_vm.networkVolume) + "\n      ")
+                _vm._v("\n        " + _vm._s(_vm.tradeCount) + "\n      ")
               ])
             ],
             1
@@ -89023,6 +89046,12 @@ var AppRequest = function (_BaseRequest) {
       var url = '/api/trades/' + id;
       return this.get(url, {});
     }
+  }, {
+    key: 'getStats24h',
+    value: function getStats24h() {
+      var url = '/api/stats24h';
+      return this.get(url, {});
+    }
   }]);
 
   return AppRequest;
@@ -90369,7 +90398,7 @@ exports = module.exports = __webpack_require__(7)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -90393,6 +90422,10 @@ var _socket = __webpack_require__(68);
 
 var _socket2 = _interopRequireDefault(_socket);
 
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _AppRequest = __webpack_require__(410);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
@@ -90402,51 +90435,6 @@ var _util = __webpack_require__(35);
 var _util2 = _interopRequireDefault(_util);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 exports.default = {
   data: function data() {
@@ -90488,7 +90476,7 @@ exports.default = {
       });
     },
     getDateInfo: function getDateInfo(timestamp) {
-      return _util2.default.getDateInfo(timestamp * 1000);
+      return (0, _moment2.default)(timestamp * 1000).format("dddd, MMMM Do YYYY, h:mm:ss a");
     },
     getTokenAmount: function getTokenAmount(amount, symbol) {
       if (!amount || !symbol) {
@@ -90505,7 +90493,49 @@ exports.default = {
   mounted: function mounted() {
     this.refresh();
   }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 /* 437 */

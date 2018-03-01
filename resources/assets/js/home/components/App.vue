@@ -28,7 +28,7 @@
         </b-nav-item>
         <b-nav-item>
           TRADES (24H)<br />
-          {{ networkVolume }}
+          {{ tradeCount }}
         </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
@@ -41,12 +41,15 @@
 
 <script>
 
+import AppRequest from '../../core/request/AppRequest';
+import util from '../../core/helper/util';
+
 export default {
   data() {
     return {
-      networkVolume: '$150,324,756.34',
-      networkFee: '$3,257.23',
-      tradeCount: '477'
+      networkVolume: '',
+      networkFee: '',
+      tradeCount: ''
     };
   },
 
@@ -54,11 +57,18 @@ export default {
     changeLanguage (locale) {
       localStorage.setItem('locale', locale);
       window.i18n.locale = locale;
+    },
+    refresh () {
+      AppRequest.getStats24h().then((stats) => {
+        this.networkVolume = stats.networkVolume;
+        this.networkFee = stats.networkFee;
+        this.tradeCount = stats.tradeCount;
+      });
     }
   },
 
   mounted () {
-
+    this.refresh();
   }
 }
 </script>

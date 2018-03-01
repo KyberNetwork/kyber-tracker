@@ -1,4 +1,4 @@
-const _         = require('lodash');
+const _ = require('lodash');
 
 const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io', 9000));

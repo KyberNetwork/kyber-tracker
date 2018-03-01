@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import network from '../../../../../config/network';
 
+BigNumber.config({ DECIMAL_PLACES: 6 });
 const tokens = _.keyBy(_.values(network.tokens), 'symbol');
 
 const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -60,7 +61,7 @@ export default {
   formatTokenAmount: function (amount, decimal=18, precision=6) {
     const bigNumber = new BigNumber(amount.toString());
     let result = bigNumber.div(Math.pow(10, decimal));
-    return result.precision(precision).toString();
+    return result.toFormat().toString();
   },
 
 };

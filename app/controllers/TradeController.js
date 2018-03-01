@@ -46,4 +46,9 @@ module.exports = AppController.extends({
     TradeService.getTradeDetails(params.tradeId, this.ok.bind(this, req, res));
   },
 
+  getStats24h: function (req, res) {
+    const TradeService = req.getService('TradeService');
+    TradeService.getStats24h(this.ok.bind(this, req, res));
+  },
+
 });

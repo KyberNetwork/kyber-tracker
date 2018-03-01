@@ -1,7 +1,8 @@
 module.exports = {
   GET: {
-    '/trades'                        : ['TradeController.getList', 'paginate'],
-    '/trades/:tradeId'               : ['TradeController.getTradeDetails'],
+    '/trades'                       : ['TradeController.getList', 'paginate'],
+    '/trades/:tradeId'              : ['TradeController.getTradeDetails'],
+    '/stats24h'                     : ['TradeController.getStats24h'],
   },
   POST: {
     // Implement me.

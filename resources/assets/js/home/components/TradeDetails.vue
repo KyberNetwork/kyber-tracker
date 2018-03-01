@@ -45,6 +45,7 @@
 
 import _ from 'lodash';
 import io from 'socket.io-client';
+import moment from 'moment';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 
@@ -87,7 +88,7 @@ export default {
         });
     },
     getDateInfo (timestamp) {
-      return util.getDateInfo(timestamp * 1000);
+      return moment(timestamp * 1000).format("dddd, MMMM Do YYYY, h:mm:ss a");
     },
     getTokenAmount (amount, symbol) {
       if (!amount || !symbol) {

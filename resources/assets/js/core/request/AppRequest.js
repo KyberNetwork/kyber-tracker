@@ -17,6 +17,11 @@ class AppRequest extends BaseRequest {
     return this.get(url, {});
   }
 
+  getStats24h () {
+    const url = `/api/stats24h`;
+    return this.get(url, {});
+  }
+
 }
 
 const instance = new AppRequest();
