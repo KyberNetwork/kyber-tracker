@@ -1,0 +1,116 @@
+const _               = require('lodash');
+const async           = require('async');
+const BN              = require('bn.js');
+const exchangeLogABI  = require('../../config/abi/log_exchange');
+const feeLogABI       = require('../../config/abi/log_fee');
+const burnLogABI      = require('../../config/abi/log_burn');
+const Utils           = require('./Utils');
+const ExSession       = require('sota-core').load('common/ExSession');
+const logger          = require('sota-core').getLogger('getKyberTradeFromTransaction');
+
+const web3            = Utils.getWeb3Instance();
+const abiDecoder      = Utils.getKyberABIDecoder();
+
+module.exports = (block, tx, callback) => {
+  async.auto({
+    receipt: (next) => {
+      web3.eth.getTransactionReceipt(tx.hash, next);
+    },
+  }, (err, ret) => {
+    if (err) {
+      return callback(err);
+    }
+
+    const record = {};
+    const receipt = ret.receipt;
+
+    if (!tx || !receipt) {
+      return callback(`Something went wrong. Cannot get transaction information.`);
+    }
+
+    const inputData = abiDecoder.decodeMethod(tx.input);
+    if (!inputData || inputData.name !== 'trade') {
+      logger.info(`Transaction is not trade transaction: ${tx.hash}`);
+      return callback(null, null);
+    }
+
+    if (!web3.utils.hexToNumber(receipt.status)) {
+      logger.info(`Transaction receipt is failed: ${tx.hash}`);
+      return callback(null, null);
+    }
+
+    record.tx = tx.hash;
+    record.blockNumber = tx.blockNumber;
+    record.blockHash = tx.blockHash;
+    record.takerAddress = tx.from;
+    record.makerAddress = tx.to;
+    record.gasLimit = tx.gas;
+    record.gasPrice = tx.gasPrice;
+    record.gasUsed = receipt.gasUsed;
+    record.blockTimestamp = block.timestamp;
+
+    _.forEach(receipt.logs, (log) => {
+      if (log.address.toLowerCase() === Utils.getKyberNetworkContractAddress() &&
+          log.topics[0].toLowerCase() === Utils.getExchangeTopicHash()) {
+        const { src, dest, srcAmount, destAmount } = web3.eth.abi.decodeParameters(exchangeLogABI, log.data);
+
+        const srcToken = Utils.getTokenFromAddress(src);
+        record.takerTokenAddress = srcToken.address;
+        record.takerTokenSymbol = srcToken.symbol;
+        record.takerTokenAmount = srcAmount;
+
+        const destToken = Utils.getTokenFromAddress(dest);
+        record.makerTokenAddress = destToken.address;
+        record.makerTokenSymbol = destToken.symbol;
+        record.makerTokenAmount = destAmount;
+      }
+
+      if (log.topics[0].toLowerCase() === Utils.getBurnFeesTopicHash()) {
+        const { reserveAddr, burnFees } = web3.eth.abi.decodeParameters(burnLogABI, log.data);
+        record.reserveAddress = reserveAddr;
+        record.burnFees = burnFees;
+      }
+
+      if (log.topics[0].toLowerCase() === Utils.getFeeToWalletTopicHash()) {
+        const { reserveAddr, walletAddr, walletFee } = web3.eth.abi.decodeParameters(feeLogABI, log.data);
+      }
+
+    });
+
+    return insertTradeRecord(record, callback);
+  });
+}
+
+function insertTradeRecord(data, callback) {
+  const exSession = new ExSession();
+  const KyberTradeModel = exSession.getModel('KyberTradeModel');
+
+  async.auto({
+    existed: (next) => {
+      KyberTradeModel.findOne({
+        where: 'tx = ?',
+        params: [data.tx]
+      }, next);
+    },
+    insert: ['existed', (ret, next) => {
+      if (ret.existed) {
+        logger.info(`Transaction was inserted already: ${data.tx}`);
+        return next(null, null);
+      }
+
+      KyberTradeModel.add(data, next);
+    }],
+    commit: ['insert', (ret, next) => {
+      exSession.commit(next);
+    }]
+  }, (err, ret) => {
+    exSession.destroy();
+
+    if (err) {
+      logger.error(err);
+      return callback(err);
+    }
+
+    callback(null, null);
+  });
+}
