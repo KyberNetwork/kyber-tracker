@@ -112,4 +112,13 @@ module.exports = BaseService.extends({
     });
   },
 
+  getNetworkVolumes: function (params, callback) {
+    // TODO: Implement me.
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+
+    KyberTradeModel.sumGroupBy('volume_eth/1000000000000000000', {
+      groupBy: ['hour_seq']
+    }, callback);
+  },
+
 });

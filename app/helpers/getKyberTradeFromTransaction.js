@@ -48,6 +48,9 @@ module.exports = (block, tx, callback) => {
     record.gasPrice = tx.gasPrice;
     record.gasUsed = receipt.gasUsed;
     record.blockTimestamp = block.timestamp;
+    record.minuteSeq = Math.floor(block.timestamp / 60);
+    record.hourSeq = Math.floor(block.timestamp / 3600);
+    record.daySeq = Math.floor(block.timestamp / 86400);
 
     _.forEach(receipt.logs, (log) => {
       if (log.address.toLowerCase() === Utils.getKyberNetworkContractAddress() &&
@@ -63,6 +66,12 @@ module.exports = (block, tx, callback) => {
         record.makerTokenAddress = destToken.address;
         record.makerTokenSymbol = destToken.symbol;
         record.makerTokenAmount = destAmount;
+
+        if (srcToken.symbol === 'ETH') {
+          record.volumeEth = srcAmount;
+        } else if (destToken.symbol === 'ETH') {
+          record.volumeEth = destAmount;
+        }
       }
 
       if (log.topics[0].toLowerCase() === Utils.getBurnFeesTopicHash()) {

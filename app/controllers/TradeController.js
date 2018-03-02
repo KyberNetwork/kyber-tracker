@@ -51,4 +51,24 @@ module.exports = AppController.extends({
     TradeService.getStats24h(this.ok.bind(this, req, res));
   },
 
+  getVolumes: function (req, res) {
+    const [err, params] = new Checkit({
+      symbol: ['string'],
+      period: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
+  },
+
+  getFees: function (req, res) {
+    // TODO
+    return res.ok('TODO: Implement me.');
+  },
+
 });

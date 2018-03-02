@@ -3,6 +3,8 @@ module.exports = {
     '/trades'                       : ['TradeController.getList', 'paginate'],
     '/trades/:tradeId'              : ['TradeController.getTradeDetails'],
     '/stats24h'                     : ['TradeController.getStats24h'],
+    '/volumes'                      : ['TradeController.getVolumes'],
+    '/fees'                         : ['TradeController.getFees'],
   },
   POST: {
     // Implement me.

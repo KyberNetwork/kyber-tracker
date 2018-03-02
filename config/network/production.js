@@ -145,5 +145,5 @@ module.exports = {
   "networkId": 1,
   "chainName": "Mainnet",
   "averageBlockTime": 15000,
-  "startBlockNumber": 5075249, // From contract was deployed firstly #5049196
+  "startBlockNumber": 5090041, // From contract was deployed firstly #5049196
 };

@@ -24,10 +24,19 @@
      maker_fee: { type: 'string', length: 765 },
      taker_fee: { type: 'string', length: 765 },
      burn_fees: { type: 'string', length: 765 },
-     reserve_address: { type: 'string', length: 765 } },
+     reserve_address: { type: 'string', length: 765 },
+     minute_seq: { type: 'number', length: 11 },
+     hour_seq: { type: 'number', length: 11 },
+     day_seq: { type: 'number', length: 11 },
+     volume_eth: { type: 'string', length: 150 },
+     volume_usd: { type: 'string', length: 150 } },
   UserModel: 
    { username: { type: 'string', length: 120 },
      avatar_url: { type: 'string', length: 768 },
      email: { type: 'string', length: 120 },
      password: { type: 'string', length: 384 },
-     full_name: { type: 'string', length: 135 } } }
+     full_name: { type: 'string', length: 135 } },
+  VolumeHourModel: 
+   { timestamp: { type: 'number', length: 20 },
+     value_eth: { type: 'number', length: 20 },
+     value_usd: { type: 'number', length: 20 } } }
