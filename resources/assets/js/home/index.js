@@ -10,8 +10,8 @@ import BootstrapVue from 'bootstrap-vue';
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
 import routes from './routes';
-import en from '../../../lang/en';
-import vi from '../../../lang/vi';
+const en = require('../../../lang/en.json');
+const vi = require('../../../lang/vi.json');
 
 Vue.component('data-table', DataTable);
 

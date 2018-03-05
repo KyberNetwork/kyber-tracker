@@ -1,0 +1,35 @@
+{
+  "website_title": "Kyber Tracker",
+
+  "common": {
+    "exchange": "Exchange",
+    "name": "Name",
+    "symbol": "Symbol",
+    "volume_24h_usd": "24hr Volume (USD)",
+    "volume_24h_token": "24hr Volume (token)"
+  },
+
+  "trade_list": {
+    "title": "Recent Trades",
+    "address": "Address",
+    "date": "Date",
+    "taker_token": "Exchange from",
+    "maker_token": "Exchange to",
+    "rate": "Rate"
+  },
+
+  "trade_detail": {
+    "transaction_hash": "Transaction Hash",
+    "date": "Date",
+    "taker_address": "Taker Address",
+    "taker_token": "Exchange From",
+    "taker_amount": "Amount",
+    "maker_token": "Exchange To",
+    "maker_amount": "Amount"
+  },
+
+  "token_list": {
+    "title": "Trade Tokens"
+  }
+
+}

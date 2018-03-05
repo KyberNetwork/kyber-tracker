@@ -2,6 +2,7 @@
 const _             = require('lodash');
 const async         = require('async');
 const BigNumber     = require('bignumber.js');
+const network       = require('../../config/network');
 const Const         = require('../common/Const');
 const Utils         = require('sota-core').load('util/Utils');
 const Paginator2    = require('sota-core').load('util/Paginator2');
@@ -44,6 +45,46 @@ module.exports = BaseService.extends({
   getTradeDetails: function (tradeId, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     KyberTradeModel.findOne(tradeId, callback);
+  },
+
+  getTopTokensList: function (fromDate, toDate, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    const CMCService = this.getService('CMCService');
+
+    async.auto({
+      trades: (next) => {
+        KyberTradeModel.sumGroupBy('token_amount', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['token_symbol']
+        }, next);
+      },
+      prices: (next) => {
+        CMCService.getPriceOfAllTokens(next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const prices = ret.prices;
+      const tokens = _.map(ret.trades, (trade) => {
+        const symbol = trade.tokenSymbol;
+        const tokenConfig = network.tokens[symbol];
+        const decimal = tokenConfig.decimal;
+        const tokenVolume = (new BigNumber(trade.sum.toString())).div(Math.pow(10, decimal));
+        return {
+          symbol: trade.tokenSymbol,
+          name: tokenConfig.name,
+          volumeToken: tokenVolume.toFormat(4).toString(),
+          volumeUSD: tokenVolume.times(prices[symbol]).toFormat(2)
+        };
+      });
+
+      return callback(null, _.sortBy(tokens, (e) => {
+        return -parseFloat(e.volumeUSD);
+      }));
+    });
   },
 
   getStats24h: function (callback) {

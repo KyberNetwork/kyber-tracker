@@ -66054,15 +66054,10 @@ var _routes = __webpack_require__(382);
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _en = __webpack_require__(438);
-
-var _en2 = _interopRequireDefault(_en);
-
-var _vi = __webpack_require__(439);
-
-var _vi2 = _interopRequireDefault(_vi);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var en = __webpack_require__(505);
+var vi = __webpack_require__(506);
 
 _vue2.default.component('data-table', _DataTable2.default);
 
@@ -66073,7 +66068,7 @@ _vue2.default.use(_bootstrapVue2.default);
 
 var i18n = new _vueI18n2.default({
   locale: localStorage.getItem('locale') || 'en',
-  messages: { en: _en2.default, vi: _vi2.default }
+  messages: { en: en, vi: vi }
 });
 window.i18n = i18n;
 
@@ -84934,8 +84929,8 @@ var render = function() {
             ? _c(
                 "tbody",
                 [
-                  _vm._l(_vm.rows, function(row) {
-                    return _vm._t("body", null, { item: row })
+                  _vm._l(_vm.rows, function(row, index) {
+                    return _vm._t("body", null, { item: row, index: index })
                   })
                 ],
                 2
@@ -84976,10 +84971,14 @@ var _TradeDetails = __webpack_require__(433);
 
 var _TradeDetails2 = _interopRequireDefault(_TradeDetails);
 
+var _TokenList = __webpack_require__(500);
+
+var _TokenList2 = _interopRequireDefault(_TokenList);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-  routes: [{ path: '/', component: _TradeList2.default }, { path: '/trade', component: _TradeDetails2.default }]
+  routes: [{ path: '/', component: _TradeList2.default }, { path: '/trade', component: _TradeDetails2.default }, { path: '/tokens', component: _TokenList2.default }]
 };
 
 /***/ }),
@@ -89073,6 +89072,14 @@ var AppRequest = function (_BaseRequest) {
       var url = '/api/stats24h';
       return this.get(url, {});
     }
+  }, {
+    key: 'getTopTokens',
+    value: function getTopTokens() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var url = '/api/tokens/top';
+      return this.get(url, params);
+    }
   }]);
 
   return AppRequest;
@@ -90213,7 +90220,7 @@ module.exports = {
   "networkId": 1,
   "chainName": "Mainnet",
   "averageBlockTime": 15000,
-  "startBlockNumber": 5090041 // From contract was deployed firstly #5049196
+  "startBlockNumber": 5186629 // From contract was deployed firstly #5049196
 };
 
 /***/ }),
@@ -90712,56 +90719,8 @@ if (false) {
 }
 
 /***/ }),
-/* 438 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  website_title: 'Kyber Tracker',
-
-  common: {
-    exchange: 'Exchange'
-  },
-
-  trade_list: {
-    title: 'Recent Trades',
-    address: 'Address',
-    date: 'Date',
-    taker_token: 'Exchange from',
-    maker_token: 'Exchange to',
-    rate: 'Rate'
-  },
-
-  trade_detail: {
-    transaction_hash: 'Transaction Hash',
-    date: 'Date',
-    taker_address: 'Taker Address',
-    taker_token: 'Exchange From',
-    taker_amount: 'Amount',
-    maker_token: 'Exchange To',
-    maker_amount: 'Amount'
-  }
-
-};
-
-/***/ }),
-/* 439 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {};
-
-/***/ }),
+/* 438 */,
+/* 439 */,
 /* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -105602,6 +105561,294 @@ module.exports = {
 	}
 };
 
+
+/***/ }),
+/* 500 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue__ = __webpack_require__(503);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a963f668_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TokenList_vue__ = __webpack_require__(504);
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(501)
+}
+var normalizeComponent = __webpack_require__(9)
+/* script */
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-a963f668"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a963f668_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TokenList_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/home/components/TokenList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a963f668", Component.options)
+  } else {
+    hotAPI.reload("data-v-a963f668", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 501 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(502);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(8)("69e22e3f", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a963f668\",\"scoped\":true,\"hasInlineConfig\":false}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./TokenList.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a963f668\",\"scoped\":true,\"hasInlineConfig\":false}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./TokenList.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 502 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(7)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 503 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lodash = __webpack_require__(15);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _socket = __webpack_require__(68);
+
+var _socket2 = _interopRequireDefault(_socket);
+
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _bignumber = __webpack_require__(200);
+
+var _bignumber2 = _interopRequireDefault(_bignumber);
+
+var _AppRequest = __webpack_require__(410);
+
+var _AppRequest2 = _interopRequireDefault(_AppRequest);
+
+var _util = __webpack_require__(35);
+
+var _util2 = _interopRequireDefault(_util);
+
+var _network = __webpack_require__(430);
+
+var _network2 = _interopRequireDefault(_network);
+
+var _chart = __webpack_require__(454);
+
+var _chart2 = _interopRequireDefault(_chart);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+exports.default = {
+  data: function data() {
+    return {
+      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol')
+    };
+  },
+
+
+  methods: {
+    refresh: function refresh() {
+      if (!this.$refs.datatable) {
+        window.clearInterval(this._refreshInterval);
+        return;
+      }
+
+      this.$refs.datatable.fetch();
+    },
+    getListTitle: function getListTitle() {
+      return this.$t("token_list.title");
+    },
+    getList: function getList() {
+      return _AppRequest2.default.getTopTokens();
+    }
+  },
+
+  watch: {},
+
+  mounted: function mounted() {
+    this.refresh();
+  }
+};
+
+/***/ }),
+/* 504 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "col-sm-12" },
+    [
+      _c(
+        "data-table",
+        {
+          ref: "datatable",
+          attrs: { title: _vm.getListTitle(), getData: _vm.getList },
+          scopedSlots: _vm._u([
+            {
+              key: "body",
+              fn: function(slot) {
+                return [
+                  _c("tr", [
+                    _c("td", [_vm._v(_vm._s(slot.index + 1))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(slot.item.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(slot.item.symbol))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s("$" + slot.item.volumeUSD))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(slot.item.volumeToken + " " + slot.item.symbol)
+                      )
+                    ])
+                  ])
+                ]
+              }
+            }
+          ])
+        },
+        [
+          _c("template", { slot: "header" }, [
+            _c("th", [_vm._v("#")]),
+            _vm._v(" "),
+            _c("th", [_vm._v(_vm._s(_vm.$t("common.name")))]),
+            _vm._v(" "),
+            _c("th", [_vm._v(_vm._s(_vm.$t("common.symbol")))]),
+            _vm._v(" "),
+            _c("th", [_vm._v(_vm._s(_vm.$t("common.volume_24h_usd")))]),
+            _vm._v(" "),
+            _c("th", [_vm._v(_vm._s(_vm.$t("common.volume_24h_token")))])
+          ])
+        ],
+        2
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a963f668", esExports)
+  }
+}
+
+/***/ }),
+/* 505 */
+/***/ (function(module, exports) {
+
+module.exports = {"website_title":"Kyber Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24hr Volume (USD)","volume_24h_token":"24hr Volume (token)"},"trade_list":{"title":"Recent Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Taker Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount"},"token_list":{"title":"Trade Tokens"}}
+
+/***/ }),
+/* 506 */
+/***/ (function(module, exports) {
+
+module.exports = {"website_title":"Kyber Tracker"}
 
 /***/ })
 /******/ ]);

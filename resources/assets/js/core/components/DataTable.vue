@@ -19,7 +19,7 @@
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
-            <slot name="body" v-for="row in rows" :item="row"></slot>
+            <slot name="body" v-for="(row, index) in rows" :item="row" :index="index"></slot>
           </tbody>
         </table>
       </div>

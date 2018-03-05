@@ -22,6 +22,11 @@ class AppRequest extends BaseRequest {
     return this.get(url, {});
   }
 
+  getTopTokens (params={}) {
+    const url = `/api/tokens/top`;
+    return this.get(url, params);
+  }
+
 }
 
 const instance = new AppRequest();

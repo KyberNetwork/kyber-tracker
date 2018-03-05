@@ -3,12 +3,13 @@ const async                   = require('async');
 const AppController           = require('./AppController');
 const Checkit                 = require('cc-checkit');
 const Const                   = require('../common/Const');
+const Utils                   = require('sota-core').load('util/Utils');
 const logger                  = log4js.getLogger('TradeController');
 
 module.exports = AppController.extends({
   classname: 'TradeController',
 
-  getList: function (req, res) {
+  getTradesList: function (req, res) {
     const [err, params] = new Checkit({
       'page': ['naturalNonZero'],
       'fromDate': ['naturalNonZero'],
@@ -44,6 +45,25 @@ module.exports = AppController.extends({
 
     const TradeService = req.getService('TradeService');
     TradeService.getTradeDetails(params.tradeId, this.ok.bind(this, req, res));
+  },
+
+  getTopTokensList: function (req, res) {
+    const [err, params] = new Checkit({
+      fromDate: ['natural'],
+      toDate: ['natural'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const now = Utils.nowInSeconds();
+    let fromDate = params.fromDate || 0;
+    let toDate = params.toDate || now;
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
   },
 
   getStats24h: function (req, res) {
