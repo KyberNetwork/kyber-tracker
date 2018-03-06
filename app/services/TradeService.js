@@ -68,18 +68,23 @@ module.exports = BaseService.extends({
       }
 
       const prices = ret.prices;
-      const tokens = _.map(ret.trades, (trade) => {
-        const symbol = trade.tokenSymbol;
-        const tokenConfig = network.tokens[symbol];
+      const trades = _.keyBy(ret.trades, 'tokenSymbol');
+      const tokens = _.compact(_.map(network.tokens, (tokenConfig) => {
+        const symbol = tokenConfig.symbol;
+        if (symbol === 'ETH') {
+          return null;
+        }
+
+        const trade = trades[symbol];
         const decimal = tokenConfig.decimal;
-        const tokenVolume = (new BigNumber(trade.sum.toString())).div(Math.pow(10, decimal));
+        const tokenVolume = trade ? (new BigNumber(trade.sum.toString())).div(Math.pow(10, decimal)) : new BigNumber(0);
         return {
-          symbol: trade.tokenSymbol,
+          symbol: tokenConfig.symbol,
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
           volumeUSD: tokenVolume.times(prices[symbol]).toFormat(2)
         };
-      });
+      }));
 
       return callback(null, _.sortBy(tokens, (e) => {
         return -parseFloat(e.volumeUSD);
@@ -153,13 +158,99 @@ module.exports = BaseService.extends({
     });
   },
 
-  getNetworkVolumes: function (params, callback) {
-    // TODO: Implement me.
+  getNetworkVolumes: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
+    const now = Utils.nowInSeconds();
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+
+    let key = `vol-${period}-${interval}`;
+    if (options.symbol) {
+      key = options.symbol + '-' + key;
+    }
+
+    const cachedData = LocalCache.getSync(key);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    let groupColumn = this._getGroupColumnByIntervalParam(interval);
+    let toDate = options.toDate || now;
+    let fromDate = options.fromDate || (toDate - Const.CHART_PERIOD.D7);
+
+    let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
+    let params = [fromDate, toDate];
+
+    if (options.symbol) {
+      whereClauses += ' AND token_symbol = ?';
+      params.push(options.symbol);
+    }
 
     KyberTradeModel.sumGroupBy('volume_eth/1000000000000000000', {
-      groupBy: ['hour_seq']
-    }, callback);
+      where: whereClauses,
+      params: params,
+      groupBy: [groupColumn]
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      LocalCache.setSync(key, ret);
+      return callback(null, ret);
+    });
+  },
+
+  getNetworkFees: function (options, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    const now = Utils.nowInSeconds();
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+
+    let key = `fee-${period}-${interval}`;
+    if (options.symbol) {
+      key = options.symbol + '-' + key;
+    }
+
+    const cachedData = LocalCache.getSync(key);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    let groupColumn = this._getGroupColumnByIntervalParam(interval);
+    let toDate = options.toDate || now;
+    let fromDate = options.fromDate || (toDate - Const.CHART_PERIOD.D7);
+
+    let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
+    let params = [fromDate, toDate];
+
+    if (options.symbol) {
+      whereClauses += ' AND token_symbol = ?';
+      params.push(options.symbol);
+    }
+
+    KyberTradeModel.sumGroupBy('burn_fees/1000000000000000000', {
+      where: whereClauses,
+      params: params,
+      groupBy: [groupColumn]
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      LocalCache.setSync(key, ret);
+      return callback(null, ret);
+    });
+  },
+
+  _getGroupColumnByIntervalParam: function(interval) {
+    switch (interval) {
+      case 'H1':
+        return 'hour_seq';
+      case 'M1':
+        return 'minute_seq';
+      case 'D1':
+        return 'day_seq';
+    }
   },
 
 });

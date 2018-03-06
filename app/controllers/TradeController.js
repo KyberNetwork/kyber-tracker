@@ -74,7 +74,10 @@ module.exports = AppController.extends({
   getVolumes: function (req, res) {
     const [err, params] = new Checkit({
       symbol: ['string'],
-      period: ['string']
+      period: ['string'],
+      interval: ['string'],
+      fromDate: ['natural'],
+      toDate: ['natural']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -87,8 +90,21 @@ module.exports = AppController.extends({
   },
 
   getFees: function (req, res) {
-    // TODO
-    return res.ok('TODO: Implement me.');
+    const [err, params] = new Checkit({
+      symbol: ['string'],
+      interval: ['string'],
+      period: ['string'],
+      fromDate: ['natural'],
+      toDate: ['natural']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getNetworkFees(params, this.ok.bind(this, req, res));
   },
 
 });

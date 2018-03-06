@@ -46,18 +46,17 @@ export default {
 
   methods: {
     refresh () {
-      if (!this.$refs.datatable) {
-        window.clearInterval(this._refreshInterval);
-        return;
-      }
-
       this.$refs.datatable.fetch();
     },
     getListTitle () {
       return this.$t("token_list.title");
     },
     getList () {
-      return AppRequest.getTopTokens();
+      const now = Date.now() / 1000 | 0;
+      return AppRequest.getTopTokens({
+        fromDate: now - 24 * 60 * 60,
+        toDate: now
+      });
     },
   },
 

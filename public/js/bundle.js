@@ -90220,7 +90220,7 @@ module.exports = {
   "networkId": 1,
   "chainName": "Mainnet",
   "averageBlockTime": 15000,
-  "startBlockNumber": 5186629 // From contract was deployed firstly #5049196
+  "startBlockNumber": 5191134 // From contract was deployed firstly #5049196
 };
 
 /***/ }),
@@ -105654,7 +105654,7 @@ exports = module.exports = __webpack_require__(7)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -105743,18 +105743,17 @@ exports.default = {
 
   methods: {
     refresh: function refresh() {
-      if (!this.$refs.datatable) {
-        window.clearInterval(this._refreshInterval);
-        return;
-      }
-
       this.$refs.datatable.fetch();
     },
     getListTitle: function getListTitle() {
       return this.$t("token_list.title");
     },
     getList: function getList() {
-      return _AppRequest2.default.getTopTokens();
+      var now = Date.now() / 1000 | 0;
+      return _AppRequest2.default.getTopTokens({
+        fromDate: now - 24 * 60 * 60,
+        toDate: now
+      });
     }
   },
 
