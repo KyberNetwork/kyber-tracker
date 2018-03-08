@@ -8,28 +8,28 @@
 module.exports = {
   adapters: {
     'mysql-master' : {
-      dbName  : 'kyber_tracker',
-      dbUser  : 'root',
-      dbPwd   : '1',
-      dbHost  : '127.0.0.1',
+      dbName  : process.env.MYSQL_DBNAME,
+      dbUser  : process.env.MYSQL_USERNAME,
+      dbPwd   : process.env.MYSQL_PASSWORD,
+      dbHost  : process.env.MYSQL_DB_HOST,
     },
     'mysql-slave' : {
-      dbName  : 'kyber_tracker',
-      dbUser  : 'root',
-      dbPwd   : '1',
-      dbHost  : '127.0.0.1',
+      dbName  : process.env.MYSQL_DBNAME,
+      dbUser  : process.env.MYSQL_USERNAME,
+      dbPwd   : process.env.MYSQL_PASSWORD,
+      dbHost  : process.env.MYSQL_DB_HOST,
     },
     'mysql-master-test' : {
-      dbName  : 'kyber_tracker',
-      dbUser  : 'root',
-      dbPwd   : '1',
-      dbHost  : '127.0.0.1',
+      dbName  : process.env.MYSQL_DBNAME,
+      dbUser  : process.env.MYSQL_USERNAME,
+      dbPwd   : process.env.MYSQL_PASSWORD,
+      dbHost  : process.env.MYSQL_DB_HOST,
     },
     'mysql-slave-test' : {
-      dbName  : 'kyber_tracker',
-      dbUser  : 'root',
-      dbPwd   : '1',
-      dbHost  : '127.0.0.1',
+      dbName  : process.env.MYSQL_DBNAME,
+      dbUser  : process.env.MYSQL_USERNAME,
+      dbPwd   : process.env.MYSQL_PASSWORD,
+      dbHost  : process.env.MYSQL_DB_HOST,
     },
   }
 }
