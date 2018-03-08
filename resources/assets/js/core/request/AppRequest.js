@@ -5,11 +5,7 @@ class AppRequest extends BaseRequest {
 
   getTrades (page=0, limit=10, query={}) {
     const url = `/api/trades`;
-    return this.get(url, _.assign({
-      p_type: 'cursor',
-      p_limit: limit,
-      p_offset: page * limit
-    }, query));
+    return this.get(url, _.assign({ limit, page }, query));
   }
 
   getTradeDetails (id, params={}) {

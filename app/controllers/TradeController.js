@@ -12,6 +12,8 @@ module.exports = AppController.extends({
   getTradesList: function (req, res) {
     const [err, params] = new Checkit({
       symbol: ['string'],
+      page: ['required', 'natural'],
+      limit: ['required', 'naturalNonZero'],
       fromDate: ['naturalNonZero'],
       toDate: ['naturalNonZero'],
     }).validateSync(req.allParams);
@@ -22,15 +24,7 @@ module.exports = AppController.extends({
     }
 
     const TradeService = req.getService('TradeService');
-
-    if (req.pagination.type === 'cursor') {
-      TradeService.getTradesList(params, req.pagination, this.ok.bind(this, req, res));
-    } else if (req.pagination.type === 'cursor2') {
-      const pagination = _.merge(req.pagination, Const.DEFAULT_PAGINATION);
-      TradeService.getTradesList2(params, pagination, this.ok.bind(this, req, res));
-    } else {
-      res.badRequest(`Please use a valid pagination option.`);
-    }
+    TradeService.getTradesList(params, this.ok.bind(this, req, res));
   },
 
   getTradeDetails: function (req, res) {

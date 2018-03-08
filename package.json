@@ -4,7 +4,8 @@
   "description": "Kyber Tracker",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pm2 start app.json",
+    "test": "LOG_LEVEL=ERROR NODE_ENV=test node_modules/.bin/mocha -R spec --timeout 30000 test/index.js"
   },
   "repository": {
     "type": "git",
@@ -34,8 +35,9 @@
     "momentjs": "2.0.0",
     "nodemon": "1.13.3",
     "randomstring": "1.1.5",
+    "require-directory": "^2.1.1",
     "sota-core": "2.0.14",
-    "superagent": "3.8.2",
+    "superagent": "^3.8.2",
     "vue-i18n": "7.4.2",
     "web3": "1.0.0-beta.30",
     "ws": "3.2.0"

@@ -6,7 +6,6 @@ const request       = require('superagent');
 const Const         = require('../common/Const');
 const network       = require('../../config/network');
 const Utils         = require('sota-core').load('util/Utils');
-const Paginator2    = require('sota-core').load('util/Paginator2');
 const BaseService   = require('sota-core').load('service/BaseService');
 const LocalCache    = require('sota-core').load('cache/foundation/LocalCache');
 const logger        = require('sota-core').getLogger('CMCService');

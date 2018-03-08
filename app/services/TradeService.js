@@ -5,7 +5,6 @@ const BigNumber     = require('bignumber.js');
 const network       = require('../../config/network');
 const Const         = require('../common/Const');
 const Utils         = require('sota-core').load('util/Utils');
-const Paginator2    = require('sota-core').load('util/Paginator2');
 const BaseService   = require('sota-core').load('service/BaseService');
 const LocalCache    = require('sota-core').load('cache/foundation/LocalCache');
 const logger        = require('sota-core').getLogger('TradeService');
@@ -13,22 +12,32 @@ const logger        = require('sota-core').getLogger('TradeService');
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
-  getTradesList: function (options, pagination, callback) {
+  getTradesList: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
     let whereClauses = '1=1';
     let params = [];
 
     if (options.symbol) {
-      whereClauses += ' AND token_symbol = ?',
+      whereClauses += ' AND token_symbol = ?';
       params.push(options.symbol);
+    }
+
+    if (options.fromDate) {
+      whereClauses += ' AND block_timestamp > ?';
+      params.push(options.fromDate);
+    }
+
+    if (options.toDate) {
+      whereClauses += ' AND block_timestamp < ?';
+      params.push(options.toDate);
     }
 
     const queryOptions = {
       where: whereClauses,
       params: params,
-      limit: pagination.limit,
-      offset: pagination.offset,
+      limit: options.limit,
+      offset: options.page * options.limit,
       orderBy: 'id DESC'
     };
 
@@ -50,21 +59,13 @@ module.exports = BaseService.extends({
       return callback(null, {
         data: ret.list,
         pagination: {
-          type: pagination.type,
-          limit: pagination.limit,
-          offset: pagination.offset,
-          totalCount: ret.count
+          page: options.page,
+          limit: options.limit,
+          totalCount: ret.count,
+          maxPage: Math.ceil(ret.count/options.limit)
         }
       });
     });
-  },
-
-  getTradesList2: function (params, pagination, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
-    // TODO: filter by time/token/address,...
-    const queryOptions = {};
-
-    Paginator2.find(KyberTradeModel, queryOptions, pagination, callback);
   },
 
   getTradeDetails: function (tradeId, callback) {

@@ -1,0 +1,14 @@
+{
+  "apps" : [
+    {
+      "name"              : "kyber-tracker",
+      "script"            : "server.js",
+      "watch"             : false
+    },
+    {
+      "name"              : "kyber-crawler",
+      "script"            : "crawl.js",
+      "watch"             : false
+    },
+  ]
+}

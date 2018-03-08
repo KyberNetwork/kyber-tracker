@@ -23625,11 +23625,7 @@ var AppRequest = function (_BaseRequest) {
       var query = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       var url = '/api/trades';
-      return this.get(url, _lodash2.default.assign({
-        p_type: 'cursor',
-        p_limit: limit,
-        p_offset: page * limit
-      }, query));
+      return this.get(url, _lodash2.default.assign({ limit: limit, page: page }, query));
     }
   }, {
     key: 'getTradeDetails',
