@@ -1,12 +1,13 @@
-const _               = require('lodash');
-const async           = require('async');
-const network         = require('../../config/network');
-const getKyberTrade   = require('./getKyberTradeFromTransaction');
-const Utils           = require('./Utils');
-const logger          = require('sota-core').getLogger('KyberTradeCrawler');
+const _                     = require('lodash');
+const async                 = require('async');
+const network               = require('../../config/network');
+const getKyberTrade         = require('./getKyberTradeFromTransaction');
+const getLatestBlockNumber  = require('./getLatestBlockNumber');
+const Utils                 = require('./Utils');
+const logger                = require('sota-core').getLogger('KyberTradeCrawler');
 
-const web3            = Utils.getWeb3Instance();
-const abiDecoder      = Utils.getKyberABIDecoder();
+const web3                  = Utils.getWeb3Instance();
+const abiDecoder            = Utils.getKyberABIDecoder();
 
 let LATEST_PROCESSED_BLOCK = 0;
 
@@ -19,7 +20,11 @@ class KyberTradeCrawler {
   start() {
     async.auto({
       startBlockNumber: (next) => {
-        return next(null, LATEST_PROCESSED_BLOCK || network.startBlockNumber);
+        if (LATEST_PROCESSED_BLOCK > 0) {
+          return next(null, LATEST_PROCESSED_BLOCK);
+        }
+
+        getLatestBlockNumber(next);
       },
       processBlock: ['startBlockNumber', (ret, next) => {
         this.processBlock(ret.startBlockNumber, next);
