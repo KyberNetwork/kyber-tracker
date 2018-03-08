@@ -5,7 +5,17 @@
  * Run command `npm run schema` to re-generate this
  */
 
- module.exports = { KyberTradeModel: 
+ module.exports = { BurnedFeeModel: 
+   { block_number: { type: 'number', length: 11 },
+     block_hash: { type: 'string', length: 300 },
+     block_timestamp: { type: 'number', length: 20 },
+     tx: { type: 'string', length: 300 },
+     burner_address: { type: 'string', length: 300 },
+     burner_contract: { type: 'string', length: 150 },
+     reserve_contract: { type: 'string', length: 150 },
+     reserve_wallet: { type: 'string', length: 150 },
+     amount: { type: 'string', length: 765 } },
+  KyberTradeModel: 
    { block_number: { type: 'number', length: 11 },
      block_hash: { type: 'string', length: 300 },
      block_timestamp: { type: 'number', length: 20 },
@@ -37,8 +47,4 @@
      avatar_url: { type: 'string', length: 768 },
      email: { type: 'string', length: 120 },
      password: { type: 'string', length: 384 },
-     full_name: { type: 'string', length: 135 } },
-  VolumeHourModel: 
-   { timestamp: { type: 'number', length: 20 },
-     value_eth: { type: 'number', length: 20 },
-     value_usd: { type: 'number', length: 20 } } }
+     full_name: { type: 'string', length: 135 } } }

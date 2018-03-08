@@ -13,5 +13,6 @@ deploy-staging:
 				--exclude .git \
 				--exclude .idea \
 				--exclude .env \
+				--exclude .logs \
 				--exclude node_modules \
 				. ubuntu@52.77.238.156:/home/ubuntu/kyber-tracker/

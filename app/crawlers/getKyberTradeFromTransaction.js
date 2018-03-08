@@ -4,7 +4,7 @@ const BN              = require('bn.js');
 const exchangeLogABI  = require('../../config/abi/log_exchange');
 const feeLogABI       = require('../../config/abi/log_fee');
 const burnLogABI      = require('../../config/abi/log_burn');
-const Utils           = require('./Utils');
+const Utils           = require('../common/Utils');
 const ExSession       = require('sota-core').load('common/ExSession');
 const logger          = require('sota-core').getLogger('getKyberTradeFromTransaction');
 

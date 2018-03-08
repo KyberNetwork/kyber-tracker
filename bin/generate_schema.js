@@ -1,3 +1,4 @@
+require('dotenv').config();
 const _                     = require('lodash');
 const path                  = require('path');
 const FileUtils             = require('sota-core').load('util/FileUtils');

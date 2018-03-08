@@ -8,7 +8,7 @@ const app = SotaCore.createApp({
 app.start();
 
 process.nextTick(() => {
-  const KyberTradeCrawler = require('./app/helpers/KyberTradeCrawler');
+  const KyberTradeCrawler = require('./app/crawlers/KyberTradeCrawler');
   const crawler = new KyberTradeCrawler();
   crawler.start();
 });
