@@ -15,7 +15,7 @@
         <tr>
           <td>{{ (slot.index + 1) }}</td>
           <td>{{ slot.item.name }}</td>
-          <td>{{ slot.item.symbol }}</td>
+          <td><token-link :symbol="slot.item.symbol"></token-link></td>
           <td>{{ '$' + slot.item.volumeUSD }}</td>
           <td>{{ slot.item.volumeToken + ' ' + slot.item.symbol }}</td>
         </tr>

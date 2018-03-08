@@ -58,3 +58,4 @@ typings/
 .env
 
 .logs
+test.js

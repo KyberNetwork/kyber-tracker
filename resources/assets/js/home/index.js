@@ -9,11 +9,15 @@ import BootstrapVue from 'bootstrap-vue';
 
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
+import TradeList from '../core/components/TradeList.vue';
+import TokenLink from '../core/components/TokenLink.vue';
 import routes from './routes';
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
 
 Vue.component('data-table', DataTable);
+Vue.component('trade-list', TradeList);
+Vue.component('token-link', TokenLink);
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);

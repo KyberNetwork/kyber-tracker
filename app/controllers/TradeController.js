@@ -11,9 +11,9 @@ module.exports = AppController.extends({
 
   getTradesList: function (req, res) {
     const [err, params] = new Checkit({
-      'page': ['naturalNonZero'],
-      'fromDate': ['naturalNonZero'],
-      'toDate': ['naturalNonZero'],
+      symbol: ['string'],
+      fromDate: ['naturalNonZero'],
+      toDate: ['naturalNonZero'],
     }).validateSync(req.allParams);
 
     if (err) {
@@ -89,7 +89,7 @@ module.exports = AppController.extends({
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },
 
-  getFees: function (req, res) {
+  getToBurnFees: function (req, res) {
     const [err, params] = new Checkit({
       symbol: ['string'],
       interval: ['string'],
@@ -104,7 +104,29 @@ module.exports = AppController.extends({
     }
 
     const TradeService = req.getService('TradeService');
-    TradeService.getNetworkFees(params, this.ok.bind(this, req, res));
+    TradeService.getToBurnFees(params, this.ok.bind(this, req, res));
+  },
+
+  getToWalletFees: function (req, res) {
+    const [err, params] = new Checkit({
+      symbol: ['string'],
+      interval: ['string'],
+      period: ['string'],
+      fromDate: ['natural'],
+      toDate: ['natural']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getToWalletFees(params, this.ok.bind(this, req, res));
+  },
+
+  getBurnedFees: function (req, res) {
+    return res.badRequest(`TODO: implement me.`);
   },
 
 });

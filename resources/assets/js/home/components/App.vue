@@ -30,6 +30,27 @@
           TRADES (24H)<br />
           {{ tradeCount }}
         </b-nav-item>
+        <b-nav-item>
+          KNC PRICE<br />
+          {{ kncPrice }} ({{ kncPriceChange24h }})
+        </b-nav-item>
+      </b-navbar-nav>
+    </b-navbar>
+
+    <b-navbar toggleable="md" type="dark" variant="warning">
+      <b-navbar-nav>
+        <b-nav-item>
+          <router-link to="/">
+            Trades
+          </router-link>
+        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav>
+        <b-nav-item>
+          <router-link to="/tokens">
+            Tokens
+          </router-link>
+        </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
 
@@ -49,7 +70,9 @@ export default {
     return {
       networkVolume: '',
       networkFee: '',
-      tradeCount: ''
+      tradeCount: '',
+      kncPrice: '',
+      kncPriceChange24h: '',
     };
   },
 
@@ -63,6 +86,8 @@ export default {
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
+        this.kncPrice = '$' + parseFloat(stats.kncInfo.price_usd).toFixed(2);
+        this.kncPriceChange24h = stats.kncInfo.percent_change_24h + '%';
       });
     }
   },

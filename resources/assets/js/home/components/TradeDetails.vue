@@ -78,7 +78,7 @@ export default {
 
   methods: {
     refresh () {
-      const id = this.$route.query.id;
+      const id = this.$route.params.id;
       if (!id) {
         return;
       }

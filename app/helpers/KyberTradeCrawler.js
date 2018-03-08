@@ -48,6 +48,10 @@ class KyberTradeCrawler {
         web3.eth.getBlock(blockNumber, true, next);
       },
       processTransactions: ['currentBlockNumber', 'block', (ret, next) => {
+        if (!ret.block) {
+          return callback(null, null);
+        }
+
         const transactions = _.filter(ret.block.transactions, (tx) => {
           return tx.to && tx.to.toLowerCase() === network.contractAddresses.network;
         });

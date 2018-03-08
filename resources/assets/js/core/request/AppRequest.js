@@ -3,13 +3,13 @@ import BaseRequest from '../foundation/BaseRequest';
 
 class AppRequest extends BaseRequest {
 
-  getTrades (page=0, limit=10, type='cursor') {
+  getTrades (page=0, limit=10, query={}) {
     const url = `/api/trades`;
-    return this.get(url, {
-      p_type: type,
+    return this.get(url, _.assign({
+      p_type: 'cursor',
       p_limit: limit,
       p_offset: page * limit
-    });
+    }, query));
   }
 
   getTradeDetails (id, params={}) {

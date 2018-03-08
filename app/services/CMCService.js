@@ -73,4 +73,34 @@ module.exports = BaseService.extends({
 
   },
 
+  getCMCTokenInfo: function (symbol, callback) {
+    const key = 'cmc-info-' + symbol;
+    const cachedData = LocalCache.getSync(key);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    if (!symbol || typeof symbol !== 'string') {
+      return callback(`Cannot get config of invalid symbol: ${symbol}`);
+    }
+
+    const tokenInfo = network.tokens[symbol];
+    if (!tokenInfo) {
+      return callback(`Cannot find token config of symbol: ${symbol}`);
+    }
+
+    request
+      .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+
+        const result = response.body[0];
+
+        LocalCache.setSync(key, result);
+        return callback(null, result);
+      });
+  },
+
 });

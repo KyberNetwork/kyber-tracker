@@ -13,23 +13,48 @@ const logger        = require('sota-core').getLogger('TradeService');
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
-  getTradesList: function (params, pagination, callback) {
+  getTradesList: function (options, pagination, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    // TODO: filter by time/token/address,...
+
+    let whereClauses = '1=1';
+    let params = [];
+
+    if (options.symbol) {
+      whereClauses += ' AND token_symbol = ?',
+      params.push(options.symbol);
+    }
+
     const queryOptions = {
+      where: whereClauses,
+      params: params,
       limit: pagination.limit,
       offset: pagination.offset,
       orderBy: 'id DESC'
     };
 
-    KyberTradeModel.find(queryOptions, (err, ret) => {
+    async.auto({
+      list: (next) => {
+        KyberTradeModel.find(queryOptions, next);
+      },
+      count: (next) => {
+        KyberTradeModel.count({
+          where: whereClauses,
+          params: params
+        }, next);
+      }
+    }, (err, ret) => {
       if (err) {
         return callback(err);
       }
 
       return callback(null, {
-        data: ret,
-        pagination: pagination
+        data: ret.list,
+        pagination: {
+          type: pagination.type,
+          limit: pagination.limit,
+          offset: pagination.offset,
+          totalCount: ret.count
+        }
       });
     });
   },
@@ -123,6 +148,9 @@ module.exports = BaseService.extends({
       kncPrice: (next) => {
         CMCService.getCurrentPrice('KNC', next);
       },
+      kncInfo: (next) => {
+        CMCService.getCMCTokenInfo('KNC', next);
+      },
       tradeCount: (next) => {
         KyberTradeModel.count({
           where: 'block_timestamp > ?',
@@ -149,7 +177,8 @@ module.exports = BaseService.extends({
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
         networkFee: '$' + feeInUSD.toFormat(2).toString(),
-        tradeCount: ret.tradeCount
+        tradeCount: ret.tradeCount,
+        kncInfo: ret.kncInfo,
       };
 
       LocalCache.setSync(key, result);
@@ -160,7 +189,6 @@ module.exports = BaseService.extends({
 
   getNetworkVolumes: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    const now = Utils.nowInSeconds();
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
 
@@ -174,9 +202,8 @@ module.exports = BaseService.extends({
       return callback(null, cachedData);
     }
 
-    let groupColumn = this._getGroupColumnByIntervalParam(interval);
-    let toDate = options.toDate || now;
-    let fromDate = options.fromDate || (toDate - Const.CHART_PERIOD.D7);
+    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
     let params = [fromDate, toDate];
@@ -200,13 +227,12 @@ module.exports = BaseService.extends({
     });
   },
 
-  getNetworkFees: function (options, callback) {
+  getToBurnFees: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    const now = Utils.nowInSeconds();
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
 
-    let key = `fee-${period}-${interval}`;
+    let key = `to-burn-fee-${period}-${interval}`;
     if (options.symbol) {
       key = options.symbol + '-' + key;
     }
@@ -216,9 +242,8 @@ module.exports = BaseService.extends({
       return callback(null, cachedData);
     }
 
-    let groupColumn = this._getGroupColumnByIntervalParam(interval);
-    let toDate = options.toDate || now;
-    let fromDate = options.fromDate || (toDate - Const.CHART_PERIOD.D7);
+    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
     let params = [fromDate, toDate];
@@ -242,6 +267,46 @@ module.exports = BaseService.extends({
     });
   },
 
+  getToWalletFees: function (options, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+
+    let key = `to-wallet-fee-${period}-${interval}`;
+    if (options.symbol) {
+      key = options.symbol + '-' + key;
+    }
+
+    const cachedData = LocalCache.getSync(key);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
+
+    let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
+    let params = [fromDate, toDate];
+
+    if (options.symbol) {
+      whereClauses += ' AND token_symbol = ?';
+      params.push(options.symbol);
+    }
+
+    KyberTradeModel.sumGroupBy('taker_fee', {
+      where: whereClauses,
+      params: params,
+      groupBy: [groupColumn]
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      LocalCache.setSync(key, ret);
+      return callback(null, ret);
+    });
+  },
+
   _getGroupColumnByIntervalParam: function(interval) {
     switch (interval) {
       case 'H1':
@@ -251,6 +316,17 @@ module.exports = BaseService.extends({
       case 'D1':
         return 'day_seq';
     }
+  },
+
+  _getRequestDatePeriods: function (options, period) {
+    let toDate = options.toDate || Utils.nowInSeconds();
+    let fromDate = options.fromDate;
+
+    if (!fromDate) {
+      fromDate = toDate - Const.CHART_PERIOD[period];
+    }
+
+    return [fromDate, toDate];
   },
 
 });

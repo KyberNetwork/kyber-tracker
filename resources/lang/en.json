@@ -15,7 +15,12 @@
     "date": "Date",
     "taker_token": "Exchange from",
     "maker_token": "Exchange to",
-    "rate": "Rate"
+    "rate": "Rate",
+    "description": "Description",
+    "amount": "Amount",
+    "fee_to_wallet": "Fee",
+    "fee_to_burn": "Burn fee",
+    "exchange": "Exchange"
   },
 
   "trade_detail": {

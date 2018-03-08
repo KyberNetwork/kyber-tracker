@@ -5,7 +5,9 @@ module.exports = {
     '/tokens/top'                   : ['TradeController.getTopTokensList'],
     '/stats24h'                     : ['TradeController.getStats24h'],
     '/volumes'                      : ['TradeController.getVolumes'],
-    '/fees'                         : ['TradeController.getFees'],
+    '/fees/to_burn'                 : ['TradeController.getToBurnFees'],
+    '/fees/to_wallet'               : ['TradeController.getToWalletFees'],
+    '/fees/burned'                  : ['TradeController.getBurnedFees'],
   },
   POST: {
     // Implement me.
