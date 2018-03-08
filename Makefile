@@ -3,3 +3,15 @@ init-db:
 
 schema:
 	node bin/generate_schema.js
+
+connect-staging:
+	ssh ubuntu@52.77.238.156
+
+deploy-staging:
+	rsync -avhzL --delete \
+				--no-perms --no-owner --no-group \
+				--exclude .git \
+				--exclude .idea \
+				--exclude .env \
+				--exclude node_modules \
+				. ubuntu@52.77.238.156:/home/ubuntu/kyber-tracker/
