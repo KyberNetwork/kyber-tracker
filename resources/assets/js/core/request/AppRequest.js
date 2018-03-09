@@ -1,11 +1,20 @@
 import _ from 'lodash';
+import request from 'superagent';
 import BaseRequest from '../foundation/BaseRequest';
 
 class AppRequest extends BaseRequest {
 
-  getTrades (page=0, limit=10, query={}) {
+  getTrades (page=0, limit=10, query={}, callback) {
     const url = `/api/trades`;
-    return this.get(url, _.assign({ limit, page }, query));
+    return request
+            .get(url)
+            .query(_.assign({ limit, page }, query))
+            .then((res) => {
+              return callback(null, res.body);
+            })
+            .catch((err) => {
+              window.EventBus.$emit('EVENT_COMMON_ERROR', err);
+            })
   }
 
   getTradeDetails (id, params={}) {

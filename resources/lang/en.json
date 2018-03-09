@@ -18,8 +18,8 @@
     "rate": "Rate",
     "description": "Description",
     "amount": "Amount",
-    "fee_to_wallet": "Fee",
-    "fee_to_burn": "Burn fee",
+    "fee_to_wallet": "Wallet Fee",
+    "fee_to_burn": "Fee To Burn",
     "exchange": "Exchange"
   },
 

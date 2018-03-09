@@ -1,3 +1,38 @@
 {
-  "website_title": "Kyber Tracker"
+  "website_title": "Kyber Tracker",
+
+  "common": {
+    "exchange": "Exchange",
+    "name": "Tên",
+    "symbol": "Ký hiệu",
+    "volume_24h_usd": "Lượng giao dịch 24h (USD)",
+    "volume_24h_token": "Lượng giao dịch 24h (token)"
+  },
+
+  "trade_list": {
+    "title": "Giao dịch gần đây",
+    "address": "Địa chỉ",
+    "date": "Thời gian",
+    "rate": "Tỉ giá",
+    "description": "Mô tả",
+    "amount": "Số lượng",
+    "fee_to_wallet": "Wallet Fee",
+    "fee_to_burn": "Fee To Burn",
+    "exchange": "Đổi"
+  },
+
+  "trade_detail": {
+    "transaction_hash": "Transaction Hash",
+    "date": "Date",
+    "taker_address": "Taker Address",
+    "taker_token": "Exchange From",
+    "taker_amount": "Amount",
+    "maker_token": "Exchange To",
+    "maker_amount": "Amount"
+  },
+
+  "token_list": {
+    "title": "Trade Tokens"
+  }
+
 }

@@ -108,12 +108,12 @@ module.exports = BaseService.extends({
           symbol: tokenConfig.symbol,
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
-          volumeUSD: tokenVolume.times(prices[symbol]).toFormat(2)
+          volumeUSD: tokenVolume.times(prices[symbol]).toNumber()
         };
       }));
 
       return callback(null, _.sortBy(tokens, (e) => {
-        return -parseFloat(e.volumeUSD);
+        return -e.volumeUSD;
       }));
     });
   },

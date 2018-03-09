@@ -6,6 +6,7 @@ import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
 import VueResource from 'vue-resource';
 import BootstrapVue from 'bootstrap-vue';
+import VuePaginate from 'vuejs-paginate';
 
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
@@ -15,14 +16,15 @@ import routes from './routes';
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
 
-Vue.component('data-table', DataTable);
-Vue.component('trade-list', TradeList);
-Vue.component('token-link', TokenLink);
-
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 Vue.use(VueResource);
 Vue.use(BootstrapVue);
+
+Vue.component('data-table', DataTable);
+Vue.component('trade-list', TradeList);
+Vue.component('token-link', TokenLink);
+Vue.component('paginate', VuePaginate);
 
 const i18n = new VueI18n({
   locale: localStorage.getItem('locale') || 'en',

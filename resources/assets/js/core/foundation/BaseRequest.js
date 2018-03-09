@@ -37,7 +37,7 @@ export default class BaseRequest {
             return;
           }
 
-          resolve(response.data.data);
+          resolve(response.data.data, response.data.pagination);
         })
         .catch(err => {
           window.EventBus.$emit('EVENT_COMMON_ERROR', err);

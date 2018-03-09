@@ -16,7 +16,7 @@
           <td>{{ (slot.index + 1) }}</td>
           <td>{{ slot.item.name }}</td>
           <td><token-link :symbol="slot.item.symbol"></token-link></td>
-          <td>{{ '$' + slot.item.volumeUSD }}</td>
+          <td>{{ formatVolumeUSD(slot.item) }}</td>
           <td>{{ slot.item.volumeToken + ' ' + slot.item.symbol }}</td>
         </tr>
       </template>
@@ -58,6 +58,9 @@ export default {
         toDate: now
       });
     },
+    formatVolumeUSD (item) {
+      return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
+    }
   },
 
   watch: {

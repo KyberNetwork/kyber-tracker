@@ -6,6 +6,15 @@
         <h4> {{ title }} </h4>
       </div>
 
+      <paginate
+        :page-count="maxPage"
+        :initial-page="currentPage"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickToPage"
+        :container-class="'pagination'"
+        :page-class="'page-item'">
+      </paginate>
       <div class="table-responsive">
         <table class="table">
           <thead>
@@ -34,9 +43,19 @@
                 <token-link :symbol="row.makerTokenSymbol"></token-link>
               </td>
               <td>
-                {{ getMakerTokenInfo(row) }}
+                <span>1</span>
+                <span>{{ row.takerTokenSymbol }}</span>
+                <span>=</span>
+                <span>{{ getRate(row) }}</span>
+                <span>{{ row.makerTokenSymbol }}</span>
               </td>
-              <td>{{ getMakerTokenInfo(row) }}</td>
+              <td>
+                <span>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</span>
+                <span>{{ row.takerTokenSymbol }}</span>
+                <span>for</span>
+                <span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</span>
+                <span>{{ row.makerTokenSymbol }}</span>
+              </td>
               <td>{{ formatTokenNumber('KNC', row.takerFee) }}</td>
               <td>{{ formatTokenNumber('KNC', row.burnFees) }}</td>
             </tr>
@@ -85,9 +104,11 @@ export default {
     fetch () {
       const params = this.getRequestParams();
       AppRequest
-        .getTrades(this.currentPage, this.pageSize || 20, params)
-        .then((data) => {
+        .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
+          const data = res.data;
+          const pagination = res.pagination;
           this.rows = data;
+          this.maxPage = pagination.maxPage;
         });
     },
     getRequestParams () {
@@ -98,22 +119,10 @@ export default {
     getDateInfo (trade) {
       return util.getDateInfo(trade.blockTimestamp * 1000);
     },
-    getDescription (trade) {
-
-    },
-    getTakerTokenInfo (trade) {
-      const amount = trade.takerTokenAmount;
-      const symbol = trade.takerTokenSymbol;
-      const tokenInfo = this.tokens[symbol];
-      const formatedAmount = util.formatTokenAmount(amount, tokenInfo.decimal);
-      return  `${formatedAmount} ${symbol}`;
-    },
-    getMakerTokenInfo (trade) {
-      const amount = trade.makerTokenAmount;
-      const symbol = trade.makerTokenSymbol;
-      const tokenInfo = this.tokens[symbol];
-      const formatedAmount = util.formatTokenAmount(amount, tokenInfo.decimal);
-      return  `${formatedAmount} ${symbol}`;
+    getRate (trade) {
+      const makerAmount = new BigNumber(trade.makerTokenAmount.toString());
+      const takerAmount = new BigNumber(trade.takerTokenAmount.toString())
+      return makerAmount.div(takerAmount).toFormat(5);
     },
     formatTokenNumber (symbol, amount) {
       const tokenInfo = this.tokens[symbol];
@@ -122,57 +131,20 @@ export default {
     getTradeLink (id) {
       return `/trades/${id}`;
     },
-  },
-  created () {
-    // TODO
+    clickToPage (page) {
+      this.currentPage = page - 1;
+      this.fetch();
+    }
   }
 };
 </script>
 
-<style scoped lang="css">
-  .container {
-    margin-top: 2em;
+<style lang="css">
+  .page-item {
+    padding-right: 5px;
+    padding-left: 5px;
   }
-
-  .panel {
-    background: none !important;
-  }
-
-  .panel-heading {
-    text-align: center !important;
-    background-color: #f5f5f5 !important;
-  }
-
-  .action-block {
-    display: inline-block;
-  }
-
-  .paginator {
-    padding: 9px 14px;
-    margin-bottom: 14px;
-    background-color: #f7f7f9;
-    border: 1px solid #e1e1e8;
-    border-radius: 4px;
-  }
-
-  .indicator {
-    cursor: pointer;
-  }
-
-  .indicator-prev {
-
-  }
-
-  .indicator-next {
-    float: right;
-  }
-
-  .table-responsive {
-    overflow-x: visible !important;
-  }
-
-  .clearfix {
-    clear: both;
-    overflow: auto;
+  .page-item.active {
+    background-color: cyan;
   }
 </style>
