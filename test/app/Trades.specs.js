@@ -63,7 +63,7 @@ describe('Test get trades list', () => {
       assert.equal(trades.length, 4);
       assert.equal(pagination.totalCount, 4);
 
-      assert(_.every(trades, (trade) => trade.tokenSymbol === 'OMG'));
+      assert(_.every(trades, (trade) => trade.takerTokenSymbol === 'OMG' || trade.makerTokenSymbol === 'OMG'));
 
       done();
     });

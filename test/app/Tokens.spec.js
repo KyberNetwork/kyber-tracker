@@ -19,7 +19,7 @@ describe('Test get tokens list', () => {
       }
 
       const tokens = ret.data;
-      const tokenNum = _.keys(networkConfig.tokens).length - 1; // Exclude ETH
+      const tokenNum = _.keys(networkConfig.tokens).length;
 
       assert.equal(err, null);
       assert.equal(tokens.length, tokenNum);
