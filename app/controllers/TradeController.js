@@ -123,4 +123,20 @@ module.exports = AppController.extends({
     return res.badRequest(`TODO: implement me.`);
   },
 
+  search: function (req, res) {
+    const [err, params] = new Checkit({
+      q: ['required', 'string'],
+      page: ['natural'],
+      limit: ['naturalNonZero'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.search(params, this.ok.bind(this, req, res));
+  },
+
 });

@@ -8,6 +8,7 @@ module.exports = {
     '/fees/to_burn'                 : ['TradeController.getToBurnFees'],
     '/fees/to_wallet'               : ['TradeController.getToWalletFees'],
     '/fees/burned'                  : ['TradeController.getBurnedFees'],
+    '/search'                       : ['TradeController.search'],
   },
   POST: {
     // Implement me.

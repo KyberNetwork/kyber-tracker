@@ -210,6 +210,69 @@ module.exports = BaseService.extends({
     });
   },
 
+  search: function (options, callback) {
+    const q = options.q.toLowerCase();
+    const page = options.page || 0;
+    const limit = options.limit || 20;
+    // Transaction hash
+    if (q.length === 66) {
+      this._searchByTxid(q, callback);
+    }
+    // Address
+    else if (q.length === 42) {
+      this._searchByAddress(q, page, limit, callback);
+    }
+    else {
+      return callback(null, null);
+    }
+  },
+
+  _searchByTxid: function (txid, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    KyberTradeModel.findOne({
+      where: 'tx = ?',
+      params: [txid]
+    }, callback);
+  },
+
+  _searchByAddress: function (address, page, limit, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    const whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?';
+    const params = [address, address];
+
+    async.auto({
+      list: (next) => {
+        KyberTradeModel.find({
+          where: whereClauses,
+          params: params,
+          limit: limit,
+          offset: page * limit,
+          orderBy: 'block_timestamp DESC',
+        }, next);
+      },
+      count: (next) => {
+        KyberTradeModel.count({
+          where: whereClauses,
+          params: params
+        }, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      return callback(null, {
+        data: ret.list,
+        pagination: {
+          page: page,
+          limit: limit,
+          totalCount: ret.count,
+          maxPage: Math.ceil(ret.count/limit)
+        }
+      });
+    });
+  },
+
   getNetworkVolumes: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
