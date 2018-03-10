@@ -36,7 +36,7 @@
     "nodemon": "1.13.3",
     "randomstring": "1.1.5",
     "require-directory": "^2.1.1",
-    "sota-core": "2.0.17",
+    "sota-core": "2.0.18",
     "superagent": "^3.8.2",
     "vue-i18n": "7.4.2",
     "vuejs-datepicker": "0.9.29",
