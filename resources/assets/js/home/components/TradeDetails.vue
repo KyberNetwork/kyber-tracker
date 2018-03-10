@@ -144,7 +144,7 @@ export default {
 
       const makerAmount = (new BigNumber(this.record.makerTokenAmount.toString())).div(Math.pow(10, makerToken.decimal));
       const takerAmount = (new BigNumber(this.record.takerTokenAmount.toString())).div(Math.pow(10, takerToken.decimal));
-      return makerAmount.div(takerAmount).toFormat(5);
+      return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
   },
 

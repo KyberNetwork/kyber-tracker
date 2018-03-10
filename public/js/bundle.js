@@ -23070,6 +23070,59 @@ var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
 '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
 '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
 
+function kyberRoundingNumber(number) {
+  var MAX_DIGIS = 7,
+      SIZE = 3;
+  number = +number;
+  var numberStr = number.toString();
+  if (isNaN(number) || number <= 0) number = 0;
+  if (number < 1e-7) number = 0;
+  if (('' + Math.floor(number)).length >= MAX_DIGIS) {
+    return Math.floor(number).toLocaleString();
+  }
+
+  var count_0 = 0;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = numberStr[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var j = _step.value;
+
+      if (j == '.') continue;
+      if (j == 0) count_0++;else break;
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  var precision = number.toPrecision(number < 1 && number > 0 ? MAX_DIGIS - count_0 : MAX_DIGIS),
+      arr = precision.split('.'),
+      intPart = arr[0],
+      i = intPart.length % SIZE || SIZE,
+      result = intPart.substr(0, i);
+
+  for (; i < intPart.length; i += SIZE) {
+    result += ',' + intPart.substr(i, SIZE);
+  }
+  if (arr[1]) {
+    result += '.' + arr[1];
+  }
+  return result;
+}
+
 exports.default = {
 
   qs: function qs(key) {
@@ -23120,7 +23173,11 @@ exports.default = {
 
     var bigNumber = new _bignumber2.default(amount.toString());
     var result = bigNumber.div(Math.pow(10, decimal));
-    return result.toFormat().toString();
+    return kyberRoundingNumber(result.toNumber()).toString();
+  },
+
+  roundingNumber: function roundingNumber(number) {
+    return kyberRoundingNumber(number);
   }
 
 };
@@ -92437,7 +92494,7 @@ exports.default = {
 
       var makerAmount = new _bignumber2.default(trade.makerTokenAmount.toString()).div(Math.pow(10, makerToken.decimal));
       var takerAmount = new _bignumber2.default(trade.takerTokenAmount.toString()).div(Math.pow(10, takerToken.decimal));
-      return makerAmount.div(takerAmount).toFormat(5);
+      return _util2.default.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
     formatTokenNumber: function formatTokenNumber(symbol, amount) {
       var tokenInfo = this.tokens[symbol];
@@ -109220,7 +109277,7 @@ exports.default = {
 
       var makerAmount = new _bignumber2.default(this.record.makerTokenAmount.toString()).div(Math.pow(10, makerToken.decimal));
       var takerAmount = new _bignumber2.default(this.record.takerTokenAmount.toString()).div(Math.pow(10, takerToken.decimal));
-      return makerAmount.div(takerAmount).toFormat(5);
+      return _util2.default.roundingNumber(makerAmount.div(takerAmount).toNumber());
     }
   },
 
