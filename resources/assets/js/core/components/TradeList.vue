@@ -18,8 +18,8 @@
         <hr />
       </div>
 
-      <div v-if="rows.length == 0">
-        {{ $t("trade_list.msg_no_result") }}
+      <div>
+        {{ getSearchResultMessage() }}
       </div>
 
       <paginate v-if="rows.length > 0"
@@ -103,6 +103,16 @@ export default {
     },
     pageSize: {
       type: Number,
+    },
+    getSearchResultMessage: {
+      type: Function,
+      default: function () {
+        if (this.rows && this.rows.length) {
+          return '';
+        }
+
+        return this.$t("trade_list.msg_no_result");
+      }
     },
     fetch: {
       type: Function,

@@ -92369,6 +92369,16 @@ exports.default = {
     pageSize: {
       type: Number
     },
+    getSearchResultMessage: {
+      type: Function,
+      default: function _default() {
+        if (this.rows && this.rows.length) {
+          return '';
+        }
+
+        return this.$t("trade_list.msg_no_result");
+      }
+    },
     fetch: {
       type: Function,
       default: function _default() {
@@ -96119,15 +96129,9 @@ var render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
-        _vm.rows.length == 0
-          ? _c("div", [
-              _vm._v(
-                "\n      " +
-                  _vm._s(_vm.$t("trade_list.msg_no_result")) +
-                  "\n    "
-              )
-            ])
-          : _vm._e(),
+        _c("div", [
+          _vm._v("\n      " + _vm._s(_vm.getSearchResultMessage()) + "\n    ")
+        ]),
         _vm._v(" "),
         _vm.rows.length > 0
           ? _c("paginate", {
@@ -110148,7 +110152,7 @@ exports = module.exports = __webpack_require__(10)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -110209,11 +110213,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 
 
 exports.default = {
   data: function data() {
     return {
+      resultCount: 0,
       tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'address')
     };
   },
@@ -110229,6 +110235,13 @@ exports.default = {
     },
     getFilterTokenSymbol: function getFilterTokenSymbol() {
       return undefined;
+    },
+    getSearchResultMessage: function getSearchResultMessage() {
+      if (!this.resultCount) {
+        return 'No result found for ' + this.$route.query.q;
+      }
+
+      return this.resultCount + ' results found for ' + this.$route.query.q;
     },
     requestSearch: function requestSearch() {
       var _this = this;
@@ -110248,6 +110261,7 @@ exports.default = {
         _this.$refs.datatable.rows = data;
 
         if (pagination) {
+          _this.resultCount = pagination.totalCount;
           _this.$refs.datatable.maxPage = pagination.maxPage;
         }
       });
@@ -110285,7 +110299,8 @@ var render = function() {
         attrs: {
           getFilterTokenSymbol: _vm.getFilterTokenSymbol,
           fetch: _vm.requestSearch,
-          isHideDatepicker: true
+          isHideDatepicker: true,
+          getSearchResultMessage: _vm.getSearchResultMessage
         }
       })
     ],

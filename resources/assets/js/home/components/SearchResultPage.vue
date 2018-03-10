@@ -4,7 +4,8 @@
     <trade-list ref="datatable"
       :getFilterTokenSymbol="getFilterTokenSymbol"
       :fetch="requestSearch"
-      :isHideDatepicker="true">
+      :isHideDatepicker="true"
+      :getSearchResultMessage="getSearchResultMessage">
     </trade-list>
   </div>
 </template>
@@ -24,6 +25,7 @@ export default {
 
   data() {
     return {
+      resultCount: 0,
       tokens: _.keyBy(_.values(network.tokens), 'address')
     };
   },
@@ -38,6 +40,13 @@ export default {
     },
     getFilterTokenSymbol () {
       return undefined;
+    },
+    getSearchResultMessage () {
+      if (!this.resultCount) {
+        return `No result found for ${this.$route.query.q}`;
+      }
+
+      return `${this.resultCount} results found for ${this.$route.query.q}`;
     },
     requestSearch () {
       const currentPage = this.$refs.datatable.currentPage;
@@ -56,6 +65,7 @@ export default {
             this.$refs.datatable.rows = data;
 
             if (pagination) {
+              this.resultCount = pagination.totalCount;
               this.$refs.datatable.maxPage = pagination.maxPage;
             }
           });
