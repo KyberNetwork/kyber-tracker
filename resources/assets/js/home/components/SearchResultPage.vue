@@ -1,8 +1,10 @@
 <template>
   <div class="col-sm-12">
-    <canvas id="myChart" width="100" height="25"></canvas>
+    <h1>SEARCH RESULT</h1>
     <trade-list ref="datatable"
-      :getFilterTokenSymbol="getFilterTokenSymbol">
+      :getFilterTokenSymbol="getFilterTokenSymbol"
+      :fetch="requestSearch"
+      :isHideDatepicker="true">
     </trade-list>
   </div>
 </template>
@@ -29,16 +31,34 @@ export default {
   methods: {
     refresh () {
       if (!this.$refs.datatable) {
-        window.clearInterval(this._refreshInterval);
         return;
       }
 
       this.$refs.datatable.fetch();
     },
     getFilterTokenSymbol () {
-      const tokenAddr = this.$route.params.tokenAddr;
-      const tokenDef = this.tokens[tokenAddr];
-      return tokenDef ? tokenDef.symbol : null;
+      return undefined;
+    },
+    requestSearch () {
+      const currentPage = this.$refs.datatable.currentPage;
+      const pageSize = this.$refs.datatable.pageSize || 20;
+      const q = this.$route.query.q;
+
+      AppRequest
+          .searchTrades(q, currentPage, pageSize, (err, res) => {
+            const data = res.data;
+            if (data && data.id > 0) {
+              this.$router.push(`/trades/${data.id}`);
+              return;
+            }
+
+            const pagination = res.pagination;
+            this.$refs.datatable.rows = data;
+
+            if (pagination) {
+              this.$refs.datatable.maxPage = pagination.maxPage;
+            }
+          });
     },
   },
 
@@ -49,27 +69,7 @@ export default {
   },
 
   mounted() {
-    if (!this.getFilterTokenSymbol()) {
-      return;
-    }
-
     this.refresh();
-
-    // TODO: correct data to be filled here.
-    const ctx = document.getElementById('myChart');
-    const data = {
-      labels: ["Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Feb 28", "Mar 01"],
-      datasets: [{
-        label: 'Token volume',
-        data: [11, 44, 76, 22, 27, 55, 42],
-      }]
-    };
-    const options = {};
-    const myChart = new Chart(ctx, {
-      type: 'line',
-      data,
-      options
-    });
   }
 
 }

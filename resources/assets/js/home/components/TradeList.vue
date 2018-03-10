@@ -3,7 +3,7 @@
     <canvas id="myChart" width="100" height="25"></canvas>
     <trade-list ref="datatable"
       :title="getListTitle()"
-      :getTokenSymbol="getTokenSymbol">
+      :getFilterTokenSymbol="getFilterTokenSymbol">
     </trade-list>
 
   </div>
@@ -41,7 +41,7 @@ export default {
     getListTitle () {
       return this.$t("trade_list.title");
     },
-    getTokenSymbol () {
+    getFilterTokenSymbol () {
       const tokenAddr = this.$route.params.tokenAddr;
       const tokenDef = this.tokens[tokenAddr];
       return tokenDef ? tokenDef.symbol : null;

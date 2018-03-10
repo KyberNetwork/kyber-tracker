@@ -223,7 +223,7 @@ module.exports = BaseService.extends({
       this._searchByAddress(q, page, limit, callback);
     }
     else {
-      return callback(null, null);
+      return callback(null, []);
     }
   },
 

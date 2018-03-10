@@ -35,6 +35,16 @@
           {{ kncPrice }} ({{ kncPriceChange24h }})
         </b-nav-item>
       </b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item>
+          <b-input-group>
+            <b-form-input v-model="searchString"></b-form-input>
+            <b-input-group-append>
+              <b-btn variant="warning" @click="doSearch()">Search</b-btn>
+            </b-input-group-append>
+          </b-input-group>
+        </b-nav-item>
+      </b-navbar-nav>
     </b-navbar>
 
     <b-navbar toggleable="md" type="dark" variant="warning">
@@ -74,6 +84,7 @@ export default {
       kncPrice: '',
       kncPriceChange24h: '',
       totalBurnedFee: '',
+      searchString: '',
     };
   },
 
@@ -90,6 +101,22 @@ export default {
         this.kncPrice = '$' + parseFloat(stats.kncInfo.price_usd).toFixed(2);
         this.kncPriceChange24h = stats.kncInfo.percent_change_24h + '%';
         this.totalBurnedFee = stats.totalBurnedFee + ' KNC';
+      });
+    },
+    doSearch () {
+      if (!this.searchString) {
+        return;
+      }
+
+      this.$router.push({
+        name: 'search',
+        query: {
+          q: this.searchString
+        }
+      });
+
+      window.setTimeout(() => {
+        this.searchString = '';
       });
     }
   },

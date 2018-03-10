@@ -6,15 +6,17 @@
         <h4> {{ title }} </h4>
       </div>
 
-      <span>FROM</span>
-      <datepicker v-model="searchFromDate" name="searchFromDate"
-        :clear-button="true">
-      </datepicker>
-      <span>TO</span>
-      <datepicker v-model="searchToDate" name="searchToDate"
-        :clear-button="true">
-      </datepicker>
-      <hr />
+      <div v-if="!isHideDatepicker">
+        <span>FROM</span>
+        <datepicker v-model="searchFromDate" name="searchFromDate"
+          :clear-button="true">
+        </datepicker>
+        <span>TO</span>
+        <datepicker v-model="searchToDate" name="searchToDate"
+          :clear-button="true">
+        </datepicker>
+        <hr />
+      </div>
 
       <div v-if="rows.length == 0">
         {{ $t("trade_list.msg_no_result") }}
@@ -93,7 +95,7 @@ import network from '../../../../../config/network';
 
 export default {
   props: {
-    getTokenSymbol: {
+    getFilterTokenSymbol: {
       type: Function,
     },
     title: {
@@ -101,6 +103,23 @@ export default {
     },
     pageSize: {
       type: Number,
+    },
+    fetch: {
+      type: Function,
+      default: function () {
+        const params = this.getRequestParams();
+        AppRequest
+          .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
+            const data = res.data;
+            const pagination = res.pagination;
+            this.rows = data;
+            this.maxPage = pagination.maxPage;
+          });
+      }
+    },
+    isHideDatepicker: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -114,19 +133,9 @@ export default {
     };
   },
   methods: {
-    fetch () {
-      const params = this.getRequestParams();
-      AppRequest
-        .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
-          const data = res.data;
-          const pagination = res.pagination;
-          this.rows = data;
-          this.maxPage = pagination.maxPage;
-        });
-    },
     getRequestParams () {
       const params = {
-        symbol: this.getTokenSymbol(),
+        symbol: this.getFilterTokenSymbol(),
         fromDate: this.searchFromDate ? (this.searchFromDate.getTime() / 1000 | 0) : undefined,
         toDate: this.searchToDate ? (this.searchToDate.getTime() / 1000 | 0) : undefined,
       };

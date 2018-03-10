@@ -4,7 +4,7 @@ import BaseRequest from '../foundation/BaseRequest';
 
 class AppRequest extends BaseRequest {
 
-  getTrades (page=0, limit=10, query={}, callback) {
+  getTrades (page=0, limit=20, query={}, callback) {
     const url = `/api/trades`;
     return request
             .get(url)
@@ -15,6 +15,19 @@ class AppRequest extends BaseRequest {
             .catch((err) => {
               window.EventBus.$emit('EVENT_COMMON_ERROR', err);
             })
+  }
+
+  searchTrades (q, page=0, limit=20, callback) {
+    const url = `/api/search`;
+    return request
+            .get(url)
+            .query({ q, limit, page })
+            .then((res) => {
+              return callback(null, res.body);
+            })
+            .catch((err) => {
+              window.EventBus.$emit('EVENT_COMMON_ERROR', err);
+            });
   }
 
   getTradeDetails (id, params={}) {

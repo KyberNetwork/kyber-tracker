@@ -15,7 +15,7 @@
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.taker_address") }}</b></label></b-col>
-      <b-col sm="9"><a target="_blank" :href="getAddressEtherscanLink(record.takerAddress)">{{ record.takerAddress }}</a></b-col>
+      <b-col sm="9"><router-link :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link></b-col>
     </b-row>
 
     <b-row>
@@ -127,6 +127,12 @@ export default {
     },
     getAddressEtherscanLink (addr) {
       return network.endpoints.ethScan + 'address/' + addr;
+    },
+    doSearch (q) {
+      this.$router.push({
+        name: 'search',
+        query: { q }
+      });
     },
     getRate (trade) {
       if (!this.record.makerTokenSymbol || !this.record.takerTokenSymbol) {
