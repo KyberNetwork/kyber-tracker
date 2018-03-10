@@ -92405,7 +92405,16 @@ exports.default = {
       maxPage: 0,
       searchFromDate: null,
       searchToDate: null,
-      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol')
+      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol'),
+      highlightedToday: {
+        dates: [new Date()]
+      },
+      disabledFromDates: {
+        //
+      },
+      disabledToDates: {
+        //
+      }
     };
   },
 
@@ -92458,6 +92467,7 @@ exports.default = {
       }
 
       window.setTimeout(function () {
+        _this2.disabledToDates = { to: _this2.searchFromDate };
         _this2.fetch();
       });
     },
@@ -92476,11 +92486,16 @@ exports.default = {
       }
 
       window.setTimeout(function () {
+        _this3.disabledFromDates = { from: _this3.searchToDate };
         _this3.fetch();
       });
     }
   }
 }; //
+//
+//
+//
+//
 //
 //
 //
@@ -96100,7 +96115,12 @@ var render = function() {
                 _c("span", [_vm._v("FROM")]),
                 _vm._v(" "),
                 _c("datepicker", {
-                  attrs: { name: "searchFromDate", "clear-button": true },
+                  attrs: {
+                    name: "searchFromDate",
+                    "clear-button": true,
+                    highlighted: _vm.highlightedToday,
+                    disabled: _vm.disabledFromDates
+                  },
                   model: {
                     value: _vm.searchFromDate,
                     callback: function($$v) {
@@ -96113,7 +96133,12 @@ var render = function() {
                 _c("span", [_vm._v("TO")]),
                 _vm._v(" "),
                 _c("datepicker", {
-                  attrs: { name: "searchToDate", "clear-button": true },
+                  attrs: {
+                    name: "searchToDate",
+                    "clear-button": true,
+                    highlighted: _vm.highlightedToday,
+                    disabled: _vm.disabledToDates
+                  },
                   model: {
                     value: _vm.searchToDate,
                     callback: function($$v) {

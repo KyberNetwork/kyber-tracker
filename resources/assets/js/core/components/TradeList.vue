@@ -9,11 +9,15 @@
       <div v-if="!isHideDatepicker">
         <span>FROM</span>
         <datepicker v-model="searchFromDate" name="searchFromDate"
-          :clear-button="true">
+          :clear-button="true"
+          :highlighted="highlightedToday"
+          :disabled="disabledFromDates">
         </datepicker>
         <span>TO</span>
         <datepicker v-model="searchToDate" name="searchToDate"
-          :clear-button="true">
+          :clear-button="true"
+          :highlighted="highlightedToday"
+          :disabled="disabledToDates">
         </datepicker>
         <hr />
       </div>
@@ -139,7 +143,16 @@ export default {
       maxPage: 0,
       searchFromDate: null,
       searchToDate: null,
-      tokens: _.keyBy(_.values(network.tokens), 'symbol')
+      tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+      highlightedToday: {
+        dates: [new Date()]
+      },
+      disabledFromDates: {
+        //
+      },
+      disabledToDates: {
+        //
+      }
     };
   },
   methods: {
@@ -189,6 +202,7 @@ export default {
       }
 
       window.setTimeout(() => {
+        this.disabledToDates = { to: this.searchFromDate };
         this.fetch();
       });
     },
@@ -205,6 +219,7 @@ export default {
       }
 
       window.setTimeout(() => {
+        this.disabledFromDates = { from: this.searchToDate };
         this.fetch();
       });
     }
