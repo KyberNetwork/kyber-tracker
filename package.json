@@ -39,6 +39,7 @@
     "sota-core": "2.0.14",
     "superagent": "^3.8.2",
     "vue-i18n": "7.4.2",
+    "vuejs-datepicker": "0.9.29",
     "vuejs-paginate": "1.6.0",
     "web3": "1.0.0-beta.30",
     "ws": "3.2.0"

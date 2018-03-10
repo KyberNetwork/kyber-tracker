@@ -69,12 +69,8 @@ module.exports = (block, tx, callback) => {
 
         if (srcToken.symbol === 'ETH') {
           record.volumeEth = srcAmount;
-          record.tokenSymbol = destToken.symbol;
-          record.tokenAmount = destAmount;
         } else if (destToken.symbol === 'ETH') {
           record.volumeEth = destAmount;
-          record.tokenSymbol = srcToken.symbol;
-          record.tokenAmount = srcAmount;
         }
       }
 

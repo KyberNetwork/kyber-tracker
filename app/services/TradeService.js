@@ -19,7 +19,8 @@ module.exports = BaseService.extends({
     let params = [];
 
     if (options.symbol) {
-      whereClauses += ' AND token_symbol = ?';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+      params.push(options.symbol);
       params.push(options.symbol);
     }
 
@@ -78,11 +79,18 @@ module.exports = BaseService.extends({
     const CMCService = this.getService('CMCService');
 
     async.auto({
-      trades: (next) => {
-        KyberTradeModel.sumGroupBy('token_amount', {
+      takerTrades: (next) => {
+        KyberTradeModel.sumGroupBy('taker_token_amount', {
           where: 'block_timestamp > ? AND block_timestamp < ?',
           params: [fromDate, toDate],
-          groupBy: ['token_symbol']
+          groupBy: ['taker_token_symbol']
+        }, next);
+      },
+      makerTrades: (next) => {
+        KyberTradeModel.sumGroupBy('maker_token_amount', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['maker_token_symbol']
         }, next);
       },
       prices: (next) => {
@@ -94,16 +102,22 @@ module.exports = BaseService.extends({
       }
 
       const prices = ret.prices;
-      const trades = _.keyBy(ret.trades, 'tokenSymbol');
+      const takerTrades = _.keyBy(ret.takerTrades, 'takerTokenSymbol');
+      const makerTrades = _.keyBy(ret.makerTrades, 'makerTokenSymbol');
       const tokens = _.compact(_.map(network.tokens, (tokenConfig) => {
         const symbol = tokenConfig.symbol;
-        if (symbol === 'ETH') {
-          return null;
+
+        let tokenVolume = new BigNumber(0);
+        if (takerTrades[symbol]) {
+          tokenVolume = tokenVolume.plus(new BigNumber(takerTrades[symbol].sum.toString()));
         }
 
-        const trade = trades[symbol];
-        const decimal = tokenConfig.decimal;
-        const tokenVolume = trade ? (new BigNumber(trade.sum.toString())).div(Math.pow(10, decimal)) : new BigNumber(0);
+        if (makerTrades[symbol]) {
+          tokenVolume = tokenVolume.plus(new BigNumber(makerTrades[symbol].sum.toString()));
+        }
+
+        tokenVolume = tokenVolume.div(Math.pow(10, tokenConfig.decimal));
+
         return {
           symbol: tokenConfig.symbol,
           name: tokenConfig.name,
@@ -126,6 +140,7 @@ module.exports = BaseService.extends({
     }
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
+    const BurnedFeeModel = this.getModel('BurnedFeeModel');
     const CMCService = this.getService('CMCService');
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
@@ -163,7 +178,12 @@ module.exports = BaseService.extends({
           where: 'block_timestamp > ?',
           params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
-      }
+      },
+      totalBurnedFee: (next) => {
+        BurnedFeeModel.sum('amount', {
+          where: '1=1'
+        }, next);
+      },
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -175,11 +195,13 @@ module.exports = BaseService.extends({
       const volumeInUSD = volumeInETH.times(ret.ethPrice);
       const feeInKNC = new BigNumber(ret.fee.toString()).div(Math.pow(10, 18));
       const feeInUSD = feeInKNC.times(ret.kncPrice);
+      const totalBurnedFee = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
         networkFee: '$' + feeInUSD.toFormat(2).toString(),
         tradeCount: ret.tradeCount,
         kncInfo: ret.kncInfo,
+        totalBurnedFee: totalBurnedFee.toFormat(2).toString(),
       };
 
       LocalCache.setSync(key, result);
@@ -210,7 +232,8 @@ module.exports = BaseService.extends({
     let params = [fromDate, toDate];
 
     if (options.symbol) {
-      whereClauses += ' AND token_symbol = ?';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+      params.push(options.symbol);
       params.push(options.symbol);
     }
 
@@ -250,7 +273,8 @@ module.exports = BaseService.extends({
     let params = [fromDate, toDate];
 
     if (options.symbol) {
-      whereClauses += ' AND token_symbol = ?';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+      params.push(options.symbol);
       params.push(options.symbol);
     }
 
@@ -290,7 +314,8 @@ module.exports = BaseService.extends({
     let params = [fromDate, toDate];
 
     if (options.symbol) {
-      whereClauses += ' AND token_symbol = ?';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+      params.push(options.symbol);
       params.push(options.symbol);
     }
 

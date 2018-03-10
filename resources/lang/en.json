@@ -20,7 +20,8 @@
     "amount": "Amount",
     "fee_to_wallet": "Wallet Fee",
     "fee_to_burn": "Fee To Burn",
-    "exchange": "Exchange"
+    "exchange": "Exchange",
+    "msg_no_result": "There's no trade found."
   },
 
   "trade_detail": {
@@ -30,7 +31,11 @@
     "taker_token": "Exchange From",
     "taker_amount": "Amount",
     "maker_token": "Exchange To",
-    "maker_amount": "Amount"
+    "maker_amount": "Amount",
+    "rate": "Rate",
+    "fee_to_wallet": "Wallet Fee",
+    "fee_to_burn": "Fee To Burn",
+    "for": " for "
   },
 
   "token_list": {

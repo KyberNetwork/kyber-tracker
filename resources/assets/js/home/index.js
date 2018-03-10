@@ -7,6 +7,7 @@ import VueI18n from 'vue-i18n';
 import VueResource from 'vue-resource';
 import BootstrapVue from 'bootstrap-vue';
 import VuePaginate from 'vuejs-paginate';
+import VueDatePicker from 'vuejs-datepicker';
 
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
@@ -25,6 +26,7 @@ Vue.component('data-table', DataTable);
 Vue.component('trade-list', TradeList);
 Vue.component('token-link', TokenLink);
 Vue.component('paginate', VuePaginate);
+Vue.component('datepicker', VueDatePicker);
 
 const i18n = new VueI18n({
   locale: localStorage.getItem('locale') || 'en',

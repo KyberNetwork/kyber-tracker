@@ -53,7 +53,7 @@ class KyberTradeCrawler {
       LATEST_PROCESSED_BLOCK = blockNumber;
 
       // Finish crawling
-      if (blockNumber >= ret.currentBlockNumber) {
+      if (blockNumber > ret.currentBlockNumber) {
         return callback(null, null);
       }
 

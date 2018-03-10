@@ -23,12 +23,12 @@
           {{ networkVolume }}
         </b-nav-item>
         <b-nav-item>
-          NETWORK FEE (24H)<br />
-          {{ networkFee }}
-        </b-nav-item>
-        <b-nav-item>
           TRADES (24H)<br />
           {{ tradeCount }}
+        </b-nav-item>
+        <b-nav-item>
+          BURNED FEE<br />
+          {{ totalBurnedFee }}
         </b-nav-item>
         <b-nav-item>
           KNC PRICE<br />
@@ -73,6 +73,7 @@ export default {
       tradeCount: '',
       kncPrice: '',
       kncPriceChange24h: '',
+      totalBurnedFee: '',
     };
   },
 
@@ -88,6 +89,7 @@ export default {
         this.tradeCount = stats.tradeCount;
         this.kncPrice = '$' + parseFloat(stats.kncInfo.price_usd).toFixed(2);
         this.kncPriceChange24h = stats.kncInfo.percent_change_24h + '%';
+        this.totalBurnedFee = stats.totalBurnedFee + ' KNC';
       });
     }
   },

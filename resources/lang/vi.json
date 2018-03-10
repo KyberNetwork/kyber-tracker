@@ -18,17 +18,22 @@
     "amount": "Số lượng",
     "fee_to_wallet": "Wallet Fee",
     "fee_to_burn": "Fee To Burn",
-    "exchange": "Đổi"
+    "exchange": "Trao đổi",
+    "msg_no_result": "Không tìm thấy giao dịch nào."
   },
 
   "trade_detail": {
-    "transaction_hash": "Transaction Hash",
-    "date": "Date",
-    "taker_address": "Taker Address",
-    "taker_token": "Exchange From",
-    "taker_amount": "Amount",
-    "maker_token": "Exchange To",
-    "maker_amount": "Amount"
+    "transaction_hash": "Mã giao dịch",
+    "date": "Thời gian",
+    "taker_address": "Người thực hiện",
+    "taker_token": "Trao đổi từ",
+    "taker_amount": "Số lượng",
+    "maker_token": "Trao đổi thành",
+    "maker_amount": "Số lượng",
+    "rate": "Tỉ giá",
+    "fee_to_wallet": "Wallet Fee",
+    "fee_to_burn": "Fee To Burn",
+    "for": " đổi lấy "
   },
 
   "token_list": {

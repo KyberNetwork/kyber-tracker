@@ -39,9 +39,7 @@
      hour_seq: { type: 'number', length: 11 },
      day_seq: { type: 'number', length: 11 },
      volume_eth: { type: 'string', length: 150 },
-     volume_usd: { type: 'string', length: 150 },
-     token_symbol: { type: 'string', length: 150 },
-     token_amount: { type: 'string', length: 150 } },
+     volume_usd: { type: 'string', length: 150 } },
   UserModel: 
    { username: { type: 'string', length: 120 },
      avatar_url: { type: 'string', length: 768 },

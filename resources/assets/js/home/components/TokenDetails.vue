@@ -43,7 +43,9 @@ export default {
   },
 
   watch: {
-
+    '$route.query' () {
+      this.refresh();
+    }
   },
 
   mounted() {
@@ -52,6 +54,22 @@ export default {
     }
 
     this.refresh();
+
+    // TODO: correct data to be filled here.
+    const ctx = document.getElementById('myChart');
+    const data = {
+      labels: ["Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Feb 28", "Mar 01"],
+      datasets: [{
+        label: 'Token volume',
+        data: [11, 44, 76, 22, 27, 55, 42],
+      }]
+    };
+    const options = {};
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data,
+      options
+    });
   }
 
 }

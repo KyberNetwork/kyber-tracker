@@ -6,16 +6,30 @@
         <h4> {{ title }} </h4>
       </div>
 
-      <paginate
+      <span>FROM</span>
+      <datepicker v-model="searchFromDate" name="searchFromDate"
+        :clear-button="true">
+      </datepicker>
+      <span>TO</span>
+      <datepicker v-model="searchToDate" name="searchToDate"
+        :clear-button="true">
+      </datepicker>
+      <hr />
+
+      <div v-if="rows.length == 0">
+        {{ $t("trade_list.msg_no_result") }}
+      </div>
+
+      <paginate v-if="rows.length > 0"
         :page-count="maxPage"
         :initial-page="currentPage"
-        :page-range="3"
-        :margin-pages="2"
+        :page-range="2"
         :click-handler="clickToPage"
         :container-class="'pagination'"
         :page-class="'page-item'">
       </paginate>
-      <div class="table-responsive">
+
+      <div v-if="rows.length > 0" class="table-responsive">
         <table class="table">
           <thead>
             <tr>
@@ -28,7 +42,7 @@
               <th>{{ $t("trade_list.fee_to_burn") }}</th>
             </tr>
           </thead>
-          <tbody v-if="rows.length > 0">
+          <tbody>
             <tr v-for="(row, index) in rows" :item="row" :index="index">
               <td><router-link :to="getTradeLink(row.id)">
                 <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="24px" width="24px" viewBox="0 0 40 40" style="vertical-align: middle;">
@@ -44,17 +58,17 @@
               </td>
               <td>
                 <span>1</span>
-                <span>{{ row.takerTokenSymbol }}</span>
+                <span><token-link :symbol="row.takerTokenSymbol"></token-link></span>
                 <span>=</span>
                 <span>{{ getRate(row) }}</span>
-                <span>{{ row.makerTokenSymbol }}</span>
+                <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
               </td>
               <td>
                 <span>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</span>
-                <span>{{ row.takerTokenSymbol }}</span>
+                <span><token-link :symbol="row.takerTokenSymbol"></token-link></span>
                 <span>for</span>
                 <span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</span>
-                <span>{{ row.makerTokenSymbol }}</span>
+                <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
               </td>
               <td>{{ formatTokenNumber('KNC', row.takerFee) }}</td>
               <td>{{ formatTokenNumber('KNC', row.burnFees) }}</td>
@@ -94,11 +108,10 @@ export default {
       rows: [],
       currentPage: 0,
       maxPage: 0,
+      searchFromDate: null,
+      searchToDate: null,
       tokens: _.keyBy(_.values(network.tokens), 'symbol')
     };
-  },
-  computed: {
-
   },
   methods: {
     fetch () {
@@ -112,16 +125,23 @@ export default {
         });
     },
     getRequestParams () {
-      return {
+      const params = {
         symbol: this.getTokenSymbol(),
+        fromDate: this.searchFromDate ? (this.searchFromDate.getTime() / 1000 | 0) : undefined,
+        toDate: this.searchToDate ? (this.searchToDate.getTime() / 1000 | 0) : undefined,
       };
+
+      return params;
     },
     getDateInfo (trade) {
       return util.getDateInfo(trade.blockTimestamp * 1000);
     },
     getRate (trade) {
-      const makerAmount = new BigNumber(trade.makerTokenAmount.toString());
-      const takerAmount = new BigNumber(trade.takerTokenAmount.toString())
+      const makerToken = this.tokens[trade.makerTokenSymbol];
+      const takerToken = this.tokens[trade.takerTokenSymbol];
+
+      const makerAmount = (new BigNumber(trade.makerTokenAmount.toString())).div(Math.pow(10, makerToken.decimal));
+      const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, takerToken.decimal));
       return makerAmount.div(takerAmount).toFormat(5);
     },
     formatTokenNumber (symbol, amount) {
@@ -134,6 +154,40 @@ export default {
     clickToPage (page) {
       this.currentPage = page - 1;
       this.fetch();
+    }
+  },
+  watch: {
+    searchFromDate (val) {
+      const fromDate = val ? val.getTime() : 0;
+      const toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
+
+      if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
+        window.EventBus.$emit('EVENT_COMMON_ERROR', `From-date must be equal or less than to-date`);
+        window.setTimeout(() => {
+          this.searchFromDate = null;
+        });
+        return;
+      }
+
+      window.setTimeout(() => {
+        this.fetch();
+      });
+    },
+    searchToDate (val) {
+      const toDate = val ? val.getTime() : 0;
+      const fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
+
+      if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
+        window.EventBus.$emit('EVENT_COMMON_ERROR', `To-date must be equal or greater than from-date`);
+        window.setTimeout(() => {
+          this.searchToDate = null;
+        });
+        return;
+      }
+
+      window.setTimeout(() => {
+        this.fetch();
+      });
     }
   }
 };
