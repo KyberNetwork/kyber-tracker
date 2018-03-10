@@ -136,8 +136,8 @@ export default {
     getRequestParams () {
       const params = {
         symbol: this.getFilterTokenSymbol(),
-        fromDate: this.searchFromDate ? (this.searchFromDate.getTime() / 1000 | 0) : undefined,
-        toDate: this.searchToDate ? (this.searchToDate.getTime() / 1000 | 0) : undefined,
+        fromDate: this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined,
+        toDate: this.searchToDate ? moment(this.searchToDate).endOf('day').unix() : undefined,
       };
 
       return params;

@@ -92403,8 +92403,8 @@ exports.default = {
     getRequestParams: function getRequestParams() {
       var params = {
         symbol: this.getFilterTokenSymbol(),
-        fromDate: this.searchFromDate ? this.searchFromDate.getTime() / 1000 | 0 : undefined,
-        toDate: this.searchToDate ? this.searchToDate.getTime() / 1000 | 0 : undefined
+        fromDate: this.searchFromDate ? (0, _moment2.default)(this.searchFromDate).startOf('day').unix() : undefined,
+        toDate: this.searchToDate ? (0, _moment2.default)(this.searchToDate).endOf('day').unix() : undefined
       };
 
       return params;
