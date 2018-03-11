@@ -28,6 +28,8 @@ module.exports = {
         options: {
           loaders: {
             js: 'babel-loader?presets[]=es2015',
+            scss: 'vue-style-loader!css-loader!sass-loader',
+            sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
           }
         }
       },
@@ -60,6 +62,11 @@ module.exports = {
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
       }
     ],
+  },
+  resolveLoader: {
+    alias: {
+      'scss-loader': 'sass-loader',
+    },
   },
   plugins: [
     new Dotenv({
