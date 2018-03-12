@@ -64,8 +64,6 @@
             <b-nav-item>
               <router-link to="/">{{ $t('navigator.trades') }}</router-link>
             </b-nav-item>
-          </b-navbar-nav>
-          <b-navbar-nav>
             <b-nav-item>
               <router-link to="/tokens">{{ $t('navigator.tokens') }}</router-link>
             </b-nav-item>
