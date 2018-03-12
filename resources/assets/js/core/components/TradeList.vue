@@ -32,11 +32,18 @@
         :page-range="2"
         :click-handler="clickToPage"
         :container-class="'pagination'"
-        :page-class="'page-item'">
+        :page-class="'page-item'" 
+        :page-link-class="'page-link'"
+        :prev-class="'page-item'"
+        :prev-link-class="'page-link'"
+        :next-class="'page-item'"
+        :next-link-class="'page-link'"
+        :active-class="'active'"
+        >
       </paginate>
 
       <div v-if="rows.length > 0" class="table-responsive">
-        <table class="table">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>ID</th>
@@ -226,13 +233,3 @@ export default {
   }
 };
 </script>
-
-<style lang="css">
-  .page-item {
-    padding-right: 5px;
-    padding-left: 5px;
-  }
-  .page-item.active {
-    background-color: cyan;
-  }
-</style>
