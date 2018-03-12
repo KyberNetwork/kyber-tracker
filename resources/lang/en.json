@@ -6,7 +6,29 @@
     "name": "Name",
     "symbol": "Symbol",
     "volume_24h_usd": "24hr Volume (USD)",
-    "volume_24h_token": "24hr Volume (token)"
+    "volume_24h_token": "24hr Volume (token)",
+    "search": "Search"
+  },
+
+  "navigator": {
+    "trades": "Trades",
+    "tokens": "Tokens"
+  },
+
+  "status_bar": {
+    "network_volume": "NETWORK VOLUME (24H)",
+    "trades": "TRADES (24H)",
+    "burned_fee": "BURNED FEE",
+    "knc_price": "KNC PRICE"
+  },
+
+  "chart": {
+    "title": {
+      "network_volume": "Network Volume",
+      "network_fee": "Network Fee",
+      "fee_to_burn": "Fee To Burn",
+      "top_token": "Top Tokens"
+    }
   },
 
   "trade_list": {
@@ -40,6 +62,12 @@
 
   "token_list": {
     "title": "Trade Tokens"
+  },
+
+  "search_page": {
+    "title": "Search Results",
+    "no_result_msg": "No results found for {0}",
+    "result_msg": "{0} results found for {1}"
   }
 
 }

@@ -12,9 +12,7 @@ class AppRequest extends BaseRequest {
             .then((res) => {
               return callback(null, res.body);
             })
-            .catch((err) => {
-              window.EventBus.$emit('EVENT_COMMON_ERROR', err);
-            })
+            .catch(this._handleError)
   }
 
   searchTrades (q, page=0, limit=20, callback) {
@@ -25,9 +23,23 @@ class AppRequest extends BaseRequest {
             .then((res) => {
               return callback(null, res.body);
             })
-            .catch((err) => {
-              window.EventBus.$emit('EVENT_COMMON_ERROR', err);
-            });
+            .catch(this._handleError);
+  }
+
+  getNetworkVolume(period, interval, symbol, callback) {
+    if (typeof symbol === 'function') {
+      callback = symbol;
+      symbol = null;
+    }
+
+    const url = `/api/volumes`;
+    return request
+            .get(url)
+            .query({ period, interval, symbol })
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
   }
 
   getTradeDetails (id, params={}) {
@@ -43,6 +55,10 @@ class AppRequest extends BaseRequest {
   getTopTokens (params={}) {
     const url = `/api/tokens/top`;
     return this.get(url, params);
+  }
+
+  _handleError(err) {
+    window.EventBus.$emit('EVENT_COMMON_ERROR', err);
   }
 
 }

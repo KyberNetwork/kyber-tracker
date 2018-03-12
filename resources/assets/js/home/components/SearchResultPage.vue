@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-12">
-    <h1>SEARCH RESULT</h1>
+    <h1>{{ $t('search_page.title') }}</h1>
     <trade-list ref="datatable"
       :getFilterTokenSymbol="getFilterTokenSymbol"
       :fetch="requestSearch"
@@ -43,10 +43,10 @@ export default {
     },
     getSearchResultMessage () {
       if (!this.resultCount) {
-        return `No result found for ${this.$route.query.q}`;
+        return this.$t('search_page.no_result_msg', [this.$route.query.q]);
       }
 
-      return `${this.resultCount} results found for ${this.$route.query.q}`;
+      return this.$t('search_page.result_msg', [this.resultCount, this.$route.query.q]);
     },
     requestSearch () {
       const currentPage = this.$refs.datatable.currentPage;
@@ -67,6 +67,8 @@ export default {
             if (pagination) {
               this.resultCount = pagination.totalCount;
               this.$refs.datatable.maxPage = pagination.maxPage;
+            } else {
+              this.resultCount = 0;
             }
           });
     },

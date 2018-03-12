@@ -6,7 +6,29 @@
     "name": "Tên",
     "symbol": "Ký hiệu",
     "volume_24h_usd": "Lượng giao dịch 24h (USD)",
-    "volume_24h_token": "Lượng giao dịch 24h (token)"
+    "volume_24h_token": "Lượng giao dịch 24h (token)",
+    "search": "Tìm kiếm"
+  },
+
+  "navigator": {
+    "trades": "Giao dịch",
+    "tokens": "Tokens"
+  },
+
+  "status_bar": {
+    "network_volume": "KHỐI LƯỢNG GIAO DỊCH (24H)",
+    "trades": "SỐ LƯỢNG GIAO DỊCH (24H)",
+    "burned_fee": "PHÍ ĐÃ ĐỐT",
+    "knc_price": "GIÁ CỦA KNC"
+  },
+
+  "chart": {
+    "title": {
+      "network_volume": "Khối lượng giao dịch",
+      "network_fee": "Phí giao dịch",
+      "fee_to_burn": "Phí sẽ đốt",
+      "top_token": "Top Tokens"
+    }
   },
 
   "trade_list": {
@@ -16,8 +38,8 @@
     "rate": "Tỉ giá",
     "description": "Mô tả",
     "amount": "Số lượng",
-    "fee_to_wallet": "Wallet Fee",
-    "fee_to_burn": "Fee To Burn",
+    "fee_to_wallet": "Phí giao dịch",
+    "fee_to_burn": "Phí sẽ đốt",
     "exchange": "Trao đổi",
     "msg_no_result": "Không tìm thấy giao dịch nào."
   },
@@ -31,13 +53,19 @@
     "maker_token": "Trao đổi thành",
     "maker_amount": "Số lượng",
     "rate": "Tỉ giá",
-    "fee_to_wallet": "Wallet Fee",
-    "fee_to_burn": "Fee To Burn",
+    "fee_to_wallet": "Phí giao dịch",
+    "fee_to_burn": "Phí sẽ đốt",
     "for": " đổi lấy "
   },
 
   "token_list": {
-    "title": "Trade Tokens"
+    "title": "Danh sách tokens"
+  },
+
+  "search_page": {
+    "title": "Kết quả tìm kiếm",
+    "no_result_msg": "Không tìm thấy kết quả nào cho từ khoá {0}",
+    "result_msg": "Đã tìm thấy {0} kết quả cho từ khoá {1}"
   }
 
 }

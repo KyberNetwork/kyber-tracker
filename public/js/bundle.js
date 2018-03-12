@@ -23761,9 +23761,7 @@ var AppRequest = function (_BaseRequest) {
       var url = '/api/trades';
       return _superagent2.default.get(url).query(_lodash2.default.assign({ limit: limit, page: page }, query)).then(function (res) {
         return callback(null, res.body);
-      }).catch(function (err) {
-        window.EventBus.$emit('EVENT_COMMON_ERROR', err);
-      });
+      }).catch(this._handleError);
     }
   }, {
     key: 'searchTrades',
@@ -23775,9 +23773,20 @@ var AppRequest = function (_BaseRequest) {
       var url = '/api/search';
       return _superagent2.default.get(url).query({ q: q, limit: limit, page: page }).then(function (res) {
         return callback(null, res.body);
-      }).catch(function (err) {
-        window.EventBus.$emit('EVENT_COMMON_ERROR', err);
-      });
+      }).catch(this._handleError);
+    }
+  }, {
+    key: 'getNetworkVolume',
+    value: function getNetworkVolume(period, interval, symbol, callback) {
+      if (typeof symbol === 'function') {
+        callback = symbol;
+        symbol = null;
+      }
+
+      var url = '/api/volumes';
+      return _superagent2.default.get(url).query({ period: period, interval: interval, symbol: symbol }).then(function (res) {
+        return callback(null, res.body.data);
+      }).catch(this._handleError);
     }
   }, {
     key: 'getTradeDetails',
@@ -23800,6 +23809,11 @@ var AppRequest = function (_BaseRequest) {
 
       var url = '/api/tokens/top';
       return this.get(url, params);
+    }
+  }, {
+    key: '_handleError',
+    value: function _handleError(err) {
+      window.EventBus.$emit('EVENT_COMMON_ERROR', err);
     }
   }]);
 
@@ -70864,6 +70878,10 @@ var _vuejsDatepicker = __webpack_require__(412);
 
 var _vuejsDatepicker2 = _interopRequireDefault(_vuejsDatepicker);
 
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _App = __webpack_require__(413);
 
 var _App2 = _interopRequireDefault(_App);
@@ -70900,11 +70918,13 @@ _vue2.default.component('token-link', _TokenLink2.default);
 _vue2.default.component('paginate', _vuejsPaginate2.default);
 _vue2.default.component('datepicker', _vuejsDatepicker2.default);
 
+var locale = localStorage.getItem('locale') || 'en';
 var i18n = new _vueI18n2.default({
-  locale: localStorage.getItem('locale') || 'en',
+  locale: locale,
   messages: { en: en, vi: vi }
 });
 window.i18n = i18n;
+_moment2.default.locale(locale);
 
 var router = new _vueRouter2.default(_routes2.default);
 window.vueRouter = router;
@@ -88237,6 +88257,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _AppRequest = __webpack_require__(21);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
@@ -88246,80 +88270,6 @@ var _util = __webpack_require__(15);
 var _util2 = _interopRequireDefault(_util);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 exports.default = {
   data: function data() {
@@ -88339,6 +88289,7 @@ exports.default = {
     changeLanguage: function changeLanguage(locale) {
       localStorage.setItem('locale', locale);
       window.i18n.locale = locale;
+      _moment2.default.locale(locale);
     },
     refresh: function refresh() {
       var _this = this;
@@ -88375,7 +88326,74 @@ exports.default = {
   mounted: function mounted() {
     this.refresh();
   }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 /* 418 */
@@ -91878,26 +91896,28 @@ var render = function() {
           _c(
             "b-navbar-nav",
             [
-              _c("b-nav-item", [
-                _vm._v("\n        NETWORK VOLUME (24H)"),
+              _c("b-nav-text", [
+                _vm._v(
+                  "\n        " + _vm._s(_vm.$t("status_bar.network_volume"))
+                ),
                 _c("br"),
                 _vm._v("\n        " + _vm._s(_vm.networkVolume) + "\n      ")
               ]),
               _vm._v(" "),
-              _c("b-nav-item", [
-                _vm._v("\n        TRADES (24H)"),
+              _c("b-nav-text", { staticClass: "ml-3" }, [
+                _vm._v("\n        " + _vm._s(_vm.$t("status_bar.trades"))),
                 _c("br"),
                 _vm._v("\n        " + _vm._s(_vm.tradeCount) + "\n      ")
               ]),
               _vm._v(" "),
-              _c("b-nav-item", [
-                _vm._v("\n        BURNED FEE"),
+              _c("b-nav-text", { staticClass: "ml-3" }, [
+                _vm._v("\n        " + _vm._s(_vm.$t("status_bar.burned_fee"))),
                 _c("br"),
                 _vm._v("\n        " + _vm._s(_vm.totalBurnedFee) + "\n      ")
               ]),
               _vm._v(" "),
-              _c("b-nav-item", [
-                _vm._v("\n        KNC PRICE"),
+              _c("b-nav-text", { staticClass: "ml-3" }, [
+                _vm._v("\n        " + _vm._s(_vm.$t("status_bar.knc_price"))),
                 _c("br"),
                 _vm._v(
                   "\n        " +
@@ -91944,7 +91964,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._v("Search")]
+                            [_vm._v(_vm._s(_vm.$t("common.search")))]
                           )
                         ],
                         1
@@ -91973,7 +91993,7 @@ var render = function() {
                 "b-nav-item",
                 [
                   _c("router-link", { attrs: { to: "/" } }, [
-                    _vm._v("\n          Trades\n        ")
+                    _vm._v(_vm._s(_vm.$t("navigator.trades")))
                   ])
                 ],
                 1
@@ -91989,7 +92009,7 @@ var render = function() {
                 "b-nav-item",
                 [
                   _c("router-link", { attrs: { to: "/tokens" } }, [
-                    _vm._v("\n          Tokens\n        ")
+                    _vm._v(_vm._s(_vm.$t("navigator.tokens")))
                   ])
                 ],
                 1
@@ -96702,7 +96722,7 @@ exports = module.exports = __webpack_require__(10)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.chart-period-picker[data-v-727abd92] {\n  position: absolute;\n  top: 5;\n  right: 5;\n}\n", ""]);
 
 // exports
 
@@ -96763,13 +96783,49 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 exports.default = {
   data: function data() {
     return {
       pageSize: 10,
-      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol')
+      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol'),
+      selectedPeriod: 'D7',
+      selectedInterval: 'H1'
     };
   },
 
@@ -96790,10 +96846,103 @@ exports.default = {
       var tokenAddr = this.$route.params.tokenAddr;
       var tokenDef = this.tokens[tokenAddr];
       return tokenDef ? tokenDef.symbol : null;
+    },
+    selectPeriod: function selectPeriod(period, interval) {
+      this.selectedPeriod = period;
+      this.selectedInterval = interval;
+      this.refreshChartsData();
+    },
+    refreshChartsData: function refreshChartsData() {
+      this._refreshNetworkVolumeChart();
+      this._refreshFeeToBurnChart();
+      this._refreshTopTopkensChart();
+    },
+    _refreshNetworkVolumeChart: function _refreshNetworkVolumeChart() {
+      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
+        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
+        var ctx = document.getElementById('chart-volume');
+        var labels = [];
+        var dataSetData = [];
+        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
+          var d = (0, _moment2.default)(seq * 3600 * 1000);
+          labels.push(d.format('MMM D HH:mm'));
+
+          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          dataSetData.push(volume);
+        }
+
+        var data = {
+          labels: labels,
+          datasets: [{
+            label: 'Network volume',
+            data: dataSetData
+          }]
+        };
+        var options = {
+          // TODO
+        };
+        var myChart = new _chart2.default(ctx, {
+          type: 'line',
+          data: data,
+          options: options
+        });
+      });
+    },
+    _refreshFeeToBurnChart: function _refreshFeeToBurnChart() {
+      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
+        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
+        var ctx = document.getElementById('chart-fee');
+        var labels = [];
+        var dataSetData = [];
+        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
+          labels.push(seq);
+          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          dataSetData.push(volume);
+        }
+
+        var data = {
+          labels: labels,
+          datasets: [{
+            label: 'Network volume',
+            data: dataSetData
+          }]
+        };
+        var options = {};
+        var myChart = new _chart2.default(ctx, {
+          type: 'line',
+          data: data,
+          options: options
+        });
+      });
+    },
+    _refreshTopTopkensChart: function _refreshTopTopkensChart() {
+      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
+        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
+        var ctx = document.getElementById('chart-top-tokens');
+        var labels = [];
+        var dataSetData = [];
+        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
+          labels.push(seq);
+          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          dataSetData.push(volume);
+        }
+
+        var data = {
+          labels: labels,
+          datasets: [{
+            label: 'Network volume',
+            data: dataSetData
+          }]
+        };
+        var options = {};
+        var myChart = new _chart2.default(ctx, {
+          type: 'line',
+          data: data,
+          options: options
+        });
+      });
     }
   },
-
-  watch: {},
 
   mounted: function mounted() {
     var _this = this;
@@ -96803,22 +96952,7 @@ exports.default = {
     }, 10000);
 
     this.refresh();
-
-    // TODO: correct data to be filled here.
-    var ctx = document.getElementById('myChart');
-    var data = {
-      labels: ["Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Feb 28", "Mar 01"],
-      datasets: [{
-        label: 'Network volume',
-        data: [0, 59, 75, 20, 20, 55, 40]
-      }]
-    };
-    var options = {};
-    var myChart = new _chart2.default(ctx, {
-      type: 'line',
-      data: data,
-      options: options
-    });
+    this.refreshChartsData();
   }
 };
 
@@ -109042,7 +109176,166 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
-      _c("canvas", { attrs: { id: "myChart", width: "100", height: "25" } }),
+      _c(
+        "b-card",
+        { attrs: { "no-body": "" } },
+        [
+          _c(
+            "div",
+            { staticClass: "chart-period-picker" },
+            [
+              _c(
+                "b-button",
+                {
+                  attrs: {
+                    variant:
+                      _vm.selectedPeriod === "H24"
+                        ? "primary"
+                        : "outline-primary"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.selectPeriod("H24", "H1")
+                    }
+                  }
+                },
+                [_vm._v("24H\n      ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: {
+                    variant:
+                      _vm.selectedPeriod === "D7"
+                        ? "primary"
+                        : "outline-primary"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.selectPeriod("D7", "H1")
+                    }
+                  }
+                },
+                [_vm._v("7D\n      ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: {
+                    variant:
+                      _vm.selectedPeriod === "D30"
+                        ? "primary"
+                        : "outline-primary"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.selectPeriod("D30", "H1")
+                    }
+                  }
+                },
+                [_vm._v("1M\n      ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: {
+                    variant:
+                      _vm.selectedPeriod === "Y1"
+                        ? "primary"
+                        : "outline-primary"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.selectPeriod("Y1", "D1")
+                    }
+                  }
+                },
+                [_vm._v("1Y\n      ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: {
+                    variant:
+                      _vm.selectedPeriod === "ALL"
+                        ? "primary"
+                        : "outline-primary"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.selectPeriod("ALL", "D1")
+                    }
+                  }
+                },
+                [_vm._v("ALL\n      ")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-tabs",
+            { attrs: { card: "" } },
+            [
+              _c(
+                "b-tab",
+                {
+                  attrs: {
+                    "no-body": "",
+                    title: _vm.$t("chart.title.network_volume"),
+                    active: ""
+                  }
+                },
+                [
+                  _c("canvas", {
+                    attrs: { id: "chart-volume", width: "100", height: "25" }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-tab",
+                {
+                  attrs: {
+                    "no-body": "",
+                    title: _vm.$t("chart.title.fee_to_burn")
+                  }
+                },
+                [
+                  _c("canvas", {
+                    attrs: { id: "chart-fee", width: "100", height: "25" }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-tab",
+                {
+                  attrs: {
+                    "no-body": "",
+                    title: _vm.$t("chart.title.top_token")
+                  }
+                },
+                [
+                  _c("canvas", {
+                    attrs: {
+                      id: "chart-top-tokens",
+                      width: "100",
+                      height: "25"
+                    }
+                  })
+                ]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("trade-list", {
         ref: "datatable",
@@ -110234,7 +110527,7 @@ exports = module.exports = __webpack_require__(10)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -110320,10 +110613,10 @@ exports.default = {
     },
     getSearchResultMessage: function getSearchResultMessage() {
       if (!this.resultCount) {
-        return 'No result found for ' + this.$route.query.q;
+        return this.$t('search_page.no_result_msg', [this.$route.query.q]);
       }
 
-      return this.resultCount + ' results found for ' + this.$route.query.q;
+      return this.$t('search_page.result_msg', [this.resultCount, this.$route.query.q]);
     },
     requestSearch: function requestSearch() {
       var _this = this;
@@ -110345,6 +110638,8 @@ exports.default = {
         if (pagination) {
           _this.resultCount = pagination.totalCount;
           _this.$refs.datatable.maxPage = pagination.maxPage;
+        } else {
+          _this.resultCount = 0;
         }
       });
     }
@@ -110374,7 +110669,7 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
-      _c("h1", [_vm._v("SEARCH RESULT")]),
+      _c("h1", [_vm._v(_vm._s(_vm.$t("search_page.title")))]),
       _vm._v(" "),
       _c("trade-list", {
         ref: "datatable",
@@ -110404,13 +110699,13 @@ if (false) {
 /* 552 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24hr Volume (USD)","volume_24h_token":"24hr Volume (token)"},"trade_list":{"title":"Recent Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Wallet Fee","fee_to_burn":"Fee To Burn","exchange":"Exchange","msg_no_result":"There's no trade found."},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Taker Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Wallet Fee","fee_to_burn":"Fee To Burn","for":" for "},"token_list":{"title":"Trade Tokens"}}
+module.exports = {"website_title":"Kyber Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24hr Volume (USD)","volume_24h_token":"24hr Volume (token)","search":"Search"},"navigator":{"trades":"Trades","tokens":"Tokens"},"status_bar":{"network_volume":"NETWORK VOLUME (24H)","trades":"TRADES (24H)","burned_fee":"BURNED FEE","knc_price":"KNC PRICE"},"chart":{"title":{"network_volume":"Network Volume","network_fee":"Network Fee","fee_to_burn":"Fee To Burn","top_token":"Top Tokens"}},"trade_list":{"title":"Recent Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Wallet Fee","fee_to_burn":"Fee To Burn","exchange":"Exchange","msg_no_result":"There's no trade found."},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Taker Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Wallet Fee","fee_to_burn":"Fee To Burn","for":" for "},"token_list":{"title":"Trade Tokens"},"search_page":{"title":"Search Results","no_result_msg":"No results found for {0}","result_msg":"{0} results found for {1}"}}
 
 /***/ }),
 /* 553 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24h (USD)","volume_24h_token":"Lượng giao dịch 24h (token)"},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Wallet Fee","fee_to_burn":"Fee To Burn","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào."},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi thành","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Wallet Fee","fee_to_burn":"Fee To Burn","for":" đổi lấy "},"token_list":{"title":"Trade Tokens"}}
+module.exports = {"website_title":"Kyber Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24h (USD)","volume_24h_token":"Lượng giao dịch 24h (token)","search":"Tìm kiếm"},"navigator":{"trades":"Giao dịch","tokens":"Tokens"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ LƯỢNG GIAO DỊCH (24H)","burned_fee":"PHÍ ĐÃ ĐỐT","knc_price":"GIÁ CỦA KNC"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào."},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi thành","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens"},"search_page":{"title":"Kết quả tìm kiếm","no_result_msg":"Không tìm thấy kết quả nào cho từ khoá {0}","result_msg":"Đã tìm thấy {0} kết quả cho từ khoá {1}"}}
 
 /***/ }),
 /* 554 */

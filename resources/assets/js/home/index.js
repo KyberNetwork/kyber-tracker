@@ -7,6 +7,7 @@ import VueResource from 'vue-resource';
 import BootstrapVue from 'bootstrap-vue';
 import VuePaginate from 'vuejs-paginate';
 import VueDatePicker from 'vuejs-datepicker';
+import moment from 'moment';
 
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
@@ -27,11 +28,13 @@ Vue.component('token-link', TokenLink);
 Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
 
+const locale = localStorage.getItem('locale') || 'en';
 const i18n = new VueI18n({
-  locale: localStorage.getItem('locale') || 'en',
+  locale: locale,
   messages: { en, vi },
 });
 window.i18n = i18n;
+moment.locale(locale);
 
 const router = new VueRouter(routes);
 window.vueRouter = router;
