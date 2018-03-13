@@ -1,13 +1,13 @@
 /* eslint no-multi-spaces: ["error", { exceptions: { "VariableDeclarator": true } }] */
-const _             = require('lodash');
-const async         = require('async');
-const BigNumber     = require('bignumber.js');
-const network       = require('../../config/network');
-const Const         = require('../common/Const');
-const Utils         = require('sota-core').load('util/Utils');
-const BaseService   = require('sota-core').load('service/BaseService');
-const LocalCache    = require('sota-core').load('cache/foundation/LocalCache');
-const logger        = require('sota-core').getLogger('TradeService');
+const _ = require('lodash');
+const async = require('async');
+const BigNumber = require('bignumber.js');
+const network = require('../../config/network');
+const Const = require('../common/Const');
+const Utils = require('sota-core').load('util/Utils');
+const BaseService = require('sota-core').load('service/BaseService');
+const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
+const logger = require('sota-core').getLogger('TradeService');
 
 module.exports = BaseService.extends({
   classname: 'TradeService',
@@ -63,7 +63,7 @@ module.exports = BaseService.extends({
           page: options.page,
           limit: options.limit,
           totalCount: ret.count,
-          maxPage: Math.ceil(ret.count/options.limit)
+          maxPage: Math.ceil(ret.count / options.limit)
         }
       });
     });
@@ -267,7 +267,7 @@ module.exports = BaseService.extends({
           page: page,
           limit: limit,
           totalCount: ret.count,
-          maxPage: Math.ceil(ret.count/limit)
+          maxPage: Math.ceil(ret.count / limit)
         }
       });
     });
@@ -300,17 +300,38 @@ module.exports = BaseService.extends({
       params.push(options.symbol);
     }
 
-    KyberTradeModel.sumGroupBy('maker_total_usd', {
-      where: whereClauses,
-      params: params,
-      groupBy: [groupColumn]
+    async.auto({
+      sum: (next) => {
+        KyberTradeModel.sumGroupBy('maker_total_usd', {
+          where: whereClauses,
+          params: params,
+          groupBy: [groupColumn],
+        }, next);
+      },
+      count: (next) => {
+        KyberTradeModel.countGroupBy(groupColumn, {
+          where: whereClauses,
+          params: params,
+          groupBy: [groupColumn]
+        }, next);
+      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
 
-      LocalCache.setSync(key, ret);
-      return callback(null, ret);
+      const returnData = [];
+      for (let i = 0; i< ret.sum.length; i++){
+        returnData.push({
+          daySeq: ret.sum[i].daySeq,
+          hourSeq: ret.sum[i].hourSeq,
+          sum: ret.sum[i].sum,
+          count: ret.count[i].count
+        })
+      }
+
+      LocalCache.setSync(key, returnData);
+      return callback(null, returnData);
     });
   },
 
@@ -341,17 +362,38 @@ module.exports = BaseService.extends({
       params.push(options.symbol);
     }
 
-    KyberTradeModel.sumGroupBy('burn_fees/1000000000000000000', {
-      where: whereClauses,
-      params: params,
-      groupBy: [groupColumn]
+    async.auto({
+      sum: (next) => {
+        KyberTradeModel.sumGroupBy('burn_fees/1000000000000000000', {
+          where: whereClauses,
+          params: params,
+          groupBy: [groupColumn],
+        }, next);
+      },
+      count: (next) => {
+        KyberTradeModel.countGroupBy(groupColumn, {
+          where: whereClauses,
+          params: params,
+          groupBy: [groupColumn]
+        }, next);
+      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
 
-      LocalCache.setSync(key, ret);
-      return callback(null, ret);
+      const returnData = [];
+      for (let i = 0; i< ret.sum.length; i++){
+        returnData.push({
+          daySeq: ret.sum[i].daySeq,
+          hourSeq: ret.sum[i].hourSeq,
+          sum: ret.sum[i].sum,
+          count: ret.count[i].count
+        })
+      }
+
+      LocalCache.setSync(key, returnData);
+      return callback(null, returnData);
     });
   },
 
@@ -432,7 +474,7 @@ module.exports = BaseService.extends({
     });
   },
 
-  _getGroupColumnByIntervalParam: function(interval) {
+  _getGroupColumnByIntervalParam: function (interval) {
     switch (interval) {
       case 'H1':
         return 'hour_seq';

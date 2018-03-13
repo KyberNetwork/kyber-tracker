@@ -40,6 +40,17 @@
   import network from '../../../../../config/network';
   import Chart from 'chart.js';
 
+  const defaultChartOptions = {
+    legend: {
+      display: false
+    },
+    tooltips: {
+      mode: 'index',
+      axis: 'x',
+      intersect: false,
+    }
+  };
+
   export default {
 
     data() {
@@ -82,19 +93,59 @@
           const chartData = this._createChartData(ret, interval);
           const data = {
             labels: chartData.labels,
+            counts: chartData.counts,
             datasets: [{
               label: 'Network volume',
               data: chartData.dataSetData,
+              pointRadius: 0,
+              backgroundColor: 'rgb(148, 190, 190)',
+              borderColor: 'rgb(148, 190, 190)',
+              showLine: true,
+              spanGaps: true,
             }]
           };
-          const options = {
-            // TODO
-          };
+          const options = _.assign(defaultChartOptions, {
+            tooltips: {
+              mode: 'index',
+              axis: 'x',
+              intersect: false,
+              callbacks: {
+                label: function () {
+                  return ;
+                },
+                afterBody: function (tooltipItem, data) {
+                  const index = tooltipItem[0].index;
+                  const label = 'volume: ' + data.datasets[0].data[index];
+                  const count = 'trades: ' + data.counts[index];
+                  return [label, count];
+                }
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  callback: (label, index, labels) => {
+                    return label + ' KNC';
+                  }
+                },
+                maxTicksLimit: 5
+              }],
+              xAxes: [{
+                ticks: {
+                  callback: (label, index, labels) => {
+                    const d = moment(label);
+                    return d.format('MMM D');
+                  },
+                  maxTicksLimit: 5
+                }
+              }]
+            }
+          });
           if(this.myChart){
             this.myChart.destroy();
           }
           this.myChart = new Chart(ctx, {
-            type: 'line',
+            type: 'LineWithLine',
             data,
             options
           });
@@ -103,6 +154,7 @@
       _createChartData(ret, interval) {
         const labels = [];
         const dataSetData = [];
+        const counts = [];
         if(interval === 'H1') {
           const keyedVolumeData = _.keyBy(ret, 'hourSeq');
           for (let seq = ret[0].hourSeq; seq <= ret[ret.length-1].hourSeq; seq++) {
@@ -110,6 +162,7 @@
             labels.push(d.format('MMM D HH:mm'));
             const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
             dataSetData.push(volume);
+            counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0);
           }
         } else if(interval === 'D1') {
           const keyedVolumeData = _.keyBy(ret, 'daySeq');
@@ -118,11 +171,13 @@
             labels.push(d.format('MMM D'));
             const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
             dataSetData.push(volume);
+            counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0);
           }
         }
         return {
           dataSetData: dataSetData,
           labels: labels,
+          counts: counts,
         };
       }
     },
