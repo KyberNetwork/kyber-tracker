@@ -300,16 +300,25 @@
               label: 'Network volume',
               data: dataSetData,
               pointRadius: 0,
-              backgroundColor: 'rgb(148, 190, 190)',
-              borderColor: 'rgb(148, 190, 190)',
+              backgroundColor: ['rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
+                'rgb(135, 126, 145)', 'rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
+                'rgb(135, 126, 145)', 'rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
+                'rgb(135, 126, 145)'],
+//              backgroundColor: 'rgb(148, 190, 190)',
+//              borderColor: 'rgb(148, 190, 190)',
               showLine: true,
               spanGaps: true,
             }]
           };
           const options = {
+            tooltips: {
+              mode: 'index',
+              axis: 'x',
+              intersect: false,
+            },
             legend: {
               display: false
-            }
+            },
           };
 
           if (this.topTokenChart) {

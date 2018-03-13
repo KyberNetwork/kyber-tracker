@@ -6,23 +6,23 @@
           <div class="chart-period-picker">
             <b-button-group class="cus-pagination">
               <b-button
-                :variant="selectedPeriod === 'H24' ? 'primary' : 'outline-primary'"
+                :variant="selectedPeriod === 'H24' ? 'active' : 'outline-primary'"
                 @click="selectPeriod('H24', 'H1')">24H
               </b-button>
               <b-button
-                :variant="selectedPeriod === 'D7' ? 'primary' : 'outline-primary'"
+                :variant="selectedPeriod === 'D7' ? 'active' : 'outline-primary'"
                 @click="selectPeriod('D7', 'H1')">7D
               </b-button>
               <b-button
-                :variant="selectedPeriod === 'D30' ? 'primary' : 'outline-primary'"
+                :variant="selectedPeriod === 'D30' ? 'active' : 'outline-primary'"
                 @click="selectPeriod('D30', 'D1')">1M
               </b-button>
               <b-button
-                :variant="selectedPeriod === 'Y1' ? 'primary' : 'outline-primary'"
+                :variant="selectedPeriod === 'Y1' ? 'active' : 'outline-primary'"
                 @click="selectPeriod('Y1', 'D1')">1Y
               </b-button>
               <b-button
-                :variant="selectedPeriod === 'ALL' ? 'primary' : 'outline-primary'"
+                :variant="selectedPeriod === 'ALL' ? 'active' : 'outline-primary'"
                 @click="selectPeriod('ALL', 'D1')">ALL
               </b-button>
             </b-button-group>
