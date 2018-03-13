@@ -2,11 +2,11 @@
   <div>
     <div class="panel panel-default">
 
-      <div v-if="!!title" class="panel-heading">
+      <div v-if="!!title" class="panel-heading pt-20">
         <h4> {{ title }} </h4>
       </div>
 
-      <div v-if="!isHideDatepicker">
+      <div v-if="!isHideDatepicker" class="datepicker-container">
         <span>FROM</span>
         <datepicker v-model="searchFromDate" name="searchFromDate"
           :clear-button="true"
@@ -19,7 +19,6 @@
           :highlighted="highlightedToday"
           :disabled="disabledToDates">
         </datepicker>
-        <hr />
       </div>
 
       <div>
@@ -39,29 +38,25 @@
         :next-class="'page-item'"
         :next-link-class="'page-link'"
         :active-class="'active'"
+        :class="'home-pagination-block'"
         >
       </paginate>
 
       <div v-if="rows.length > 0" class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-hover">
           <thead>
             <tr>
-              <th>ID</th>
               <th>{{ $t("trade_list.date") }}</th>
               <th>{{ $t("trade_list.description") }}</th>
               <th>{{ $t("trade_list.rate") }}</th>
               <th>{{ $t("trade_list.amount") }}</th>
               <th>{{ $t("trade_list.fee_to_wallet") }}</th>
               <th>{{ $t("trade_list.fee_to_burn") }}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(row, index) in rows" :item="row" :index="index">
-              <td><router-link :to="getTradeLink(row.id)">
-                <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="24px" width="24px" viewBox="0 0 40 40" style="vertical-align: middle;">
-                <g><path d="m8.9 23.8c-2.2 0-3.9-1.7-3.9-3.8 0-2 1.7-3.7 3.9-3.7s3.9 1.7 3.9 3.7c0 2.1-1.7 3.8-3.9 3.8z m11.1 0c-2.2 0-3.9-1.7-3.9-3.8 0-2 1.7-3.7 3.9-3.7s3.9 1.7 3.9 3.7c0 2.1-1.7 3.8-3.9 3.8z m11.1 0c-2.2 0-3.9-1.7-3.9-3.8 0-2 1.7-3.7 3.9-3.7s3.9 1.7 3.9 3.7c0 2.1-1.7 3.8-3.9 3.8z"></path></g>
-                </svg>
-              </router-link></td>
               <td>{{ getDateInfo(row) }}</td>
               <td>
                 <span>{{ $t("trade_list.exchange") }}</span>
@@ -85,6 +80,9 @@
               </td>
               <td>{{ formatTokenNumber('KNC', row.takerFee) }}</td>
               <td>{{ formatTokenNumber('KNC', row.burnFees) }}</td>
+              <td><router-link :to="getTradeLink(row.id)">
+                <i class="k k-angle right"></i>
+              </router-link></td>
             </tr>
           </tbody>
         </table>

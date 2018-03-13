@@ -1,31 +1,40 @@
 <template>
-  <div class="col-sm-12">
-    <div class="chart-period-picker">
-      <b-button
-        :variant="selectedPeriod === 'H24' ? 'primary' : 'outline-primary'"
-        @click="selectPeriod('H24', 'H1')">24H
-      </b-button>
-      <b-button
-        :variant="selectedPeriod === 'D7' ? 'primary' : 'outline-primary'"
-        @click="selectPeriod('D7', 'H1')">7D
-      </b-button>
-      <b-button
-        :variant="selectedPeriod === 'D30' ? 'primary' : 'outline-primary'"
-        @click="selectPeriod('D30', 'D1')">1M
-      </b-button>
-      <b-button
-        :variant="selectedPeriod === 'Y1' ? 'primary' : 'outline-primary'"
-        @click="selectPeriod('Y1', 'D1')">1Y
-      </b-button>
-      <b-button
-        :variant="selectedPeriod === 'ALL' ? 'primary' : 'outline-primary'"
-        @click="selectPeriod('ALL', 'D1')">ALL
-      </b-button>
+  <div>
+  <div class="card">
+    <div class="tabs">
+      <div class="card-header">
+        <div class="chart-period-picker">
+          <b-button-group class="cus-pagination">
+            <b-button
+              :variant="selectedPeriod === 'H24' ? 'primary' : 'outline-primary'"
+              @click="selectPeriod('H24', 'H1')">24H
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'D7' ? 'primary' : 'outline-primary'"
+              @click="selectPeriod('D7', 'H1')">7D
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'D30' ? 'primary' : 'outline-primary'"
+              @click="selectPeriod('D30', 'D1')">1M
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'Y1' ? 'primary' : 'outline-primary'"
+              @click="selectPeriod('Y1', 'D1')">1Y
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'ALL' ? 'primary' : 'outline-primary'"
+              @click="selectPeriod('ALL', 'D1')">ALL
+            </b-button>
+          </b-button-group>
+        </div>
+      </div>
     </div>
+
     <canvas id="myChart" width="100" height="25"></canvas>
-    <trade-list ref="datatable"
-                :getFilterTokenSymbol="getFilterTokenSymbol">
-    </trade-list>
+  </div>
+  <trade-list ref="datatable"
+              :getFilterTokenSymbol="getFilterTokenSymbol">
+  </trade-list>
   </div>
 </template>
 
