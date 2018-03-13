@@ -9,3 +9,147 @@ body{
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
   font-family: $code-font-family;
 }
+
+.change-language-button {
+  button:first-child, button:first-child:hover, button:first-child:active {
+    background: transparent !important;
+    outline: none !important;
+    border: none !important;
+    color: #2a4552 !important;
+    box-shadow: none !important;
+  }
+  
+  .dropdown-toggle::after {
+    vertical-align: middle;
+  }
+
+}
+
+.heading-bar {
+    background-color: #192e3b;
+    color: rgba(255, 255, 255, 0.56);
+    min-height: 0px !important;
+    padding: 15px 0;
+    border-top: 1px solid #243c47;
+}
+
+.second-heading-bar {
+  background-color: #2a4451;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+  a:hover, a:active, a:focus {
+    color: #3ee6c1;
+  }
+}
+
+a {
+  color: #2a4451;
+}
+
+a:hover, a:active, a:focus {
+  color: #192e3b;
+}
+
+.btn-outline-primary {
+    background-color: #f4f4f4;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    display: block;
+    outline: none;
+}
+
+.cus-pagination {
+  button {
+    border-radius: 0;
+    background-color: #ededed;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #000000;
+  }
+
+  button:hover, button:active, button:focus, .btn-active {
+    background-color: #d5d5d5;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.card-header-tabs {
+  outline: none;
+}
+
+.pagination {
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: .25rem;
+
+  li.page-item {
+      margin: 0 3px 0 0;
+
+      a.page-link {
+          background-color: #f4f4f4;
+          border: none;
+          border-radius: 0;
+          color: currentColor;
+          cursor: pointer;
+          display: block;
+          outline: none;
+          padding: 10px 15px;
+      }
+  }
+
+  li.page-item.active a.page-link {
+      background-color: #dfdbdb;
+  }
+}
+
+
+#footer {
+    margin: 30px 0px;
+    letter-spacing: .5px;
+    font-size: 0.8rem;
+    line-height: 25px;
+
+    .footer-menu {
+        font-size: 0.8rem;
+
+        ul.links {
+          padding: 0;
+          list-style: none;
+          margin: 0px;
+          margin-bottom: 5px;
+
+
+          li {
+              display: inline-block;
+
+              a {
+                  color: #262C41;
+                  display: block;
+              }
+          }
+        }
+
+        .d-inline-block {
+            display: inline-block;
+        }
+
+    }
+}
+
+.input-group>.input-group-append>.btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+btn {
+  cursor: pointer;
+}

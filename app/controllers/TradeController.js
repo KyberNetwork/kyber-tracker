@@ -139,4 +139,44 @@ module.exports = AppController.extends({
     TradeService.search(params, this.ok.bind(this, req, res));
   },
 
+  countMarkerAddress: function (req, res) {
+    const [err, params] = new Checkit({
+      markerAddress: ['required', 'string'],
+      fromDate: ['natural'],
+      toDate: ['natural'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const now = Utils.nowInSeconds();
+    let fromDate = params.fromDate || 0;
+    let toDate = params.toDate || now;
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getCountMarkerAddress(params.markerAddress, fromDate, toDate, this.ok.bind(this, req, res));
+  },
+
+  sumMarkerAddress: function (req, res) {
+    const [err, params] = new Checkit({
+      markerAddress: ['required', 'string'],
+      fromDate: ['natural'],
+      toDate: ['natural'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const now = Utils.nowInSeconds();
+    let fromDate = params.fromDate || 0;
+    let toDate = params.toDate || now;
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getSumMarkerAddress(params.markerAddress, fromDate, toDate, this.ok.bind(this, req, res));
+  },
+
 });
