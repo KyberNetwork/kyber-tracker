@@ -110248,7 +110248,6 @@ exports.default = {
 
   methods: {
     refresh: function refresh() {
-      debugger;
       if (!this.$refs.datatable) {
         window.clearInterval(this._refreshInterval);
         return;
@@ -111188,10 +111187,6 @@ exports.default = {
           }]
         };
 
-        if (_this.volumeChart) {
-          _this.volumeChart.destroy();
-        }
-
         var options = _lodash2.default.assign(defaultChartOptions, {
           scales: {
             yAxes: [{
@@ -111214,6 +111209,10 @@ exports.default = {
           }
         });
 
+        if (_this.volumeChart) {
+          _this.volumeChart.destroy();
+        }
+
         _this.volumeChart = new _chart2.default(ctx, {
           type: 'line',
           data: data,
@@ -111230,13 +111229,40 @@ exports.default = {
         var data = {
           labels: chartData.labels,
           datasets: [{
-            data: chartData.dataSetData
+            data: chartData.dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true
           }]
         };
-        var options = {};
+        var options = _lodash2.default.assign(defaultChartOptions, {
+          scales: {
+            yAxes: [{
+              ticks: {
+                callback: function callback(label, index, labels) {
+                  return label + ' KNC';
+                }
+              },
+              maxTicksLimit: 5
+            }],
+            xAxes: [{
+              ticks: {
+                callback: function callback(label, index, labels) {
+                  var d = (0, _moment2.default)(label);
+                  return d.format('MMM D');
+                },
+                maxTicksLimit: 5
+              }
+            }]
+          }
+        });
+
         if (_this2.feeToBurnChart) {
           _this2.feeToBurnChart.destroy();
         }
+
         _this2.feeToBurnChart = new _chart2.default(ctx, {
           type: 'line',
           data: data,
@@ -111279,13 +111305,24 @@ exports.default = {
           labels: labels,
           datasets: [{
             label: 'Network volume',
-            data: dataSetData
+            data: dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true
           }]
         };
-        var options = {};
+        var options = {
+          legend: {
+            display: false
+          }
+        };
+
         if (_this3.topTokenChart) {
           _this3.topTokenChart.destroy();
         }
+
         _this3.topTokenChart = new _chart2.default(ctx, {
           type: 'bar',
           data: data,

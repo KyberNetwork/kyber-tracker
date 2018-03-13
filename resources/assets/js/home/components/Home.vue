@@ -124,10 +124,6 @@ export default {
           }]
         };
 
-        if(this.volumeChart){
-          this.volumeChart.destroy();
-        }
-
         const options = _.assign(defaultChartOptions, {
           scales: {
             yAxes: [{
@@ -150,6 +146,10 @@ export default {
           }
         });
 
+        if(this.volumeChart){
+          this.volumeChart.destroy();
+        }
+
         this.volumeChart = new Chart(ctx, {
           type: 'line',
           data: data,
@@ -165,12 +165,39 @@ export default {
           labels: chartData.labels,
           datasets: [{
             data: chartData.dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true,
           }]
         };
-        const options = {};
+        const options = _.assign(defaultChartOptions, {
+          scales: {
+            yAxes: [{
+              ticks: {
+                callback: (label, index, labels) => {
+                  return label + ' KNC';
+                }
+              },
+              maxTicksLimit: 5
+            }],
+            xAxes: [{
+              ticks: {
+                callback: (label, index, labels) => {
+                  const d = moment(label);
+                  return d.format('MMM D');
+                },
+                maxTicksLimit: 5
+              }
+            }]
+          }
+        });
+
         if(this.feeToBurnChart){
           this.feeToBurnChart.destroy();
         }
+
         this.feeToBurnChart = new Chart(ctx, {
           type: 'line',
           data,
@@ -178,6 +205,7 @@ export default {
         });
       });
     },
+
     _refreshTopTopkensChart (period) {
       const now = Date.now() / 1000 | 0;
       let start;
@@ -212,12 +240,23 @@ export default {
           datasets: [{
             label: 'Network volume',
             data: dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true,
           }]
         };
-        const options = {};
+        const options = {
+          legend: {
+            display: false
+          }
+        };
+
         if(this.topTokenChart){
           this.topTokenChart.destroy();
         }
+
         this.topTokenChart = new Chart(ctx, {
           type: 'bar',
           data,
@@ -225,6 +264,7 @@ export default {
         });
       });
     },
+
     _createChartData(ret, interval) {
       const labels = [];
       const dataSetData = [];
