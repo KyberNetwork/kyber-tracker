@@ -40,7 +40,8 @@
             </b-nav-text>
             <b-nav-text class="ml-3">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-              {{ kncPrice }} ({{ kncPriceChange24h }})
+              <span>{{ kncPrice }} </span>
+              <span :class="kncPriceChange24h < 0 ? 'neg-value' : 'pos-value'">({{ formatedKNCPriceChange24h }})</span>
             </b-nav-text>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
@@ -120,12 +121,21 @@ export default {
       networkFee: '',
       tradeCount: '',
       kncPrice: '',
-      kncPriceChange24h: '',
+      kncPriceChange24h: 0,
       totalBurnedFee: '',
       searchString: '',
     };
   },
 
+  computed: {
+    formatedKNCPriceChange24h () {
+      if (this.kncPriceChange24h >= 0) {
+        return '+' + this.kncPriceChange24h + '%';
+      } else {
+        return this.kncPriceChange24h + '%';
+      }
+    }
+  },
 
   methods: {
     changeLanguage (locale) {
@@ -159,7 +169,7 @@ export default {
           }
 
           this.kncPrice = '$' + parseFloat(data.price_usd).toFixed(2);
-          this.kncPriceChange24h = data.percent_change_24h + '%';
+          this.kncPriceChange24h = parseFloat(data.percent_change_24h);
         });
     },
     doSearch () {
