@@ -13,7 +13,7 @@
         </b-button>
         <b-button
           :variant="selectedPeriod === 'D30' ? 'active' : ''"
-          @click="selectPeriod('D30', 'H1')">1M
+          @click="selectPeriod('D30', 'D1')">1M
         </b-button>
         <b-button
           :variant="selectedPeriod === 'Y1' ? 'active' : ''"
@@ -27,7 +27,7 @@
       </div>
       <b-tabs card>
         <b-tab no-body :title="$t('chart.title.network_volume')" active>
-          <canvas id="chart-volume"></canvas>
+          <canvas id="chart-volume" width="100" height="25"></canvas>
         </b-tab>
         <b-tab no-body :title="$t('chart.title.fee_to_burn')">
           <canvas id="chart-fee" width="100" height="25"></canvas>
@@ -73,8 +73,11 @@ export default {
     return {
       pageSize: 10,
       tokens: _.keyBy(_.values(network.tokens), 'symbol'),
-      selectedPeriod: 'H24',
+      selectedPeriod: 'D7',
       selectedInterval: 'H1',
+      volumeChart: undefined,
+      feeToBurnChart: undefined,
+      topTokenChart: undefined,
     };
   },
 
@@ -98,24 +101,31 @@ export default {
     selectPeriod (period, interval) {
       this.selectedPeriod = period;
       this.selectedInterval = interval;
-      this.refreshChartsData();
+      this.refreshChartsData(period, interval);
     },
-    refreshChartsData () {
-      this._refreshNetworkVolumeChart();
-      this._refreshFeeToBurnChart();
-      this._refreshTopTopkensChart();
+    refreshChartsData (period, interval) {
+      this._refreshNetworkVolumeChart(period, interval);
+      this._refreshFeeToBurnChart(period, interval);
+      this._refreshTopTopkensChart(period);
     },
-    _refreshNetworkVolumeChart () {
-      AppRequest.getNetworkVolume('H24', 'H1', (err, ret) => {
-        const keyedVolumeData = _.keyBy(ret, 'hourSeq');
+    _refreshNetworkVolumeChart (period, interval) {
+      AppRequest.getNetworkVolume(period, interval, (err, ret) => {
         const ctx = document.getElementById('chart-volume');
-        const labels = [];
-        const dataSetData = [];
-        for (let seq = ret[0].hourSeq; seq <= ret[ret.length-1].hourSeq; seq++) {
-          labels.push(seq);
+        const chartData = this._createChartData(ret, interval);
+        const data = {
+          labels: chartData.labels,
+          datasets: [{
+            data: chartData.dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true,
+          }]
+        };
 
-          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
+        if(this.volumeChart){
+          this.volumeChart.destroy();
         }
 
         const options = _.assign(defaultChartOptions, {
@@ -131,7 +141,7 @@ export default {
             xAxes: [{
               ticks: {
                 callback: (label, index, labels) => {
-                  const d = moment(label * 3600 * 1000);
+                  const d = moment(label);
                   return d.format('MMM D');
                 },
                 maxTicksLimit: 5
@@ -140,61 +150,61 @@ export default {
           }
         });
 
-        const myChart = new Chart(ctx, {
+        this.volumeChart = new Chart(ctx, {
           type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Network volume',
-              data: dataSetData,
-              pointRadius: 0,
-              backgroundColor: '#28a745',
-              borderColor: '#28a745',
-              showLine: true,
-              spanGaps: true,
-            }]
-          },
+          data: data,
           options: options,
         });
       });
     },
-    _refreshFeeToBurnChart () {
-      AppRequest.getNetworkVolume('D7', 'H1', (err, ret) => {
-        const keyedVolumeData = _.keyBy(ret, 'hourSeq');
+    _refreshFeeToBurnChart (period, interval) {
+      AppRequest.getFeeToBurn(period, interval, (err, ret) => {
         const ctx = document.getElementById('chart-fee');
-        const labels = [];
-        const dataSetData = [];
-        for (let seq = ret[0].hourSeq; seq <= ret[ret.length-1].hourSeq; seq++) {
-          labels.push(seq);
-          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
-        }
-
+        const chartData = this._createChartData(ret, interval);
         const data = {
-          labels: labels,
+          labels: chartData.labels,
           datasets: [{
-            label: 'Network volume',
-            data: dataSetData,
+            data: chartData.dataSetData,
           }]
         };
         const options = {};
-        const myChart = new Chart(ctx, {
+        if(this.feeToBurnChart){
+          this.feeToBurnChart.destroy();
+        }
+        this.feeToBurnChart = new Chart(ctx, {
           type: 'line',
           data,
           options
         });
       });
     },
-    _refreshTopTopkensChart () {
-      AppRequest.getNetworkVolume('D7', 'H1', (err, ret) => {
-        const keyedVolumeData = _.keyBy(ret, 'hourSeq');
+    _refreshTopTopkensChart (period) {
+      const now = Date.now() / 1000 | 0;
+      let start;
+      switch(period){
+        case 'H24':
+          start = now - 60 * 60 * 24;
+          break;
+        case 'D7':
+          start = now - 60 * 60 * 24 * 7;
+          break;
+        case 'D30':
+          start = now - 60 * 60 * 24 * 30;
+          break;
+        case 'Y1':
+          start = now - 60 * 60 * 24 * 365;
+          break;
+        default:
+          start = now - 60 * 60 * 24 * 365 * 10;
+          break;
+      }
+      AppRequest.getTopToken(start, now, (err, ret) => {
         const ctx = document.getElementById('chart-top-tokens');
         const labels = [];
         const dataSetData = [];
-        for (let seq = ret[0].hourSeq; seq <= ret[ret.length-1].hourSeq; seq++) {
-          labels.push(seq);
-          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
+        for (let i = 0; i < ret.length; i++) {
+          labels.push(ret[i].symbol);
+          dataSetData.push(ret[i].volumeUSD);
         }
 
         const data = {
@@ -205,12 +215,38 @@ export default {
           }]
         };
         const options = {};
-        const myChart = new Chart(ctx, {
-          type: 'line',
+        if(this.topTokenChart){
+          this.topTokenChart.destroy();
+        }
+        this.topTokenChart = new Chart(ctx, {
+          type: 'bar',
           data,
           options
         });
       });
+    },
+    _createChartData(ret, interval) {
+      const labels = [];
+      const dataSetData = [];
+      if(interval === 'H1') {
+        const keyedVolumeData = _.keyBy(ret, 'hourSeq');
+        for (let seq = ret[0].hourSeq; seq <= ret[ret.length-1].hourSeq; seq++) {
+          labels.push(seq * 3600 * 1000);
+          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          dataSetData.push(volume);
+        }
+      } else if(interval === 'D1') {
+        const keyedVolumeData = _.keyBy(ret, 'daySeq');
+        for (let seq = ret[0].daySeq; seq <= ret[ret.length-1].daySeq; seq++) {
+          labels.push(seq * 3600 * 24 * 1000);
+          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          dataSetData.push(volume);
+        }
+      }
+      return {
+        dataSetData: dataSetData,
+        labels: labels,
+      };
     }
   },
 
@@ -220,8 +256,8 @@ export default {
     }, 10000);
 
     this.refresh();
-    this.refreshChartsData();
-  }
+    this.refreshChartsData(this.selectedPeriod, this.selectedInterval);
+  },
 
 }
 </script>
@@ -229,7 +265,7 @@ export default {
 <style scoped lang="css">
   .chart-period-picker {
     position: absolute;
-    top: 5;
-    right: 5;
+    top: 5px;
+    right: 5px;
   }
 </style>
