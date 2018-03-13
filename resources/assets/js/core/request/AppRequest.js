@@ -42,6 +42,34 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
+  getFeeToBurn(period, interval, symbol, callback) {
+    if (typeof symbol === 'function') {
+      callback = symbol;
+      symbol = null;
+    }
+
+    const url = `/api/fees/to_burn`;
+    return request
+            .get(url)
+            .query({ period, interval, symbol })
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
+  getTopToken(fromDate, toDate, callback) {
+
+    const url = `/api/tokens/top`;
+    return request
+            .get(url)
+            .query({ fromDate, toDate })
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
   getTradeDetails (id, params={}) {
     const url = `/api/trades/${id}`;
     return this.get(url, {});
