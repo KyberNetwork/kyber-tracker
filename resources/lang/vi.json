@@ -10,9 +10,22 @@
     "search": "Tìm kiếm"
   },
 
-  "navigator": {
+  "page_title": {
+    "home": "Trang chính",
     "trades": "Giao dịch",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "trade_list": "Danh sách giao dịch",
+    "token_list": "Danh sách token",
+    "trade_detail": "Chi tiết giao dịch",
+    "token_detail": "Chi tiết token"
+  },
+
+  "navigator": {
+    "home": "Trang chính",
+    "trades": "Giao dịch",
+    "tokens": "Tokens",
+    "trade_detail": "Chi tiết giao dịch",
+    "token_detail": "Chi tiết token"
   },
 
   "filter": {

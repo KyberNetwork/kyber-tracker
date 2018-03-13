@@ -72,12 +72,18 @@
         </div>
       </b-navbar>
 
+      <div class="breadcrumbs" v-if="breadcrumbsItems.length > 0">
+        <div class="container-fluid">
+          <div class="title">{{ pageTitle }}</div>
+          <b-breadcrumb :items="breadcrumbsItems"/>
+        </div>
+      </div>
+
     <div class="container">
       <div class="row pt-40">
         <router-view></router-view>
       </div>
     </div>
-
 
     <div id="footer">
       <div class="container">
@@ -124,6 +130,8 @@ export default {
       kncPriceChange24h: 0,
       totalBurnedFee: '',
       searchString: '',
+      pageTitle: '',
+      breadcrumbsItems: [],
     };
   },
 
@@ -187,11 +195,72 @@ export default {
       window.setTimeout(() => {
         this.searchString = '';
       });
+    },
+    loadBreadcumbs (routeName) {
+      switch (routeName) {
+        case 'home':
+          this.pageTitle = '';
+          this.breadcrumbsItems = [];
+          return;
+        case 'trade-list':
+          this.pageTitle = this.$t('page_title.trade_list');
+          this.breadcrumbsItems = [{
+            text: this.$t('navigator.home'),
+            to: { name: 'home' },
+          }, {
+            text: this.$t('navigator.trades'),
+            active: true,
+          }];
+          return;
+        case 'token-list':
+          this.pageTitle = this.$t('page_title.token_list');
+          this.breadcrumbsItems = [{
+            text: this.$t('navigator.home'),
+            to: { name: 'home' },
+          }, {
+            text: this.$t('navigator.tokens'),
+            active: true,
+          }];
+          return;
+        case 'trade-details':
+          this.pageTitle = this.$t('page_title.trade_detail');
+          this.breadcrumbsItems = [{
+            text: this.$t('navigator.home'),
+            to: { name: 'home' }
+          }, {
+            text: this.$t('navigator.trades'),
+            to: { name: 'trade-list' }
+          }, {
+            text: this.$t('navigator.trade_detail'),
+            active: true
+          }];
+          return;
+        case 'token-details':
+          this.pageTitle = this.$t('page_title.token_detail');
+          this.breadcrumbsItems = [{
+            text: this.$t('navigator.home'),
+            to: { name: 'home' }
+          }, {
+            text: this.$t('navigator.tokens'),
+            to: { name: 'token-list' }
+          }, {
+            text: this.$t('navigator.token_detail'),
+            active: true
+          }];
+          return;
+      }
+    }
+  },
+
+  watch: {
+    '$route'(toVal, fromVal) {
+      this.loadBreadcumbs(toVal.name);
     }
   },
 
   mounted () {
     this.refresh();
+    this.loadBreadcumbs(this.$route.name);
 
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
@@ -199,5 +268,33 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../../../css/app.scss'
+  @import '../../../css/app.scss';
+  .breadcrumbs {
+    width: 100%;
+    background-color: #dcdcdc;
+    .container-fluid {
+      padding: 0 30px;
+      -webkit-box-pack: justify !important;
+      -ms-flex-pack: justify !important;
+      display: -webkit-box !important;
+      display: -moz-box !important;
+      display: -ms-flexbox !important;
+      display: -webkit-flex !important;
+      display: flex !important;
+      -webkit-justify-content: space-between !important;
+      justify-content: space-between !important;
+      .breadcrumb {
+        float: right;
+        background: none;
+        margin: 0;
+      }
+      .title {
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        font-size: 16px;
+      }
+    }
+  }
 </style>
