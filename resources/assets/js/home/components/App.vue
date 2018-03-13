@@ -109,6 +109,7 @@
 <script>
 
 import moment from 'moment';
+import request from 'superagent';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 
@@ -146,10 +147,20 @@ export default {
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
-        this.kncPrice = '$' + parseFloat(stats.kncInfo.price_usd).toFixed(2);
-        this.kncPriceChange24h = stats.kncInfo.percent_change_24h + '%';
         this.totalBurnedFee = stats.totalBurnedFee + ' KNC';
       });
+
+      request
+        .get('https://api.coinmarketcap.com/v1/ticker/kyber-network/')
+        .then((res) => {
+          const data = res.body[0];
+          if (!data || !data.id) {
+            return;
+          }
+
+          this.kncPrice = '$' + parseFloat(data.price_usd).toFixed(2);
+          this.kncPriceChange24h = data.percent_change_24h + '%';
+        });
     },
     doSearch () {
       if (!this.searchString) {
@@ -171,6 +182,8 @@ export default {
 
   mounted () {
     this.refresh();
+
+    window.setInterval(this.refresh, 60000); // Refresh each minute
   }
 }
 </script>

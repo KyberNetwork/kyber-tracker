@@ -7,13 +7,13 @@
       </div>
 
       <div v-if="!isHideDatepicker" class="datepicker-container">
-        <span>FROM</span>
+        <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate"
           :clear-button="true"
           :highlighted="highlightedToday"
           :disabled="disabledFromDates">
         </datepicker>
-        <span>TO</span>
+        <span>{{ $t('filter.to') }}</span>
         <datepicker v-model="searchToDate" name="searchToDate"
           :clear-button="true"
           :highlighted="highlightedToday"
@@ -30,8 +30,10 @@
         :initial-page="currentPage"
         :page-range="2"
         :click-handler="clickToPage"
+        :prev-text="$t('token_list.prev')"
+        :next-text="$t('token_list.next')"
         :container-class="'pagination'"
-        :page-class="'page-item'" 
+        :page-class="'page-item'"
         :page-link-class="'page-link'"
         :prev-class="'page-item'"
         :prev-link-class="'page-link'"
@@ -47,9 +49,8 @@
           <thead>
             <tr>
               <th>{{ $t("trade_list.date") }}</th>
-              <th>{{ $t("trade_list.description") }}</th>
-              <th>{{ $t("trade_list.rate") }}</th>
               <th>{{ $t("trade_list.amount") }}</th>
+              <th>{{ $t("trade_list.rate") }}</th>
               <th>{{ $t("trade_list.fee_to_wallet") }}</th>
               <th>{{ $t("trade_list.fee_to_burn") }}</th>
               <th></th>
@@ -59,10 +60,11 @@
             <tr v-for="(row, index) in rows" :item="row" :index="index">
               <td>{{ getDateInfo(row) }}</td>
               <td>
-                <span>{{ $t("trade_list.exchange") }}</span>
-                <token-link :symbol="row.takerTokenSymbol"></token-link>
-                <span> > </span>
-                <token-link :symbol="row.makerTokenSymbol"></token-link>
+                <span>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</span>
+                <span><token-link :symbol="row.takerTokenSymbol"></token-link></span>
+                <span><i class="k k-angle right"></i></span>
+                <span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</span>
+                <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
               </td>
               <td>
                 <span>1</span>
@@ -71,15 +73,8 @@
                 <span>{{ getRate(row) }}</span>
                 <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
               </td>
-              <td>
-                <span>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</span>
-                <span><token-link :symbol="row.takerTokenSymbol"></token-link></span>
-                <span>for</span>
-                <span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</span>
-                <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
-              </td>
-              <td>{{ formatTokenNumber('KNC', row.takerFee) }}</td>
-              <td>{{ formatTokenNumber('KNC', row.burnFees) }}</td>
+              <td>{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
+              <td>{{ formatTokenNumber('KNC', row.burnFees) }} KNC</td>
               <td><router-link :to="getTradeLink(row.id)">
                 <i class="k k-angle right"></i>
               </router-link></td>

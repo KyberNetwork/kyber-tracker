@@ -15,11 +15,16 @@
     "tokens": "Tokens"
   },
 
+  "filter": {
+    "from": "Từ ngày",
+    "to": "Đến ngày"
+  },
+
   "status_bar": {
     "network_volume": "KHỐI LƯỢNG GIAO DỊCH (24H)",
-    "trades": "SỐ LƯỢNG GIAO DỊCH (24H)",
+    "trades": "SỐ GIAO DỊCH (24H)",
     "burned_fee": "PHÍ ĐÃ ĐỐT",
-    "knc_price": "GIÁ CỦA KNC"
+    "knc_price": "GIÁ KNC"
   },
 
   "chart": {
@@ -59,7 +64,9 @@
   },
 
   "token_list": {
-    "title": "Danh sách tokens"
+    "title": "Danh sách tokens",
+    "prev": "Trang trước",
+    "next": "Trang tiếp"
   },
 
   "search_page": {

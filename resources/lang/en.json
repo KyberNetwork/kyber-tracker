@@ -15,6 +15,11 @@
     "tokens": "Tokens"
   },
 
+  "filter": {
+    "from": "From",
+    "to": "To"
+  },
+
   "status_bar": {
     "network_volume": "NETWORK VOLUME (24H)",
     "trades": "TRADES (24H)",
@@ -61,7 +66,9 @@
   },
 
   "token_list": {
-    "title": "Trade Tokens"
+    "title": "Trade Tokens",
+    "prev": "Prev",
+    "next": "Next"
   },
 
   "search_page": {

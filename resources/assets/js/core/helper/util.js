@@ -92,10 +92,23 @@ export default {
     return moment(timestamp).fromNow();
   },
 
+  formatFiatCurrency: function (amount) {
+    if (amount === 0) {
+      return '0';
+    }
+
+    if (!amount) {
+      return '';
+    }
+
+    const bn = new BigNumber(amount.toString());
+    return parseFloat(bn.toFixed(2).toString());
+  },
+
   formatTokenAmount: function (amount, decimal=18, precision=6) {
     const bigNumber = new BigNumber(amount.toString());
     let result = bigNumber.div(Math.pow(10, decimal));
-    return kyberRoundingNumber(result.toNumber()).toString();
+    return parseFloat(result.toFixed(3).toString());
   },
 
   roundingNumber: function (number) {
