@@ -10,6 +10,8 @@ const BaseService   = require('sota-core').load('service/BaseService');
 const LocalCache    = require('sota-core').load('cache/foundation/LocalCache');
 const logger        = require('sota-core').getLogger('CMCService');
 
+const CMC_GRAPH_API_TICKER = 900 * 1000; // 15 minutes in milliseconds
+
 module.exports = BaseService.extends({
   classname: 'CMCService',
 
@@ -98,6 +100,52 @@ module.exports = BaseService.extends({
         const result = response.body[0];
 
         LocalCache.setSync(key, result);
+        return callback(null, result);
+      });
+  },
+
+  getHistoricalPrice: function (symbol, timeInMillis, callback) {
+    if (!symbol || typeof symbol !== 'string') {
+      return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
+    }
+
+    const tokenInfo = network.tokens[symbol];
+    if (!tokenInfo) {
+      return callback(`Cannot find token info of symbol: ${symbol}`);
+    }
+
+    const fromTime = timeInMillis - CMC_GRAPH_API_TICKER;
+    const toTime = timeInMillis + CMC_GRAPH_API_TICKER;
+
+    request
+      .get(`https://graphs2.coinmarketcap.com/currencies/${tokenInfo.cmcId}/${fromTime}/${toTime}`)
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+
+        const result = {};
+
+        try {
+          const data = response.body;
+          if (symbol === 'BTC') {
+            result.price_btc = 1;
+          } else {
+            result.price_btc = data.price_btc[0][1];
+          }
+
+          if (symbol === 'ETH') {
+            result.price_eth = 1;
+          } else {
+            result.price_eth = data.price_platform[0][1];
+          }
+
+          result.price_usd = data.price_usd[0][1];
+        } catch (e) {
+          return callback(`Cannot get price of [${symbol}] at [${timeInMillis}]`);
+        }
+
+        logger.debug(`Price of [${symbol}] at [${timeInMillis}] is: $${result.price_usd}`);
         return callback(null, result);
       });
   },

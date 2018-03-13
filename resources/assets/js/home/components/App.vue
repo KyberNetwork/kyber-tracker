@@ -11,7 +11,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          
+
           <b-dropdown class="change-language-button" right>
             <template slot="button-content">
               <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
@@ -62,7 +62,7 @@
         <div class="container">
           <b-navbar-nav>
             <b-nav-item>
-              <router-link to="/">{{ $t('navigator.trades') }}</router-link>
+              <router-link to="/trades">{{ $t('navigator.trades') }}</router-link>
             </b-nav-item>
             <b-nav-item>
               <router-link to="/tokens">{{ $t('navigator.tokens') }}</router-link>
