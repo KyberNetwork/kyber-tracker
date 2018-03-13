@@ -300,7 +300,7 @@ module.exports = BaseService.extends({
       params.push(options.symbol);
     }
 
-    KyberTradeModel.sumGroupBy('volume_eth/1000000000000000000', {
+    KyberTradeModel.sumGroupBy('maker_total_usd', {
       where: whereClauses,
       params: params,
       groupBy: [groupColumn]
@@ -420,7 +420,7 @@ module.exports = BaseService.extends({
     let whereClauses = 'maker_address = ? AND block_timestamp > ? AND block_timestamp < ?';
     let params = [markerAddress, fromDate, toDate];
 
-    KyberTradeModel.sumGroupBy('volume_eth/1000000000000000000', {
+    KyberTradeModel.sumGroupBy('maker_total_usd', {
       where: whereClauses,
       params: params,
       groupBy: ['maker_address']

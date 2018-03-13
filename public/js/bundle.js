@@ -111300,14 +111300,14 @@ exports.default = {
         var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
         for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
           labels.push(seq * 3600 * 1000);
-          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          var volume = keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0;
           dataSetData.push(volume);
         }
       } else if (interval === 'D1') {
         var _keyedVolumeData = _lodash2.default.keyBy(ret, 'daySeq');
         for (var _seq = ret[0].daySeq; _seq <= ret[ret.length - 1].daySeq; _seq++) {
           labels.push(_seq * 3600 * 24 * 1000);
-          var _volume = (_keyedVolumeData[_seq] ? _keyedVolumeData[_seq].sum : 0) * 725;
+          var _volume = _keyedVolumeData[_seq] ? _keyedVolumeData[_seq].sum : 0;
           dataSetData.push(_volume);
         }
       }

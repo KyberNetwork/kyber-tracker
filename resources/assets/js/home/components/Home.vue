@@ -232,14 +232,14 @@ export default {
         const keyedVolumeData = _.keyBy(ret, 'hourSeq');
         for (let seq = ret[0].hourSeq; seq <= ret[ret.length-1].hourSeq; seq++) {
           labels.push(seq * 3600 * 1000);
-          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
           dataSetData.push(volume);
         }
       } else if(interval === 'D1') {
         const keyedVolumeData = _.keyBy(ret, 'daySeq');
         for (let seq = ret[0].daySeq; seq <= ret[ret.length-1].daySeq; seq++) {
           labels.push(seq * 3600 * 24 * 1000);
-          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
           dataSetData.push(volume);
         }
       }
