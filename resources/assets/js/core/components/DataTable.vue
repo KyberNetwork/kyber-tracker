@@ -3,7 +3,7 @@
     <div class="panel panel-default">
 
       <div v-if="!!title" class="panel-heading">
-        <h4> {{ title }} </h4>
+        <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
       <div class="table-responsive">

@@ -27,13 +27,13 @@
       </div>
       <b-tabs card>
         <b-tab no-body :title="$t('chart.title.network_volume')" active>
-          <canvas id="chart-volume" width="100" height="25"></canvas>
+          <canvas id="chart-volume" width="100" height="25" class="mt-20"></canvas>
         </b-tab>
         <b-tab no-body :title="$t('chart.title.fee_to_burn')">
-          <canvas id="chart-fee" width="100" height="25"></canvas>
+          <canvas id="chart-fee" width="100" height="25" class="mt-20"></canvas>
         </b-tab>
         <b-tab no-body :title="$t('chart.title.top_token')">
-          <canvas id="chart-top-tokens" width="100" height="25"></canvas>
+          <canvas id="chart-top-tokens" width="100" height="25" class="mt-20"></canvas>
         </b-tab>
       </b-tabs>
     </b-card>

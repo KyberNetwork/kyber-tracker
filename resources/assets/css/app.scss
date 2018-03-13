@@ -208,6 +208,10 @@ btn {
   padding-top: 40px;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .k {
   width: 10px;
   height: 9px;
@@ -299,6 +303,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .vdp-datepicker {
+  .vdp-datepicker__calendar {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    border-radius: 5px;
+  }
+
   input {
     padding-left: 5px;
     border: 1px solid rgba(0, 0, 0, 0.125);
