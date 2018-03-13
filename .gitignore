@@ -60,3 +60,4 @@ typings/
 .logs
 test.js
 credentials
+.idea/

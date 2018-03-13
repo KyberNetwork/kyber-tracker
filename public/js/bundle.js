@@ -23561,6 +23561,28 @@ var AppRequest = function (_BaseRequest) {
       }).catch(this._handleError);
     }
   }, {
+    key: 'getFeeToBurn',
+    value: function getFeeToBurn(period, interval, symbol, callback) {
+      if (typeof symbol === 'function') {
+        callback = symbol;
+        symbol = null;
+      }
+
+      var url = '/api/fees/to_burn';
+      return _superagent2.default.get(url).query({ period: period, interval: interval, symbol: symbol }).then(function (res) {
+        return callback(null, res.body.data);
+      }).catch(this._handleError);
+    }
+  }, {
+    key: 'getTopToken',
+    value: function getTopToken(fromDate, toDate, callback) {
+
+      var url = '/api/tokens/top';
+      return _superagent2.default.get(url).query({ fromDate: fromDate, toDate: toDate }).then(function (res) {
+        return callback(null, res.body.data);
+      }).catch(this._handleError);
+    }
+  }, {
     key: 'getTradeDetails',
     value: function getTradeDetails(id) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -96854,12 +96876,8 @@ exports.default = {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue__ = __webpack_require__(483);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_727abd92_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeList_vue__ = __webpack_require__(529);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_727abd92_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeList_vue__ = __webpack_require__(560);
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(481)
-}
 var normalizeComponent = __webpack_require__(18)
 /* script */
 
@@ -96868,14 +96886,14 @@ var normalizeComponent = __webpack_require__(18)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-727abd92"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_727abd92_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeList_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_727abd92_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeList_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -96904,46 +96922,8 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 481 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(482);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(25)("74303e64", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-727abd92\",\"scoped\":true,\"hasInlineConfig\":false}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./TradeList.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-727abd92\",\"scoped\":true,\"hasInlineConfig\":false}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./TradeList.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 482 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(11)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.chart-period-picker[data-v-727abd92] {\n  position: absolute;\n  top: 5;\n  right: 5;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 481 */,
+/* 482 */,
 /* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -96998,52 +96978,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 exports.default = {
   data: function data() {
     return {
       pageSize: 10,
-      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol'),
-      selectedPeriod: 'D7',
-      selectedInterval: 'H1'
+      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol')
     };
   },
 
@@ -97061,104 +97002,7 @@ exports.default = {
       return this.$t("trade_list.title");
     },
     getFilterTokenSymbol: function getFilterTokenSymbol() {
-      var tokenAddr = this.$route.params.tokenAddr;
-      var tokenDef = this.tokens[tokenAddr];
-      return tokenDef ? tokenDef.symbol : null;
-    },
-    selectPeriod: function selectPeriod(period, interval) {
-      this.selectedPeriod = period;
-      this.selectedInterval = interval;
-      this.refreshChartsData();
-    },
-    refreshChartsData: function refreshChartsData() {
-      this._refreshNetworkVolumeChart();
-      this._refreshFeeToBurnChart();
-      this._refreshTopTopkensChart();
-    },
-    _refreshNetworkVolumeChart: function _refreshNetworkVolumeChart() {
-      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
-        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
-        var ctx = document.getElementById('chart-volume');
-        var labels = [];
-        var dataSetData = [];
-        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
-          var d = (0, _moment2.default)(seq * 3600 * 1000);
-          labels.push(d.format('MMM D HH:mm'));
-
-          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
-        }
-
-        var data = {
-          labels: labels,
-          datasets: [{
-            label: 'Network volume',
-            data: dataSetData
-          }]
-        };
-        var options = {
-          // TODO
-        };
-        var myChart = new _chart2.default(ctx, {
-          type: 'line',
-          data: data,
-          options: options
-        });
-      });
-    },
-    _refreshFeeToBurnChart: function _refreshFeeToBurnChart() {
-      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
-        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
-        var ctx = document.getElementById('chart-fee');
-        var labels = [];
-        var dataSetData = [];
-        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
-          labels.push(seq);
-          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
-        }
-
-        var data = {
-          labels: labels,
-          datasets: [{
-            label: 'Network volume',
-            data: dataSetData
-          }]
-        };
-        var options = {};
-        var myChart = new _chart2.default(ctx, {
-          type: 'line',
-          data: data,
-          options: options
-        });
-      });
-    },
-    _refreshTopTopkensChart: function _refreshTopTopkensChart() {
-      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
-        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
-        var ctx = document.getElementById('chart-top-tokens');
-        var labels = [];
-        var dataSetData = [];
-        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
-          labels.push(seq);
-          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
-        }
-
-        var data = {
-          labels: labels,
-          datasets: [{
-            label: 'Network volume',
-            data: dataSetData
-          }]
-        };
-        var options = {};
-        var myChart = new _chart2.default(ctx, {
-          type: 'line',
-          data: data,
-          options: options
-        });
-      });
+      return null;
     }
   },
 
@@ -97170,7 +97014,6 @@ exports.default = {
     }, 10000);
 
     this.refresh();
-    this.refreshChartsData();
   }
 };
 
@@ -109382,194 +109225,7 @@ module.exports = {
 
 
 /***/ }),
-/* 529 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "col-sm-12" },
-    [
-      _c(
-        "b-card",
-        { attrs: { "no-body": "" } },
-        [
-          _c(
-            "div",
-            { staticClass: "chart-period-picker" },
-            [
-              _c(
-                "b-button-group",
-                { staticClass: "cus-pagination" },
-                [
-                  _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        variant: _vm.selectedPeriod === "H24" ? "active" : ""
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.selectPeriod("H24", "H1")
-                        }
-                      }
-                    },
-                    [_vm._v("24H\n      ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        variant: _vm.selectedPeriod === "D7" ? "active" : ""
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.selectPeriod("D7", "H1")
-                        }
-                      }
-                    },
-                    [_vm._v("7D\n      ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        variant: _vm.selectedPeriod === "D30" ? "active" : ""
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.selectPeriod("D30", "H1")
-                        }
-                      }
-                    },
-                    [_vm._v("1M\n      ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        variant: _vm.selectedPeriod === "Y1" ? "active" : ""
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.selectPeriod("Y1", "D1")
-                        }
-                      }
-                    },
-                    [_vm._v("1Y\n      ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        variant: _vm.selectedPeriod === "ALL" ? "active" : ""
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.selectPeriod("ALL", "D1")
-                        }
-                      }
-                    },
-                    [_vm._v("ALL\n      ")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-tabs",
-            { attrs: { card: "" } },
-            [
-              _c(
-                "b-tab",
-                {
-                  attrs: {
-                    "no-body": "",
-                    title: _vm.$t("chart.title.network_volume"),
-                    active: ""
-                  }
-                },
-                [
-                  _c("canvas", {
-                    attrs: { id: "chart-volume", width: "100", height: "25" }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-tab",
-                {
-                  attrs: {
-                    "no-body": "",
-                    title: _vm.$t("chart.title.fee_to_burn")
-                  }
-                },
-                [
-                  _c("canvas", {
-                    attrs: { id: "chart-fee", width: "100", height: "25" }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-tab",
-                {
-                  attrs: {
-                    "no-body": "",
-                    title: _vm.$t("chart.title.top_token")
-                  }
-                },
-                [
-                  _c("canvas", {
-                    attrs: {
-                      id: "chart-top-tokens",
-                      width: "100",
-                      height: "25"
-                    }
-                  })
-                ]
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("trade-list", {
-        ref: "datatable",
-        attrs: {
-          title: _vm.getListTitle(),
-          getFilterTokenSymbol: _vm.getFilterTokenSymbol
-        }
-      })
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-727abd92", esExports)
-  }
-}
-
-/***/ }),
+/* 529 */,
 /* 530 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -110495,7 +110151,7 @@ exports = module.exports = __webpack_require__(11)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.chart-period-picker[data-v-722ec384] {\n  position: absolute;\n  top: 5px;\n  right: 5px;\n}\n", ""]);
 
 // exports
 
@@ -110554,12 +110210,38 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 exports.default = {
   data: function data() {
     return {
-      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'address')
+      tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'address'),
+      selectedPeriod: 'D7',
+      selectedInterval: 'H1',
+      myChart: undefined,
+      symbol: undefined
     };
   },
 
@@ -110571,12 +110253,73 @@ exports.default = {
         return;
       }
 
+      this.symbol = this.getFilterTokenSymbol();
+      this.refreshChartsData(this.selectedPeriod, this.selectedInterval, this.symbol);
       this.$refs.datatable.fetch();
+    },
+    selectPeriod: function selectPeriod(period, interval) {
+      this.selectedPeriod = period;
+      this.selectedInterval = interval;
+      this.refreshChartsData(period, interval, this.symbol);
     },
     getFilterTokenSymbol: function getFilterTokenSymbol() {
       var tokenAddr = this.$route.params.tokenAddr;
       var tokenDef = this.tokens[tokenAddr];
       return tokenDef ? tokenDef.symbol : null;
+    },
+    refreshChartsData: function refreshChartsData(period, interval, symbol) {
+      this._refreshTokenDetailChart(period, interval, symbol);
+    },
+    _refreshTokenDetailChart: function _refreshTokenDetailChart(period, interval, symbol) {
+      var _this = this;
+
+      _AppRequest2.default.getNetworkVolume(period, interval, symbol, function (err, ret) {
+        var ctx = document.getElementById('myChart');
+        var chartData = _this._createChartData(ret, interval);
+        var data = {
+          labels: chartData.labels,
+          datasets: [{
+            label: 'Network volume',
+            data: chartData.dataSetData
+          }]
+        };
+        var options = {
+          // TODO
+        };
+        if (_this.myChart) {
+          _this.myChart.destroy();
+        }
+        _this.myChart = new _chart2.default(ctx, {
+          type: 'line',
+          data: data,
+          options: options
+        });
+      });
+    },
+    _createChartData: function _createChartData(ret, interval) {
+      var labels = [];
+      var dataSetData = [];
+      if (interval === 'H1') {
+        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
+        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
+          var d = (0, _moment2.default)(seq * 3600 * 1000);
+          labels.push(d.format('MMM D HH:mm'));
+          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
+          dataSetData.push(volume);
+        }
+      } else if (interval === 'D1') {
+        var _keyedVolumeData = _lodash2.default.keyBy(ret, 'daySeq');
+        for (var _seq = ret[0].daySeq; _seq <= ret[ret.length - 1].daySeq; _seq++) {
+          var _d = (0, _moment2.default)(_seq * 3600 * 24 * 1000);
+          labels.push(_d.format('MMM D'));
+          var _volume = (_keyedVolumeData[_seq] ? _keyedVolumeData[_seq].sum : 0) * 725;
+          dataSetData.push(_volume);
+        }
+      }
+      return {
+        dataSetData: dataSetData,
+        labels: labels
+      };
     }
   },
 
@@ -110587,27 +110330,14 @@ exports.default = {
   },
 
   mounted: function mounted() {
-    if (!this.getFilterTokenSymbol()) {
+    this.symbol = this.getFilterTokenSymbol();
+    if (!this.symbol) {
       return;
     }
 
     this.refresh();
 
-    // TODO: correct data to be filled here.
-    var ctx = document.getElementById('myChart');
-    var data = {
-      labels: ["Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Feb 28", "Mar 01"],
-      datasets: [{
-        label: 'Token volume',
-        data: [11, 44, 76, 22, 27, 55, 42]
-      }]
-    };
-    var options = {};
-    var myChart = new _chart2.default(ctx, {
-      type: 'line',
-      data: data,
-      options: options
-    });
+    this.refreshChartsData(this.selectedPeriod, this.selectedInterval, this.symbol);
   }
 };
 
@@ -110624,6 +110354,93 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
+      _c(
+        "div",
+        { staticClass: "chart-period-picker" },
+        [
+          _c(
+            "b-button",
+            {
+              attrs: {
+                variant:
+                  _vm.selectedPeriod === "H24" ? "primary" : "outline-primary"
+              },
+              on: {
+                click: function($event) {
+                  _vm.selectPeriod("H24", "H1")
+                }
+              }
+            },
+            [_vm._v("24H\n    ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: {
+                variant:
+                  _vm.selectedPeriod === "D7" ? "primary" : "outline-primary"
+              },
+              on: {
+                click: function($event) {
+                  _vm.selectPeriod("D7", "H1")
+                }
+              }
+            },
+            [_vm._v("7D\n    ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: {
+                variant:
+                  _vm.selectedPeriod === "D30" ? "primary" : "outline-primary"
+              },
+              on: {
+                click: function($event) {
+                  _vm.selectPeriod("D30", "D1")
+                }
+              }
+            },
+            [_vm._v("1M\n    ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: {
+                variant:
+                  _vm.selectedPeriod === "Y1" ? "primary" : "outline-primary"
+              },
+              on: {
+                click: function($event) {
+                  _vm.selectPeriod("Y1", "D1")
+                }
+              }
+            },
+            [_vm._v("1Y\n    ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: {
+                variant:
+                  _vm.selectedPeriod === "ALL" ? "primary" : "outline-primary"
+              },
+              on: {
+                click: function($event) {
+                  _vm.selectPeriod("ALL", "D1")
+                }
+              }
+            },
+            [_vm._v("ALL\n    ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c("canvas", { attrs: { id: "myChart", width: "100", height: "25" } }),
       _vm._v(" "),
       _c("trade-list", {
@@ -111201,7 +111018,7 @@ exports = module.exports = __webpack_require__(11)(undefined);
 
 
 // module
-exports.push([module.i, "\n.chart-period-picker[data-v-7d1e1a5a] {\n  position: absolute;\n  top: 5;\n  right: 5;\n}\n", ""]);
+exports.push([module.i, "\n.chart-period-picker[data-v-7d1e1a5a] {\n  position: absolute;\n  top: 5px;\n  right: 5px;\n}\n", ""]);
 
 // exports
 
@@ -111316,8 +111133,11 @@ exports.default = {
     return {
       pageSize: 10,
       tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol'),
-      selectedPeriod: 'H24',
-      selectedInterval: 'H1'
+      selectedPeriod: 'D7',
+      selectedInterval: 'H1',
+      volumeChart: undefined,
+      feeToBurnChart: undefined,
+      topTokenChart: undefined
     };
   },
 
@@ -111342,25 +111162,30 @@ exports.default = {
     selectPeriod: function selectPeriod(period, interval) {
       this.selectedPeriod = period;
       this.selectedInterval = interval;
-      this.refreshChartsData();
+      this.refreshChartsData(period, interval);
     },
-    refreshChartsData: function refreshChartsData() {
-      this._refreshNetworkVolumeChart();
-      this._refreshFeeToBurnChart();
-      this._refreshTopTopkensChart();
+    refreshChartsData: function refreshChartsData(period, interval) {
+      this._refreshNetworkVolumeChart(period, interval);
+      this._refreshFeeToBurnChart(period, interval);
+      this._refreshTopTopkensChart(period);
     },
-    _refreshNetworkVolumeChart: function _refreshNetworkVolumeChart() {
-      _AppRequest2.default.getNetworkVolume('H24', 'H1', function (err, ret) {
-        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
-        var ctx = document.getElementById('chart-volume');
-        var labels = [];
-        var dataSetData = [];
-        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
-          labels.push(seq);
+    _refreshNetworkVolumeChart: function _refreshNetworkVolumeChart(period, interval) {
+      var _this = this;
 
-          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
-        }
+      _AppRequest2.default.getNetworkVolume(period, interval, function (err, ret) {
+        var ctx = document.getElementById('chart-volume');
+        var chartData = _this._createChartData(ret, interval);
+        var data = {
+          labels: chartData.labels,
+          datasets: [{
+            data: chartData.dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true
+          }]
+        };
 
         var options = _lodash2.default.assign(defaultChartOptions, {
           scales: {
@@ -111375,7 +111200,7 @@ exports.default = {
             xAxes: [{
               ticks: {
                 callback: function callback(label, index, labels) {
-                  var d = (0, _moment2.default)(label * 3600 * 1000);
+                  var d = (0, _moment2.default)(label);
                   return d.format('MMM D');
                 },
                 maxTicksLimit: 5
@@ -111384,89 +111209,161 @@ exports.default = {
           }
         });
 
-        var myChart = new _chart2.default(ctx, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Network volume',
-              data: dataSetData,
-              pointRadius: 0,
-              backgroundColor: '#28a745',
-              borderColor: '#28a745',
-              showLine: true,
-              spanGaps: true
-            }]
-          },
-          options: options
-        });
-      });
-    },
-    _refreshFeeToBurnChart: function _refreshFeeToBurnChart() {
-      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
-        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
-        var ctx = document.getElementById('chart-fee');
-        var labels = [];
-        var dataSetData = [];
-        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
-          labels.push(seq);
-          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
+        if (_this.volumeChart) {
+          _this.volumeChart.destroy();
         }
 
-        var data = {
-          labels: labels,
-          datasets: [{
-            label: 'Network volume',
-            data: dataSetData
-          }]
-        };
-        var options = {};
-        var myChart = new _chart2.default(ctx, {
+        _this.volumeChart = new _chart2.default(ctx, {
           type: 'line',
           data: data,
           options: options
         });
       });
     },
-    _refreshTopTopkensChart: function _refreshTopTopkensChart() {
-      _AppRequest2.default.getNetworkVolume('D7', 'H1', function (err, ret) {
-        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
+    _refreshFeeToBurnChart: function _refreshFeeToBurnChart(period, interval) {
+      var _this2 = this;
+
+      _AppRequest2.default.getFeeToBurn(period, interval, function (err, ret) {
+        var ctx = document.getElementById('chart-fee');
+        var chartData = _this2._createChartData(ret, interval);
+        var data = {
+          labels: chartData.labels,
+          datasets: [{
+            data: chartData.dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true
+          }]
+        };
+        var options = _lodash2.default.assign(defaultChartOptions, {
+          scales: {
+            yAxes: [{
+              ticks: {
+                callback: function callback(label, index, labels) {
+                  return label + ' KNC';
+                }
+              },
+              maxTicksLimit: 5
+            }],
+            xAxes: [{
+              ticks: {
+                callback: function callback(label, index, labels) {
+                  var d = (0, _moment2.default)(label);
+                  return d.format('MMM D');
+                },
+                maxTicksLimit: 5
+              }
+            }]
+          }
+        });
+
+        if (_this2.feeToBurnChart) {
+          _this2.feeToBurnChart.destroy();
+        }
+
+        _this2.feeToBurnChart = new _chart2.default(ctx, {
+          type: 'line',
+          data: data,
+          options: options
+        });
+      });
+    },
+    _refreshTopTopkensChart: function _refreshTopTopkensChart(period) {
+      var _this3 = this;
+
+      var now = Date.now() / 1000 | 0;
+      var start = void 0;
+      switch (period) {
+        case 'H24':
+          start = now - 60 * 60 * 24;
+          break;
+        case 'D7':
+          start = now - 60 * 60 * 24 * 7;
+          break;
+        case 'D30':
+          start = now - 60 * 60 * 24 * 30;
+          break;
+        case 'Y1':
+          start = now - 60 * 60 * 24 * 365;
+          break;
+        default:
+          start = now - 60 * 60 * 24 * 365 * 10;
+          break;
+      }
+      _AppRequest2.default.getTopToken(start, now, function (err, ret) {
         var ctx = document.getElementById('chart-top-tokens');
         var labels = [];
         var dataSetData = [];
-        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
-          labels.push(seq);
-          var volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-          dataSetData.push(volume);
+        for (var i = 0; i < ret.length; i++) {
+          labels.push(ret[i].symbol);
+          dataSetData.push(ret[i].volumeUSD);
         }
 
         var data = {
           labels: labels,
           datasets: [{
             label: 'Network volume',
-            data: dataSetData
+            data: dataSetData,
+            pointRadius: 0,
+            backgroundColor: 'rgb(148, 190, 190)',
+            borderColor: 'rgb(148, 190, 190)',
+            showLine: true,
+            spanGaps: true
           }]
         };
-        var options = {};
-        var myChart = new _chart2.default(ctx, {
-          type: 'line',
+        var options = {
+          legend: {
+            display: false
+          }
+        };
+
+        if (_this3.topTokenChart) {
+          _this3.topTokenChart.destroy();
+        }
+
+        _this3.topTokenChart = new _chart2.default(ctx, {
+          type: 'bar',
           data: data,
           options: options
         });
       });
+    },
+    _createChartData: function _createChartData(ret, interval) {
+      var labels = [];
+      var dataSetData = [];
+      if (interval === 'H1') {
+        var keyedVolumeData = _lodash2.default.keyBy(ret, 'hourSeq');
+        for (var seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
+          labels.push(seq * 3600 * 1000);
+          var volume = keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0;
+          dataSetData.push(volume);
+        }
+      } else if (interval === 'D1') {
+        var _keyedVolumeData = _lodash2.default.keyBy(ret, 'daySeq');
+        for (var _seq = ret[0].daySeq; _seq <= ret[ret.length - 1].daySeq; _seq++) {
+          labels.push(_seq * 3600 * 24 * 1000);
+          var _volume = _keyedVolumeData[_seq] ? _keyedVolumeData[_seq].sum : 0;
+          dataSetData.push(_volume);
+        }
+      }
+      return {
+        dataSetData: dataSetData,
+        labels: labels
+      };
     }
   },
 
   mounted: function mounted() {
-    var _this = this;
+    var _this4 = this;
 
     this._refreshInterval = window.setInterval(function () {
-      _this.refresh();
+      _this4.refresh();
     }, 10000);
 
     this.refresh();
-    this.refreshChartsData();
+    this.refreshChartsData(this.selectedPeriod, this.selectedInterval);
   }
 };
 
@@ -111533,7 +111430,7 @@ var render = function() {
                       },
                       on: {
                         click: function($event) {
-                          _vm.selectPeriod("D30", "H1")
+                          _vm.selectPeriod("D30", "D1")
                         }
                       }
                     },
@@ -111589,7 +111486,11 @@ var render = function() {
                     active: ""
                   }
                 },
-                [_c("canvas", { attrs: { id: "chart-volume" } })]
+                [
+                  _c("canvas", {
+                    attrs: { id: "chart-volume", width: "100", height: "25" }
+                  })
+                ]
               ),
               _vm._v(" "),
               _c(
@@ -111651,6 +111552,41 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-7d1e1a5a", esExports)
+  }
+}
+
+/***/ }),
+/* 560 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "col-sm-12" },
+    [
+      _c("trade-list", {
+        ref: "datatable",
+        attrs: {
+          title: _vm.getListTitle(),
+          getFilterTokenSymbol: _vm.getFilterTokenSymbol
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-727abd92", esExports)
   }
 }
 

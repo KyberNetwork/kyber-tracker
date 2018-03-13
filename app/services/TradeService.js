@@ -300,7 +300,7 @@ module.exports = BaseService.extends({
       params.push(options.symbol);
     }
 
-    KyberTradeModel.sumGroupBy('volume_eth/1000000000000000000', {
+    KyberTradeModel.sumGroupBy('maker_total_usd', {
       where: whereClauses,
       params: params,
       groupBy: [groupColumn]
@@ -392,6 +392,42 @@ module.exports = BaseService.extends({
       }
 
       LocalCache.setSync(key, ret);
+      return callback(null, ret);
+    });
+  },
+
+  getCountMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+
+    let whereClauses = 'maker_address = ? AND block_timestamp > ? AND block_timestamp < ?';
+    let params = [markerAddress, fromDate, toDate];
+
+    KyberTradeModel.countGroupBy('maker_address', {
+      where: whereClauses,
+      params: params,
+      groupBy: ['maker_address']
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+      return callback(null, ret);
+    });
+  },
+
+  getSumMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+
+    let whereClauses = 'maker_address = ? AND block_timestamp > ? AND block_timestamp < ?';
+    let params = [markerAddress, fromDate, toDate];
+
+    KyberTradeModel.sumGroupBy('maker_total_usd', {
+      where: whereClauses,
+      params: params,
+      groupBy: ['maker_address']
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
       return callback(null, ret);
     });
   },
