@@ -62,7 +62,7 @@
               <td>
                 <span>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</span>
                 <span><token-link :symbol="row.takerTokenSymbol"></token-link></span>
-                <span><i class="k k-angle right"></i></span>
+                <span class="inline-arrow"><i class="k k-angle right"></i></span>
                 <span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</span>
                 <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
               </td>
@@ -75,7 +75,7 @@
               </td>
               <td>{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
               <td>{{ formatTokenNumber('KNC', row.burnFees) }} KNC</td>
-              <td><router-link :to="getTradeLink(row.id)">
+              <td><router-link :to="getTradeLink(row.id)" class="pull-right">
                 <i class="k k-angle right"></i>
               </router-link></td>
             </tr>

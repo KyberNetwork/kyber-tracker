@@ -10,9 +10,9 @@
           </b-nav-item>
         </b-navbar-nav>
 
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto cursor-pointer">
 
-          <b-dropdown class="change-language-button" right>
+          <b-dropdown class="change-language-button no-padding-right" right>
             <template slot="button-content">
               <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
             </template>
@@ -45,7 +45,7 @@
             </b-nav-text>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item>
+            <b-nav-item class="no-padding-right">
               <b-input-group>
                 <b-form-input v-model="searchString"></b-form-input>
                 <b-input-group-append>
@@ -73,9 +73,13 @@
       </b-navbar>
 
       <div class="breadcrumbs" v-if="breadcrumbsItems.length > 0">
-        <div class="container-fluid">
-          <div class="title">{{ pageTitle }}</div>
-          <b-breadcrumb :items="breadcrumbsItems"/>
+        <div class="container">
+          <div class="row">
+            <div class="col"><p class="big-heading">{{ pageTitle }}</p></div>
+            <div class="col">
+              <b-breadcrumb :items="breadcrumbsItems" class="ml-auto home-breadcrumb"/>
+            </div>
+          </div>
         </div>
       </div>
 

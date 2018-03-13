@@ -154,6 +154,22 @@ btn {
   cursor: pointer;
 }
 
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
 .datepicker-container {
   padding-top: 20px;
   float: left;
@@ -178,6 +194,10 @@ btn {
   float: right;
   padding: 20px 0;
   margin: 0;
+}
+
+.pt-10 {
+  padding-top: 10px;
 }
 
 .pt-20 {
@@ -212,7 +232,7 @@ btn {
 
 td {
   .k-angle {
-    padding-top: 18px;
+    padding-top: 17px;
   }
 }
 
@@ -228,6 +248,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {
   cursor: pointer !important;
+
+  .btn {
+    cursor: pointer !important;
+  }
 }
 
 .table thead th {
@@ -248,8 +272,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   content: "";
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 7px;
+  top: 8px;
   height: 22px;
   width: 22px;
   display: block;
@@ -272,4 +296,75 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   span {
     margin-right: 0;
   }
+}
+
+.vdp-datepicker {
+  input {
+    padding-left: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 5px;
+    position: relative;
+    z-index: 2;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input:hover, input:active, input:focus {
+    border: 1px solid rgba(0, 0, 0, 0.25);
+  }
+
+  .vdp-datepicker__clear-button {
+    position: absolute;
+    right: 34px;
+    top: 0px;
+    font-size: 20PX;
+    font-style: normal;
+    font-family: sans-serif;
+    color: #ddd;
+    z-index: 3;
+  }
+
+  .vdp-datepicker__clear-button:hover {
+    color: #bbb;
+  }
+}
+
+.home-breadcrumb {
+  background: transparent;
+  margin: 0;
+  float: right;
+  padding-right: 0;
+}
+
+.big-heading {
+  padding: 12px;
+  margin: 0;
+}
+
+.no-margin-right {
+  margin-right: 0 !important;
+
+  > * {
+    margin-right: 0 !important;
+  }
+
+  .btn-secondary {
+    margin-right: 0 !important;
+  }
+}
+
+
+.no-padding-right {
+  padding-right: 0 !important;
+
+  > * {
+    padding-right: 0 !important;
+  }
+}
+
+.inline-arrow {
+  padding-left: 12px;
+  line-height: 20px;
+  height: 20px;
+  display: inline-block;
 }
