@@ -27,19 +27,19 @@
         <div class="container">
           <b-navbar-nav>
             <b-nav-text>
-              {{ $t('status_bar.network_volume') }}<br />
+              <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               {{ networkVolume }}
             </b-nav-text>
             <b-nav-text class="ml-3">
-              {{ $t('status_bar.trades') }}<br />
+              <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
               {{ tradeCount }}
             </b-nav-text>
             <b-nav-text class="ml-3">
-              {{ $t('status_bar.burned_fee') }}<br />
+              <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
               {{ totalBurnedFee }}
             </b-nav-text>
             <b-nav-text class="ml-3">
-              {{ $t('status_bar.knc_price') }}<br />
+              <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
               {{ kncPrice }} ({{ kncPriceChange24h }})
             </b-nav-text>
           </b-navbar-nav>

@@ -8,13 +8,13 @@
 
       <div v-if="!isHideDatepicker" class="datepicker-container">
         <span>{{ $t('filter.from') }}</span>
-        <datepicker v-model="searchFromDate" name="searchFromDate"
+        <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :clear-button="true"
           :highlighted="highlightedToday"
           :disabled="disabledFromDates">
         </datepicker>
         <span>{{ $t('filter.to') }}</span>
-        <datepicker v-model="searchToDate" name="searchToDate"
+        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon"
           :clear-button="true"
           :highlighted="highlightedToday"
           :disabled="disabledToDates">
