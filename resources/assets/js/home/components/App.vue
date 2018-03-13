@@ -65,6 +65,9 @@
         <div class="container">
           <b-navbar-nav>
             <b-nav-item>
+              <router-link to="/">{{ $t('navigator.home') }}</router-link>
+            </b-nav-item>
+            <b-nav-item>
               <router-link to="/trades">{{ $t('navigator.trades') }}</router-link>
             </b-nav-item>
             <b-nav-item>
@@ -77,7 +80,7 @@
       <div class="breadcrumbs" v-if="breadcrumbsItems.length > 0">
         <div class="container">
           <div class="row">
-            <div class="col"><p class="big-heading">{{ pageTitle }}</p></div>
+            <div class="col"><p class="big-heading" v-html="pageTitle"></p></div>
             <div class="col">
               <b-breadcrumb :items="breadcrumbsItems" class="ml-auto home-breadcrumb"/>
             </div>
@@ -125,6 +128,7 @@ import moment from 'moment';
 import request from 'superagent';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
+import network from '../../../../../config/network';
 
 export default {
   data() {
@@ -202,12 +206,10 @@ export default {
         this.searchString = '';
       });
     },
-    loadBreadcumbs (routeName) {
+    loadBreadcumbs (route) {
+      const routeName = route.name;
+
       switch (routeName) {
-        case 'home':
-          this.pageTitle = '';
-          this.breadcrumbsItems = [];
-          return;
         case 'trade-list':
           this.pageTitle = this.$t('page_title.trade_list');
           this.breadcrumbsItems = [{
@@ -242,7 +244,15 @@ export default {
           }];
           return;
         case 'token-details':
+          const tokenInfo = _.find(_.values(network.tokens), (token) => {
+            return token.address === route.params.tokenAddr;
+          });
+
           this.pageTitle = this.$t('page_title.token_detail');
+          if (tokenInfo) {
+            this.pageTitle = `${tokenInfo.name} <span class='sub-title'>${tokenInfo.symbol}</span>`;
+          }
+
           this.breadcrumbsItems = [{
             text: this.$t('navigator.home'),
             to: { name: 'home' }
@@ -254,19 +264,37 @@ export default {
             active: true
           }];
           return;
+        case 'search':
+          this.pageTitle = this.$t('page_title.search');
+          this.breadcrumbsItems = [{
+            text: this.$t('navigator.home'),
+            to: { name: 'home' }
+          }, {
+            text: this.$t('navigator.search'),
+            active: true
+          }];
+          return;
+        case 'home':
+          this.pageTitle = '';
+          this.breadcrumbsItems = [];
+          return;
+        default:
+          this.pageTitle = '';
+          this.breadcrumbsItems = [];
+          return;
       }
     }
   },
 
   watch: {
     '$route'(toVal, fromVal) {
-      this.loadBreadcumbs(toVal.name);
+      this.loadBreadcumbs(toVal);
     }
   },
 
   mounted () {
     this.refresh();
-    this.loadBreadcumbs(this.$route.name);
+    this.loadBreadcumbs(this.$route);
 
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
@@ -300,6 +328,11 @@ export default {
         justify-content: center;
         align-self: center;
         font-size: 16px;
+
+        .sub-title {
+          margin-left: 10px;
+          color: #868e96;
+        }
       }
     }
   }

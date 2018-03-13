@@ -7,7 +7,8 @@
     "symbol": "Symbol",
     "volume_24h_usd": "24hr Volume (USD)",
     "volume_24h_token": "24hr Volume (token)",
-    "search": "Search"
+    "search": "Search",
+    "network_activity": "Network Activity"
   },
 
   "page_title": {
@@ -15,9 +16,10 @@
     "trades": "Trades",
     "tokens": "Tokens",
     "trade_list": "Trades List",
-    "token_list": "Tokens List",
+    "token_list": "Traded Tokens",
     "trade_detail": "Trade Details",
-    "token_detail": "Token Details"
+    "token_detail": "Token Details",
+    "search": "Search Results"
   },
 
   "navigator": {
@@ -25,7 +27,8 @@
     "trades": "Trades",
     "tokens": "Tokens",
     "trade_detail": "Trade Details",
-    "token_detail": "Token Details"
+    "token_detail": "Token Details",
+    "search": "Search Results"
   },
 
   "filter": {

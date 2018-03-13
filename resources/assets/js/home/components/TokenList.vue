@@ -49,7 +49,7 @@ export default {
       this.$refs.datatable.fetch();
     },
     getListTitle () {
-      return this.$t("token_list.title");
+      return '';
     },
     getList () {
       const now = Date.now() / 1000 | 0;

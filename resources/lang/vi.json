@@ -7,17 +7,19 @@
     "symbol": "Ký hiệu",
     "volume_24h_usd": "Lượng giao dịch 24h (USD)",
     "volume_24h_token": "Lượng giao dịch 24h (token)",
-    "search": "Tìm kiếm"
+    "search": "Tìm kiếm",
+    "network_activity": "Danh sách giao dịch"
   },
 
   "page_title": {
     "home": "Trang chính",
     "trades": "Giao dịch",
-    "tokens": "Tokens",
+    "tokens": "Danh sách Tokens",
     "trade_list": "Danh sách giao dịch",
     "token_list": "Danh sách token",
     "trade_detail": "Chi tiết giao dịch",
-    "token_detail": "Chi tiết token"
+    "token_detail": "Chi tiết token",
+    "search": "Kết quả tìm kiếm"
   },
 
   "navigator": {
@@ -25,7 +27,8 @@
     "trades": "Giao dịch",
     "tokens": "Tokens",
     "trade_detail": "Chi tiết giao dịch",
-    "token_detail": "Chi tiết token"
+    "token_detail": "Chi tiết token",
+    "search": "Kết quả tìm kiếm"
   },
 
   "filter": {
