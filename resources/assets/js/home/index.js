@@ -34,6 +34,10 @@ const i18n = new VueI18n({
   messages: { en, vi },
 });
 window.i18n = i18n;
+
+// moment.updateLocale('vi', {
+
+// })
 moment.locale(locale);
 
 const router = new VueRouter(routes);

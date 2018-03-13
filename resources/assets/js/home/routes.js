@@ -8,7 +8,7 @@ import SearchResult   from './components/SearchResultPage.vue';
 export default {
   routes: [
     { path: '/',                  name: 'home',           component: Home },
-    { path: '/trades',            name: 'trades',         component: TradeList },
+    { path: '/trades',            name: 'trade-list',     component: TradeList },
     { path: '/trades/:id',        name: 'trade-details',  component: TradeDetails },
     { path: '/tokens',            name: 'token-list',     component: TokenList },
     { path: '/tokens/:tokenAddr', name: 'token-details',  component: TokenDetails },

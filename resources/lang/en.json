@@ -10,9 +10,27 @@
     "search": "Search"
   },
 
-  "navigator": {
+  "page_title": {
+    "home": "Home",
     "trades": "Trades",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "trade_list": "Trades List",
+    "token_list": "Tokens List",
+    "trade_detail": "Trade Details",
+    "token_detail": "Token Details"
+  },
+
+  "navigator": {
+    "home": "Home",
+    "trades": "Trades",
+    "tokens": "Tokens",
+    "trade_detail": "Trade Details",
+    "token_detail": "Token Details"
+  },
+
+  "filter": {
+    "from": "From",
+    "to": "To"
   },
 
   "status_bar": {
@@ -61,7 +79,9 @@
   },
 
   "token_list": {
-    "title": "Trade Tokens"
+    "title": "Trade Tokens",
+    "prev": "Prev",
+    "next": "Next"
   },
 
   "search_page": {

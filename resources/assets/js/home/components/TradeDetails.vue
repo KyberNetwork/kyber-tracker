@@ -20,22 +20,19 @@
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.taker_token") }}</b></label></b-col>
-      <b-col sm="9"><token-link :symbol="record.takerTokenSymbol"></token-link></b-col>
-    </b-row>
-
-    <b-row>
-      <b-col sm="3"><label><b>{{ $t("trade_detail.taker_amount") }}</b></label></b-col>
-      <b-col sm="9">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</b-col>
+      <b-col sm="9">
+        <span>{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
+        <token-link :symbol="record.takerTokenSymbol"></token-link>
+        <span>(${{ formatFiatCurrency(record.takerTotalUsd) }})</span>
+      </b-col>
     </b-row>
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.maker_token") }}</b></label></b-col>
-      <b-col sm="9"><token-link :symbol="record.makerTokenSymbol"></token-link></b-col>
-    </b-row>
-
-    <b-row>
-      <b-col sm="3"><label><b>{{ $t("trade_detail.maker_amount") }}</b></label></b-col>
-      <b-col sm="9">{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</b-col>
+      <b-col sm="9">
+        <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
+        <token-link :symbol="record.makerTokenSymbol"></token-link>
+      </b-col>
     </b-row>
 
     <b-row>
@@ -51,12 +48,12 @@
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.fee_to_wallet") }}</b></label></b-col>
-      <b-col sm="9">{{ getTokenAmount(record.takerFee, 'KNC') }}</b-col>
+      <b-col sm="9">{{ getTokenAmount(record.takerFee, 'KNC') }} KNC</b-col>
     </b-row>
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.fee_to_burn") }}</b></label></b-col>
-      <b-col sm="9">{{ getTokenAmount(record.burnFees, 'KNC') }}</b-col>
+      <b-col sm="9">{{ getTokenAmount(record.burnFees, 'KNC') }} KNC</b-col>
     </b-row>
 
   </div>
@@ -89,6 +86,7 @@ export default {
         "takerTokenAddress": "",
         "takerTokenSymbol": "",
         "takerTokenAmount": "",
+        "takerTotalUsd": "",
         "gasLimit": "",
         "gasPrice": "",
         "gasUsed": "",
@@ -112,7 +110,13 @@ export default {
         });
     },
     getDateInfo (timestamp) {
-      return moment(timestamp * 1000).format("dddd, MMMM Do YYYY, h:mm:ss a");
+      const locale = localStorage.getItem('locale') || 'en';
+      if (locale === 'vi') {
+        return moment(timestamp * 1000).format('dddd, ngày Do/MM/YYYY, HH:mm:ss');
+      } else {
+        return moment(timestamp * 1000).format('dddd, MMMM Do YYYY, HH:mm:ss');
+      }
+
     },
     getTokenAmount (amount, symbol) {
       if (!amount || !symbol) {
@@ -146,6 +150,9 @@ export default {
       const takerAmount = (new BigNumber(this.record.takerTokenAmount.toString())).div(Math.pow(10, takerToken.decimal));
       return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
+    formatFiatCurrency (amount) {
+      return util.formatFiatCurrency(amount);
+    }
   },
 
   watch: {
