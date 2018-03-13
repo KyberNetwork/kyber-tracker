@@ -115,8 +115,8 @@
 
         this.$refs.datatable.fetch();
       },
-      getListTitle() {
-        return this.$t("trade_list.title");
+      getListTitle () {
+        return this.$t("common.network_activity");
       },
       getFilterTokenSymbol() {
         const tokenAddr = this.$route.params.tokenAddr;

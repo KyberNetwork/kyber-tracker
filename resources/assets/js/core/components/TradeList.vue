@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(row, index) in rows" :item="row" :index="index">
+            <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
               <td>{{ getDateInfo(row) }}</td>
               <td>
                 <span>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</span>
@@ -183,10 +183,18 @@ export default {
     getTradeLink (id) {
       return `/trades/${id}`;
     },
+    onClickRow (row) {
+      this.$router.push({
+        name: 'trade-details',
+        params: {
+          id: row.id
+        }
+      });
+    },
     clickToPage (page) {
       this.currentPage = page - 1;
       this.fetch();
-    }
+    },
   },
   watch: {
     searchFromDate (val) {

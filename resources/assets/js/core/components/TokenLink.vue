@@ -1,5 +1,5 @@
 <template>
-  <span><router-link :to="getLink()">{{ symbol }}</router-link></span>
+  <span @click.stop="onClickToken()">{{ symbol }}</span>
 </template>
 
 <script>
@@ -31,7 +31,20 @@ export default {
       }
 
       return `/tokens/${tokenDef.address}`;
-    }
+    },
+    onClickToken () {
+      const tokenDef = this.tokens[this.symbol];
+      if (!tokenDef) {
+        return;
+      }
+
+      this.$router.replace({
+        name: 'token-details',
+        params: {
+          tokenAddr: tokenDef.address
+        }
+      });
+    },
   },
 };
 </script>
