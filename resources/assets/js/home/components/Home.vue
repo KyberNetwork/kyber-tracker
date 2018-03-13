@@ -58,7 +58,7 @@
 
   Chart.defaults.LineWithLine = Chart.defaults.line;
   Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-    draw: function(ease) {
+    draw: function (ease) {
       Chart.controllers.line.prototype.draw.call(this, ease);
 
       if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
@@ -98,7 +98,7 @@
       return {
         pageSize: 10,
         tokens: _.keyBy(_.values(network.tokens), 'symbol'),
-        selectedPeriod: 'D7',
+        selectedPeriod: 'H24',
         selectedInterval: 'H1',
         volumeChart: undefined,
         feeToBurnChart: undefined,
@@ -115,7 +115,7 @@
 
         this.$refs.datatable.fetch();
       },
-      getListTitle () {
+      getListTitle() {
         return this.$t("common.network_activity");
       },
       getFilterTokenSymbol() {
@@ -193,8 +193,7 @@
           }
 
           this.volumeChart = new Chart(ctx, {
-          type: 'LineWithLine',
-//            type: 'line',
+            type: 'LineWithLine',
             data: data,
             options: options,
           });
@@ -223,7 +222,7 @@
               intersect: false,
               callbacks: {
                 label: function () {
-                  return ;
+                  return;
                 },
                 afterBody: function (tooltipItem, data) {
                   const index = tooltipItem[0].index;
@@ -259,8 +258,7 @@
           }
 
           this.feeToBurnChart = new Chart(ctx, {
-          type: 'LineWithLine',
-//            type: 'line',
+            type: 'LineWithLine',
             data,
             options
           });
@@ -293,7 +291,7 @@
           const dataSetData = [];
           for (let i = 0; i < ret.length; i++) {
             labels.push(ret[i].symbol);
-            dataSetData.push(ret[i].volumeUSD);
+            dataSetData.push(Math.round(ret[i].volumeUSD * 100) / 100);
           }
 
           const data = {
@@ -335,7 +333,7 @@
           for (let seq = ret[0].hourSeq; seq <= ret[ret.length - 1].hourSeq; seq++) {
             labels.push(seq * 3600 * 1000);
             const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
-            dataSetData.push(volume);
+            dataSetData.push(Math.round(volume * 100) / 100);
             counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0)
           }
         } else if (interval === 'D1') {
@@ -343,7 +341,8 @@
           for (let seq = ret[0].daySeq; seq <= ret[ret.length - 1].daySeq; seq++) {
             labels.push(seq * 3600 * 24 * 1000);
             const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
-            dataSetData.push(volume);
+            dataSetData.push(Math.round(volume * 100) / 100);
+            counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0)
           }
         }
         return {

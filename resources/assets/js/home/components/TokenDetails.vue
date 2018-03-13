@@ -65,7 +65,7 @@
     data() {
       return {
         tokens: _.keyBy(_.values(network.tokens), 'address'),
-        selectedPeriod: 'D7',
+        selectedPeriod: 'H24',
         selectedInterval: 'H1',
         myChart: undefined,
         symbol: undefined,
@@ -170,7 +170,7 @@
             const d = moment(seq * 3600 * 1000);
             labels.push(d.format('MMM D HH:mm'));
             const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-            dataSetData.push(volume);
+            dataSetData.push(Math.round(volume * 100) / 100);
             counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0);
           }
         } else if(interval === 'D1') {
@@ -179,7 +179,7 @@
             const d = moment(seq * 3600 * 24 * 1000);
             labels.push(d.format('MMM D'));
             const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0) * 725;
-            dataSetData.push(volume);
+            dataSetData.push(Math.round(volume * 100) / 100);
             counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0);
           }
         }
