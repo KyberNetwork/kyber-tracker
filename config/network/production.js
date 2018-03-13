@@ -143,6 +143,14 @@ module.exports = {
       "icon": "salt.svg",
       "decimal": 8,
       "cmcId": "salt"
+    },
+    "BQX": {
+      "name" : "Ethos",
+      "address": "0x5af2be193a6abca9c8817001f45744777db30756",
+      "symbol": "BQX",
+      "decimal": 8,
+      "icon": "bqx.svg",
+      "cmcId":"ethos"
     }
   },
   "networkId": 1,

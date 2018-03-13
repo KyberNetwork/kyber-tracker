@@ -57,6 +57,8 @@ module.exports = (block, tx, callback) => {
           log.topics[0].toLowerCase() === Utils.getExchangeTopicHash()) {
         const { src, dest, srcAmount, destAmount } = web3.eth.abi.decodeParameters(exchangeLogABI, log.data);
 
+        logger.info(`Got new trade: ${JSON.stringify({ src, dest, srcAmount, destAmount })}`);
+
         const srcToken = Utils.getTokenFromAddress(src);
         record.takerTokenAddress = srcToken.address;
         record.takerTokenSymbol = srcToken.symbol;
@@ -93,6 +95,7 @@ module.exports = (block, tx, callback) => {
 function insertTradeRecord(data, callback) {
   const exSession = new ExSession();
   const KyberTradeModel = exSession.getModel('KyberTradeModel');
+  const CMCService = exSession.getService('CMCService');
 
   async.auto({
     existed: (next) => {
@@ -101,12 +104,24 @@ function insertTradeRecord(data, callback) {
         params: [data.tx]
       }, next);
     },
-    insert: ['existed', (ret, next) => {
+    takerPrice: (next) => {
+      CMCService.getHistoricalPrice(data.takerTokenSymbol, data.blockTimestamp * 1000, next);
+    },
+    makerPrice: (next) => {
+      CMCService.getHistoricalPrice(data.makerTokenSymbol, data.blockTimestamp * 1000, next);
+    },
+    insert: ['existed', 'takerPrice', 'makerPrice', (ret, next) => {
       if (ret.existed) {
         logger.info(`Transaction was inserted already: ${data.tx}`);
         return next(null, null);
       }
 
+      data.makerPriceBtc = ret.makerPrice.price_btc;
+      data.makerPriceEth = ret.makerPrice.price_eth;
+      data.makerPriceUsd = ret.makerPrice.price_usd;
+      data.takerPriceBtc = ret.takerPrice.price_btc;
+      data.takerPriceEth = ret.takerPrice.price_eth;
+      data.takerPriceUsd = ret.takerPrice.price_usd;
       KyberTradeModel.add(data, next);
     }],
     commit: ['insert', (ret, next) => {
