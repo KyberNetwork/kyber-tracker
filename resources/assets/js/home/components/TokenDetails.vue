@@ -54,7 +54,6 @@
 
     methods: {
       refresh() {
-        debugger;
         if (!this.$refs.datatable) {
           window.clearInterval(this._refreshInterval);
           return;
