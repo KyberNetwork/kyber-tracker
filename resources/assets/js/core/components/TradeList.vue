@@ -18,6 +18,7 @@
         <span>{{ $t('filter.to') }}</span>
         <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon"
           :language="locale"
+          :format="formatDatepicker"
           :clear-button="true"
           :highlighted="highlightedToday"
           :disabled="disabledToDates">
