@@ -194,6 +194,12 @@ btn {
   float: right;
   padding: 20px 0;
   margin: 0;
+
+  .page-item {
+    .page-link {
+      text-align: center;
+    }
+  }
 }
 
 .clear {
@@ -395,6 +401,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 }
 
+@media (min-width: 780px) {
+  .text-logo {
+    padding-top: 8px;
+    float: left;
+  }
+}
+
 @media (max-width: 780px) {
   .full-width-btn-group {
     display: flex;
@@ -424,6 +437,28 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   margin: -5px;
 }
 
+.inline-logo {
+  margin-left: -20px;
+  margin-right: -10px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  float: left;
+}
+
+.float-lang-bar {
+  float: right;
+  margin-top: -15px;
+}
+
+.change-language-button > .btn {
+  padding: 0 !important;
+}
+
+.tracker-logo {
+  min-width: 140px;
+}
+
+
 body {
   margin: 0;
   padding: 0;
@@ -434,6 +469,7 @@ html {
   margin: 0;
   padding: 0;
 }
+
 * html #wrapper {
   height:100%;
 }
