@@ -84,9 +84,8 @@ export default {
       });
     },
     _getChartOptions (interval) {
-      const self = this;
       const callbacks = {
-        title: function (tooltipItem, data) {
+        title: (tooltipItem, data) => {
           const index = tooltipItem[0].index;
           const value = data.labels[index];
           const d= moment(value);
@@ -96,12 +95,13 @@ export default {
             return util.getLocale() === 'vi' ? d.format('DD/MM') : d.format('MMM DD');
           }
         },
-        label: function () {
+        label: () => {
         },
-        afterBody: function (tooltipItem, data) {
+        afterBody: (tooltipItem, data) => {
           const index = tooltipItem[0].index;
-          const label = self.$t('chart.title.label_volume') + ': ' + util.numberWithCommas(data.datasets[0].data[index]);
-          const count = self.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
+          const label = this.$t('chart.title.label_volume') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
+            + ' $';
+          const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
           return [label, count];
         }
       };
