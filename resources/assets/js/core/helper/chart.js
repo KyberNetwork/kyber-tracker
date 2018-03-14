@@ -18,7 +18,7 @@ Chart.controllers.LineWithLine = Chart.controllers.line.extend({
       ctx.moveTo(x, topY);
       ctx.lineTo(x, bottomY);
       ctx.lineWidth = 0.5;
-      ctx.strokeStyle = '#07C';
+      ctx.strokeStyle = '#2a4451';
       ctx.stroke();
       ctx.restore();
     }

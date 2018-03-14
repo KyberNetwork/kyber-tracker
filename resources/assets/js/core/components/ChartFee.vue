@@ -103,6 +103,7 @@
 
         const yAxeScale = {
           ticks: {
+            maxRotation: 0,
             callback: (label, index, labels) => {
               return util.numberWithCommas(label) + ' KNC';
             }
@@ -112,6 +113,7 @@
 
         const xAxeScale = {
           ticks: {
+            maxRotation: 0,
             callback: (label, index, labels) => {
               const d = moment(label);
               if (util.getLocale() === 'vi') {
@@ -129,6 +131,7 @@
             mode: 'index',
             axis: 'x',
             intersect: false,
+            backgroundColor: 'rgba(25, 46, 59, 0.7)',
             callbacks,
           },
           scales: {

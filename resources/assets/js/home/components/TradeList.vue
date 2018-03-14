@@ -24,7 +24,8 @@ export default {
   data() {
     return {
       pageSize: 10,
-      tokens: _.keyBy(_.values(network.tokens), 'symbol')
+      tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+      query: this.$route.query,
     };
   },
 

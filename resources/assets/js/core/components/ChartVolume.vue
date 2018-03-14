@@ -99,8 +99,7 @@ export default {
         },
         afterBody: (tooltipItem, data) => {
           const index = tooltipItem[0].index;
-          const label = this.$t('chart.title.label_volume') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
-            + ' $';
+          const label = this.$t('chart.title.label_volume') + ': $' + util.numberWithCommas(data.datasets[0].data[index]);
           const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
           return [label, count];
         }
@@ -108,6 +107,7 @@ export default {
 
       const yAxeScale = {
         ticks: {
+          maxRotation: 0,
           callback: (label, index, labels) => {
             return '$' + util.numberWithCommas(label);
           }
@@ -117,6 +117,7 @@ export default {
 
       const xAxeScale = {
         ticks: {
+          maxRotation: 0,
           callback: (label, index, labels) => {
             const d = moment(label);
             if (util.getLocale() === 'vi') {
@@ -134,6 +135,7 @@ export default {
           mode: 'index',
           axis: 'x',
           intersect: false,
+          backgroundColor: 'rgba(25, 46, 59, 0.7)',
           callbacks,
         },
         scales: {

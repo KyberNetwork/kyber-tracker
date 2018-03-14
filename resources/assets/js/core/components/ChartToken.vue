@@ -52,8 +52,7 @@
         const callbacks = {
           label: (tooltipItem, data) => {
             const index = tooltipItem.index;
-            return this.$t('chart.title.label_volume') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
-              + ' $';
+            return this.$t('chart.title.label_volume') + ': $' + util.numberWithCommas(data.datasets[0].data[index]);
           }
         };
 
@@ -71,6 +70,7 @@
             mode: 'index',
             axis: 'x',
             intersect: false,
+            backgroundColor: 'rgba(25, 46, 59, 0.7)',
             callbacks,
           },
           scales: {
