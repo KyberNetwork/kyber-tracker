@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <b-card no-body>
       <div class="chart-period-picker">
-        <b-button-group class="cus-pagination">
+        <b-button-group class="cus-pagination full-width-btn-group">
           <b-button
             :variant="selectedPeriod === 'H24' ? 'active' : ''"
             @click="selectPeriod('H24', 'H1')">24H

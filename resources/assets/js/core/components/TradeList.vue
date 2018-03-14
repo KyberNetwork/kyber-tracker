@@ -6,7 +6,7 @@
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
-      <div v-if="!isHideDatepicker" class="datepicker-container">
+      <div v-if="!isHideDatepicker" class="datepicker-container  ">
         <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
@@ -24,9 +24,6 @@
         </datepicker>
       </div>
 
-      <div>
-        {{ getSearchResultMessage() }}
-      </div>
 
       <paginate v-if="maxPage > 1"
         ref="topPaginator"
@@ -44,12 +41,16 @@
         :next-class="'page-item'"
         :next-link-class="'page-link'"
         :active-class="'active'"
-        :class="'home-pagination-block'"
+        :class="'home-pagination-block full-width-pagination'"
         >
       </paginate>
 
-      <div v-if="rows.length > 0" class="table-responsive">
-        <table class="table table-hover">
+      <div class="clear">
+        {{ getSearchResultMessage() }}
+      </div>
+
+      <div v-if="rows.length > 0">
+        <table class="table table-hover table-responsive" responsive>
           <thead>
             <tr>
               <th>{{ $t("trade_list.date") }}</th>
@@ -103,7 +104,7 @@
         :next-class="'page-item'"
         :next-link-class="'page-link'"
         :active-class="'active'"
-        :class="'home-pagination-block'"
+        :class="'home-pagination-block full-width-pagination'"
         >
       </paginate>
 
