@@ -6,8 +6,8 @@
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
-      <div class="table-responsive">
-        <table class="table">
+      <div>
+        <table class="table table-hover table-responsive" responsive>
           <thead>
             <tr>
             <slot name="header"></slot>
@@ -135,10 +135,6 @@
 
   .indicator-next {
     float: right;
-  }
-
-  .table-responsive {
-    overflow-x: visible !important;
   }
 
   .clearfix {

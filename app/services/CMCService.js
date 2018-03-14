@@ -10,7 +10,7 @@ const BaseService   = require('sota-core').load('service/BaseService');
 const LocalCache    = require('sota-core').load('cache/foundation/LocalCache');
 const logger        = require('sota-core').getLogger('CMCService');
 
-const CMC_GRAPH_API_TICKER = 900 * 1000; // 15 minutes in milliseconds
+const CMC_GRAPH_API_TICKER = 300 * 1000; // 5 minutes in milliseconds
 
 module.exports = BaseService.extends({
   classname: 'CMCService',
@@ -46,7 +46,7 @@ module.exports = BaseService.extends({
         }
 
         logger.debug(`Current price of [${symbol}] is: $${price}`);
-        LocalCache.setSync(key, price);
+        LocalCache.setSync(key, price, { ttl: Const.MINUTE_IN_MILLISECONDS });
         return callback(null, price);
       });
   },
@@ -99,7 +99,7 @@ module.exports = BaseService.extends({
 
         const result = response.body[0];
 
-        LocalCache.setSync(key, result);
+        LocalCache.setSync(key, result, { ttl: Const.MINUTE_IN_MILLISECONDS });
         return callback(null, result);
       });
   },
@@ -117,8 +117,15 @@ module.exports = BaseService.extends({
     const fromTime = timeInMillis - CMC_GRAPH_API_TICKER;
     const toTime = timeInMillis + CMC_GRAPH_API_TICKER;
 
+    this._getHistoricalPrice(tokenInfo, fromTime, toTime, callback);
+  },
+
+  _getHistoricalPrice: function (tokenInfo, fromTime, toTime, callback) {
+    const symbol = tokenInfo.symbol;
+    const cmcId = tokenInfo.cmcId;
+
     request
-      .get(`https://graphs2.coinmarketcap.com/currencies/${tokenInfo.cmcId}/${fromTime}/${toTime}`)
+      .get(`https://graphs2.coinmarketcap.com/currencies/${cmcId}/${fromTime}/${toTime}`)
       .end((err, response) => {
         if (err) {
           return callback(err);
@@ -142,10 +149,15 @@ module.exports = BaseService.extends({
 
           result.price_usd = data.price_usd[0][1];
         } catch (e) {
-          return callback(`Cannot get price of [${symbol}] at [${timeInMillis}]`);
+          // Tried more than 3 times. It's failed.
+          if (toTime - fromTime > 10 * CMC_GRAPH_API_TICKER) {
+            return callback(`Cannot get price of [${symbol}] at [${timeInMillis}]`);
+          }
+
+          return this._getHistoricalPrice(cmcId, fromTime - CMC_GRAPH_API_TICKER, toTime + CMC_GRAPH_API_TICKER, callback);
         }
 
-        logger.debug(`Price of [${symbol}] at [${timeInMillis}] is: $${result.price_usd}`);
+        logger.debug(`Price of [${cmcId}] at [${timeInMillis}] is: $${result.price_usd}`);
         return callback(null, result);
       });
   },

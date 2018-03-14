@@ -46,14 +46,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   }
 }
 
-a {
-  color: #2a4451;
-}
-
-a:hover, a:active, a:focus {
-  color: #192e3b;
-}
-
 .btn-outline-primary {
   background-color: #f4f4f4;
   border: none;
@@ -113,7 +105,6 @@ a:hover, a:active, a:focus {
 }
 
 #footer {
-  position: absolute;
   width: 100%;
   clear: both;
   bottom: 0;
@@ -185,6 +176,10 @@ btn {
     margin-right: 5px;
     line-height: 34px;
     padding: 0;
+
+    input[type="text"] {
+      width: 140px;
+    }
   }
 
   span {
@@ -199,6 +194,11 @@ btn {
   float: right;
   padding: 20px 0;
   margin: 0;
+}
+
+.clear {
+  clear: both;
+  display: block;
 }
 
 .pt-10 {
@@ -263,10 +263,16 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-.table thead th {
-  background-color: #eee;
-  font-weight: normal;
-  padding: 15px 12px;
+.table {
+  thead th {
+    background-color: #eee;
+    font-weight: normal;
+    padding: 15px 12px;
+  }
+
+  th, td {
+    white-space: nowrap;
+  }
 }
 
 .card-header {
@@ -380,6 +386,42 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   line-height: 20px;
   height: 20px;
   display: inline-block;
+}
+
+@media (min-width: 720px) {
+  .table-responsive {
+    display: table;
+  }
+
+}
+
+@media (max-width: 780px) {
+  .full-width-btn-group {
+    display: flex;
+
+    .btn {
+      flex: 1;
+    }
+  }
+
+  .full-width-pagination {
+    display: flex;
+    width: 100%;
+
+    li {
+      flex: 1;
+    }
+  }
+
+  .chart-period-picker {
+    position: static !important;
+    display: block;
+    width: 100%;
+  }
+}
+
+.image-inline-td {
+  margin: -5px;
 }
 
 body {

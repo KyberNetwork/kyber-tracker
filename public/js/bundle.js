@@ -89452,7 +89452,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,600);", ""]);
 
 // module
-exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.heading-bar {\n  background-color: #192e3b;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 15px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #2a4451;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n}\na {\n  color: #2a4451;\n}\na:hover, a:active, a:focus {\n  color: #192e3b;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: #ededed;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #d5d5d5;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  padding: 0;\n  height: 115px;\n  padding: 30px 0px;\n  letter-spacing: .5px;\n  font-size: 0.8rem;\n  line-height: 25px;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          color: #262C41;\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 20px;\n  float: left;\n  padding-bottom: 20px;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 20px 0;\n  margin: 0;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  background-color: #eee;\n  font-weight: normal;\n  padding: 15px 12px;\n}\n.card-header {\n  min-height: 46px;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: #fff;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px;\n  margin: 0;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n#home-page-search {\n  margin-bottom: 0px;\n}\n", ""]);
+exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.heading-bar {\n  background-color: #192e3b;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 15px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #2a4451;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: #ededed;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #d5d5d5;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n#footer {\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  padding: 0;\n  height: 115px;\n  padding: 30px 0px;\n  letter-spacing: .5px;\n  font-size: 0.8rem;\n  line-height: 25px;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          color: #262C41;\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 20px;\n  float: left;\n  padding-bottom: 20px;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 140px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 20px 0;\n  margin: 0;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  background-color: #eee;\n  font-weight: normal;\n  padding: 15px 12px;\n}\n.table th, .table td {\n  white-space: nowrap;\n}\n.card-header {\n  min-height: 46px;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: #fff;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px;\n  margin: 0;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n}\n.image-inline-td {\n  margin: -5px;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n", ""]);
 
 // exports
 
@@ -89700,6 +89700,36 @@ exports.default = {
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -92076,26 +92106,107 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "wrapper" } }, [
-    _c(
-      "div",
-      { attrs: { id: "page-content" } },
-      [
-        _c(
-          "b-navbar",
-          {
-            staticClass: "heading-bar",
-            attrs: { toggleable: "md", type: "dark" }
-          },
-          [
+  return _c(
+    "div",
+    [
+      _c(
+        "b-navbar",
+        { attrs: { toggleable: "md", type: "light", variant: "" } },
+        [
+          _c(
+            "div",
+            { staticClass: "container" },
+            [
+              _c(
+                "b-navbar-nav",
+                [
+                  _c(
+                    "b-nav-item",
+                    [
+                      _c("router-link", { attrs: { to: "/" } }, [
+                        _c("img", { attrs: { src: "images/logo_nav.svg" } })
+                      ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-navbar-nav",
+                { staticClass: "ml-auto cursor-pointer" },
+                [
+                  _c(
+                    "b-dropdown",
+                    {
+                      staticClass: "change-language-button no-padding-right",
+                      attrs: { right: "" }
+                    },
+                    [
+                      _c("template", { slot: "button-content" }, [
+                        _c("span", [
+                          _c("img", {
+                            attrs: {
+                              src:
+                                "images/locales/" + this.getLanguage() + ".svg"
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "b-dropdown-item",
+                        {
+                          on: {
+                            click: function($event) {
+                              _vm.changeLanguage("en")
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: "images/locales/en.svg" } })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-dropdown-item",
+                        {
+                          on: {
+                            click: function($event) {
+                              _vm.changeLanguage("vi")
+                            }
+                          }
+                        },
+                        [_c("img", { attrs: { src: "images/locales/vi.svg" } })]
+                      )
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-navbar",
+        {
+          staticClass: "heading-bar",
+          attrs: { toggleable: "md", type: "dark" }
+        },
+        [
+          _c("div", { staticClass: "container" }, [
             _c(
               "div",
-              { staticClass: "container" },
+              { staticClass: "col-12 col-md-8 col-lg-9" },
               [
                 _c(
                   "b-navbar-nav",
+                  { staticClass: "row" },
                   [
-                    _c("b-nav-text", { staticClass: "mr-3" }, [
+                    _c("b-nav-text", { staticClass: "col-md-6 col-lg-3" }, [
                       _c("span", { staticClass: "light-text" }, [
                         _vm._v(_vm._s(_vm.$t("status_bar.network_volume")))
                       ]),
@@ -92107,7 +92218,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("b-nav-text", { staticClass: "mr-3" }, [
+                    _c("b-nav-text", { staticClass: "col-md-6 col-lg-3" }, [
                       _c("span", { staticClass: "light-text" }, [
                         _vm._v(_vm._s(_vm.$t("status_bar.trades")))
                       ]),
@@ -92119,7 +92230,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("b-nav-text", { staticClass: "mr-3" }, [
+                    _c("b-nav-text", { staticClass: "col-md-6 col-lg-3" }, [
                       _c("span", { staticClass: "light-text" }, [
                         _vm._v(_vm._s(_vm.$t("status_bar.burned_fee")))
                       ]),
@@ -92131,7 +92242,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("b-nav-text", { staticClass: "mr-3" }, [
+                    _c("b-nav-text", { staticClass: "col-md-6 col-lg-3" }, [
                       _c("span", { staticClass: "light-text" }, [
                         _vm._v(_vm._s(_vm.$t("status_bar.knc_price")))
                       ]),
@@ -92147,134 +92258,19 @@ var render = function() {
                     ])
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-navbar-nav",
-                  { staticClass: "ml-auto cursor-pointer" },
-                  [
-                    _c(
-                      "b-dropdown",
-                      {
-                        staticClass: "change-language-button no-padding-right",
-                        attrs: { right: "" }
-                      },
-                      [
-                        _c("template", { slot: "button-content" }, [
-                          _c("span", [
-                            _c("img", {
-                              attrs: {
-                                src:
-                                  "images/locales/" +
-                                  this.getLanguage() +
-                                  ".svg"
-                              }
-                            })
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "b-dropdown-item",
-                          {
-                            on: {
-                              click: function($event) {
-                                _vm.changeLanguage("en")
-                              }
-                            }
-                          },
-                          [
-                            _c("img", {
-                              attrs: { src: "images/locales/en.svg" }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-dropdown-item",
-                          {
-                            on: {
-                              click: function($event) {
-                                _vm.changeLanguage("vi")
-                              }
-                            }
-                          },
-                          [
-                            _c("img", {
-                              attrs: { src: "images/locales/vi.svg" }
-                            })
-                          ]
-                        )
-                      ],
-                      2
-                    )
-                  ],
-                  1
                 )
               ],
               1
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "b-navbar",
-          {
-            staticClass: "second-heading-bar",
-            attrs: { toggleable: "md", type: "dark" }
-          },
-          [
+            ),
+            _vm._v(" "),
             _c(
               "div",
-              { staticClass: "container" },
+              { staticClass: "col-12 col-md-4 col-lg-3" },
               [
-                _c(
-                  "b-navbar-nav",
-                  [
-                    _c(
-                      "b-nav-item",
-                      [
-                        _c("router-link", { attrs: { to: "/" } }, [
-                          _c("img", { attrs: { src: "images/logo_nav.svg" } }),
-                          _vm._v("Kyber tracker\n            ")
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-nav-item",
-                      { staticClass: "navbar" },
-                      [
-                        _c("router-link", { attrs: { to: "/trades" } }, [
-                          _vm._v(_vm._s(_vm.$t("navigator.trades")))
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-nav-item",
-                      { staticClass: "navbar" },
-                      [
-                        _c("router-link", { attrs: { to: "/tokens" } }, [
-                          _vm._v(_vm._s(_vm.$t("navigator.tokens")))
-                        ])
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
                 _c("b-navbar-nav", { staticClass: "ml-auto" }, [
                   _c(
                     "form",
-                    {
-                      attrs: {
-                        id: "home-page-search",
-                        action: "javasript:void(0)"
-                      }
-                    },
+                    { attrs: { action: "javasript:void(0)" } },
                     [
                       _c(
                         "b-nav-item",
@@ -92355,66 +92351,132 @@ var render = function() {
               ],
               1
             )
-          ]
-        ),
-        _vm._v(" "),
-        _vm.breadcrumbsItems.length > 0
-          ? _c("div", { staticClass: "breadcrumbs" }, [
-              _c("div", { staticClass: "container" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col" }, [
-                    _c("p", {
-                      staticClass: "big-heading",
-                      domProps: { innerHTML: _vm._s(_vm.pageTitle) }
-                    })
-                  ]),
-                  _vm._v(" "),
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-navbar",
+        {
+          staticClass: "second-heading-bar",
+          attrs: { toggleable: "sm", type: "dark" }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "container" },
+            [
+              _c("b-navbar-toggle", { attrs: { target: "nav_collapse" } }),
+              _vm._v(" "),
+              _c(
+                "b-collapse",
+                { attrs: { "is-nav": "", id: "nav_collapse" } },
+                [
                   _c(
-                    "div",
-                    { staticClass: "col" },
+                    "b-navbar-nav",
                     [
-                      _c("b-breadcrumb", {
-                        staticClass: "ml-auto home-breadcrumb",
-                        attrs: { items: _vm.breadcrumbsItems }
-                      })
+                      _c(
+                        "b-nav-item",
+                        [
+                          _c("router-link", { attrs: { to: "/" } }, [
+                            _c("img", {
+                              attrs: { src: "images/logo_nav.svg" }
+                            }),
+                            _vm._v("Kyber Network\n            ")
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-nav-item",
+                        { staticClass: "navbar" },
+                        [
+                          _c("router-link", { attrs: { to: "/trades" } }, [
+                            _vm._v(_vm._s(_vm.$t("navigator.trades")))
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-nav-item",
+                        { staticClass: "navbar" },
+                        [
+                          _c("router-link", { attrs: { to: "/tokens" } }, [
+                            _vm._v(_vm._s(_vm.$t("navigator.tokens")))
+                          ])
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
-                ])
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.breadcrumbsItems.length > 0
+        ? _c("div", { staticClass: "breadcrumbs" }, [
+            _c("div", { staticClass: "container" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col" }, [
+                  _c("p", {
+                    staticClass: "big-heading",
+                    domProps: { innerHTML: _vm._s(_vm.pageTitle) }
+                  })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col" },
+                  [
+                    _c("b-breadcrumb", {
+                      staticClass: "ml-auto home-breadcrumb",
+                      attrs: { items: _vm.breadcrumbsItems }
+                    })
+                  ],
+                  1
+                )
               ])
             ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row pt-40" }, [_c("router-view")], 1)
-        ])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { attrs: { id: "footer" } }, [
+          ])
+        : _vm._e(),
+      _vm._v(" "),
       _c("div", { staticClass: "container" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col footer-menu" }, [
-            _c("ul", { staticClass: "links" }, [
-              _c(
-                "li",
-                [_c("router-link", { attrs: { to: "/" } }, [_vm._v("Home")])],
-                1
-              ),
-              _vm._v(" "),
-              _vm._m(0, false, false),
-              _vm._v(" "),
-              _vm._m(1, false, false)
+        _c("div", { staticClass: "row pt-40" }, [_c("router-view")], 1)
+      ]),
+      _vm._v(" "),
+      _c("div", { attrs: { id: "footer" } }, [
+        _c("div", { staticClass: "container" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col footer-menu" }, [
+              _c("ul", { staticClass: "links" }, [
+                _c(
+                  "li",
+                  [_c("router-link", { attrs: { to: "/" } }, [_vm._v("Home")])],
+                  1
+                ),
+                _vm._v(" "),
+                _vm._m(0, false, false),
+                _vm._v(" "),
+                _vm._m(1, false, false)
+              ]),
+              _vm._v("\n          ©️ 2018 Kyber Network\n        ")
             ]),
-            _vm._v("\n          ©️ 2018 Kyber Network\n        ")
-          ]),
-          _vm._v(" "),
-          _vm._m(2, false, false)
+            _vm._v(" "),
+            _vm._m(2, false, false)
+          ])
         ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -92596,7 +92658,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n.container[data-v-f06e0fe8] {\n  margin-top: 2em;\n}\n.panel[data-v-f06e0fe8] {\n  background: none !important;\n}\n.panel-heading[data-v-f06e0fe8] {\n  text-align: center !important;\n  background-color: #f5f5f5 !important;\n}\n.action-block[data-v-f06e0fe8] {\n  display: inline-block;\n}\n.paginator[data-v-f06e0fe8] {\n  padding: 9px 14px;\n  margin-bottom: 14px;\n  background-color: #f7f7f9;\n  border: 1px solid #e1e1e8;\n  border-radius: 4px;\n}\n.indicator[data-v-f06e0fe8] {\n  cursor: pointer;\n}\n.indicator-prev[data-v-f06e0fe8] {\n}\n.indicator-next[data-v-f06e0fe8] {\n  float: right;\n}\n.table-responsive[data-v-f06e0fe8] {\n  overflow-x: visible !important;\n}\n.clearfix[data-v-f06e0fe8] {\n  clear: both;\n  overflow: auto;\n}\n", ""]);
+exports.push([module.i, "\n.container[data-v-f06e0fe8] {\n  margin-top: 2em;\n}\n.panel[data-v-f06e0fe8] {\n  background: none !important;\n}\n.panel-heading[data-v-f06e0fe8] {\n  text-align: center !important;\n  background-color: #f5f5f5 !important;\n}\n.action-block[data-v-f06e0fe8] {\n  display: inline-block;\n}\n.paginator[data-v-f06e0fe8] {\n  padding: 9px 14px;\n  margin-bottom: 14px;\n  background-color: #f7f7f9;\n  border: 1px solid #e1e1e8;\n  border-radius: 4px;\n}\n.indicator[data-v-f06e0fe8] {\n  cursor: pointer;\n}\n.indicator-prev[data-v-f06e0fe8] {\n}\n.indicator-next[data-v-f06e0fe8] {\n  float: right;\n}\n.clearfix[data-v-f06e0fe8] {\n  clear: both;\n  overflow: auto;\n}\n", ""]);
 
 // exports
 
@@ -92733,24 +92795,31 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "table-responsive" }, [
-        _c("table", { staticClass: "table" }, [
-          _c("thead", [_c("tr", [_vm._t("header")], 2)]),
-          _vm._v(" "),
-          _c("thead", [_c("tr", [_vm._t("filter")], 2)]),
-          _vm._v(" "),
-          _vm.rows.length > 0
-            ? _c(
-                "tbody",
-                [
-                  _vm._l(_vm.rows, function(row, index) {
-                    return _vm._t("body", null, { item: row, index: index })
-                  })
-                ],
-                2
-              )
-            : _vm._e()
-        ])
+      _c("div", [
+        _c(
+          "table",
+          {
+            staticClass: "table table-hover table-responsive",
+            attrs: { responsive: "" }
+          },
+          [
+            _c("thead", [_c("tr", [_vm._t("header")], 2)]),
+            _vm._v(" "),
+            _c("thead", [_c("tr", [_vm._t("filter")], 2)]),
+            _vm._v(" "),
+            _vm.rows.length > 0
+              ? _c(
+                  "tbody",
+                  [
+                    _vm._l(_vm.rows, function(row, index) {
+                      return _vm._t("body", null, { item: row, index: index })
+                    })
+                  ],
+                  2
+                )
+              : _vm._e()
+          ]
+        )
       ])
     ])
   ])
@@ -96703,7 +96772,7 @@ var render = function() {
         !_vm.isHideDatepicker
           ? _c(
               "div",
-              { staticClass: "datepicker-container d-inline-block" },
+              { staticClass: "datepicker-container  " },
               [
                 _c("span", [_vm._v(_vm._s(_vm.$t("filter.from")))]),
                 _vm._v(" "),
@@ -96750,18 +96819,10 @@ var render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
-        _vm.getSearchResultMessage()
-          ? _c("div", { staticClass: "not-found-message d-inline-block" }, [
-              _vm._v(
-                "\n      " + _vm._s(_vm.getSearchResultMessage()) + "\n    "
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
         _vm.maxPage > 1
           ? _c("paginate", {
               ref: "topPaginator",
-              class: "home-pagination-block",
+              class: "home-pagination-block full-width-pagination",
               attrs: {
                 "page-count": _vm.maxPage,
                 "initial-page": _vm.currentPage,
@@ -96781,159 +96842,172 @@ var render = function() {
             })
           : _vm._e(),
         _vm._v(" "),
+        _c("div", { staticClass: "clear" }, [
+          _vm._v("\n      " + _vm._s(_vm.getSearchResultMessage()) + "\n    ")
+        ]),
+        _vm._v(" "),
         _vm.rows.length > 0
-          ? _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v(_vm._s(_vm.$t("trade_list.date")))]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v(_vm._s(_vm.$t("trade_list.amount")))]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v(_vm._s(_vm.$t("trade_list.rate")))]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(_vm._s(_vm.$t("trade_list.fee_to_wallet")))
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(_vm._s(_vm.$t("trade_list.fee_to_burn")))
-                    ]),
-                    _vm._v(" "),
-                    _c("th")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.rows, function(row, index) {
-                    return _c(
-                      "tr",
-                      {
-                        attrs: { item: row, index: index },
-                        on: {
-                          click: function($event) {
-                            _vm.onClickRow(row)
+          ? _c("div", [
+              _c(
+                "table",
+                {
+                  staticClass: "table table-hover table-responsive",
+                  attrs: { responsive: "" }
+                },
+                [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [_vm._v(_vm._s(_vm.$t("trade_list.date")))]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v(_vm._s(_vm.$t("trade_list.amount")))]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v(_vm._s(_vm.$t("trade_list.rate")))]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(_vm._s(_vm.$t("trade_list.fee_to_wallet")))
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(_vm._s(_vm.$t("trade_list.fee_to_burn")))
+                      ]),
+                      _vm._v(" "),
+                      _c("th")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.rows, function(row, index) {
+                      return _c(
+                        "tr",
+                        {
+                          attrs: { item: row, index: index },
+                          on: {
+                            click: function($event) {
+                              _vm.onClickRow(row)
+                            }
                           }
-                        }
-                      },
-                      [
-                        _c("td", [_vm._v(_vm._s(_vm.getDateInfo(row)))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("span", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.formatTokenNumber(
-                                  row.takerTokenSymbol,
-                                  row.takerTokenAmount
+                        },
+                        [
+                          _c("td", [_vm._v(_vm._s(_vm.getDateInfo(row)))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatTokenNumber(
+                                    row.takerTokenSymbol,
+                                    row.takerTokenAmount
+                                  )
                                 )
                               )
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            [
-                              _c("token-link", {
-                                attrs: { symbol: row.takerTokenSymbol }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm._m(0, true, false),
-                          _vm._v(" "),
-                          _c("span", [
-                            _vm._v(
-                              _vm._s(
-                                _vm.formatTokenNumber(
-                                  row.makerTokenSymbol,
-                                  row.makerTokenAmount
-                                )
-                              )
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            [
-                              _c("token-link", {
-                                attrs: { symbol: row.makerTokenSymbol }
-                              })
-                            ],
-                            1
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("span", [_vm._v("1")]),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            [
-                              _c("token-link", {
-                                attrs: { symbol: row.takerTokenSymbol }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("span", [_vm._v("=")]),
-                          _vm._v(" "),
-                          _c("span", [_vm._v(_vm._s(_vm.getRate(row)))]),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            [
-                              _c("token-link", {
-                                attrs: { symbol: row.makerTokenSymbol }
-                              })
-                            ],
-                            1
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.formatTokenNumber("KNC", row.takerFee)) +
-                              " KNC"
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(_vm.formatTokenNumber("KNC", row.burnFees)) +
-                              " KNC"
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          [
+                            ]),
+                            _vm._v(" "),
                             _c(
-                              "router-link",
-                              {
-                                staticClass: "pull-right",
-                                attrs: { to: _vm.getTradeLink(row.id) }
-                              },
-                              [_c("i", { staticClass: "k k-angle right" })]
+                              "span",
+                              [
+                                _c("token-link", {
+                                  attrs: { symbol: row.takerTokenSymbol }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _vm._m(0, true, false),
+                            _vm._v(" "),
+                            _c("span", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatTokenNumber(
+                                    row.makerTokenSymbol,
+                                    row.makerTokenAmount
+                                  )
+                                )
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              [
+                                _c("token-link", {
+                                  attrs: { symbol: row.makerTokenSymbol }
+                                })
+                              ],
+                              1
                             )
-                          ],
-                          1
-                        )
-                      ]
-                    )
-                  })
-                )
-              ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", [_vm._v("1")]),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              [
+                                _c("token-link", {
+                                  attrs: { symbol: row.takerTokenSymbol }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("=")]),
+                            _vm._v(" "),
+                            _c("span", [_vm._v(_vm._s(_vm.getRate(row)))]),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              [
+                                _c("token-link", {
+                                  attrs: { symbol: row.makerTokenSymbol }
+                                })
+                              ],
+                              1
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.formatTokenNumber("KNC", row.takerFee)
+                              ) + " KNC"
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.formatTokenNumber("KNC", row.burnFees)
+                              ) + " KNC"
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "pull-right",
+                                  attrs: { to: _vm.getTradeLink(row.id) }
+                                },
+                                [_c("i", { staticClass: "k k-angle right" })]
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      )
+                    })
+                  )
+                ]
+              )
             ])
           : _vm._e(),
         _vm._v(" "),
         _vm.maxPage > 1
           ? _c("paginate", {
               ref: "bottomPaginator",
-              class: "home-pagination-block",
+              class: "home-pagination-block full-width-pagination",
               attrs: {
                 "page-count": _vm.maxPage,
                 "initial-page": _vm.currentPage,
@@ -110459,7 +110533,7 @@ var render = function() {
             [
               _c(
                 "b-button-group",
-                { staticClass: "cus-pagination" },
+                { staticClass: "cus-pagination full-width-btn-group" },
                 [
                   _c(
                     "b-button",
@@ -110916,7 +110990,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -111054,6 +111128,7 @@ exports.default = {
     this.refresh();
   }
 }; //
+//
 //
 //
 //
@@ -111260,7 +111335,15 @@ var render = function() {
               _vm._v(" "),
               _c("token-link", {
                 attrs: { symbol: _vm.record.makerTokenSymbol }
-              })
+              }),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v(
+                  "($" +
+                    _vm._s(_vm.formatFiatCurrency(_vm.record.makerTotalUsd)) +
+                    ")"
+                )
+              ])
             ],
             1
           )
@@ -111452,7 +111535,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -111502,8 +111585,6 @@ var _chart2 = _interopRequireDefault(_chart);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
 //
 //
 //
@@ -111598,11 +111679,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       _c("img", {
+                        staticClass: "image-inline-td mr-1",
                         attrs: { src: _vm.getTokenImageLink(slot.item.symbol) }
-                      })
+                      }),
+                      _vm._v(" " + _vm._s(slot.item.name))
                     ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(slot.item.name))]),
                     _vm._v(" "),
                     _c(
                       "td",
@@ -111630,8 +111711,6 @@ var render = function() {
         [
           _c("template", { slot: "header" }, [
             _c("th", [_vm._v("#")]),
-            _vm._v(" "),
-            _c("th"),
             _vm._v(" "),
             _c("th", [_vm._v(_vm._s(_vm.$t("common.name")))]),
             _vm._v(" "),

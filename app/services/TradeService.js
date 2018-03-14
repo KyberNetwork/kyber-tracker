@@ -1,6 +1,7 @@
 /* eslint no-multi-spaces: ["error", { exceptions: { "VariableDeclarator": true } }] */
 const _ = require('lodash');
 const async = require('async');
+const util = require('util');
 const BigNumber = require('bignumber.js');
 const network = require('../../config/network');
 const Const = require('../common/Const');
@@ -93,6 +94,20 @@ module.exports = BaseService.extends({
           groupBy: ['maker_token_symbol']
         }, next);
       },
+      takerUsds: (next) => {
+        KyberTradeModel.sumGroupBy('taker_total_usd', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['taker_token_symbol']
+        }, next);
+      },
+      makerUsds: (next) => {
+        KyberTradeModel.sumGroupBy('maker_total_usd', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['maker_token_symbol']
+        }, next);
+      },
       prices: (next) => {
         CMCService.getPriceOfAllTokens(next);
       }
@@ -104,6 +119,8 @@ module.exports = BaseService.extends({
       const prices = ret.prices;
       const takerTrades = _.keyBy(ret.takerTrades, 'takerTokenSymbol');
       const makerTrades = _.keyBy(ret.makerTrades, 'makerTokenSymbol');
+      const takerUsds = _.keyBy(ret.takerUsds, 'takerTokenSymbol');
+      const makerUsds = _.keyBy(ret.makerUsds, 'makerTokenSymbol');
       const tokens = _.compact(_.map(network.tokens, (tokenConfig) => {
         const symbol = tokenConfig.symbol;
 
@@ -118,11 +135,20 @@ module.exports = BaseService.extends({
 
         tokenVolume = tokenVolume.div(Math.pow(10, tokenConfig.decimal));
 
+        let volumeUSD = new BigNumber(0);
+        if (takerUsds[symbol]) {
+          volumeUSD = volumeUSD.plus(new BigNumber(takerUsds[symbol].sum.toString()));
+        }
+
+        if (makerUsds[symbol]) {
+          volumeUSD = volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString()));
+        }
+
         return {
           symbol: tokenConfig.symbol,
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
-          volumeUSD: tokenVolume.times(prices[symbol]).toNumber()
+          volumeUSD: volumeUSD.toNumber(),
         };
       }));
 
@@ -135,10 +161,15 @@ module.exports = BaseService.extends({
   getStats24h: function (callback) {
     const key = 'stats24h';
     const cachedData = LocalCache.getSync(key);
+
     if (cachedData) {
       return callback(null, cachedData);
     }
 
+    this._getStats24h(key, callback);
+  },
+
+  _getStats24h: function (key, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const BurnedFeeModel = this.getModel('BurnedFeeModel');
     const CMCService = this.getService('CMCService');
@@ -201,7 +232,7 @@ module.exports = BaseService.extends({
         totalBurnedFee: totalBurnedFee.toFormat(2).toString(),
       };
 
-      LocalCache.setSync(key, result);
+      LocalCache.setSync(key, result, { ttl: Const.MINUTE_IN_MILLISECONDS });
 
       return callback(null, result);
     });
@@ -327,7 +358,7 @@ module.exports = BaseService.extends({
         })
       }
 
-      LocalCache.setSync(key, returnData);
+      LocalCache.setSync(key, returnData, { ttl: Const.MINUTE_IN_MILLISECONDS });
       return callback(null, returnData);
     });
   },
@@ -389,7 +420,7 @@ module.exports = BaseService.extends({
         })
       }
 
-      LocalCache.setSync(key, returnData);
+      LocalCache.setSync(key, returnData, { ttl: Const.MINUTE_IN_MILLISECONDS });
       return callback(null, returnData);
     });
   },
@@ -430,7 +461,7 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      LocalCache.setSync(key, ret);
+      LocalCache.setSync(key, ret, { ttl: Const.MINUTE_IN_MILLISECONDS });
       return callback(null, ret);
     });
   },
