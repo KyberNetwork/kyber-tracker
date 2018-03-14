@@ -8,7 +8,7 @@ module.exports = AppController.extends({
 
   mainPage: function (req, res) {
     res.render('index', {
-      title: 'Kyber Tracker',
+      title: 'Kyber Network Tracker',
       version: version,
     });
   },

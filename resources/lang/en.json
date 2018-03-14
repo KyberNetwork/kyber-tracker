@@ -15,7 +15,7 @@
     "home": "Home",
     "trades": "Trades",
     "tokens": "Tokens",
-    "trade_list": "Trades List",
+    "trade_list": "Completed Trades",
     "token_list": "Traded Tokens",
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
@@ -39,15 +39,15 @@
   "status_bar": {
     "network_volume": "NETWORK VOLUME (24H)",
     "trades": "TRADES (24H)",
-    "burned_fee": "BURNED FEE",
+    "burned_fee": "FEES BURNED",
     "knc_price": "KNC PRICE"
   },
 
   "chart": {
     "title": {
       "network_volume": "Network Volume",
-      "network_fee": "Network Fee",
-      "fee_to_burn": "Fee To Burn",
+      "network_fee": "Network Fees",
+      "fee_to_burn": "Fees To Burn",
       "top_token": "Top Tokens",
       "token_volume": "Trade Volume",
       "label_volume": "Volume",
@@ -65,8 +65,8 @@
     "rate": "Rate",
     "description": "Description",
     "amount": "Amount",
-    "fee_to_wallet": "Wallet Fee",
-    "fee_to_burn": "Fee To Burn",
+    "fee_to_wallet": "Wallet Fees",
+    "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found."
   },
@@ -80,8 +80,8 @@
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
     "rate": "Rate",
-    "fee_to_wallet": "Wallet Fee",
-    "fee_to_burn": "Fee To Burn",
+    "fee_to_wallet": "Wallet Fees",
+    "fee_to_burn": "Fees To Burn",
     "for": " for "
   },
 

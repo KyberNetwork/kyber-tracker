@@ -28,10 +28,11 @@
         {{ getSearchResultMessage() }}
       </div>
 
-      <paginate v-if="rows.length > 0"
+      <paginate v-if="maxPage > 1"
+        ref="topPaginator"
         :page-count="maxPage"
         :initial-page="currentPage"
-        :page-range="2"
+        :page-range="1"
         :click-handler="clickToPage"
         :prev-text="$t('token_list.prev')"
         :next-text="$t('token_list.next')"
@@ -85,6 +86,26 @@
           </tbody>
         </table>
       </div>
+
+      <paginate v-if="maxPage > 1"
+        ref="bottomPaginator"
+        :page-count="maxPage"
+        :initial-page="currentPage"
+        :page-range="1"
+        :click-handler="clickToPage"
+        :prev-text="$t('token_list.prev')"
+        :next-text="$t('token_list.next')"
+        :container-class="'pagination'"
+        :page-class="'page-item'"
+        :page-link-class="'page-link'"
+        :prev-class="'page-item'"
+        :prev-link-class="'page-link'"
+        :next-class="'page-item'"
+        :next-link-class="'page-link'"
+        :active-class="'active'"
+        :class="'home-pagination-block'"
+        >
+      </paginate>
 
     </div>
   </div>
