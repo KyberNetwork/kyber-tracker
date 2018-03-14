@@ -6,7 +6,7 @@
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
-      <div>
+      <div class="table-responsive-wraper">
         <table class="table table-hover table-responsive" responsive>
           <thead>
             <tr>

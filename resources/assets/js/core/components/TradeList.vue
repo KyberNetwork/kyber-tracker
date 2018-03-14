@@ -49,7 +49,7 @@
         {{ getSearchResultMessage() }}
       </div>
 
-      <div v-if="rows.length > 0">
+      <div v-if="rows.length > 0" class="table-responsive-wraper">
         <table class="table table-hover table-responsive" responsive>
           <thead>
             <tr>
