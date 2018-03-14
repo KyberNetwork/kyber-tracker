@@ -123,6 +123,7 @@ module.exports = BaseService.extends({
   _getHistoricalPrice: function (tokenInfo, fromTime, toTime, callback) {
     const symbol = tokenInfo.symbol;
     const cmcId = tokenInfo.cmcId;
+    const timeInMillis = (fromTime + toTime) / 2;
 
     request
       .get(`https://graphs2.coinmarketcap.com/currencies/${cmcId}/${fromTime}/${toTime}`)
