@@ -64,13 +64,13 @@
       <b-navbar toggleable="md" type="dark" class="second-heading-bar">
         <div class="container">
           <b-navbar-nav>
-            <b-nav-item>
+            <b-nav-item class="navbar">
               <router-link to="/">{{ $t('navigator.home') }}</router-link>
             </b-nav-item>
-            <b-nav-item>
+            <b-nav-item class="navbar">
               <router-link to="/trades">{{ $t('navigator.trades') }}</router-link>
             </b-nav-item>
-            <b-nav-item>
+            <b-nav-item class="navbar">
               <router-link to="/tokens">{{ $t('navigator.tokens') }}</router-link>
             </b-nav-item>
           </b-navbar-nav>
@@ -325,7 +325,6 @@ export default {
       }
       .title {
         float: left;
-        display: flex;
         justify-content: center;
         align-self: center;
         font-size: 16px;
@@ -336,5 +335,8 @@ export default {
         }
       }
     }
+  }
+  .navbar .router-link-exact-active {
+    color: #3ee6c1 !important;
   }
 </style>

@@ -125,6 +125,7 @@
       },
 
       _refreshTopTopkensChart(period) {
+        const self = this;
         const now = Date.now() / 1000 | 0;
         let start;
         switch (period) {
@@ -156,7 +157,6 @@
           const data = {
             labels: labels,
             datasets: [{
-              label: 'Network volume',
               data: dataSetData,
               pointRadius: 0,
               backgroundColor: ['rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
@@ -173,6 +173,22 @@
               mode: 'index',
               axis: 'x',
               intersect: false,
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  const index = tooltipItem.index;
+                  return self.$t('chart.title.network_volume') + ': ' + util.numberWithCommas(data.datasets[0].data[index]);
+                }
+              }
+            },
+            scales: {
+              yAxes : [{
+                ticks: {
+                  callback: (label, index, labels) => {
+                    return util.numberWithCommas(label);
+                  }
+                },
+                maxTicksLimit: 5
+              }]
             },
             legend: {
               display: false

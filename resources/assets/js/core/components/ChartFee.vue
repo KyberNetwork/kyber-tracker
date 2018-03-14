@@ -65,7 +65,7 @@ export default {
       AppRequest.getFeeToBurn(period, interval, (err, feeData) => {
         const ctx = document.getElementById(this.elementId);
         const data = this._buildChartData(feeData, interval);
-        const options = this._getChartOptions();
+        const options = this._getChartOptions(interval);
 
         if (this.chartInstance) {
           this.chartInstance.destroy();
@@ -79,15 +79,25 @@ export default {
         });
       });
     },
-    _getChartOptions () {
+    _getChartOptions (interval) {
+      const self = this;
       const callbacks = {
+        title: function (tooltipItem, data) {
+          const index = tooltipItem[0].index;
+          const value = data.labels[index];
+          const d= moment(value);
+          if(interval === 'H1') {
+            return util.getLocale() === 'vi' ? d.format('DD/MM HH:mm') : d.format('MMM DD HH:mm');
+          } else {
+            return util.getLocale() === 'vi' ? d.format('DD/MM') : d.format('MMM DD');
+          }
+        },
         label: function () {
-          return;
         },
         afterBody: function (tooltipItem, data) {
           const index = tooltipItem[0].index;
-          const label = 'total: ' + data.datasets[0].data[index];
-          const count = 'count: ' + data.counts[index];
+          const label = self.$t('chart.title.label_total') + ': ' + util.numberWithCommas(data.datasets[0].data[index]);
+          const count = self.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
           return [label, count];
         }
       };
@@ -95,7 +105,7 @@ export default {
       const yAxeScale = {
         ticks: {
           callback: (label, index, labels) => {
-            return label + ' KNC';
+            return util.numberWithCommas(label) + ' KNC';
           }
         },
         maxTicksLimit: 5

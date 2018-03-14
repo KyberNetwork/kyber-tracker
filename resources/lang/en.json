@@ -49,7 +49,10 @@
       "network_fee": "Network Fee",
       "fee_to_burn": "Fee To Burn",
       "top_token": "Top Tokens",
-      "token_volume": "Trade Volume"
+      "token_volume": "Trade Volume",
+      "label_volume": "Volume",
+      "label_count": "Trades",
+      "label_total": "Total"
     }
   },
 
