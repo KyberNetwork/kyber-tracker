@@ -6,7 +6,7 @@
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
-      <div v-if="!isHideDatepicker" class="datepicker-container">
+      <div v-if="!isHideDatepicker" class="datepicker-container d-inline-block">
         <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
@@ -24,7 +24,7 @@
         </datepicker>
       </div>
 
-      <div>
+      <div class="not-found-message d-inline-block" v-if="getSearchResultMessage()">
         {{ getSearchResultMessage() }}
       </div>
 
@@ -274,5 +274,9 @@ export default {
 <style language="css">
   .vdp-datepicker__calendar .cell.day-header {
     white-space: nowrap;
+  }
+  .not-found-message {
+    width: 100%;
+    text-align: center;
   }
 </style>>

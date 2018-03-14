@@ -52,7 +52,7 @@
         const callbacks = {
           label: (tooltipItem, data) => {
             const index = tooltipItem.index;
-            return this.$t('chart.title.network_volume') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
+            return this.$t('chart.title.label_volume') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
               + ' $';
           }
         };
@@ -60,7 +60,7 @@
         const yAxeScale = {
           ticks: {
             callback: (label, index, labels) => {
-              return util.numberWithCommas(label);
+              return '$' + util.numberWithCommas(label);
             }
           },
           maxTicksLimit: 5

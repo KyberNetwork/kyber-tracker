@@ -97,8 +97,7 @@
             const index = tooltipItem[0].index;
             const label = this.$t('chart.title.label_total') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
               + ' KNC';
-            const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
-            return [label, count];
+            return [label];
           }
         };
 
