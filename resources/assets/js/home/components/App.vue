@@ -41,7 +41,7 @@
             <b-nav-text class="mr-3">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
               <span>{{ kncPrice }} </span>
-              <span :class="kncPriceChange24h < 0 ? 'neg-value' : 'pos-value'">({{ formatedKNCPriceChange24h }})</span>
+              <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
             </b-nav-text>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
@@ -147,7 +147,7 @@ export default {
 
   computed: {
     formatedKNCPriceChange24h () {
-      if (this.kncPriceChange24h >= 0) {
+      if (this.kncPriceChange24h > 0) {
         return '+' + this.kncPriceChange24h + '%';
       } else {
         return this.kncPriceChange24h + '%';
@@ -170,6 +170,10 @@ export default {
         moment.locale('vi');
         return 'vi';
       }
+    },
+    getPriceChangeClass () {
+      if (this.kncPriceChange24h === 0) return '';
+      return this.kncPriceChange24h < 0 ? 'neg-value' : 'pos-value'
     },
     refresh () {
       AppRequest.getStats24h().then((stats) => {
@@ -251,7 +255,7 @@ export default {
 
           this.pageTitle = this.$t('page_title.token_detail');
           if (tokenInfo) {
-            this.pageTitle = `${tokenInfo.name} <span class='sub-title'>${tokenInfo.symbol}</span>`;
+            this.pageTitle = `<img src="images/tokens/${tokenInfo.icon}" /> <span>${tokenInfo.name}</span> <span class='sub-title'>(${tokenInfo.symbol})</span>`;
           }
 
           this.breadcrumbsItems = [{

@@ -38,7 +38,7 @@ export default {
       this.$refs.datatable.fetch();
     },
     getListTitle () {
-      return this.$t("trade_list.title");
+      return '';
     },
     getFilterTokenSymbol () {
       return null;

@@ -1,7 +1,5 @@
 <template>
   <div class="col-sm-12">
-    <h1>Trade Details</h1>
-    <hr />
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.transaction_hash") }}</b></label></b-col>
