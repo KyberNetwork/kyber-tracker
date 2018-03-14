@@ -13,6 +13,8 @@ import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
 import TradeList from '../core/components/TradeList.vue';
 import TokenLink from '../core/components/TokenLink.vue';
+import ChartVolume from '../core/components/ChartVolume.vue';
+import ChartFee from '../core/components/ChartFee.vue';
 import routes from './routes';
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
@@ -25,6 +27,8 @@ Vue.use(BootstrapVue);
 Vue.component('data-table', DataTable);
 Vue.component('trade-list', TradeList);
 Vue.component('token-link', TokenLink);
+Vue.component('chart-volume', ChartVolume);
+Vue.component('chart-fee', ChartFee);
 Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
 

@@ -1,12 +1,12 @@
 {
-  "website_title": "Kyber Tracker",
+  "website_title": "Kyber Network Tracker",
 
   "common": {
     "exchange": "Exchange",
     "name": "Tên",
     "symbol": "Ký hiệu",
     "volume_24h_usd": "Lượng giao dịch 24h (USD)",
-    "volume_24h_token": "Lượng giao dịch 24h (token)",
+    "volume_24h_token": "Lượng giao dịch 24h (Token)",
     "search": "Tìm kiếm",
     "network_activity": "Danh sách giao dịch"
   },
@@ -48,7 +48,8 @@
       "network_volume": "Khối lượng giao dịch",
       "network_fee": "Phí giao dịch",
       "fee_to_burn": "Phí sẽ đốt",
-      "top_token": "Top Tokens"
+      "top_token": "Top Tokens",
+      "token_volume": "Khối lượng giao dịch"
     }
   },
 

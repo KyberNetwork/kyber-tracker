@@ -9,12 +9,15 @@
       <div v-if="!isHideDatepicker" class="datepicker-container">
         <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
+          :language="locale"
+          :format="formatDatepicker"
           :clear-button="true"
           :highlighted="highlightedToday"
           :disabled="disabledFromDates">
         </datepicker>
         <span>{{ $t('filter.to') }}</span>
         <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon"
+          :language="locale"
           :clear-button="true"
           :highlighted="highlightedToday"
           :disabled="disabledToDates">
@@ -180,6 +183,13 @@ export default {
       const tokenInfo = this.tokens[symbol];
       return util.formatTokenAmount(amount, tokenInfo.decimal);
     },
+    formatDatepicker (date) {
+      if (util.getLocale() === 'vi') {
+        return moment(date).format('DD/MM/YYYY');
+      } else {
+        return moment(date).format('DD MMM YYYY');
+      }
+    },
     getTradeLink (id) {
       return `/trades/${id}`;
     },
@@ -195,6 +205,11 @@ export default {
       this.currentPage = page - 1;
       this.fetch();
     },
+  },
+  computed: {
+    locale () {
+      return util.getLocale();
+    }
   },
   watch: {
     searchFromDate (val) {
@@ -234,3 +249,9 @@ export default {
   }
 };
 </script>
+
+<style language="css">
+  .vdp-datepicker__calendar .cell.day-header {
+    white-space: nowrap;
+  }
+</style>>

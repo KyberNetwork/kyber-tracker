@@ -147,13 +147,13 @@ module.exports = BaseService.extends({
 
     async.auto({
       volumeBuy: (next) => {
-        KyberTradeModel.sum('taker_token_amount', {
+        KyberTradeModel.sum('taker_total_usd', {
           where: 'taker_token_symbol = ? AND block_timestamp > ?',
           params: ['ETH', nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
       volumeSell: (next) => {
-        KyberTradeModel.sum('maker_token_amount', {
+        KyberTradeModel.sum('maker_total_usd', {
           where: 'maker_token_symbol = ? AND block_timestamp > ?',
           params: ['ETH', nowInSeconds - DAY_IN_SECONDS],
         }, next);
@@ -189,10 +189,7 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      const volBuy = new BigNumber(ret.volumeBuy.toString());
-      const volSell = new BigNumber(ret.volumeSell.toString());
-      const volumeInETH = volBuy.plus(volSell).div(Math.pow(10, 18));
-      const volumeInUSD = volumeInETH.times(ret.ethPrice);
+      const volumeInUSD = new BigNumber((ret.volumeBuy + ret.volumeSell).toString());
       const feeInKNC = new BigNumber(ret.fee.toString()).div(Math.pow(10, 18));
       const feeInUSD = feeInKNC.times(ret.kncPrice);
       const totalBurnedFee = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));

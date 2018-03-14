@@ -84,6 +84,10 @@ export default {
     }
   },
 
+  getLocale: function() {
+    return localStorage.getItem('locale') || 'en';
+  },
+
   getTokenInfo: function (symbol) {
     return tokens[symbol];
   },

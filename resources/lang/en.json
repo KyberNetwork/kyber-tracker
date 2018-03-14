@@ -1,12 +1,12 @@
 {
-  "website_title": "Kyber Tracker",
+  "website_title": "Kyber Network Tracker",
 
   "common": {
     "exchange": "Exchange",
     "name": "Name",
     "symbol": "Symbol",
     "volume_24h_usd": "24hr Volume (USD)",
-    "volume_24h_token": "24hr Volume (token)",
+    "volume_24h_token": "24hr Volume (Token)",
     "search": "Search",
     "network_activity": "Network Activity"
   },
@@ -48,12 +48,13 @@
       "network_volume": "Network Volume",
       "network_fee": "Network Fee",
       "fee_to_burn": "Fee To Burn",
-      "top_token": "Top Tokens"
+      "top_token": "Top Tokens",
+      "token_volume": "Trade Volume"
     }
   },
 
   "trade_list": {
-    "title": "Recent Trades",
+    "title": "Completed Trades",
     "address": "Address",
     "date": "Date",
     "taker_token": "Exchange from",
@@ -70,7 +71,7 @@
   "trade_detail": {
     "transaction_hash": "Transaction Hash",
     "date": "Date",
-    "taker_address": "Taker Address",
+    "taker_address": "Wallet Address",
     "taker_token": "Exchange From",
     "taker_amount": "Amount",
     "maker_token": "Exchange To",

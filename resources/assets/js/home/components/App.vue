@@ -26,19 +26,19 @@
       <b-navbar toggleable="md" type="dark" class="heading-bar">
         <div class="container">
           <b-navbar-nav>
-            <b-nav-text>
+            <b-nav-text class="mr-3">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               {{ networkVolume }}
             </b-nav-text>
-            <b-nav-text class="ml-3">
+            <b-nav-text class="mr-3">
               <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
               {{ tradeCount }}
             </b-nav-text>
-            <b-nav-text class="ml-3">
+            <b-nav-text class="mr-3">
               <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
               {{ totalBurnedFee }}
             </b-nav-text>
-            <b-nav-text class="ml-3">
+            <b-nav-text class="mr-3">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
               <span>{{ kncPrice }} </span>
               <span :class="kncPriceChange24h < 0 ? 'neg-value' : 'pos-value'">({{ formatedKNCPriceChange24h }})</span>
@@ -99,7 +99,7 @@
         <div class="row">
           <div class="col footer-menu">
             <ul class="links">
-              <li><a href="https://home.kyber.network" target="_blank">Home</a></li>
+              <li><router-link to="/">Home</router-link></li>
               <li><a href="mailto:support@kyber.network">Product Feedback</a></li>
               <li><a href="https://kybernetwork.zendesk.com/" target="_blank">Help</a></li>
             </ul>
@@ -160,6 +160,7 @@ export default {
       localStorage.setItem('locale', locale);
       window.i18n.locale = locale;
       moment.locale(locale);
+      window.location.reload();
     },
     getLanguage () {
       if(typeof window.i18n != 'undefined' && typeof window.i18n.locale != 'undefined') {

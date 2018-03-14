@@ -26,14 +26,18 @@
         </b-button-group>
       </div>
       <b-tabs card>
-        <b-tab no-body :title="$t('chart.title.network_volume')" active>
-          <canvas id="chart-volume" width="100" height="25" class="mt-20"></canvas>
+        <b-tab no-body @click="onSelectTab('chartVolume')" :title="$t('chart.title.network_volume')" active>
+          <chart-volume ref="chartVolume"
+            :elementId="'chart-volume'">
+          </chart-volume>
         </b-tab>
-        <b-tab no-body :title="$t('chart.title.fee_to_burn')">
-          <canvas id="chart-fee" width="100" height="25" class="mt-20"></canvas>
+        <b-tab no-body @click="onSelectTab('chartFee')" :title="$t('chart.title.fee_to_burn')">
+          <chart-fee ref="chartFee"
+            :elementId="'chart-fee'">
+          </chart-fee>
         </b-tab>
-        <b-tab no-body :title="$t('chart.title.top_token')">
-          <canvas id="chart-top-tokens" width="100" height="25" class="mt-20"></canvas>
+        <b-tab no-body @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
+          <canvas id="chart-top-tokens" height="250px" class="mt-20"></canvas>
         </b-tab>
       </b-tabs>
     </b-card>
@@ -56,40 +60,10 @@
   import network from '../../../../../config/network';
   import Chart from 'chart.js';
 
-  Chart.defaults.LineWithLine = Chart.defaults.line;
-  Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-    draw: function (ease) {
-      Chart.controllers.line.prototype.draw.call(this, ease);
-
-      if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
-        const activePoint = this.chart.tooltip._active[0],
-          ctx = this.chart.ctx,
-          x = activePoint.tooltipPosition().x,
-          topY = this.chart.scales['y-axis-0'].top,
-          bottomY = this.chart.scales['y-axis-0'].bottom;
-
-        // draw line
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(x, topY);
-        ctx.lineTo(x, bottomY);
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = '#07C';
-        ctx.stroke();
-        ctx.restore();
-      }
-    }
-  });
-
   const defaultChartOptions = {
     legend: {
       display: false
-    },
-//  tooltips: {
-//    mode: 'index',
-//    axis: 'x',
-//    intersect: false,
-//  }
+    }
   };
 
   export default {
@@ -126,143 +100,28 @@
       selectPeriod(period, interval) {
         this.selectedPeriod = period;
         this.selectedInterval = interval;
-        this.refreshChartsData(period, interval);
+        this.refreshChartsData();
       },
-      refreshChartsData(period, interval) {
+      onSelectTab (tabName) {
+        this.refreshChartsData();
+      },
+      refreshChartsData() {
+        const period = this.selectedPeriod;
+        const interval = this.selectedInterval;
+
         this._refreshNetworkVolumeChart(period, interval);
         this._refreshFeeToBurnChart(period, interval);
         this._refreshTopTopkensChart(period);
       },
       _refreshNetworkVolumeChart(period, interval) {
-        AppRequest.getNetworkVolume(period, interval, (err, ret) => {
-          const ctx = document.getElementById('chart-volume');
-          const chartData = this._createChartData(ret, interval);
-          const data = {
-            labels: chartData.labels,
-            counts: chartData.counts,
-            datasets: [{
-              data: chartData.dataSetData,
-              pointRadius: 0,
-              backgroundColor: 'rgb(148, 190, 190)',
-              borderColor: 'rgb(148, 190, 190)',
-              showLine: true,
-              spanGaps: true,
-            }]
-          };
-
-          const options = _.assign(defaultChartOptions, {
-            tooltips: {
-              mode: 'index',
-              axis: 'x',
-              intersect: false,
-              callbacks: {
-                label: function () {
-                  return;
-                },
-                afterBody: function (tooltipItem, data) {
-                  const index = tooltipItem[0].index;
-                  const label = 'volume: ' + data.datasets[0].data[index];
-                  const count = 'trades: ' + data.counts[index];
-                  return [label, count];
-                }
-              }
-            },
-            scales: {
-              yAxes: [{
-                ticks: {
-                  callback: (label, index, labels) => {
-                    return '$' + label;
-                  }
-                },
-                maxTicksLimit: 5
-              }],
-              xAxes: [{
-                ticks: {
-                  callback: (label, index, labels) => {
-                    const d = moment(label);
-                    return d.format('MMM D');
-                  },
-                  maxTicksLimit: 5
-                }
-              }]
-            }
-          });
-
-          if (this.volumeChart) {
-            this.volumeChart.destroy();
-          }
-
-          this.volumeChart = new Chart(ctx, {
-            type: 'LineWithLine',
-            data: data,
-            options: options,
-          });
-        });
+        if (this.$refs.chartVolume) {
+          this.$refs.chartVolume.refresh(period, interval);
+        }
       },
       _refreshFeeToBurnChart(period, interval) {
-        AppRequest.getFeeToBurn(period, interval, (err, ret) => {
-          const ctx = document.getElementById('chart-fee');
-          const chartData = this._createChartData(ret, interval);
-          const data = {
-            labels: chartData.labels,
-            counts: chartData.counts,
-            datasets: [{
-              data: chartData.dataSetData,
-              pointRadius: 0,
-              backgroundColor: 'rgb(148, 190, 190)',
-              borderColor: 'rgb(148, 190, 190)',
-              showLine: true,
-              spanGaps: true,
-            }]
-          };
-          const options = _.assign(defaultChartOptions, {
-            tooltips: {
-              mode: 'index',
-              axis: 'x',
-              intersect: false,
-              callbacks: {
-                label: function () {
-                  return;
-                },
-                afterBody: function (tooltipItem, data) {
-                  const index = tooltipItem[0].index;
-                  const label = 'volume: ' + data.datasets[0].data[index];
-                  const count = 'trades: ' + data.counts[index];
-                  return [label, count];
-                }
-              }
-            },
-            scales: {
-              yAxes: [{
-                ticks: {
-                  callback: (label, index, labels) => {
-                    return label + ' KNC';
-                  }
-                },
-                maxTicksLimit: 5
-              }],
-              xAxes: [{
-                ticks: {
-                  callback: (label, index, labels) => {
-                    const d = moment(label);
-                    return d.format('MMM D');
-                  },
-                  maxTicksLimit: 5
-                }
-              }]
-            }
-          });
-
-          if (this.feeToBurnChart) {
-            this.feeToBurnChart.destroy();
-          }
-
-          this.feeToBurnChart = new Chart(ctx, {
-            type: 'LineWithLine',
-            data,
-            options
-          });
-        });
+        if (this.$refs.chartFee) {
+          this.$refs.chartFee.refresh(period, interval);
+        }
       },
 
       _refreshTopTopkensChart(period) {
@@ -304,13 +163,12 @@
                 'rgb(135, 126, 145)', 'rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
                 'rgb(135, 126, 145)', 'rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
                 'rgb(135, 126, 145)'],
-//              backgroundColor: 'rgb(148, 190, 190)',
-//              borderColor: 'rgb(148, 190, 190)',
               showLine: true,
               spanGaps: true,
             }]
           };
           const options = {
+            maintainAspectRatio: false,
             tooltips: {
               mode: 'index',
               axis: 'x',
@@ -368,7 +226,7 @@
       }, 10000);
 
       this.refresh();
-      this.refreshChartsData(this.selectedPeriod, this.selectedInterval);
+      this.refreshChartsData();
     },
 
   }
