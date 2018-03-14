@@ -24,7 +24,6 @@
         </datepicker>
       </div>
 
-
       <paginate v-if="maxPage > 1"
         ref="topPaginator"
         :page-count="maxPage"
@@ -275,5 +274,9 @@ export default {
 <style language="css">
   .vdp-datepicker__calendar .cell.day-header {
     white-space: nowrap;
+  }
+  .not-found-message {
+    width: 100%;
+    text-align: center;
   }
 </style>>

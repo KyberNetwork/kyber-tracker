@@ -30,6 +30,7 @@
       <b-col sm="9">
         <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
         <token-link :symbol="record.makerTokenSymbol"></token-link>
+        <span>(${{ formatFiatCurrency(record.makerTotalUsd) }})</span>
       </b-col>
     </b-row>
 
