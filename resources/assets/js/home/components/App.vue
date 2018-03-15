@@ -49,9 +49,9 @@
           <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav>
-              <b-nav-item class="tracker-logo">
+              <b-nav-item class="navbar tracker-logo">
                 <router-link to="/">
-                  <img class="inline-logo" src="images/logo_nav_light.svg" /><span class="text-logo">KYBER TRACKER</span>
+                  <span class="inline-logo"></span><span class="text-logo">KYBER TRACKER</span>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="navbar">

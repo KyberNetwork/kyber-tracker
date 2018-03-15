@@ -413,10 +413,14 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.text-logo {
+  white-space: normal;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 @media (min-width: 576px) and (max-width: 992px) {
   .heading-summary{
-    margin: 0 15px;
-
     li {
       width: 50%;
       margin: 0;
@@ -436,6 +440,16 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+@media (min-width: 576px){
+  .tracker-logo {
+    padding-left: 0;
+
+    a {
+      padding-left: 0 !important;
+    }
+  }
+}
+
 @media (min-width: 720px) {
   .table-responsive {
     display: table;
@@ -443,19 +457,6 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 }
 
-@media (max-width: 576px) {
-  .text-logo {
-    padding-top: 8px;
-    float: left;
-  }
-}
-
-@media (min-width: 780px) {
-  .text-logo {
-    padding-top: 8px;
-    float: left;
-  }
-}
 
 @media (max-width: 780px) {
   .full-width-btn-group {
@@ -487,11 +488,14 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .inline-logo {
-  margin-left: -20px;
-  margin-right: -10px;
-  margin-top: -10px;
-  margin-bottom: -10px;
-  float: left;
+  background-image: url(/images/logo_nav_light.svg);
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 46px;
+  background-position: center center;
+  margin-right: 10px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .p-relative {
@@ -510,6 +514,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .tracker-logo {
   min-width: 140px;
+
+  .router-link-active {
+    white-space: nowrap;
+  }
 }
 
 
