@@ -213,9 +213,8 @@ btn {
 }
 
 .datepicker-container {
-  padding-top: 20px;
+  padding-top: 10px;
   float: left;
-  padding-bottom: 20px;
 
   .vdp-datepicker {
     display: inline-block;
@@ -224,7 +223,7 @@ btn {
     padding: 0;
 
     input[type="text"] {
-      width: 140px;
+      width: 150px;
     }
   }
 
@@ -238,7 +237,7 @@ btn {
 
 .home-pagination-block {
   float: right;
-  padding: 20px 0;
+  padding: 10px 0 0 0;
   margin: 0;
 
   .page-item {

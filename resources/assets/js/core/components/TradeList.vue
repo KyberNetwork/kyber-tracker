@@ -45,12 +45,12 @@
         >
       </paginate>
 
-      <div class="clear pb-40">
+      <div class="clear pt-20" v-if="rows.length <= 0">
         {{ getSearchResultMessage() }}
       </div>
 
-      <div v-if="rows.length > 0" class="table-responsive-wraper">
-        <table class="table table-hover table-responsive" responsive>
+      <div v-if="rows.length > 0" class="table-responsive-wraper pt-20 clear">
+        <table class="table table-hover table-responsive">
           <thead>
             <tr>
               <th>{{ $t("trade_list.date") }}</th>
