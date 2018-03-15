@@ -66,7 +66,7 @@
           <b-navbar-nav class="ml-auto">
             <form action="javasript:void(0)" class="no-margin no-padding">
               <b-nav-item class="no-padding-right">
-                <b-input-group size="xs">
+                <b-input-group size="sm">
                   <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input>
                   <b-input-group-append>
                     <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
