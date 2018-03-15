@@ -36,7 +36,7 @@ a {
   .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
-    background-color: #007bff;
+    background-color: #30968e;
   }
 
   .dropdown-menu {
@@ -82,7 +82,16 @@ a {
   .nav-item {
     padding-top: 0;
     padding-bottom: 0;
+    padding-left: 0;
   }
+}
+
+.search-form {
+  width: 100%;
+}
+
+.search-box-container {
+  min-width: 30%;
 }
 
 .btn-outline-primary {
@@ -519,6 +528,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       margin: 0;
     }
   }
+
+  .search-box-container {
+    width: calc(100% - 80px);
+  }
 }
 
 @media (min-width: 576px){
@@ -628,4 +641,5 @@ html {
 
 #page-content {
   padding-bottom: 115px;
+  overflow-x: hidden;
 }

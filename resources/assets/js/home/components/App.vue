@@ -63,8 +63,8 @@
             </b-navbar-nav>
           </b-collapse>
 
-          <b-navbar-nav class="ml-auto">
-            <form action="javasript:void(0)" class="no-margin no-padding">
+          <b-navbar-nav class="ml-auto search-box-container">
+            <form action="javasript:void(0)" class="no-margin no-padding search-form">
               <b-nav-item class="no-padding-right">
                 <b-input-group size="sm">
                   <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input>
