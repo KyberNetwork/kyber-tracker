@@ -79,7 +79,7 @@
                 <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
               </td>
               <td>{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
-              <td>{{ formatTokenNumber('KNC', row.burnFees) }} KNC</td>
+              <td>{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><router-link :to="getTradeLink(row.id)" class="pull-right">
                 <i class="k k-angle right"></i>
               </router-link></td>
@@ -201,6 +201,10 @@ export default {
       const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, takerToken.decimal));
       return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
+    formatFeeToBurn(symbol, amount) {
+      const tokenInfo = this.tokens[symbol];
+      return Number(util.formatTokenAmount(amount, tokenInfo.decimal)).toFixed(3);
+    },
     formatTokenNumber (symbol, amount) {
       const tokenInfo = this.tokens[symbol];
       return util.formatTokenAmount(amount, tokenInfo.decimal);
@@ -224,7 +228,7 @@ export default {
       });
     },
     clickToPage (page) {
-      this.currentPage = page - 1;
+      this.currentPage = this.$refs.topPaginator.selected = this.$refs.bottomPaginator.selected = page - 1;
       this.fetch();
     },
   },

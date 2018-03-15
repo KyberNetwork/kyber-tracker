@@ -5,8 +5,8 @@
     "exchange": "Exchange",
     "name": "Name",
     "symbol": "Symbol",
-    "volume_24h_usd": "24hr Volume (USD)",
-    "volume_24h_token": "24hr Volume (Token)",
+    "volume_24h_usd": "24H Volume (USD)",
+    "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
     "network_activity": "Network Activity"
   },
