@@ -32,8 +32,8 @@
                 <template slot="button-content">
                   <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
                 </template>
-                <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /></b-dropdown-item>
-                <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /></b-dropdown-item>
+                <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
+                <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
               </b-dropdown>
             </b-navbar-nav>
             
