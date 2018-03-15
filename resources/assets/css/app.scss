@@ -11,6 +11,16 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: $code-font-family;
 }
 
+a {
+  color: #2A9A8D;
+}
+
+.content-wrapper {
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 120px;
+}
+
 .change-language-button {
   button:first-child, button:first-child:hover, button:first-child:active {
     background: transparent !important;
@@ -105,6 +115,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 }
 
 #footer {
+  position: absolute;
   width: 100%;
   clear: both;
   bottom: 0;
@@ -128,7 +139,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
         display: inline-block;
 
         a {
-          color: #262C41;
+          color: #2A9A8D;
           display: block;
         }
       }
@@ -367,7 +378,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .big-heading {
-  padding: 12px;
+  padding: 12px 0;
   margin: 0;
 }
 
