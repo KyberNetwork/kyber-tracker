@@ -2,7 +2,7 @@
   <div>
     <div class="panel panel-default">
 
-      <div v-if="!!title" class="panel-heading pt-20">
+      <div v-if="!!title" class="panel-heading pt-40">
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
@@ -45,7 +45,7 @@
         >
       </paginate>
 
-      <div class="clear">
+      <div class="clear pb-40">
         {{ getSearchResultMessage() }}
       </div>
 
@@ -54,35 +54,31 @@
           <thead>
             <tr>
               <th>{{ $t("trade_list.date") }}</th>
-              <th>{{ $t("trade_list.amount") }}</th>
-              <th>{{ $t("trade_list.rate") }}</th>
-              <th>{{ $t("trade_list.fee_to_wallet") }}</th>
-              <th>{{ $t("trade_list.fee_to_burn") }}</th>
+              <th colspan="5" class="text-center">{{ $t("trade_list.amount") }}</th>
+              <th colspan="4"class="text-center">{{ $t("trade_list.rate") }}</th>
+              <th class="text-right">{{ $t("trade_list.fee_to_wallet") }}</th>
+              <th colspan="2" class="text-center">{{ $t("trade_list.fee_to_burn") }}</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
               <td>{{ getDateInfo(row) }}</td>
-              <td>
-                <span>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</span>
-                <span><token-link :symbol="row.takerTokenSymbol"></token-link></span>
-                <span class="inline-arrow"><i class="k k-angle right"></i></span>
-                <span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</span>
-                <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
-              </td>
-              <td>
-                <span>1</span>
-                <span><token-link :symbol="row.takerTokenSymbol"></token-link></span>
-                <span>=</span>
-                <span>{{ getRate(row) }}</span>
-                <span><token-link :symbol="row.makerTokenSymbol"></token-link></span>
-              </td>
-              <td>{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
-              <td>{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
-              <td><router-link :to="getTradeLink(row.id)" class="pull-right">
+              <td class="text-right no-padding-right">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</td>
+              <td class="text-left no-padding-right">{{ row.takerTokenSymbol }}</td>
+              <td class="text-center"><i class="k k-angle right"></i></td>
+              <td class="text-right no-padding-right no-padding-left">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</td>
+              <td class="text-left">{{ row.makerTokenSymbol }}</td>
+              <td class="text-right no-padding-left no-padding-right">1 {{ row.takerTokenSymbol }}</td>
+              <td class="text-center">=</td>
+              <td class="no-padding-left no-padding-right text-right">{{ getRate(row) }}</span>
+              <td>{{ row.makerTokenSymbol }}</td>
+              <td class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} <span class="td-inline-symbol">KNC</span></td>
+              <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }}</td>
+              <td class="text-left">KNC</span></td>
+              <td><span class="pull-right">
                 <i class="k k-angle right"></i>
-              </router-link></td>
+              </span></td>
             </tr>
           </tbody>
         </table>

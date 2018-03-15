@@ -8,7 +8,8 @@
     "volume_24h_usd": "24H Volume (USD)",
     "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
-    "network_activity": "Network Activity"
+    "network_activity": "Network Activity",
+    "searchbox_placeholder" : "Tx Hash / Wallet Address"
   },
 
   "page_title": {

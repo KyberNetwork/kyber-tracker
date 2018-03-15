@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-12">
+  <div class="col-sm-12 trade-details-container">
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.transaction_hash") }}</b></label></b-col>
@@ -11,12 +11,12 @@
       <b-col sm="9">{{ getDateInfo(record.blockTimestamp) }}</b-col>
     </b-row>
 
-    <b-row>
+    <b-row class="mt-20">
       <b-col sm="3"><label><b>{{ $t("trade_detail.taker_address") }}</b></label></b-col>
       <b-col sm="9"><router-link :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link></b-col>
     </b-row>
 
-    <b-row>
+    <b-row class="mt-20">
       <b-col sm="3"><label><b>{{ $t("trade_detail.taker_token") }}</b></label></b-col>
       <b-col sm="9">
         <span>{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
@@ -45,7 +45,7 @@
       </b-col>
     </b-row>
 
-    <b-row>
+    <b-row class="mt-20">
       <b-col sm="3"><label><b>{{ $t("trade_detail.fee_to_wallet") }}</b></label></b-col>
       <b-col sm="9">{{ getTokenAmount(record.takerFee, 'KNC') }} KNC</b-col>
     </b-row>

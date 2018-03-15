@@ -15,6 +15,11 @@ a {
   color: #2A9A8D;
 }
 
+:focus {
+    outline: none;
+}
+
+
 .change-language-button {
   button:first-child, button:first-child:hover, button:first-child:active {
     background: transparent !important;
@@ -28,6 +33,20 @@ a {
     vertical-align: middle;
   }
 
+  .dropdown-item:hover {
+    color: #fff;
+    text-decoration: none;
+    background-color: #007bff;
+  }
+
+  .dropdown-menu {
+    padding: 0;
+  }
+
+  .dropdown-item {
+    padding: 5px;
+  }
+
 }
 
 .search-button {
@@ -35,6 +54,9 @@ a {
 
   svg {
     fill: #fff;
+    vertical-align: middle;
+    margin-top: -3px;
+    margin-bottom: -3px;
   }
 }
 
@@ -118,6 +140,12 @@ a {
 
   li.page-item.active a.page-link {
     background-color: #dfdbdb;
+  }
+}
+
+.trade-details-container {
+  a {
+    word-break: break-all;
   }
 }
 
@@ -233,6 +261,14 @@ btn {
   padding-top: 20px;
 }
 
+.pb-20 {
+  padding-bottom: 20px;
+}
+
+.pb-40 {
+  padding-bottom: 40px;
+}
+
 .pt-40 {
   padding-top: 40px;
 }
@@ -267,6 +303,20 @@ td {
   .k-angle {
     padding-top: 17px;
   }
+
+  .td-inline-symbol {
+    display: inline-block;
+    min-width: 60px;
+    text-align: left;
+    margin-left: 5px;  
+  }
+
+  .td-inline-number {
+    min-width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+  }
 }
 
 .table-hover {
@@ -295,12 +345,15 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   thead th {
     background-color: #eee;
     font-weight: normal;
-    padding: 15px 12px;
+    padding: 15px 6px;
   }
 
   th, td {
     white-space: nowrap;
-    padding: 20px 12px;
+    padding: 20px 6px;
+    line-height: 20px;
+    height: 20px;
+    vertical-align: middle;
   }
 }
 
@@ -333,7 +386,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .light-text {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.56);
   font-size: 14px;
 }
 
@@ -389,6 +442,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 .big-heading {
   padding: 12px 0;
   margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .no-margin-right {
@@ -411,11 +467,16 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.no-padding-left {
+  padding-left: 0 !important;
+}
+
 .inline-arrow {
   padding-left: 12px;
   line-height: 20px;
   height: 20px;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .heading-summary {
@@ -430,6 +491,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     float: left;
     float: left;
     margin-right: 30px;
+    color: #fff;
   }
 }
 
@@ -504,7 +566,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .image-inline-td {
-  margin: -5px;
+  display: inline-block;
+  width: 26px;
+  vertical-align: middle;
+  height: 26px;
+  margin-top: -3px;
 }
 
 .inline-logo {

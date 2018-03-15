@@ -1,6 +1,5 @@
 <template>
   <div class="col-sm-12">
-    <h1>{{ $t('search_page.title') }}</h1>
     <trade-list ref="datatable"
       :getFilterTokenSymbol="getFilterTokenSymbol"
       :fetch="requestSearch"

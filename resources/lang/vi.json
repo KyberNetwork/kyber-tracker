@@ -8,7 +8,8 @@
     "volume_24h_usd": "Lượng giao dịch 24h (USD)",
     "volume_24h_token": "Lượng giao dịch 24h (Token)",
     "search": "Tìm kiếm",
-    "network_activity": "Danh sách giao dịch"
+    "network_activity": "Danh sách giao dịch",
+    "searchbox_placeholder" : "Tx Hash / Wallet Address"
   },
 
   "page_title": {
