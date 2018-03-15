@@ -1,29 +1,30 @@
 <template>
   <div class="content-wrapper">
+    <div id="page-content">
       <b-navbar toggleable="md" type="dark" class="heading-bar">
         <div class="container p-relative">
           <div class="row">
-          <div class="col">
-            <ul class="heading-summary">
-              <li>
-                <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
-                {{ networkVolume }}
-              </li>
-              <li>
-                <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-                {{ tradeCount }}
-              </li>
-              <li>
-                <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
-                {{ totalBurnedFee }}
-              </li>
-              <li>
-                <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                <span>{{ kncPrice }} </span>
-                <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
-              </li>
-            </ul>
-          </div>
+            <div class="col">
+              <ul class="heading-summary">
+                <li>
+                  <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
+                  {{ networkVolume }}
+                </li>
+                <li>
+                  <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
+                  {{ tradeCount }}
+                </li>
+                <li>
+                  <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
+                  {{ totalBurnedFee }}
+                </li>
+                <li>
+                  <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
+                  <span>{{ kncPrice }} </span>
+                  <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div class="float-lang-bar cursor-pointer">
@@ -36,7 +37,7 @@
                 <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
               </b-dropdown>
             </b-navbar-nav>
-            
+
           </div>
 
 
@@ -90,11 +91,13 @@
         </div>
       </div>
 
-    <div class="container">
-      <div class="row pt-40">
-        <router-view></router-view>
+      <div class="container">
+        <div class="row pt-40">
+          <router-view></router-view>
+        </div>
       </div>
     </div>
+
 
     <div id="footer">
       <div class="container">

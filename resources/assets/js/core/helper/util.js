@@ -106,13 +106,13 @@ export default {
     }
 
     const bn = new BigNumber(amount.toString());
-    return parseFloat(bn.toFixed(2).toString());
+    return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
   formatTokenAmount: function (amount, decimal=18, precision=6) {
     const bigNumber = new BigNumber(amount.toString());
     let result = bigNumber.div(Math.pow(10, decimal));
-    return parseFloat(result.toFixed(3).toString());
+    return this.numberWithCommas(parseFloat(result.toFixed(3).toString()));
   },
 
   roundingNumber: function (number) {

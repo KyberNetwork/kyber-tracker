@@ -4,7 +4,7 @@
         :title="getListTitle()"
         :getData="getList">
       <template slot="header">
-        <th>#</th>
+        <th>No.</th>
         <th>{{ $t("common.name") }}</th>
         <th>{{ $t("common.symbol") }}</th>
         <th>{{ $t("common.volume_24h_usd") }}</th>
