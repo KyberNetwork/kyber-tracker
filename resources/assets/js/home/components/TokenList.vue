@@ -9,6 +9,7 @@
         <th>{{ $t("common.symbol") }}</th>
         <th class="text-right">{{ $t("common.volume_24h_usd") }}</th>
         <th class="text-right">{{ $t("common.volume_24h_token") }}</th>
+        <th></th>
       </template>
 
       <template slot="body" scope="slot">
@@ -18,6 +19,9 @@
           <td><token-link :symbol="slot.item.symbol"></token-link></td>
           <td class="text-right">{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
+          <td><span class="pull-right">
+              <i class="k k-angle right"></i>
+            </span></td>
         </tr>
       </template>
     </data-table>
