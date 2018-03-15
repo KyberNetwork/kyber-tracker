@@ -4,7 +4,7 @@
         :title="getListTitle()"
         :getData="getList">
       <template slot="header">
-        <th>No.</th>
+        <th class="text-right">No.</th>
         <th>{{ $t("common.name") }}</th>
         <th>{{ $t("common.symbol") }}</th>
         <th class="text-right">{{ $t("common.volume_24h_usd") }}</th>
@@ -14,7 +14,7 @@
 
       <template slot="body" scope="slot">
         <tr>
-          <td>{{ (slot.index + 1) }}</td>
+          <td class="text-right">{{ (slot.index + 1) }}</td>
           <td><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> {{ slot.item.name }}</td>
           <td><token-link :symbol="slot.item.symbol"></token-link></td>
           <td class="text-right">{{ formatVolumeUSD(slot.item) }}</td>
