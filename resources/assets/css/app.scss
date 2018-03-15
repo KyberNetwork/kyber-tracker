@@ -109,9 +109,9 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   width: 100%;
   clear: both;
   bottom: 0;
-  padding: 0;
+  //padding: 0;
   height: 115px;
-  //padding: 30px 0px;
+  padding: 30px 0px;
   letter-spacing: .5px;
   font-size: 0.8rem;
   line-height: 25px;
@@ -258,6 +258,10 @@ td {
   }
 }
 
+.table-responsive-wraper {
+  overflow: auto;
+}
+
 a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   color: #3ee6c1;
 }
@@ -395,11 +399,55 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   display: inline-block;
 }
 
+.heading-summary {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+
+  li {
+    float: left;
+    float: left;
+    margin-right: 30px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 992px) {
+  .heading-summary{
+    margin: 0 15px;
+
+    li {
+      width: 50%;
+      margin: 0;
+    }
+  }
+}
+
+
+@media (max-width: 575px){
+  .heading-summary{
+    margin: 0 15px;
+    
+    li {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
 @media (min-width: 720px) {
   .table-responsive {
     display: table;
   }
 
+}
+
+@media (max-width: 576px) {
+  .text-logo {
+    padding-top: 8px;
+    float: left;
+  }
 }
 
 @media (min-width: 780px) {
@@ -446,9 +494,14 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   float: left;
 }
 
+.p-relative {
+  position: relative;
+}
+
 .float-lang-bar {
-  float: right;
-  margin-top: -15px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
 }
 
 .change-language-button > .btn {

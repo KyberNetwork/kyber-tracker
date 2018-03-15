@@ -2,33 +2,33 @@
   <div id="wrapper">
     <div id="page-content">
       <b-navbar toggleable="md" type="dark" class="heading-bar">
-        <div class="container">
-
-          <div class="col">
-            <b-navbar-nav class="row">
-              <b-nav-text class="col-md-6 col-lg-4">
-                <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
-                {{ networkVolume }}
-              </b-nav-text>
-              <b-nav-text class="col-md-6 col-lg-3">
-                <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-                {{ tradeCount }}
-              </b-nav-text>
-              <b-nav-text class="col-md-6 col-lg-3">
-                <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
-                {{ totalBurnedFee }}
-              </b-nav-text>
-              <b-nav-text class="col-md-6 col-lg-2">
-                <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                <span>{{ kncPrice }} </span>
-                <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
-              </b-nav-text>
-            </b-navbar-nav>
+        <div class="container p-relative">
+          <div class="row">
+            <div class="col">
+              <ul class="heading-summary">
+                <li>
+                  <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
+                  {{ networkVolume }}
+                </li>
+                <li>
+                  <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
+                  {{ tradeCount }}
+                </li>
+                <li>
+                  <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
+                  {{ totalBurnedFee }}
+                </li>
+                <li>
+                  <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
+                  <span>{{ kncPrice }} </span>
+                  <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div class="float-lang-bar cursor-pointer">
-            <b-navbar-nav class="ml-auto">
-
+            <b-navbar-nav>
               <b-dropdown class="change-language-button" no-caret right>
                 <template slot="button-content">
                   <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
@@ -97,6 +97,7 @@
         </div>
       </div>
     </div>
+
 
     <div id="footer">
       <div class="container">
