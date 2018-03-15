@@ -57,7 +57,7 @@
               <th colspan="5" class="text-center">{{ $t("trade_list.amount") }}</th>
               <th colspan="4"class="text-center">{{ $t("trade_list.rate") }}</th>
               <th class="text-right">{{ $t("trade_list.fee_to_wallet") }}</th>
-              <th colspan="2" class="text-center">{{ $t("trade_list.fee_to_burn") }}</th>
+              <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th>
               <th></th>
             </tr>
           </thead>
@@ -73,9 +73,8 @@
               <td class="text-center">=</td>
               <td class="no-padding-left no-padding-right text-right">{{ getRate(row) }}</span>
               <td>{{ row.makerTokenSymbol }}</td>
-              <td class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} <span class="td-inline-symbol">KNC</span></td>
-              <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }}</td>
-              <td class="text-left">KNC</span></td>
+              <td class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
+              <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right">
                 <i class="k k-angle right"></i>
               </span></td>
