@@ -30,6 +30,14 @@ a {
 
 }
 
+.search-button {
+  background-color: rgb(90,175,133) !important;
+
+  svg {
+    fill: #fff;
+  }
+}
+
 .heading-bar {
   background-color: #192e3b;
   color: rgba(255, 255, 255, 0.56);
