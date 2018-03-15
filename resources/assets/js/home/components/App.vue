@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrapper">
+  <div id="wrapper">
     <div id="page-content">
       <b-navbar toggleable="md" type="dark" class="heading-bar">
         <div class="container p-relative">
