@@ -42,8 +42,8 @@
     data() {
       return {
         tokens: _.keyBy(_.values(network.tokens), 'address'),
-        selectedPeriod: 'H24',
-        selectedInterval: 'H1',
+        selectedPeriod: 'D30',
+        selectedInterval: 'D1',
         myChart: undefined,
         symbol: undefined,
       };
