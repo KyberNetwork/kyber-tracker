@@ -6,6 +6,7 @@ module.exports = {
    * Then put the name in this array
    */
   before: [
+    'requestLogger',
     'cookieParser',
     'bodyParser',
     'bodyMultipart',
