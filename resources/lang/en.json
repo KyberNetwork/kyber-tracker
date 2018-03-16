@@ -94,7 +94,8 @@
   "token_list": {
     "title": "Trade Tokens",
     "prev": "Prev",
-    "next": "Next"
+    "next": "Next",
+    "no" : "No."
   },
 
   "search_page": {

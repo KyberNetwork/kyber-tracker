@@ -92,7 +92,8 @@
   "token_list": {
     "title": "Danh sách tokens",
     "prev": " < ",
-    "next": " > "
+    "next": " > ",
+    "no" : "STT"
   },
 
   "search_page": {
