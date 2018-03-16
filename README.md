@@ -25,6 +25,7 @@ $ cp .env.example .env // Then update the valid setting values in the .env file
 ### Initialize the database schema and seeds data
 ```
 $ npm run init-db
+$ npm run seeds
 ```
 
 ### Run the app
