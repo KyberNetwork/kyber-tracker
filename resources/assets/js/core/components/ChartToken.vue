@@ -69,7 +69,7 @@
         return {
           tooltips: {
             mode: 'index',
-            axis: 'x',
+            axis: 'y',
             intersect: false,
             backgroundColor: 'rgba(25, 46, 59, 0.7)',
             callbacks,
