@@ -13,10 +13,10 @@
       </template>
 
       <template slot="body" scope="slot">
-        <tr>
+        <tr @click="toTokenDetails(slot.item.symbol)">
           <td class="text-right">{{ (slot.index + 1) }}</td>
           <td><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> {{ slot.item.name }}</td>
-          <td><token-link :symbol="slot.item.symbol"></token-link></td>
+          <td>{{ slot.item.symbol }}</td>
           <td class="text-right">{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
           <td><span class="pull-right">
@@ -68,6 +68,19 @@ export default {
     getTokenImageLink (symbol) {
       return 'images/tokens/' + this.tokens[symbol].icon;
     },
+    toTokenDetails (symbol) {
+      const tokenInfo = this.tokens[symbol];
+      if (!tokenInfo) {
+        return;
+      }
+
+      this.$router.push({
+        name: 'token-details',
+        params: {
+          tokenAddr: tokenInfo.address
+        }
+      });
+    }
   },
 
   watch: {

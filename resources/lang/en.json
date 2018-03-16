@@ -54,6 +54,9 @@
       "label_volume": "Volume",
       "label_count": "Trades",
       "label_total": "Total"
+    },
+    "label": {
+      "to_burn": "To burn"
     }
   },
 

@@ -95,7 +95,7 @@
           },
           afterBody: (tooltipItem, data) => {
             const index = tooltipItem[0].index;
-            const label = this.$t('chart.title.label_total') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
+            const label = this.$t('chart.label.to_burn') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
               + ' KNC';
             return [label];
           }

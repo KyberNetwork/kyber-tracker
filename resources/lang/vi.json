@@ -54,6 +54,9 @@
       "label_volume": "Khối lượng giao dịch",
       "label_count": "Số giao dịch",
       "label_total": "Khối lượng giao dịch"
+    },
+    "label": {
+      "to_burn": "Sẽ đốt"
     }
   },
 

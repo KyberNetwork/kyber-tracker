@@ -33,7 +33,7 @@ module.exports = {
       "cmcId": "ethereum"
     },
     "KNC": {
-      "name": "KyberNetwork",
+      "name": "Kyber Network",
       "symbol": "KNC",
       "icon": "knc.svg",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
@@ -81,7 +81,7 @@ module.exports = {
       "cmcId": "power-ledger"
     },
     "MANA": {
-      "name": "Mana",
+      "name": "Decentraland",
       "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
       "symbol": "MANA",
       "icon": "mana.svg",
