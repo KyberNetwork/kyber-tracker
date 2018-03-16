@@ -52,10 +52,10 @@ a {
 }
 
 .search-button {
-  background-color: rgb(90,175,133) !important;
+  background-color: #192E3B !important;
 
   svg {
-    fill: #192E3B;
+    fill: #fff;
     vertical-align: middle;
     margin-top: -3px;
     margin-bottom: -3px;
@@ -248,7 +248,7 @@ btn {
 
 .home-pagination-block {
   float: right;
-  padding: 10px 0 0 0;
+  padding: 10px 0 10px 0;
   margin: 0;
 
   .page-item {
@@ -739,6 +739,11 @@ html {
 .token-link {
   cursor: pointer;
   color: #2A9A8D;
+}
+
+.token-link:hover {
+  color: #3ee6c1;
+  text-decoration: underline;
 }
 
 .topbar-value {

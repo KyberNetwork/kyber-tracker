@@ -57,7 +57,7 @@
           }
         };
 
-        const yAxeScale = {
+        const xAxeScale = {
           ticks: {
             callback: (label, index, labels) => {
               return '$' + util.numberWithCommas(label);
@@ -75,7 +75,7 @@
             callbacks,
           },
           scales: {
-            yAxes: [yAxeScale],
+            xAxes: [xAxeScale],
           },
           legend: {
             display: false
