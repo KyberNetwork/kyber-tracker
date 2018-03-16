@@ -4,6 +4,10 @@
   "description": "Kyber Tracker",
   "main": "index.js",
   "scripts": {
+    "init-db": "knex migrate:latest",
+    "build-dev": "NODE_ENV=development webpack",
+    "build-prod": "NODE_ENV=production webpack",
+    "watch": "webpack --watch",
     "start": "pm2 start app.json",
     "test": "LOG_LEVEL=ERROR NODE_ENV=test node_modules/.bin/mocha -R spec --timeout 30000 test/index.js"
   },
@@ -32,7 +36,7 @@
     "randomstring": "1.1.5",
     "require-directory": "^2.1.1",
     "scss-loader": "0.0.1",
-    "sota-core": "2.0.18",
+    "sota-core": "2.0.19",
     "superagent": "^3.8.2",
     "web3": "1.0.0-beta.30",
     "ws": "3.2.0"
