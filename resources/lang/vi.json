@@ -70,7 +70,9 @@
     "fee_to_wallet": "Phí giao dịch",
     "fee_to_burn": "Phí sẽ đốt",
     "exchange": "Trao đổi",
-    "msg_no_result": "Không tìm thấy giao dịch nào."
+    "msg_no_result": "Không tìm thấy giao dịch nào.",
+    "exchange_from" : "Đổi từ",
+    "exchange_to" : "Đổi sang"
   },
 
   "trade_detail": {

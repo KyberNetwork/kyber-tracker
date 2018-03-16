@@ -72,7 +72,9 @@
     "fee_to_wallet": "Wallet Fees",
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
-    "msg_no_result": "There's no trade found."
+    "msg_no_result": "There's no trade found.",
+    "exchange_from" : "Exchange from",
+    "exchange_to" : "Exchange to"
   },
 
   "trade_detail": {
