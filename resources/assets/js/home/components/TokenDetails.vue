@@ -57,7 +57,7 @@
         }
 
         this.symbol = this.getFilterTokenSymbol();
-        this.refreshChartsData(this.selectedPeriod, this.selectedInterval, this.symbol);
+        this.refreshChartsData();
         this.$refs.datatable.fetch();
       },
       selectPeriod (period, interval) {
@@ -72,7 +72,7 @@
       },
       refreshChartsData () {
         if (this.$refs.chartVolume) {
-          this.$refs.chartVolume.refresh(this.selectedPeriod, this.selectedInterval);
+          this.$refs.chartVolume.refresh(this.selectedPeriod, this.selectedInterval, this.symbol);
         }
       },
     },

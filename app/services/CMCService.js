@@ -121,6 +121,7 @@ module.exports = BaseService.extends({
   },
 
   _getHistoricalPrice: function (tokenInfo, fromTime, toTime, callback) {
+    logger.debug(`_getHistoricalPrice tokenInfo=` + JSON.stringify(tokenInfo));
     const symbol = tokenInfo.symbol;
     const cmcId = tokenInfo.cmcId;
     const timeInMillis = (fromTime + toTime) / 2;

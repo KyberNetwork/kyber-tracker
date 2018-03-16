@@ -65,8 +65,8 @@ export default {
         }]
       };
     },
-    refresh (period, interval) {
-      AppRequest.getNetworkVolume(period, interval, (err, volumeData) => {
+    refresh (period, interval, tokenSymbol=null) {
+      AppRequest.getNetworkVolume(period, interval, tokenSymbol, (err, volumeData) => {
         const ctx = document.getElementById(this.elementId);
         const data = this._buildChartData(volumeData, interval);
         const options = this._getChartOptions(interval);
