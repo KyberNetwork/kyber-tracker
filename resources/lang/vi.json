@@ -91,8 +91,8 @@
 
   "token_list": {
     "title": "Danh sách tokens",
-    "prev": "Trang trước",
-    "next": "Trang tiếp"
+    "prev": " < ",
+    "next": " > "
   },
 
   "search_page": {

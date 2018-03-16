@@ -596,6 +596,63 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+@media (min-width: 576px) and (max-width: 730px) {
+  .vdp-datepicker__calendar {
+    left: -80px;
+  }
+}
+
+@media (max-width: 576px){
+  .datepicker-container {
+    span {
+      display: block;
+      float: left;
+      clear: left;
+    }
+
+    .vdp-datepicker {
+      display: block;
+      float: right;
+      position: static;
+      margin: 0;
+    }
+
+    .vdp-datepicker__calendar {
+      left: 10px !important;
+      right: 10px !important;
+      width: calc(100% - 20px) !important;
+
+      .cell {
+        margin: 0;
+        padding: 0;
+        clear: none;
+      }
+
+      header {
+        clear: both;
+        text-align: center;
+      }
+
+      .next {
+        clear: none;
+        float: right;
+      }
+
+      .prev {
+        clear: none;
+        float: left;
+      }
+
+      .up {
+        clear: none;
+        text-align: center;
+      }
+    }
+  }
+
+
+}
+
 .image-inline-td {
   display: inline-block;
   width: 26px;
