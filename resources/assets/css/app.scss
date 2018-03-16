@@ -206,7 +206,7 @@ btn {
 }
 
 .no-margin {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .no-padding {
@@ -283,6 +283,14 @@ btn {
 
 .mt-20 {
   margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.p-20 {
+  padding: 20px 0;
 }
 
 .k {
@@ -490,7 +498,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 .heading-summary {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 10px 0;
   width: 100%;
   overflow: hidden;
   line-height: 18px;
@@ -513,11 +521,17 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .heading-summary{
     li {
       width: 50%;
-      margin: 0;
+      margin: 5px 0;
     }
   }
 }
 
+
+@media (min-width: 576px) and (max-width: 779px) {
+  .heading-summary {
+    padding-left: 15px;
+  }
+}
 
 @media (max-width: 575px){
   .heading-summary{
@@ -532,6 +546,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .search-box-container {
     width: calc(100% - 80px);
   }
+
+  .second-heading-bar {
+    padding: 15px;
+  }
+
 }
 
 @media (min-width: 576px){

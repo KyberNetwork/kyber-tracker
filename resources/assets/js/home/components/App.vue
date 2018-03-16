@@ -1,30 +1,28 @@
 <template>
   <div id="wrapper">
     <div id="page-content">
-      <b-navbar toggleable="md" type="dark" class="heading-bar">
+      <b-navbar toggleable="md" type="dark" class="heading-bar no-padding">
         <div class="container p-relative">
-          <div class="row">
-            <div class="col">
-              <ul class="heading-summary">
-                <li>
-                  <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
-                  {{ networkVolume }}
-                </li>
-                <li>
-                  <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-                  {{ tradeCount }}
-                </li>
-                <li>
-                  <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
-                  {{ totalBurnedFee }}
-                </li>
-                <li>
-                  <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                  <span>{{ kncPrice }} </span>
-                  <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
-                </li>
-              </ul>
-            </div>
+          <div class="col no-padding">
+            <ul class="heading-summary">
+              <li>
+                <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
+                {{ networkVolume }}
+              </li>
+              <li>
+                <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
+                {{ tradeCount }}
+              </li>
+              <li>
+                <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
+                {{ totalBurnedFee }}
+              </li>
+              <li>
+                <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
+                <span>{{ kncPrice }} </span>
+                <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
+              </li>
+            </ul>
           </div>
 
           <div class="float-lang-bar cursor-pointer">
@@ -44,7 +42,7 @@
         </div>
       </b-navbar>
 
-      <b-navbar toggleable="sm" type="dark" class="second-heading-bar">
+      <b-navbar toggleable="sm" type="dark" class="second-heading-bar no-padding">
         <div class="container">
           <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">

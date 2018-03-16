@@ -74,8 +74,8 @@
       return {
         pageSize: 10,
         tokens: _.keyBy(_.values(network.tokens), 'symbol'),
-        selectedPeriod: 'H24',
-        selectedInterval: 'H1',
+        selectedPeriod: 'D30',
+        selectedInterval: 'D1',
         volumeChart: undefined,
         feeToBurnChart: undefined,
         topTokenChart: undefined,

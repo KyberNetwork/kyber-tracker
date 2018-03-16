@@ -5,7 +5,7 @@ const dotenv = require('dotenv').config('./.env');
 const webpack = require('webpack');
 
 module.exports = () => {
-  const minimize = dotenv.parsed.NODE_ENV !== 'development';
+  const minimize = process.env.NODE_ENV === 'production';
   let plugins;
   if(minimize){
     plugins = [
