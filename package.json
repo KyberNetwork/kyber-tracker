@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "init-db": "knex migrate:latest",
+    "seeds": "node bin/generate_data.js",
     "build-dev": "NODE_ENV=development webpack",
     "build-prod": "NODE_ENV=production webpack",
     "watch": "webpack --watch",

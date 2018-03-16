@@ -125,6 +125,10 @@ module.exports = BaseService.extends({
     const cmcId = tokenInfo.cmcId;
     const timeInMillis = (fromTime + toTime) / 2;
 
+    if (!cmcId) {
+      return callback(`_getHistoricalPrice invalid tokenInfo: ` + JSON.stringify(tokenInfo));
+    }
+
     request
       .get(`https://graphs2.coinmarketcap.com/currencies/${cmcId}/${fromTime}/${toTime}`)
       .end((err, response) => {

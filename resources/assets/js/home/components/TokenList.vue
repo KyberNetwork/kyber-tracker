@@ -14,7 +14,7 @@
 
       <template slot="body" scope="slot">
         <tr @click="toTokenDetails(slot.item.symbol)">
-          <td class="text-right">{{ (slot.index + 1) }}</td>
+          <td class="text-right pr-10">{{ (slot.index + 1) }}</td>
           <td><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> {{ slot.item.name }}</td>
           <td>{{ slot.item.symbol }}</td>
           <td class="text-right">{{ formatVolumeUSD(slot.item) }}</td>
