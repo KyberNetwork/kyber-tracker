@@ -6,7 +6,7 @@
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
-      <div v-if="!isHideDatepicker" class="datepicker-container mb-20">
+      <div v-if="!isHideDatepicker" class="datepicker-container">
         <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
@@ -45,7 +45,7 @@
         >
       </paginate>
 
-      <div class="clear p-20">
+      <div class="clear p-10">
         {{ getSearchResultMessage() }}
       </div>
 

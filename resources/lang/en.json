@@ -73,8 +73,8 @@
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
-    "exchange_from" : "Exchange from",
-    "exchange_to" : "Exchange to"
+    "exchange_from" : "Exchange From",
+    "exchange_to" : "Exchange To"
   },
 
   "trade_detail": {
