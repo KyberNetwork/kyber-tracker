@@ -159,7 +159,7 @@ module.exports = BaseService.extends({
             return callback(`Cannot get price of [${symbol}] at [${timeInMillis}]`);
           }
 
-          return this._getHistoricalPrice(cmcId, fromTime - CMC_GRAPH_API_TICKER, toTime + CMC_GRAPH_API_TICKER, callback);
+          return this._getHistoricalPrice(tokenInfo, fromTime - CMC_GRAPH_API_TICKER, toTime + CMC_GRAPH_API_TICKER, callback);
         }
 
         logger.debug(`Price of [${cmcId}] at [${timeInMillis}] is: $${result.price_usd}`);
