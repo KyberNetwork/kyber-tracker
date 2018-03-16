@@ -26,17 +26,17 @@
         </b-button-group>
       </div>
       <b-tabs card>
-        <b-tab no-body @click="onSelectTab('chartVolume')" :title="$t('chart.title.network_volume')" active>
+        <b-tab @click="onSelectTab('chartVolume')" :title="$t('chart.title.network_volume')" active>
           <chart-volume ref="chartVolume"
             :elementId="'chart-volume'">
           </chart-volume>
         </b-tab>
-        <b-tab no-body @click="onSelectTab('chartFee')" :title="$t('chart.title.fee_to_burn')">
+        <b-tab @click="onSelectTab('chartFee')" :title="$t('chart.title.fee_to_burn')">
           <chart-fee ref="chartFee"
             :elementId="'chart-fee'">
           </chart-fee>
         </b-tab>
-        <b-tab no-body @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
+        <b-tab @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
           <chart-token ref="chartToken"
             :elementId="'chart-token'">
           </chart-token>
