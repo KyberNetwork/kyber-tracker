@@ -490,7 +490,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 .heading-summary {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 10px 0;
   width: 100%;
   overflow: hidden;
   line-height: 18px;
@@ -513,7 +513,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .heading-summary{
     li {
       width: 50%;
-      margin: 0;
+      margin: 5px 0;
     }
   }
 }
@@ -537,7 +537,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
   .search-box-container {
     width: calc(100% - 80px);
-    padding-right: 15px;
+  }
+
+  .second-heading-bar {
+    padding: 15px;
   }
 
 }
