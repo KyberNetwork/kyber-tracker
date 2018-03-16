@@ -7,20 +7,20 @@
             <ul class="heading-summary">
               <li>
                 <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
-                {{ networkVolume }}
+                <span class="topbar-value">{{ networkVolume }}</span>
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-                {{ tradeCount }}
+                <span class="topbar-value">{{ tradeCount }}</span>
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
-                {{ totalBurnedFee }}
+                <span class="topbar-value">{{ totalBurnedFee }}</span>
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                <span>{{ kncPrice }} </span>
-                <span :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
+                <span class="topbar-value">{{ kncPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
               </li>
             </ul>
           </div>
@@ -102,9 +102,9 @@
         <div class="row">
           <div class="col footer-menu">
             <ul class="links">
-              <li><router-link to="/">Home</router-link></li>
-              <li><a href="mailto:support@kyber.network">Product Feedback</a></li>
-              <li><a href="https://kybernetwork.zendesk.com/" target="_blank">Help</a></li>
+              <li><router-link to="/">{{ $t('main_page.home') }}</router-link></li>
+              <li><a href="mailto:support@kyber.network">{{ $t('main_page.feedback') }}</a></li>
+              <li><a href="https://kybernetwork.zendesk.com/" target="_blank">{{ $t('main_page.help') }}</a></li>
             </ul>
             ©️ 2018 Kyber Network
           </div>

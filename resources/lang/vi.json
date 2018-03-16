@@ -5,11 +5,11 @@
     "exchange": "Exchange",
     "name": "Tên",
     "symbol": "Ký hiệu",
-    "volume_24h_usd": "Lượng giao dịch 24h (USD)",
-    "volume_24h_token": "Lượng giao dịch 24h (Token)",
+    "volume_24h_usd": "Lượng giao dịch 24H (USD)",
+    "volume_24h_token": "Lượng giao dịch 24H (Token)",
     "search": "Tìm kiếm",
     "network_activity": "Danh sách giao dịch",
-    "searchbox_placeholder" : "Tx Hash / Wallet Address"
+    "searchbox_placeholder" : "Tx Hash / địa chỉ ví"
   },
 
   "page_title": {
@@ -100,6 +100,12 @@
     "title": "Kết quả tìm kiếm",
     "no_result_msg": "Không tìm thấy kết quả nào cho từ khoá {0}",
     "result_msg": "Đã tìm thấy {0} kết quả cho từ khoá {1}"
+  },
+
+  "main_page": {
+    "home": "Trang chủ",
+    "feedback": "Phản hồi",
+    "help": "Trợ giúp"
   }
 
 }

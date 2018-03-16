@@ -55,7 +55,7 @@ a {
   background-color: rgb(90,175,133) !important;
 
   svg {
-    fill: #fff;
+    fill: #192E3B;
     vertical-align: middle;
     margin-top: -3px;
     margin-bottom: -3px;
@@ -734,4 +734,13 @@ html {
 #page-content {
   padding-bottom: 115px;
   overflow-x: hidden;
+}
+
+.token-link {
+  cursor: pointer;
+  color: #2A9A8D;
+}
+
+.topbar-value {
+  font-size: 13px;
 }

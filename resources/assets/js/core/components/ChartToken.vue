@@ -26,6 +26,7 @@
     },
     methods: {
       _buildChartData(ret) {
+        ret = ret.slice(0, 5);
         const labels = [];
         const dataset = [];
 
@@ -113,7 +114,7 @@
           }
 
           this.chartInstance = new Chart(ctx, {
-            type: 'bar',
+            type: 'horizontalBar',
             data: data,
             options: options,
           });
