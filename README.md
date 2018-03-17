@@ -3,7 +3,7 @@
 ## Setup environment and run the app
 ### Install system dependencies
 - NodeJS v8+
-- MariaDB v10.1+/MySQL v5.7+
+- MariaDB v10+ (may use MySQL v5.7+ instead)
 
 ### Install NodeJS global packages
 ```
