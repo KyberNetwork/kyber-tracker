@@ -9,6 +9,6 @@
       "name"              : "kyber-crawler",
       "script"            : "crawl.js",
       "watch"             : false
-    },
+    }
   ]
 }

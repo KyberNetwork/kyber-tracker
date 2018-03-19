@@ -11,6 +11,9 @@ module.exports = {
     '/search'                       : ['TradeController.search'],
     '/marker_address/count'         : ['TradeController.countMarkerAddress'],
     '/marker_address/sum'           : ['TradeController.sumMarkerAddress'],
+
+    '/currencies/convertiblePairs'  : ['CurrenciesController.getConvertiblePairs'],
+    '/currencies/:base'             : ['CurrenciesController.getConvertiblePairs'],
   },
   POST: {
     // Implement me.
