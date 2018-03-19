@@ -11,6 +11,7 @@ const web3                  = Utils.getWeb3Instance();
 const abiDecoder            = Utils.getKyberABIDecoder();
 
 let LATEST_PROCESSED_BLOCK = 0;
+const REQUIRED_CONFIRMATION = 7;
 
 /**
  * Traversal through all blocks from the moment contract was deployed
@@ -53,7 +54,7 @@ class KyberTradeCrawler {
       LATEST_PROCESSED_BLOCK = blockNumber;
 
       // Finish crawling
-      if (blockNumber > ret.currentBlockNumber) {
+      if (blockNumber > ret.currentBlockNumber - REQUIRED_CONFIRMATION) {
         return callback(null, null);
       }
 

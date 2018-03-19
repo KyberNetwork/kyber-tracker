@@ -6,7 +6,11 @@
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
-      <div v-if="!isHideDatepicker" class="datepicker-container mb-20">
+      <div class="clear p-10">
+        {{ getSearchResultMessage() }}
+      </div>
+
+      <div v-if="!isHideDatepicker" class="datepicker-container">
         <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
@@ -45,11 +49,7 @@
         >
       </paginate>
 
-      <div class="clear p-20">
-        {{ getSearchResultMessage() }}
-      </div>
-
-      <div v-if="rows.length > 0" class="table-responsive-wraper clear">
+      <div v-if="rows.length > 0" class="table-responsive-wraper clear pt-10">
         <table class="table table-hover table-responsive">
           <thead>
             <tr>
@@ -74,7 +74,7 @@
               <td>{{ row.makerTokenSymbol }}</td>
               <td class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
               <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
-              <td><span class="pull-right">
+              <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td>
             </tr>

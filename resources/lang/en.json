@@ -20,7 +20,7 @@
     "token_list": "Traded Tokens",
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
-    "search": "Search Results"
+    "search": "Wallet Details"
   },
 
   "navigator": {
@@ -29,7 +29,7 @@
     "tokens": "Tokens",
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
-    "search": "Search Results"
+    "search": "Wallet Details"
   },
 
   "filter": {
@@ -69,12 +69,12 @@
     "rate": "Rate",
     "description": "Description",
     "amount": "Amount",
-    "fee_to_wallet": "Wallet Fees",
+    "fee_to_wallet": "Wallet Commission",
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
-    "exchange_from" : "Exchange from",
-    "exchange_to" : "Exchange to"
+    "exchange_from" : "Exchange From",
+    "exchange_to" : "Exchange To"
   },
 
   "trade_detail": {
@@ -86,7 +86,7 @@
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
     "rate": "Rate",
-    "fee_to_wallet": "Wallet Fees",
+    "fee_to_wallet": "Wallet Commission",
     "fee_to_burn": "Fees To Burn",
     "for": " for "
   },
@@ -94,13 +94,20 @@
   "token_list": {
     "title": "Trade Tokens",
     "prev": "Prev",
-    "next": "Next"
+    "next": "Next",
+    "no" : "No."
   },
 
   "search_page": {
-    "title": "Search Results",
+    "title": "Wallet Details",
     "no_result_msg": "No results found for {0}",
     "result_msg": "{0} results found for {1}"
+  },
+
+  "main_page": {
+    "home": "Home",
+    "feedback": "Product Feedback",
+    "help": "Help"
   }
 
 }

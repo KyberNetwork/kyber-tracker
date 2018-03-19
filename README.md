@@ -3,7 +3,7 @@
 ## Setup environment and run the app
 ### Install system dependencies
 - NodeJS v8+
-- MariaDB v10.1+/MySQL v5.7+
+- MariaDB v10+ (may use MySQL v5.7+ instead)
 
 ### Install NodeJS global packages
 ```
@@ -25,6 +25,7 @@ $ cp .env.example .env // Then update the valid setting values in the .env file
 ### Initialize the database schema and seeds data
 ```
 $ npm run init-db
+$ npm run seeds
 ```
 
 ### Run the app

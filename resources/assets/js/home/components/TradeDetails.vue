@@ -20,7 +20,7 @@
       <b-col sm="3"><label><b>{{ $t("trade_detail.taker_token") }}</b></label></b-col>
       <b-col sm="9">
         <span>{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
-        <token-link :symbol="record.takerTokenSymbol"></token-link>
+        <span>{{ record.takerTokenSymbol }}</span>
         <span>(${{ formatFiatCurrency(record.takerTotalUsd) }})</span>
       </b-col>
     </b-row>
@@ -29,7 +29,7 @@
       <b-col sm="3"><label><b>{{ $t("trade_detail.maker_token") }}</b></label></b-col>
       <b-col sm="9">
         <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
-        <token-link :symbol="record.makerTokenSymbol"></token-link>
+        <span>{{ record.makerTokenSymbol }}</span>
         <span>(${{ formatFiatCurrency(record.makerTotalUsd) }})</span>
       </b-col>
     </b-row>
@@ -38,10 +38,10 @@
       <b-col sm="3"><label><b>{{ $t("trade_detail.rate") }}</b></label></b-col>
       <b-col sm="9">
         <span>1</span>
-        <span><token-link :symbol="record.takerTokenSymbol"></token-link></span>
+        <span><token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link></span>
         <span> {{ $t("trade_detail.for") }} </span>
         <span>{{ getRate(record) }}</span>
-        <span><token-link :symbol="record.makerTokenSymbol"></token-link></span>
+        <span><token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link></span>
       </b-col>
     </b-row>
 

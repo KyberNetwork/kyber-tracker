@@ -121,9 +121,14 @@ module.exports = BaseService.extends({
   },
 
   _getHistoricalPrice: function (tokenInfo, fromTime, toTime, callback) {
+    logger.debug(`_getHistoricalPrice tokenInfo=` + JSON.stringify(tokenInfo));
     const symbol = tokenInfo.symbol;
     const cmcId = tokenInfo.cmcId;
     const timeInMillis = (fromTime + toTime) / 2;
+
+    if (!cmcId) {
+      return callback(`_getHistoricalPrice invalid tokenInfo: ` + JSON.stringify(tokenInfo));
+    }
 
     request
       .get(`https://graphs2.coinmarketcap.com/currencies/${cmcId}/${fromTime}/${toTime}`)
@@ -155,7 +160,7 @@ module.exports = BaseService.extends({
             return callback(`Cannot get price of [${symbol}] at [${timeInMillis}]`);
           }
 
-          return this._getHistoricalPrice(cmcId, fromTime - CMC_GRAPH_API_TICKER, toTime + CMC_GRAPH_API_TICKER, callback);
+          return this._getHistoricalPrice(tokenInfo, fromTime - CMC_GRAPH_API_TICKER, toTime + CMC_GRAPH_API_TICKER, callback);
         }
 
         logger.debug(`Price of [${cmcId}] at [${timeInMillis}] is: $${result.price_usd}`);

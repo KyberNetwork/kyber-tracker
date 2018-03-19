@@ -26,6 +26,7 @@
     },
     methods: {
       _buildChartData(ret) {
+        ret = ret.slice(0, 5);
         const labels = [];
         const dataset = [];
 
@@ -56,7 +57,7 @@
           }
         };
 
-        const yAxeScale = {
+        const xAxeScale = {
           ticks: {
             callback: (label, index, labels) => {
               return '$' + util.numberWithCommas(label);
@@ -68,13 +69,13 @@
         return {
           tooltips: {
             mode: 'index',
-            axis: 'x',
+            axis: 'y',
             intersect: false,
             backgroundColor: 'rgba(25, 46, 59, 0.7)',
             callbacks,
           },
           scales: {
-            yAxes: [yAxeScale],
+            xAxes: [xAxeScale],
           },
           legend: {
             display: false
@@ -113,7 +114,7 @@
           }
 
           this.chartInstance = new Chart(ctx, {
-            type: 'bar',
+            type: 'horizontalBar',
             data: data,
             options: options,
           });
