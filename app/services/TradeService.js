@@ -215,6 +215,12 @@ module.exports = BaseService.extends({
           where: '1=1'
         }, next);
       },
+      feeToBurn: (next) => {
+        KyberTradeModel.sum('burn_fees', {
+          where: 'block_timestamp > ?',
+          params: [nowInSeconds - DAY_IN_SECONDS]
+        }, next);
+      },
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -224,12 +230,14 @@ module.exports = BaseService.extends({
       const feeInKNC = new BigNumber(ret.fee.toString()).div(Math.pow(10, 18));
       const feeInUSD = feeInKNC.times(ret.kncPrice);
       const totalBurnedFee = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
+      const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
         networkFee: '$' + feeInUSD.toFormat(2).toString(),
         tradeCount: ret.tradeCount,
         kncInfo: ret.kncInfo,
         totalBurnedFee: totalBurnedFee.toFormat(2).toString(),
+        feeToBurn: feeToBurn.toFormat(2).toString()
       };
 
       LocalCache.setSync(key, result, { ttl: Const.MINUTE_IN_MILLISECONDS });

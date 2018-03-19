@@ -15,7 +15,7 @@
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
-                <span class="topbar-value">{{ totalBurnedFee }}</span>
+                <span class="topbar-value">{{ feeToBurn }}</span>
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
@@ -144,6 +144,7 @@ export default {
       totalBurnedFee: '',
       searchString: '',
       pageTitle: '',
+      feeToBurn: '',
       breadcrumbsItems: [],
     };
   },
@@ -180,10 +181,13 @@ export default {
     },
     refresh () {
       AppRequest.getStats24h().then((stats) => {
+        console.log("+++++++++++++++++++++")
+        console.log(stats)
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
         this.totalBurnedFee = stats.totalBurnedFee + ' KNC';
+        this.feeToBurn = stats.feeToBurn + " KNC"
       });
 
       request

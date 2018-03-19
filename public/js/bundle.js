@@ -89534,6 +89534,7 @@ exports.default = {
       totalBurnedFee: '',
       searchString: '',
       pageTitle: '',
+      feeToBurn: '',
       breadcrumbsItems: []
     };
   },
@@ -89573,10 +89574,13 @@ exports.default = {
       var _this = this;
 
       _AppRequest2.default.getStats24h().then(function (stats) {
+        console.log("+++++++++++++++++++++");
+        console.log(stats);
         _this.networkVolume = stats.networkVolume;
         _this.networkFee = stats.networkFee;
         _this.tradeCount = stats.tradeCount;
         _this.totalBurnedFee = stats.totalBurnedFee + ' KNC';
+        _this.feeToBurn = stats.feeToBurn + " KNC";
       });
 
       _superagent2.default.get('https://api.coinmarketcap.com/v1/ticker/kyber-network/').then(function (res) {
@@ -92131,7 +92135,7 @@ var render = function() {
                     _c("br"),
                     _vm._v(" "),
                     _c("span", { staticClass: "topbar-value" }, [
-                      _vm._v(_vm._s(_vm.totalBurnedFee))
+                      _vm._v(_vm._s(_vm.feeToBurn))
                     ])
                   ]),
                   _vm._v(" "),
