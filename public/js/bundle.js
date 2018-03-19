@@ -89574,8 +89574,6 @@ exports.default = {
       var _this = this;
 
       _AppRequest2.default.getStats24h().then(function (stats) {
-        console.log("+++++++++++++++++++++");
-        console.log(stats);
         _this.networkVolume = stats.networkVolume;
         _this.networkFee = stats.networkFee;
         _this.tradeCount = stats.tradeCount;

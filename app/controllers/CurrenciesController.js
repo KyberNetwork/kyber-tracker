@@ -30,4 +30,20 @@ module.exports = AppController.extends({
     CurrenciesService.getConvertiblePairs(this.ok.bind(this, req, res));
   },
 
+  getCurrencyInfo: function (req, res) {
+
+    const [err, params] = new Checkit({
+      token: ['string', 'required'],
+      fromCurrencyCode: ['string', 'required']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const CurrenciesService = req.getService('CurrenciesService');
+    CurrenciesService.getCurrencyInfo(params, this.ok.bind(this, req, res));
+  }
+
 });

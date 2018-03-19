@@ -51,6 +51,52 @@ module.exports = BaseService.extends({
       });
   },
 
+  getCurrentRate: function (symbol, base, callback) {
+    const key = 'price-' + symbol;
+    const cachedData = LocalCache.getSync(key);
+
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    if (!symbol || typeof symbol !== 'string') {
+      return callback(`Cannot get price of invalid symbol: ${symbol}`);
+    }
+
+    if (!base || typeof base !== 'string') {
+      return callback(`Cannot get price of invalid base: ${base}`);
+    }
+
+    const tokenInfo = network.tokens[symbol];
+    if (!tokenInfo) {
+      return callback(`Cannot find token info of symbol: ${symbol}`);
+    }
+
+    request
+      .get(`https://production-cache.kyber.network/getRate`)
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if(!response || !response.body || !response.body.data || !response.body.data.length){
+          return callback("cannot get response data");
+        }
+
+        let rateData = response.body.data.filter(x => {
+          return x.source == symbol && x.dest == base
+        })
+
+        if(!rateData && !rateData.length){
+          return callback(`Cannot get token rate: ${symbol}`);
+        }
+
+        logger.debug(`Current price of [${symbol}] is: $${rateData[0].rate}`);
+        LocalCache.setSync(key, rateData[0], { ttl: Const.MINUTE_IN_MILLISECONDS });
+        return callback(null, rateData[0]);
+      });
+  },
+
   getPriceOfAllTokens: function (callback) {
     const tokenSymbols = _.keys(network.tokens);
     const result = {};

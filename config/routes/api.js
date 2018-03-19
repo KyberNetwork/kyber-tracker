@@ -13,7 +13,7 @@ module.exports = {
     '/marker_address/sum'           : ['TradeController.sumMarkerAddress'],
 
     '/currencies/convertiblePairs'  : ['CurrenciesController.getConvertiblePairs'],
-    '/currencies/:base'             : ['CurrenciesController.getConvertiblePairs'],
+    '/currencies/:token'             : ['CurrenciesController.getCurrencyInfo'],
   },
   POST: {
     // Implement me.
