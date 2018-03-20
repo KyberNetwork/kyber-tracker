@@ -40,7 +40,7 @@
   "status_bar": {
     "network_volume": "KHỐI LƯỢNG GIAO DỊCH (24H)",
     "trades": "SỐ GIAO DỊCH (24H)",
-    "burned_fee": "PHÍ ĐÃ ĐỐT (24H)",
+    "burned_fee": "PHÍ SẼ ĐỐT (24H)",
     "knc_price": "GIÁ KNC"
   },
 
