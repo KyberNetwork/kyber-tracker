@@ -40,7 +40,7 @@
   "status_bar": {
     "network_volume": "NETWORK VOLUME (24H)",
     "trades": "TRADES (24H)",
-    "burned_fee": "Fees To Burn",
+    "burned_fee": "FEES TO BURN (24H)",
     "knc_price": "KNC PRICE"
   },
 
@@ -87,7 +87,7 @@
     "maker_amount": "Amount",
     "rate": "Rate",
     "fee_to_wallet": "Wallet Commission",
-    "fee_to_burn": "Fees To Burn",
+    "fee_to_burn": "Fees To Burn (24h)",
     "for": " for "
   },
 
@@ -101,8 +101,9 @@
   "search_page": {
     "title": "Wallet Details",
     "no_result_msg": "No results found for {0}",
-    "result_msg": "Transaction Count: {0}",
-    "total_usd_msg": "Total volume: {0}"
+    "result_msg": "Transaction count: {0}",
+    "total_usd_msg": "Total volume: {0}",
+    "result_title": "Address: {0}"
   },
 
   "main_page": {

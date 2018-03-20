@@ -40,7 +40,7 @@
   "status_bar": {
     "network_volume": "KHỐI LƯỢNG GIAO DỊCH (24H)",
     "trades": "SỐ GIAO DỊCH (24H)",
-    "burned_fee": "PHÍ ĐÃ ĐỐT",
+    "burned_fee": "PHÍ ĐÃ ĐỐT (24H)",
     "knc_price": "GIÁ KNC"
   },
 
@@ -85,7 +85,7 @@
     "maker_amount": "Số lượng",
     "rate": "Tỉ giá",
     "fee_to_wallet": "Phí giao dịch",
-    "fee_to_burn": "Phí sẽ đốt",
+    "fee_to_burn": "Phí sẽ đốt (24h)",
     "for": " đổi lấy "
   },
 
@@ -99,7 +99,9 @@
   "search_page": {
     "title": "Kết quả tìm kiếm",
     "no_result_msg": "Không tìm thấy kết quả nào cho từ khoá {0}",
-    "result_msg": "Đã tìm thấy {0} kết quả cho từ khoá {1}"
+    "result_msg": "Số lượng giao dịch: {0}",
+    "total_usd_msg": "Tổng khối lượng giao dịch: {0}",
+    "result_title": "Địa chỉ: {0}"
   },
 
   "main_page": {

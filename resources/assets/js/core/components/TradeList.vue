@@ -7,6 +7,10 @@
       </div>
 
       <div class="clear p-10">
+        <b v-html="getSearchResultTitle()" />
+      </div>
+
+      <div class="clear p-10">
         <div v-html="getSearchResultMessage()" />
       </div>
 
@@ -56,7 +60,7 @@
               <th>{{ $t("trade_list.date") }}</th>
               <th colspan="3" class="text-center">{{ $t("trade_list.exchange_from") }}</th>
               <th colspan="2" class="text-center">{{ $t("trade_list.exchange_to") }}</th>
-              <th colspan="2"class="text-center">{{ $t("trade_list.rate") }}</th>
+              <th colspan="2" class="text-center">{{ $t("trade_list.rate") }}</th>
               <th class="text-right">{{ $t("trade_list.fee_to_wallet") }}</th>
               <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th>
               <th></th>
@@ -137,10 +141,16 @@ export default {
         return this.$t("trade_list.msg_no_result");
       }
     },
+    getSearchResultTitle: {
+      type: Function,
+      default: () => ""
+    },
     fetch: {
       type: Function,
       default: function () {
         const params = this.getRequestParams();
+        console.log("++++++++++++++++++")
+        console.log(this.currentPage)
         AppRequest
           .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
             const data = res.data;
@@ -235,7 +245,6 @@ export default {
     searchFromDate (val) {
       const fromDate = val ? val.getTime() : 0;
       const toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
-
       if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
         window.EventBus.$emit('EVENT_COMMON_ERROR', `From-date must be equal or less than to-date`);
         window.setTimeout(() => {
@@ -252,7 +261,6 @@ export default {
     searchToDate (val) {
       const toDate = val ? val.getTime() : 0;
       const fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
-
       if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
         window.EventBus.$emit('EVENT_COMMON_ERROR', `To-date must be equal or greater than from-date`);
         window.setTimeout(() => {

@@ -92969,12 +92969,20 @@ exports.default = {
         return this.$t("trade_list.msg_no_result");
       }
     },
+    getSearchResultTitle: {
+      type: Function,
+      default: function _default() {
+        return "";
+      }
+    },
     fetch: {
       type: Function,
       default: function _default() {
         var _this = this;
 
         var params = this.getRequestParams();
+        console.log("++++++++++++++++++");
+        console.log(this.currentPage);
         _AppRequest2.default.getTrades(this.currentPage, this.pageSize || 20, params, function (err, res) {
           var data = res.data;
           var pagination = res.pagination;
@@ -93071,7 +93079,6 @@ exports.default = {
 
       var fromDate = val ? val.getTime() : 0;
       var toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
-
       if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
         window.EventBus.$emit('EVENT_COMMON_ERROR', 'From-date must be equal or less than to-date');
         window.setTimeout(function () {
@@ -93090,7 +93097,6 @@ exports.default = {
 
       var toDate = val ? val.getTime() : 0;
       var fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
-
       if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
         window.EventBus.$emit('EVENT_COMMON_ERROR', 'To-date must be equal or greater than from-date');
         window.setTimeout(function () {
@@ -93106,6 +93112,10 @@ exports.default = {
     }
   }
 }; //
+//
+//
+//
+//
 //
 //
 //
@@ -96742,6 +96752,12 @@ var render = function() {
               ])
             ])
           : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "clear p-10" }, [
+          _c("b", {
+            domProps: { innerHTML: _vm._s(_vm.getSearchResultTitle()) }
+          })
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "clear p-10" }, [
           _c("div", {
@@ -112118,7 +112134,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -112183,46 +112199,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 exports.default = {
-  props: {
-    isHideDatepicker: {
-      type: Boolean,
-      default: false
-    }
-  },
-
   data: function data() {
     return {
       resultCount: 0,
       totalUsd: 0,
       searchFromDate: null,
       searchToDate: null,
-      highlightedToday: {
-        dates: [new Date()]
-      },
-      disabledFromDates: {
-        //
-      },
-      disabledToDates: {
-        //
-      },
       tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'address')
     };
   },
@@ -112238,32 +112223,20 @@ exports.default = {
     getFilterTokenSymbol: function getFilterTokenSymbol() {
       return undefined;
     },
-    getSearchResultMessage: function getSearchResultMessage() {
-      // if (!this.resultCount) {
-      //   return this.$t('search_page.no_result_msg', [this.$route.query.q]);
-      // }
-
-      return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) + '</br>' + this.$t('search_page.total_usd_msg', [this.totalUsd]) + " USD" + '</span>';
-      // <div>
-      //   <span> {{resultMsg}} </span> 
-      //   <br />
-      //   <span> {{totalMsg}} USD </span>
-      // </div>
-
-      // return this.$t('search_page.result_msg', [this.resultCount]);
+    getSearchResultTitle: function getSearchResultTitle() {
+      return this.$t('search_page.result_title', [this.$route.query.q]);
     },
-
-    // getTotalUsdMessage (){
-    //   return this.$t('search_page.total_usd_msg', [this.totalUsd]);
-    // },
+    getSearchResultMessage: function getSearchResultMessage() {
+      return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) + '</br>' + this.$t('search_page.total_usd_msg', [this.totalUsd]) + " USD" + '</span>';
+    },
     requestSearch: function requestSearch() {
       var _this = this;
 
       var currentPage = this.$refs.datatable.currentPage;
       var pageSize = this.$refs.datatable.pageSize || 20;
       var q = this.$route.query.q;
-      var fromDate = this.searchFromDate ? (0, _moment2.default)(this.searchFromDate).startOf('day').unix() : undefined;
-      var toDate = this.searchToDate ? (0, _moment2.default)(this.searchToDate).endOf('day').unix() : undefined;
+      var fromDate = this.$refs.datatable.searchFromDate ? (0, _moment2.default)(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined;
+      var toDate = this.$refs.datatable.searchToDate ? (0, _moment2.default)(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined;
 
       _AppRequest2.default.searchTrades(q, currentPage, pageSize, fromDate, toDate, function (err, res) {
         var data = res.data;
@@ -112283,13 +112256,6 @@ exports.default = {
           _this.resultCount = 0;
         }
       });
-    },
-    formatDatepicker: function formatDatepicker(date) {
-      if (_util2.default.getLocale() === 'vi') {
-        return (0, _moment2.default)(date).format('DD/MM/YYYY');
-      } else {
-        return (0, _moment2.default)(date).format('DD MMM YYYY');
-      }
     }
   },
 
@@ -112302,44 +112268,6 @@ exports.default = {
   watch: {
     '$route.query': function $routeQuery() {
       this.refresh();
-    },
-    searchFromDate: function searchFromDate(val) {
-      var _this2 = this;
-
-      var fromDate = val ? val.getTime() : 0;
-      var toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
-
-      if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
-        window.EventBus.$emit('EVENT_COMMON_ERROR', 'From-date must be equal or less than to-date');
-        window.setTimeout(function () {
-          _this2.searchFromDate = null;
-        });
-        return;
-      }
-
-      window.setTimeout(function () {
-        _this2.disabledToDates = { to: _this2.searchFromDate };
-        _this2.refresh();
-      });
-    },
-    searchToDate: function searchToDate(val) {
-      var _this3 = this;
-
-      var toDate = val ? val.getTime() : 0;
-      var fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
-
-      if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
-        window.EventBus.$emit('EVENT_COMMON_ERROR', 'To-date must be equal or greater than from-date');
-        window.setTimeout(function () {
-          _this3.searchToDate = null;
-        });
-        return;
-      }
-
-      window.setTimeout(function () {
-        _this3.disabledFromDates = { from: _this3.searchToDate };
-        _this3.refresh();
-      });
     }
   },
 
@@ -112361,64 +112289,16 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
-      !_vm.isHideDatepicker
-        ? _c(
-            "div",
-            { staticClass: "datepicker-container" },
-            [
-              _c("span", [_vm._v(_vm._s(_vm.$t("filter.from")))]),
-              _vm._v(" "),
-              _c("datepicker", {
-                staticClass: "calendar-icon",
-                attrs: {
-                  name: "searchFromDate",
-                  language: _vm.locale,
-                  format: _vm.formatDatepicker,
-                  "clear-button": true,
-                  highlighted: _vm.highlightedToday,
-                  disabled: _vm.disabledFromDates
-                },
-                model: {
-                  value: _vm.searchFromDate,
-                  callback: function($$v) {
-                    _vm.searchFromDate = $$v
-                  },
-                  expression: "searchFromDate"
-                }
-              }),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.$t("filter.to")))]),
-              _vm._v(" "),
-              _c("datepicker", {
-                staticClass: "calendar-icon",
-                attrs: {
-                  name: "searchToDate",
-                  language: _vm.locale,
-                  format: _vm.formatDatepicker,
-                  "clear-button": true,
-                  highlighted: _vm.highlightedToday,
-                  disabled: _vm.disabledToDates
-                },
-                model: {
-                  value: _vm.searchToDate,
-                  callback: function($$v) {
-                    _vm.searchToDate = $$v
-                  },
-                  expression: "searchToDate"
-                }
-              })
-            ],
-            1
-          )
-        : _vm._e(),
-      _vm._v(" "),
       _c("trade-list", {
         ref: "datatable",
         attrs: {
           getFilterTokenSymbol: _vm.getFilterTokenSymbol,
           fetch: _vm.requestSearch,
-          isHideDatepicker: true,
-          getSearchResultMessage: _vm.getSearchResultMessage
+          isHideDatepicker: false,
+          getSearchResultMessage: _vm.getSearchResultMessage,
+          getSearchResultTitle: _vm.getSearchResultTitle,
+          searchFromDate: _vm.searchFromDate,
+          searchToDate: _vm.searchToDate
         }
       })
     ],
@@ -112440,13 +112320,13 @@ if (false) {
 /* 564 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Network Activity","searchbox_placeholder":"Tx Hash / Wallet Address"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Completed Trades","token_list":"Traded Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"NETWORK VOLUME (24H)","trades":"TRADES (24H)","burned_fee":"Fees To Burn","knc_price":"KNC PRICE"},"chart":{"title":{"network_volume":"Network Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"Trade Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Completed Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No results found for {0}","result_msg":"Transaction Count: {0}","total_usd_msg":"Total volume: {0}"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Network Activity","searchbox_placeholder":"Tx Hash / Wallet Address"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Completed Trades","token_list":"Traded Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"NETWORK VOLUME (24H)","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","knc_price":"KNC PRICE"},"chart":{"title":{"network_volume":"Network Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"Trade Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Completed Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn (24h)","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No results found for {0}","result_msg":"Transaction count: {0}","total_usd_msg":"Total volume: {0}","result_title":"Address: {0}"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
 
 /***/ }),
 /* 565 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Kết quả tìm kiếm"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Kết quả tìm kiếm"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ ĐÃ ĐỐT","knc_price":"GIÁ KNC"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi thành","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Kết quả tìm kiếm","no_result_msg":"Không tìm thấy kết quả nào cho từ khoá {0}","result_msg":"Đã tìm thấy {0} kết quả cho từ khoá {1}"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Kết quả tìm kiếm"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Kết quả tìm kiếm"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ ĐÃ ĐỐT (24H)","knc_price":"GIÁ KNC"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi thành","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt (24h)","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Kết quả tìm kiếm","no_result_msg":"Không tìm thấy kết quả nào cho từ khoá {0}","result_msg":"Số lượng giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch: {0}","result_title":"Địa chỉ: {0}"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
 
 /***/ }),
 /* 566 */
