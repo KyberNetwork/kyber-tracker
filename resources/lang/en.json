@@ -69,7 +69,7 @@
     "rate": "Rate",
     "description": "Description",
     "amount": "Amount",
-    "fee_to_wallet": "Wallet Commission",
+    "fee_to_wallet": "Partner commision",
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
@@ -86,7 +86,7 @@
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
     "rate": "Rate",
-    "fee_to_wallet": "Wallet Commission",
+    "fee_to_wallet": "Partner commision",
     "fee_to_burn": "Fees To Burn (24h)",
     "for": " for "
   },
@@ -104,7 +104,7 @@
     "result_msg": "Transaction count: {0}",
     "total_usd_msg": "Total volume: {0}",
     "result_title": "Address: {0}",
-    "total_fee": "Total wallet commition: {0}"
+    "total_fee": "Total partner commision: {0}"
   },
 
   "main_page": {
