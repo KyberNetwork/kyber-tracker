@@ -103,7 +103,8 @@
     "no_result_msg": "No results found for {0}",
     "result_msg": "Transaction count: {0}",
     "total_usd_msg": "Total volume: {0}",
-    "result_title": "Address: {0}"
+    "result_title": "Address: {0}",
+    "total_fee": "Total wallet commition: {0}"
   },
 
   "main_page": {

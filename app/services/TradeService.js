@@ -317,6 +317,12 @@ module.exports = BaseService.extends({
           params: params,
         }, next);
       },
+      sumFee: (next) => {
+        KyberTradeModel.sum('taker_fee', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      }
       // totalUSDVolume: (next) => {
       //   KyberTradeModel.find({
       //     columns: sumColumn,
@@ -337,6 +343,7 @@ module.exports = BaseService.extends({
           totalCount: ret.count,
           takerUsds: ret.takerUsds,
           makerUsds: ret.makerUsds,
+          sumFee: ret.sumFee,
           maxPage: Math.ceil(ret.count / limit)
         }
       });

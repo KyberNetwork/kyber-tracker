@@ -101,7 +101,8 @@
     "no_result_msg": "Không tìm thấy kết quả nào cho từ khoá {0}",
     "result_msg": "Số lượng giao dịch: {0}",
     "total_usd_msg": "Tổng khối lượng giao dịch: {0}",
-    "result_title": "Địa chỉ: {0}"
+    "result_title": "Địa chỉ: {0}",
+    "total_fee": "Tổng phí giao dịch: {0}"
   },
 
   "main_page": {

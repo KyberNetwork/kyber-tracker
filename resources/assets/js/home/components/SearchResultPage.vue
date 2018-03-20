@@ -30,6 +30,7 @@ export default {
     return {
       resultCount: 0,
       totalUsd: 0,
+      totalFee: 0,
       searchFromDate: null,
       searchToDate: null,
       tokens: _.keyBy(_.values(network.tokens), 'address')
@@ -54,6 +55,8 @@ export default {
       return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) 
             + '</br>' 
             + this.$t('search_page.total_usd_msg', [this.totalUsd]) + " USD"
+            + '</br>' 
+            + this.$t('search_page.total_fee', [this.totalFee]) + " KNC"
             + '</span>'
     },
     requestSearch () {
@@ -76,7 +79,8 @@ export default {
 
             if (pagination) {
               this.resultCount = pagination.totalCount;
-              this.totalUsd = new BigNumber(pagination.makerUsds).plus(new BigNumber(pagination.takerUsds)).toFormat(2)  ;
+              this.totalUsd = new BigNumber(pagination.makerUsds).plus(new BigNumber(pagination.takerUsds)).toFormat(2)
+              this.totalFee = pagination.sumFee;
               this.$refs.datatable.maxPage = pagination.maxPage;
             } else {
               this.resultCount = 0;
