@@ -67,7 +67,7 @@
     "rate": "Tỉ giá",
     "description": "Mô tả",
     "amount": "Số lượng",
-    "fee_to_wallet": "Phí giao dịch",
+    "fee_to_wallet": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt",
     "exchange": "Trao đổi",
     "msg_no_result": "Không tìm thấy giao dịch nào.",
@@ -84,7 +84,7 @@
     "maker_token": "Trao đổi thành",
     "maker_amount": "Số lượng",
     "rate": "Tỉ giá",
-    "fee_to_wallet": "Phí giao dịch",
+    "fee_to_wallet": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt (24h)",
     "for": " đổi lấy "
   },
@@ -102,7 +102,7 @@
     "result_msg": "Số lượng giao dịch: {0}",
     "total_usd_msg": "Tổng khối lượng giao dịch: {0}",
     "result_title": "Địa chỉ: {0}",
-    "total_fee": "Tổng phí giao dịch: {0}"
+    "total_fee": "Tổng phí tích hợp: {0}"
   },
 
   "main_page": {

@@ -86,7 +86,7 @@
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
     "rate": "Rate",
-    "fee_to_wallet": "Partner commision",
+    "fee_to_wallet": "Partner Commision",
     "fee_to_burn": "Fees To Burn (24h)",
     "for": " for "
   },
