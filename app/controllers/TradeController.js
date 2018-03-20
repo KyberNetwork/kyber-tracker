@@ -128,6 +128,8 @@ module.exports = AppController.extends({
       q: ['required', 'string'],
       page: ['natural'],
       limit: ['naturalNonZero'],
+      fromDate: ['natural'],
+      toDate: ['natural'],
     }).validateSync(req.allParams);
 
     if (err) {

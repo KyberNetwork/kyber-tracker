@@ -15,11 +15,11 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
-  searchTrades (q, page=0, limit=20, callback) {
+  searchTrades (q, page=0, limit=20, fromDate, toDate, callback) {
     const url = `/api/search`;
     return request
             .get(url)
-            .query({ q, limit, page })
+            .query({ q, limit, page, fromDate, toDate })
             .then((res) => {
               return callback(null, res.body);
             })

@@ -7,7 +7,7 @@
       </div>
 
       <div class="clear p-10">
-        {{ getSearchResultMessage() }}
+        <div v-html="getSearchResultMessage()" />
       </div>
 
       <div v-if="!isHideDatepicker" class="datepicker-container">

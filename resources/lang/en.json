@@ -40,7 +40,7 @@
   "status_bar": {
     "network_volume": "NETWORK VOLUME (24H)",
     "trades": "TRADES (24H)",
-    "burned_fee": "FEES BURNED",
+    "burned_fee": "Fees To Burn",
     "knc_price": "KNC PRICE"
   },
 
@@ -101,7 +101,8 @@
   "search_page": {
     "title": "Wallet Details",
     "no_result_msg": "No results found for {0}",
-    "result_msg": "{0} results found for {1}"
+    "result_msg": "Transaction Count: {0}",
+    "total_usd_msg": "Total volume: {0}"
   },
 
   "main_page": {

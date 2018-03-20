@@ -22809,10 +22809,12 @@ var AppRequest = function (_BaseRequest) {
     value: function searchTrades(q) {
       var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       var limit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
-      var callback = arguments[3];
+      var fromDate = arguments[3];
+      var toDate = arguments[4];
+      var callback = arguments[5];
 
       var url = '/api/search';
-      return _superagent2.default.get(url).query({ q: q, limit: limit, page: page }).then(function (res) {
+      return _superagent2.default.get(url).query({ q: q, limit: limit, page: page, fromDate: fromDate, toDate: toDate }).then(function (res) {
         return callback(null, res.body);
       }).catch(this._handleError);
     }
@@ -96742,7 +96744,9 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "clear p-10" }, [
-          _vm._v("\n      " + _vm._s(_vm.getSearchResultMessage()) + "\n    ")
+          _c("div", {
+            domProps: { innerHTML: _vm._s(_vm.getSearchResultMessage()) }
+          })
         ]),
         _vm._v(" "),
         !_vm.isHideDatepicker
@@ -112114,7 +112118,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -112175,12 +112179,50 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 exports.default = {
+  props: {
+    isHideDatepicker: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   data: function data() {
     return {
       resultCount: 0,
+      totalUsd: 0,
+      searchFromDate: null,
+      searchToDate: null,
+      highlightedToday: {
+        dates: [new Date()]
+      },
+      disabledFromDates: {
+        //
+      },
+      disabledToDates: {
+        //
+      },
       tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'address')
     };
   },
@@ -112191,27 +112233,39 @@ exports.default = {
       if (!this.$refs.datatable) {
         return;
       }
-
       this.$refs.datatable.fetch();
     },
     getFilterTokenSymbol: function getFilterTokenSymbol() {
       return undefined;
     },
     getSearchResultMessage: function getSearchResultMessage() {
-      if (!this.resultCount) {
-        return this.$t('search_page.no_result_msg', [this.$route.query.q]);
-      }
+      // if (!this.resultCount) {
+      //   return this.$t('search_page.no_result_msg', [this.$route.query.q]);
+      // }
 
-      return this.$t('search_page.result_msg', [this.resultCount, this.$route.query.q]);
+      return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) + '</br>' + this.$t('search_page.total_usd_msg', [this.totalUsd]) + " USD" + '</span>';
+      // <div>
+      //   <span> {{resultMsg}} </span> 
+      //   <br />
+      //   <span> {{totalMsg}} USD </span>
+      // </div>
+
+      // return this.$t('search_page.result_msg', [this.resultCount]);
     },
+
+    // getTotalUsdMessage (){
+    //   return this.$t('search_page.total_usd_msg', [this.totalUsd]);
+    // },
     requestSearch: function requestSearch() {
       var _this = this;
 
       var currentPage = this.$refs.datatable.currentPage;
       var pageSize = this.$refs.datatable.pageSize || 20;
       var q = this.$route.query.q;
+      var fromDate = this.searchFromDate ? (0, _moment2.default)(this.searchFromDate).startOf('day').unix() : undefined;
+      var toDate = this.searchToDate ? (0, _moment2.default)(this.searchToDate).endOf('day').unix() : undefined;
 
-      _AppRequest2.default.searchTrades(q, currentPage, pageSize, function (err, res) {
+      _AppRequest2.default.searchTrades(q, currentPage, pageSize, fromDate, toDate, function (err, res) {
         var data = res.data;
         if (data && data.id > 0) {
           _this.$router.push('/trades/' + data.id);
@@ -112223,17 +112277,69 @@ exports.default = {
 
         if (pagination) {
           _this.resultCount = pagination.totalCount;
+          _this.totalUsd = new _bignumber2.default(pagination.makerUsds).plus(new _bignumber2.default(pagination.takerUsds)).toFormat(2);
           _this.$refs.datatable.maxPage = pagination.maxPage;
         } else {
           _this.resultCount = 0;
         }
       });
+    },
+    formatDatepicker: function formatDatepicker(date) {
+      if (_util2.default.getLocale() === 'vi') {
+        return (0, _moment2.default)(date).format('DD/MM/YYYY');
+      } else {
+        return (0, _moment2.default)(date).format('DD MMM YYYY');
+      }
+    }
+  },
+
+  computed: {
+    locale: function locale() {
+      return _util2.default.getLocale();
     }
   },
 
   watch: {
     '$route.query': function $routeQuery() {
       this.refresh();
+    },
+    searchFromDate: function searchFromDate(val) {
+      var _this2 = this;
+
+      var fromDate = val ? val.getTime() : 0;
+      var toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
+
+      if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
+        window.EventBus.$emit('EVENT_COMMON_ERROR', 'From-date must be equal or less than to-date');
+        window.setTimeout(function () {
+          _this2.searchFromDate = null;
+        });
+        return;
+      }
+
+      window.setTimeout(function () {
+        _this2.disabledToDates = { to: _this2.searchFromDate };
+        _this2.refresh();
+      });
+    },
+    searchToDate: function searchToDate(val) {
+      var _this3 = this;
+
+      var toDate = val ? val.getTime() : 0;
+      var fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
+
+      if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
+        window.EventBus.$emit('EVENT_COMMON_ERROR', 'To-date must be equal or greater than from-date');
+        window.setTimeout(function () {
+          _this3.searchToDate = null;
+        });
+        return;
+      }
+
+      window.setTimeout(function () {
+        _this3.disabledFromDates = { from: _this3.searchToDate };
+        _this3.refresh();
+      });
     }
   },
 
@@ -112255,6 +112361,57 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
+      !_vm.isHideDatepicker
+        ? _c(
+            "div",
+            { staticClass: "datepicker-container" },
+            [
+              _c("span", [_vm._v(_vm._s(_vm.$t("filter.from")))]),
+              _vm._v(" "),
+              _c("datepicker", {
+                staticClass: "calendar-icon",
+                attrs: {
+                  name: "searchFromDate",
+                  language: _vm.locale,
+                  format: _vm.formatDatepicker,
+                  "clear-button": true,
+                  highlighted: _vm.highlightedToday,
+                  disabled: _vm.disabledFromDates
+                },
+                model: {
+                  value: _vm.searchFromDate,
+                  callback: function($$v) {
+                    _vm.searchFromDate = $$v
+                  },
+                  expression: "searchFromDate"
+                }
+              }),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.$t("filter.to")))]),
+              _vm._v(" "),
+              _c("datepicker", {
+                staticClass: "calendar-icon",
+                attrs: {
+                  name: "searchToDate",
+                  language: _vm.locale,
+                  format: _vm.formatDatepicker,
+                  "clear-button": true,
+                  highlighted: _vm.highlightedToday,
+                  disabled: _vm.disabledToDates
+                },
+                model: {
+                  value: _vm.searchToDate,
+                  callback: function($$v) {
+                    _vm.searchToDate = $$v
+                  },
+                  expression: "searchToDate"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c("trade-list", {
         ref: "datatable",
         attrs: {
@@ -112283,7 +112440,7 @@ if (false) {
 /* 564 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Network Activity","searchbox_placeholder":"Tx Hash / Wallet Address"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Completed Trades","token_list":"Traded Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"NETWORK VOLUME (24H)","trades":"TRADES (24H)","burned_fee":"FEES BURNED","knc_price":"KNC PRICE"},"chart":{"title":{"network_volume":"Network Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"Trade Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Completed Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No results found for {0}","result_msg":"{0} results found for {1}"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Network Activity","searchbox_placeholder":"Tx Hash / Wallet Address"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Completed Trades","token_list":"Traded Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"NETWORK VOLUME (24H)","trades":"TRADES (24H)","burned_fee":"Fees To Burn","knc_price":"KNC PRICE"},"chart":{"title":{"network_volume":"Network Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"Trade Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Completed Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Wallet Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No results found for {0}","result_msg":"Transaction Count: {0}","total_usd_msg":"Total volume: {0}"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
 
 /***/ }),
 /* 565 */

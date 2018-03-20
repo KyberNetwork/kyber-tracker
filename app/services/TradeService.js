@@ -250,13 +250,15 @@ module.exports = BaseService.extends({
     const q = options.q.toLowerCase();
     const page = options.page || 0;
     const limit = options.limit || 20;
+    const fromDate = options.fromDate
+    const toDate = options.toDate
     // Transaction hash
     if (q.length === 66) {
       this._searchByTxid(q, callback);
     }
     // Address
     else if (q.length === 42) {
-      this._searchByAddress(q, page, limit, callback);
+      this._searchByAddress(q, page, limit, fromDate, toDate, callback);
     }
     else {
       return callback(null, []);
@@ -271,10 +273,21 @@ module.exports = BaseService.extends({
     }, callback);
   },
 
-  _searchByAddress: function (address, page, limit, callback) {
+  _searchByAddress: function (address, page, limit, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    const whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?';
-    const params = [address, address];
+    let whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?'; 
+    let sumColumn = 'SUM(taker_total_usd)'
+    let params = [address, address];
+
+    if (fromDate) {
+      whereClauses += ' AND block_timestamp > ?';
+      params.push(fromDate);
+    }
+
+    if (toDate) {
+      whereClauses += ' AND block_timestamp < ?';
+      params.push(toDate);
+    }
 
     async.auto({
       list: (next) => {
@@ -291,7 +304,26 @@ module.exports = BaseService.extends({
           where: whereClauses,
           params: params
         }, next);
-      }
+      },
+      takerUsds: (next) => {
+        KyberTradeModel.sum('taker_total_usd', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
+      makerUsds: (next) => {
+        KyberTradeModel.sum('maker_total_usd', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
+      // totalUSDVolume: (next) => {
+      //   KyberTradeModel.find({
+      //     columns: sumColumn,
+      //     where: whereClauses,
+      //     params: params
+      //   }, next);
+      // }
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -303,6 +335,8 @@ module.exports = BaseService.extends({
           page: page,
           limit: limit,
           totalCount: ret.count,
+          takerUsds: ret.takerUsds,
+          makerUsds: ret.makerUsds,
           maxPage: Math.ceil(ret.count / limit)
         }
       });
