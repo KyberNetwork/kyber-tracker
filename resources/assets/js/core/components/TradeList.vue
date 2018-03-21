@@ -2,15 +2,15 @@
   <div>
     <div class="panel panel-default">
 
-      <div v-if="!!title" class="panel-heading pt-40">
+      <div v-if="!!title" class="panel-heading pt-56 pb-16">
         <h4 class="no-margin"> {{ title }} </h4>
       </div>
 
-      <div class="clear p-10">
+      <div v-if="!!getSearchResultTitle()" class="clear p-10">
         <b v-html="getSearchResultTitle()" />
       </div>
 
-      <div class="clear p-10">
+      <div v-if="!!getSearchResultMessage()" class="clear p-10">
         <div v-html="getSearchResultMessage()" />
       </div>
 

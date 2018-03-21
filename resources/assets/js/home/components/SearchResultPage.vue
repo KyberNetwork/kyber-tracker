@@ -79,8 +79,12 @@ export default {
 
             if (pagination) {
               this.resultCount = pagination.totalCount;
-              this.totalUsd = new BigNumber(pagination.makerUsds).plus(new BigNumber(pagination.takerUsds)).toFormat(2)
-              this.totalFee = pagination.sumFee;
+              // this.totalUsd = new BigNumber(pagination.makerUsds).plus(new BigNumber(pagination.takerUsds)).toFormat(2)
+              // this.totalFee = new BigNumber(pagination.sumFee.toString()).div(Math.pow(10, 18)).toFormat(3);
+
+              this.totalUsd = new BigNumber(pagination.takerUsds).toFormat(2)
+              this.totalFee = new BigNumber(pagination.sumFee.toString()).div(Math.pow(10, 18)).toFormat(3);
+
               this.$refs.datatable.maxPage = pagination.maxPage;
             } else {
               this.resultCount = 0;

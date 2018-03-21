@@ -20,7 +20,7 @@
     "token_list": "Danh sách token",
     "trade_detail": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
-    "search": "Kết quả tìm kiếm"
+    "search": "Thông tin ví"
   },
 
   "navigator": {
@@ -29,7 +29,7 @@
     "tokens": "Tokens",
     "trade_detail": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
-    "search": "Kết quả tìm kiếm"
+    "search": "Thông tin ví"
   },
 
   "filter": {
@@ -81,7 +81,7 @@
     "taker_address": "Người thực hiện",
     "taker_token": "Trao đổi từ",
     "taker_amount": "Số lượng",
-    "maker_token": "Trao đổi thành",
+    "maker_token": "Trao đổi sang",
     "maker_amount": "Số lượng",
     "rate": "Tỉ giá",
     "fee_to_wallet": "Phí tích hợp",
@@ -97,9 +97,9 @@
   },
 
   "search_page": {
-    "title": "Kết quả tìm kiếm",
-    "no_result_msg": "Không tìm thấy kết quả nào cho từ khoá {0}",
-    "result_msg": "Số lượng giao dịch: {0}",
+    "title": "Thông tin ví",
+    "no_result_msg": "Không tìm thấy giao dịch nào của ví {0}",
+    "result_msg": "Số lần giao dịch: {0}",
     "total_usd_msg": "Tổng khối lượng giao dịch: {0}",
     "result_title": "Địa chỉ: {0}",
     "total_fee": "Tổng phí tích hợp: {0}"
