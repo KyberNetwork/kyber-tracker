@@ -76,8 +76,8 @@
               <td class="text-left">{{ row.makerTokenSymbol }}</td>
               <td class="text-right no-padding-left no-padding-right">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }}</td>
               <td>{{ row.makerTokenSymbol }}</td>
-              <td class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
-              <td v-if="!isHidePartnerCommission" class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
+              <td v-if="!isHidePartnerCommission"  class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
+              <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td>

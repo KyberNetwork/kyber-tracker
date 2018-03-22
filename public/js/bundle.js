@@ -103576,27 +103576,27 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(row.makerTokenSymbol))]),
                           _vm._v(" "),
-                          _c("td", { staticClass: "text-right" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.formatTokenNumber("KNC", row.takerFee)
-                              ) + " KNC"
-                            )
-                          ]),
-                          _vm._v(" "),
                           !_vm.isHidePartnerCommission
-                            ? _c(
-                                "td",
-                                { staticClass: "text-right no-padding-right" },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.formatFeeToBurn("KNC", row.burnFees)
-                                    ) + " KNC"
-                                  )
-                                ]
-                              )
+                            ? _c("td", { staticClass: "text-right" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.formatTokenNumber("KNC", row.takerFee)
+                                  ) + " KNC"
+                                )
+                              ])
                             : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            { staticClass: "text-right no-padding-right" },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatFeeToBurn("KNC", row.burnFees)
+                                ) + " KNC"
+                              )
+                            ]
+                          ),
                           _vm._v(" "),
                           _vm._m(1, true, false)
                         ]
