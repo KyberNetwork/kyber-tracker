@@ -50,7 +50,7 @@
     "network_volume": "Network volume during the last 24 hours",
     "fees_to_burn": "Total fees set aside to burn so far",
     "fees_burned": "Total fees burned so far",
-    "knc_price": "Current estimated KNC price",
+    "knc_price": "Current KNC price",
     "knc_price_change_24": "Percent changed comparing to price 24 hour ago"
   },
 
