@@ -97374,6 +97374,12 @@ exports.default = {
 
       _AppRequest2.default.getNetworkVolume(period, interval, tokenSymbol, function (err, volumeData) {
         var ctx = document.getElementById(_this.elementId);
+
+        // Ignore render chart if the page has been changed and the chart element is omitted
+        if (!ctx) {
+          return;
+        }
+
         var data = _this._buildChartData(volumeData, interval);
         var options = _this._getChartOptions(interval);
 
@@ -97637,6 +97643,12 @@ exports.default = {
 
       _AppRequest2.default.getFeeToBurn(period, interval, function (err, feeData) {
         var ctx = document.getElementById(_this.elementId);
+
+        // Ignore render chart if the page has been changed and the chart element is omitted
+        if (!ctx) {
+          return;
+        }
+
         var data = _this._buildChartData(feeData, interval);
         var options = _this._getChartOptions(interval);
 
@@ -97939,6 +97951,12 @@ exports.default = {
       }
       _AppRequest2.default.getTopToken(start, now, function (err, ret) {
         var ctx = document.getElementById(_this2.elementId);
+
+        // Ignore render chart if the page has been changed and the chart element is omitted
+        if (!ctx) {
+          return;
+        }
+
         var data = _this2._buildChartData(ret);
         var options = _this2._getChartOptions();
 

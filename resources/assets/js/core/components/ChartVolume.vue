@@ -68,6 +68,12 @@ export default {
     refresh (period, interval, tokenSymbol=null) {
       AppRequest.getNetworkVolume(period, interval, tokenSymbol, (err, volumeData) => {
         const ctx = document.getElementById(this.elementId);
+
+        // Ignore render chart if the page has been changed and the chart element is omitted
+        if (!ctx) {
+          return;
+        }
+          
         const data = this._buildChartData(volumeData, interval);
         const options = this._getChartOptions(interval);
 

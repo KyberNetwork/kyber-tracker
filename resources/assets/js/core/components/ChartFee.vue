@@ -64,6 +64,12 @@
       refresh(period, interval) {
         AppRequest.getFeeToBurn(period, interval, (err, feeData) => {
           const ctx = document.getElementById(this.elementId);
+
+          // Ignore render chart if the page has been changed and the chart element is omitted
+          if (!ctx) {
+            return;
+          }
+          
           const data = this._buildChartData(feeData, interval);
           const options = this._getChartOptions(interval);
 

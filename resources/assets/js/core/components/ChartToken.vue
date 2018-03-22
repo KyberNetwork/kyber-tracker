@@ -105,6 +105,12 @@
         }
         AppRequest.getTopToken(start, now, (err, ret) => {
           const ctx = document.getElementById(this.elementId);
+
+          // Ignore render chart if the page has been changed and the chart element is omitted
+          if (!ctx) {
+            return;
+          }
+          
           const data = this._buildChartData(ret);
           const options = this._getChartOptions();
 
