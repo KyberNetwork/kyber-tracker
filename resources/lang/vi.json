@@ -46,6 +46,14 @@
     "knc_price": "GIÁ KNC"
   },
 
+  "tooltip": {
+    "network_volume": "Khối lượng giao dịch trong 24 giờ gần đây",
+    "fees_to_burn": "Tổng phí dành ra để đốt cho đến nay",
+    "fees_burned": "Tổn phí đã đốt cho đến nay",
+    "knc_price": "Giá hiện tại của KNC",
+    "knc_price_change_24": "Phần trăm thay đổi so với 24 giờ trước"
+  },
+
   "chart": {
     "title": {
       "network_volume": "Khối lượng giao dịch",

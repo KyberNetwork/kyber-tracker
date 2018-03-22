@@ -46,6 +46,14 @@
     "knc_price": "KNC PRICE"
   },
 
+  "tooltip": {
+    "network_volume": "Network volume during the last 24 hours",
+    "fees_to_burn": "Total fees set aside to burn so far",
+    "fees_burned": "Total fees burned so far",
+    "knc_price": "Current estimated KNC price",
+    "knc_price_change_24": "Percent changed comparing to price 24 hour ago"
+  },
+
   "chart": {
     "title": {
       "network_volume": "Network Volume",
@@ -71,7 +79,7 @@
     "rate": "Rate",
     "description": "Description",
     "amount": "Amount",
-    "fee_to_wallet": "Partner Commision",
+    "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
@@ -88,7 +96,7 @@
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
     "rate": "Rate",
-    "fee_to_wallet": "Partner Commision",
+    "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
     "for": " for "
   },
@@ -106,7 +114,7 @@
     "result_msg": "Transaction count: {0}",
     "total_usd_msg": "Total volume: {0}",
     "result_title": "Address: {0}",
-    "total_fee": "Total partner commision: {0}"
+    "total_fee": "Total partner commission: {0}"
   },
 
   "main_page": {

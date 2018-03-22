@@ -3,7 +3,7 @@
     <trade-list ref="datatable"
       :title="getListTitle()"
       :getFilterTokenSymbol="getFilterTokenSymbol"
-      :isHidePartnerCommition="true"
+      :isHidePartnerCommission="true"
       >
     </trade-list>
 
