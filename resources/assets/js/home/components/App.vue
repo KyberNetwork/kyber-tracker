@@ -9,13 +9,17 @@
                 <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
                 <span class="topbar-value">{{ networkVolume }}</span>
               </li>
-              <li>
+              <!-- <li>
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
                 <span class="topbar-value">{{ tradeCount }}</span>
+              </li> -->
+              <li>
+                <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
+                <span class="topbar-value">{{ feeToBurn }}</span>
               </li>
               <li>
-                <span class="light-text">{{ $t('status_bar.burned_fee') }}</span><br />
-                <span class="topbar-value">{{ feeToBurn }}</span>
+                <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
+                <span class="topbar-value">{{ totalBurnedFee }}</span>
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />

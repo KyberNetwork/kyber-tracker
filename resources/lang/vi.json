@@ -41,6 +41,8 @@
     "network_volume": "KHỐI LƯỢNG GIAO DỊCH (24H)",
     "trades": "SỐ GIAO DỊCH (24H)",
     "burned_fee": "PHÍ SẼ ĐỐT (24H)",
+    "fees_to_burn": "PHÍ SẼ ĐỐT",
+    "fees_burned": "PHÍ ĐÃ ĐỐT",
     "knc_price": "GIÁ KNC"
   },
 
@@ -85,7 +87,7 @@
     "maker_amount": "Số lượng",
     "rate": "Tỉ giá",
     "fee_to_wallet": "Phí tích hợp",
-    "fee_to_burn": "Phí sẽ đốt (24h)",
+    "fee_to_burn": "Phí sẽ đốt",
     "for": " đổi lấy "
   },
 

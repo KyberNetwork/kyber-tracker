@@ -38,9 +38,11 @@
   },
 
   "status_bar": {
-    "network_volume": "NETWORK VOLUME (24H)",
+    "network_volume": "24H VOLUME",
     "trades": "TRADES (24H)",
     "burned_fee": "FEES TO BURN (24H)",
+    "fees_to_burn": "FEES TO BURN",
+    "fees_burned": "FEE BURNED",
     "knc_price": "KNC PRICE"
   },
 
@@ -87,7 +89,7 @@
     "maker_amount": "Amount",
     "rate": "Rate",
     "fee_to_wallet": "Partner Commision",
-    "fee_to_burn": "Fees To Burn (24h)",
+    "fee_to_burn": "Fees To Burn",
     "for": " for "
   },
 

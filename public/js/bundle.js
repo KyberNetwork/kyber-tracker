@@ -89830,6 +89830,10 @@ exports.default = {
 //
 //
 //
+//
+//
+//
+//
 
 /***/ }),
 /* 420 */
@@ -92119,23 +92123,23 @@ var render = function() {
                   _vm._v(" "),
                   _c("li", [
                     _c("span", { staticClass: "light-text" }, [
-                      _vm._v(_vm._s(_vm.$t("status_bar.trades")))
-                    ]),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "topbar-value" }, [
-                      _vm._v(_vm._s(_vm.tradeCount))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("li", [
-                    _c("span", { staticClass: "light-text" }, [
-                      _vm._v(_vm._s(_vm.$t("status_bar.burned_fee")))
+                      _vm._v(_vm._s(_vm.$t("status_bar.fees_to_burn")))
                     ]),
                     _c("br"),
                     _vm._v(" "),
                     _c("span", { staticClass: "topbar-value" }, [
                       _vm._v(_vm._s(_vm.feeToBurn))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("span", { staticClass: "light-text" }, [
+                      _vm._v(_vm._s(_vm.$t("status_bar.fees_burned")))
+                    ]),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "topbar-value" }, [
+                      _vm._v(_vm._s(_vm.totalBurnedFee))
                     ])
                   ]),
                   _vm._v(" "),
@@ -112352,13 +112356,13 @@ if (false) {
 /* 564 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Network Activity","searchbox_placeholder":"Tx Hash / Wallet Address"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Completed Trades","token_list":"Traded Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"NETWORK VOLUME (24H)","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","knc_price":"KNC PRICE"},"chart":{"title":{"network_volume":"Network Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"Trade Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Completed Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Partner Commision","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Partner Commision","fee_to_burn":"Fees To Burn (24h)","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Transaction count: {0}","total_usd_msg":"Total volume: {0}","result_title":"Address: {0}","total_fee":"Total partner commision: {0}"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Network Activity","searchbox_placeholder":"Tx Hash / Wallet Address"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Completed Trades","token_list":"Traded Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H VOLUME","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"FEES TO BURN","fees_burned":"FEE BURNED","knc_price":"KNC PRICE"},"chart":{"title":{"network_volume":"Network Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"Trade Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Completed Trades","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Partner Commision","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Partner Commision","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Transaction count: {0}","total_usd_msg":"Total volume: {0}","result_title":"Address: {0}","total_fee":"Total partner commision: {0}"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
 
 /***/ }),
 /* 565 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","knc_price":"GIÁ KNC"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt (24h)","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch: {0}","result_title":"Địa chỉ: {0}","total_fee":"Tổng phí tích hợp: {0}"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"PHÍ SẼ ĐỐT","fees_burned":"PHÍ ĐÃ ĐỐT","knc_price":"GIÁ KNC"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch: {0}","result_title":"Địa chỉ: {0}","total_fee":"Tổng phí tích hợp: {0}"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
 
 /***/ }),
 /* 566 */
