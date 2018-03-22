@@ -217,8 +217,9 @@ module.exports = BaseService.extends({
       },
       feeToBurn: (next) => {
         KyberTradeModel.sum('burn_fees', {
-          where: 'block_timestamp > ?',
-          params: [nowInSeconds - DAY_IN_SECONDS]
+          where: '1=1'
+          // where: 'block_timestamp > ?',
+          // params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
       },
     }, (err, ret) => {
