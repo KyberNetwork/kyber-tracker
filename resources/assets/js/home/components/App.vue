@@ -5,7 +5,7 @@
         <div class="container p-relative">
           <div class="col no-padding">
             <ul class="heading-summary">
-              <li>
+              <li v-tooltip.bottom="'Network volume during the last 24 hours.'">
                 <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
                 <span class="topbar-value">{{ networkVolume }}</span>
               </li>
@@ -13,18 +13,18 @@
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
                 <span class="topbar-value">{{ tradeCount }}</span>
               </li> -->
-              <li>
+              <li v-tooltip.bottom="'Total fees set aside to burn so far.'">
                 <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
                 <span class="topbar-value">{{ feeToBurn }}</span>
               </li>
-              <li>
+              <li v-tooltip.bottom="'Total fees burned so far.'">
                 <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
                 <span class="topbar-value">{{ totalBurnedFee }}</span>
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                <span class="topbar-value">{{ kncPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass()">({{ formatedKNCPriceChange24h }})</span>
+                <span class="topbar-value" v-tooltip.bottom="'Current estimated KNC price.'">{{ kncPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass()" v-tooltip.bottom="'Percent changed comparing to price 24 hour ago.'">({{ formatedKNCPriceChange24h }})</span>
               </li>
             </ul>
           </div>

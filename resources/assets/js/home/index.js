@@ -8,6 +8,7 @@ import BootstrapVue from 'bootstrap-vue';
 import VuePaginate from 'vuejs-paginate';
 import VueDatePicker from 'vuejs-datepicker';
 import moment from 'moment';
+import VTooltip from 'v-tooltip'
 
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
@@ -24,6 +25,7 @@ Vue.use(VueRouter);
 Vue.use(VueI18n);
 Vue.use(VueResource);
 Vue.use(BootstrapVue);
+Vue.use(VTooltip)
 
 Vue.component('data-table', DataTable);
 Vue.component('trade-list', TradeList);

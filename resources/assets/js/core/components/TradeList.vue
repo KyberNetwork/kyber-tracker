@@ -149,8 +149,6 @@ export default {
       type: Function,
       default: function () {
         const params = this.getRequestParams();
-        console.log("++++++++++++++++++")
-        console.log(this.currentPage)
         AppRequest
           .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
             const data = res.data;

@@ -39,6 +39,7 @@
     "scss-loader": "0.0.1",
     "sota-core": "2.0.19",
     "superagent": "^3.8.2",
+    "v-tooltip": "^2.0.0-rc.31",
     "web3": "1.0.0-beta.30",
     "ws": "3.2.0"
   },
