@@ -42,16 +42,16 @@
     "trades": "TRADES (24H)",
     "burned_fee": "FEES TO BURN (24H)",
     "fees_to_burn": "FEES TO BURN",
-    "fees_burned": "FEE BURNED",
+    "fees_burned": "FEES BURNED",
     "knc_price": "KNC PRICE"
   },
 
   "tooltip": {
     "network_volume": "Network volume during the last 24 hours",
     "fees_to_burn": "Total fees set aside to burn so far",
-    "fees_burned": "Total fees burned so far",
+    "fees_burned": "Total fees that have already been burnt",
     "knc_price": "Current KNC price",
-    "knc_price_change_24": "Percent changed comparing to price 24 hour ago"
+    "knc_price_change_24": "Percent changed comparing to price at 24 hour ago"
   },
 
   "chart": {
