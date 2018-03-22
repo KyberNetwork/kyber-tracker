@@ -54,8 +54,10 @@
           datasets: [{
             data: dataset,
             pointRadius: 0,
-            backgroundColor: 'rgb(148, 190, 190)',
-            borderColor: 'rgb(148, 190, 190)',
+            //backgroundColor: 'rgb(148, 190, 190)',
+            backgroundColor: '#AA3599',
+            //borderColor: 'rgb(148, 190, 190)',
+            borderColor: '#AA3599',
             showLine: true,
             spanGaps: true,
           }]
