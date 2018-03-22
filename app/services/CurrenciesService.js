@@ -16,59 +16,19 @@ module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
   getConvertiblePairs: function (callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
+    if(!tokens) return callback(null, {});
 
-    let whereClauses = '1=1';
-    let params = [];
+    let pairs = {}
 
-    // if (options.symbol) {
-    //   whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-    //   params.push(options.symbol);
-    //   params.push(options.symbol);
-    // }
-
-    // if (options.fromDate) {
-    //   whereClauses += ' AND block_timestamp > ?';
-    //   params.push(options.fromDate);
-    // }
-
-    // if (options.toDate) {
-    //   whereClauses += ' AND block_timestamp < ?';
-    //   params.push(options.toDate);
-    // }
-
-    const queryOptions = {
-      where: whereClauses,
-      params: params,
-      limit: options.limit,
-      offset: options.page * options.limit,
-      orderBy: 'id DESC'
-    };
-
-    async.auto({
-      list: (next) => {
-        KyberTradeModel.find(queryOptions, next);
-      },
-      count: (next) => {
-        KyberTradeModel.count({
-          where: whereClauses,
-          params: params
-        }, next);
+    Object.keys(tokens).map(token => {
+      if(token.toUpperCase() !== "ETH"){
+        pairs[token] = "ETH"
+        pairs[token + "ETH"] = "ETH"
       }
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
-      }
+    })
 
-      return callback(null, {
-        data: ret.list,
-        // pagination: {
-        //   page: options.page,
-        //   limit: options.limit,
-        //   totalCount: ret.count,
-        //   maxPage: Math.ceil(ret.count / options.limit)
-        // }
-      });
+    return callback(null, {
+      data: pairs,
     });
   },
 
