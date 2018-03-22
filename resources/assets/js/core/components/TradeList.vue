@@ -61,7 +61,7 @@
               <th colspan="3" class="text-center">{{ $t("trade_list.exchange_from") }}</th>
               <th colspan="2" class="text-center">{{ $t("trade_list.exchange_to") }}</th>
               <th colspan="2" class="text-center">{{ $t("trade_list.rate") }}</th>
-              <th class="text-right">{{ $t("trade_list.fee_to_wallet") }}</th>
+              <th v-if="!isHidePartnerCommition" class="text-right">{{ $t("trade_list.fee_to_wallet") }}</th>
               <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th>
               <th></th>
             </tr>
@@ -77,7 +77,7 @@
               <td class="text-right no-padding-left no-padding-right">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }}</td>
               <td>{{ row.makerTokenSymbol }}</td>
               <td class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
-              <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
+              <td v-if="!isHidePartnerCommition" class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td>
@@ -130,6 +130,9 @@ export default {
     },
     pageSize: {
       type: Number,
+    },
+    isHidePartnerCommition: {
+      type: Boolean
     },
     getSearchResultMessage: {
       type: Function,

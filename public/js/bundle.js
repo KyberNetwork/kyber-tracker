@@ -93035,6 +93035,9 @@ exports.default = {
     pageSize: {
       type: Number
     },
+    isHidePartnerCommition: {
+      type: Boolean
+    },
     getSearchResultMessage: {
       type: Function,
       default: function _default() {
@@ -96945,9 +96948,11 @@ var render = function() {
                         [_vm._v(_vm._s(_vm.$t("trade_list.rate")))]
                       ),
                       _vm._v(" "),
-                      _c("th", { staticClass: "text-right" }, [
-                        _vm._v(_vm._s(_vm.$t("trade_list.fee_to_wallet")))
-                      ]),
+                      !_vm.isHidePartnerCommition
+                        ? _c("th", { staticClass: "text-right" }, [
+                            _vm._v(_vm._s(_vm.$t("trade_list.fee_to_wallet")))
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       _c("th", { staticClass: "text-right" }, [
                         _vm._v(_vm._s(_vm.$t("trade_list.fee_to_burn")))
@@ -97044,17 +97049,19 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "text-right no-padding-right" },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatFeeToBurn("KNC", row.burnFees)
-                                ) + " KNC"
+                          !_vm.isHidePartnerCommition
+                            ? _c(
+                                "td",
+                                { staticClass: "text-right no-padding-right" },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.formatFeeToBurn("KNC", row.burnFees)
+                                    ) + " KNC"
+                                  )
+                                ]
                               )
-                            ]
-                          ),
+                            : _vm._e(),
                           _vm._v(" "),
                           _vm._m(1, true, false)
                         ]
@@ -98259,6 +98266,8 @@ var _chart2 = _interopRequireDefault(_chart);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
 //
 //
 //
@@ -110783,7 +110792,8 @@ var render = function() {
         ref: "datatable",
         attrs: {
           title: _vm.getListTitle(),
-          getFilterTokenSymbol: _vm.getFilterTokenSymbol
+          getFilterTokenSymbol: _vm.getFilterTokenSymbol,
+          isHidePartnerCommition: true
         }
       })
     ],
@@ -110909,6 +110919,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 
 
 exports.default = {
@@ -110966,7 +110978,8 @@ var render = function() {
         ref: "datatable",
         attrs: {
           title: _vm.getListTitle(),
-          getFilterTokenSymbol: _vm.getFilterTokenSymbol
+          getFilterTokenSymbol: _vm.getFilterTokenSymbol,
+          isHidePartnerCommition: true
         }
       })
     ],

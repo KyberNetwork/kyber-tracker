@@ -2,7 +2,9 @@
   <div class="col-sm-12">
     <trade-list ref="datatable"
       :title="getListTitle()"
-      :getFilterTokenSymbol="getFilterTokenSymbol">
+      :getFilterTokenSymbol="getFilterTokenSymbol"
+      :isHidePartnerCommition="true"
+      >
     </trade-list>
 
   </div>

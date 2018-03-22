@@ -45,7 +45,9 @@
     </b-card>
     <trade-list ref="datatable"
                 :title="getListTitle()"
-                :getFilterTokenSymbol="getFilterTokenSymbol">
+                :getFilterTokenSymbol="getFilterTokenSymbol"
+                :isHidePartnerCommition="true"
+                >
     </trade-list>
 
   </div>
