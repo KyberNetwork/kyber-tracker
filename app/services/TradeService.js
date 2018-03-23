@@ -241,7 +241,7 @@ module.exports = BaseService.extends({
         feeToBurn: feeToBurn.toFormat(2).toString()
       };
 
-      LocalCache.setSync(key, result, { ttl: Const.MINUTE_IN_MILLISECONDS });
+      LocalCache.setSync(key, result, {ttl: Const.MINUTE_IN_MILLISECONDS});
 
       return callback(null, result);
     });
@@ -276,7 +276,7 @@ module.exports = BaseService.extends({
 
   _searchByAddress: function (address, page, limit, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    let whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?'; 
+    let whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?';
     let sumColumn = 'SUM(taker_total_usd)'
     let params = [address, address];
 
@@ -399,16 +399,43 @@ module.exports = BaseService.extends({
       }
 
       const returnData = [];
-      for (let i = 0; i< ret.sum.length; i++){
+      if (ret.sum.length) {
+
+        for (let i = 0; i < ret.sum.length; i++) {
+          returnData.push({
+            daySeq: ret.sum[i].daySeq,
+            hourSeq: ret.sum[i].hourSeq,
+            sum: ret.sum[i].sum,
+            count: ret.count[i].count
+          })
+        }
+        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+        if (nowSeq > lastSeq) {
+          const nullData = {
+            [this._convertSeqColumnName(groupColumn)]: nowSeq,
+            sum: 0,
+            count: 0
+          };
+          returnData.push(nullData);
+        }
+
+      } else {
+        const firstSeq = fromDate / Const.CHART_INTERVAL[interval];
+        const nowSeq = toDate / Const.CHART_INTERVAL[interval];
         returnData.push({
-          daySeq: ret.sum[i].daySeq,
-          hourSeq: ret.sum[i].hourSeq,
-          sum: ret.sum[i].sum,
-          count: ret.count[i].count
-        })
+          [this._convertSeqColumnName(groupColumn)]: firstSeq,
+          sum: 0,
+          count: 0
+        });
+        returnData.push({
+          [this._convertSeqColumnName(groupColumn)]: nowSeq,
+          sum: 0,
+          count: 0
+        });
       }
 
-      LocalCache.setSync(key, returnData, { ttl: Const.MINUTE_IN_MILLISECONDS });
+      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
       return callback(null, returnData);
     });
   },
@@ -461,16 +488,43 @@ module.exports = BaseService.extends({
       }
 
       const returnData = [];
-      for (let i = 0; i< ret.sum.length; i++){
+      if (ret.sum.length) {
+
+        for (let i = 0; i < ret.sum.length; i++) {
+          returnData.push({
+            daySeq: ret.sum[i].daySeq,
+            hourSeq: ret.sum[i].hourSeq,
+            sum: ret.sum[i].sum,
+            count: ret.count[i].count
+          })
+        }
+        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+        if (nowSeq > lastSeq) {
+          const nullData = {
+            [this._convertSeqColumnName(groupColumn)]: nowSeq,
+            sum: 0,
+            count: 0
+          };
+          returnData.push(nullData);
+        }
+
+      } else {
+        const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
         returnData.push({
-          daySeq: ret.sum[i].daySeq,
-          hourSeq: ret.sum[i].hourSeq,
-          sum: ret.sum[i].sum,
-          count: ret.count[i].count
-        })
+          [this._convertSeqColumnName(groupColumn)]: firstSeq,
+          sum: 0,
+          count: 0
+        });
+        returnData.push({
+          [this._convertSeqColumnName(groupColumn)]: nowSeq,
+          sum: 0,
+          count: 0
+        });
       }
 
-      LocalCache.setSync(key, returnData, { ttl: Const.MINUTE_IN_MILLISECONDS });
+      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
       return callback(null, returnData);
     });
   },
@@ -511,7 +565,7 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      LocalCache.setSync(key, ret, { ttl: Const.MINUTE_IN_MILLISECONDS });
+      LocalCache.setSync(key, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
       return callback(null, ret);
     });
   },
@@ -572,6 +626,13 @@ module.exports = BaseService.extends({
     }
 
     return [fromDate, toDate];
+  },
+
+  _convertSeqColumnName: function (seq) {
+    if (seq === 'day_seq') {
+      return 'daySeq';
+    }
+    return 'hourSeq';
   },
 
 });

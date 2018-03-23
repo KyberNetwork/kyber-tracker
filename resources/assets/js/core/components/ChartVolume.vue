@@ -80,15 +80,16 @@ export default {
         const options = this._getChartOptions(interval);
 
         if (this.chartInstance) {
-          this.chartInstance.destroy();
-          this.chartInstance = undefined;
+          this.chartInstance.config.data = data;
+          this.chartInstance.update();
         }
-
-        this.chartInstance = new Chart(ctx, {
-          type: 'LineWithLine',
-          data: data,
-          options: options,
-        });
+        else {
+          this.chartInstance = new Chart(ctx, {
+            type: 'LineWithLine',
+            data: data,
+            options: options,
+          });
+        }
       });
     },
     _getChartOptions (interval) {
@@ -115,6 +116,7 @@ export default {
 
       const yAxeScale = {
         ticks: {
+          beginAtZero: true,
           maxRotation: 0,
           callback: (label, index, labels) => {
             return '$' + util.numberWithCommas(label);
@@ -162,6 +164,7 @@ export default {
           display: false
         },
         maintainAspectRatio: false,
+        animation: false
       };
     },
   },
