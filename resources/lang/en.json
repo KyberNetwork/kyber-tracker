@@ -8,7 +8,7 @@
     "volume_24h_usd": "24H Volume (USD)",
     "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
-    "network_activity": "Network Activity",
+    "network_activity": "Trade History",
     "searchbox_placeholder" : "Tx Hash / Wallet Address"
   },
 
@@ -16,8 +16,8 @@
     "home": "Home",
     "trades": "Trades",
     "tokens": "Tokens",
-    "trade_list": "Completed Trades",
-    "token_list": "Traded Tokens",
+    "trade_list": "Trade History",
+    "token_list": "Supported Tokens",
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
     "search": "Wallet Details"
@@ -47,20 +47,20 @@
   },
 
   "tooltip": {
-    "network_volume": "Network volume during the last 24 hours",
+    "network_volume": "Trading volume during the last 24 hours",
     "fees_to_burn": "Total fees set aside to burn so far",
     "fees_burned": "Total fees that have already been burnt",
     "knc_price": "Current KNC price",
-    "knc_price_change_24": "Percent changed comparing to price at 24 hour ago"
+    "knc_price_change_24": "% change compared with price at 24 hours ago"
   },
 
   "chart": {
     "title": {
-      "network_volume": "Network Volume",
+      "network_volume": "Trade Volume",
       "network_fee": "Network Fees",
       "fee_to_burn": "Fees To Burn",
       "top_token": "Top Tokens",
-      "token_volume": "Trade Volume",
+      "token_volume": "{0} Volume",
       "label_volume": "Volume",
       "label_count": "Trades",
       "label_total": "Total"
@@ -71,7 +71,7 @@
   },
 
   "trade_list": {
-    "title": "Completed Trades",
+    "title": "Trade History",
     "address": "Address",
     "date": "Date",
     "taker_token": "Exchange from",
@@ -111,7 +111,7 @@
   "search_page": {
     "title": "Wallet Details",
     "no_result_msg": "No transactions found for wallet {0}",
-    "result_msg": "Transaction count: {0}",
+    "result_msg": "Number of trades: {0}",
     "total_usd_msg": "Total volume: {0}",
     "result_title": "Address: {0}",
     "total_fee": "Total partner commission: {0}"

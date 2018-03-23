@@ -94,9 +94,9 @@
             const value = data.labels[index];
             const d = moment(value);
             if (interval === 'H1') {
-              return util.getLocale() === 'vi' ? d.format('DD/MM HH:mm') : d.format('MMM DD HH:mm');
+              return util.getLocale() === 'vi' ? d.format('DD/MM HH:mm UTCZ') : d.format('MMM DD HH:mm UTCZ');
             } else {
-              return util.getLocale() === 'vi' ? d.format('DD/MM') : d.format('MMM DD');
+              return util.getLocale() === 'vi' ? d.format('DD/MM (UTC+00:00)') : d.format('MMM DD (UTC+00:00)');
             }
           },
           label: () => {
@@ -139,7 +139,15 @@
             mode: 'index',
             axis: 'x',
             intersect: false,
-            backgroundColor: 'rgba(25, 46, 59, 0.7)',
+            backgroundColor: 'rgba(25, 46, 59, 0.8)',
+            titleFontSize: 14,
+            titleFontColor: "#f8f8f8",
+            bodyFontSize: 14,
+            bodyFontColor: "#f8f8f8",
+            bodySpacing: 6,
+            titleMarginBottom: 15,
+            xPadding: 12,
+            yPadding: 12,
             callbacks,
           },
           scales: {

@@ -3,7 +3,7 @@
 
     <b-row>
       <b-col sm="3"><label><b>{{ $t("trade_detail.transaction_hash") }}</b></label></b-col>
-      <b-col sm="9"><a target="_blank" :href="getTxEtherscanLink(record.tx)">{{ record.tx }}</a></b-col>
+      <b-col sm="9"><a class="long-address" target="_blank" :href="getTxEtherscanLink(record.tx)">{{ record.tx }}</a></b-col>
     </b-row>
 
     <b-row>
@@ -13,7 +13,7 @@
 
     <b-row class="mt-20">
       <b-col sm="3"><label><b>{{ $t("trade_detail.taker_address") }}</b></label></b-col>
-      <b-col sm="9"><router-link :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link></b-col>
+      <b-col sm="9"><router-link class="long-address" :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link></b-col>
     </b-row>
 
     <b-row class="mt-20">
@@ -111,9 +111,9 @@ export default {
     getDateInfo (timestamp) {
       const locale = localStorage.getItem('locale') || 'en';
       if (locale === 'vi') {
-        return moment(timestamp * 1000).format('dddd, ngày Do/MM/YYYY, HH:mm:ss');
+        return moment(timestamp * 1000).format('dddd, ngày Do/MM/YYYY, HH:mm:ss UTCZ');
       } else {
-        return moment(timestamp * 1000).format('dddd, MMMM Do YYYY, HH:mm:ss');
+        return moment(timestamp * 1000).format('dddd, MMMM Do YYYY, HH:mm:ss UTCZ');
       }
 
     },

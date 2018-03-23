@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-12">
-    <b-card :header="$t('chart.title.token_volume')">
+    <b-card :header="$t('chart.title.token_volume', [getFilterTokenSymbol()])">
       <b-tab no-body active>
         <chart-volume ref="chartVolume"
           :elementId="'chart-volume'"

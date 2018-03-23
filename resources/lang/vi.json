@@ -60,7 +60,7 @@
       "network_fee": "Phí giao dịch",
       "fee_to_burn": "Phí sẽ đốt",
       "top_token": "Top Tokens",
-      "token_volume": "Khối lượng giao dịch",
+      "token_volume": "{0} - Khối lượng giao dịch",
       "label_volume": "Khối lượng giao dịch",
       "label_count": "Số giao dịch",
       "label_total": "Khối lượng giao dịch"

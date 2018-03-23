@@ -49,7 +49,9 @@ export default {
       return undefined;
     },
     getSearchResultTitle(){
-      return this.$t('search_page.result_title', [this.$route.query.q]);
+      return "<span class='long-address'>" + 
+        this.$t('search_page.result_title', [this.$route.query.q]) +
+        "</span>";
     },
     getSearchResultMessage () {
       return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) 
