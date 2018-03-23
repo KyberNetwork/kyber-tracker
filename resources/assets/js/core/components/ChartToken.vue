@@ -40,10 +40,6 @@
           datasets: [{
             data: dataset,
             pointRadius: 0,
-            // backgroundColor: ['rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
-            //   'rgb(135, 126, 145)', 'rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
-            //   'rgb(135, 126, 145)', 'rgb(240, 219, 121)', 'rgb(57, 146, 202)', 'rgb(226, 79, 139)', 'rgb(141, 198, 196)',
-            //   'rgb(135, 126, 145)'],
             backgroundColor: [
               '#20A39E','#2191FB', '#6457A6', '#FFBA49', '#AA3599', 
             ],
@@ -62,6 +58,7 @@
 
         const xAxeScale = {
           ticks: {
+            beginAtZero: true,
             callback: (label, index, labels) => {
               return '$' + util.numberWithCommas(label);
             }
@@ -91,7 +88,7 @@
           legend: {
             display: false
           },
-          maintainAspectRatio: false,
+          maintainAspectRatio: false
         };
       },
       refresh(period) {

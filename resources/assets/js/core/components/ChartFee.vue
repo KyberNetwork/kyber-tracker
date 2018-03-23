@@ -111,6 +111,7 @@
 
         const yAxeScale = {
           ticks: {
+            beginAtZero: true,
             maxRotation: 0,
             callback: (label, index, labels) => {
               return util.numberWithCommas(label) + ' KNC';
@@ -157,7 +158,7 @@
           legend: {
             display: false
           },
-          maintainAspectRatio: false,
+          maintainAspectRatio: false
         };
       },
     },
