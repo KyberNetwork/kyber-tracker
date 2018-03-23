@@ -158,8 +158,7 @@
           legend: {
             display: false
           },
-          maintainAspectRatio: false,
-          animation: false
+          maintainAspectRatio: false
         };
       },
     },
