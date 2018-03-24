@@ -75,12 +75,13 @@ export default {
         if (!ctx) {
           return;
         }
-          
+
         const data = this._buildChartData(volumeData, interval);
         const options = this._getChartOptions(interval);
 
         if (this.chartInstance) {
           this.chartInstance.config.data = data;
+          this.chartInstance.options = options;
           this.chartInstance.update();
         }
         else {
