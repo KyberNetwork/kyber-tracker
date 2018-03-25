@@ -31,13 +31,15 @@
 
           <div class="float-lang-bar cursor-pointer">
             <b-navbar-nav>
-              <b-dropdown class="change-language-button" no-caret right>
+              <!-- <b-dropdown class="change-language-button" no-caret right>
                 <template slot="button-content">
                   <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
                 </template>
                 <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
                 <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-              </b-dropdown>
+              </b-dropdown> -->
+              <import-acount>
+              </import-acount>
             </b-navbar-nav>
 
           </div>
