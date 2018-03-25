@@ -22,6 +22,17 @@ module.exports = BaseEntity.extends({
     this.takerTotalEth = takerAmount * this.takerPriceEth;
     this.takerTotalUsd = takerAmount * this.takerPriceUsd;
 
+    if (this.makerTokenSymbol === "ETH") {
+      this.volumeEth = makerAmount;
+      this.volumeUsd = this.makerTotalUsd;
+    } else if (this.takerTokenSymbol === "ETH") {
+      this.volumeEth = takerAmount;
+      this.volumeUsd = this.takerTotalUsd;
+    } else {
+      this.volumeEth = this.makerTotalEth;
+      this.volumeUsd = this.makerTotalUsd;
+    }
+
     return this;
   },
 

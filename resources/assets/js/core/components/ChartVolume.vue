@@ -33,6 +33,7 @@ export default {
       const labels = [];
       const counts = [];
       const dataset = [];
+      const eths = [];
 
       if (interval === 'H1') {
         const keyedVolumeData = _.keyBy(volumeData, 'hourSeq');
@@ -40,6 +41,8 @@ export default {
           labels.push(seq * 3600 * 1000);
           const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
           dataset.push(Math.round(volume * 100) / 100);
+          const volumeEth = (keyedVolumeData[seq] ? keyedVolumeData[seq].sumEth : 0);
+          eths.push(Math.round(volumeEth * 1000) / 1000);
           counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0)
         }
       } else if (interval === 'D1') {
@@ -48,6 +51,8 @@ export default {
           labels.push(seq * 3600 * 24 * 1000);
           const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
           dataset.push(Math.round(volume * 100) / 100);
+          const volumeEth = (keyedVolumeData[seq] ? keyedVolumeData[seq].sumEth : 0);
+          eths.push(Math.round(volumeEth * 1000) / 1000);
           counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0)
         }
       }
@@ -55,6 +60,7 @@ export default {
       return {
         labels,
         counts,
+        eths,
         datasets: [{
           data: dataset,
           pointRadius: 0,
@@ -100,18 +106,19 @@ export default {
           const value = data.labels[index];
           const d= moment(value);
           if(interval === 'H1') {
-            return util.getLocale() === 'vi' ? d.format('DD/MM HH:mm UTCZ') : d.format('MMM DD HH:mm UTCZ');
+            return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY, HH:mm UTCZ') : d.format('ddd, MMMM Do YYYY, HH:mm UTCZ');
           } else {
-            return util.getLocale() === 'vi' ? d.format('DD/MM (UTC+00:00)') : d.format('MMM DD (UTC+00:00)');
+            return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY (UTC+00:00)') : d.format('ddd, MMM Do YYYY (UTC+00:00)');
           }
         },
         label: () => {
         },
         afterBody: (tooltipItem, data) => {
           const index = tooltipItem[0].index;
-          const label = this.$t('chart.title.label_volume') + ': $' + util.numberWithCommas(data.datasets[0].data[index]);
+          const label = this.$t('chart.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
+          const eth = this.$t('chart.title.label_volume') + ' (ETH): ' + util.numberWithCommas(data.eths[index]);
           const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
-          return [label, count];
+          return [label, eth, count];
         }
       };
 
@@ -147,7 +154,7 @@ export default {
           axis: 'x',
           intersect: false,
           backgroundColor: 'rgba(25, 46, 59, 0.8)',
-          titleFontSize: 14,
+          titleFontSize: 13,
           titleFontColor: "#f8f8f8",
           bodyFontSize: 14,
           bodyFontColor: "#f8f8f8",

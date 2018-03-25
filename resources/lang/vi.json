@@ -110,9 +110,10 @@
     "title": "Thông tin ví",
     "no_result_msg": "Không tìm thấy giao dịch nào của ví {0}",
     "result_msg": "Số lần giao dịch: {0}",
-    "total_usd_msg": "Tổng khối lượng giao dịch: {0}",
+    "total_usd_msg": "Tổng khối lượng giao dịch (USD): ${0}",
+    "total_eth_msg": "Tổng khối lượng giao dịch (ETH): {0}",
     "result_title": "Địa chỉ: {0}",
-    "total_fee": "Tổng phí tích hợp: {0}"
+    "total_fee": "Tổng phí tích hợp: {0} KNC"
   },
 
   "main_page": {

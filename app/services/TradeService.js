@@ -148,6 +148,7 @@ module.exports = BaseService.extends({
           symbol: tokenConfig.symbol,
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
+          volumeTokenNumber: tokenVolume.toNumber(),
           volumeUSD: volumeUSD.toNumber(),
         };
       }));
@@ -177,39 +178,43 @@ module.exports = BaseService.extends({
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
     async.auto({
-      volumeBuy: (next) => {
-        KyberTradeModel.sum('taker_total_usd', {
-          where: 'taker_token_symbol = ? AND block_timestamp > ?',
-          params: ['ETH', nowInSeconds - DAY_IN_SECONDS],
+      volumeUsd: (next) => {
+        KyberTradeModel.sum('volume_usd', {
+          where: 'block_timestamp > ?',
+          params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
-      volumeSell: (next) => {
-        KyberTradeModel.sum('maker_total_usd', {
-          where: 'maker_token_symbol = ? AND block_timestamp > ?',
-          params: ['ETH', nowInSeconds - DAY_IN_SECONDS],
+      volumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: 'block_timestamp > ?',
+          params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
+      /*
       ethPrice: (next) => {
         CMCService.getCurrentPrice('ETH', next);
       },
       kncPrice: (next) => {
         CMCService.getCurrentPrice('KNC', next);
       },
+      */
       kncInfo: (next) => {
         CMCService.getCMCTokenInfo('KNC', next);
       },
+      /*
       tradeCount: (next) => {
         KyberTradeModel.count({
           where: 'block_timestamp > ?',
           params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
       },
-      fee: (next) => {
+      partnerFee: (next) => {
         KyberTradeModel.sum('taker_fee', {
           where: 'block_timestamp > ?',
           params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
       },
+      */
       totalBurnedFee: (next) => {
         BurnedFeeModel.sum('amount', {
           where: '1=1'
@@ -227,15 +232,17 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      const volumeInUSD = new BigNumber((ret.volumeBuy + ret.volumeSell).toString());
-      const feeInKNC = new BigNumber(ret.fee.toString()).div(Math.pow(10, 18));
-      const feeInUSD = feeInKNC.times(ret.kncPrice);
+      const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
+      const volumeInETH = new BigNumber(ret.volumeEth.toString());
+      //const feeInKNC = new BigNumber(ret.partnerFee.toString()).div(Math.pow(10, 18));
+      //const feeInUSD = feeInKNC.times(ret.kncPrice);
       const totalBurnedFee = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
       const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
-        networkFee: '$' + feeInUSD.toFormat(2).toString(),
-        tradeCount: ret.tradeCount,
+        networkVolumeEth:  volumeInETH.toFormat(2).toString() + " ETH",
+        //partnerFee: '$' + feeInUSD.toFormat(2).toString(),
+        //tradeCount: ret.tradeCount,
         kncInfo: ret.kncInfo,
         totalBurnedFee: totalBurnedFee.toFormat(2).toString(),
         feeToBurn: feeToBurn.toFormat(2).toString()
@@ -306,31 +313,24 @@ module.exports = BaseService.extends({
           params: params
         }, next);
       },
-      takerUsds: (next) => {
-        KyberTradeModel.sum('taker_total_usd', {
+      volumeUsd: (next) => {
+        KyberTradeModel.sum('volume_usd', {
           where: whereClauses,
           params: params,
         }, next);
       },
-      makerUsds: (next) => {
-        KyberTradeModel.sum('maker_total_usd', {
+      volumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
           where: whereClauses,
           params: params,
         }, next);
       },
-      sumFee: (next) => {
+      partnerFee: (next) => {
         KyberTradeModel.sum('taker_fee', {
           where: whereClauses,
           params: params,
         }, next);
       }
-      // totalUSDVolume: (next) => {
-      //   KyberTradeModel.find({
-      //     columns: sumColumn,
-      //     where: whereClauses,
-      //     params: params
-      //   }, next);
-      // }
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -342,9 +342,9 @@ module.exports = BaseService.extends({
           page: page,
           limit: limit,
           totalCount: ret.count,
-          takerUsds: ret.takerUsds,
-          makerUsds: ret.makerUsds,
-          sumFee: ret.sumFee,
+          volumeUsd: ret.volumeUsd,
+          volumeEth: ret.volumeEth,
+          partnerFee: ret.partnerFee,
           maxPage: Math.ceil(ret.count / limit)
         }
       });
@@ -386,6 +386,13 @@ module.exports = BaseService.extends({
           groupBy: [groupColumn],
         }, next);
       },
+      sumEth: (next) => {
+        KyberTradeModel.sumGroupBy('volume_eth', {
+          where: whereClauses,
+          params: params,
+          groupBy: [groupColumn],
+        }, next);
+      },
       count: (next) => {
         KyberTradeModel.countGroupBy(groupColumn, {
           where: whereClauses,
@@ -406,6 +413,7 @@ module.exports = BaseService.extends({
             daySeq: ret.sum[i].daySeq,
             hourSeq: ret.sum[i].hourSeq,
             sum: ret.sum[i].sum,
+            sumEth: ret.sumEth[i].sum,
             count: ret.count[i].count
           })
         }
@@ -415,6 +423,7 @@ module.exports = BaseService.extends({
           const nullData = {
             [this._convertSeqColumnName(groupColumn)]: nowSeq,
             sum: 0,
+            sumEth: 0,
             count: 0
           };
           returnData.push(nullData);
@@ -426,11 +435,13 @@ module.exports = BaseService.extends({
         returnData.push({
           [this._convertSeqColumnName(groupColumn)]: firstSeq,
           sum: 0,
+          sumEth: 0,
           count: 0
         });
         returnData.push({
           [this._convertSeqColumnName(groupColumn)]: nowSeq,
           sum: 0,
+          sumEth: 0,
           count: 0
         });
       }

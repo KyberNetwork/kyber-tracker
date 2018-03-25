@@ -30,7 +30,8 @@ export default {
     return {
       resultCount: 0,
       totalUsd: 0,
-      totalFee: 0,
+      totalEth: 0,
+      totalPartnerFee: 0,
       searchFromDate: null,
       searchToDate: null,
       tokens: _.keyBy(_.values(network.tokens), 'address')
@@ -56,9 +57,11 @@ export default {
     getSearchResultMessage () {
       return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) 
             + '</br>' 
-            + this.$t('search_page.total_usd_msg', [this.totalUsd]) + " USD"
+            + this.$t('search_page.total_usd_msg', [this.totalUsd])
             + '</br>' 
-            + this.$t('search_page.total_fee', [this.totalFee]) + " KNC"
+            + this.$t('search_page.total_eth_msg', [this.totalEth])
+            + '</br>' 
+            + this.$t('search_page.total_fee', [this.totalPartnerFee])
             + '</span>'
     },
     requestSearch () {
@@ -81,11 +84,9 @@ export default {
 
             if (pagination) {
               this.resultCount = pagination.totalCount;
-              // this.totalUsd = new BigNumber(pagination.makerUsds).plus(new BigNumber(pagination.takerUsds)).toFormat(2)
-              // this.totalFee = new BigNumber(pagination.sumFee.toString()).div(Math.pow(10, 18)).toFormat(3);
-
-              this.totalUsd = new BigNumber(pagination.takerUsds).toFormat(2)
-              this.totalFee = new BigNumber(pagination.sumFee.toString()).div(Math.pow(10, 18)).toFormat(3);
+              this.totalUsd = new BigNumber(pagination.volumeUsd).toFormat(2)
+              this.totalEth = new BigNumber(pagination.volumeEth).toFormat(3);
+              this.totalPartnerFee = new BigNumber(pagination.partnerFee.toString()).div(Math.pow(10, 18)).toFormat(3);
 
               this.$refs.datatable.maxPage = pagination.maxPage;
             } else {

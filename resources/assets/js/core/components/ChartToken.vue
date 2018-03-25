@@ -29,14 +29,17 @@
         ret = ret.slice(0, 5);
         const labels = [];
         const dataset = [];
+        const volumeTokens = [];
 
         for (let i = 0; i < ret.length; i++) {
           labels.push(ret[i].symbol);
           dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
+          volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
         }
 
         return {
           labels,
+          volumeTokens,
           datasets: [{
             data: dataset,
             pointRadius: 0,
@@ -50,9 +53,21 @@
       },
       _getChartOptions() {
         const callbacks = {
-          label: (tooltipItem, data) => {
-            const index = tooltipItem.index;
-            return this.$t('chart.title.label_volume') + ': $' + util.numberWithCommas(data.datasets[0].data[index]);
+          title: (tooltipItem, data) => {
+            const index = tooltipItem[0].index;
+            const symbol = data.labels[index];
+            const tokenName = util.getTokenInfo(symbol).name;
+            return tokenName + " - " + symbol;
+          },
+          label: () => {
+          },
+          afterBody: (tooltipItem, data) => {
+            const index = tooltipItem[0].index;
+            const tokenSymbol = data.labels[index];
+            const usdText = this.$t('chart.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
+            const tokenText = this.$t('chart.title.label_volume') + ' (' +
+              tokenSymbol + '): ' + util.numberWithCommas(data.volumeTokens[index]);
+            return [usdText, tokenText];
           }
         };
 

@@ -112,9 +112,10 @@
     "title": "Wallet Details",
     "no_result_msg": "No transactions found for wallet {0}",
     "result_msg": "Number of trades: {0}",
-    "total_usd_msg": "Total volume: {0}",
+    "total_usd_msg": "Total volume (USD): ${0}",
+    "total_eth_msg": "Total volume (ETH): {0}",
     "result_title": "Address: {0}",
-    "total_fee": "Total partner commission: {0}"
+    "total_fee": "Total partner commission: {0} KNC"
   },
 
   "main_page": {

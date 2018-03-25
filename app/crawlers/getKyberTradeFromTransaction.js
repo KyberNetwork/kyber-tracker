@@ -69,11 +69,13 @@ module.exports = (block, tx, callback) => {
         record.makerTokenSymbol = destToken.symbol;
         record.makerTokenAmount = destAmount;
 
+        /*
         if (srcToken.symbol === 'ETH') {
           record.volumeEth = srcAmount;
         } else if (destToken.symbol === 'ETH') {
           record.volumeEth = destAmount;
         }
+        */
       }
 
       if (log.topics[0].toLowerCase() === Utils.getBurnFeesTopicHash()) {
