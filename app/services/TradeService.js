@@ -75,6 +75,7 @@ module.exports = BaseService.extends({
     KyberTradeModel.findOne(tradeId, callback);
   },
 
+  // Use for totken list page & top token chart
   getTopTokensList: function (fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const CMCService = this.getService('CMCService');
@@ -159,6 +160,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for topbar items
   getStats24h: function (callback) {
     const key = 'stats24h';
     const cachedData = LocalCache.getSync(key);
@@ -284,7 +286,6 @@ module.exports = BaseService.extends({
   _searchByAddress: function (address, page, limit, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     let whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?';
-    let sumColumn = 'SUM(taker_total_usd)'
     let params = [address, address];
 
     if (fromDate) {
@@ -351,6 +352,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for Volume charts
   getNetworkVolumes: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
@@ -380,7 +382,7 @@ module.exports = BaseService.extends({
 
     async.auto({
       sum: (next) => {
-        KyberTradeModel.sumGroupBy('maker_total_usd', {
+        KyberTradeModel.sumGroupBy('volume_usd', {
           where: whereClauses,
           params: params,
           groupBy: [groupColumn],
@@ -451,6 +453,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for "Fees To Burn" chart
   getToBurnFees: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
@@ -540,6 +543,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for "partner commision" chart (currently not used by front-end)
   getToWalletFees: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
@@ -581,6 +585,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Seems not used anywhere
   getCountMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
@@ -599,6 +604,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Seems not used anywhere
   getSumMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 

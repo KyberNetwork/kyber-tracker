@@ -24,13 +24,13 @@ module.exports = BaseEntity.extends({
 
     if (this.makerTokenSymbol === "ETH") {
       this.volumeEth = makerAmount;
-      this.volumeUsd = this.makerTotalUsd;
+      this.volumeUsd = this.makerTotalUsd || this.takerTotalUsd;
     } else if (this.takerTokenSymbol === "ETH") {
       this.volumeEth = takerAmount;
-      this.volumeUsd = this.takerTotalUsd;
+      this.volumeUsd = this.takerTotalUsd || this.makerTotalUsd;
     } else {
-      this.volumeEth = this.makerTotalEth;
-      this.volumeUsd = this.makerTotalUsd;
+      this.volumeEth = this.makerTotalEth || this.takerTotalEth;
+      this.volumeUsd = this.makerTotalUsd || this.takerTotalUsd;
     }
 
     return this;
