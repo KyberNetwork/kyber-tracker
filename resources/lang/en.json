@@ -6,6 +6,7 @@
     "name": "Name",
     "symbol": "Symbol",
     "volume_24h_usd": "24H Volume (USD)",
+    "volume_24h_eth": "24H Volume (ETH)",
     "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
     "network_activity": "Trade History",

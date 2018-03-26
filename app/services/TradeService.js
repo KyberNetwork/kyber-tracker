@@ -109,6 +109,20 @@ module.exports = BaseService.extends({
           groupBy: ['maker_token_symbol']
         }, next);
       },
+      takerEth: (next) => {
+        KyberTradeModel.sumGroupBy('taker_total_eth', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['taker_token_symbol']
+        }, next);
+      },
+      makerEth: (next) => {
+        KyberTradeModel.sumGroupBy('maker_total_eth', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['maker_token_symbol']
+        }, next);
+      },
       prices: (next) => {
         CMCService.getPriceOfAllTokens(next);
       }
@@ -122,6 +136,8 @@ module.exports = BaseService.extends({
       const makerTrades = _.keyBy(ret.makerTrades, 'makerTokenSymbol');
       const takerUsds = _.keyBy(ret.takerUsds, 'takerTokenSymbol');
       const makerUsds = _.keyBy(ret.makerUsds, 'makerTokenSymbol');
+      const takerEth = _.keyBy(ret.takerEth, 'takerTokenSymbol');
+      const makerEth = _.keyBy(ret.makerEth, 'makerTokenSymbol');
       const tokens = _.compact(_.map(network.tokens, (tokenConfig) => {
         const symbol = tokenConfig.symbol;
 
@@ -145,12 +161,23 @@ module.exports = BaseService.extends({
           volumeUSD = volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString()));
         }
 
+        let ethVolume = new BigNumber(0);
+        if (takerEth[symbol]) {
+          ethVolume = ethVolume.plus(new BigNumber(takerEth[symbol].sum.toString()));
+        }
+
+        if (makerEth[symbol]) {
+          ethVolume = ethVolume.plus(new BigNumber(makerEth[symbol].sum.toString()));
+        }
+
         return {
           symbol: tokenConfig.symbol,
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
           volumeTokenNumber: tokenVolume.toNumber(),
           volumeUSD: volumeUSD.toNumber(),
+          volumeETH: ethVolume.toFormat(4).toString(),
+          volumeEthNumber: ethVolume.toNumber(),
         };
       }));
 
