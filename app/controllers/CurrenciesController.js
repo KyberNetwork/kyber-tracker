@@ -11,7 +11,7 @@ module.exports = AppController.extends({
 
   getConvertiblePairs: function (req, res) {
 
-    console.log("################# get covertiple pairs ")
+    // console.log("################# get covertiple pairs ")
     
     // const [err, params] = new Checkit({
     //   symbol: ['string'],
@@ -27,7 +27,10 @@ module.exports = AppController.extends({
     // }
 
     const CurrenciesService = req.getService('CurrenciesService');
-    CurrenciesService.getConvertiblePairs(this.ok.bind(this, req, res));
+    //CurrenciesService.getConvertiblePairs(this.ok.bind(this, req, res));
+    CurrenciesService.getConvertiblePairs((err, ret) => {
+      res.json(ret);
+    });
   },
 
   getCurrencyInfo: function (req, res) {
