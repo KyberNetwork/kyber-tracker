@@ -27,10 +27,10 @@ module.exports = BaseService.extends({
           token: token,
           fromCurrencyCode: "ETH"
         }, asyncCallback)
-        pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
-          token: "ETH",
-          fromCurrencyCode: token
-        }, asyncCallback)
+        // pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
+        //   token: "ETH",
+        //   fromCurrencyCode: token
+        // }, asyncCallback)
       }
     })
     if(pairs && Object.keys(pairs).length){
