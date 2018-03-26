@@ -107,9 +107,10 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      console.log(ret)
-      const baseVolume = new BigNumber(ret.baseVolume.toString()).div(Math.pow(10, baseTokenData.decimal)).toNumber()
-      const quoteVolume = new BigNumber(ret.quoteVolumeTaker.toString()).plus(new BigNumber(ret.quoteVolumeMaker.toString())).div(Math.pow(10, tokenData.decimal)).toNumber()
+      // const baseVolume = new BigNumber(ret.baseVolume.toString()).div(Math.pow(10, baseTokenData.decimal)).toNumber()
+      let bigQuoteVolumeTaker = ret.quoteVolumeTaker ? new BigNumber(ret.quoteVolumeTaker.toString()) : new BigNumber(0)
+      let bigQuoteVolumeMaker = ret.quoteVolumeMaker ? new BigNumber(ret.quoteVolumeMaker.toString()) : new BigNumber(0)
+      const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
       const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
       return callback( null , {
         "name": tokenData.name,
@@ -119,7 +120,7 @@ module.exports = BaseService.extends({
         "address": tokenData.address,
         price: currentPrice.toNumber(),
         quoteVolume: quoteVolume,
-        baseVolume: baseVolume
+        baseVolume: ret.baseVolume
         // price24h: null,
 
       })
