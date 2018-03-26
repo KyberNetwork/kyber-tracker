@@ -38,13 +38,13 @@ module.exports = BaseService.extends({
       async.auto(
         pairs,
         (err, ret) => {
-          let arrayBaseVolume = Object.keys(ret).map( pairKey => ret[pairKey].baseVolume)
-          let sum = helper.sumBig(arrayBaseVolume, 0)
+          // let arrayBaseVolume = Object.keys(ret).map( pairKey => ret[pairKey].baseVolume)
+          // let sum = helper.sumBig(arrayBaseVolume, 0)
           return callback(null, {
             data: ret,
-            pagination: {
-              totalBaseVolume: sum
-            }
+            // pagination: {
+            //   totalBaseVolume: sum
+            // }
           });
         })
     } else {
