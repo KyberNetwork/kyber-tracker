@@ -22,17 +22,34 @@ module.exports = BaseService.extends({
 
     Object.keys(tokens).map(token => {
       if(token.toUpperCase() !== "ETH"){
-        pairs[token] = "ETH"
-        pairs[token + "ETH"] = "ETH"
+        let pairOption = 
+        pairs[token + "_ETH"] = (asyncCallback) => this._getCurrencyInfo({
+          token: token,
+          fromCurrencyCode: "ETH"
+        }, asyncCallback)
+        pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
+          token: "ETH",
+          fromCurrencyCode: token
+        }, asyncCallback)
       }
     })
-
-    return callback(null, {
-      data: pairs,
-    });
+    if(pairs && Object.keys(pairs).length){
+      async.auto(
+        pairs,
+        (err, ret) => {
+          return callback(null, {
+            data: ret,
+          });
+        })
+    } else {
+      return callback(null, {
+        data: {},
+      });
+    }
+    
   },
 
-  getCurrencyInfo: function (options, callback) {
+  _getCurrencyInfo: function (options, callback) {
     if(!options.token || !tokens[options.token]){
       return callback("token not supported")
     }
@@ -84,6 +101,6 @@ module.exports = BaseService.extends({
 
       })
     })
-  }
+  },
 
 });

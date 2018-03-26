@@ -17,6 +17,7 @@ import TokenLink from '../core/components/TokenLink.vue';
 import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
+import ImportAcount from '../core/components/ImportAccount.vue';
 import routes from './routes';
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
@@ -33,8 +34,10 @@ Vue.component('token-link', TokenLink);
 Vue.component('chart-volume', ChartVolume);
 Vue.component('chart-fee', ChartFee);
 Vue.component('chart-token', ChartToken);
+Vue.component('import-acount', ImportAcount)
 Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
+
 
 const locale = localStorage.getItem('locale') || 'en';
 const i18n = new VueI18n({

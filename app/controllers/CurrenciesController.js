@@ -31,7 +31,6 @@ module.exports = AppController.extends({
   },
 
   getCurrencyInfo: function (req, res) {
-
     const [err, params] = new Checkit({
       token: ['string', 'required'],
       fromCurrencyCode: ['string', 'required']
