@@ -97,7 +97,7 @@ module.exports = BaseService.extends({
         "decimals": tokenData.decimal,
         price: currentPrice.toNumber(),
         volume24h: volume24h.toNumber(),
-        price24h: null,
+        // price24h: null,
 
       })
     })
