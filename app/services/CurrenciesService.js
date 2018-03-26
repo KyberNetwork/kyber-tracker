@@ -5,6 +5,7 @@ const util = require('util');
 const BigNumber = require('bignumber.js');
 const network = require('../../config/network');
 const Const = require('../common/Const');
+const helper = require('../common/Utils');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
 const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
@@ -37,8 +38,13 @@ module.exports = BaseService.extends({
       async.auto(
         pairs,
         (err, ret) => {
+          let arrayBaseVolume = Object.keys(ret).map( pairKey => ret[pairKey].baseVolume)
+          let sum = helper.sumBig(arrayBaseVolume, 0)
           return callback(null, {
             data: ret,
+            pagination: {
+              totalBaseVolume: sum
+            }
           });
         })
     } else {
@@ -115,7 +121,7 @@ module.exports = BaseService.extends({
       return callback( null , {
         "name": tokenData.name,
         "symbol": tokenData.symbol,
-        "code": tokenData.symbol,
+        // "code": tokenData.symbol,
         "decimals": tokenData.decimal,
         "address": tokenData.address,
         price: currentPrice.toNumber(),
