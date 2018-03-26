@@ -115,7 +115,7 @@ module.exports = BaseService.extends({
       return callback( null , {
         "name": tokenData.name,
         "symbol": tokenData.symbol,
-        "code": tokenData.symbol,
+        // "code": tokenData.symbol,
         "decimals": tokenData.decimal,
         "address": tokenData.address,
         price: currentPrice.toNumber(),
