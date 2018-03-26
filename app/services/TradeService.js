@@ -110,17 +110,17 @@ module.exports = BaseService.extends({
         }, next);
       },
       takerEth: (next) => {
-        KyberTradeModel.sumGroupBy('taker_total_eth', {
-          where: 'block_timestamp > ? AND block_timestamp < ?',
-          params: [fromDate, toDate],
-          groupBy: ['taker_token_symbol']
-        }, next);
-      },
-      makerEth: (next) => {
-        KyberTradeModel.sumGroupBy('maker_total_eth', {
+        KyberTradeModel.sumGroupBy('volume_eth', {
           where: 'block_timestamp > ? AND block_timestamp < ?',
           params: [fromDate, toDate],
           groupBy: ['maker_token_symbol']
+        }, next);
+      },
+      makerEth: (next) => {
+        KyberTradeModel.sumGroupBy('volume_eth', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['taker_token_symbol']
         }, next);
       },
       prices: (next) => {
@@ -136,8 +136,8 @@ module.exports = BaseService.extends({
       const makerTrades = _.keyBy(ret.makerTrades, 'makerTokenSymbol');
       const takerUsds = _.keyBy(ret.takerUsds, 'takerTokenSymbol');
       const makerUsds = _.keyBy(ret.makerUsds, 'makerTokenSymbol');
-      const takerEth = _.keyBy(ret.takerEth, 'takerTokenSymbol');
-      const makerEth = _.keyBy(ret.makerEth, 'makerTokenSymbol');
+      const takerEth = _.keyBy(ret.takerEth, 'makerTokenSymbol');
+      const makerEth = _.keyBy(ret.makerEth, 'takerTokenSymbol');
       const tokens = _.compact(_.map(network.tokens, (tokenConfig) => {
         const symbol = tokenConfig.symbol;
 
