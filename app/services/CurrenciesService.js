@@ -89,7 +89,7 @@ module.exports = BaseService.extends({
       // },
       baseVolume: (next) => {
         KyberTradeModel.sum('volume_eth', {
-          where: 'block_timestamp > ? AND (maker_token_symbol = ? AND taker_token_symbol = ?) OR (maker_token_symbol = ? AND taker_token_symbol = ?)',
+          where: 'block_timestamp > ? AND ((maker_token_symbol = ? AND taker_token_symbol = ?) OR (maker_token_symbol = ? AND taker_token_symbol = ?))',
           params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol, base, base, tokenSymbol],
         }, next);
       },
