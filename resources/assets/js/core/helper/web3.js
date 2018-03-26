@@ -40,4 +40,18 @@ export default class Web3Service {
   setDefaultAddress(address){
     web3.eth.defaultAccount = address
   }
+
+  getAllAddresses(){
+    return this.web3.eth.accounts;
+    // return new Promise((resolve, reject)=>{
+    //   this.web3.eth.accounts((error, result) => {
+    //     if (error || !result) {
+    //       var error = new Error("Cannot get all addresses")
+    //       reject(error)
+    //     }else{
+    //       resolve(result)
+    //     }
+    //   })
+    // })
+  }
 }

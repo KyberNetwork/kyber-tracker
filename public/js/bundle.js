@@ -96384,6 +96384,10 @@ exports.default = {
 //
 //
 //
+//
+//
+//
+//
 
 /***/ }),
 /* 421 */
@@ -98786,7 +98790,70 @@ var render = function() {
               _c(
                 "div",
                 { staticClass: "float-lang-bar cursor-pointer" },
-                [_c("b-navbar-nav", [_c("import-acount")], 1)],
+                [
+                  _c(
+                    "b-navbar-nav",
+                    [
+                      _c(
+                        "b-dropdown",
+                        {
+                          staticClass: "change-language-button",
+                          attrs: { "no-caret": "", right: "" }
+                        },
+                        [
+                          _c("template", { slot: "button-content" }, [
+                            _c("span", [
+                              _c("img", {
+                                attrs: {
+                                  src:
+                                    "images/locales/" +
+                                    this.getLanguage() +
+                                    ".svg"
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "b-dropdown-item",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.changeLanguage("en")
+                                }
+                              }
+                            },
+                            [
+                              _c("img", {
+                                attrs: { src: "images/locales/en.svg" }
+                              }),
+                              _vm._v(" English")
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-dropdown-item",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.changeLanguage("vi")
+                                }
+                              }
+                            },
+                            [
+                              _c("img", {
+                                attrs: { src: "images/locales/vi.svg" }
+                              }),
+                              _vm._v(" Tiếng Việt")
+                            ]
+                          )
+                        ],
+                        2
+                      )
+                    ],
+                    1
+                  )
+                ],
                 1
               )
             ])
@@ -104706,7 +104773,7 @@ exports = module.exports = __webpack_require__(13)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -104759,39 +104826,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
   data: function data() {
     return {
-      address: null
+      addresses: []
     };
   },
 
 
   methods: {
     refresh: function refresh() {},
-    getListTitle: function getListTitle() {
-      return '';
-    },
-    getList: function getList() {},
-    formatVolumeUSD: function formatVolumeUSD(item) {
-      // return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
-    },
-    getTokenImageLink: function getTokenImageLink(symbol) {
-      // return 'images/tokens/' + this.tokens[symbol].icon;
-    },
-    toTokenDetails: function toTokenDetails(symbol) {
-      // const tokenInfo = this.tokens[symbol];
-      // if (!tokenInfo) {
-      //   return;
-      // }
-
-      // this.$router.push({
-      //   name: 'token-details',
-      //   params: {
-      //     tokenAddr: tokenInfo.address
-      //   }
-      // });
-    },
-    connect: async function connect(e) {
+    connectMetaMask: async function connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        // this.props.dispatch(throwError(this.props.translate('error.metamask_not_install') || 'Cannot connect to metamask. Please make sure you have metamask installed'))
         alert('Cannot connect to metamask. Please make sure you have metamask installed');
         return;
       }
@@ -104800,24 +104843,26 @@ exports.default = {
       var browser = _bowser2.default.name;
       if (browser != 'Chrome' && browser != 'Firefox') {
         if (!web3Service.isTrust()) {
-          // let erroMsg = this.props.translate("error.browser_not_support_metamask", {browser: browser}) || `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
           alert('Metamask is not supported on ' + browser + ', you can use Chrome or Firefox instead.');
-          // this.props.dispatch(throwError(erroMsg))
           return;
         }
       }
-      var metaMaskAddress = await web3Service.getCoinbase();
-      console.log("*******************");
-      console.log(metaMaskAddress);
-      this.address = metaMaskAddress;
-      // this.dispatchAccMetamask(web3Service);
+
+      try {
+        var addresses = await web3Service.getAllAddresses();
+        console.log("*******************");
+        console.log(addresses);
+        this.addresses = addresses;
+      } catch (e) {
+        alert(e);
+      }
     }
   },
 
   watch: {},
 
   mounted: function mounted() {
-    this.connect();
+    this.connectMetaMask();
   }
 };
 
@@ -104887,6 +104932,21 @@ var Web3Service = function () {
     key: "setDefaultAddress",
     value: function setDefaultAddress(address) {
       web3.eth.defaultAccount = address;
+    }
+  }, {
+    key: "getAllAddresses",
+    value: function getAllAddresses() {
+      return this.web3.eth.accounts;
+      // return new Promise((resolve, reject)=>{
+      //   this.web3.eth.accounts((error, result) => {
+      //     if (error || !result) {
+      //       var error = new Error("Cannot get all addresses")
+      //       reject(error)
+      //     }else{
+      //       resolve(result)
+      //     }
+      //   })
+      // })
     }
   }]);
 
@@ -105540,7 +105600,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-sm-12" }, [
-    _vm._v("\n  " + _vm._s(_vm.address) + "\n")
+    _vm._v("\n  " + _vm._s(_vm.addresses) + "\n")
   ])
 }
 var staticRenderFns = []

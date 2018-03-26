@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-12">
-    {{address}}
+    {{addresses}}
   </div>
 </template>
 
@@ -17,40 +17,15 @@ export default {
 
   data() {
     return {
-      address: null
+      addresses: []
     };
   },
 
   methods: {
     refresh () {
     },
-    getListTitle () {
-      return '';
-    },
-    getList () {
-    },
-    formatVolumeUSD (item) {
-      // return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
-    },
-    getTokenImageLink (symbol) {
-      // return 'images/tokens/' + this.tokens[symbol].icon;
-    },
-    toTokenDetails (symbol) {
-      // const tokenInfo = this.tokens[symbol];
-      // if (!tokenInfo) {
-      //   return;
-      // }
-
-      // this.$router.push({
-      //   name: 'token-details',
-      //   params: {
-      //     tokenAddr: tokenInfo.address
-      //   }
-      // });
-    },
-    async connect (e) {   
+    async connectMetaMask (e) {   
       if (typeof web3 === "undefined") {
-        // this.props.dispatch(throwError(this.props.translate('error.metamask_not_install') || 'Cannot connect to metamask. Please make sure you have metamask installed'))
         alert('Cannot connect to metamask. Please make sure you have metamask installed')
         return
       }            
@@ -59,23 +34,20 @@ export default {
       let browser = bowser.name
       if(browser != 'Chrome' && browser != 'Firefox'){
         if(!web3Service.isTrust()){
-          // let erroMsg = this.props.translate("error.browser_not_support_metamask", {browser: browser}) || `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
           alert(`Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`)
-          // this.props.dispatch(throwError(erroMsg))
           return
         }
       }
-      let metaMaskAddress = await web3Service.getCoinbase()
-      console.log("*******************")
-      console.log(metaMaskAddress)
-      this.address = metaMaskAddress
-      // this.dispatchAccMetamask(web3Service);
-    },
 
-    // dispatchAccMetamask(web3Service){
-    //   this.props.dispatch(importAccountMetamask(web3Service, BLOCKCHAIN_INFO.networkId,
-    //     this.props.ethereum, this.props.tokens, this.props.translate))
-    // }
+      try{
+        let addresses = await web3Service.getAllAddresses()
+        console.log("*******************")
+        console.log(addresses)
+        this.addresses = addresses
+      } catch(e){
+        alert(e)
+      }
+    },
   },
 
   watch: {
@@ -83,7 +55,7 @@ export default {
   },
 
   mounted() {
-    this.connect();
+    this.connectMetaMask();
   }
 
 }
