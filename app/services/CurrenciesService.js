@@ -5,6 +5,7 @@ const util = require('util');
 const BigNumber = require('bignumber.js');
 const network = require('../../config/network');
 const Const = require('../common/Const');
+const helper = require('../common/Utils');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
 const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
@@ -23,22 +24,27 @@ module.exports = BaseService.extends({
     Object.keys(tokens).map(token => {
       if(token.toUpperCase() !== "ETH"){
         let pairOption = 
-        pairs[token + "_ETH"] = (asyncCallback) => this._getCurrencyInfo({
+        pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
           fromCurrencyCode: "ETH"
         }, asyncCallback)
-        pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
-          token: "ETH",
-          fromCurrencyCode: token
-        }, asyncCallback)
+        // pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
+        //   token: "ETH",
+        //   fromCurrencyCode: token
+        // }, asyncCallback)
       }
     })
     if(pairs && Object.keys(pairs).length){
       async.auto(
         pairs,
         (err, ret) => {
+          let arrayBaseVolume = Object.keys(ret).map( pairKey => ret[pairKey].baseVolume)
+          let sum = helper.sumBig(arrayBaseVolume, 0)
           return callback(null, {
             data: ret,
+            pagination: {
+              totalBaseVolume: sum
+            }
           });
         })
     } else {
@@ -61,6 +67,7 @@ module.exports = BaseService.extends({
     let tokenSymbol = options.token
     let base = options.fromCurrencyCode
     let tokenData = tokens[tokenSymbol]
+    let baseTokenData = tokens[base]
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const CMCService = this.getService('CMCService');
@@ -68,16 +75,34 @@ module.exports = BaseService.extends({
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
     async.auto({
-      volumeBuy: (next) => {
-        KyberTradeModel.sum('taker_total_usd', {
-          where: 'taker_token_symbol = ? AND block_timestamp > ?',
-          params: [tokenSymbol, nowInSeconds - DAY_IN_SECONDS],
+      // volumeBuy: (next) => {
+      //   KyberTradeModel.sum('taker_total_usd', {
+      //     where: 'taker_token_symbol = ? AND block_timestamp > ?',
+      //     params: [tokenSymbol, nowInSeconds - DAY_IN_SECONDS],
+      //   }, next);
+      // },
+      // volumeSell: (next) => {
+      //   KyberTradeModel.sum('maker_total_usd', {
+      //     where: 'maker_token_symbol = ? AND block_timestamp > ?',
+      //     params: [tokenSymbol, nowInSeconds - DAY_IN_SECONDS],
+      //   }, next);
+      // },
+      baseVolume: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: 'block_timestamp > ? AND ((maker_token_symbol = ? AND taker_token_symbol = ?) OR (maker_token_symbol = ? AND taker_token_symbol = ?))',
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol, base, base, tokenSymbol],
         }, next);
       },
-      volumeSell: (next) => {
-        KyberTradeModel.sum('maker_total_usd', {
-          where: 'maker_token_symbol = ? AND block_timestamp > ?',
-          params: [tokenSymbol, nowInSeconds - DAY_IN_SECONDS],
+      quoteVolumeTaker: (next) => {
+        KyberTradeModel.sum('taker_token_amount', {
+          where: 'block_timestamp > ? AND maker_token_symbol = ? AND taker_token_symbol = ?',
+          params: [nowInSeconds - DAY_IN_SECONDS, base, tokenSymbol],
+        }, next);
+      },
+      quoteVolumeMaker: (next) => {
+        KyberTradeModel.sum('maker_token_amount', {
+          where: 'block_timestamp > ? AND maker_token_symbol = ? AND taker_token_symbol = ?',
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol, base],
         }, next);
       },
       price: (next) => {
@@ -88,16 +113,21 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      const volume24h = new BigNumber(ret.volumeBuy).plus(new BigNumber(ret.volumeSell))
-      const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, tokenData.decimal)) : null
+      // const baseVolume = new BigNumber(ret.baseVolume.toString()).div(Math.pow(10, baseTokenData.decimal)).toNumber()
+      let bigQuoteVolumeTaker = ret.quoteVolumeTaker ? new BigNumber(ret.quoteVolumeTaker.toString()) : new BigNumber(0)
+      let bigQuoteVolumeMaker = ret.quoteVolumeMaker ? new BigNumber(ret.quoteVolumeMaker.toString()) : new BigNumber(0)
+      const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
+      const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
       return callback( null , {
         "name": tokenData.name,
         "symbol": tokenData.symbol,
-        "code": tokenData.symbol,
+        // "code": tokenData.symbol,
         "decimals": tokenData.decimal,
+        "address": tokenData.address,
         price: currentPrice.toNumber(),
-        volume24h: volume24h.toNumber(),
-        price24h: null,
+        quoteVolume: quoteVolume,
+        baseVolume: ret.baseVolume
+        // price24h: null,
 
       })
     })

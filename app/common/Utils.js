@@ -4,6 +4,7 @@ const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io', 9000));
 
 const abiDecoder = require('abi-decoder');
+const BigNumber = require('bignumber.js');
 const kyberABI = require('../../config/abi/kyber');
 const burnedFeeABI = require('../../config/abi/burned_fee');
 abiDecoder.addABI(kyberABI);
@@ -65,5 +66,13 @@ module.exports = {
 
     return addr === contractAddresses.feeBurner1 || addr === contractAddresses.feeBurner2;
   },
+  sumBig(arrayParams, initState) {
+    return arrayParams.reduce((a, b) => {
+      let bigA = a ? new BigNumber(a.toString()) : new BigNumber(0)
+      let bigB = b ? new BigNumber(b.toString()) : new BigNumber(0)
+      return bigA.plus(bigB)
+    }, new BigNumber(initState))
+    .toString()
+  }
 
 };
