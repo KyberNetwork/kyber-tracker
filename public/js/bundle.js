@@ -96958,6 +96958,8 @@ exports.default = {
     onSelected: function onSelected(selected) {
       if (selected && selected.item && selected.item.addr) {
         this.searchString = selected.item.addr;
+        // document.getElementById("autosuggest__input").focus()
+        this.doSearch();
       }
     },
     loadBreadcumbs: function loadBreadcumbs(route) {
