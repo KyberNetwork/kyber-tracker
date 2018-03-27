@@ -113,7 +113,7 @@
     "result_msg": "Số lần giao dịch: {0}",
     "total_usd_msg": "Tổng khối lượng giao dịch (USD): ${0}",
     "total_eth_msg": "Tổng khối lượng giao dịch (ETH): {0}",
-    "result_title": "Địa chỉ: {0}",
+    "result_title": "Địa chỉ: ",
     "total_fee": "Tổng phí tích hợp: {0} KNC"
   },
 

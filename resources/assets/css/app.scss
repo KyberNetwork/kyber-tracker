@@ -865,6 +865,7 @@ html {
 
 #autosuggest__input{
   width: 100%;
+  height: 34px;
 }
 
 #autosuggest{
@@ -876,7 +877,7 @@ html {
   text-overflow: ellipsis;
 }
 
-.autosuggest__results-container{
+.autosuggest__results{
   position: absolute;
   color: black;
   top: 50px;
