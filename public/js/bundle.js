@@ -96936,6 +96936,7 @@ exports.default = {
 
       window.setTimeout(function () {
         _this2.searchString = "";
+        _this2.$refs.seatchInputRef.searchInput = "";
       });
     },
     isTxHash: function isTxHash(hash) {
@@ -97056,6 +97057,7 @@ exports.default = {
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
 }; //
+//
 //
 //
 //
@@ -99775,6 +99777,7 @@ var render = function() {
                               { attrs: { size: "sm" } },
                               [
                                 _c("vue-autosuggest", {
+                                  ref: "seatchInputRef",
                                   attrs: {
                                     suggestions: [
                                       {
