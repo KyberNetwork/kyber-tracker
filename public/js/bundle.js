@@ -96905,6 +96905,7 @@ exports.default = {
       if (!this.searchString) {
         return;
       }
+      this.searchString = this.searchString.trim();
 
       this.$router.push({
         name: "search",
