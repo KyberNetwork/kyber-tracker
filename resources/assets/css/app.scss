@@ -867,7 +867,16 @@ html {
   width: 100%;
 }
 
-.suggest-input-result{
+#autosuggest{
+  width: 100%;
+}
+.autosuggest__results_item{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.autosuggest__results-container{
   position: absolute;
   color: black;
   top: 50px;
@@ -877,5 +886,7 @@ html {
   /* box-sizing: border-box; */
   border: 1px solid #ced4da;
   border-radius: 3px;
-
+  ul{
+    padding: 5px;
+  }
 }

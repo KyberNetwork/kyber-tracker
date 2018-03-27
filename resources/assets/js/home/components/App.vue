@@ -86,7 +86,8 @@
                       }]"
                       :getSuggestionValue="getSuggestionValue"
                       :renderSuggestion="renderSuggestion"
-                      :inputProps="{id:'autosuggest__input', placeholder:$t('common.searchbox_placeholder')}"
+                      :onSelected="onSelected"
+                      :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:$t('common.searchbox_placeholder')}"
                   />
                   
                   <b-input-group-append>
@@ -150,213 +151,271 @@
 </template>
 
 <script>
-
-import moment from 'moment';
-import request from 'superagent';
-import AppRequest from '../../core/request/AppRequest';
-import util from '../../core/helper/util';
-import network from '../../../../../config/network';
-import Web3Service from '../../core/helper/web3';
-import bowser from 'bowser'
+import moment from "moment";
+import request from "superagent";
+import AppRequest from "../../core/request/AppRequest";
+import util from "../../core/helper/util";
+import network from "../../../../../config/network";
+import Web3Service from "../../core/helper/web3";
+import bowser from "bowser";
 
 export default {
   data() {
     return {
-      networkVolume: '',
-      networkFee: '',
-      tradeCount: '',
-      kncPrice: '',
+      networkVolume: "",
+      networkFee: "",
+      tradeCount: "",
+      kncPrice: "",
       kncPriceChange24h: 0,
-      totalBurnedFee: '',
-      searchString: '',
-      pageTitle: '',
-      feeToBurn: '',
+      totalBurnedFee: "",
+      searchString: "",
+      pageTitle: "",
+      feeToBurn: "",
       breadcrumbsItems: [],
       addresses: []
     };
   },
 
   computed: {
-    formatedKNCPriceChange24h () {
+    formatedKNCPriceChange24h() {
       if (this.kncPriceChange24h > 0) {
-        return '+' + this.kncPriceChange24h + '%';
+        return "+" + this.kncPriceChange24h + "%";
       } else {
-        return this.kncPriceChange24h + '%';
+        return this.kncPriceChange24h + "%";
       }
     }
   },
 
   methods: {
-    changeLanguage (locale) {
-      localStorage.setItem('locale', locale);
+    changeLanguage(locale) {
+      localStorage.setItem("locale", locale);
       window.i18n.locale = locale;
       moment.locale(locale);
       window.location.reload();
     },
-    getLanguage () {
-      if(typeof window.i18n != 'undefined' && typeof window.i18n.locale != 'undefined') {
+    getLanguage() {
+      if (
+        typeof window.i18n != "undefined" &&
+        typeof window.i18n.locale != "undefined"
+      ) {
         return window.i18n.locale;
       } else {
-        window.i18n.locale = 'vi';
-        moment.locale('vi');
-        return 'vi';
+        window.i18n.locale = "vi";
+        moment.locale("vi");
+        return "vi";
       }
     },
-    getPriceChangeClass () {
-      if (this.kncPriceChange24h === 0) return '';
-      return this.kncPriceChange24h < 0 ? 'neg-value' : 'pos-value'
+    getPriceChangeClass() {
+      if (this.kncPriceChange24h === 0) return "";
+      return this.kncPriceChange24h < 0 ? "neg-value" : "pos-value";
     },
-    async connectMetaMask (e) {   
+    async connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        alert('Cannot connect to metamask. Please make sure you have metamask installed')
-        return
-      }            
-      var web3Service = new Web3Service(web3)
-      
-      let browser = bowser.name
-      if(browser != 'Chrome' && browser != 'Firefox'){
-        if(!web3Service.isTrust()){
-          alert(`Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`)
-          return
+        alert(
+          "Cannot connect to metamask. Please make sure you have metamask installed"
+        );
+        return;
+      }
+      var web3Service = new Web3Service(web3);
+
+      let browser = bowser.name;
+      if (browser != "Chrome" && browser != "Firefox") {
+        if (!web3Service.isTrust()) {
+          alert(
+            `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
+          );
+          return;
         }
       }
 
-      try{
-        let addresses = await web3Service.getAllAddresses()
+      try {
+        let addresses = await web3Service.getAllAddresses();
         let suggestData = addresses.map(addr => {
-          console.log(addr)
+          console.log(addr);
           return {
-            type: "metamask", 
+            type: "metamask",
             addr: addr
-          }
-        })
-        this.addresses = suggestData
-        
-      } catch(e){
-        alert(e)
+          };
+        });
+        this.addresses = suggestData;
+      } catch (e) {
+        alert(e);
       }
     },
 
-    refresh () {
-      AppRequest.getStats24h().then((stats) => {
+    refresh() {
+      AppRequest.getStats24h().then(stats => {
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
-        this.totalBurnedFee = stats.totalBurnedFee + ' KNC';
-        this.feeToBurn = stats.feeToBurn + " KNC"
+        this.totalBurnedFee = stats.totalBurnedFee + " KNC";
+        this.feeToBurn = stats.feeToBurn + " KNC";
       });
 
       request
-        .get('https://api.coinmarketcap.com/v1/ticker/kyber-network/')
-        .then((res) => {
+        .get("https://api.coinmarketcap.com/v1/ticker/kyber-network/")
+        .then(res => {
           const data = res.body[0];
           if (!data || !data.id) {
             return;
           }
 
-          this.kncPrice = '$' + parseFloat(data.price_usd).toFixed(2);
+          this.kncPrice = "$" + parseFloat(data.price_usd).toFixed(2);
           this.kncPriceChange24h = parseFloat(data.percent_change_24h);
         });
     },
-    doSearch () {
+    doSearch() {
       if (!this.searchString) {
         return;
       }
 
       this.$router.push({
-        name: 'search',
+        name: "search",
         query: {
           q: this.searchString
         }
       });
 
+      //add search string to suggest input
+      let indexItemExist = this.addresses.map(item => item.addr).indexOf(this.searchString);
+
+      if (indexItemExist < 0) {
+        if (this.isAddress(this.searchString)) {
+          this.addresses.push({
+            type: "address",
+            addr: this.searchString
+          });
+        }
+        if (this.isTxHash(this.searchString)) {
+          this.addresses.push({
+            type: "tx hash",
+            addr: this.searchString
+          });
+        }
+      }
+
       window.setTimeout(() => {
-        this.searchString = '';
+        this.searchString = "";
       });
+    },
+    isTxHash(hash) {
+      return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
+    },
+    isAddress(address) {
+      return /^(0x)?[0-9a-f]{40}$/i.test(address)
     },
 
     renderSuggestion(suggestion) {
-      return suggestion.item.type + " - " + suggestion.item.addr
+      return suggestion.item.type + " - " + suggestion.item.addr;
     },
 
     getSuggestionValue(suggestion) {
-        return suggestion.item.addr;
+      return suggestion.item.addr;
     },
 
-    loadBreadcumbs (route) {
+    onInputChange(text, oldText) {
+      this.searchString = text;
+    },
+
+    onSelected(selected) {
+      this.searchString = selected.item.addr;
+    },
+
+    loadBreadcumbs(route) {
       const routeName = route.name;
 
       switch (routeName) {
-        case 'trade-list':
-          this.pageTitle = this.$t('page_title.trade_list');
-          this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' },
-          }, {
-            text: this.$t('navigator.trades'),
-            active: true,
-          }];
+        case "trade-list":
+          this.pageTitle = this.$t("page_title.trade_list");
+          this.breadcrumbsItems = [
+            {
+              text: this.$t("navigator.home"),
+              to: { name: "home" }
+            },
+            {
+              text: this.$t("navigator.trades"),
+              active: true
+            }
+          ];
           return;
-        case 'token-list':
-          this.pageTitle = this.$t('page_title.token_list');
-          this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' },
-          }, {
-            text: this.$t('navigator.tokens'),
-            active: true,
-          }];
+        case "token-list":
+          this.pageTitle = this.$t("page_title.token_list");
+          this.breadcrumbsItems = [
+            {
+              text: this.$t("navigator.home"),
+              to: { name: "home" }
+            },
+            {
+              text: this.$t("navigator.tokens"),
+              active: true
+            }
+          ];
           return;
-        case 'trade-details':
-          this.pageTitle = this.$t('page_title.trade_detail');
-          this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
-          }, {
-            text: this.$t('navigator.trades'),
-            to: { name: 'trade-list' }
-          }, {
-            text: this.$t('navigator.trade_detail'),
-            active: true
-          }];
+        case "trade-details":
+          this.pageTitle = this.$t("page_title.trade_detail");
+          this.breadcrumbsItems = [
+            {
+              text: this.$t("navigator.home"),
+              to: { name: "home" }
+            },
+            {
+              text: this.$t("navigator.trades"),
+              to: { name: "trade-list" }
+            },
+            {
+              text: this.$t("navigator.trade_detail"),
+              active: true
+            }
+          ];
           return;
-        case 'token-details':
-          const tokenInfo = _.find(_.values(network.tokens), (token) => {
+        case "token-details":
+          const tokenInfo = _.find(_.values(network.tokens), token => {
             return token.address === route.params.tokenAddr;
           });
 
-          this.pageTitle = this.$t('page_title.token_detail');
+          this.pageTitle = this.$t("page_title.token_detail");
           if (tokenInfo) {
-            this.pageTitle = `<img src="images/tokens/${tokenInfo.icon}" /> <span>${tokenInfo.name}</span> <span class='sub-title'>(${tokenInfo.symbol})</span>`;
+            this.pageTitle = `<img src="images/tokens/${
+              tokenInfo.icon
+            }" /> <span>${tokenInfo.name}</span> <span class='sub-title'>(${
+              tokenInfo.symbol
+            })</span>`;
           }
 
-          this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
-          }, {
-            text: this.$t('navigator.tokens'),
-            to: { name: 'token-list' }
-          }, {
-            text: this.$t('navigator.token_detail'),
-            active: true
-          }];
+          this.breadcrumbsItems = [
+            {
+              text: this.$t("navigator.home"),
+              to: { name: "home" }
+            },
+            {
+              text: this.$t("navigator.tokens"),
+              to: { name: "token-list" }
+            },
+            {
+              text: this.$t("navigator.token_detail"),
+              active: true
+            }
+          ];
           return;
-        case 'search':
-          this.pageTitle = this.$t('page_title.search');
-          this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
-          }, {
-            text: this.$t('navigator.search'),
-            active: true
-          }];
+        case "search":
+          this.pageTitle = this.$t("page_title.search");
+          this.breadcrumbsItems = [
+            {
+              text: this.$t("navigator.home"),
+              to: { name: "home" }
+            },
+            {
+              text: this.$t("navigator.search"),
+              active: true
+            }
+          ];
           return;
-        case 'home':
-          this.pageTitle = '';
+        case "home":
+          this.pageTitle = "";
           this.breadcrumbsItems = [];
           return;
         default:
-          this.pageTitle = '';
+          this.pageTitle = "";
           this.breadcrumbsItems = [];
           return;
       }
@@ -364,56 +423,56 @@ export default {
   },
 
   watch: {
-    '$route'(toVal, fromVal) {
+    $route(toVal, fromVal) {
       this.loadBreadcumbs(toVal);
     }
   },
 
-  mounted () {
+  mounted() {
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);
 
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
-}
+};
 </script>
 
 <style lang="scss">
-  @import '../../../css/app.scss';
-  .breadcrumbs {
-    width: 100%;
-    background-color: #dcdcdc;
-    .container-fluid {
-      padding: 0 30px;
-      -webkit-box-pack: justify !important;
-      -ms-flex-pack: justify !important;
-      display: -webkit-box !important;
-      display: -moz-box !important;
-      display: -ms-flexbox !important;
-      display: -webkit-flex !important;
-      display: flex !important;
-      -webkit-justify-content: space-between !important;
-      justify-content: space-between !important;
-      .breadcrumb {
-        float: right;
-        background: none;
-        margin: 0;
-      }
-      .title {
-        float: left;
-        justify-content: center;
-        align-self: center;
-        font-size: 16px;
+@import "../../../css/app.scss";
+.breadcrumbs {
+  width: 100%;
+  background-color: #dcdcdc;
+  .container-fluid {
+    padding: 0 30px;
+    -webkit-box-pack: justify !important;
+    -ms-flex-pack: justify !important;
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: -ms-flexbox !important;
+    display: -webkit-flex !important;
+    display: flex !important;
+    -webkit-justify-content: space-between !important;
+    justify-content: space-between !important;
+    .breadcrumb {
+      float: right;
+      background: none;
+      margin: 0;
+    }
+    .title {
+      float: left;
+      justify-content: center;
+      align-self: center;
+      font-size: 16px;
 
-        .sub-title {
-          margin-left: 10px;
-          color: #868e96;
-        }
+      .sub-title {
+        margin-left: 10px;
+        color: #868e96;
       }
     }
   }
-  .navbar .router-link-exact-active {
-    color: #3ee6c1 !important;
-  }
+}
+.navbar .router-link-exact-active {
+  color: #3ee6c1 !important;
+}
 </style>

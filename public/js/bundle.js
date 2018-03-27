@@ -4697,9 +4697,9 @@ function vueUse(VuePlugin) {
 
 
 module.exports = __webpack_require__(50);
-module.exports.easing = __webpack_require__(505);
-module.exports.canvas = __webpack_require__(506);
-module.exports.options = __webpack_require__(507);
+module.exports.easing = __webpack_require__(506);
+module.exports.canvas = __webpack_require__(507);
+module.exports.options = __webpack_require__(508);
 
 
 /***/ }),
@@ -26714,10 +26714,10 @@ exports.Socket = __webpack_require__(245);
 
 
 module.exports = {};
-module.exports.Arc = __webpack_require__(513);
-module.exports.Line = __webpack_require__(514);
-module.exports.Point = __webpack_require__(515);
-module.exports.Rectangle = __webpack_require__(516);
+module.exports.Arc = __webpack_require__(514);
+module.exports.Line = __webpack_require__(515);
+module.exports.Point = __webpack_require__(516);
+module.exports.Rectangle = __webpack_require__(517);
 
 
 /***/ }),
@@ -27584,12 +27584,12 @@ exports.decodePayloadAsBinary = function (data, binaryType, callback) {
 /**
  * @namespace Chart
  */
-var Chart = __webpack_require__(504)();
+var Chart = __webpack_require__(505)();
 
 Chart.helpers = __webpack_require__(3);
 
 // @todo dispatch these helpers into appropriated helpers/helpers.* file and write unit tests!
-__webpack_require__(508)(Chart);
+__webpack_require__(509)(Chart);
 
 Chart.defaults = __webpack_require__(5);
 Chart.Element = __webpack_require__(20);
@@ -27600,40 +27600,40 @@ Chart.platform = __webpack_require__(250);
 Chart.plugins = __webpack_require__(251);
 Chart.Ticks = __webpack_require__(37);
 
-__webpack_require__(519)(Chart);
 __webpack_require__(520)(Chart);
 __webpack_require__(521)(Chart);
 __webpack_require__(522)(Chart);
 __webpack_require__(523)(Chart);
 __webpack_require__(524)(Chart);
-
 __webpack_require__(525)(Chart);
+
 __webpack_require__(526)(Chart);
 __webpack_require__(527)(Chart);
 __webpack_require__(528)(Chart);
 __webpack_require__(529)(Chart);
 __webpack_require__(530)(Chart);
+__webpack_require__(531)(Chart);
 
 // Controllers must be loaded after elements
 // See Chart.core.datasetController.dataElementType
-__webpack_require__(531)(Chart);
 __webpack_require__(532)(Chart);
 __webpack_require__(533)(Chart);
 __webpack_require__(534)(Chart);
 __webpack_require__(535)(Chart);
 __webpack_require__(536)(Chart);
 __webpack_require__(537)(Chart);
-
 __webpack_require__(538)(Chart);
+
 __webpack_require__(539)(Chart);
 __webpack_require__(540)(Chart);
 __webpack_require__(541)(Chart);
 __webpack_require__(542)(Chart);
 __webpack_require__(543)(Chart);
 __webpack_require__(544)(Chart);
+__webpack_require__(545)(Chart);
 
 // Loading built-it plugins
-var plugins = __webpack_require__(545);
+var plugins = __webpack_require__(546);
 for (var k in plugins) {
 	if (plugins.hasOwnProperty(k)) {
 		Chart.plugins.register(plugins[k]);
@@ -71225,8 +71225,8 @@ module.exports = function(obj, fn){
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var convert = __webpack_require__(509);
-var string = __webpack_require__(511);
+var convert = __webpack_require__(510);
+var string = __webpack_require__(512);
 
 var Color = function (obj) {
 	if (obj instanceof Color) {
@@ -72056,8 +72056,8 @@ module.exports = {
 
 
 var helpers = __webpack_require__(3);
-var basic = __webpack_require__(517);
-var dom = __webpack_require__(518);
+var basic = __webpack_require__(518);
+var dom = __webpack_require__(519);
 
 // @TODO Make possible to select another platform at build time.
 var implementation = dom._enabled ? dom : basic;
@@ -72600,18 +72600,18 @@ var _ImportAccount = __webpack_require__(494);
 
 var _ImportAccount2 = _interopRequireDefault(_ImportAccount);
 
-var _vueAutosuggest = __webpack_require__(579);
+var _vueAutosuggest = __webpack_require__(499);
 
 var _vueAutosuggest2 = _interopRequireDefault(_vueAutosuggest);
 
-var _routes = __webpack_require__(499);
+var _routes = __webpack_require__(500);
 
 var _routes2 = _interopRequireDefault(_routes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var en = __webpack_require__(573);
-var vi = __webpack_require__(574);
+var en = __webpack_require__(574);
+var vi = __webpack_require__(575);
 
 _vue2.default.use(_vueRouter2.default);
 _vue2.default.use(_vueI18n2.default);
@@ -72645,7 +72645,7 @@ _moment2.default.locale(locale);
 var router = new _vueRouter2.default(_routes2.default);
 window.vueRouter = router;
 
-__webpack_require__(575);
+__webpack_require__(576);
 
 var app = exports.app = new _vue2.default({
   i18n: i18n,
@@ -96722,7 +96722,7 @@ exports = module.exports = __webpack_require__(13)(undefined);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,600);", ""]);
 
 // module
-exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2A9A8D;\n}\n:focus {\n  outline: none;\n}\n.change-language-button {\n  margin-top: 10px;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n    background: transparent !important;\n    outline: none !important;\n    border: none !important;\n    color: #2a4552 !important;\n    box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n    vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n    color: #fff;\n    text-decoration: none;\n    background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n    padding: 0;\n}\n.change-language-button .dropdown-item {\n    padding: 5px;\n}\n.search-button {\n  background-color: #192E3B !important;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192e3b;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #2a4451;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-left: 0;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: #ededed;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #d5d5d5;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 115px;\n  padding: 30px 0px;\n  letter-spacing: .5px;\n  font-size: 0.8rem;\n  line-height: 25px;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          color: #2A9A8D;\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  background-color: #eee;\n  font-weight: normal;\n  padding: 15px 6px;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 46px;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 0;\n  width: 100%;\n  overflow: hidden;\n  line-height: 18px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 100%;\n      margin: 0;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 10px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.p-relative {\n  position: relative;\n}\n.float-lang-bar {\n  position: absolute;\n  right: 15px;\n  top: 7px;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo {\n  min-width: 140px;\n}\n.tracker-logo .router-link-active {\n    white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #3ee6c1;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 10000;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  width: 100%;\n}\n.suggest-input-result {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 9999;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n", ""]);
+exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2A9A8D;\n}\n:focus {\n  outline: none;\n}\n.change-language-button {\n  margin-top: 10px;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n    background: transparent !important;\n    outline: none !important;\n    border: none !important;\n    color: #2a4552 !important;\n    box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n    vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n    color: #fff;\n    text-decoration: none;\n    background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n    padding: 0;\n}\n.change-language-button .dropdown-item {\n    padding: 5px;\n}\n.search-button {\n  background-color: #192E3B !important;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192e3b;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #2a4451;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-left: 0;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: #ededed;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #d5d5d5;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 115px;\n  padding: 30px 0px;\n  letter-spacing: .5px;\n  font-size: 0.8rem;\n  line-height: 25px;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          color: #2A9A8D;\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  background-color: #eee;\n  font-weight: normal;\n  padding: 15px 6px;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 46px;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 0;\n  width: 100%;\n  overflow: hidden;\n  line-height: 18px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 100%;\n      margin: 0;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 10px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.p-relative {\n  position: relative;\n}\n.float-lang-bar {\n  position: absolute;\n  right: 15px;\n  top: 7px;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo {\n  min-width: 140px;\n}\n.tracker-logo .router-link-active {\n    white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #3ee6c1;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 10000;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  width: 100%;\n}\n#autosuggest {\n  width: 100%;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results-container {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 9999;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.autosuggest__results-container ul {\n    padding: 5px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n", ""]);
 
 // exports
 
@@ -96804,15 +96804,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
   data: function data() {
     return {
-      networkVolume: '',
-      networkFee: '',
-      tradeCount: '',
-      kncPrice: '',
+      networkVolume: "",
+      networkFee: "",
+      tradeCount: "",
+      kncPrice: "",
       kncPriceChange24h: 0,
-      totalBurnedFee: '',
-      searchString: '',
-      pageTitle: '',
-      feeToBurn: '',
+      totalBurnedFee: "",
+      searchString: "",
+      pageTitle: "",
+      feeToBurn: "",
       breadcrumbsItems: [],
       addresses: []
     };
@@ -96822,44 +96822,44 @@ exports.default = {
   computed: {
     formatedKNCPriceChange24h: function formatedKNCPriceChange24h() {
       if (this.kncPriceChange24h > 0) {
-        return '+' + this.kncPriceChange24h + '%';
+        return "+" + this.kncPriceChange24h + "%";
       } else {
-        return this.kncPriceChange24h + '%';
+        return this.kncPriceChange24h + "%";
       }
     }
   },
 
   methods: {
     changeLanguage: function changeLanguage(locale) {
-      localStorage.setItem('locale', locale);
+      localStorage.setItem("locale", locale);
       window.i18n.locale = locale;
       _moment2.default.locale(locale);
       window.location.reload();
     },
     getLanguage: function getLanguage() {
-      if (typeof window.i18n != 'undefined' && typeof window.i18n.locale != 'undefined') {
+      if (typeof window.i18n != "undefined" && typeof window.i18n.locale != "undefined") {
         return window.i18n.locale;
       } else {
-        window.i18n.locale = 'vi';
-        _moment2.default.locale('vi');
-        return 'vi';
+        window.i18n.locale = "vi";
+        _moment2.default.locale("vi");
+        return "vi";
       }
     },
     getPriceChangeClass: function getPriceChangeClass() {
-      if (this.kncPriceChange24h === 0) return '';
-      return this.kncPriceChange24h < 0 ? 'neg-value' : 'pos-value';
+      if (this.kncPriceChange24h === 0) return "";
+      return this.kncPriceChange24h < 0 ? "neg-value" : "pos-value";
     },
     connectMetaMask: async function connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        alert('Cannot connect to metamask. Please make sure you have metamask installed');
+        alert("Cannot connect to metamask. Please make sure you have metamask installed");
         return;
       }
       var web3Service = new _web2.default(web3);
 
       var browser = _bowser2.default.name;
-      if (browser != 'Chrome' && browser != 'Firefox') {
+      if (browser != "Chrome" && browser != "Firefox") {
         if (!web3Service.isTrust()) {
-          alert('Metamask is not supported on ' + browser + ', you can use Chrome or Firefox instead.');
+          alert("Metamask is not supported on " + browser + ", you can use Chrome or Firefox instead.");
           return;
         }
       }
@@ -96885,17 +96885,17 @@ exports.default = {
         _this.networkVolume = stats.networkVolume;
         _this.networkFee = stats.networkFee;
         _this.tradeCount = stats.tradeCount;
-        _this.totalBurnedFee = stats.totalBurnedFee + ' KNC';
+        _this.totalBurnedFee = stats.totalBurnedFee + " KNC";
         _this.feeToBurn = stats.feeToBurn + " KNC";
       });
 
-      _superagent2.default.get('https://api.coinmarketcap.com/v1/ticker/kyber-network/').then(function (res) {
+      _superagent2.default.get("https://api.coinmarketcap.com/v1/ticker/kyber-network/").then(function (res) {
         var data = res.body[0];
         if (!data || !data.id) {
           return;
         }
 
-        _this.kncPrice = '$' + parseFloat(data.price_usd).toFixed(2);
+        _this.kncPrice = "$" + parseFloat(data.price_usd).toFixed(2);
         _this.kncPriceChange24h = parseFloat(data.percent_change_24h);
       });
     },
@@ -96907,15 +96907,43 @@ exports.default = {
       }
 
       this.$router.push({
-        name: 'search',
+        name: "search",
         query: {
           q: this.searchString
         }
       });
 
+      //add search string to suggest input
+      var indexItemExist = this.addresses.map(function (item) {
+        return item.addr;
+      }).indexOf(this.searchString);
+
+      if (indexItemExist < 0) {
+        if (this.isAddress(this.searchString)) {
+          this.addresses.push({
+            type: "address",
+            addr: this.searchString
+          });
+        }
+        if (this.isTxHash(this.searchString)) {
+          this.addresses.push({
+            type: "tx hash",
+            addr: this.searchString
+          });
+        }
+      }
+
       window.setTimeout(function () {
-        _this2.searchString = '';
+        _this2.searchString = "";
       });
+    },
+    isTxHash: function isTxHash(hash) {
+      return (/^0x([A-Fa-f0-9]{64})$/i.test(hash)
+      );
+    },
+    isAddress: function isAddress(address) {
+      return (/^(0x)?[0-9a-f]{40}$/i.test(address)
+      );
     },
     renderSuggestion: function renderSuggestion(suggestion) {
       return suggestion.item.type + " - " + suggestion.item.addr;
@@ -96923,80 +96951,86 @@ exports.default = {
     getSuggestionValue: function getSuggestionValue(suggestion) {
       return suggestion.item.addr;
     },
+    onInputChange: function onInputChange(text, oldText) {
+      this.searchString = text;
+    },
+    onSelected: function onSelected(selected) {
+      this.searchString = selected.item.addr;
+    },
     loadBreadcumbs: function loadBreadcumbs(route) {
       var routeName = route.name;
 
       switch (routeName) {
-        case 'trade-list':
-          this.pageTitle = this.$t('page_title.trade_list');
+        case "trade-list":
+          this.pageTitle = this.$t("page_title.trade_list");
           this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
+            text: this.$t("navigator.home"),
+            to: { name: "home" }
           }, {
-            text: this.$t('navigator.trades'),
+            text: this.$t("navigator.trades"),
             active: true
           }];
           return;
-        case 'token-list':
-          this.pageTitle = this.$t('page_title.token_list');
+        case "token-list":
+          this.pageTitle = this.$t("page_title.token_list");
           this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
+            text: this.$t("navigator.home"),
+            to: { name: "home" }
           }, {
-            text: this.$t('navigator.tokens'),
+            text: this.$t("navigator.tokens"),
             active: true
           }];
           return;
-        case 'trade-details':
-          this.pageTitle = this.$t('page_title.trade_detail');
+        case "trade-details":
+          this.pageTitle = this.$t("page_title.trade_detail");
           this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
+            text: this.$t("navigator.home"),
+            to: { name: "home" }
           }, {
-            text: this.$t('navigator.trades'),
-            to: { name: 'trade-list' }
+            text: this.$t("navigator.trades"),
+            to: { name: "trade-list" }
           }, {
-            text: this.$t('navigator.trade_detail'),
+            text: this.$t("navigator.trade_detail"),
             active: true
           }];
           return;
-        case 'token-details':
+        case "token-details":
           var tokenInfo = _.find(_.values(_network2.default.tokens), function (token) {
             return token.address === route.params.tokenAddr;
           });
 
-          this.pageTitle = this.$t('page_title.token_detail');
+          this.pageTitle = this.$t("page_title.token_detail");
           if (tokenInfo) {
-            this.pageTitle = '<img src="images/tokens/' + tokenInfo.icon + '" /> <span>' + tokenInfo.name + '</span> <span class=\'sub-title\'>(' + tokenInfo.symbol + ')</span>';
+            this.pageTitle = "<img src=\"images/tokens/" + tokenInfo.icon + "\" /> <span>" + tokenInfo.name + "</span> <span class='sub-title'>(" + tokenInfo.symbol + ")</span>";
           }
 
           this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
+            text: this.$t("navigator.home"),
+            to: { name: "home" }
           }, {
-            text: this.$t('navigator.tokens'),
-            to: { name: 'token-list' }
+            text: this.$t("navigator.tokens"),
+            to: { name: "token-list" }
           }, {
-            text: this.$t('navigator.token_detail'),
+            text: this.$t("navigator.token_detail"),
             active: true
           }];
           return;
-        case 'search':
-          this.pageTitle = this.$t('page_title.search');
+        case "search":
+          this.pageTitle = this.$t("page_title.search");
           this.breadcrumbsItems = [{
-            text: this.$t('navigator.home'),
-            to: { name: 'home' }
+            text: this.$t("navigator.home"),
+            to: { name: "home" }
           }, {
-            text: this.$t('navigator.search'),
+            text: this.$t("navigator.search"),
             active: true
           }];
           return;
-        case 'home':
-          this.pageTitle = '';
+        case "home":
+          this.pageTitle = "";
           this.breadcrumbsItems = [];
           return;
         default:
-          this.pageTitle = '';
+          this.pageTitle = "";
           this.breadcrumbsItems = [];
           return;
       }
@@ -97004,7 +97038,7 @@ exports.default = {
   },
 
   watch: {
-    '$route': function $route(toVal, fromVal) {
+    $route: function $route(toVal, fromVal) {
       this.loadBreadcumbs(toVal);
     }
   },
@@ -97017,6 +97051,7 @@ exports.default = {
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
 }; //
+//
 //
 //
 //
@@ -99738,8 +99773,10 @@ var render = function() {
                                     ],
                                     getSuggestionValue: _vm.getSuggestionValue,
                                     renderSuggestion: _vm.renderSuggestion,
+                                    onSelected: _vm.onSelected,
                                     inputProps: {
                                       id: "autosuggest__input",
+                                      onInputChange: this.onInputChange,
                                       placeholder: _vm.$t(
                                         "common.searchbox_placeholder"
                                       )
@@ -105692,6 +105729,583 @@ if (false) {
 
 /***/ }),
 /* 499 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VueAutosuggest", function() { return VueAutosuggest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultSection", function() { return DefaultSection; });
+var DefaultSection = {
+  name: "default-section",
+  props: {
+    section: { type: Object, required: true },
+    currentIndex: { type: Number, required: false, default: Infinity },
+    updateCurrentIndex: { type: Function, required: true },
+    searchInput: { type: String, required: false, default: "" },
+    renderSuggestion: { type: Function, required: true },
+    normalizeItemFunction: { type: Function, required: true }
+  },
+  computed: {
+    list: function() {
+      var ref = this.section;
+      var limit = ref.limit;
+      var data = ref.data;
+      if (data.length < limit) {
+        limit = data.length;
+      }
+      return data.slice(0, limit);
+    },
+    className: function() {
+      return ("autosuggest__results_title autosuggest__results_title_" + (this.section.name));
+    }
+  },
+  methods: {
+    getItemIndex: function getItemIndex(i) {
+      return this.section.start_index + i;
+    },
+    getItemByIndex: function getItemByIndex(i) {
+      return this.section.data[i];
+    },
+    getLabelByIndex: function getLabelByIndex(i) {
+      return this.section.data[i];
+    },
+    onMouseEnter: function onMouseEnter(event) {
+      this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
+    },
+    onMouseLeave: function onMouseLeave() {
+      this.updateCurrentIndex(null);
+    }
+  },
+  // eslint-disable-next-line no-unused-vars
+  render: function render(h) {
+    var this$1 = this;
+
+    var sectionTitle = this.section.label ? (
+      h( 'li', { class: this.className }, this.section.label)
+    ) : (
+      ""
+    );
+    return h(
+      "ul",
+      {
+        attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
+      },
+      [
+        sectionTitle,
+        this.list.map(function (val, key) {
+          var item = this$1.normalizeItemFunction(this$1.section.name, this$1.section.type, this$1.getLabelByIndex(key), val);
+          return h(
+            "li",
+            {
+              attrs: {
+                role: "option",
+                "data-suggestion-index": this$1.getItemIndex(key),
+                "data-section-name": this$1.section.name,
+                id: "autosuggest__results_item-" + this$1.getItemIndex(key)
+              },
+              key: this$1.getItemIndex(key),
+              class: {
+                "autosuggest__results_item-highlighted":
+                  this$1.getItemIndex(key) == this$1.currentIndex,
+                autosuggest__results_item: true
+              },
+              on: {
+                mouseenter: this$1.onMouseEnter,
+                mouseleave: this$1.onMouseLeave
+              }
+            },
+            [this$1.renderSuggestion(item)]
+          );
+        })
+      ]
+    );
+  }
+};
+
+/** DOM Utilities */
+function hasClass(el, className) {
+  return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
+}
+
+function addClass(el, className) {
+  if (!hasClass(el, className)) { el.className += " " + className; }
+}
+
+function removeClass(el, className) {
+  if (el.classList) {
+    el.classList.remove(className);
+  }
+}
+
+var VueAutosuggest = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":_vm.component_attr_id_autosuggest}},[_c('input',_vm._g(_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","autocomplete":_vm.inputProps.autocomplete,"role":"combobox","aria-autocomplete":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results_item-" + (_vm.currentIndex)) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false',"aria-expanded":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value;}}},'input',_vm.inputProps,false),_vm.listeners)),_vm._v(" "),_c('div',{class:_vm.component_attr_class_autosuggest__results_container},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{class:_vm.component_attr_class_autosuggest__results,attrs:{"aria-labelledby":_vm.component_attr_id_autosuggest}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"normalizeItemFunction":_vm.normalizeItem,"renderSuggestion":_vm.renderSuggestion,"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])},staticRenderFns: [],
+  name: "autosuggest",
+  components: {
+    DefaultSection: DefaultSection
+  },
+  props: {
+    inputProps: {
+      type: Object,
+      required: true,
+      default: function() {
+        return {
+          id: {
+            type: String,
+            default: "autosuggest__input"
+          },
+          onInputChange: {
+            type: Function,
+            required: true
+          },
+          initialValue: {
+            type: String,
+            required: false
+          },
+          onClick: {
+            type: Function,
+            required: false
+          }
+        };
+      }
+    },
+    limit: {
+      type: Number,
+      required: false,
+      default: Infinity
+    },
+    suggestions: {
+      type: Array,
+      required: true,
+      default: []
+    },
+    renderSuggestion: {
+      type: Function,
+      required: false,
+      default: function (suggestion) {
+        return suggestion.item;
+      }
+    },
+    getSuggestionValue: {
+      type: Function,
+      required: false,
+      default: function (suggestion) {
+        var item = suggestion.item;
+        if (typeof item === "object" && item.hasOwnProperty("name")) {
+          return item.name;
+        } else {
+          return item;
+        }
+      }
+    },
+    shouldRenderSuggestions: {
+      type: Function,
+      required: false,
+      default: function () {
+        return true;
+      }
+    },
+    sectionConfigs: {
+      type: Object,
+      required: false,
+      default: function () {
+        return {
+          default: {
+            onSelected: null
+          }
+        };
+      }
+    },
+    onSelected: {
+      type: Function,
+      required: false,
+      default: null
+    }
+  },
+  data: function () { return ({
+    component_attr_id_autosuggest: "autosuggest",
+    component_attr_class_autosuggest__results_container: "autosuggest__results-container",
+    component_attr_class_autosuggest__results: "autosuggest__results",
+    searchInput: "",
+    searchInputOriginal: null,
+    currentIndex: null,
+    currentItem: null,
+    loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
+    didSelectFromOptions: false,
+    computedSections: [],
+    computedSize: 0,
+    internal_inputProps: {}, // Nest default prop values don't work currently in Vue
+    defaultInputProps: {
+      initialValue: "",
+      autocomplete: "off"
+    },
+    defaultSectionConfig: {
+      name: "default",
+      type: "default-section"
+    }
+  }); },
+  computed: {
+    listeners: function listeners() {
+      var this$1 = this;
+
+      return Object.assign({}, this.$listeners,
+        {focus: function (e) {
+          this$1.$listeners.focus && this$1.$listeners.focus(e);
+          if (this$1.inputProps.onFocus) {
+            this$1.onFocus(e);
+          }
+        },
+        blur: function (e) {
+          this$1.$listeners.blur && this$1.$listeners.blur(e);
+          if (this$1.inputProps.onBlur) {
+            this$1.onBlur(e);
+          }
+        },
+        click: function () {
+          this$1.loading = false;
+          this$1.$listeners.click && this$1.$listeners.click(this$1.currentItem);
+
+          if(this$1.inputProps.onClick){
+            this$1.onClick(this$1.currentItem);
+          }
+          this$1.$nextTick(function () {
+            this$1.ensureItemVisible(this$1.currentItem, this$1.currentIndex);
+          });
+        }});
+    },
+    isOpen: function isOpen() {
+      return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
+    }
+  },
+  methods: {
+    _onSelected: function _onSelected() {
+      if (
+        this.currentItem &&
+        this.sectionConfigs[this.currentItem.name] &&
+        this.sectionConfigs[this.currentItem.name].onSelected
+      ) {
+        this.sectionConfigs[this.currentItem.name].onSelected(
+          this.currentItem,
+          this.searchInputOriginal
+        );
+      } else if (this.sectionConfigs["default"].onSelected) {
+        this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
+      } else {
+        this.onSelected && this.onSelected(this.currentItem);
+      }
+    },
+    getSectionRef: function getSectionRef(i) {
+      return "computed_section_" + i;
+    },
+    getSize: function getSize() {
+      return this.computedSize;
+    },
+    getItemByIndex: function getItemByIndex(index) {
+      var this$1 = this;
+
+      var obj = false;
+      if (index === null) { return obj; }
+      for (var i = 0; i < this.computedSections.length; i++) {
+        if (
+          index >= this$1.computedSections[i].start_index &&
+          index <= this$1.computedSections[i].end_index
+        ) {
+          var trueIndex = index - this$1.computedSections[i].start_index;
+          var childSection = this$1.$refs["computed_section_" + i][0];
+          if (childSection) {
+            obj = this$1.normalizeItem(
+              this$1.computedSections[i].name,
+              this$1.computedSections[i].type,
+              childSection.getLabelByIndex(trueIndex),
+              childSection.getItemByIndex(trueIndex)
+            );
+            break;
+          }
+        }
+      }
+
+      return obj;
+    },
+    handleKeyStroke: function handleKeyStroke(e) {
+      var this$1 = this;
+
+      var keyCode = e.keyCode;
+
+      var ignoredKeyCodes = [
+        16, // Shift
+        9, // Tab
+        18, // alt/option
+        91, // OS Key
+        93 // Right OS Key
+      ];
+
+      if (ignoredKeyCodes.indexOf(keyCode) > -1) {
+        return;
+      }
+
+      this.loading = false;
+      this.didSelectFromOptions = false;
+      switch (keyCode) {
+        case 40: // ArrowDown
+        case 38: // ArrowUp
+          e.preventDefault();
+          if (this.isOpen) {
+            if (keyCode === 38 && this.currentIndex === null) {
+              break;
+            }
+            // Determine direction of arrow up/down and determine new currentIndex
+            var direction = keyCode === 40 ? 1 : -1;
+            var newIndex = parseInt(this.currentIndex) + direction;
+
+            this.setCurrentIndex(newIndex, this.getSize(), direction);
+            this.didSelectFromOptions = true;
+            if (this.getSize() > 0 && this.currentIndex >= 0) {
+              this.setChangeItem(this.getItemByIndex(this.currentIndex));
+              this.didSelectFromOptions = true;
+            } else if (this.currentIndex == -1) {
+              this.currentIndex = null;
+              this.searchInput = this.searchInputOriginal;
+              e.preventDefault();
+            }
+          }
+          break;
+        case 13: // Enter
+          e.preventDefault();
+          if (keyCode === 229) {
+            // https://github.com/moroshko/react-autosuggest/pull/388
+            break;
+          }
+          this.$nextTick(function () {
+            if (this$1.getSize() > 0 && this$1.currentIndex >= 0) {
+              this$1.setChangeItem(this$1.getItemByIndex(this$1.currentIndex), true);
+              this$1.didSelectFromOptions = true;
+            }
+            this$1.loading = true;
+            this$1.$nextTick(function () {
+              this$1._onSelected(this$1.didSelectFromOptions);
+            });
+          });
+          break;
+        case 27: // Escape
+          if (this.isOpen) {
+            /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
+            this.loading = true;
+            this.currentIndex = null;
+            this.searchInput = this.searchInputOriginal;
+            e.preventDefault();
+          }
+          break;
+      }
+    },
+    setChangeItem: function setChangeItem(item, overrideOriginalInput) {
+      if ( overrideOriginalInput === void 0 ) overrideOriginalInput = false;
+
+      if (this.currentIndex === null) {
+        this.currentItem = null;
+      } else if (item) {
+        this.searchInput = this.getSuggestionValue(item);
+        this.currentItem = item;
+        if (overrideOriginalInput) {
+          this.searchInputOriginal = this.getSuggestionValue(item);
+        }
+        this.ensureItemVisible(item, this.currentIndex);
+      }
+    },
+    normalizeItem: function normalizeItem(name, type, label, item) {
+      return {
+        name: name,
+        type: type,
+        label: label,
+        item: item
+      };
+    },
+    ensureItemVisible: function ensureItemVisible(item, index) {
+      var resultsScrollElement = document.querySelector(
+        ("." + (this.component_attr_class_autosuggest__results))
+      );
+
+      if (!item || (!index && index !== 0) || !resultsScrollElement) {
+        return;
+      }
+
+      var itemElement = document.querySelector(("#autosuggest__results_item-" + index));
+      if (!itemElement) {
+        return;
+      }
+
+      var resultsScrollWindowHeight = resultsScrollElement.clientHeight;
+      var resultsScrollScrollTop = resultsScrollElement.scrollTop;
+
+      var itemHeight = itemElement.clientHeight;
+      var currentItemScrollOffset = itemElement.offsetTop;
+
+      if (
+        itemHeight + currentItemScrollOffset >=
+        resultsScrollScrollTop + resultsScrollWindowHeight
+      ) {
+        /** Current item goes below visible scroll window */
+        resultsScrollElement.scrollTo(
+          0,
+          itemHeight + currentItemScrollOffset - resultsScrollWindowHeight
+        );
+      } else if (currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0) {
+        /** Current item goes above visible scroll window */
+        resultsScrollElement.scrollTo(0, currentItemScrollOffset);
+      }
+    },
+    updateCurrentIndex: function updateCurrentIndex(index) {
+      this.currentIndex = index;
+    },
+    onDocumentMouseUp: function onDocumentMouseUp(e) {
+      var this$1 = this;
+
+      /** Clicks outside of dropdown to exit */
+      if (this.currentIndex === null || !this.isOpen) {
+        this.loading = this.shouldRenderSuggestions();
+        return;
+      }
+
+      /** Do not re-render list on input click  */
+      var isChild = this.$el.contains(e.target);
+      if (isChild && e.target.tagName === 'INPUT') {
+        return;
+      }
+
+      /** Selects an item in the dropdown */
+      this.loading = true;
+      this.didSelectFromOptions = true;
+      this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
+      this.$nextTick(function () {
+        this$1._onSelected(true);
+      });
+    },
+    setCurrentIndex: function setCurrentIndex(newIndex, limit, direction) {
+      if ( limit === void 0 ) limit = -1;
+
+      var adjustedValue = newIndex;
+
+      // if we hit the lower limit then stop iterating the index
+      if (this.currentIndex === null) {
+        adjustedValue = 0;
+      }
+
+      if (this.currentIndex < 0 && direction === 1) {
+        adjustedValue = 0;
+      }
+
+      // if we hit the upper limit then just stop iterating the index
+      if (newIndex >= limit) {
+        adjustedValue = 0;
+      }
+
+      this.currentIndex = adjustedValue;
+
+      var element = document.getElementById(("autosuggest__results_item-" + (this.currentIndex)));
+      var hoverClass = "autosuggest__results_item-highlighted";
+      if (document.querySelector(("." + hoverClass))) {
+        removeClass(document.querySelector(("." + hoverClass)), hoverClass);
+      }
+      if (element) {
+        addClass(element, hoverClass);
+      }
+    },
+    onClick: function onClick(e) {
+      console.warn(
+        'inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
+      this.internal_inputProps.onClick && this.internal_inputProps.onClick(e);
+    },
+    onBlur: function onBlur(e) {
+      console.warn(
+        'inputProps.onBlur is deprecated. Please use native blur event listener \n\ne.g. <vue-autosuggest ... @blur="blurMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
+      this.internal_inputProps.onBlur && this.internal_inputProps.onBlur(e);
+    },
+    onFocus: function onFocus(e) {
+      console.warn(
+        'inputProps.onFocus is deprecated. Please use native focus event listener \n\ne.g. <vue-autosuggest ... @focus="focusMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
+      this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
+    }
+  },
+  created: function created() {
+    /** Take care of nested input props */
+    this.internal_inputProps = Object.assign({}, this.defaultInputProps, this.inputProps);
+    this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
+
+    this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
+  },
+  mounted: function mounted() {
+    document.addEventListener("mouseup", this.onDocumentMouseUp);
+    this.loading = true;
+  },
+  watch: {
+    searchInput: function searchInput(newValue, oldValue) {
+      this.value = newValue;
+      if (!this.didSelectFromOptions) {
+        this.searchInputOriginal = this.value;
+        this.currentIndex = null;
+        this.internal_inputProps.onInputChange(newValue, oldValue);
+      }
+    },
+    suggestions: {
+      immediate: true,
+      handler: function handler() {
+        var this$1 = this;
+
+        this.computedSections = [];
+        this.computedSize = 0;
+
+        this.suggestions.forEach(function (section) {
+          if (!section.data) { return; }
+
+          var name = section.name ? section.name : this$1.defaultSectionConfig.name;
+
+          var ref = this$1.sectionConfigs[name];
+          var type = ref.type;
+          var limit = ref.limit;
+          var label = ref.label;
+
+          /** Set defaults for section configs. */
+          type = type ? type : this$1.defaultSectionConfig.type;
+
+          limit = limit ? limit : Infinity;
+          limit = section.data.length < limit ? section.data.length : limit;
+
+          label = label ? label : section.label;
+
+          var computedSection = {
+            name: name,
+            label: label,
+            type: type,
+            limit: limit,
+            data: section.data,
+            start_index: this$1.computedSize,
+            end_index: this$1.computedSize + limit - 1
+          };
+          this$1.computedSections.push(computedSection);
+          this$1.computedSize += limit;
+        }, this);
+      }
+    }
+  }
+};
+
+var VueAutosuggestPlugin = {
+  install: function install(Vue) {
+    Vue.component("vue-autosuggest-default-section", DefaultSection);
+    Vue.component("vue-autosuggest", VueAutosuggest);
+  }
+};
+
+if (typeof window !== "undefined" && window.Vue) {
+  window.Vue.use(VueAutosuggestPlugin);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (VueAutosuggestPlugin);
+
+
+
+/***/ }),
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -105701,27 +106315,27 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Home = __webpack_require__(500);
+var _Home = __webpack_require__(501);
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _TradeList = __webpack_require__(550);
+var _TradeList = __webpack_require__(551);
 
 var _TradeList2 = _interopRequireDefault(_TradeList);
 
-var _TradeDetails = __webpack_require__(553);
+var _TradeDetails = __webpack_require__(554);
 
 var _TradeDetails2 = _interopRequireDefault(_TradeDetails);
 
-var _TokenList = __webpack_require__(558);
+var _TokenList = __webpack_require__(559);
 
 var _TokenList2 = _interopRequireDefault(_TokenList);
 
-var _TokenDetails = __webpack_require__(563);
+var _TokenDetails = __webpack_require__(564);
 
 var _TokenDetails2 = _interopRequireDefault(_TokenDetails);
 
-var _SearchResultPage = __webpack_require__(568);
+var _SearchResultPage = __webpack_require__(569);
 
 var _SearchResultPage2 = _interopRequireDefault(_SearchResultPage);
 
@@ -105732,18 +106346,18 @@ exports.default = {
 };
 
 /***/ }),
-/* 500 */
+/* 501 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_Home_vue__ = __webpack_require__(503);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_Home_vue__ = __webpack_require__(504);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_Home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_Home_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_7d1e1a5a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_Home_vue__ = __webpack_require__(549);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_7d1e1a5a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_Home_vue__ = __webpack_require__(550);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(501)
+  __webpack_require__(502)
 }
 var normalizeComponent = __webpack_require__(11)
 /* script */
@@ -105789,13 +106403,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 501 */
+/* 502 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(502);
+var content = __webpack_require__(503);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -105815,7 +106429,7 @@ if(false) {
 }
 
 /***/ }),
-/* 502 */
+/* 503 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(13)(undefined);
@@ -105829,7 +106443,7 @@ exports.push([module.i, "\n.chart-period-picker[data-v-7d1e1a5a] {\n  position: 
 
 
 /***/ }),
-/* 503 */
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106013,7 +106627,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 504 */
+/* 505 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106069,7 +106683,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 505 */
+/* 506 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106326,7 +106940,7 @@ helpers.easingEffects = effects;
 
 
 /***/ }),
-/* 506 */
+/* 507 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106547,7 +107161,7 @@ helpers.drawRoundedRectangle = function(ctx) {
 
 
 /***/ }),
-/* 507 */
+/* 508 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106650,7 +107264,7 @@ module.exports = {
 
 
 /***/ }),
-/* 508 */
+/* 509 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -107268,10 +107882,10 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 509 */
+/* 510 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var conversions = __webpack_require__(510);
+var conversions = __webpack_require__(511);
 
 var convert = function() {
    return new Converter();
@@ -107365,7 +107979,7 @@ Converter.prototype.getValues = function(space) {
 module.exports = convert;
 
 /***/ }),
-/* 510 */
+/* 511 */
 /***/ (function(module, exports) {
 
 /* MIT license */
@@ -108069,11 +108683,11 @@ for (var key in cssKeywords) {
 
 
 /***/ }),
-/* 511 */
+/* 512 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* MIT license */
-var colorNames = __webpack_require__(512);
+var colorNames = __webpack_require__(513);
 
 module.exports = {
    getRgba: getRgba,
@@ -108296,7 +108910,7 @@ for (var name in colorNames) {
 
 
 /***/ }),
-/* 512 */
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108455,7 +109069,7 @@ module.exports = {
 
 
 /***/ }),
-/* 513 */
+/* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108569,7 +109183,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 514 */
+/* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108667,7 +109281,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 515 */
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108780,7 +109394,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 516 */
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -109004,7 +109618,7 @@ module.exports = Element.extend({
 
 
 /***/ }),
-/* 517 */
+/* 518 */
 /***/ (function(module, exports) {
 
 /**
@@ -109025,7 +109639,7 @@ module.exports = {
 
 
 /***/ }),
-/* 518 */
+/* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -109489,7 +110103,7 @@ helpers.removeEvent = removeEventListener;
 
 
 /***/ }),
-/* 519 */
+/* 520 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -109668,7 +110282,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 520 */
+/* 521 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -110622,7 +111236,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 521 */
+/* 522 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -110959,7 +111573,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 522 */
+/* 523 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -111012,7 +111626,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 523 */
+/* 524 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -111955,7 +112569,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 524 */
+/* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -112910,7 +113524,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 525 */
+/* 526 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113103,7 +113717,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 526 */
+/* 527 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113243,7 +113857,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 527 */
+/* 528 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113441,7 +114055,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 528 */
+/* 529 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113795,7 +114409,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 529 */
+/* 530 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -114331,7 +114945,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 530 */
+/* 531 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115121,7 +115735,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 531 */
+/* 532 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115632,7 +116246,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 532 */
+/* 533 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115819,7 +116433,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 533 */
+/* 534 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116125,7 +116739,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 534 */
+/* 535 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116465,7 +117079,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 535 */
+/* 536 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116694,7 +117308,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 536 */
+/* 537 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116869,7 +117483,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 537 */
+/* 538 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116918,7 +117532,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 538 */
+/* 539 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116936,7 +117550,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 539 */
+/* 540 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116953,7 +117567,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 540 */
+/* 541 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116971,7 +117585,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 541 */
+/* 542 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116989,7 +117603,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 542 */
+/* 543 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -117007,7 +117621,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 543 */
+/* 544 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -117025,7 +117639,7 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 544 */
+/* 545 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -117040,20 +117654,20 @@ module.exports = function(Chart) {
 
 
 /***/ }),
-/* 545 */
+/* 546 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 module.exports = {};
-module.exports.filler = __webpack_require__(546);
-module.exports.legend = __webpack_require__(547);
-module.exports.title = __webpack_require__(548);
+module.exports.filler = __webpack_require__(547);
+module.exports.legend = __webpack_require__(548);
+module.exports.title = __webpack_require__(549);
 
 
 /***/ }),
-/* 546 */
+/* 547 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -117378,7 +117992,7 @@ module.exports = {
 
 
 /***/ }),
-/* 547 */
+/* 548 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -117961,7 +118575,7 @@ module.exports = {
 
 
 /***/ }),
-/* 548 */
+/* 549 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -118220,7 +118834,7 @@ module.exports = {
 
 
 /***/ }),
-/* 549 */
+/* 550 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -118419,14 +119033,14 @@ if (false) {
 }
 
 /***/ }),
-/* 550 */
+/* 551 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue__ = __webpack_require__(551);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue__ = __webpack_require__(552);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_727abd92_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeList_vue__ = __webpack_require__(552);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_727abd92_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeList_vue__ = __webpack_require__(553);
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
@@ -118472,7 +119086,7 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 551 */
+/* 552 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -118569,7 +119183,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 552 */
+/* 553 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -118605,18 +119219,18 @@ if (false) {
 }
 
 /***/ }),
-/* 553 */
+/* 554 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeDetails_vue__ = __webpack_require__(556);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeDetails_vue__ = __webpack_require__(557);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeDetails_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TradeDetails_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_79554b39_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeDetails_vue__ = __webpack_require__(557);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_79554b39_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TradeDetails_vue__ = __webpack_require__(558);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(554)
+  __webpack_require__(555)
 }
 var normalizeComponent = __webpack_require__(11)
 /* script */
@@ -118662,13 +119276,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 554 */
+/* 555 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(555);
+var content = __webpack_require__(556);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -118688,7 +119302,7 @@ if(false) {
 }
 
 /***/ }),
-/* 555 */
+/* 556 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(13)(undefined);
@@ -118702,7 +119316,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 556 */
+/* 557 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -118895,7 +119509,7 @@ exports.default = {
 //
 
 /***/ }),
-/* 557 */
+/* 558 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119145,18 +119759,18 @@ if (false) {
 }
 
 /***/ }),
-/* 558 */
+/* 559 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue__ = __webpack_require__(561);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue__ = __webpack_require__(562);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a963f668_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TokenList_vue__ = __webpack_require__(562);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a963f668_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TokenList_vue__ = __webpack_require__(563);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(559)
+  __webpack_require__(560)
 }
 var normalizeComponent = __webpack_require__(11)
 /* script */
@@ -119202,13 +119816,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 559 */
+/* 560 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(560);
+var content = __webpack_require__(561);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -119228,7 +119842,7 @@ if(false) {
 }
 
 /***/ }),
-/* 560 */
+/* 561 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(13)(undefined);
@@ -119242,7 +119856,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 561 */
+/* 562 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -119372,7 +119986,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 562 */
+/* 563 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119494,18 +120108,18 @@ if (false) {
 }
 
 /***/ }),
-/* 563 */
+/* 564 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenDetails_vue__ = __webpack_require__(566);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenDetails_vue__ = __webpack_require__(567);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenDetails_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_TokenDetails_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_722ec384_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TokenDetails_vue__ = __webpack_require__(567);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_722ec384_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_TokenDetails_vue__ = __webpack_require__(568);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(564)
+  __webpack_require__(565)
 }
 var normalizeComponent = __webpack_require__(11)
 /* script */
@@ -119551,13 +120165,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 564 */
+/* 565 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(565);
+var content = __webpack_require__(566);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -119577,7 +120191,7 @@ if(false) {
 }
 
 /***/ }),
-/* 565 */
+/* 566 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(13)(undefined);
@@ -119591,7 +120205,7 @@ exports.push([module.i, "\n.chart-period-picker[data-v-722ec384] {\n  position: 
 
 
 /***/ }),
-/* 566 */
+/* 567 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -119723,7 +120337,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 567 */
+/* 568 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119783,18 +120397,18 @@ if (false) {
 }
 
 /***/ }),
-/* 568 */
+/* 569 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_SearchResultPage_vue__ = __webpack_require__(571);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_SearchResultPage_vue__ = __webpack_require__(572);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_SearchResultPage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_presets_es2015_node_modules_vue_loader_lib_selector_type_script_index_0_bustCache_SearchResultPage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d7bac2e2_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_SearchResultPage_vue__ = __webpack_require__(572);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d7bac2e2_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bustCache_SearchResultPage_vue__ = __webpack_require__(573);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(569)
+  __webpack_require__(570)
 }
 var normalizeComponent = __webpack_require__(11)
 /* script */
@@ -119840,13 +120454,13 @@ if (false) {(function () {
 
 
 /***/ }),
-/* 569 */
+/* 570 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(570);
+var content = __webpack_require__(571);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -119866,7 +120480,7 @@ if(false) {
 }
 
 /***/ }),
-/* 570 */
+/* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(13)(undefined);
@@ -119880,7 +120494,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 571 */
+/* 572 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -119966,7 +120580,7 @@ exports.default = {
       return undefined;
     },
     getSearchResultTitle: function getSearchResultTitle() {
-      return "<span class='long-address'>" + this.$t('search_page.result_title', [this.$route.query.q]) + "</span>";
+      return "<a href=\"https://etherscan.io/address/" + this.$route.query.q + "\" target=\"blank\">" + "<span class='long-address'>" + this.$t('search_page.result_title', [this.$route.query.q]) + "</span>" + "</a>";
     },
     getSearchResultMessage: function getSearchResultMessage() {
       return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) + '</br>' + this.$t('search_page.total_usd_msg', [this.totalUsd]) + '</br>' + this.$t('search_page.total_eth_msg', [this.totalEth]) + '</br>' + this.$t('search_page.total_fee', [this.totalPartnerFee]) + '</span>';
@@ -120022,7 +120636,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 572 */
+/* 573 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -120062,31 +120676,31 @@ if (false) {
 }
 
 /***/ }),
-/* 573 */
+/* 574 */
 /***/ (function(module, exports) {
 
 module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_eth":"24H Volume (ETH)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Trade History","searchbox_placeholder":"Tx Hash / Wallet Address"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Trade History","token_list":"Supported Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H VOLUME","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"FEES TO BURN","fees_burned":"FEES BURNED","knc_price":"KNC PRICE"},"tooltip":{"network_volume":"Trading volume during the last 24 hours","fees_to_burn":"Total fees set aside to burn so far","fees_burned":"Total fees that have already been burnt","knc_price":"Current KNC price","knc_price_change_24":"% change compared with price at 24 hours ago"},"chart":{"title":{"network_volume":"Trade Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"{0} Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Trade History","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Number of trades: {0}","total_usd_msg":"Total volume (USD): ${0}","total_eth_msg":"Total volume (ETH): {0}","result_title":"Address: {0}","total_fee":"Total partner commission: {0} KNC"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
 
 /***/ }),
-/* 574 */
+/* 575 */
 /***/ (function(module, exports) {
 
 module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_eth":"Lượng giao dịch 24H (ETH)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"PHÍ SẼ ĐỐT","fees_burned":"PHÍ ĐÃ ĐỐT","knc_price":"GIÁ KNC"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","knc_price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: {0}","total_fee":"Tổng phí tích hợp: {0} KNC"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
 
 /***/ }),
-/* 575 */
+/* 576 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(576);
-__webpack_require__(12);
 __webpack_require__(577);
+__webpack_require__(12);
 __webpack_require__(578);
+__webpack_require__(579);
 
 /***/ }),
-/* 576 */
+/* 577 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120176,7 +120790,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 }).call(undefined);
 
 /***/ }),
-/* 577 */
+/* 578 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120267,7 +120881,7 @@ EventBus.$on('EVENT_COMMON_MSG', function (msg) {
 exports.default = EventBus;
 
 /***/ }),
-/* 578 */
+/* 579 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120303,583 +120917,6 @@ _chart2.default.controllers.LineWithLine = _chart2.default.controllers.line.exte
     }
   }
 });
-
-/***/ }),
-/* 579 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VueAutosuggest", function() { return VueAutosuggest; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultSection", function() { return DefaultSection; });
-var DefaultSection = {
-  name: "default-section",
-  props: {
-    section: { type: Object, required: true },
-    currentIndex: { type: Number, required: false, default: Infinity },
-    updateCurrentIndex: { type: Function, required: true },
-    searchInput: { type: String, required: false, default: "" },
-    renderSuggestion: { type: Function, required: true },
-    normalizeItemFunction: { type: Function, required: true }
-  },
-  computed: {
-    list: function() {
-      var ref = this.section;
-      var limit = ref.limit;
-      var data = ref.data;
-      if (data.length < limit) {
-        limit = data.length;
-      }
-      return data.slice(0, limit);
-    },
-    className: function() {
-      return ("autosuggest__results_title autosuggest__results_title_" + (this.section.name));
-    }
-  },
-  methods: {
-    getItemIndex: function getItemIndex(i) {
-      return this.section.start_index + i;
-    },
-    getItemByIndex: function getItemByIndex(i) {
-      return this.section.data[i];
-    },
-    getLabelByIndex: function getLabelByIndex(i) {
-      return this.section.data[i];
-    },
-    onMouseEnter: function onMouseEnter(event) {
-      this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
-    },
-    onMouseLeave: function onMouseLeave() {
-      this.updateCurrentIndex(null);
-    }
-  },
-  // eslint-disable-next-line no-unused-vars
-  render: function render(h) {
-    var this$1 = this;
-
-    var sectionTitle = this.section.label ? (
-      h( 'li', { class: this.className }, this.section.label)
-    ) : (
-      ""
-    );
-    return h(
-      "ul",
-      {
-        attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
-      },
-      [
-        sectionTitle,
-        this.list.map(function (val, key) {
-          var item = this$1.normalizeItemFunction(this$1.section.name, this$1.section.type, this$1.getLabelByIndex(key), val);
-          return h(
-            "li",
-            {
-              attrs: {
-                role: "option",
-                "data-suggestion-index": this$1.getItemIndex(key),
-                "data-section-name": this$1.section.name,
-                id: "autosuggest__results_item-" + this$1.getItemIndex(key)
-              },
-              key: this$1.getItemIndex(key),
-              class: {
-                "autosuggest__results_item-highlighted":
-                  this$1.getItemIndex(key) == this$1.currentIndex,
-                autosuggest__results_item: true
-              },
-              on: {
-                mouseenter: this$1.onMouseEnter,
-                mouseleave: this$1.onMouseLeave
-              }
-            },
-            [this$1.renderSuggestion(item)]
-          );
-        })
-      ]
-    );
-  }
-};
-
-/** DOM Utilities */
-function hasClass(el, className) {
-  return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
-}
-
-function addClass(el, className) {
-  if (!hasClass(el, className)) { el.className += " " + className; }
-}
-
-function removeClass(el, className) {
-  if (el.classList) {
-    el.classList.remove(className);
-  }
-}
-
-var VueAutosuggest = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":_vm.component_attr_id_autosuggest}},[_c('input',_vm._g(_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","autocomplete":_vm.inputProps.autocomplete,"role":"combobox","aria-autocomplete":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results_item-" + (_vm.currentIndex)) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false',"aria-expanded":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value;}}},'input',_vm.inputProps,false),_vm.listeners)),_vm._v(" "),_c('div',{class:_vm.component_attr_class_autosuggest__results_container},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{class:_vm.component_attr_class_autosuggest__results,attrs:{"aria-labelledby":_vm.component_attr_id_autosuggest}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"normalizeItemFunction":_vm.normalizeItem,"renderSuggestion":_vm.renderSuggestion,"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])},staticRenderFns: [],
-  name: "autosuggest",
-  components: {
-    DefaultSection: DefaultSection
-  },
-  props: {
-    inputProps: {
-      type: Object,
-      required: true,
-      default: function() {
-        return {
-          id: {
-            type: String,
-            default: "autosuggest__input"
-          },
-          onInputChange: {
-            type: Function,
-            required: true
-          },
-          initialValue: {
-            type: String,
-            required: false
-          },
-          onClick: {
-            type: Function,
-            required: false
-          }
-        };
-      }
-    },
-    limit: {
-      type: Number,
-      required: false,
-      default: Infinity
-    },
-    suggestions: {
-      type: Array,
-      required: true,
-      default: []
-    },
-    renderSuggestion: {
-      type: Function,
-      required: false,
-      default: function (suggestion) {
-        return suggestion.item;
-      }
-    },
-    getSuggestionValue: {
-      type: Function,
-      required: false,
-      default: function (suggestion) {
-        var item = suggestion.item;
-        if (typeof item === "object" && item.hasOwnProperty("name")) {
-          return item.name;
-        } else {
-          return item;
-        }
-      }
-    },
-    shouldRenderSuggestions: {
-      type: Function,
-      required: false,
-      default: function () {
-        return true;
-      }
-    },
-    sectionConfigs: {
-      type: Object,
-      required: false,
-      default: function () {
-        return {
-          default: {
-            onSelected: null
-          }
-        };
-      }
-    },
-    onSelected: {
-      type: Function,
-      required: false,
-      default: null
-    }
-  },
-  data: function () { return ({
-    component_attr_id_autosuggest: "autosuggest",
-    component_attr_class_autosuggest__results_container: "autosuggest__results-container",
-    component_attr_class_autosuggest__results: "autosuggest__results",
-    searchInput: "",
-    searchInputOriginal: null,
-    currentIndex: null,
-    currentItem: null,
-    loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
-    didSelectFromOptions: false,
-    computedSections: [],
-    computedSize: 0,
-    internal_inputProps: {}, // Nest default prop values don't work currently in Vue
-    defaultInputProps: {
-      initialValue: "",
-      autocomplete: "off"
-    },
-    defaultSectionConfig: {
-      name: "default",
-      type: "default-section"
-    }
-  }); },
-  computed: {
-    listeners: function listeners() {
-      var this$1 = this;
-
-      return Object.assign({}, this.$listeners,
-        {focus: function (e) {
-          this$1.$listeners.focus && this$1.$listeners.focus(e);
-          if (this$1.inputProps.onFocus) {
-            this$1.onFocus(e);
-          }
-        },
-        blur: function (e) {
-          this$1.$listeners.blur && this$1.$listeners.blur(e);
-          if (this$1.inputProps.onBlur) {
-            this$1.onBlur(e);
-          }
-        },
-        click: function () {
-          this$1.loading = false;
-          this$1.$listeners.click && this$1.$listeners.click(this$1.currentItem);
-
-          if(this$1.inputProps.onClick){
-            this$1.onClick(this$1.currentItem);
-          }
-          this$1.$nextTick(function () {
-            this$1.ensureItemVisible(this$1.currentItem, this$1.currentIndex);
-          });
-        }});
-    },
-    isOpen: function isOpen() {
-      return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
-    }
-  },
-  methods: {
-    _onSelected: function _onSelected() {
-      if (
-        this.currentItem &&
-        this.sectionConfigs[this.currentItem.name] &&
-        this.sectionConfigs[this.currentItem.name].onSelected
-      ) {
-        this.sectionConfigs[this.currentItem.name].onSelected(
-          this.currentItem,
-          this.searchInputOriginal
-        );
-      } else if (this.sectionConfigs["default"].onSelected) {
-        this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
-      } else {
-        this.onSelected && this.onSelected(this.currentItem);
-      }
-    },
-    getSectionRef: function getSectionRef(i) {
-      return "computed_section_" + i;
-    },
-    getSize: function getSize() {
-      return this.computedSize;
-    },
-    getItemByIndex: function getItemByIndex(index) {
-      var this$1 = this;
-
-      var obj = false;
-      if (index === null) { return obj; }
-      for (var i = 0; i < this.computedSections.length; i++) {
-        if (
-          index >= this$1.computedSections[i].start_index &&
-          index <= this$1.computedSections[i].end_index
-        ) {
-          var trueIndex = index - this$1.computedSections[i].start_index;
-          var childSection = this$1.$refs["computed_section_" + i][0];
-          if (childSection) {
-            obj = this$1.normalizeItem(
-              this$1.computedSections[i].name,
-              this$1.computedSections[i].type,
-              childSection.getLabelByIndex(trueIndex),
-              childSection.getItemByIndex(trueIndex)
-            );
-            break;
-          }
-        }
-      }
-
-      return obj;
-    },
-    handleKeyStroke: function handleKeyStroke(e) {
-      var this$1 = this;
-
-      var keyCode = e.keyCode;
-
-      var ignoredKeyCodes = [
-        16, // Shift
-        9, // Tab
-        18, // alt/option
-        91, // OS Key
-        93 // Right OS Key
-      ];
-
-      if (ignoredKeyCodes.indexOf(keyCode) > -1) {
-        return;
-      }
-
-      this.loading = false;
-      this.didSelectFromOptions = false;
-      switch (keyCode) {
-        case 40: // ArrowDown
-        case 38: // ArrowUp
-          e.preventDefault();
-          if (this.isOpen) {
-            if (keyCode === 38 && this.currentIndex === null) {
-              break;
-            }
-            // Determine direction of arrow up/down and determine new currentIndex
-            var direction = keyCode === 40 ? 1 : -1;
-            var newIndex = parseInt(this.currentIndex) + direction;
-
-            this.setCurrentIndex(newIndex, this.getSize(), direction);
-            this.didSelectFromOptions = true;
-            if (this.getSize() > 0 && this.currentIndex >= 0) {
-              this.setChangeItem(this.getItemByIndex(this.currentIndex));
-              this.didSelectFromOptions = true;
-            } else if (this.currentIndex == -1) {
-              this.currentIndex = null;
-              this.searchInput = this.searchInputOriginal;
-              e.preventDefault();
-            }
-          }
-          break;
-        case 13: // Enter
-          e.preventDefault();
-          if (keyCode === 229) {
-            // https://github.com/moroshko/react-autosuggest/pull/388
-            break;
-          }
-          this.$nextTick(function () {
-            if (this$1.getSize() > 0 && this$1.currentIndex >= 0) {
-              this$1.setChangeItem(this$1.getItemByIndex(this$1.currentIndex), true);
-              this$1.didSelectFromOptions = true;
-            }
-            this$1.loading = true;
-            this$1.$nextTick(function () {
-              this$1._onSelected(this$1.didSelectFromOptions);
-            });
-          });
-          break;
-        case 27: // Escape
-          if (this.isOpen) {
-            /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
-            this.loading = true;
-            this.currentIndex = null;
-            this.searchInput = this.searchInputOriginal;
-            e.preventDefault();
-          }
-          break;
-      }
-    },
-    setChangeItem: function setChangeItem(item, overrideOriginalInput) {
-      if ( overrideOriginalInput === void 0 ) overrideOriginalInput = false;
-
-      if (this.currentIndex === null) {
-        this.currentItem = null;
-      } else if (item) {
-        this.searchInput = this.getSuggestionValue(item);
-        this.currentItem = item;
-        if (overrideOriginalInput) {
-          this.searchInputOriginal = this.getSuggestionValue(item);
-        }
-        this.ensureItemVisible(item, this.currentIndex);
-      }
-    },
-    normalizeItem: function normalizeItem(name, type, label, item) {
-      return {
-        name: name,
-        type: type,
-        label: label,
-        item: item
-      };
-    },
-    ensureItemVisible: function ensureItemVisible(item, index) {
-      var resultsScrollElement = document.querySelector(
-        ("." + (this.component_attr_class_autosuggest__results))
-      );
-
-      if (!item || (!index && index !== 0) || !resultsScrollElement) {
-        return;
-      }
-
-      var itemElement = document.querySelector(("#autosuggest__results_item-" + index));
-      if (!itemElement) {
-        return;
-      }
-
-      var resultsScrollWindowHeight = resultsScrollElement.clientHeight;
-      var resultsScrollScrollTop = resultsScrollElement.scrollTop;
-
-      var itemHeight = itemElement.clientHeight;
-      var currentItemScrollOffset = itemElement.offsetTop;
-
-      if (
-        itemHeight + currentItemScrollOffset >=
-        resultsScrollScrollTop + resultsScrollWindowHeight
-      ) {
-        /** Current item goes below visible scroll window */
-        resultsScrollElement.scrollTo(
-          0,
-          itemHeight + currentItemScrollOffset - resultsScrollWindowHeight
-        );
-      } else if (currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0) {
-        /** Current item goes above visible scroll window */
-        resultsScrollElement.scrollTo(0, currentItemScrollOffset);
-      }
-    },
-    updateCurrentIndex: function updateCurrentIndex(index) {
-      this.currentIndex = index;
-    },
-    onDocumentMouseUp: function onDocumentMouseUp(e) {
-      var this$1 = this;
-
-      /** Clicks outside of dropdown to exit */
-      if (this.currentIndex === null || !this.isOpen) {
-        this.loading = this.shouldRenderSuggestions();
-        return;
-      }
-
-      /** Do not re-render list on input click  */
-      var isChild = this.$el.contains(e.target);
-      if (isChild && e.target.tagName === 'INPUT') {
-        return;
-      }
-
-      /** Selects an item in the dropdown */
-      this.loading = true;
-      this.didSelectFromOptions = true;
-      this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
-      this.$nextTick(function () {
-        this$1._onSelected(true);
-      });
-    },
-    setCurrentIndex: function setCurrentIndex(newIndex, limit, direction) {
-      if ( limit === void 0 ) limit = -1;
-
-      var adjustedValue = newIndex;
-
-      // if we hit the lower limit then stop iterating the index
-      if (this.currentIndex === null) {
-        adjustedValue = 0;
-      }
-
-      if (this.currentIndex < 0 && direction === 1) {
-        adjustedValue = 0;
-      }
-
-      // if we hit the upper limit then just stop iterating the index
-      if (newIndex >= limit) {
-        adjustedValue = 0;
-      }
-
-      this.currentIndex = adjustedValue;
-
-      var element = document.getElementById(("autosuggest__results_item-" + (this.currentIndex)));
-      var hoverClass = "autosuggest__results_item-highlighted";
-      if (document.querySelector(("." + hoverClass))) {
-        removeClass(document.querySelector(("." + hoverClass)), hoverClass);
-      }
-      if (element) {
-        addClass(element, hoverClass);
-      }
-    },
-    onClick: function onClick(e) {
-      console.warn(
-        'inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onClick && this.internal_inputProps.onClick(e);
-    },
-    onBlur: function onBlur(e) {
-      console.warn(
-        'inputProps.onBlur is deprecated. Please use native blur event listener \n\ne.g. <vue-autosuggest ... @blur="blurMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onBlur && this.internal_inputProps.onBlur(e);
-    },
-    onFocus: function onFocus(e) {
-      console.warn(
-        'inputProps.onFocus is deprecated. Please use native focus event listener \n\ne.g. <vue-autosuggest ... @focus="focusMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
-    }
-  },
-  created: function created() {
-    /** Take care of nested input props */
-    this.internal_inputProps = Object.assign({}, this.defaultInputProps, this.inputProps);
-    this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
-
-    this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
-  },
-  mounted: function mounted() {
-    document.addEventListener("mouseup", this.onDocumentMouseUp);
-    this.loading = true;
-  },
-  watch: {
-    searchInput: function searchInput(newValue, oldValue) {
-      this.value = newValue;
-      if (!this.didSelectFromOptions) {
-        this.searchInputOriginal = this.value;
-        this.currentIndex = null;
-        this.internal_inputProps.onInputChange(newValue, oldValue);
-      }
-    },
-    suggestions: {
-      immediate: true,
-      handler: function handler() {
-        var this$1 = this;
-
-        this.computedSections = [];
-        this.computedSize = 0;
-
-        this.suggestions.forEach(function (section) {
-          if (!section.data) { return; }
-
-          var name = section.name ? section.name : this$1.defaultSectionConfig.name;
-
-          var ref = this$1.sectionConfigs[name];
-          var type = ref.type;
-          var limit = ref.limit;
-          var label = ref.label;
-
-          /** Set defaults for section configs. */
-          type = type ? type : this$1.defaultSectionConfig.type;
-
-          limit = limit ? limit : Infinity;
-          limit = section.data.length < limit ? section.data.length : limit;
-
-          label = label ? label : section.label;
-
-          var computedSection = {
-            name: name,
-            label: label,
-            type: type,
-            limit: limit,
-            data: section.data,
-            start_index: this$1.computedSize,
-            end_index: this$1.computedSize + limit - 1
-          };
-          this$1.computedSections.push(computedSection);
-          this$1.computedSize += limit;
-        }, this);
-      }
-    }
-  }
-};
-
-var VueAutosuggestPlugin = {
-  install: function install(Vue) {
-    Vue.component("vue-autosuggest-default-section", DefaultSection);
-    Vue.component("vue-autosuggest", VueAutosuggest);
-  }
-};
-
-if (typeof window !== "undefined" && window.Vue) {
-  window.Vue.use(VueAutosuggestPlugin);
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (VueAutosuggestPlugin);
-
-
 
 /***/ })
 /******/ ]);
