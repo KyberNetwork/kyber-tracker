@@ -105,6 +105,7 @@ module.exports = BaseService.extends({
         KyberTradeModel.findOne({
           where: '(taker_token_symbol = ? and maker_token_symbol = ? ) or (taker_token_symbol = ? and maker_token_symbol = ?)',
           params: [tokenSymbol, base, base, tokenSymbol],
+          orderBy: 'block_timestamp DESC',
         }, next)
       }
     }, (err, ret) => {
