@@ -96851,7 +96851,7 @@ exports.default = {
     },
     connectMetaMask: async function connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        alert("Cannot connect to metamask. Please make sure you have metamask installed");
+        console.log("Cannot connect to metamask. Please make sure you have metamask installed");
         return;
       }
       var web3Service = new _web2.default(web3);
@@ -96859,7 +96859,7 @@ exports.default = {
       var browser = _bowser2.default.name;
       if (browser != "Chrome" && browser != "Firefox") {
         if (!web3Service.isTrust()) {
-          alert("Metamask is not supported on " + browser + ", you can use Chrome or Firefox instead.");
+          console.log("Metamask is not supported on " + browser + ", you can use Chrome or Firefox instead.");
           return;
         }
       }
@@ -96875,7 +96875,7 @@ exports.default = {
         });
         this.addresses = suggestData;
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
     },
     refresh: function refresh() {
