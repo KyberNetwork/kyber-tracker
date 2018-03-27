@@ -326,6 +326,8 @@ export default {
     onSelected(selected) {
       if(selected && selected.item && selected.item.addr){
         this.searchString = selected.item.addr;
+        // document.getElementById("autosuggest__input").focus()
+        this.doSearch()
       }
     },
 
