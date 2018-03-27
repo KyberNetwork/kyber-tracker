@@ -10,7 +10,8 @@
     "build-prod": "NODE_ENV=production webpack",
     "watch": "webpack --watch",
     "start": "pm2 start app.json",
-    "test": "LOG_LEVEL=ERROR NODE_ENV=test node_modules/.bin/mocha -R spec --timeout 30000 test/index.js"
+    "test": "LOG_LEVEL=ERROR NODE_ENV=test node_modules/.bin/mocha -R spec --timeout 30000 test/index.js",
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "sota-core": "2.0.19",
     "superagent": "^3.8.2",
     "v-tooltip": "^2.0.0-rc.31",
+    "vue-autosuggest": "^1.4.1",
     "web3": "1.0.0-beta.30",
     "ws": "3.2.0"
   },

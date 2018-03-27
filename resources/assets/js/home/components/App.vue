@@ -31,6 +31,8 @@
 
           <div class="float-lang-bar cursor-pointer">
             <b-navbar-nav>
+
+
               <b-dropdown class="change-language-button" no-caret right>
                 <template slot="button-content">
                   <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
@@ -75,12 +77,24 @@
             <form action="javasript:void(0)" class="no-margin no-padding search-form">
               <b-nav-item class="no-padding-right">
                 <b-input-group size="sm">
-                  <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input>
+                  <!-- <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input> -->
+
+                  
+                  <vue-autosuggest
+                      :suggestions="[{
+                        data: addresses
+                      }]"
+                      :getSuggestionValue="getSuggestionValue"
+                      :renderSuggestion="renderSuggestion"
+                      :inputProps="{id:'autosuggest__input', placeholder:$t('common.searchbox_placeholder')}"
+                  />
+                  
                   <b-input-group-append>
                     <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
                       <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
                     </b-btn>
                   </b-input-group-append>
+                  
                 </b-input-group>
               </b-nav-item>
             </form>
@@ -142,6 +156,8 @@ import request from 'superagent';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 import network from '../../../../../config/network';
+import Web3Service from '../../core/helper/web3';
+import bowser from 'bowser'
 
 export default {
   data() {
@@ -156,6 +172,7 @@ export default {
       pageTitle: '',
       feeToBurn: '',
       breadcrumbsItems: [],
+      addresses: []
     };
   },
 
@@ -189,6 +206,37 @@ export default {
       if (this.kncPriceChange24h === 0) return '';
       return this.kncPriceChange24h < 0 ? 'neg-value' : 'pos-value'
     },
+    async connectMetaMask (e) {   
+      if (typeof web3 === "undefined") {
+        alert('Cannot connect to metamask. Please make sure you have metamask installed')
+        return
+      }            
+      var web3Service = new Web3Service(web3)
+      
+      let browser = bowser.name
+      if(browser != 'Chrome' && browser != 'Firefox'){
+        if(!web3Service.isTrust()){
+          alert(`Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`)
+          return
+        }
+      }
+
+      try{
+        let addresses = await web3Service.getAllAddresses()
+        let suggestData = addresses.map(addr => {
+          console.log(addr)
+          return {
+            type: "metamask", 
+            addr: addr
+          }
+        })
+        this.addresses = suggestData
+        
+      } catch(e){
+        alert(e)
+      }
+    },
+
     refresh () {
       AppRequest.getStats24h().then((stats) => {
         this.networkVolume = stats.networkVolume;
@@ -226,6 +274,15 @@ export default {
         this.searchString = '';
       });
     },
+
+    renderSuggestion(suggestion) {
+      return suggestion.item.type + " - " + suggestion.item.addr
+    },
+
+    getSuggestionValue(suggestion) {
+        return suggestion.item.addr;
+    },
+
     loadBreadcumbs (route) {
       const routeName = route.name;
 
@@ -314,6 +371,7 @@ export default {
 
   mounted () {
     this.refresh();
+    this.connectMetaMask();
     this.loadBreadcumbs(this.$route);
 
     window.setInterval(this.refresh, 60000); // Refresh each minute
