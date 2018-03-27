@@ -6,6 +6,7 @@
     "name": "Tên",
     "symbol": "Ký hiệu",
     "volume_24h_usd": "Lượng giao dịch 24H (USD)",
+    "volume_24h_eth": "Lượng giao dịch 24H (ETH)",
     "volume_24h_token": "Lượng giao dịch 24H (Token)",
     "search": "Tìm kiếm",
     "network_activity": "Danh sách giao dịch",

@@ -30,16 +30,19 @@
         const labels = [];
         const dataset = [];
         const volumeTokens = [];
+        const volumeEths = [];
 
         for (let i = 0; i < ret.length; i++) {
           labels.push(ret[i].symbol);
           dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
           volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
+          volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
         }
 
         return {
           labels,
           volumeTokens,
+          volumeEths,
           datasets: [{
             data: dataset,
             pointRadius: 0,
@@ -65,9 +68,15 @@
             const index = tooltipItem[0].index;
             const tokenSymbol = data.labels[index];
             const usdText = this.$t('chart.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
+            const ethText = this.$t('chart.title.label_volume') + ' (ETH): ' + util.numberWithCommas(data.volumeEths[index]);
             const tokenText = this.$t('chart.title.label_volume') + ' (' +
               tokenSymbol + '): ' + util.numberWithCommas(data.volumeTokens[index]);
-            return [usdText, tokenText];
+            
+            if (tokenSymbol === "ETH") {
+              return [usdText, tokenText];
+            } else {
+              return [usdText, ethText, tokenText];
+            }
           }
         };
 

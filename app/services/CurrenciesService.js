@@ -38,19 +38,12 @@ module.exports = BaseService.extends({
       async.auto(
         pairs,
         (err, ret) => {
-          // let arrayBaseVolume = Object.keys(ret).map( pairKey => ret[pairKey].baseVolume)
-          // let sum = helper.sumBig(arrayBaseVolume, 0)
-          return callback(null, {
-            data: ret,
-            // pagination: {
-            //   totalBaseVolume: sum
-            // }
-          });
+          //let arrayBaseVolume = Object.keys(ret).map( pairKey => ret[pairKey].baseVolume)
+          //let sum = helper.sumBig(arrayBaseVolume, 0)
+          return callback(null, ret);
         })
     } else {
-      return callback(null, {
-        data: {},
-      });
+      return callback(null, {});
     }
     
   },
@@ -119,14 +112,14 @@ module.exports = BaseService.extends({
       const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
       const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
       return callback( null , {
-        "name": tokenData.name,
         "symbol": tokenData.symbol,
+        "name": tokenData.name,
         // "code": tokenData.symbol,
+        "contractAddress": tokenData.address,
         "decimals": tokenData.decimal,
-        "address": tokenData.address,
         price: currentPrice.toNumber(),
-        quoteVolume: quoteVolume,
-        baseVolume: ret.baseVolume
+        baseVolume: ret.baseVolume,
+        quoteVolume: quoteVolume
         // price24h: null,
 
       })

@@ -8,6 +8,7 @@
         <th class="text-left">{{ $t("common.name") }}</th>
         <th class="text-left">{{ $t("common.symbol") }}</th>
         <th class="text-right">{{ $t("common.volume_24h_usd") }}</th>
+        <th class="text-right">{{ $t("common.volume_24h_eth") }}</th>
         <th class="text-right">{{ $t("common.volume_24h_token") }}</th>
         <th></th>
       </template>
@@ -18,6 +19,7 @@
           <td><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> {{ slot.item.name }}</td>
           <td>{{ slot.item.symbol }}</td>
           <td class="text-right">{{ formatVolumeUSD(slot.item) }}</td>
+          <td class="text-right">{{ slot.item.volumeETH }}</td>
           <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
           <td><span class="pull-right">
               <i class="k k-angle right"></i>

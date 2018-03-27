@@ -106,7 +106,7 @@ export default {
           const value = data.labels[index];
           const d= moment(value);
           if(interval === 'H1') {
-            return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY, HH:mm UTCZ') : d.format('ddd, MMMM Do YYYY, HH:mm UTCZ');
+            return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY, HH:mm UTCZ') : d.format('ddd, MMM Do YYYY, HH:mm UTCZ');
           } else {
             return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY (UTC+00:00)') : d.format('ddd, MMM Do YYYY (UTC+00:00)');
           }

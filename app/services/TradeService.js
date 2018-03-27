@@ -75,6 +75,7 @@ module.exports = BaseService.extends({
     KyberTradeModel.findOne(tradeId, callback);
   },
 
+  // Use for totken list page & top token chart
   getTopTokensList: function (fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const CMCService = this.getService('CMCService');
@@ -108,6 +109,20 @@ module.exports = BaseService.extends({
           groupBy: ['maker_token_symbol']
         }, next);
       },
+      takerEth: (next) => {
+        KyberTradeModel.sumGroupBy('volume_eth', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['maker_token_symbol']
+        }, next);
+      },
+      makerEth: (next) => {
+        KyberTradeModel.sumGroupBy('volume_eth', {
+          where: 'block_timestamp > ? AND block_timestamp < ?',
+          params: [fromDate, toDate],
+          groupBy: ['taker_token_symbol']
+        }, next);
+      },
       prices: (next) => {
         CMCService.getPriceOfAllTokens(next);
       }
@@ -121,6 +136,8 @@ module.exports = BaseService.extends({
       const makerTrades = _.keyBy(ret.makerTrades, 'makerTokenSymbol');
       const takerUsds = _.keyBy(ret.takerUsds, 'takerTokenSymbol');
       const makerUsds = _.keyBy(ret.makerUsds, 'makerTokenSymbol');
+      const takerEth = _.keyBy(ret.takerEth, 'makerTokenSymbol');
+      const makerEth = _.keyBy(ret.makerEth, 'takerTokenSymbol');
       const tokens = _.compact(_.map(network.tokens, (tokenConfig) => {
         const symbol = tokenConfig.symbol;
 
@@ -144,12 +161,23 @@ module.exports = BaseService.extends({
           volumeUSD = volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString()));
         }
 
+        let ethVolume = new BigNumber(0);
+        if (takerEth[symbol]) {
+          ethVolume = ethVolume.plus(new BigNumber(takerEth[symbol].sum.toString()));
+        }
+
+        if (makerEth[symbol]) {
+          ethVolume = ethVolume.plus(new BigNumber(makerEth[symbol].sum.toString()));
+        }
+
         return {
           symbol: tokenConfig.symbol,
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
           volumeTokenNumber: tokenVolume.toNumber(),
           volumeUSD: volumeUSD.toNumber(),
+          volumeETH: ethVolume.toFormat(4).toString(),
+          volumeEthNumber: ethVolume.toNumber(),
         };
       }));
 
@@ -159,6 +187,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for topbar items
   getStats24h: function (callback) {
     const key = 'stats24h';
     const cachedData = LocalCache.getSync(key);
@@ -284,7 +313,6 @@ module.exports = BaseService.extends({
   _searchByAddress: function (address, page, limit, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     let whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?';
-    let sumColumn = 'SUM(taker_total_usd)'
     let params = [address, address];
 
     if (fromDate) {
@@ -351,6 +379,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for Volume charts
   getNetworkVolumes: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
@@ -380,7 +409,7 @@ module.exports = BaseService.extends({
 
     async.auto({
       sum: (next) => {
-        KyberTradeModel.sumGroupBy('maker_total_usd', {
+        KyberTradeModel.sumGroupBy('volume_usd', {
           where: whereClauses,
           params: params,
           groupBy: [groupColumn],
@@ -451,6 +480,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for "Fees To Burn" chart
   getToBurnFees: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
@@ -540,6 +570,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Use for "partner commision" chart (currently not used by front-end)
   getToWalletFees: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
@@ -581,6 +612,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Seems not used anywhere
   getCountMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
@@ -599,6 +631,7 @@ module.exports = BaseService.extends({
     });
   },
 
+  // Seems not used anywhere
   getSumMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
