@@ -84,10 +84,15 @@
                       :suggestions="[{
                         data: addresses
                       }]"
+                      @keyup.enter="doSearch"
                       :getSuggestionValue="getSuggestionValue"
                       :renderSuggestion="renderSuggestion"
                       :onSelected="onSelected"
-                      :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:$t('common.searchbox_placeholder')}"
+                      :inputProps="{
+                        id:'autosuggest__input', 
+                        onInputChange: this.onInputChange, 
+                        placeholder:$t('common.searchbox_placeholder'),
+                      }"
                   />
                   
                   <b-input-group-append>
@@ -318,7 +323,9 @@ export default {
     },
 
     onSelected(selected) {
-      this.searchString = selected.item.addr;
+      if(selected && selected.item && selected.item.addr){
+        this.searchString = selected.item.addr;
+      }
     },
 
     loadBreadcumbs(route) {
