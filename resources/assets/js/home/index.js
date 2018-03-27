@@ -18,6 +18,7 @@ import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
 import ImportAcount from '../core/components/ImportAccount.vue';
+import VueAutosuggest from "vue-autosuggest";
 import routes from './routes';
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
@@ -27,6 +28,7 @@ Vue.use(VueI18n);
 Vue.use(VueResource);
 Vue.use(BootstrapVue);
 Vue.use(VTooltip)
+Vue.use(VueAutosuggest)
 
 Vue.component('data-table', DataTable);
 Vue.component('trade-list', TradeList);

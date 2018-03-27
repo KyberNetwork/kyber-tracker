@@ -3,6 +3,7 @@ const path = require('path');
 const Dotenv_webpack = require('dotenv-webpack');
 const dotenv = require('dotenv').config('./.env');
 const webpack = require('webpack');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = () => {
   const minimize = process.env.NODE_ENV === 'production';
@@ -12,7 +13,7 @@ module.exports = () => {
       new Dotenv_webpack({
         path: './.env', // Path to .env file (this is the default)
       }),
-      new webpack.optimize.UglifyJsPlugin({
+      new MinifyPlugin({}, {
         include: /\.js$/
       })
     ]
