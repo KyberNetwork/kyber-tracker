@@ -81,6 +81,7 @@
 
                   
                   <vue-autosuggest
+                      ref="seatchInputRef"
                       :suggestions="[{
                         data: addresses
                       }]"
@@ -302,6 +303,7 @@ export default {
 
       window.setTimeout(() => {
         this.searchString = "";
+        this.$refs.seatchInputRef.searchInput = ""
       });
     },
     isTxHash(hash) {
