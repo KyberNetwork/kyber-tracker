@@ -50,9 +50,9 @@ export default {
       return undefined;
     },
     getSearchResultTitle(){
-      return "<span class='long-address'>" + 
+      return "<a href=\"https://etherscan.io/address/"+ this.$route.query.q + "\" target=\"blank\">" + "<span class='long-address'>" + 
         this.$t('search_page.result_title', [this.$route.query.q]) +
-        "</span>";
+        "</span>" + "</a>";
     },
     getSearchResultMessage () {
       return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) 
