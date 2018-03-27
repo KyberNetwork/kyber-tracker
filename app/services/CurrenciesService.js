@@ -101,9 +101,33 @@ module.exports = BaseService.extends({
       price: (next) => {
         CMCService.getCurrentRate(tokenSymbol, base, next);
       },
+      lastTrade: (next) => {
+        KyberTradeModel.findOne({
+          where: '(taker_token_symbol = ? and maker_token_symbol = ? ) or (taker_token_symbol = ? and maker_token_symbol = ?)',
+          params: [tokenSymbol, base, base, tokenSymbol],
+        }, next)
+      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
+      }
+
+      let lastPrice = 0
+      if(ret.lastTrade){
+        let bigMakerAmount = ret.lastTrade.makerTokenAmount ? new BigNumber(ret.lastTrade.makerTokenAmount) : new BigNumber(0)
+        let bigTakerAmount = ret.lastTrade.takerTokenAmount ? new BigNumber(ret.lastTrade.takerTokenAmount) : new BigNumber(0)
+
+        if(ret.lastTrade.takerTokenSymbol == base && !bigMakerAmount.isZero()){
+          let amountTaker = bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
+          let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal))
+          lastPrice = amountTaker.div(amountMaker).toNumber()
+        }
+        else if(ret.lastTrade.makerTokenSymbol == base && !bigTakerAmount.isZero()){
+          let amountMaker = bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
+          let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))          
+          lastPrice = amountMaker.div(amountTaker).toNumber()
+        }
+
       }
 
       // const baseVolume = new BigNumber(ret.baseVolume.toString()).div(Math.pow(10, baseTokenData.decimal)).toNumber()
@@ -119,7 +143,8 @@ module.exports = BaseService.extends({
         "decimals": tokenData.decimal,
         price: currentPrice.toNumber(),
         baseVolume: ret.baseVolume,
-        quoteVolume: quoteVolume
+        quoteVolume: quoteVolume,
+        lastPrice: lastPrice
         // price24h: null,
 
       })
