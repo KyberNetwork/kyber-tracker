@@ -103,7 +103,7 @@ module.exports = BaseService.extends({
       },
       lastTrade: (next) => {
         KyberTradeModel.findOne({
-          where: '(taker_token_symbol = ? and maker_token_symbol = ? ) or (taker_token_symbol = ? and maker_token_symbol = ?)',
+          where: '(taker_token_symbol = ? and maker_token_symbol = ?) or (taker_token_symbol = ? and maker_token_symbol = ?)',
           params: [tokenSymbol, base, base, tokenSymbol],
           orderBy: 'block_timestamp DESC',
         }, next)
@@ -142,12 +142,11 @@ module.exports = BaseService.extends({
         // "code": tokenData.symbol,
         "contractAddress": tokenData.address,
         "decimals": tokenData.decimal,
-        price: currentPrice.toNumber(),
+        currentPrice: currentPrice.toNumber(),
+        lastPrice: lastPrice,
+        lastTimestamp: ret.lastTrade.blockTimestamp,
         baseVolume: ret.baseVolume,
-        quoteVolume: quoteVolume,
-        lastPrice: lastPrice
-        // price24h: null,
-
+        quoteVolume: quoteVolume
       })
     })
   },
