@@ -324,7 +324,7 @@ export default {
           logoUrl = '/images/address.svg'
           break;
         case "txHash":
-          logoUrl = '/images/txHash.svg'
+          logoUrl = '/images/txhash.svg'
           break;
         case "metamask":
           logoUrl = '/images/metamask.svg'
