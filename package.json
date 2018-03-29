@@ -33,6 +33,8 @@
     "bn.js": "4.11.8",
     "bowser": "^1.9.3",
     "dotenv": "4.0.0",
+    "localStorage": "^1.0.3",
+    "localforage": "^1.6.0",
     "lodash": "4.17.4",
     "moment": "2.20.1",
     "nodemon": "1.13.3",
