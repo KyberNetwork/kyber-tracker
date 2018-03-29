@@ -117,6 +117,12 @@ export default {
 
   roundingNumber: function (number) {
     return kyberRoundingNumber(number);
-  }
+  },
+  isTxHash: function(hash) {
+    return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
+  },
+  isAddress: function(address) {
+    return /^(0x)?[0-9a-f]{40}$/i.test(address)
+  },
 
 };
