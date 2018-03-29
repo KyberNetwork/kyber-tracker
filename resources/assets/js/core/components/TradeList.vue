@@ -14,7 +14,7 @@
         <div v-html="getSearchResultMessage()" />
       </div>
 
-      <div v-if="!isHideDatepicker" class="datepicker-container">
+      <div v-if="!isHideDatepicker && rows && rows.length" class="datepicker-container">
         <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"

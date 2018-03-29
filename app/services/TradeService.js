@@ -283,6 +283,13 @@ module.exports = BaseService.extends({
     });
   },
 
+  _isTxHash: function(hash) {
+    return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
+  },
+  _isAddress: function(address) {
+    return /^(0x)?[0-9a-f]{40}$/i.test(address)
+  },
+
   search: function (options, callback) {
     const q = options.q.toLowerCase();
     const page = options.page || 0;
@@ -290,11 +297,16 @@ module.exports = BaseService.extends({
     const fromDate = options.fromDate
     const toDate = options.toDate
     // Transaction hash
-    if (q.length === 66) {
+
+    console.log("+++++++++++****************")
+    console.log(q)
+    if (this._isTxHash(q)) {
+      console.log("is tx hash")
       this._searchByTxid(q, callback);
     }
     // Address
-    else if (q.length === 42) {
+    else if (this._isAddress(q)) {
+      console.log("+++++++++ is address")
       this._searchByAddress(q, page, limit, fromDate, toDate, callback);
     }
     else {

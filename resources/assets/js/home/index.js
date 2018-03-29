@@ -19,7 +19,13 @@ import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
 import ImportAcount from '../core/components/ImportAccount.vue';
 import VueAutosuggest from "vue-autosuggest";
+// import localforage from 'localforage';
 import routes from './routes';
+
+// localforage.config({
+//   name: 'KyberTracker'
+// });
+
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
 

@@ -83,9 +83,10 @@
                   <vue-autosuggest
                       ref="seatchInputRef"
                       :suggestions="[{
-                        data: addresses
+                        data: [...this.addressesMetamask, ...this.searchData]
                       }]"
                       @keyup.enter="doSearch"
+                      @focus="onfocus"
                       :getSuggestionValue="getSuggestionValue"
                       :renderSuggestion="renderSuggestion"
                       :onSelected="onSelected"
@@ -164,7 +165,7 @@ import util from "../../core/helper/util";
 import network from "../../../../../config/network";
 import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
-
+import store from "../../core/helper/store"
 export default {
   data() {
     return {
@@ -178,7 +179,8 @@ export default {
       pageTitle: "",
       feeToBurn: "",
       breadcrumbsItems: [],
-      addresses: []
+      searchData: [],
+      addressesMetamask: []
     };
   },
 
@@ -237,13 +239,12 @@ export default {
       try {
         let addresses = await web3Service.getAllAddresses();
         let suggestData = addresses.map(addr => {
-          console.log(addr);
           return {
             type: "metamask",
             addr: addr
           };
         });
-        this.addresses = suggestData;
+        this.addressesMetamask = suggestData;
       } catch (e) {
         console.log(e);
       }
@@ -284,22 +285,24 @@ export default {
       });
 
       //add search string to suggest input
-      let indexItemExist = this.addresses.map(item => item.addr).indexOf(this.searchString);
+      let indexItemExist = [...this.addressesMetamask, ...this.searchData].map(item => item.addr).indexOf(this.searchString);
 
       if (indexItemExist < 0) {
         if (this.isAddress(this.searchString)) {
-          this.addresses.push({
+          this.searchData.unshift({
             type: "address",
             addr: this.searchString
           });
         }
         if (this.isTxHash(this.searchString)) {
-          this.addresses.push({
-            type: "tx hash",
+          this.searchData.unshift({
+            type: "txHash",
             addr: this.searchString
           });
         }
       }
+      this.searchData = this.searchData.slice(0, 5)
+      store.set("searchData", this.searchData)
 
       window.setTimeout(() => {
         this.searchString = "";
@@ -314,7 +317,23 @@ export default {
     },
 
     renderSuggestion(suggestion) {
-      return suggestion.item.type + " - " + suggestion.item.addr;
+      // return suggestion.item.type + " - " + suggestion.item.addr;
+      let logoUrl = ''
+      switch (suggestion.item.type) {
+        case "address":
+          logoUrl = '/images/address.svg'
+          break;
+        case "txHash":
+          logoUrl = '/images/txHash.svg'
+          break;
+        case "metamask":
+          logoUrl = '/images/metamask.svg'
+          break;
+      }
+      return <div>
+        <img class="history-logo" src={logoUrl} />
+        <span> {suggestion.item.addr} </span>
+        </div>;
     },
 
     getSuggestionValue(suggestion) {
@@ -331,6 +350,10 @@ export default {
         // document.getElementById("autosuggest__input").focus()
         this.doSearch()
       }
+    },
+
+    onfocus(){
+      this.connectMetaMask();
     },
 
     loadBreadcumbs(route) {
@@ -444,7 +467,7 @@ export default {
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);
-
+    this.searchData = store.get("searchData") || []
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
 };
