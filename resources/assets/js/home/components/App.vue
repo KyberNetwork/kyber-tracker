@@ -94,6 +94,7 @@
                         id:'autosuggest__input', 
                         onInputChange: this.onInputChange, 
                         placeholder:$t('common.searchbox_placeholder'),
+                        autocomplete: 'off'
                       }"
                   />
                   
@@ -332,7 +333,7 @@ export default {
       }
       return <div>
         <img class="history-logo" src={logoUrl} />
-        <span> {suggestion.item.addr} </span>
+        <span>{suggestion.item.addr.slice(0, 14)} ... {suggestion.item.addr.slice(-12)} </span>
         </div>;
     },
 

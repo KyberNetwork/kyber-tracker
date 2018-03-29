@@ -50,6 +50,15 @@ export default {
       return undefined;
     },
     getSearchResultTitle(){
+      if(util.isTxHash(this.$route.query.q) && !this.resultCount){
+        return "<span class='long-address'>" + 
+              this.$t('search_page.tx_hash') + 
+              "<a href=\"https://etherscan.io/tx/"+ this.$route.query.q + "\" target=\"blank\">" + 
+              this.$route.query.q + 
+              "</a>"
+            "</span>";
+      }
+
       return "<span class='long-address'>" + 
               this.$t('search_page.result_title') + 
               "<a href=\"https://etherscan.io/address/"+ this.$route.query.q + "\" target=\"blank\">" + 
@@ -58,6 +67,9 @@ export default {
             "</span>";
     },
     getSearchResultMessage () {
+      if(util.isTxHash(this.$route.query.q) && !this.resultCount){
+        return '<span>'+ this.$t('search_page.no_txhash_data') +'</span>'
+      }
       return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) 
             + '</br>' 
             + this.$t('search_page.total_usd_msg', [this.totalUsd])

@@ -114,7 +114,9 @@
     "total_usd_msg": "Tổng khối lượng giao dịch (USD): ${0}",
     "total_eth_msg": "Tổng khối lượng giao dịch (ETH): {0}",
     "result_title": "Địa chỉ: ",
-    "total_fee": "Tổng phí tích hợp: {0} KNC"
+    "tx_hash": "Tx hash: ",
+    "total_fee": "Tổng phí tích hợp: {0} KNC",
+    "no_txhash_data": "Giao dịch này không được thực hiện với Kyber Network!"
   },
 
   "main_page": {
