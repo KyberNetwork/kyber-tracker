@@ -50,6 +50,9 @@ export default {
       return undefined;
     },
     getSearchResultTitle(){
+      if(!util.isTxHash(this.$route.query.q) && !util.isAddress(this.$route.query.q)){
+        return "<span class='long-address'>" + this.$route.query.q + "</span>";
+      }
       if(util.isTxHash(this.$route.query.q) && !this.resultCount){
         return "<span class='long-address'>" + 
               this.$t('search_page.tx_hash') + 
@@ -67,6 +70,10 @@ export default {
             "</span>";
     },
     getSearchResultMessage () {
+      if(!util.isTxHash(this.$route.query.q) && !util.isAddress(this.$route.query.q)){
+        return '<span>'+ this.$t('search_page.invalid_query') +'</span>'
+      }
+
       if(util.isTxHash(this.$route.query.q) && !this.resultCount){
         return '<span>'+ this.$t('search_page.no_txhash_data') +'</span>'
       }

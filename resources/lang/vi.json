@@ -116,7 +116,8 @@
     "result_title": "Địa chỉ: ",
     "tx_hash": "Tx hash: ",
     "total_fee": "Tổng phí tích hợp: {0} KNC",
-    "no_txhash_data": "Giao dịch này không được thực hiện với Kyber Network!"
+    "no_txhash_data": "Giao dịch này không được thực hiện với Kyber Network",
+    "invalid_query": "Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"
   },
 
   "main_page": {

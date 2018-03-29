@@ -118,7 +118,8 @@
     "result_title": "Address: ",
     "tx_hash": "Tx hash: ",
     "total_fee": "Total partner commission: {0} KNC",
-    "no_txhash_data": "This transaction is not with Kyber Network"
+    "no_txhash_data": "This transaction is not with Kyber Network",
+    "invalid_query": "Your search string is not address or tx hash"
   },
 
   "main_page": {
