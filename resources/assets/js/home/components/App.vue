@@ -296,7 +296,7 @@ export default {
         }
         if (this.isTxHash(this.searchString)) {
           this.searchData.unshift({
-            type: "tx hash",
+            type: "txHash",
             addr: this.searchString
           });
         }
@@ -317,7 +317,23 @@ export default {
     },
 
     renderSuggestion(suggestion) {
-      return suggestion.item.type + " - " + suggestion.item.addr;
+      // return suggestion.item.type + " - " + suggestion.item.addr;
+      let logoUrl = ''
+      switch (suggestion.item.type) {
+        case "address":
+          logoUrl = '/images/address.svg'
+          break;
+        case "txHash":
+          logoUrl = '/images/txHash.svg'
+          break;
+        case "metamask":
+          logoUrl = '/images/metamask.svg'
+          break;
+      }
+      return <div>
+        <img class="history-logo" src={logoUrl} />
+        <span> {suggestion.item.addr} </span>
+        </div>;
     },
 
     getSuggestionValue(suggestion) {
