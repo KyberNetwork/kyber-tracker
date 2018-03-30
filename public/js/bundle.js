@@ -99509,7 +99509,7 @@ module.exports = {
       "decimal": 4,
       "symbol": "ADX",
       "icon": "adx.svg",
-      "cmcId": "adex"
+      "cmcId": "adx-net"
     },
     "AST": {
       "name": "AirSwap",

@@ -16,6 +16,11 @@ module.exports = (callback) => {
       return callback(err);
     }
 
+    if(process.env.BLOCK_START){
+      logger.info(`Crawler start with custom blocknumber: ${process.env.BLOCK_START}`);
+      return callback(null, +process.env.BLOCK_START)
+    }
+
     if (!ret) {
       return callback(null, network.startBlockNumber);
     }
