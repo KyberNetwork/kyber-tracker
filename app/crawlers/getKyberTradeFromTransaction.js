@@ -60,11 +60,19 @@ module.exports = (block, tx, callback) => {
         logger.info(`Got new trade: ${JSON.stringify({ src, dest, srcAmount, destAmount })}`);
 
         const srcToken = Utils.getTokenFromAddress(src);
+        const destToken = Utils.getTokenFromAddress(dest);
+
+        if(!srcToken || !destToken) {
+          if(!srcToken) logger.error(`Cannot get src token with address: ${src}`);
+          if(!destToken) logger.error(`Cannot get src token with address: ${dest}`);
+          return callback(null, null)
+        }
+
         record.takerTokenAddress = srcToken.address;
         record.takerTokenSymbol = srcToken.symbol;
         record.takerTokenAmount = srcAmount;
 
-        const destToken = Utils.getTokenFromAddress(dest);
+        
         record.makerTokenAddress = destToken.address;
         record.makerTokenSymbol = destToken.symbol;
         record.makerTokenAmount = destAmount;
