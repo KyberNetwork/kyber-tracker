@@ -13,10 +13,11 @@ abiDecoder.addABI(burnedFeeABI);
 const network = require('../../config/network');
 const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
-// const tokensByAddress = _.keyBy(_.values(tokens), 'address');
-const tokensByAddress = Object.keys(tokens).map( tokenSymbol => tokens[tokenSymbol].address.toLowerCase())
-console.log("++++++++++++")
-console.log(tokensByAddress)
+const tokensByAddress = _.keyBy(_.values(tokens), o => o.address.toLowerCase());
+
+// const tokensByAddress = Object.keys(tokens).map( tokenSymbol => tokens[tokenSymbol].address.toLowerCase())
+// console.log("++++++++++++")
+// console.log(tokensByAddress)
 
 module.exports = {
 
