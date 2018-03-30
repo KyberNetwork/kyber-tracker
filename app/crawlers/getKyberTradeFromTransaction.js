@@ -65,7 +65,7 @@ module.exports = (block, tx, callback) => {
         if(!srcToken || !destToken) {
           if(!srcToken) logger.error(`Cannot get src token with address: ${src}`);
           if(!destToken) logger.error(`Cannot get src token with address: ${dest}`);
-          return callback(null, null)
+          return
         }
 
         record.takerTokenAddress = srcToken.address;
