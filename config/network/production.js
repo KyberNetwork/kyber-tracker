@@ -151,7 +151,57 @@ module.exports = {
       "decimal": 8,
       "icon": "bqx.svg",
       "cmcId":"ethos"
-    }
+    },
+
+    "ADX": {
+      "name": "AdEx",
+      "address": "0x4470BB87d77b963A013DB939BE332f927f2b992e",
+      "decimal": 4,
+      "symbol": "ADEX",
+      "icon": "adx.svg",
+      "cmcId":"adex"
+    },
+    "AST": {
+      "name": "AirSwap",
+      "decimal": 4,
+      "address": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
+
+      "symbol": "AST",
+      "icon": "ast.svg",
+      "cmcId":"airswap"
+      
+    },
+    "RCN": {
+      "name": "Ripio Credit Network",
+      "decimal": 18,
+      "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
+
+      "symbol": "RCN",
+      "icon": "rcn.svg",
+      "cmcId":"ripio-credit-network"
+      
+    },
+    "ZIL": {
+      "name": "Zilliqa",
+      "decimal": 12,
+      "address": "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
+
+      "symbol": "ZIL",
+      "icon": "zil.svg",
+      "cmcId":"zilliqa"
+      
+    },
+    "LINK": {
+      "name": "Chain Link",
+      "decimal": 18,
+      "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+
+      "symbol": "LINK",
+      "icon": "link.svg",
+      "cmcId":"chainlink"
+      
+    },
+
   },
   "networkId": 1,
   "chainName": "Mainnet",
