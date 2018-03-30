@@ -411,7 +411,7 @@ export default {
 
           this.pageTitle = this.$t("page_title.token_detail");
           if (tokenInfo) {
-            this.pageTitle = `<img src="images/tokens/${
+            this.pageTitle = `<img class="token-logo-detail" src="images/tokens/${
               tokenInfo.icon
             }" /> <span>${tokenInfo.name}</span> <span class='sub-title'>(${
               tokenInfo.symbol
