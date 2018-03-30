@@ -157,7 +157,7 @@ module.exports = {
       "name": "AdEx",
       "address": "0x4470BB87d77b963A013DB939BE332f927f2b992e",
       "decimal": 4,
-      "symbol": "ADEX",
+      "symbol": "ADX",
       "icon": "adx.svg",
       "cmcId":"adex"
     },
