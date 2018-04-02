@@ -17,7 +17,7 @@ import TokenLink from '../core/components/TokenLink.vue';
 import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
-import ImportAcount from '../core/components/ImportAccount.vue';
+// import ImportAcount from '../core/components/ImportAccount.vue';
 import VueAutosuggest from "vue-autosuggest";
 // import localforage from 'localforage';
 import routes from './routes';
@@ -42,7 +42,7 @@ Vue.component('token-link', TokenLink);
 Vue.component('chart-volume', ChartVolume);
 Vue.component('chart-fee', ChartFee);
 Vue.component('chart-token', ChartToken);
-Vue.component('import-acount', ImportAcount)
+// Vue.component('import-acount', ImportAcount)
 Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
 

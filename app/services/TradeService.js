@@ -105,7 +105,7 @@ module.exports = BaseService.extends({
       },
       makerUsds: (next) => {
         // KyberTradeModel.sumGroupBy('maker_total_usd', {
-        KyberTradeModel.sumGroupBy('taker_total_usd', {
+        KyberTradeModel.sumGroupBy('volume_usd', {
           where: 'block_timestamp > ? AND block_timestamp < ?',
           params: [fromDate, toDate],
           groupBy: ['maker_token_symbol']
@@ -300,15 +300,15 @@ module.exports = BaseService.extends({
     const toDate = options.toDate
     // Transaction hash
 
-    console.log("+++++++++++****************")
-    console.log(q)
+    // console.log("+++++++++++****************")
+    // console.log(q)
     if (this._isTxHash(q)) {
-      console.log("is tx hash")
+      // console.log("is tx hash")
       this._searchByTxid(q, callback);
     }
     // Address
     else if (this._isAddress(q)) {
-      console.log("+++++++++ is address")
+      // console.log("+++++++++ is address")
       this._searchByAddress(q, page, limit, fromDate, toDate, callback);
     }
     else {

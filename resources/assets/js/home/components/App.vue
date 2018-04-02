@@ -220,9 +220,9 @@ export default {
     },
     async connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        console.log(
-          "Cannot connect to metamask. Please make sure you have metamask installed"
-        );
+        // console.log(
+        //  "Cannot connect to metamask. Please make sure you have metamask installed"
+        //);
         return;
       }
       var web3Service = new Web3Service(web3);
@@ -230,9 +230,9 @@ export default {
       let browser = bowser.name;
       if (browser != "Chrome" && browser != "Firefox") {
         if (!web3Service.isTrust()) {
-          console.log(
-            `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
-          );
+          // console.log(
+          //  `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
+          //);
           return;
         }
       }
