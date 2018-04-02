@@ -9,8 +9,8 @@ module.exports = {
     '/fees/to_wallet'               : ['TradeController.getToWalletFees'],
     '/fees/burned'                  : ['TradeController.getBurnedFees'],
     '/search'                       : ['TradeController.search'],
-    '/marker_address/count'         : ['TradeController.countMarkerAddress'],
-    '/marker_address/sum'           : ['TradeController.sumMarkerAddress'],
+    // '/marker_address/count'         : ['TradeController.countMarkerAddress'],
+    // '/marker_address/sum'           : ['TradeController.sumMarkerAddress'],
 
     '/currencies/convertiblePairs'  : ['CurrenciesController.getConvertiblePairs'],
     // '/currencies/:token'             : ['CurrenciesController.getCurrencyInfo'],

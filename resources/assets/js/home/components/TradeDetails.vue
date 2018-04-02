@@ -21,7 +21,7 @@
       <b-col sm="9">
         <span>{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
         <span>{{ record.takerTokenSymbol }}</span>
-        <span>(${{ formatFiatCurrency(record.takerTotalUsd) }})</span>
+        <span v-if="record.takerTotalUsd">(${{ formatFiatCurrency(record.takerTotalUsd) }})</span>
       </b-col>
     </b-row>
 
@@ -30,7 +30,7 @@
       <b-col sm="9">
         <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
         <span>{{ record.makerTokenSymbol }}</span>
-        <span>(${{ formatFiatCurrency(record.makerTotalUsd) }})</span>
+        <span v-if="record.makerTotalUsd">(${{ formatFiatCurrency(record.makerTotalUsd) }})</span>
       </b-col>
     </b-row>
 

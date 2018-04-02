@@ -141,6 +141,8 @@ module.exports = AppController.extends({
     TradeService.search(params, this.ok.bind(this, req, res));
   },
 
+  /*
+  NOT USED
   countMarkerAddress: function (req, res) {
     const [err, params] = new Checkit({
       markerAddress: ['required', 'string'],
@@ -180,5 +182,6 @@ module.exports = AppController.extends({
     const TradeService = req.getService('TradeService');
     TradeService.getSumMarkerAddress(params.markerAddress, fromDate, toDate, this.ok.bind(this, req, res));
   },
+  */
 
 });

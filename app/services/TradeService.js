@@ -96,14 +96,16 @@ module.exports = BaseService.extends({
         }, next);
       },
       takerUsds: (next) => {
-        KyberTradeModel.sumGroupBy('taker_total_usd', {
+        // KyberTradeModel.sumGroupBy('taker_total_usd', {
+        KyberTradeModel.sumGroupBy('volume_usd', {
           where: 'block_timestamp > ? AND block_timestamp < ?',
           params: [fromDate, toDate],
           groupBy: ['taker_token_symbol']
         }, next);
       },
       makerUsds: (next) => {
-        KyberTradeModel.sumGroupBy('maker_total_usd', {
+        // KyberTradeModel.sumGroupBy('maker_total_usd', {
+        KyberTradeModel.sumGroupBy('taker_total_usd', {
           where: 'block_timestamp > ? AND block_timestamp < ?',
           params: [fromDate, toDate],
           groupBy: ['maker_token_symbol']
@@ -123,15 +125,15 @@ module.exports = BaseService.extends({
           groupBy: ['taker_token_symbol']
         }, next);
       },
-      prices: (next) => {
+      /* prices: (next) => {
         CMCService.getPriceOfAllTokens(next);
-      }
+      } */
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
 
-      const prices = ret.prices;
+      // const prices = ret.prices;
       const takerTrades = _.keyBy(ret.takerTrades, 'takerTokenSymbol');
       const makerTrades = _.keyBy(ret.makerTrades, 'makerTokenSymbol');
       const takerUsds = _.keyBy(ret.takerUsds, 'takerTokenSymbol');
@@ -625,6 +627,7 @@ module.exports = BaseService.extends({
   },
 
   // Seems not used anywhere
+  /*
   getCountMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
@@ -642,8 +645,10 @@ module.exports = BaseService.extends({
       return callback(null, ret);
     });
   },
+  */
 
   // Seems not used anywhere
+  /*
   getSumMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
@@ -661,6 +666,7 @@ module.exports = BaseService.extends({
       return callback(null, ret);
     });
   },
+  */
 
   _getGroupColumnByIntervalParam: function (interval) {
     switch (interval) {
