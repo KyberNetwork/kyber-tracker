@@ -12,8 +12,15 @@
               <li>
                 <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
                 <span class="topbar-value" v-tooltip.bottom="$t('tooltip.knc_price')">{{ kncPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass()" v-tooltip.bottom="$t('tooltip.knc_price_change_24')">({{ formatedKNCPriceChange24h }})</span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)" v-tooltip.bottom="$t('tooltip.price_change_24')">({{ formatedKNCPriceChange24h }})</span>
               </li>
+
+              <li>
+                <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
+                <span class="topbar-value" v-tooltip.bottom="$t('tooltip.eth_price')">{{ ethPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)" v-tooltip.bottom="$t('tooltip.price_change_24')">({{ formatedETHPriceChange24h }})</span>
+              </li>
+
               <!-- <li>
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
                 <span class="topbar-value">{{ tradeCount }}</span>
@@ -61,7 +68,7 @@
                   />
 
                   <b-input-group-append>
-                    <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
+                    <b-btn type="submit" class="search-button btn-search" variant="default cursor-pointer" @click="doSearch()">
                       <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
                     </b-btn>
                   </b-input-group-append>
@@ -206,6 +213,8 @@ export default {
       tradeCount: "",
       kncPrice: "",
       kncPriceChange24h: 0,
+      ethPrice: "",
+      ethPriceChange24h: 0,
       totalBurnedFee: "",
       searchString: "",
       pageTitle: "",
@@ -222,6 +231,13 @@ export default {
         return "+" + this.kncPriceChange24h + "%";
       } else {
         return this.kncPriceChange24h + "%";
+      }
+    },
+    formatedETHPriceChange24h() {
+      if (this.ethPriceChange24h > 0) {
+        return "+" + this.ethPriceChange24h + "%";
+      } else {
+        return this.ethPriceChange24h + "%";
       }
     }
   },
@@ -245,9 +261,9 @@ export default {
         return "vi";
       }
     },
-    getPriceChangeClass() {
-      if (this.kncPriceChange24h === 0) return "";
-      return this.kncPriceChange24h < 0 ? "neg-value" : "pos-value";
+    getPriceChangeClass(priceChange) {
+      if (priceChange === 0) return "";
+      return priceChange < 0 ? "neg-value" : "pos-value";
     },
     async connectMetaMask(e) {
       if (typeof web3 === "undefined") {
@@ -301,6 +317,18 @@ export default {
 
           this.kncPrice = "$" + parseFloat(data.price_usd).toFixed(2);
           this.kncPriceChange24h = parseFloat(data.percent_change_24h);
+        });
+
+      request
+        .get("https://api.coinmarketcap.com/v1/ticker/ethereum/")
+        .then(res => {
+          const data = res.body[0];
+          if (!data || !data.id) {
+            return;
+          }
+
+          this.ethPrice = "$" + parseFloat(data.price_usd).toFixed(2);
+          this.ethPriceChange24h = parseFloat(data.percent_change_24h);
         });
     },
     doSearch() {

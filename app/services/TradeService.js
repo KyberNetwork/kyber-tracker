@@ -233,6 +233,9 @@ module.exports = BaseService.extends({
       kncInfo: (next) => {
         CMCService.getCMCTokenInfo('KNC', next);
       },
+      ethInfo: (next) => {
+        CMCService.getCMCTokenInfo('ETH', next);
+      },
       /*
       tradeCount: (next) => {
         KyberTradeModel.count({
@@ -276,6 +279,7 @@ module.exports = BaseService.extends({
         //partnerFee: '$' + feeInUSD.toFormat(2).toString(),
         //tradeCount: ret.tradeCount,
         kncInfo: ret.kncInfo,
+        ethInfo: ret.ethInfo,
         totalBurnedFee: totalBurnedFee.toFormat(2).toString(),
         feeToBurn: feeToBurn.toFormat(2).toString()
       };

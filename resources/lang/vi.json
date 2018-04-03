@@ -46,7 +46,8 @@
     "burned_fee": "PHÍ SẼ ĐỐT (24H)",
     "fees_to_burn": "PHÍ SẼ ĐỐT",
     "fees_burned": "PHÍ ĐÃ ĐỐT",
-    "knc_price": "GIÁ KNC"
+    "knc_price": "GIÁ KNC",
+    "eth_price": "GIÁ ETH"
   },
 
   "tooltip": {
@@ -54,7 +55,8 @@
     "fees_to_burn": "Tổng phí dành ra để đốt cho đến nay",
     "fees_burned": "Tổng phí đã đốt cho đến nay",
     "knc_price": "Giá hiện tại của KNC",
-    "knc_price_change_24": "Phần trăm thay đổi so với 24 giờ trước"
+    "eth_price": "Giá hiện tại của ETH",
+    "price_change_24": "Phần trăm thay đổi so với 24 giờ trước"
   },
 
   "chart": {

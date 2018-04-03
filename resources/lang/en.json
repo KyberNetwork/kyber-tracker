@@ -46,7 +46,8 @@
     "burned_fee": "FEES TO BURN (24H)",
     "fees_to_burn": "FEES TO BURN",
     "fees_burned": "FEES BURNED",
-    "knc_price": "KNC PRICE"
+    "knc_price": "KNC PRICE",
+    "eth_price": "ETH PRICE"
   },
 
   "tooltip": {
@@ -54,7 +55,8 @@
     "fees_to_burn": "Total fees set aside to burn so far",
     "fees_burned": "Total fees that have already been burnt",
     "knc_price": "Current KNC price",
-    "knc_price_change_24": "% change compared with price at 24 hours ago"
+    "eth_price": "Current ETH price",
+    "price_change_24": "% change compared with price at 24 hours ago"
   },
 
   "chart": {
