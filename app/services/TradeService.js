@@ -154,20 +154,23 @@ module.exports = BaseService.extends({
 
         let volumeUSD = new BigNumber(0);
         if (takerUsds[symbol]) {
-          volumeUSD = volumeUSD.plus(new BigNumber(takerUsds[symbol].sum.toString()));
+          console.log("*********************^^^^^^^^^^^^^^^^")
+          console.log(takerUsds)
+          console.log(symbol)
+          volumeUSD = takerUsds[symbol].sum ? volumeUSD.plus(new BigNumber(takerUsds[symbol].sum.toString())) : new BigNumber(0);
         }
 
         if (makerUsds[symbol]) {
-          volumeUSD = volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString()));
+          volumeUSD = makerUsds[symbol].sum ? volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString())) : new BigNumber(0);
         }
 
         let ethVolume = new BigNumber(0);
         if (takerEth[symbol]) {
-          ethVolume = ethVolume.plus(new BigNumber(takerEth[symbol].sum.toString()));
+          ethVolume = takerEth[symbol].sum ? ethVolume.plus(new BigNumber(takerEth[symbol].sum.toString())) : new BigNumber(0);
         }
 
         if (makerEth[symbol]) {
-          ethVolume = ethVolume.plus(new BigNumber(makerEth[symbol].sum.toString()));
+          ethVolume = makerEth[symbol].sum ? ethVolume.plus(new BigNumber(makerEth[symbol].sum.toString())) : new BigNumber(0);
         }
 
         return {
@@ -175,7 +178,7 @@ module.exports = BaseService.extends({
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
           volumeTokenNumber: tokenVolume.toNumber(),
-          volumeUSD: volumeUSD.toNumber(),
+          volumeUSD: volumeUSD ? volumeUSD.toNumber() : 0,
           volumeETH: ethVolume.toFormat(4).toString(),
           volumeEthNumber: ethVolume.toNumber(),
         };
