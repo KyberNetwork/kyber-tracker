@@ -164,12 +164,12 @@ a {
   clear: both;
   bottom: 0;
   //padding: 0;
-  height: 115px;
+  height: 56px;
   padding: 30px 0px;
   letter-spacing: .5px;
   font-size: 0.8rem;
   line-height: 25px;
-
+  background-color: #f4f5f4;
   .footer-menu {
     font-size: 0.8rem;
 
@@ -183,7 +183,7 @@ a {
         display: inline-block;
 
         a {
-          color: #2A9A8D;
+          // color: #2A9A8D;
           display: block;
         }
       }
@@ -687,6 +687,12 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 }
 
+.chart-period-picker {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
 .image-inline-td {
   display: inline-block;
   width: 26px;
@@ -869,7 +875,7 @@ html {
 }
 
 #autosuggest{
-  width: 100%;
+  width: 365px;
 }
 .autosuggest__results_item{
   white-space: nowrap;
@@ -899,4 +905,22 @@ html {
 
 .token-logo-detail{
   width: 25px;
+}
+
+.see-all-trade{
+  width: 116px;
+  height: 36px;
+  border-radius: 3px;
+  border: solid 1px #56c7c4;
+  // width: 84px;
+  // height: 20px;
+  // font-family: OpenSans;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+  color: #00d3a7;
 }

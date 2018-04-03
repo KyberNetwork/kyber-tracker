@@ -10,7 +10,9 @@
     "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
     "network_activity": "Trade History",
-    "searchbox_placeholder" : "Tx Hash / Wallet Address"
+    "searchbox_placeholder" : "Tx Hash / Wallet Address",
+    "all_token": "All Token",
+    "see_all": "See All"
   },
 
   "page_title": {

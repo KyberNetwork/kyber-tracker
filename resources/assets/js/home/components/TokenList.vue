@@ -1,5 +1,46 @@
 <template>
   <div class="col-sm-12">
+
+
+    <b-card no-body>
+      <div class="chart-period-picker">
+        <b-button-group class="cus-pagination full-width-btn-group">
+          <b-button
+            :variant="selectedPeriod === 'H24' ? 'active' : ''"
+            @click="selectPeriod('H24', 'H1')">24H
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'D7' ? 'active' : ''"
+            @click="selectPeriod('D7', 'H1')">7D
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'D30' ? 'active' : ''"
+            @click="selectPeriod('D30', 'D1')">1M
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'Y1' ? 'active' : ''"
+            @click="selectPeriod('Y1', 'D1')">1Y
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'ALL' ? 'active' : ''"
+            @click="selectPeriod('ALL', 'D1')">ALL
+          </b-button>
+        </b-button-group>
+      </div>
+      <b-tabs card>
+        <b-tab :title="$t('chart.title.top_token')">
+          <chart-token ref="chartToken"
+            :elementId="'chart-token'">
+          </chart-token>
+        </b-tab>
+      </b-tabs>
+    </b-card>
+
+    <!-- <div class="panel-heading pt-56 pb-16">
+      <h4 class="no-margin">{{ $t("common.all_token") }}</h4>
+    </div> -->
+
+
     <data-table ref="datatable"
         :title="getListTitle()"
         :getData="getList">
@@ -46,17 +87,26 @@ export default {
 
   data() {
     return {
-      tokens: _.keyBy(_.values(network.tokens), 'symbol')
+      tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+      selectedPeriod: 'D30',
+      selectedInterval: 'D1',
     };
   },
 
   methods: {
     refresh () {
       this.$refs.datatable.fetch();
+      this.refreshTopTopkensChart(this.selectedPeriod);
     },
     getListTitle () {
       return '';
     },
+    selectPeriod(period, interval) {
+      this.selectedPeriod = period;
+      this.selectedInterval = interval;
+      this.refreshTopTopkensChart(this.selectedPeriod);
+    },
+
     getList () {
       const now = Date.now() / 1000 | 0;
       return AppRequest.getTopTokens({
@@ -82,6 +132,11 @@ export default {
           tokenAddr: tokenInfo.address
         }
       });
+    },
+    refreshTopTopkensChart(period) {
+      if (this.$refs.chartToken) {
+        this.$refs.chartToken.refresh(period);
+      }
     }
   },
 

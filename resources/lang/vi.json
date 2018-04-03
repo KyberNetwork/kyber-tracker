@@ -10,7 +10,9 @@
     "volume_24h_token": "Lượng giao dịch 24H (Token)",
     "search": "Tìm kiếm",
     "network_activity": "Danh sách giao dịch",
-    "searchbox_placeholder" : "Tx Hash / địa chỉ ví"
+    "searchbox_placeholder" : "Tx Hash / địa chỉ ví",
+    "all_token": "Danh sách token",
+    "see_all": "Xem Tất Cả"
   },
 
   "page_title": {

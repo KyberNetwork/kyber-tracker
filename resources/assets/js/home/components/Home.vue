@@ -36,19 +36,29 @@
             :elementId="'chart-fee'">
           </chart-fee>
         </b-tab>
-        <b-tab @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
+        <!-- <b-tab @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
           <chart-token ref="chartToken"
             :elementId="'chart-token'">
           </chart-token>
-        </b-tab>
+        </b-tab> -->
       </b-tabs>
     </b-card>
     <trade-list ref="datatable"
                 :title="getListTitle()"
                 :getFilterTokenSymbol="getFilterTokenSymbol"
                 :isHidePartnerCommission="true"
+                :isHideDatepicker="true"
+                :isHidePaginate="true"
+                :pageSize="5"
                 >
     </trade-list>
+    <div class="text-center">
+      <router-link to="/trades">
+        <button type="button" class="btn btn-default see-all-trade mx-auto">{{ $t("common.see_all") }}</button>
+      </router-link>
+      
+    </div>
+    
 
   </div>
 </template>
@@ -115,7 +125,7 @@
 
         this._refreshNetworkVolumeChart(period, interval);
         this._refreshFeeToBurnChart(period, interval);
-        this._refreshTopTopkensChart(period);
+        // this._refreshTopTopkensChart(period);
       },
       _refreshNetworkVolumeChart(period, interval) {
         if (this.$refs.chartVolume) {

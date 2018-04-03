@@ -33,7 +33,7 @@
         </datepicker>
       </div>
 
-      <paginate v-if="maxPage > 1"
+      <paginate v-if="maxPage > 1 && !isHidePaginate"
         ref="topPaginator"
         :page-count="maxPage"
         :initial-page="currentPage"
@@ -86,7 +86,7 @@
         </table>
       </div>
 
-      <paginate v-if="maxPage > 1"
+      <paginate v-if="maxPage > 1 && !isHidePaginate"
         ref="bottomPaginator"
         :page-count="maxPage"
         :initial-page="currentPage"
@@ -165,6 +165,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isHidePaginate: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -187,11 +191,15 @@ export default {
   },
   methods: {
     getRequestParams () {
-      const params = {
+      let params = {
         symbol: this.getFilterTokenSymbol(),
-        fromDate: this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined,
-        toDate: this.searchToDate ? moment(this.searchToDate).endOf('day').unix() : undefined,
+        
       };
+
+      if(!this.isHideDatepicker){
+        params.fromDate = this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined
+        params.toDate = this.searchToDate ? moment(this.searchToDate).endOf('day').unix() : undefined
+      }
 
       return params;
     },

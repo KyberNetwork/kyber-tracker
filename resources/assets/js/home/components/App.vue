@@ -9,6 +9,11 @@
                 <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
                 <span class="topbar-value">{{ networkVolume }}</span>
               </li>
+              <li>
+                <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
+                <span class="topbar-value" v-tooltip.bottom="$t('tooltip.knc_price')">{{ kncPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass()" v-tooltip.bottom="$t('tooltip.knc_price_change_24')">({{ formatedKNCPriceChange24h }})</span>
+              </li>
               <!-- <li>
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
                 <span class="topbar-value">{{ tradeCount }}</span>
@@ -21,11 +26,7 @@
                 <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
                 <span class="topbar-value">{{ totalBurnedFee }}</span>
               </li>
-              <li>
-                <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                <span class="topbar-value" v-tooltip.bottom="$t('tooltip.knc_price')">{{ kncPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass()" v-tooltip.bottom="$t('tooltip.knc_price_change_24')">({{ formatedKNCPriceChange24h }})</span>
-              </li>
+              
             </ul>
           </div>
 
@@ -33,17 +34,38 @@
             <b-navbar-nav>
 
 
-              <b-dropdown class="change-language-button" no-caret right>
+              <!-- <b-dropdown class="change-language-button" no-caret right>
                 <template slot="button-content">
                   <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
                 </template>
                 <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
                 <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-              </b-dropdown>
+              </b-dropdown> -->
 
+              <vue-autosuggest
+                      ref="seatchInputRef"
+                      :suggestions="[{
+                        data: [...this.addressesMetamask, ...this.searchData]
+                      }]"
+                      @keyup.enter="doSearch"
+                      @focus="onfocus"
+                      :getSuggestionValue="getSuggestionValue"
+                      :renderSuggestion="renderSuggestion"
+                      :onSelected="onSelected"
+                      :inputProps="{
+                        id:'autosuggest__input', 
+                        onInputChange: this.onInputChange, 
+                        placeholder:$t('common.searchbox_placeholder'),
+                        autocomplete: 'off'
+                      }"
+                  />
 
-              <!-- <import-acount>
-              </import-acount> -->
+                  <b-input-group-append>
+                    <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
+                      <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+                    </b-btn>
+                  </b-input-group-append>
+
 
 
             </b-navbar-nav>
@@ -80,7 +102,7 @@
                   <!-- <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input> -->
 
                   
-                  <vue-autosuggest
+                  <!-- <vue-autosuggest
                       ref="seatchInputRef"
                       :suggestions="[{
                         data: [...this.addressesMetamask, ...this.searchData]
@@ -96,13 +118,13 @@
                         placeholder:$t('common.searchbox_placeholder'),
                         autocomplete: 'off'
                       }"
-                  />
+                  /> -->
                   
-                  <b-input-group-append>
+                  <!-- <b-input-group-append>
                     <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
                       <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
                     </b-btn>
-                  </b-input-group-append>
+                  </b-input-group-append> -->
                   
                 </b-input-group>
               </b-nav-item>
@@ -134,20 +156,29 @@
       <div class="container">
         <div class="row">
           <div class="col footer-menu">
-            <ul class="links">
+            <!-- <ul class="links">
               <li><router-link to="/">{{ $t('main_page.home') }}</router-link></li>
               <li><a href="mailto:support@kyber.network">{{ $t('main_page.feedback') }}</a></li>
               <li><a href="https://kybernetwork.zendesk.com/" target="_blank">{{ $t('main_page.help') }}</a></li>
-            </ul>
-            ©️ 2018 Kyber Network
+            </ul> -->
+            Copyright 2018 @ Kyber Network 
           </div>
           <div class="col footer-menu text-right">
             <div class="d-inline-block">
-              Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br>
+              <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
                 <li><a href="https://t.me/kybernetwork" target="_blank">Telegram</a></li>
                 <li><a href="https://github.com/kyberNetwork/" target="_blank">GitHub</a></li>
                 <li><a href="https://twitter.com/KyberNetwork" target="_blank">Twitter</a></li>
+                <li>
+                  <b-dropdown class="change-language-button" no-caret right>
+                    <template slot="button-content">
+                      <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
+                    </template>
+                    <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
+                  </b-dropdown> 
+              </li>
               </ul>
             </div>
           </div>
