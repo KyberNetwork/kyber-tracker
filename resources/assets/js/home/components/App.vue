@@ -25,14 +25,28 @@
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
                 <span class="topbar-value">{{ tradeCount }}</span>
               </li> -->
-              <li v-tooltip.bottom="$t('tooltip.fees_to_burn')">
-                <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
-                <span class="topbar-value">{{ feeToBurn }}</span>
+              <li class="network-fee" v-tooltip.right="$t('tooltip.fees_to_burn')">
+                  <div @click="onToggleFee()">
+                    <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
+                    <span class="topbar-value">{{ feeToBurn }}</span>
+                    <i class="fas fa-caret-down more-fee"></i>
+                  </div>
+                  
+
+                  <div v-if="isOpenFee" class="fees-burned">
+                    <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
+                    <span class="topbar-value">{{ totalBurnedFee }}</span>
+                  </div>
+
+                
+
+                
+            
               </li>
-              <li v-tooltip.bottom="$t('tooltip.fees_burned')">
+              <!-- <li v-tooltip.bottom="$t('tooltip.fees_burned')">
                 <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
                 <span class="topbar-value">{{ totalBurnedFee }}</span>
-              </li>
+              </li> -->
               
             </ul>
           </div>
@@ -85,7 +99,7 @@
 
       <b-navbar toggleable="sm" type="dark" class="second-heading-bar no-padding">
         <div class="container">
-          <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+          <!-- <b-navbar-toggle target="nav_collapse"></b-navbar-toggle> -->
           <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav>
               <b-nav-item class="navbar tracker-logo">
@@ -102,10 +116,10 @@
             </b-navbar-nav>
           </b-collapse>
 
-          <b-navbar-nav class="ml-auto search-box-container">
+          <!-- <b-navbar-nav class="ml-auto search-box-container">
             <form action="javasript:void(0)" class="no-margin no-padding search-form">
               <b-nav-item class="no-padding-right">
-                <b-input-group size="sm">
+                <b-input-group size="sm"> -->
                   <!-- <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input> -->
 
                   
@@ -133,10 +147,10 @@
                     </b-btn>
                   </b-input-group-append> -->
                   
-                </b-input-group>
+                <!-- </b-input-group>
               </b-nav-item>
             </form>
-          </b-navbar-nav>
+          </b-navbar-nav> -->
         </div>
       </b-navbar>
 
@@ -221,7 +235,8 @@ export default {
       feeToBurn: "",
       breadcrumbsItems: [],
       searchData: [],
-      addressesMetamask: []
+      addressesMetamask: [],
+      isOpenFee: false
     };
   },
 
@@ -261,6 +276,11 @@ export default {
         return "vi";
       }
     },
+
+    onToggleFee(){
+      this.isOpenFee = !this.isOpenFee
+    },
+
     getPriceChangeClass(priceChange) {
       if (priceChange === 0) return "";
       return priceChange < 0 ? "neg-value" : "pos-value";

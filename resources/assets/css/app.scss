@@ -50,6 +50,25 @@ a {
   }
 
 }
+.network-fee{
+  position: relative;
+}
+.fees-burned{
+  position: absolute;
+  z-index: 9;
+  top: 47px;
+  background-color: #31467d;
+  border-radius: 3px;
+  padding: 10px;
+  left: -10px;
+  right: -20px;
+}
+
+.more-fee{
+  position: relative;
+  left: 30px;
+  bottom: 10;
+}
 
 .search-button {
   border-radius: 0px 4px 4px 0px;
@@ -542,8 +561,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   margin: 0;
   padding: 10px 0;
   width: 100%;
-  overflow: hidden;
+  // overflow: hidden;
   line-height: 18px;
+  height: 56px;
 
   li {
     float: left;
@@ -791,7 +811,7 @@ html {
 
 .tooltip {
   display: block !important;
-  z-index: 10000;
+  z-index: 5;
 
   .tooltip-inner {
     background: black;
@@ -904,7 +924,7 @@ html {
   position: absolute;
   color: black;
   top: 50px;
-  z-index: 9999;
+  z-index: 5;
   width: 100%;
   background-color: white;
   /* box-sizing: border-box; */
