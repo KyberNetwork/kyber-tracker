@@ -54,10 +54,9 @@
           datasets: [{
             data: dataset,
             pointRadius: 0,
-            //backgroundColor: 'rgb(148, 190, 190)',
-            backgroundColor: '#AA3599',
-            //borderColor: 'rgb(148, 190, 190)',
-            borderColor: '#AA3599',
+            backgroundColor: 'rgba(0,173,168,.3)',
+            borderColor: 'rgb(0,173,168)',
+            borderWidth: 2,
             showLine: true,
             spanGaps: true,
           }]
@@ -96,7 +95,7 @@
             if(interval === 'H1') {
               return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY, HH:mm UTCZ') : d.format('ddd, MMM Do YYYY, HH:mm UTCZ');
             } else {
-              return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY (UTC+00:00)') : d.format('ddd, MMM Do YYYY (UTC+00:00)');
+              return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY UTC') : d.format('ddd, MMM Do YYYY UTC');
             }
           },
           label: () => {
@@ -113,26 +112,36 @@
           ticks: {
             beginAtZero: true,
             maxRotation: 0,
+            fontFamily: "Montserrat, My-Montserrat, sans-serif",
+            fontSize: 12,
+            maxTicksLimit: 5,
             callback: (label, index, labels) => {
               return util.numberWithCommas(label) + ' KNC';
             }
-          },
-          maxTicksLimit: 5
+          }
         };
 
         const xAxeScale = {
           ticks: {
             maxRotation: 0,
+            fontFamily: "Montserrat, My-Montserrat, sans-serif",
+            fontSize: 12,
+            maxTicksLimit: 5,
             callback: (label, index, labels) => {
+              if (index === 0) {
+                return " ";
+              }
               const d = moment(label);
               if (util.getLocale() === 'vi') {
-                return d.format('DD/MM');
+                return d.format('D/MM');
               } else {
-                return d.format('MMM DD');
+                return d.format('D MMM');
               }
-            },
-            maxTicksLimit: 5
-          }
+            }
+          },
+          gridLines: {
+            drawBorder: false
+          },
         };
 
         return {
@@ -140,6 +149,7 @@
             mode: 'index',
             axis: 'x',
             intersect: false,
+            fontFamily: "Montserrat, My-Montserrat, sans-serif",
             backgroundColor: 'rgba(25, 46, 59, 0.8)',
             titleFontSize: 13,
             titleFontColor: "#f8f8f8",

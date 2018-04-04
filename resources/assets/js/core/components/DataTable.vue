@@ -7,7 +7,7 @@
       </div>
 
       <div class="table-responsive-wraper">
-        <table class="table table-hover table-responsive" responsive>
+        <table class="table table-hover table-responsive table-round" responsive>
           <thead>
             <tr>
             <slot name="header"></slot>

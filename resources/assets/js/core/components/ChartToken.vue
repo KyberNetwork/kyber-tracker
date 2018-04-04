@@ -47,7 +47,7 @@
             data: dataset,
             pointRadius: 0,
             backgroundColor: [
-              '#20A39E','#2191FB', '#6457A6', '#FFBA49', '#AA3599', 
+              '#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86'
             ],
             showLine: true,
             spanGaps: true,
@@ -80,14 +80,28 @@
           }
         };
 
+        const yAxeScale = {
+          ticks: {
+            fontFamily: "Montserrat, My-Montserrat, sans-serif",
+            fontSize: 12
+          },
+          gridLines: {
+              drawBorder: false
+          }
+        };
+
         const xAxeScale = {
           ticks: {
             beginAtZero: true,
+            fontFamily: "Montserrat, My-Montserrat, sans-serif",
+            fontSize: 12,
             callback: (label, index, labels) => {
-              return '$' + util.numberWithCommas(label);
+              if (index === 0) {
+                return " ";
+              }
+              return '$' + util.numberWithCommas(label / 1000) + "k";
             }
-          },
-          maxTicksLimit: 5
+          }
         };
 
         return {
@@ -95,6 +109,7 @@
             mode: 'index',
             axis: 'y',
             intersect: false,
+            fontFamily: "Montserrat, My-Montserrat, sans-serif",
             backgroundColor: 'rgba(25, 46, 59, 0.8)',
             titleFontSize: 14,
             titleFontColor: "#f8f8f8",
@@ -108,6 +123,7 @@
           },
           scales: {
             xAxes: [xAxeScale],
+            yAxes: [yAxeScale],
           },
           legend: {
             display: false
