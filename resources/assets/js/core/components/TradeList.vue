@@ -54,7 +54,7 @@
       </paginate>
 
       <div v-if="rows.length > 0" class="table-responsive-wraper clear pt-10">
-        <table class="table table-hover table-responsive">
+        <table class="table table-hover table-responsive table-round">
           <thead>
             <tr>
               <th>{{ $t("trade_list.date") }}</th>
