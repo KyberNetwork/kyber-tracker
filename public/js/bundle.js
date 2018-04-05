@@ -22504,7 +22504,7 @@ var _jquery = __webpack_require__(67);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -22512,7 +22512,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -22667,6 +22667,88 @@ exports.default = {
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalObject) {
@@ -25398,7 +25480,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalObject) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25406,88 +25488,6 @@ var __WEBPACK_AMD_DEFINE_RESULT__;;(function (globalObject) {
 
 // TODO: switch network here
 module.exports = __webpack_require__(447);
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
 
 /***/ }),
 /* 16 */
@@ -72704,7 +72704,7 @@ if(false) {
 /* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -81256,7 +81256,7 @@ if(false) {
 /* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -82365,7 +82365,7 @@ if(false) {
 /* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -88180,7 +88180,7 @@ if(false) {
 /* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -96731,12 +96731,12 @@ if(false) {
 /* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,600);", ""]);
 
 // module
-exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2A9A8D;\n}\n:focus {\n  outline: none;\n}\n.change-language-button {\n  margin-top: 10px;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n    background: transparent !important;\n    outline: none !important;\n    border: none !important;\n    color: #2a4552 !important;\n    box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n    vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n    color: #fff;\n    text-decoration: none;\n    background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n    padding: 0;\n}\n.change-language-button .dropdown-item {\n    padding: 5px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-left: 0;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: #ededed;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #d5d5d5;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 30px 0px;\n  letter-spacing: .5px;\n  font-size: 0.8rem;\n  line-height: 25px;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 46px;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 0;\n  width: 100%;\n  line-height: 18px;\n  height: 56px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 100%;\n      margin: 0;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 5px;\n  right: 5px;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 10px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.p-relative {\n  position: relative;\n}\n.float-lang-bar {\n  position: absolute;\n  right: 15px;\n  top: 7px;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo {\n  min-width: 140px;\n}\n.tracker-logo .router-link-active {\n    white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #3ee6c1;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  width: 100%;\n  height: 40px;\n  border-radius: 0px;\n  background-color: #1f3468;\n  border-style: none;\n}\n#autosuggest {\n  width: 365px;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 5;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.autosuggest__results ul {\n    padding: 5px;\n}\n.history-logo {\n  width: 25px;\n  padding: 3px;\n}\n.token-logo-detail {\n  width: 25px;\n}\n.see-all-trade {\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n", ""]);
+exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2A9A8D;\n}\n:focus {\n  outline: none;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n  color: #fff;\n  text-decoration: none;\n  background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n  padding: 0;\n}\n.change-language-button .dropdown-item {\n  padding: 5px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n  height: 60px;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n    fill: #fff;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n    fill: #3ee6c1;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-right: 20px;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: rgba(255, 255, 255, 0);\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #e9ecf1;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 20px 0px;\n  opacity: 0.9;\n  /* font-family: OpenSans; */\n  font-size: 12px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  text-align: left;\n  color: #1f3468;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu .footer-icon {\n      height: 20px;\n      width: 20px;\n      margin-left: 25px;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 40px;\n}\n.card-header .nav-item {\n    font-size: 12px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: center;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.full-width-btn-group button {\n  font-size: 10px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.2;\n  letter-spacing: normal;\n  text-align: center;\n}\n.full-width-btn-group .btn-active {\n  margin-right: 0 !important;\n  color: #2ed573;\n}\n.full-width-btn-group .btn-secondary {\n  margin-right: 0 !important;\n  color: #0c0033;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 0;\n  width: 100%;\n  line-height: 18px;\n  height: 56px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 100%;\n      margin: 0;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 11px !important;\n  right: 33px !important;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 45px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.icon-second-header {\n  margin-right: 5px;\n}\n.p-relative {\n  position: relative;\n}\n.float-lang-bar {\n  position: absolute;\n  right: 15px;\n  top: 7px;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo {\n  min-width: 140px;\n}\n.tracker-logo .router-link-active {\n    white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #3ee6c1;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  width: 100%;\n  height: 40px;\n  border-radius: 0px;\n  background-color: #1f3468;\n  border-style: none;\n  color: #ffffff;\n}\n#autosuggest__input::placeholder {\n  font-size: 10px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n  opacity: 0.7;\n}\n#autosuggest {\n  width: 365px;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 5;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.autosuggest__results ul {\n    padding: 5px;\n}\n.history-logo {\n  width: 25px;\n  padding: 3px;\n}\n.token-logo-detail {\n  width: 25px;\n}\n.see-all-trade {\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n}\ntable.table-round th {\n  border-top: 0;\n}\ntable.table-round tr:first-child th:first-child {\n  border-top-left-radius: 6px;\n}\ntable.table-round tr:first-child th:last-child {\n  border-top-right-radius: 6px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n", ""]);
 
 // exports
 
@@ -96801,7 +96801,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -96820,6 +96820,14 @@ var _store2 = _interopRequireDefault(_store);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -99980,9 +99988,16 @@ var render = function() {
                           [
                             _c("router-link", { attrs: { to: "/" } }, [
                               _c("span", { staticClass: "inline-logo" }),
-                              _c("span", { staticClass: "text-logo" }, [
-                                _vm._v("KYBER TRACKER")
-                              ])
+                              _vm._v(" "),
+                              _c("i", {
+                                staticClass:
+                                  "fas fa-chart-bar icon-second-header"
+                              }),
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(_vm.$t("navigator.network")) +
+                                  "\n                \n              "
+                              )
                             ])
                           ],
                           1
@@ -99993,7 +100008,15 @@ var render = function() {
                           { staticClass: "navbar" },
                           [
                             _c("router-link", { attrs: { to: "/trades" } }, [
-                              _vm._v(_vm._s(_vm.$t("navigator.trades")))
+                              _c("i", {
+                                staticClass:
+                                  "fas fa-exchange-alt icon-second-header"
+                              }),
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.$t("navigator.trades")) +
+                                  "\n              "
+                              )
                             ])
                           ],
                           1
@@ -100004,7 +100027,15 @@ var render = function() {
                           { staticClass: "navbar" },
                           [
                             _c("router-link", { attrs: { to: "/tokens" } }, [
-                              _vm._v(_vm._s(_vm.$t("navigator.tokens")))
+                              _c("i", {
+                                staticClass:
+                                  "fas fa-database icon-second-header"
+                              }),
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.$t("navigator.tokens")) +
+                                  "\n              "
+                              )
                             ])
                           ],
                           1
@@ -100084,6 +100115,7 @@ var render = function() {
                         _c("template", { slot: "button-content" }, [
                           _c("span", [
                             _c("img", {
+                              staticClass: "footer-icon",
                               attrs: {
                                 src:
                                   "images/locales/" +
@@ -100149,22 +100181,18 @@ var staticRenderFns = [
     return _c("li", [
       _c(
         "a",
-        { attrs: { href: "https://t.me/kybernetwork", target: "_blank" } },
-        [_vm._v("Telegram")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c(
-        "a",
         {
-          attrs: { href: "https://github.com/kyberNetwork/", target: "_blank" }
+          attrs: {
+            href: "https://kybernetwork.zendesk.com/hc/en-us",
+            target: "_blank"
+          }
         },
-        [_vm._v("GitHub")]
+        [
+          _c("img", {
+            staticClass: "footer-icon",
+            attrs: { src: "/images/zendesk.svg" }
+          })
+        ]
       )
     ])
   },
@@ -100178,7 +100206,31 @@ var staticRenderFns = [
         {
           attrs: { href: "https://twitter.com/KyberNetwork", target: "_blank" }
         },
-        [_vm._v("Twitter")]
+        [
+          _c("img", {
+            staticClass: "footer-icon",
+            attrs: { src: "/images/twitter.svg" }
+          })
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c(
+        "a",
+        {
+          attrs: { href: "https://github.com/kyberNetwork/", target: "_blank" }
+        },
+        [
+          _c("img", {
+            staticClass: "footer-icon",
+            attrs: { src: "/images/github.svg" }
+          })
+        ]
       )
     ])
   }
@@ -100280,7 +100332,7 @@ if(false) {
 /* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -100426,7 +100478,7 @@ var render = function() {
         _c(
           "table",
           {
-            staticClass: "table table-hover table-responsive",
+            staticClass: "table table-hover table-responsive table-round",
             attrs: { responsive: "" }
           },
           [
@@ -100549,7 +100601,7 @@ if(false) {
 /* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -100582,7 +100634,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -100594,7 +100646,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -100773,6 +100825,7 @@ exports.default = {
     }
   }
 }; //
+//
 //
 //
 //
@@ -104508,7 +104561,9 @@ var render = function() {
           ? _c("div", { staticClass: "table-responsive-wraper clear pt-10" }, [
               _c(
                 "table",
-                { staticClass: "table table-hover table-responsive" },
+                {
+                  staticClass: "table table-hover table-responsive table-round"
+                },
                 [
                   _c("thead", [
                     _c("tr", [
@@ -104538,10 +104593,6 @@ var render = function() {
                           ])
                         : _vm._e(),
                       _vm._v(" "),
-                      _c("th", { staticClass: "text-right" }, [
-                        _vm._v(_vm._s(_vm.$t("trade_list.fee_to_burn")))
-                      ]),
-                      _vm._v(" "),
                       _c("th")
                     ])
                   ]),
@@ -104549,107 +104600,84 @@ var render = function() {
                   _c(
                     "tbody",
                     _vm._l(_vm.rows, function(row, index) {
-                      return _c(
-                        "tr",
-                        {
-                          attrs: { item: row, index: index },
-                          on: {
-                            click: function($event) {
-                              _vm.onClickRow(row)
+                      return _c("tr", { attrs: { item: row, index: index } }, [
+                        _c("td", [_vm._v(_vm._s(_vm.getDateInfo(row)))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "text-right no-padding-right" },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm.formatTokenNumber(
+                                  row.takerTokenSymbol,
+                                  row.takerTokenAmount
+                                )
+                              )
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "text-left no-padding-right" },
+                          [_vm._v(_vm._s(row.takerTokenSymbol))]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(0, true, false),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass:
+                              "text-right no-padding-right no-padding-left"
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm.formatTokenNumber(
+                                  row.makerTokenSymbol,
+                                  row.makerTokenAmount
+                                )
+                              )
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-left" }, [
+                          _vm._v(_vm._s(row.makerTokenSymbol))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass:
+                              "text-right no-padding-left no-padding-right"
+                          },
+                          [
+                            _vm._v(
+                              "1 " +
+                                _vm._s(row.takerTokenSymbol) +
+                                " = " +
+                                _vm._s(_vm.getRate(row))
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(row.makerTokenSymbol))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            on: {
+                              click: function($event) {
+                                _vm.onClickRow(row)
+                              }
                             }
-                          }
-                        },
-                        [
-                          _c("td", [_vm._v(_vm._s(_vm.getDateInfo(row)))]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "text-right no-padding-right" },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatTokenNumber(
-                                    row.takerTokenSymbol,
-                                    row.takerTokenAmount
-                                  )
-                                )
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "text-left no-padding-right" },
-                            [_vm._v(_vm._s(row.takerTokenSymbol))]
-                          ),
-                          _vm._v(" "),
-                          _vm._m(0, true, false),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass:
-                                "text-right no-padding-right no-padding-left"
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatTokenNumber(
-                                    row.makerTokenSymbol,
-                                    row.makerTokenAmount
-                                  )
-                                )
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-left" }, [
-                            _vm._v(_vm._s(row.makerTokenSymbol))
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass:
-                                "text-right no-padding-left no-padding-right"
-                            },
-                            [
-                              _vm._v(
-                                "1 " +
-                                  _vm._s(row.takerTokenSymbol) +
-                                  " = " +
-                                  _vm._s(_vm.getRate(row))
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(row.makerTokenSymbol))]),
-                          _vm._v(" "),
-                          !_vm.isHidePartnerCommission
-                            ? _c("td", { staticClass: "text-right" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.formatTokenNumber("KNC", row.takerFee)
-                                  ) + " KNC"
-                                )
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "text-right no-padding-right" },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatFeeToBurn("KNC", row.burnFees)
-                                ) + " KNC"
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm._m(1, true, false)
-                        ]
-                      )
+                          },
+                          [_c("img", { attrs: { src: "/images/more.svg" } })]
+                        )
+                      ])
                     })
                   )
                 ]
@@ -104691,16 +104719,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("td", { staticClass: "text-center" }, [
       _c("i", { staticClass: "k k-angle right" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("span", { staticClass: "pull-right ml-10" }, [
-        _c("i", { staticClass: "k k-angle right" })
-      ])
     ])
   }
 ]
@@ -104790,7 +104808,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -104802,7 +104820,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -104953,7 +104971,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -104965,7 +104983,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -105031,10 +105049,9 @@ exports.default = {
         datasets: [{
           data: dataset,
           pointRadius: 0,
-          //backgroundColor: 'rgb(148, 190, 190)',
-          //borderColor: 'rgb(148, 190, 190)',
-          backgroundColor: '#20A39E',
-          borderColor: '#20A39E',
+          backgroundColor: 'rgba(51,102,204,.3)',
+          borderColor: 'rgb(51,102,204)',
+          borderWidth: 2,
           showLine: true,
           spanGaps: true
         }]
@@ -105080,7 +105097,7 @@ exports.default = {
           if (interval === 'H1') {
             return _util2.default.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY, HH:mm UTCZ') : d.format('ddd, MMM Do YYYY, HH:mm UTCZ');
           } else {
-            return _util2.default.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY (UTC+00:00)') : d.format('ddd, MMM Do YYYY (UTC+00:00)');
+            return _util2.default.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY UTC') : d.format('ddd, MMM Do YYYY UTC');
           }
         },
         label: function label() {},
@@ -105097,25 +105114,35 @@ exports.default = {
         ticks: {
           beginAtZero: true,
           maxRotation: 0,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontSize: 12,
+          maxTicksLimit: 5,
           callback: function callback(label, index, labels) {
-            return '$' + _util2.default.numberWithCommas(label);
+            return '$' + _util2.default.numberWithCommas(label / 1000) + "k";
           }
-        },
-        maxTicksLimit: 5
+        }
       };
 
       var xAxeScale = {
         ticks: {
           maxRotation: 0,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontSize: 12,
+          maxTicksLimit: 5,
           callback: function callback(label, index, labels) {
+            if (index === 0) {
+              return " ";
+            }
             var d = (0, _moment2.default)(label);
             if (_util2.default.getLocale() === 'vi') {
-              return d.format('DD/MM');
+              return d.format('D/MM');
             } else {
-              return d.format('MMM DD');
+              return d.format('D MMM');
             }
-          },
-          maxTicksLimit: 5
+          }
+        },
+        gridLines: {
+          drawBorder: false
         }
       };
 
@@ -105124,6 +105151,7 @@ exports.default = {
           mode: 'index',
           axis: 'x',
           intersect: false,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
           backgroundColor: 'rgba(25, 46, 59, 0.8)',
           titleFontSize: 13,
           titleFontColor: "#f8f8f8",
@@ -105247,7 +105275,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -105259,7 +105287,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -105315,10 +105343,9 @@ exports.default = {
         datasets: [{
           data: dataset,
           pointRadius: 0,
-          //backgroundColor: 'rgb(148, 190, 190)',
-          backgroundColor: '#AA3599',
-          //borderColor: 'rgb(148, 190, 190)',
-          borderColor: '#AA3599',
+          backgroundColor: 'rgba(0,173,168,.3)',
+          borderColor: 'rgb(0,173,168)',
+          borderWidth: 2,
           showLine: true,
           spanGaps: true
         }]
@@ -105361,7 +105388,7 @@ exports.default = {
           if (interval === 'H1') {
             return _util2.default.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY, HH:mm UTCZ') : d.format('ddd, MMM Do YYYY, HH:mm UTCZ');
           } else {
-            return _util2.default.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY (UTC+00:00)') : d.format('ddd, MMM Do YYYY (UTC+00:00)');
+            return _util2.default.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY UTC') : d.format('ddd, MMM Do YYYY UTC');
           }
         },
         label: function label() {},
@@ -105376,25 +105403,35 @@ exports.default = {
         ticks: {
           beginAtZero: true,
           maxRotation: 0,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontSize: 12,
+          maxTicksLimit: 5,
           callback: function callback(label, index, labels) {
             return _util2.default.numberWithCommas(label) + ' KNC';
           }
-        },
-        maxTicksLimit: 5
+        }
       };
 
       var xAxeScale = {
         ticks: {
           maxRotation: 0,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontSize: 12,
+          maxTicksLimit: 5,
           callback: function callback(label, index, labels) {
+            if (index === 0) {
+              return " ";
+            }
             var d = (0, _moment2.default)(label);
             if (_util2.default.getLocale() === 'vi') {
-              return d.format('DD/MM');
+              return d.format('D/MM');
             } else {
-              return d.format('MMM DD');
+              return d.format('D MMM');
             }
-          },
-          maxTicksLimit: 5
+          }
+        },
+        gridLines: {
+          drawBorder: false
         }
       };
 
@@ -105403,6 +105440,7 @@ exports.default = {
           mode: 'index',
           axis: 'x',
           intersect: false,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
           backgroundColor: 'rgba(25, 46, 59, 0.8)',
           titleFontSize: 13,
           titleFontColor: "#f8f8f8",
@@ -105526,7 +105564,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -105538,7 +105576,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -105586,7 +105624,7 @@ exports.default = {
         datasets: [{
           data: dataset,
           pointRadius: 0,
-          backgroundColor: ['#20A39E', '#2191FB', '#6457A6', '#FFBA49', '#AA3599'],
+          backgroundColor: ['#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86'],
           showLine: true,
           spanGaps: true
         }]
@@ -105618,14 +105656,28 @@ exports.default = {
         }
       };
 
+      var yAxeScale = {
+        ticks: {
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontSize: 12
+        },
+        gridLines: {
+          drawBorder: false
+        }
+      };
+
       var xAxeScale = {
         ticks: {
           beginAtZero: true,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontSize: 12,
           callback: function callback(label, index, labels) {
-            return '$' + _util2.default.numberWithCommas(label);
+            if (index === 0) {
+              return " ";
+            }
+            return '$' + _util2.default.numberWithCommas(label / 1000) + "k";
           }
-        },
-        maxTicksLimit: 5
+        }
       };
 
       return {
@@ -105633,6 +105685,7 @@ exports.default = {
           mode: 'index',
           axis: 'y',
           intersect: false,
+          fontFamily: "Montserrat, My-Montserrat, sans-serif",
           backgroundColor: 'rgba(25, 46, 59, 0.8)',
           titleFontSize: 14,
           titleFontColor: "#f8f8f8",
@@ -105645,7 +105698,8 @@ exports.default = {
           callbacks: callbacks
         },
         scales: {
-          xAxes: [xAxeScale]
+          xAxes: [xAxeScale],
+          yAxes: [yAxeScale]
         },
         legend: {
           display: false
@@ -105815,7 +105869,7 @@ if(false) {
 /* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -105848,7 +105902,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -106642,7 +106696,7 @@ if(false) {
 /* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -106675,7 +106729,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -106687,7 +106741,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -119330,7 +119384,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -119342,7 +119396,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -119527,7 +119581,7 @@ if(false) {
 /* 557 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -119560,7 +119614,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -119572,7 +119626,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -120067,7 +120121,7 @@ if(false) {
 /* 562 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -120100,7 +120154,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -120112,7 +120166,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -120585,7 +120639,7 @@ if(false) {
 /* 567 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -120618,7 +120672,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -120630,7 +120684,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -120874,7 +120928,7 @@ if(false) {
 /* 572 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -120907,7 +120961,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _bignumber = __webpack_require__(13);
+var _bignumber = __webpack_require__(14);
 
 var _bignumber2 = _interopRequireDefault(_bignumber);
 
@@ -120919,7 +120973,7 @@ var _util = __webpack_require__(12);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _network = __webpack_require__(14);
+var _network = __webpack_require__(15);
 
 var _network2 = _interopRequireDefault(_network);
 
@@ -121086,13 +121140,13 @@ if (false) {
 /* 575 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_eth":"24H Volume (ETH)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Trade History","searchbox_placeholder":"Tx Hash / Wallet Address","all_token":"All Token","see_all":"See All"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Trade History","token_list":"Supported Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H VOLUME","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"FEES TO BURN","fees_burned":"FEES BURNED","knc_price":"KNC PRICE","eth_price":"ETH PRICE"},"tooltip":{"network_volume":"Trading volume during the last 24 hours","fees_to_burn":"Total fees set aside to burn so far","fees_burned":"Total fees that have already been burnt","knc_price":"Current KNC price","eth_price":"Current ETH price","price_change_24":"% change compared with price at 24 hours ago"},"chart":{"title":{"network_volume":"Trade Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"{0} Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Trade History","address":"Address","date":"Date","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rate","description":"Description","amount":"Amount","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"Exchange From","exchange_to":"Exchange To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Number of trades: {0}","total_usd_msg":"Total volume (USD): ${0}","total_eth_msg":"Total volume (ETH): {0}","result_title":"Address: ","tx_hash":"Tx hash: ","total_fee":"Total partner commission: {0} KNC","no_txhash_data":"This transaction is not with Kyber Network","invalid_query":"Your search string is not address or tx hash"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_eth":"24H Volume (ETH)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Trade History","searchbox_placeholder":"Tx Hash / Wallet Address","all_token":"All Token","see_all":"See All"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Trade History","token_list":"Supported Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trade","tokens":"Token","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details","network":"Network"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H VOLUME","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"FEES TO BURN","fees_burned":"FEES BURNED","knc_price":"KNC PRICE","eth_price":"ETH PRICE"},"tooltip":{"network_volume":"Trading volume during the last 24 hours","fees_to_burn":"Total fees set aside to burn so far","fees_burned":"Total fees that have already been burnt","knc_price":"Current KNC price","eth_price":"Current ETH price","price_change_24":"% change compared with price at 24 hours ago"},"chart":{"title":{"network_volume":"Trade Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"{0} Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Trade History","address":"Address","date":"Time","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rates","description":"Description","amount":"Amount","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"From","exchange_to":"To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Number of trades: {0}","total_usd_msg":"Total volume (USD): ${0}","total_eth_msg":"Total volume (ETH): {0}","result_title":"Address: ","tx_hash":"Tx hash: ","total_fee":"Total partner commission: {0} KNC","no_txhash_data":"This transaction is not with Kyber Network","invalid_query":"Your search string is not address or tx hash"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
 
 /***/ }),
 /* 576 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_eth":"Lượng giao dịch 24H (ETH)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví","all_token":"Danh sách token","see_all":"Xem Tất Cả"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"PHÍ SẼ ĐỐT","fees_burned":"PHÍ ĐÃ ĐỐT","knc_price":"GIÁ KNC","eth_price":"GIÁ ETH"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","eth_price":"Giá hiện tại của ETH","price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: ","tx_hash":"Tx hash: ","total_fee":"Tổng phí tích hợp: {0} KNC","no_txhash_data":"Giao dịch này không được thực hiện với Kyber Network","invalid_query":"Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_eth":"Lượng giao dịch 24H (ETH)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví","all_token":"Danh sách token","see_all":"Xem Tất Cả"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví","network":"Network"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"PHÍ SẼ ĐỐT","fees_burned":"PHÍ ĐÃ ĐỐT","knc_price":"GIÁ KNC","eth_price":"GIÁ ETH"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","eth_price":"Giá hiện tại của ETH","price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: ","tx_hash":"Tx hash: ","total_fee":"Tổng phí tích hợp: {0} KNC","no_txhash_data":"Giao dịch này không được thực hiện với Kyber Network","invalid_query":"Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
 
 /***/ }),
 /* 577 */

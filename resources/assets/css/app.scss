@@ -21,7 +21,6 @@ a {
 
 
 .change-language-button {
-  margin-top: 10px;
 
   button:first-child, button:first-child:hover, button:first-child:active {
     background: transparent !important;
@@ -94,19 +93,27 @@ a {
 
 .second-heading-bar {
   background-color: #1f3468;
+  height: 60px;
 
   a {
     color: #fff;
     text-decoration: none;
+    fill: #fff;
   }
   a:hover, a:active, a:focus {
     color: #3ee6c1;
+    fill: #3ee6c1;
   }
+
+  .pl-20{
+    // padding-left: 20px;
+  }
+
 
   .nav-item {
     padding-top: 0;
     padding-bottom: 0;
-    padding-left: 0;
+    padding-right: 20px;
   }
 }
 
@@ -130,7 +137,8 @@ a {
 .cus-pagination {
   button {
     border-radius: 0;
-    background-color: #ededed;
+    // background-color: #ededed;
+    background-color: rgba(255, 255, 255, 0);
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
@@ -138,7 +146,7 @@ a {
   }
 
   button:hover, button:active, button:focus, .btn-active {
-    background-color: #d5d5d5;
+    background-color: #e9ecf1;
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
@@ -187,13 +195,28 @@ a {
   bottom: 0;
   //padding: 0;
   height: 56px;
-  padding: 30px 0px;
-  letter-spacing: .5px;
-  font-size: 0.8rem;
-  line-height: 25px;
+  padding: 20px 0px;
+  opacity: 0.9;
+  /* font-family: OpenSans; */
+  font-size: 12px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1f3468;
   background-color: #f4f5f4;
+
   .footer-menu {
     font-size: 0.8rem;
+
+    .footer-icon{
+      height: 20px;
+      width: 20px;
+      margin-left: 25px;
+      // padding-bottom: 21px;
+    }
 
     ul.links {
       padding: 0;
@@ -431,7 +454,18 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .card-header {
-  min-height: 46px;
+  min-height: 40px;
+
+  .nav-item{
+    font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  // color: #0c0033;
+  }
 }
 
 .calendar-icon {
@@ -530,9 +564,29 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   > * {
     margin-right: 0 !important;
   }
-
+  
   .btn-secondary {
     margin-right: 0 !important;
+  }
+}
+
+.full-width-btn-group{
+  button{
+    font-size: 10px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: center;
+  }
+  .btn-active {
+    margin-right: 0 !important;
+    color: #2ed573;
+  }
+  .btn-secondary {
+    margin-right: 0 !important;
+    color: #0c0033;
   }
 }
 
@@ -723,8 +777,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .chart-period-picker {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 11px !important;
+  right: 33px !important;
 }
 
 .image-inline-td {
@@ -741,10 +795,17 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   width: 30px;
   height: 46px;
   background-position: center center;
-  margin-right: 10px;
+  margin-right: 45px;
   vertical-align: middle;
   display: inline-block;
 }
+
+.icon-second-header{
+  margin-right: 5px;
+}
+
+
+
 
 .p-relative {
   position: relative;
@@ -909,6 +970,19 @@ html {
   border-radius: 0px;
   background-color: #1f3468;
   border-style: none;
+  color: #ffffff;
+}
+#autosuggest__input::placeholder{
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+  opacity: 0.7;
+
 }
 
 #autosuggest{

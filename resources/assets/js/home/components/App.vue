@@ -104,14 +104,26 @@
             <b-navbar-nav>
               <b-nav-item class="navbar tracker-logo">
                 <router-link to="/">
-                  <span class="inline-logo"></span><span class="text-logo">KYBER TRACKER</span>
+                  <span class="inline-logo"></span>
+                  <!-- <img src="/images/network.svg" /> -->
+                  <i class="fas fa-chart-bar icon-second-header"></i>
+                  {{ $t('navigator.network') }}
+                  
                 </router-link>
               </b-nav-item>
               <b-nav-item class="navbar">
-                <router-link to="/trades">{{ $t('navigator.trades') }}</router-link>
+                <router-link to="/trades">
+                <!-- <img src="/images/trade.svg" /> -->
+                <i class="fas fa-exchange-alt icon-second-header"></i>
+                {{ $t('navigator.trades') }}
+                </router-link>
               </b-nav-item>
               <b-nav-item class="navbar">
-                <router-link to="/tokens">{{ $t('navigator.tokens') }}</router-link>
+                <router-link to="/tokens">
+                <!-- <img src="/images/token.svg" /> -->
+                <i class="fas fa-database icon-second-header"></i>
+                {{ $t('navigator.tokens') }}
+                </router-link>
               </b-nav-item>
             </b-navbar-nav>
           </b-collapse>
@@ -174,27 +186,23 @@
 
 
     <div id="footer">
+
       <div class="container">
         <div class="row">
           <div class="col footer-menu">
-            <!-- <ul class="links">
-              <li><router-link to="/">{{ $t('main_page.home') }}</router-link></li>
-              <li><a href="mailto:support@kyber.network">{{ $t('main_page.feedback') }}</a></li>
-              <li><a href="https://kybernetwork.zendesk.com/" target="_blank">{{ $t('main_page.help') }}</a></li>
-            </ul> -->
             Copyright 2018 @ Kyber Network 
           </div>
           <div class="col footer-menu text-right">
             <div class="d-inline-block">
               <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
-                <li><a href="https://t.me/kybernetwork" target="_blank">Telegram</a></li>
-                <li><a href="https://github.com/kyberNetwork/" target="_blank">GitHub</a></li>
-                <li><a href="https://twitter.com/KyberNetwork" target="_blank">Twitter</a></li>
+                <li><a href="https://kybernetwork.zendesk.com/hc/en-us" target="_blank"><img class="footer-icon" src="/images/zendesk.svg" /></a></li>
+                <li><a href="https://twitter.com/KyberNetwork" target="_blank"><img class="footer-icon" src="/images/twitter.svg" /></a></li>
+                <li><a href="https://github.com/kyberNetwork/" target="_blank"><img class="footer-icon" src="/images/github.svg" /></a></li>
                 <li>
                   <b-dropdown class="change-language-button" no-caret right>
                     <template slot="button-content">
-                      <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
+                      <span><img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
                     </template>
                     <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
                     <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>

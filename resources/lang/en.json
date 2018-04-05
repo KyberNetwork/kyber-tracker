@@ -28,11 +28,13 @@
 
   "navigator": {
     "home": "Home",
-    "trades": "Trades",
-    "tokens": "Tokens",
+    "trades": "Trade",
+    "tokens": "Token",
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
-    "search": "Wallet Details"
+    "search": "Wallet Details",
+    "network": "Network"
+
   },
 
   "filter": {
@@ -78,18 +80,18 @@
   "trade_list": {
     "title": "Trade History",
     "address": "Address",
-    "date": "Date",
+    "date": "Time",
     "taker_token": "Exchange from",
     "maker_token": "Exchange to",
-    "rate": "Rate",
+    "rate": "Rates",
     "description": "Description",
     "amount": "Amount",
     "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
-    "exchange_from" : "Exchange From",
-    "exchange_to" : "Exchange To"
+    "exchange_from" : "From",
+    "exchange_to" : "To"
   },
 
   "trade_detail": {

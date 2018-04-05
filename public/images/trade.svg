@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->
+    <title>ic/trade</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M14.152,6.388 L4.251,6.388 L4.251,4.408 L0.291,7.775 L4.251,10.943 L4.251,9.161 L14.152,9.161 L14.152,6.388 L14.152,6.388 Z M20.093,14.705 L16.132,11.338 L16.132,13.318 L6.231,13.318 L6.231,16.09 L16.132,16.09 L16.132,17.872 L20.093,14.705 L20.093,14.705 Z" id="path-1"></path>
+    </defs>
+    <g id="ic/trade" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-path" x="0" y="0" width="16" height="16"></rect>
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Mask" fill="#000000" xlink:href="#path-1"></use>
+    </g>
+</svg>

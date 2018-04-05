@@ -32,7 +32,8 @@
     "tokens": "Tokens",
     "trade_detail": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
-    "search": "Thông tin ví"
+    "search": "Thông tin ví",
+    "network": "Network"
   },
 
   "filter": {
