@@ -1,10 +1,8 @@
 const _ = require('lodash');
 
-const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io', 9000));
-
 const abiDecoder = require('abi-decoder');
 const BigNumber = require('bignumber.js');
+const getWeb3Instance = require('./getWeb3Instance');
 const kyberABI = require('../../config/abi/kyber');
 const burnedFeeABI = require('../../config/abi/burned_fee');
 abiDecoder.addABI(kyberABI);
@@ -15,10 +13,6 @@ const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
 const tokensByAddress = _.keyBy(_.values(tokens), o => o.address.toLowerCase());
 
-// const tokensByAddress = Object.keys(tokens).map( tokenSymbol => tokens[tokenSymbol].address.toLowerCase())
-// console.log("++++++++++++")
-// console.log(tokensByAddress)
-
 module.exports = {
 
   getKyberABIDecoder: function() {
@@ -26,7 +20,7 @@ module.exports = {
   },
 
   getWeb3Instance: function() {
-    return web3;
+    return getWeb3Instance();
   },
 
   getTokenFromAddress: function(address) {

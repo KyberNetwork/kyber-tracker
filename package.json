@@ -31,6 +31,7 @@
     "bignumber.js": "6.0.0",
     "bowser": "^1.9.3",
     "dotenv": "4.0.0",
+    "level": "3.0.0",
     "localStorage": "^1.0.3",
     "localforage": "^1.6.0",
     "lodash": "4.17.4",
@@ -44,6 +45,7 @@
     "v-tooltip": "^2.0.0-rc.31",
     "vue-autosuggest": "^1.4.1",
     "web3": "1.0.0-beta.30",
+    "web3-core-helpers": "1.0.0-beta.33",
     "ws": "3.2.0"
   },
   "devDependencies": {
