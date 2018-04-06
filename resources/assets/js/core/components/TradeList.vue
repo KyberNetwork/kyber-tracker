@@ -57,25 +57,25 @@
         <table class="table table-hover table-responsive table-round">
           <thead>
             <tr>
-              <th>{{ $t("trade_list.date") }}</th>
-              <th colspan="3" class="text-center">{{ $t("trade_list.exchange_from") }}</th>
-              <th colspan="2" class="text-center">{{ $t("trade_list.exchange_to") }}</th>
-              <th colspan="2" class="text-center">{{ $t("trade_list.rate") }}</th>
-              <th v-if="!isHidePartnerCommission" class="text-right">{{ $t("trade_list.fee_to_wallet") }}</th>
+              <th class="pl-4">{{ $t("trade_list.date") }}</th>
+              <th colspan="2" class="pl-4">{{ $t("trade_list.exchange_from") }}</th>
+              <th class="pl-4">{{ $t("trade_list.exchange_to") }}</th>
+              <th colspan="2" class="pl-4">{{ $t("trade_list.rate") }}</th>
+              <th v-if="!isHidePartnerCommission" class="text-right ">{{ $t("trade_list.fee_to_wallet") }}</th>
               <!-- <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th> -->
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(row, index) in rows" :item="row" :index="index">
-              <td>{{ getDateInfo(row) }}</td>
-              <td class="text-right no-padding-right">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}</td>
-              <td class="text-left no-padding-right">{{ row.takerTokenSymbol }}</td>
+              <td class="pl-4">{{ getDateInfo(row) }}</td>
+              <td class="text-left pl-4">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</td>
+              <!-- <td class="text-left no-padding-right"></td> -->
               <td class="text-center"><i class="k k-angle right"></i></td>
-              <td class="text-right no-padding-right no-padding-left">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}</td>
-              <td class="text-left">{{ row.makerTokenSymbol }}</td>
-              <td class="text-right no-padding-left no-padding-right">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }}</td>
-              <td>{{ row.makerTokenSymbol }}</td>
+              <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} {{ row.makerTokenSymbol }}</td>
+              <!-- <td class="text-left"></td> -->
+              <td class="text-left pl-4">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }} {{ row.makerTokenSymbol }}</td>
+              <!-- <td>{{ row.makerTokenSymbol }}</td> -->
               <!-- <td v-if="!isHidePartnerCommission"  class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
               <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">

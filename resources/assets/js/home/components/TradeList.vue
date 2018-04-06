@@ -1,5 +1,8 @@
 <template>
   <div class="col-sm-12">
+    <div class="panel-heading pb-16">
+        <h4 class="no-margin">{{$t('navigator.trade_history')}} </h4>
+      </div>
     <trade-list ref="datatable"
       :title="getListTitle()"
       :getFilterTokenSymbol="getFilterTokenSymbol"

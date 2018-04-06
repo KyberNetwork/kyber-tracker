@@ -2,30 +2,32 @@
   <div id="wrapper">
     <div id="page-content">
       <b-navbar toggleable="md" type="dark" class="heading-bar no-padding">
-        <div class="container p-relative">
+        <div>
           <div class="col no-padding">
             <ul class="heading-summary">
-              <li v-tooltip.bottom="$t('tooltip.network_volume')">
+              <li>
                 <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
                 <span class="topbar-value">{{ networkVolume }}</span>
               </li>
               <li>
                 <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                <span class="topbar-value" v-tooltip.bottom="$t('tooltip.knc_price')">{{ kncPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)" v-tooltip.bottom="$t('tooltip.price_change_24')">({{ formatedKNCPriceChange24h }})</span>
+                <span class="topbar-value">
+                 {{ kncPrice }} 
+                 </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
               </li>
 
               <li>
                 <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
-                <span class="topbar-value" v-tooltip.bottom="$t('tooltip.eth_price')">{{ ethPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)" v-tooltip.bottom="$t('tooltip.price_change_24')">({{ formatedETHPriceChange24h }})</span>
+                <span class="topbar-value" >{{ ethPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
               </li>
 
               <!-- <li>
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
                 <span class="topbar-value">{{ tradeCount }}</span>
               </li> -->
-              <li class="network-fee" v-tooltip.right="$t('tooltip.fees_to_burn')">
+              <li class="network-fee" >
                   <div @click="onToggleFee()">
                     <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
                     <span class="topbar-value">{{ feeToBurn }}</span>
@@ -97,16 +99,17 @@
         </div>
       </b-navbar>
 
-      <b-navbar toggleable="sm" type="dark" class="second-heading-bar no-padding">
-        <div class="container">
+      <b-navbar toggleable="sm" type="dark" class="second-heading-bar">
+        <div>
           <!-- <b-navbar-toggle target="nav_collapse"></b-navbar-toggle> -->
           <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav>
               <b-nav-item class="navbar tracker-logo">
                 <router-link to="/">
-                  <span class="inline-logo"></span>
+                  <img class="kyber-logo" src="/images/logo.png" />
+                  <!-- <span class="inline-logo"></span> -->
                   <!-- <img src="/images/network.svg" /> -->
-                  <i class="fas fa-chart-bar icon-second-header"></i>
+                  <i class="fas fa-signal icon-second-header"></i>
                   {{ $t('navigator.network') }}
                   
                 </router-link>
@@ -165,7 +168,7 @@
           </b-navbar-nav> -->
         </div>
       </b-navbar>
-
+<!-- 
       <div class="breadcrumbs" v-if="breadcrumbsItems.length > 0">
         <div class="container">
           <div class="row">
@@ -175,7 +178,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="container">
         <div class="row pt-40">
@@ -328,10 +331,11 @@ export default {
 
     refresh() {
       AppRequest.getStats24h().then(stats => {
+        console.log(stats)
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
-        this.totalBurnedFee = stats.totalBurnedFee + " KNC";
+        this.totalBurnedFee = stats.feeToBurn ?  Math.round(+stats.totalBurnedFee.replace(',','') / +stats.feeToBurn.replace(',','') * 1000) / 10 + " %" : 0;
         this.feeToBurn = stats.feeToBurn + " KNC";
       });
 

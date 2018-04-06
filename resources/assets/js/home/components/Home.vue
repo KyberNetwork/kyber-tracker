@@ -1,5 +1,9 @@
 <template>
+  
   <div class="col-sm-12">
+    <div class="panel-heading pb-16">
+        <h4 class="no-margin">{{$t('navigator.network')}} </h4>
+      </div>
     <b-card no-body>
       <div class="chart-period-picker">
         <b-button-group class="cus-pagination full-width-btn-group">

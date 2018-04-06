@@ -96736,7 +96736,7 @@ exports = module.exports = __webpack_require__(13)(undefined);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,600);", ""]);
 
 // module
-exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2A9A8D;\n}\n:focus {\n  outline: none;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n  color: #fff;\n  text-decoration: none;\n  background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n  padding: 0;\n}\n.change-language-button .dropdown-item {\n  padding: 5px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n  height: 60px;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n    fill: #fff;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n    fill: #3ee6c1;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-right: 20px;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: rgba(255, 255, 255, 0);\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #e9ecf1;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 20px 0px;\n  opacity: 0.9;\n  /* font-family: OpenSans; */\n  font-size: 12px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  text-align: left;\n  color: #1f3468;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu .footer-icon {\n      height: 20px;\n      width: 20px;\n      margin-left: 25px;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 40px;\n}\n.card-header .nav-item {\n    font-size: 12px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: center;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.full-width-btn-group button {\n  font-size: 10px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.2;\n  letter-spacing: normal;\n  text-align: center;\n}\n.full-width-btn-group .btn-active {\n  margin-right: 0 !important;\n  color: #2ed573;\n}\n.full-width-btn-group .btn-secondary {\n  margin-right: 0 !important;\n  color: #0c0033;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 0;\n  width: 100%;\n  line-height: 18px;\n  height: 56px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 100%;\n      margin: 0;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 11px !important;\n  right: 33px !important;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 45px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.icon-second-header {\n  margin-right: 5px;\n}\n.p-relative {\n  position: relative;\n}\n.float-lang-bar {\n  position: absolute;\n  right: 15px;\n  top: 7px;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo {\n  min-width: 140px;\n}\n.tracker-logo .router-link-active {\n    white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #3ee6c1;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  width: 100%;\n  height: 40px;\n  border-radius: 0px;\n  background-color: #1f3468;\n  border-style: none;\n  color: #ffffff;\n}\n#autosuggest__input::placeholder {\n  font-size: 10px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n  opacity: 0.7;\n}\n#autosuggest {\n  width: 365px;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 5;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.autosuggest__results ul {\n    padding: 5px;\n}\n.history-logo {\n  width: 25px;\n  padding: 3px;\n}\n.token-logo-detail {\n  width: 25px;\n}\n.see-all-trade {\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n}\ntable.table-round th {\n  border-top: 0;\n}\ntable.table-round tr:first-child th:first-child {\n  border-top-left-radius: 6px;\n}\ntable.table-round tr:first-child th:last-child {\n  border-top-right-radius: 6px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n", ""]);
+exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2A9A8D;\n}\n:focus {\n  outline: none;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n  color: #fff;\n  text-decoration: none;\n  background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n  padding: 0;\n}\n.change-language-button .dropdown-item {\n  padding: 5px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n  height: 60px;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n    fill: #fff;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #3ee6c1;\n    fill: #3ee6c1;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-right: 20px;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: rgba(255, 255, 255, 0);\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #e9ecf1;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #f4f4f4;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dfdbdb;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 20px 0px;\n  opacity: 0.9;\n  /* font-family: OpenSans; */\n  font-size: 12px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  text-align: left;\n  color: #1f3468;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu .footer-icon {\n      height: 20px;\n      width: 20px;\n      margin-left: 25px;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #3ee6c1;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 40px;\n}\n.card-header .nav-item {\n    font-size: 12px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: center;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #28a745 !important;\n}\n.neg-value {\n  color: #dc3545 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.full-width-btn-group button {\n  font-size: 10px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.2;\n  letter-spacing: normal;\n  text-align: center;\n}\n.full-width-btn-group .btn-active {\n  margin-right: 0 !important;\n  color: #2ed573;\n}\n.full-width-btn-group .btn-secondary {\n  margin-right: 0 !important;\n  color: #0c0033;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 15px;\n  width: 100%;\n  line-height: 18px;\n  height: 56px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 100%;\n      margin: 0;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 11px !important;\n  right: 33px !important;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.kyber-logo {\n  height: 46px;\n  margin-right: 45px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 45px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.icon-second-header {\n  margin-right: 5px;\n}\n.p-relative {\n  position: relative;\n}\n.float-lang-bar {\n  position: absolute;\n  right: 15px;\n  top: 7px;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo {\n  min-width: 140px;\n}\n.tracker-logo .router-link-active {\n    white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #3ee6c1;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  width: 100%;\n  height: 40px;\n  border-radius: 0px;\n  background-color: #1f3468;\n  border-style: none;\n  color: #ffffff;\n}\n#autosuggest__input::placeholder {\n  font-size: 10px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n  opacity: 0.7;\n}\n#autosuggest {\n  width: 365px;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 5;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.autosuggest__results ul {\n    padding: 5px;\n}\n.history-logo {\n  width: 25px;\n  padding: 3px;\n}\n.token-logo-detail {\n  width: 25px;\n}\n.see-all-trade {\n  cursor: pointer;\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n}\ntable.table-round th {\n  border-top: 0;\n}\ntable.table-round tr:first-child th:first-child {\n  border-top-left-radius: 6px;\n}\ntable.table-round tr:first-child th:last-child {\n  border-top-right-radius: 6px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #3ee6c1 !important;\n}\n", ""]);
 
 // exports
 
@@ -96820,6 +96820,9 @@ var _store2 = _interopRequireDefault(_store);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
+//
+//
 //
 //
 //
@@ -97134,10 +97137,11 @@ exports.default = {
       var _this = this;
 
       _AppRequest2.default.getStats24h().then(function (stats) {
+        console.log(stats);
         _this.networkVolume = stats.networkVolume;
         _this.networkFee = stats.networkFee;
         _this.tradeCount = stats.tradeCount;
-        _this.totalBurnedFee = stats.totalBurnedFee + " KNC";
+        _this.totalBurnedFee = stats.feeToBurn ? Math.round(+stats.totalBurnedFee.replace(',', '') / +stats.feeToBurn.replace(',', '') * 1000) / 10 + " %" : 0;
         _this.feeToBurn = stats.feeToBurn + " KNC";
       });
 
@@ -99692,33 +99696,19 @@ var render = function() {
             attrs: { toggleable: "md", type: "dark" }
           },
           [
-            _c("div", { staticClass: "container p-relative" }, [
+            _c("div", [
               _c("div", { staticClass: "col no-padding" }, [
                 _c("ul", { staticClass: "heading-summary" }, [
-                  _c(
-                    "li",
-                    {
-                      directives: [
-                        {
-                          name: "tooltip",
-                          rawName: "v-tooltip.bottom",
-                          value: _vm.$t("tooltip.network_volume"),
-                          expression: "$t('tooltip.network_volume')",
-                          modifiers: { bottom: true }
-                        }
-                      ]
-                    },
-                    [
-                      _c("span", { staticClass: "light-text" }, [
-                        _vm._v(_vm._s(_vm.$t("status_bar.network_volume")))
-                      ]),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "topbar-value" }, [
-                        _vm._v(_vm._s(_vm.networkVolume))
-                      ])
-                    ]
-                  ),
+                  _c("li", [
+                    _c("span", { staticClass: "light-text" }, [
+                      _vm._v(_vm._s(_vm.$t("status_bar.network_volume")))
+                    ]),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "topbar-value" }, [
+                      _vm._v(_vm._s(_vm.networkVolume))
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("li", [
                     _c("span", { staticClass: "light-text" }, [
@@ -99726,35 +99716,17 @@ var render = function() {
                     ]),
                     _c("br"),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        directives: [
-                          {
-                            name: "tooltip",
-                            rawName: "v-tooltip.bottom",
-                            value: _vm.$t("tooltip.knc_price"),
-                            expression: "$t('tooltip.knc_price')",
-                            modifiers: { bottom: true }
-                          }
-                        ],
-                        staticClass: "topbar-value"
-                      },
-                      [_vm._v(_vm._s(_vm.kncPrice) + " ")]
-                    ),
+                    _c("span", { staticClass: "topbar-value" }, [
+                      _vm._v(
+                        "\n                 " +
+                          _vm._s(_vm.kncPrice) +
+                          " \n                 "
+                      )
+                    ]),
                     _vm._v(" "),
                     _c(
                       "span",
                       {
-                        directives: [
-                          {
-                            name: "tooltip",
-                            rawName: "v-tooltip.bottom",
-                            value: _vm.$t("tooltip.price_change_24"),
-                            expression: "$t('tooltip.price_change_24')",
-                            modifiers: { bottom: true }
-                          }
-                        ],
                         staticClass: "topbar-value",
                         class: _vm.getPriceChangeClass(this.kncPriceChange24h)
                       },
@@ -99772,35 +99744,13 @@ var render = function() {
                     ]),
                     _c("br"),
                     _vm._v(" "),
-                    _c(
-                      "span",
-                      {
-                        directives: [
-                          {
-                            name: "tooltip",
-                            rawName: "v-tooltip.bottom",
-                            value: _vm.$t("tooltip.eth_price"),
-                            expression: "$t('tooltip.eth_price')",
-                            modifiers: { bottom: true }
-                          }
-                        ],
-                        staticClass: "topbar-value"
-                      },
-                      [_vm._v(_vm._s(_vm.ethPrice) + " ")]
-                    ),
+                    _c("span", { staticClass: "topbar-value" }, [
+                      _vm._v(_vm._s(_vm.ethPrice) + " ")
+                    ]),
                     _vm._v(" "),
                     _c(
                       "span",
                       {
-                        directives: [
-                          {
-                            name: "tooltip",
-                            rawName: "v-tooltip.bottom",
-                            value: _vm.$t("tooltip.price_change_24"),
-                            expression: "$t('tooltip.price_change_24')",
-                            modifiers: { bottom: true }
-                          }
-                        ],
                         staticClass: "topbar-value",
                         class: _vm.getPriceChangeClass(this.ethPriceChange24h)
                       },
@@ -99812,58 +99762,43 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "li",
-                    {
-                      directives: [
-                        {
-                          name: "tooltip",
-                          rawName: "v-tooltip.right",
-                          value: _vm.$t("tooltip.fees_to_burn"),
-                          expression: "$t('tooltip.fees_to_burn')",
-                          modifiers: { right: true }
-                        }
-                      ],
-                      staticClass: "network-fee"
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          on: {
-                            click: function($event) {
-                              _vm.onToggleFee()
-                            }
+                  _c("li", { staticClass: "network-fee" }, [
+                    _c(
+                      "div",
+                      {
+                        on: {
+                          click: function($event) {
+                            _vm.onToggleFee()
                           }
-                        },
-                        [
+                        }
+                      },
+                      [
+                        _c("span", { staticClass: "light-text" }, [
+                          _vm._v(_vm._s(_vm.$t("status_bar.fees_to_burn")))
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "topbar-value" }, [
+                          _vm._v(_vm._s(_vm.feeToBurn))
+                        ]),
+                        _vm._v(" "),
+                        _c("i", { staticClass: "fas fa-caret-down more-fee" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.isOpenFee
+                      ? _c("div", { staticClass: "fees-burned" }, [
                           _c("span", { staticClass: "light-text" }, [
-                            _vm._v(_vm._s(_vm.$t("status_bar.fees_to_burn")))
+                            _vm._v(_vm._s(_vm.$t("status_bar.fees_burned")))
                           ]),
                           _c("br"),
                           _vm._v(" "),
                           _c("span", { staticClass: "topbar-value" }, [
-                            _vm._v(_vm._s(_vm.feeToBurn))
-                          ]),
-                          _vm._v(" "),
-                          _c("i", { staticClass: "fas fa-caret-down more-fee" })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm.isOpenFee
-                        ? _c("div", { staticClass: "fees-burned" }, [
-                            _c("span", { staticClass: "light-text" }, [
-                              _vm._v(_vm._s(_vm.$t("status_bar.fees_burned")))
-                            ]),
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "topbar-value" }, [
-                              _vm._v(_vm._s(_vm.totalBurnedFee))
-                            ])
+                            _vm._v(_vm._s(_vm.totalBurnedFee))
                           ])
-                        : _vm._e()
-                    ]
-                  )
+                        ])
+                      : _vm._e()
+                  ])
                 ])
               ]),
               _vm._v(" "),
@@ -99967,13 +99902,12 @@ var render = function() {
         _c(
           "b-navbar",
           {
-            staticClass: "second-heading-bar no-padding",
+            staticClass: "second-heading-bar",
             attrs: { toggleable: "sm", type: "dark" }
           },
           [
             _c(
               "div",
-              { staticClass: "container" },
               [
                 _c(
                   "b-collapse",
@@ -99987,16 +99921,18 @@ var render = function() {
                           { staticClass: "navbar tracker-logo" },
                           [
                             _c("router-link", { attrs: { to: "/" } }, [
-                              _c("span", { staticClass: "inline-logo" }),
+                              _c("img", {
+                                staticClass: "kyber-logo",
+                                attrs: { src: "/images/logo.png" }
+                              }),
                               _vm._v(" "),
                               _c("i", {
-                                staticClass:
-                                  "fas fa-chart-bar icon-second-header"
+                                staticClass: "fas fa-signal icon-second-header"
                               }),
                               _vm._v(
-                                "\n                " +
+                                "\n                  " +
                                   _vm._s(_vm.$t("navigator.network")) +
-                                  "\n                \n              "
+                                  "\n                  \n                "
                               )
                             ])
                           ],
@@ -100013,9 +99949,9 @@ var render = function() {
                                   "fas fa-exchange-alt icon-second-header"
                               }),
                               _vm._v(
-                                "\n              " +
+                                "\n                " +
                                   _vm._s(_vm.$t("navigator.trades")) +
-                                  "\n              "
+                                  "\n                "
                               )
                             ])
                           ],
@@ -100032,9 +99968,9 @@ var render = function() {
                                   "fas fa-database icon-second-header"
                               }),
                               _vm._v(
-                                "\n              " +
+                                "\n                " +
                                   _vm._s(_vm.$t("navigator.tokens")) +
-                                  "\n              "
+                                  "\n                "
                               )
                             ])
                           ],
@@ -100052,33 +99988,6 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _vm.breadcrumbsItems.length > 0
-          ? _c("div", { staticClass: "breadcrumbs" }, [
-              _c("div", { staticClass: "container" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col" }, [
-                    _c("p", {
-                      staticClass: "big-heading",
-                      domProps: { innerHTML: _vm._s(_vm.pageTitle) }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col" },
-                    [
-                      _c("b-breadcrumb", {
-                        staticClass: "ml-auto home-breadcrumb",
-                        attrs: { items: _vm.breadcrumbsItems }
-                      })
-                    ],
-                    1
-                  )
-                ])
-              ])
-            ])
-          : _vm._e(),
-        _vm._v(" "),
         _c("div", { staticClass: "container" }, [
           _c("div", { staticClass: "row pt-40" }, [_c("router-view")], 1)
         ])
@@ -100090,7 +99999,7 @@ var render = function() {
       _c("div", { staticClass: "container" }, [
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col footer-menu" }, [
-            _vm._v("\n          Copyright 2018 @ Kyber Network \n        ")
+            _vm._v("\n            Copyright 2018 @ Kyber Network \n          ")
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col footer-menu text-right" }, [
@@ -104567,28 +104476,28 @@ var render = function() {
                 [
                   _c("thead", [
                     _c("tr", [
-                      _c("th", [_vm._v(_vm._s(_vm.$t("trade_list.date")))]),
+                      _c("th", { staticClass: "pl-4" }, [
+                        _vm._v(_vm._s(_vm.$t("trade_list.date")))
+                      ]),
                       _vm._v(" "),
                       _c(
                         "th",
-                        { staticClass: "text-center", attrs: { colspan: "3" } },
+                        { staticClass: "pl-4", attrs: { colspan: "2" } },
                         [_vm._v(_vm._s(_vm.$t("trade_list.exchange_from")))]
                       ),
                       _vm._v(" "),
-                      _c(
-                        "th",
-                        { staticClass: "text-center", attrs: { colspan: "2" } },
-                        [_vm._v(_vm._s(_vm.$t("trade_list.exchange_to")))]
-                      ),
+                      _c("th", { staticClass: "pl-4" }, [
+                        _vm._v(_vm._s(_vm.$t("trade_list.exchange_to")))
+                      ]),
                       _vm._v(" "),
                       _c(
                         "th",
-                        { staticClass: "text-center", attrs: { colspan: "2" } },
+                        { staticClass: "pl-4", attrs: { colspan: "2" } },
                         [_vm._v(_vm._s(_vm.$t("trade_list.rate")))]
                       ),
                       _vm._v(" "),
                       !_vm.isHidePartnerCommission
-                        ? _c("th", { staticClass: "text-right" }, [
+                        ? _c("th", { staticClass: "text-right " }, [
                             _vm._v(_vm._s(_vm.$t("trade_list.fee_to_wallet")))
                           ])
                         : _vm._e(),
@@ -104601,70 +104510,48 @@ var render = function() {
                     "tbody",
                     _vm._l(_vm.rows, function(row, index) {
                       return _c("tr", { attrs: { item: row, index: index } }, [
-                        _c("td", [_vm._v(_vm._s(_vm.getDateInfo(row)))]),
+                        _c("td", { staticClass: "pl-4" }, [
+                          _vm._v(_vm._s(_vm.getDateInfo(row)))
+                        ]),
                         _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "text-right no-padding-right" },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                _vm.formatTokenNumber(
-                                  row.takerTokenSymbol,
-                                  row.takerTokenAmount
-                                )
+                        _c("td", { staticClass: "text-left pl-4" }, [
+                          _vm._v(
+                            _vm._s(
+                              _vm.formatTokenNumber(
+                                row.takerTokenSymbol,
+                                row.takerTokenAmount
                               )
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "text-left no-padding-right" },
-                          [_vm._v(_vm._s(row.takerTokenSymbol))]
-                        ),
+                            ) +
+                              " " +
+                              _vm._s(row.takerTokenSymbol)
+                          )
+                        ]),
                         _vm._v(" "),
                         _vm._m(0, true, false),
                         _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass:
-                              "text-right no-padding-right no-padding-left"
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                _vm.formatTokenNumber(
-                                  row.makerTokenSymbol,
-                                  row.makerTokenAmount
-                                )
+                        _c("td", { staticClass: "text-left pl-4" }, [
+                          _vm._v(
+                            _vm._s(
+                              _vm.formatTokenNumber(
+                                row.makerTokenSymbol,
+                                row.makerTokenAmount
                               )
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-left" }, [
-                          _vm._v(_vm._s(row.makerTokenSymbol))
+                            ) +
+                              " " +
+                              _vm._s(row.makerTokenSymbol)
+                          )
                         ]),
                         _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticClass:
-                              "text-right no-padding-left no-padding-right"
-                          },
-                          [
-                            _vm._v(
-                              "1 " +
-                                _vm._s(row.takerTokenSymbol) +
-                                " = " +
-                                _vm._s(_vm.getRate(row))
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(row.makerTokenSymbol))]),
+                        _c("td", { staticClass: "text-left pl-4" }, [
+                          _vm._v(
+                            "1 " +
+                              _vm._s(row.takerTokenSymbol) +
+                              " = " +
+                              _vm._s(_vm.getRate(row)) +
+                              " " +
+                              _vm._s(row.makerTokenSymbol)
+                          )
+                        ]),
                         _vm._v(" "),
                         _c(
                           "td",
@@ -106751,6 +106638,10 @@ var _chart2 = _interopRequireDefault(_chart);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -119120,6 +119011,12 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
+      _c("div", { staticClass: "panel-heading pb-16" }, [
+        _c("h4", { staticClass: "no-margin" }, [
+          _vm._v(_vm._s(_vm.$t("navigator.network")) + " ")
+        ])
+      ]),
+      _vm._v(" "),
       _c(
         "b-card",
         { attrs: { "no-body": "" } },
@@ -119418,6 +119315,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
 
 
 exports.default = {
@@ -119471,6 +119371,12 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
+      _c("div", { staticClass: "panel-heading pb-16" }, [
+        _c("h4", { staticClass: "no-margin" }, [
+          _vm._v(_vm._s(_vm.$t("navigator.trade_history")) + " ")
+        ])
+      ]),
+      _vm._v(" "),
       _c("trade-list", {
         ref: "datatable",
         attrs: {
@@ -120126,7 +120032,7 @@ exports = module.exports = __webpack_require__(13)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -120176,6 +120082,8 @@ var _chart2 = _interopRequireDefault(_chart);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
 //
 //
 //
@@ -120328,6 +120236,12 @@ var render = function() {
     "div",
     { staticClass: "col-sm-12" },
     [
+      _c("div", { staticClass: "panel-heading pb-16" }, [
+        _c("h4", { staticClass: "no-margin" }, [
+          _vm._v(_vm._s(_vm.$t("navigator.top_token")) + " ")
+        ])
+      ]),
+      _vm._v(" "),
       _c(
         "b-card",
         { attrs: { "no-body": "" } },
@@ -120463,11 +120377,7 @@ var render = function() {
                       }
                     },
                     [
-                      _c("td", { staticClass: "text-center" }, [
-                        _vm._v(_vm._s(slot.index + 1))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
+                      _c("td", { staticClass: "pl-4" }, [
                         _c("img", {
                           staticClass: "image-inline-td mr-1",
                           attrs: {
@@ -120477,7 +120387,9 @@ var render = function() {
                         _vm._v(" " + _vm._s(slot.item.name))
                       ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(slot.item.symbol))]),
+                      _c("td", { staticClass: "pl-4" }, [
+                        _vm._v(_vm._s(slot.item.symbol))
+                      ]),
                       _vm._v(" "),
                       _c("td", { staticClass: "text-right" }, [
                         _vm._v(_vm._s(_vm.formatVolumeUSD(slot.item)))
@@ -120485,19 +120397,6 @@ var render = function() {
                       _vm._v(" "),
                       _c("td", { staticClass: "text-right" }, [
                         _vm._v(_vm._s(slot.item.volumeETH))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "text-right" }, [
-                        _vm._v(_vm._s(slot.item.volumeToken)),
-                        _c("span", { staticClass: "td-inline-symbol" }, [
-                          _vm._v(_vm._s(slot.item.symbol))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("span", { staticClass: "pull-right" }, [
-                          _c("i", { staticClass: "k k-angle right" })
-                        ])
                       ])
                     ]
                   )
@@ -120508,28 +120407,20 @@ var render = function() {
         },
         [
           _c("template", { slot: "header" }, [
-            _c("th", { staticClass: "text-center" }, [
-              _vm._v(_vm._s(_vm.$t("token_list.no")))
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "text-left" }, [
+            _c("th", { staticClass: "text-left pl-4" }, [
               _vm._v(_vm._s(_vm.$t("common.name")))
             ]),
             _vm._v(" "),
-            _c("th", { staticClass: "text-left" }, [
+            _c("th", { staticClass: "text-left pl-4" }, [
               _vm._v(_vm._s(_vm.$t("common.symbol")))
             ]),
             _vm._v(" "),
-            _c("th", { staticClass: "text-right" }, [
+            _c("th", { staticClass: "text-right pl-4" }, [
               _vm._v(_vm._s(_vm.$t("common.volume_24h_usd")))
             ]),
             _vm._v(" "),
-            _c("th", { staticClass: "text-right" }, [
+            _c("th", { staticClass: "text-right pl-4" }, [
               _vm._v(_vm._s(_vm.$t("common.volume_24h_eth")))
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "text-right" }, [
-              _vm._v(_vm._s(_vm.$t("common.volume_24h_token")))
             ]),
             _vm._v(" "),
             _c("th")
@@ -121140,13 +121031,13 @@ if (false) {
 /* 575 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_eth":"24H Volume (ETH)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Trade History","searchbox_placeholder":"Tx Hash / Wallet Address","all_token":"All Token","see_all":"See All"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Trade History","token_list":"Supported Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trade","tokens":"Token","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details","network":"Network"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H VOLUME","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"FEES TO BURN","fees_burned":"FEES BURNED","knc_price":"KNC PRICE","eth_price":"ETH PRICE"},"tooltip":{"network_volume":"Trading volume during the last 24 hours","fees_to_burn":"Total fees set aside to burn so far","fees_burned":"Total fees that have already been burnt","knc_price":"Current KNC price","eth_price":"Current ETH price","price_change_24":"% change compared with price at 24 hours ago"},"chart":{"title":{"network_volume":"Trade Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"{0} Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Trade History","address":"Address","date":"Time","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rates","description":"Description","amount":"Amount","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"From","exchange_to":"To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Number of trades: {0}","total_usd_msg":"Total volume (USD): ${0}","total_eth_msg":"Total volume (ETH): {0}","result_title":"Address: ","tx_hash":"Tx hash: ","total_fee":"Total partner commission: {0} KNC","no_txhash_data":"This transaction is not with Kyber Network","invalid_query":"Your search string is not address or tx hash"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_eth":"24H Volume (ETH)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Latest Trade","searchbox_placeholder":"Tx Hash / Wallet Address","all_token":"All Token","see_all":"See All"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Trade History","token_list":"Supported Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trade","trade_history":"Trade History","tokens":"Token","top_token":"Top Token","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details","network":"Network"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H Volume","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"Fees to burn","fees_burned":"Burnt","knc_price":"KNC Price","eth_price":"ETH Price"},"tooltip":{"network_volume":"Trading volume during the last 24 hours","fees_to_burn":"Total fees set aside to burn so far","fees_burned":"Total fees that have already been burnt","knc_price":"Current KNC price","eth_price":"Current ETH price","price_change_24":"% change compared with price at 24 hours ago"},"chart":{"title":{"network_volume":"Trade Volume","network_fee":"Network Fees","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"{0} Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Trade History","address":"Address","date":"Time","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rates","description":"Description","amount":"Amount","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"From","exchange_to":"To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Number of trades: {0}","total_usd_msg":"Total volume (USD): ${0}","total_eth_msg":"Total volume (ETH): {0}","result_title":"Address: ","tx_hash":"Tx hash: ","total_fee":"Total partner commission: {0} KNC","no_txhash_data":"This transaction is not with Kyber Network","invalid_query":"Your search string is not address or tx hash"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
 
 /***/ }),
 /* 576 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_eth":"Lượng giao dịch 24H (ETH)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Danh sách giao dịch","searchbox_placeholder":"Tx Hash / địa chỉ ví","all_token":"Danh sách token","see_all":"Xem Tất Cả"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","tokens":"Tokens","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví","network":"Network"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"KHỐI LƯỢNG GIAO DỊCH (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"PHÍ SẼ ĐỐT","fees_burned":"PHÍ ĐÃ ĐỐT","knc_price":"GIÁ KNC","eth_price":"GIÁ ETH"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","eth_price":"Giá hiện tại của ETH","price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: ","tx_hash":"Tx hash: ","total_fee":"Tổng phí tích hợp: {0} KNC","no_txhash_data":"Giao dịch này không được thực hiện với Kyber Network","invalid_query":"Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"Lượng giao dịch 24H (USD)","volume_24h_eth":"Lượng giao dịch 24H (ETH)","volume_24h_token":"Lượng giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Giao dịch gần nhất","searchbox_placeholder":"Tx Hash / địa chỉ ví","all_token":"Danh sách token","see_all":"Xem Tất Cả"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","trade_history":"Lịch sử giao dịch","tokens":"Tokens","top_token":"Top Token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví","network":"Network"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"Khối lượng giao dịch (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"Phí sẽ đốt","fees_burned":"Đã đốt","knc_price":"Giá KNC","eth_price":"Giá ETH"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","eth_price":"Giá hiện tại của ETH","price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"Khối lượng giao dịch","network_fee":"Phí giao dịch","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"Khối lượng giao dịch","label_count":"Số giao dịch","label_total":"Khối lượng giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: ","tx_hash":"Tx hash: ","total_fee":"Tổng phí tích hợp: {0} KNC","no_txhash_data":"Giao dịch này không được thực hiện với Kyber Network","invalid_query":"Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
 
 /***/ }),
 /* 577 */

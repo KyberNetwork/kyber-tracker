@@ -613,7 +613,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 .heading-summary {
   list-style: none;
   margin: 0;
-  padding: 10px 0;
+  padding: 10px 15px;
   width: 100%;
   // overflow: hidden;
   line-height: 18px;
@@ -787,6 +787,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
   height: 26px;
   margin-top: -3px;
+}
+.kyber-logo{
+  // width: 30px;
+  height: 46px;
+  margin-right: 45px;
 }
 
 .inline-logo {
@@ -1019,6 +1024,7 @@ html {
 }
 
 .see-all-trade{
+  cursor: pointer;
   width: 116px;
   height: 36px;
   border-radius: 3px;

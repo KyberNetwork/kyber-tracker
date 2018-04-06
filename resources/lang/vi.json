@@ -9,7 +9,7 @@
     "volume_24h_eth": "Lượng giao dịch 24H (ETH)",
     "volume_24h_token": "Lượng giao dịch 24H (Token)",
     "search": "Tìm kiếm",
-    "network_activity": "Danh sách giao dịch",
+    "network_activity": "Giao dịch gần nhất",
     "searchbox_placeholder" : "Tx Hash / địa chỉ ví",
     "all_token": "Danh sách token",
     "see_all": "Xem Tất Cả"
@@ -29,7 +29,9 @@
   "navigator": {
     "home": "Trang chính",
     "trades": "Giao dịch",
+    "trade_history": "Lịch sử giao dịch",
     "tokens": "Tokens",
+    "top_token": "Top Token",
     "trade_detail": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
     "search": "Thông tin ví",
@@ -42,13 +44,13 @@
   },
 
   "status_bar": {
-    "network_volume": "KHỐI LƯỢNG GIAO DỊCH (24H)",
+    "network_volume": "Khối lượng giao dịch (24H)",
     "trades": "SỐ GIAO DỊCH (24H)",
     "burned_fee": "PHÍ SẼ ĐỐT (24H)",
-    "fees_to_burn": "PHÍ SẼ ĐỐT",
-    "fees_burned": "PHÍ ĐÃ ĐỐT",
-    "knc_price": "GIÁ KNC",
-    "eth_price": "GIÁ ETH"
+    "fees_to_burn": "Phí sẽ đốt",
+    "fees_burned": "Đã đốt",
+    "knc_price": "Giá KNC",
+    "eth_price": "Giá ETH"
   },
 
   "tooltip": {

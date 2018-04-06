@@ -9,7 +9,7 @@
     "volume_24h_eth": "24H Volume (ETH)",
     "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
-    "network_activity": "Trade History",
+    "network_activity": "Latest Trade",
     "searchbox_placeholder" : "Tx Hash / Wallet Address",
     "all_token": "All Token",
     "see_all": "See All"
@@ -29,7 +29,9 @@
   "navigator": {
     "home": "Home",
     "trades": "Trade",
+    "trade_history": "Trade History",
     "tokens": "Token",
+    "top_token": "Top Token",
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
     "search": "Wallet Details",
@@ -43,13 +45,13 @@
   },
 
   "status_bar": {
-    "network_volume": "24H VOLUME",
+    "network_volume": "24H Volume",
     "trades": "TRADES (24H)",
     "burned_fee": "FEES TO BURN (24H)",
-    "fees_to_burn": "FEES TO BURN",
-    "fees_burned": "FEES BURNED",
-    "knc_price": "KNC PRICE",
-    "eth_price": "ETH PRICE"
+    "fees_to_burn": "Fees to burn",
+    "fees_burned": "Burnt",
+    "knc_price": "KNC Price",
+    "eth_price": "ETH Price"
   },
 
   "tooltip": {
