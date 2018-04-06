@@ -54,7 +54,7 @@
       </paginate>
 
       <div v-if="rows.length > 0" class="table-responsive-wraper clear pt-10">
-        <table class="table table-hover table-responsive table-round">
+        <table class="table table-hover table-responsive table-round table-striped">
           <thead>
             <tr>
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
@@ -63,7 +63,7 @@
               <th colspan="2" class="pl-4">{{ $t("trade_list.rate") }}</th>
               <th v-if="!isHidePartnerCommission" class="text-right ">{{ $t("trade_list.fee_to_wallet") }}</th>
               <!-- <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th> -->
-              <th></th>
+              <!-- <th></th> -->
             </tr>
           </thead>
           <tbody>

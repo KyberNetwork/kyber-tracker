@@ -100387,7 +100387,8 @@ var render = function() {
         _c(
           "table",
           {
-            staticClass: "table table-hover table-responsive table-round",
+            staticClass:
+              "table table-hover table-responsive table-round table-striped",
             attrs: { responsive: "" }
           },
           [
@@ -104471,7 +104472,8 @@ var render = function() {
               _c(
                 "table",
                 {
-                  staticClass: "table table-hover table-responsive table-round"
+                  staticClass:
+                    "table table-hover table-responsive table-round table-striped"
                 },
                 [
                   _c("thead", [
@@ -104500,9 +104502,7 @@ var render = function() {
                         ? _c("th", { staticClass: "text-right " }, [
                             _vm._v(_vm._s(_vm.$t("trade_list.fee_to_wallet")))
                           ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("th")
+                        : _vm._e()
                     ])
                   ]),
                   _vm._v(" "),
@@ -120395,7 +120395,7 @@ var render = function() {
                         _vm._v(_vm._s(_vm.formatVolumeUSD(slot.item)))
                       ]),
                       _vm._v(" "),
-                      _c("td", { staticClass: "text-right" }, [
+                      _c("td", { staticClass: "text-right pr-4" }, [
                         _vm._v(_vm._s(slot.item.volumeETH))
                       ])
                     ]
@@ -120419,11 +120419,9 @@ var render = function() {
               _vm._v(_vm._s(_vm.$t("common.volume_24h_usd")))
             ]),
             _vm._v(" "),
-            _c("th", { staticClass: "text-right pl-4" }, [
+            _c("th", { staticClass: "text-right pl-4 pr-4" }, [
               _vm._v(_vm._s(_vm.$t("common.volume_24h_eth")))
-            ]),
-            _vm._v(" "),
-            _c("th")
+            ])
           ])
         ],
         2
