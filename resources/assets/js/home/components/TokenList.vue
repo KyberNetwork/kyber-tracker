@@ -1,7 +1,7 @@
 <template>
   <div class="col-sm-12">
     <div class="panel-heading pb-16">
-      <h4 class="no-margin">{{$t('navigator.top_token')}} </h4>
+      <span class="no-margin panel-title">{{$t('navigator.top_token')}} </span>
     </div>
 
     <b-card no-body>

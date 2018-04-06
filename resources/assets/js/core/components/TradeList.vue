@@ -3,7 +3,7 @@
     <div class="panel panel-default">
 
       <div v-if="!!title" class="panel-heading pt-56 pb-16">
-        <h4 class="no-margin"> {{ title }} </h4>
+        <span class="panel-title no-margin"> {{ title }} </span>
       </div>
 
       <div v-if="!!getSearchResultTitle()" class="clear p-10">
@@ -54,7 +54,7 @@
       </paginate>
 
       <div v-if="rows.length > 0" class="table-responsive-wraper clear pt-10">
-        <table class="table table-hover table-responsive table-round table-striped">
+        <table class="table table-responsive table-round table-striped">
           <thead>
             <tr>
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
@@ -81,7 +81,7 @@
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td> -->
-              <td @click="onClickRow(row)"><img src="/images/more.svg" /></td>
+              <td @click="onClickRow(row)" class="pointer"><img src="/images/more.svg" /></td>
             </tr>
           </tbody>
         </table>

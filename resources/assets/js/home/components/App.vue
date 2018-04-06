@@ -1,102 +1,86 @@
 <template>
   <div id="wrapper">
     <div id="page-content">
-      <b-navbar toggleable="md" type="dark" class="heading-bar no-padding">
-        <div>
-          <div class="col no-padding">
-            <ul class="heading-summary">
-              <li>
-                <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
-                <span class="topbar-value">{{ networkVolume }}</span>
-              </li>
-              <li>
-                <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-                <span class="topbar-value">
-                 {{ kncPrice }} 
-                 </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-              </li>
+      <b-navbar toggleable="md" type="dark" class="heading-bar">
+        <div class="col no-padding col-md-6 col-12 col-sm-12">
+          <ul class="heading-summary">
+            <li>
+              <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
+              <span class="topbar-value">{{ networkVolume }}</span>
+            </li>
+            <li>
+              <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
+              <span class="topbar-value">
+                {{ kncPrice }} 
+                </span>
+              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+            </li>
 
-              <li>
-                <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
-                <span class="topbar-value" >{{ ethPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-              </li>
+            <li>
+              <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
+              <span class="topbar-value" >{{ ethPrice }} </span>
+              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+            </li>
 
-              <!-- <li>
-                <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-                <span class="topbar-value">{{ tradeCount }}</span>
-              </li> -->
-              <li class="network-fee" >
-                  <div @click="onToggleFee()">
-                    <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
-                    <span class="topbar-value">{{ feeToBurn }}</span>
-                    <i class="fas fa-caret-down more-fee"></i>
-                  </div>
-                  
-
-                  <div v-if="isOpenFee" class="fees-burned">
-                    <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
-                    <span class="topbar-value">{{ totalBurnedFee }}</span>
-                  </div>
-
+            <!-- <li>
+              <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
+              <span class="topbar-value">{{ tradeCount }}</span>
+            </li> -->
+            <li class="network-fee" >
+                <div @click="onToggleFee()">
+                  <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
+                  <span class="topbar-value">{{ feeToBurn }}</span>
+                  <i class="fas fa-caret-down more-fee"></i>
+                </div>
                 
 
-                
-            
-              </li>
-              <!-- <li v-tooltip.bottom="$t('tooltip.fees_burned')">
-                <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
-                <span class="topbar-value">{{ totalBurnedFee }}</span>
-              </li> -->
+                <div v-if="isOpenFee" class="fees-burned">
+                  <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
+                  <span class="topbar-value">{{ totalBurnedFee }}</span>
+                </div>
+
               
-            </ul>
-          </div>
 
-          <div class="float-lang-bar cursor-pointer">
-            <b-navbar-nav>
-
-
-              <!-- <b-dropdown class="change-language-button" no-caret right>
-                <template slot="button-content">
-                  <span><img :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
-                </template>
-                <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
-                <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-              </b-dropdown> -->
-
-              <vue-autosuggest
-                      ref="seatchInputRef"
-                      :suggestions="[{
-                        data: [...this.addressesMetamask, ...this.searchData]
-                      }]"
-                      @keyup.enter="doSearch"
-                      @focus="onfocus"
-                      :getSuggestionValue="getSuggestionValue"
-                      :renderSuggestion="renderSuggestion"
-                      :onSelected="onSelected"
-                      :inputProps="{
-                        id:'autosuggest__input', 
-                        onInputChange: this.onInputChange, 
-                        placeholder:$t('common.searchbox_placeholder'),
-                        autocomplete: 'off'
-                      }"
-                  />
-
-                  <b-input-group-append>
-                    <b-btn type="submit" class="search-button btn-search" variant="default cursor-pointer" @click="doSearch()">
-                      <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
-                    </b-btn>
-                  </b-input-group-append>
-
-
-
-            </b-navbar-nav>
-
-          </div>
-
-
+              
+          
+            </li>
+            <!-- <li v-tooltip.bottom="$t('tooltip.fees_burned')">
+              <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
+              <span class="topbar-value">{{ totalBurnedFee }}</span>
+            </li> -->
+            
+          </ul>
         </div>
+
+        
+        <div class="p-relative cursor-pointer col-md-6 col-12 col-sm-12">
+
+          <vue-autosuggest
+            ref="seatchInputRef"
+            :suggestions="[{
+              data: [...this.addressesMetamask, ...this.searchData]
+            }]"
+            @keyup.enter="doSearch"
+            @focus="onfocus"
+            :getSuggestionValue="getSuggestionValue"
+            :renderSuggestion="renderSuggestion"
+            :onSelected="onSelected"
+            :inputProps="{
+              id:'autosuggest__input', 
+              onInputChange: this.onInputChange, 
+              placeholder:$t('common.searchbox_placeholder'),
+              autocomplete: 'off'
+            }"
+          />
+          <b-input-group-append class="btn-search ">
+            <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
+              <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+            </b-btn>
+          </b-input-group-append>
+        </div>
+
+        
+
       </b-navbar>
 
       <b-navbar toggleable="sm" type="dark" class="second-heading-bar">
@@ -168,23 +152,14 @@
           </b-navbar-nav> -->
         </div>
       </b-navbar>
-<!-- 
-      <div class="breadcrumbs" v-if="breadcrumbsItems.length > 0">
-        <div class="container">
-          <div class="row">
-            <div class="col"><p class="big-heading" v-html="pageTitle"></p></div>
-            <div class="col">
-              <b-breadcrumb :items="breadcrumbsItems" class="ml-auto home-breadcrumb"/>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <div class="container">
         <div class="row pt-40">
           <router-view></router-view>
         </div>
       </div>
+
+      
     </div>
 
 
@@ -229,7 +204,7 @@ import util from "../../core/helper/util";
 import network from "../../../../../config/network";
 import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
-import store from "../../core/helper/store"
+import store from "../../core/helper/store";
 export default {
   data() {
     return {
@@ -288,8 +263,8 @@ export default {
       }
     },
 
-    onToggleFee(){
-      this.isOpenFee = !this.isOpenFee
+    onToggleFee() {
+      this.isOpenFee = !this.isOpenFee;
     },
 
     getPriceChangeClass(priceChange) {
@@ -331,11 +306,19 @@ export default {
 
     refresh() {
       AppRequest.getStats24h().then(stats => {
-        console.log(stats)
+        console.log(stats);
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
-        this.totalBurnedFee = stats.feeToBurn ?  Math.round(+stats.totalBurnedFee.replace(',','') / +stats.feeToBurn.replace(',','') * 1000) / 10 + " %" : 0;
+        this.totalBurnedFee = stats.feeToBurn
+          ? Math.round(
+              +stats.totalBurnedFee.replace(",", "") /
+                +stats.feeToBurn.replace(",", "") *
+                1000
+            ) /
+              10 +
+            " %"
+          : 0;
         this.feeToBurn = stats.feeToBurn + " KNC";
       });
 
@@ -367,7 +350,7 @@ export default {
       if (!this.searchString) {
         return;
       }
-      this.searchString = this.searchString.trim()
+      this.searchString = this.searchString.trim();
 
       this.$router.push({
         name: "search",
@@ -377,7 +360,9 @@ export default {
       });
 
       //add search string to suggest input
-      let indexItemExist = [...this.addressesMetamask, ...this.searchData].map(item => item.addr).indexOf(this.searchString);
+      let indexItemExist = [...this.addressesMetamask, ...this.searchData]
+        .map(item => item.addr)
+        .indexOf(this.searchString);
 
       if (indexItemExist < 0) {
         if (this.isAddress(this.searchString)) {
@@ -393,39 +378,44 @@ export default {
           });
         }
       }
-      this.searchData = this.searchData.slice(0, 5)
-      store.set("searchData", this.searchData)
+      this.searchData = this.searchData.slice(0, 5);
+      store.set("searchData", this.searchData);
 
       window.setTimeout(() => {
         this.searchString = "";
-        this.$refs.seatchInputRef.searchInput = ""
+        this.$refs.seatchInputRef.searchInput = "";
       });
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
     },
     isAddress(address) {
-      return /^(0x)?[0-9a-f]{40}$/i.test(address)
+      return /^(0x)?[0-9a-f]{40}$/i.test(address);
     },
 
     renderSuggestion(suggestion) {
       // return suggestion.item.type + " - " + suggestion.item.addr;
-      let logoUrl = ''
+      let logoUrl = "";
       switch (suggestion.item.type) {
         case "address":
-          logoUrl = '/images/address.svg'
+          logoUrl = "/images/address.svg";
           break;
         case "txHash":
-          logoUrl = '/images/txhash.svg'
+          logoUrl = "/images/txhash.svg";
           break;
         case "metamask":
-          logoUrl = '/images/metamask.svg'
+          logoUrl = "/images/metamask.svg";
           break;
       }
-      return <div>
-        <img class="history-logo" src={logoUrl} />
-        <span>{suggestion.item.addr.slice(0, 14)} ... {suggestion.item.addr.slice(-12)} </span>
-        </div>;
+      return (
+        <div>
+          <img class="history-logo" src={logoUrl} />
+          <span>
+            {suggestion.item.addr.slice(0, 14)} ...{" "}
+            {suggestion.item.addr.slice(-12)}{" "}
+          </span>
+        </div>
+      );
     },
 
     getSuggestionValue(suggestion) {
@@ -437,14 +427,14 @@ export default {
     },
 
     onSelected(selected) {
-      if(selected && selected.item && selected.item.addr){
+      if (selected && selected.item && selected.item.addr) {
         this.searchString = selected.item.addr;
         // document.getElementById("autosuggest__input").focus()
-        this.doSearch()
+        this.doSearch();
       }
     },
 
-    onfocus(){
+    onfocus() {
       this.connectMetaMask();
     },
 
@@ -559,7 +549,7 @@ export default {
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);
-    this.searchData = store.get("searchData") || []
+    this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
   }
 };
@@ -600,6 +590,6 @@ export default {
   }
 }
 .navbar .router-link-exact-active {
-  color: #3ee6c1 !important;
+  color: #2ed573 !important;
 }
 </style>

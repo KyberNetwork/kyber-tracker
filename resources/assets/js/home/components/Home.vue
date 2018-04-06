@@ -2,7 +2,7 @@
   
   <div class="col-sm-12">
     <div class="panel-heading pb-16">
-        <h4 class="no-margin">{{$t('navigator.network')}} </h4>
+        <span class="no-margin panel-title">{{$t('navigator.network')}} </span>
       </div>
     <b-card no-body>
       <div class="chart-period-picker">
