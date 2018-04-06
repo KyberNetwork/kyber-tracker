@@ -1,6 +1,5 @@
 const _               = require('lodash');
 const async           = require('async');
-const BN              = require('bn.js');
 const network         = require('../../config/network');
 const Utils           = require('../common/Utils');
 const ExSession       = require('sota-core').load('common/ExSession');
