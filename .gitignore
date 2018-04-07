@@ -62,3 +62,4 @@ test.js
 credentials
 .idea/
 public/js/bundle.js
+db/level

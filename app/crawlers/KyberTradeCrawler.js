@@ -29,7 +29,7 @@ class KyberTradeCrawler {
         getLatestBlockNumber(next);
       },
       processBlock: ['startBlockNumber', (ret, next) => {
-        this.processBlock(ret.startBlockNumber + 1, next);
+        this.processBlock(ret.startBlockNumber, next);
       }],
     }, (err, ret) => {
       if (err) {

@@ -29,11 +29,9 @@
     "async": "2.6.0",
     "axios": "0.17.1",
     "bignumber.js": "6.0.0",
-    "bitcoind-rpc-dash": "1.0.1",
-    "bitcore-lib-dash": "0.15.0",
-    "bn.js": "4.11.8",
     "bowser": "^1.9.3",
     "dotenv": "4.0.0",
+    "level": "3.0.0",
     "localStorage": "^1.0.3",
     "localforage": "^1.6.0",
     "lodash": "4.17.4",
@@ -47,6 +45,7 @@
     "v-tooltip": "^2.0.0-rc.31",
     "vue-autosuggest": "^1.4.1",
     "web3": "1.0.0-beta.30",
+    "web3-core-helpers": "1.0.0-beta.33",
     "ws": "3.2.0"
   },
   "devDependencies": {
