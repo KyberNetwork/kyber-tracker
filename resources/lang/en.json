@@ -57,9 +57,9 @@
 
   "chart": {
     "title": {
-      "network_volume": "Trade Volume",
-      "network_fee": "Network Fees",
-      "fee_to_burn": "Fees To Burn",
+      "network_volume": "Volume",
+      "network_fee": "Fees",
+      "fee_to_burn": "Burn",
       "top_token": "Top Tokens",
       "token_volume": "{0} Volume",
       "label_volume": "Volume",
@@ -81,11 +81,11 @@
     "description": "Description",
     "amount": "Amount",
     "fee_to_wallet": "Partner Commission",
-    "fee_to_burn": "Fees To Burn",
+    "fee_to_burn": "Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
-    "exchange_from" : "Exchange From",
-    "exchange_to" : "Exchange To"
+    "exchange_from" : "From",
+    "exchange_to" : "To"
   },
 
   "trade_detail": {

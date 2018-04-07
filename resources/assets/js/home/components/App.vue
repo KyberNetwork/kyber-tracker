@@ -207,22 +207,33 @@ export default {
         typeof window.i18n != "undefined" &&
         typeof window.i18n.locale != "undefined"
       ) {
+        moment.locale(window.i18n.locale);
         return window.i18n.locale;
       } else {
-        window.i18n.locale = "vi";
-        moment.locale("vi");
-        return "vi";
+        window.i18n.locale = "en";
+        moment.locale("en");
+        return "en";
       }
     },
     customizeMoment(){
+      moment.updateLocale('vi', {
+        relativeTime : {
+            m:  "1 phút",
+            h:  "1 giờ",
+            d:  "1 ngày",
+            y:  "1 năm",
+        }
+      });
+
       moment.updateLocale('en', {
         relativeTime : {
             m:  "1 min",
             mm: "%d mins",
             h:  "1 hour",
-            d:  "1 day"
+            d:  "1 day",
+            y:  "1 year"
         }
-    });
+      });
     },
     getPriceChangeClass() {
       if (this.kncPriceChange24h === 0) return "";

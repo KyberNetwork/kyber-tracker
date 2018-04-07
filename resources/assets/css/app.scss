@@ -108,15 +108,22 @@ a {
 .cus-pagination {
   button {
     border-radius: 0;
-    background-color: #ededed;
+    background-color: transparent;
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
-    color: #000000;
+    color: rgba(16,4,55,.5);
+    cursor: pointer;
   }
 
-  button:hover, button:active, button:focus, .btn-active {
-    background-color: #d5d5d5;
+  button:hover {
+    background-color: transparent;
+    color: #0c0033;
+  }
+
+  button:focus, button:active, .btn-active, button:hover.btn-active {
+    background-color: #e9ecf1;
+    color: #2ed573;
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
@@ -125,6 +132,15 @@ a {
 
 .card-header-tabs {
   outline: none;
+}
+
+.nav-tabs {
+  .nav-link {
+    color: rgba(16,4,55,.5);
+  }
+  .nav-link.active, .nav-link:hover {
+    color: #0c0033;
+  }
 }
 
 .pagination {
