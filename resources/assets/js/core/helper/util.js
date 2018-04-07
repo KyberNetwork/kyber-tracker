@@ -57,7 +57,10 @@ export default {
   },
 
   numberWithCommas: function (x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    //return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
   },
 
   getAppEndpoint: function () {
@@ -109,10 +112,10 @@ export default {
     return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
-  formatTokenAmount: function (amount, decimal=18, precision=6) {
+  formatTokenAmount: function (amount, decimal=18, decimalFormat = 3) {
     const bigNumber = new BigNumber(amount.toString());
     let result = bigNumber.div(Math.pow(10, decimal));
-    return this.numberWithCommas(parseFloat(result.toFixed(3).toString()));
+    return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
   },
 
   roundingNumber: function (number) {

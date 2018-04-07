@@ -214,6 +214,16 @@ export default {
         return "vi";
       }
     },
+    customizeMoment(){
+      moment.updateLocale('en', {
+        relativeTime : {
+            m:  "1 min",
+            mm: "%d mins",
+            h:  "1 hour",
+            d:  "1 day"
+        }
+    });
+    },
     getPriceChangeClass() {
       if (this.kncPriceChange24h === 0) return "";
       return this.kncPriceChange24h < 0 ? "neg-value" : "pos-value";
@@ -465,6 +475,7 @@ export default {
   },
 
   mounted() {
+    this.customizeMoment();
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);

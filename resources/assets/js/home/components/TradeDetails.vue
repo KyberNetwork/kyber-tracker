@@ -123,7 +123,7 @@ export default {
       }
 
       const tokenInfo = util.getTokenInfo(symbol);
-      return util.formatTokenAmount(amount, tokenInfo.decimal);
+      return util.formatTokenAmount(amount, tokenInfo.decimal, 6);
     },
     getTxEtherscanLink (tx) {
       return network.endpoints.ethScan + 'tx/' + tx;

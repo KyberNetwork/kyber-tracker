@@ -77,7 +77,7 @@
               <td class="text-right no-padding-left no-padding-right">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }}</td>
               <td>{{ row.makerTokenSymbol }}</td>
               <td v-if="!isHidePartnerCommission"  class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
-              <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
+              <td class="text-right no-padding-right">{{ formatTokenNumber('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td>
@@ -205,10 +205,6 @@ export default {
       const makerAmount = (new BigNumber(trade.makerTokenAmount.toString())).div(Math.pow(10, makerToken.decimal));
       const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, takerToken.decimal));
       return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
-    },
-    formatFeeToBurn(symbol, amount) {
-      const tokenInfo = this.tokens[symbol];
-      return Number(util.formatTokenAmount(amount, tokenInfo.decimal)).toFixed(3);
     },
     formatTokenNumber (symbol, amount) {
       const tokenInfo = this.tokens[symbol];
