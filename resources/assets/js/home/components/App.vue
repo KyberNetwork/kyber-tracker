@@ -306,7 +306,6 @@ export default {
 
     refresh() {
       AppRequest.getStats24h().then(stats => {
-        console.log(stats);
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;

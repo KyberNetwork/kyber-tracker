@@ -168,6 +168,9 @@
           legend: {
             display: false
           },
+          plugins: {
+            datalabels: false
+          },
           maintainAspectRatio: false
         };
       },

@@ -131,8 +131,8 @@ a {
     fill: #fff;
   }
   a:hover, a:active, a:focus {
-    color: #3ee6c1;
-    fill: #3ee6c1;
+    color: #2ed573;
+    fill: #2ed573;
   }
 
   .pl-20{
@@ -451,7 +451,7 @@ td {
 }
 
 a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
-  color: #3ee6c1;
+  color: #2ed573;
 }
 
 .cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {
@@ -501,6 +501,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   text-align: center;
   // color: #0c0033;
   }
+
+  a[aria-selected="false"]{
+    color: #100437;
+    opacity: 0.5;
+  }
 }
 
 .calendar-icon {
@@ -524,11 +529,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .pos-value {
-  color: #28a745 !important;
+  color: #4cd137 !important;
 }
 
 .neg-value {
-  color: #dc3545 !important;
+  color: #e84118 !important;
 }
 
 .light-text {
@@ -901,7 +906,7 @@ html {
 }
 
 .token-link:hover {
-  color: #3ee6c1;
+  color: #2ed573;
   text-decoration: underline;
 }
 

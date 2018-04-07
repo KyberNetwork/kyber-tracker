@@ -12,6 +12,7 @@
   import AppRequest from '../request/AppRequest';
   import util from '../helper/util';
   import network from '../../../../../config/network';
+  import datalabels from 'chartjs-plugin-datalabels'
 
   export default {
     props: {
@@ -67,7 +68,7 @@
           afterBody: (tooltipItem, data) => {
             const index = tooltipItem[0].index;
             const tokenSymbol = data.labels[index];
-            const usdText = this.$t('chart.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
+            const usdText = this.$t('ß.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
             const ethText = this.$t('chart.title.label_volume') + ' (ETH): ' + util.numberWithCommas(data.volumeEths[index]);
             const tokenText = this.$t('chart.title.label_volume') + ' (' +
               tokenSymbol + '): ' + util.numberWithCommas(data.volumeTokens[index]);
@@ -128,6 +129,26 @@
           legend: {
             display: false
           },
+          plugins: {
+            datalabels: {
+              display: true,
+              align: 'right',
+              anchor: 'end',
+              // color: [
+              //   'red',    // color for data at index 0
+              //   'blue',   // color for data at index 1
+              //   'green',  // color for data at index 2
+              //   'black',  // color for data at index 3
+              //   //...
+              // ],
+              formatter: function(value, context) {
+                let sum = context.dataset.data.reduce((a,b) => (a + b), 0)
+
+                  return Math.round(value/sum * 1000) / 10 + '%';
+              }
+          },
+          },
+          
           maintainAspectRatio: false
         };
       },
@@ -161,7 +182,6 @@
           
           const data = this._buildChartData(ret);
           const options = this._getChartOptions();
-
           if (this.chartInstance) {
             this.chartInstance.destroy();
             this.chartInstance = undefined;
@@ -171,6 +191,7 @@
             type: 'horizontalBar',
             data: data,
             options: options,
+            plugins: [datalabels]
           });
         });
       },

@@ -33,6 +33,7 @@
     "bitcore-lib-dash": "0.15.0",
     "bn.js": "4.11.8",
     "bowser": "^1.9.3",
+    "chartjs-plugin-datalabels": "^0.3.0",
     "dotenv": "4.0.0",
     "localStorage": "^1.0.3",
     "localforage": "^1.6.0",

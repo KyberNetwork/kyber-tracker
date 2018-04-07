@@ -31,7 +31,8 @@
       </div>
       <b-tabs card>
         <b-tab :title="$t('chart.title.top_token')">
-          <chart-token ref="chartToken"
+          <chart-token 
+            ref="chartToken"
             :elementId="'chart-token'">
           </chart-token>
         </b-tab>
@@ -84,6 +85,7 @@ import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 import network from '../../../../../config/network';
 import Chart from 'chart.js';
+
 
 export default {
 

@@ -71,7 +71,7 @@
               <td class="pl-4">{{ getDateInfo(row) }}</td>
               <td class="text-left pl-4">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</td>
               <!-- <td class="text-left no-padding-right"></td> -->
-              <td class="text-center"><i class="k k-angle right"></i></td>
+              <td class="text-left"><i class="k k-angle right"></i></td>
               <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} {{ row.makerTokenSymbol }}</td>
               <!-- <td class="text-left"></td> -->
               <td class="text-left pl-4">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }} {{ row.makerTokenSymbol }}</td>
