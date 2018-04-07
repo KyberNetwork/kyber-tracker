@@ -38,7 +38,7 @@ a {
   .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
-    background-color: #30968e;
+    background-color: rgba(51,102,204,.75);
   }
 
   .dropdown-menu {
@@ -46,13 +46,13 @@ a {
   }
 
   .dropdown-item {
-    padding: 5px;
+    padding: 6px 6px 6px 10px;
   }
 
 }
 
 .search-button {
-  background-color: #192E3B !important;
+  background-color: #192a56 !important;
 
   svg {
     fill: #fff;
@@ -63,7 +63,7 @@ a {
 }
 
 .heading-bar {
-  background-color: #192e3b;
+  background-color: #192a56;
   color: rgba(255, 255, 255, 0.56);
   min-height: 0px !important;
   padding: 10px 0;
@@ -71,14 +71,14 @@ a {
 }
 
 .second-heading-bar {
-  background-color: #2a4451;
+  background-color: #1f3468;
 
   a {
     color: #fff;
     text-decoration: none;
   }
   a:hover, a:active, a:focus {
-    color: #3ee6c1;
+    color: #2ed573;
   }
 
   .nav-item {
@@ -370,7 +370,7 @@ td {
 }
 
 a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
-  color: #3ee6c1;
+  color: #2ed573;
 }
 
 .cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {
@@ -383,7 +383,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .table {
   thead th {
-    background-color: #eee;
+    background-color: #1f3468;
+    color: #fff;
     font-weight: normal;
     padding: 15px 6px;
   }
@@ -422,11 +423,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .pos-value {
-  color: #28a745 !important;
+  color: #4cd137 !important;
 }
 
 .neg-value {
-  color: #dc3545 !important;
+  color: #d14c37 !important;
 }
 
 .light-text {
@@ -760,7 +761,7 @@ html {
 }
 
 .token-link:hover {
-  color: #3ee6c1;
+  color: #2ed573;
   text-decoration: underline;
 }
 

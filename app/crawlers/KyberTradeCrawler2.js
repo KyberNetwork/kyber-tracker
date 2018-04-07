@@ -216,12 +216,13 @@ class KyberTradeCrawler2 {
         getCoinPrice('ETH', record.blockTimestamp, next);
       },
       model: ['price', (ret, next) => {
-        if (record.takerTokenAddress.toLowerCase() === networkConfig.tokens.ETH.address) {
+        const ethAddress = networkConfig.tokens.ETH.address.toLowerCase();
+        if (record.takerTokenAddress.toLowerCase() === ethAddress) {
           record.takerPriceEth = 1;
           record.takerPriceUsd = ret.price;
         }
 
-        if (record.makerTokenAddress.toLowerCase() === networkConfig.tokens.ETH.address) {
+        if (record.makerTokenAddress.toLowerCase() === ethAddress) {
           record.makerPriceEth = 1;
           record.makerPriceUsd = ret.price;
         }

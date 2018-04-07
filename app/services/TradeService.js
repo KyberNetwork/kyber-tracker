@@ -40,7 +40,7 @@ module.exports = BaseService.extends({
       params: params,
       limit: options.limit,
       offset: options.page * options.limit,
-      orderBy: 'id DESC'
+      orderBy: 'block_timestamp DESC'
     };
 
     async.auto({

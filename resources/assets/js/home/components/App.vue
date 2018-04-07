@@ -509,6 +509,6 @@ export default {
   }
 }
 .navbar .router-link-exact-active {
-  color: #3ee6c1 !important;
+  color: #2ed573 !important;
 }
 </style>
