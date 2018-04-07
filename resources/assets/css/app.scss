@@ -141,6 +141,9 @@ a {
   .nav-link.active, .nav-link:hover {
     color: #0c0033;
   }
+  .nav-link:hover {
+    border-bottom: none;
+  }
 }
 
 .pagination {
@@ -416,6 +419,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .card-header {
   min-height: 46px;
+  background-color: rgba(207,207,207,.2);
+  border-bottom: none;
 }
 
 .calendar-icon {
