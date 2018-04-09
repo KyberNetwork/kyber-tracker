@@ -107,6 +107,7 @@ a {
   min-height: 0px !important;
   padding: 10px 0;
   border-top: 1px solid #243c47;
+  align-items: flex-start !important;
 }
 
 .panel-title{
@@ -198,7 +199,7 @@ a {
     margin: 0 3px 0 0;
 
     a.page-link {
-      background-color: #f4f4f4;
+      background-color: #e7e9ec;
       border: none;
       border-radius: 0;
       color: currentColor;
@@ -210,7 +211,7 @@ a {
   }
 
   li.page-item.active a.page-link {
-    background-color: #dfdbdb;
+    background-color: #dadce2;
   }
 }
 
@@ -488,8 +489,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     vertical-align: middle;
   }
 }
+
 .card-header {
   min-height: 40px;
+  background-color: #f4f4f4;
 
   .nav-item{
     font-size: 12px;
@@ -694,9 +697,34 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     margin: 0 15px;
     
     li {
-      width: 100%;
+      width: 50%;
       margin: 0;
     }
+  }
+  .container{
+    padding: 0px;
+  }
+  .kyber-logo{
+    display: none;
+  }
+  .navbar-nav{
+    display: flex;
+    flex-direction: row;
+    .navbar{
+      padding: 0;
+    }
+    li{
+      padding: 10px !important;
+    }
+  }
+  .pt-40{
+    padding-top: 20px;
+  }
+  .panel-heading{
+    padding-left: 15px;
+  }
+  .datepicker-container{
+    padding-left: 15px;
   }
 
   .search-box-container {
@@ -749,6 +777,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     position: static !important;
     display: block;
     width: 100%;
+  }
+  table tr,table th{
+    border-radius: 0px !important;
   }
 }
 
@@ -867,7 +898,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .tracker-logo {
-  min-width: 140px;
+  // min-width: 140px;
 
   .router-link-active {
     white-space: nowrap;

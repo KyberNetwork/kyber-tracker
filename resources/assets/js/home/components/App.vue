@@ -53,7 +53,7 @@
         </div>
 
         
-        <div class="p-relative cursor-pointer col-md-6 col-12 col-sm-12">
+        <div class="p-relative cursor-pointer col-md-6 col-12 col-sm-12 pt-2">
 
           <vue-autosuggest
             ref="seatchInputRef"
@@ -72,7 +72,7 @@
               autocomplete: 'off'
             }"
           />
-          <b-input-group-append class="btn-search ">
+          <b-input-group-append class="btn-search pt-2">
             <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
               <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
             </b-btn>
@@ -86,7 +86,7 @@
       <b-navbar toggleable="sm" type="dark" class="second-heading-bar">
         <div>
           <!-- <b-navbar-toggle target="nav_collapse"></b-navbar-toggle> -->
-          <b-collapse is-nav id="nav_collapse">
+          <!-- <b-collapse is-nav id="nav_collapse"> -->
             <b-navbar-nav>
               <b-nav-item class="navbar tracker-logo">
                 <router-link to="/">
@@ -113,7 +113,7 @@
                 </router-link>
               </b-nav-item>
             </b-navbar-nav>
-          </b-collapse>
+          <!-- </b-collapse> -->
 
           <!-- <b-navbar-nav class="ml-auto search-box-container">
             <form action="javasript:void(0)" class="no-margin no-padding search-form">

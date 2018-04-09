@@ -60,8 +60,8 @@
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
               <th colspan="2" class="pl-4">{{ $t("trade_list.exchange_from") }}</th>
               <th class="pl-4">{{ $t("trade_list.exchange_to") }}</th>
-              <th colspan="2" class="pl-4">{{ $t("trade_list.rate") }}</th>
-              <th v-if="!isHidePartnerCommission" class="text-right ">{{ $t("trade_list.fee_to_wallet") }}</th>
+              <th v-bind:colspan="!isHidePartnerCommission ? 1 : 2" class="pl-4">{{ $t("trade_list.rate") }}</th>
+              <th v-if="!isHidePartnerCommission" colspan="2" class="pl-4" >{{ $t("trade_list.fee_to_wallet") }}</th>
               <!-- <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th> -->
               <!-- <th></th> -->
             </tr>
@@ -76,12 +76,12 @@
               <!-- <td class="text-left"></td> -->
               <td class="text-left pl-4">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }} {{ row.makerTokenSymbol }}</td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
-              <!-- <td v-if="!isHidePartnerCommission"  class="text-right">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
-              <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
+              <td v-if="!isHidePartnerCommission" class="text-left pl-4">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
+              <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td> -->
-              <td @click="onClickRow(row)" class="pointer"><img src="/images/more.svg" /></td>
+              <td class="pointer text-right pr-4" @click="onClickRow(row)"><img src="/images/more.svg" /></td>
             </tr>
           </tbody>
         </table>
