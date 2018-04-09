@@ -47,6 +47,7 @@
     "superagent": "^3.8.2",
     "v-tooltip": "^2.0.0-rc.31",
     "vue-autosuggest": "^1.4.1",
+    "vue-mq": "^0.1.3",
     "web3": "1.0.0-beta.30",
     "ws": "3.2.0"
   },

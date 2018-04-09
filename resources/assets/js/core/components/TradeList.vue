@@ -52,8 +52,10 @@
         :class="'home-pagination-block full-width-pagination'"
         >
       </paginate>
+      
 
-      <div v-if="rows.length > 0" class="table-responsive-wraper clear pt-10">
+      <!-- trade list for large screen device -->
+      <div v-if="rows.length > 0 && ($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
           <thead>
             <tr>
@@ -86,6 +88,42 @@
           </tbody>
         </table>
       </div>
+
+      <!-- small trade list for mobile -->
+      <div v-if="rows.length > 0 && ($mq !== 'md' && $mq !== 'lg')" class="table-responsive-wraper clear pt-10">
+        <table class="table table-round table-striped">
+          <thead>
+            <tr>
+              <th class="pl-4">{{ $t("trade_list.date") }}</th>
+              <th class="pl-4">{{ $t("trade_list.exchange_from") }} > {{ $t("trade_list.exchange_to") }}</th>
+              <th class="pl-4">{{ $t("trade_list.rate") }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, index) in rows" :item="row" :index="index">
+              <td class="pl-4">{{ getDateInfo(row, true) }}</td>
+              <td class="text-left pl-4">
+                <b>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</b>
+                <br/>
+                {{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} {{ row.makerTokenSymbol }}
+              </td>
+              <!-- <td class="text-left pl-4"></td> -->
+              <td class="text-left pl-4">
+                <b>{{ row.takerTokenSymbol }}/{{ row.makerTokenSymbol }}</b>
+                <br/>
+                {{ getRate(row) }}
+              </td>
+              
+              <!-- <td class="pointer text-right pr-4" @click="onClickRow(row)"><img src="/images/more.svg" /></td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+
+
+
 
       <paginate v-if="maxPage > 1 && !isHidePaginate"
         ref="bottomPaginator"
@@ -204,8 +242,8 @@ export default {
 
       return params;
     },
-    getDateInfo (trade) {
-      return util.getDateInfo(trade.blockTimestamp * 1000);
+    getDateInfo (trade, isShort) {
+      return util.getDateInfo(trade.blockTimestamp * 1000, isShort);
     },
     getRate (trade) {
       const makerToken = this.tokens[trade.makerTokenSymbol];

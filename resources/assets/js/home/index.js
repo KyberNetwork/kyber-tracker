@@ -19,6 +19,7 @@ import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
 import ImportAcount from '../core/components/ImportAccount.vue';
 import VueAutosuggest from "vue-autosuggest";
+import VueMq from 'vue-mq'
 // import localforage from 'localforage';
 import routes from './routes';
 
@@ -35,6 +36,14 @@ Vue.use(VueResource);
 Vue.use(BootstrapVue);
 Vue.use(VTooltip)
 Vue.use(VueAutosuggest)
+Vue.use(VueMq, {
+  breakpoints: {
+    sm: 450,
+    ml: 845,
+    md: 1250,
+    lg: Infinity,
+  }
+})
 
 Vue.component('data-table', DataTable);
 Vue.component('trade-list', TradeList);

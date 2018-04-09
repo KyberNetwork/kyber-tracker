@@ -22625,8 +22625,8 @@ exports.default = {
     return tokens[symbol];
   },
 
-  getDateInfo: function getDateInfo(timestamp) {
-    return (0, _moment2.default)(timestamp).fromNow();
+  getDateInfo: function getDateInfo(timestamp, isShort) {
+    return (0, _moment2.default)(timestamp).fromNow(isShort);
   },
 
   formatFiatCurrency: function formatFiatCurrency(amount) {
@@ -72612,6 +72612,10 @@ var _vueAutosuggest = __webpack_require__(546);
 
 var _vueAutosuggest2 = _interopRequireDefault(_vueAutosuggest);
 
+var _vueMq = __webpack_require__(582);
+
+var _vueMq2 = _interopRequireDefault(_vueMq);
+
 var _routes = __webpack_require__(547);
 
 var _routes2 = _interopRequireDefault(_routes);
@@ -72633,6 +72637,14 @@ _vue2.default.use(_vueResource2.default);
 _vue2.default.use(_bootstrapVue2.default);
 _vue2.default.use(_vTooltip2.default);
 _vue2.default.use(_vueAutosuggest2.default);
+_vue2.default.use(_vueMq2.default, {
+  breakpoints: {
+    sm: 450,
+    ml: 845,
+    md: 1250,
+    lg: Infinity
+  }
+});
 
 _vue2.default.component('data-table', _DataTable2.default);
 _vue2.default.component('trade-list', _TradeList2.default);
@@ -96736,7 +96748,7 @@ exports = module.exports = __webpack_require__(13)(undefined);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,600);", ""]);
 
 // module
-exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n  color: #2a4552;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2ed573;\n}\n:focus {\n  outline: none;\n}\n.table th, .table td {\n  border-top: none;\n}\n.pointer {\n  cursor: pointer;\n}\n.table-striped tbody tr:nth-of-type(even) {\n  background-color: rgba(31, 52, 104, 0.02);\n}\n.table-striped tbody tr:nth-of-type(odd) {\n  background-color: transparent !important;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n  color: #fff;\n  text-decoration: none;\n  background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n  padding: 0;\n}\n.change-language-button .dropdown-item {\n  padding: 5px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n  align-items: flex-start !important;\n}\n.panel-title {\n  font-size: 18px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.67;\n  letter-spacing: normal;\n  text-align: left;\n  color: #3d464d;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n  height: 60px;\n  padding-left: 22px;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n    fill: #fff;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #2ed573;\n    fill: #2ed573;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-right: 20px;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: rgba(255, 255, 255, 0);\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #e9ecf1;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #e7e9ec;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dadce2;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 20px 0px;\n  opacity: 0.9;\n  font-family: \"Open Sans\";\n  font-size: 12px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  text-align: left;\n  color: #1f3468;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu .footer-icon {\n      height: 20px;\n      width: 20px;\n      margin-left: 25px;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-search {\n  position: absolute;\n  top: 0;\n  right: 15px;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #2ed573;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 40px;\n  background-color: #f4f4f4;\n}\n.card-header .nav-item {\n    font-size: 12px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: center;\n}\n.card-header a[aria-selected=\"false\"] {\n    color: #100437;\n    opacity: 0.5;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #4cd137 !important;\n}\n.neg-value {\n  color: #e84118 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.full-width-btn-group button {\n  font-size: 10px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.2;\n  letter-spacing: normal;\n  text-align: center;\n}\n.full-width-btn-group .btn-active {\n  margin-right: 0 !important;\n  color: #2ed573;\n}\n.full-width-btn-group .btn-secondary {\n  margin-right: 0 !important;\n  color: #0c0033;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 17px;\n  width: 100%;\n  line-height: 18px;\n  height: 56px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 50%;\n      margin: 0;\n}\n.container {\n    padding: 0px;\n}\n.kyber-logo {\n    display: none;\n}\n.navbar-nav {\n    display: flex;\n    flex-direction: row;\n}\n.navbar-nav .navbar {\n      padding: 0;\n}\n.navbar-nav li {\n      padding: 10px !important;\n}\n.pt-40 {\n    padding-top: 20px;\n}\n.panel-heading {\n    padding-left: 15px;\n}\n.datepicker-container {\n    padding-left: 15px;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\ntable tr, table th {\n    border-radius: 0px !important;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 11px !important;\n  right: 33px !important;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.kyber-logo {\n  height: 46px;\n  margin-right: 45px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 45px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.icon-second-header {\n  margin-right: 5px;\n}\n.p-relative {\n  position: relative;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo .router-link-active {\n  white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #2ed573;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  padding-right: 49px;\n  width: 100%;\n  height: 40px;\n  border-radius: 0px;\n  background-color: #1f3468;\n  border-style: none;\n  color: #ffffff;\n  outline: none;\n  box-shadow: none !important;\n  border: none !important;\n}\n#autosuggest__input::placeholder {\n  font-size: 10px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n  opacity: 0.7;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 5;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.autosuggest__results ul {\n    padding: 5px;\n}\n.history-logo {\n  width: 25px;\n  padding: 3px;\n}\n.token-logo-detail {\n  width: 25px;\n}\n.see-all-trade {\n  cursor: pointer;\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n}\ntable.table-round th {\n  border-top: 0;\n}\ntable.table-round tr:first-child th:first-child {\n  border-top-left-radius: 6px;\n}\ntable.table-round tr:first-child th:last-child {\n  border-top-right-radius: 6px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #2ed573 !important;\n}\n", ""]);
+exports.push([module.i, "\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n  color: #2a4552;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2ed573;\n}\n:focus {\n  outline: none;\n}\n.table th, .table td {\n  border-top: none;\n}\n.pointer {\n  cursor: pointer;\n}\n.table-striped tbody tr:nth-of-type(even) {\n  background-color: rgba(31, 52, 104, 0.02);\n}\n.table-striped tbody tr:nth-of-type(odd) {\n  background-color: transparent !important;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n  color: #fff;\n  text-decoration: none;\n  background-color: #30968e;\n}\n.change-language-button .dropdown-menu {\n  padding: 0;\n}\n.change-language-button .dropdown-item {\n  padding: 5px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n  align-items: flex-start !important;\n}\n.panel-title {\n  font-size: 18px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.67;\n  letter-spacing: normal;\n  text-align: left;\n  color: #3d464d;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n  height: 60px;\n  padding-left: 22px;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n    fill: #fff;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #2ed573;\n    fill: #2ed573;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-right: 20px;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: rgba(255, 255, 255, 0);\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: #000000;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #e9ecf1;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #e7e9ec;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dadce2;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 20px 0px;\n  opacity: 0.9;\n  font-family: \"Open Sans\";\n  font-size: 12px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  text-align: left;\n  color: #1f3468;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu .footer-icon {\n      height: 20px;\n      width: 20px;\n      margin-left: 25px;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.btn-search {\n  position: absolute;\n  top: 0;\n  right: 15px;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #2ed573;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 40px;\n  background-color: #f4f4f4;\n}\n.card-header .nav-item {\n    font-size: 12px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: center;\n}\n.card-header a[aria-selected=\"false\"] {\n    color: #100437;\n    opacity: 0.5;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.pos-value {\n  color: #4cd137 !important;\n}\n.neg-value {\n  color: #e84118 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n  font-size: 14px;\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.full-width-btn-group button {\n  font-size: 10px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.2;\n  letter-spacing: normal;\n  text-align: center;\n}\n.full-width-btn-group .btn-active {\n  margin-right: 0 !important;\n  color: #2ed573;\n}\n.full-width-btn-group .btn-secondary {\n  margin-right: 0 !important;\n  color: #0c0033;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 17px;\n  width: 100%;\n  line-height: 18px;\n  height: 56px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 30px;\n    color: #fff;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 576px) and (max-width: 992px) {\n.heading-summary li {\n    width: 50%;\n    margin: 5px 0;\n}\n}\n@media (min-width: 576px) and (max-width: 779px) {\n.heading-summary {\n    padding-left: 15px;\n}\n}\n@media (max-width: 575px) {\n.heading-summary {\n    margin: 0 15px;\n}\n.heading-summary li {\n      width: 50%;\n      margin: 0;\n}\n.container {\n    padding: 0px;\n}\n.kyber-logo {\n    display: none;\n}\n.navbar-nav {\n    display: flex;\n    flex-direction: row;\n}\n.navbar-nav .navbar {\n      padding: 0;\n}\n.navbar-nav li {\n      padding: 10px !important;\n}\n.pt-40, .pt-56 {\n    padding-top: 20px;\n}\n.panel-heading {\n    padding-left: 15px;\n}\n.datepicker-container {\n    padding-left: 15px;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\ntable tr, table th {\n    border-radius: 0px !important;\n}\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: block;\n    float: right;\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 11px !important;\n  right: 33px !important;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.kyber-logo {\n  height: 46px;\n  margin-right: 45px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 45px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.icon-second-header {\n  margin-right: 5px;\n}\n.p-relative {\n  position: relative;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo .router-link-active {\n  white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2A9A8D;\n}\n.token-link:hover {\n  color: #2ed573;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 13px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest__input {\n  padding-right: 49px;\n  width: 100%;\n  height: 40px;\n  border-radius: 0px;\n  background-color: #1f3468;\n  border-style: none;\n  color: #ffffff;\n  outline: none;\n  box-shadow: none !important;\n  border: none !important;\n}\n#autosuggest__input::placeholder {\n  font-size: 10px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n  opacity: 0.7;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  top: 50px;\n  z-index: 5;\n  width: 100%;\n  background-color: white;\n  /* box-sizing: border-box; */\n  border: 1px solid #ced4da;\n  border-radius: 3px;\n}\n.autosuggest__results ul {\n    padding: 5px;\n}\n.history-logo {\n  width: 25px;\n  padding: 3px;\n}\n.token-logo-detail {\n  width: 25px;\n}\n.see-all-trade {\n  cursor: pointer;\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n}\ntable.table-round th {\n  border-top: 0;\n}\ntable.table-round tr:first-child th:first-child {\n  border-top-left-radius: 6px;\n}\ntable.table-round tr:first-child th:last-child {\n  border-top-right-radius: 6px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #2ed573 !important;\n}\n", ""]);
 
 // exports
 
@@ -100613,8 +100625,8 @@ exports.default = {
 
       return params;
     },
-    getDateInfo: function getDateInfo(trade) {
-      return _util2.default.getDateInfo(trade.blockTimestamp * 1000);
+    getDateInfo: function getDateInfo(trade, isShort) {
+      return _util2.default.getDateInfo(trade.blockTimestamp * 1000, isShort);
     },
     getRate: function getRate(trade) {
       var makerToken = this.tokens[trade.makerTokenSymbol];
@@ -100699,6 +100711,44 @@ exports.default = {
     }
   }
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -104431,7 +104481,7 @@ var render = function() {
             })
           : _vm._e(),
         _vm._v(" "),
-        _vm.rows.length > 0
+        _vm.rows.length > 0 && (_vm.$mq == "md" || _vm.$mq == "lg")
           ? _c("div", { staticClass: "table-responsive-wraper clear pt-10" }, [
               _c(
                 "table",
@@ -104551,6 +104601,89 @@ var render = function() {
                   )
                 ]
               )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.rows.length > 0 && (_vm.$mq !== "md" && _vm.$mq !== "lg")
+          ? _c("div", { staticClass: "table-responsive-wraper clear pt-10" }, [
+              _c("table", { staticClass: "table table-round table-striped" }, [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", { staticClass: "pl-4" }, [
+                      _vm._v(_vm._s(_vm.$t("trade_list.date")))
+                    ]),
+                    _vm._v(" "),
+                    _c("th", { staticClass: "pl-4" }, [
+                      _vm._v(
+                        _vm._s(_vm.$t("trade_list.exchange_from")) +
+                          " > " +
+                          _vm._s(_vm.$t("trade_list.exchange_to"))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("th", { staticClass: "pl-4" }, [
+                      _vm._v(_vm._s(_vm.$t("trade_list.rate")))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.rows, function(row, index) {
+                    return _c("tr", { attrs: { item: row, index: index } }, [
+                      _c("td", { staticClass: "pl-4" }, [
+                        _vm._v(_vm._s(_vm.getDateInfo(row, true)))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-left pl-4" }, [
+                        _c("b", [
+                          _vm._v(
+                            _vm._s(
+                              _vm.formatTokenNumber(
+                                row.takerTokenSymbol,
+                                row.takerTokenAmount
+                              )
+                            ) +
+                              " " +
+                              _vm._s(row.takerTokenSymbol)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(
+                              _vm.formatTokenNumber(
+                                row.makerTokenSymbol,
+                                row.makerTokenAmount
+                              )
+                            ) +
+                            " " +
+                            _vm._s(row.makerTokenSymbol) +
+                            "\n            "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-left pl-4" }, [
+                        _c("b", [
+                          _vm._v(
+                            _vm._s(row.takerTokenSymbol) +
+                              "/" +
+                              _vm._s(row.makerTokenSymbol)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.getRate(row)) +
+                            "\n            "
+                        )
+                      ])
+                    ])
+                  })
+                )
+              ])
             ])
           : _vm._e(),
         _vm._v(" "),
@@ -122302,6 +122435,238 @@ _chart2.default.controllers.LineWithLine = _chart2.default.controllers.line.exte
     }
   }
 });
+
+/***/ }),
+/* 582 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_json2mq__ = __webpack_require__(583);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_json2mq___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_json2mq__);
+
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function _toConsumableArray(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+}
+
+function convertBreakpointsToMediaQueries(breakpoints) {
+  var keys = Object.keys(breakpoints);
+  var values = keys.map(function (key) {
+    return breakpoints[key];
+  });
+  var breakpointValues = [0].concat(_toConsumableArray(values.slice(0, -1)));
+  var mediaQueries = breakpointValues.reduce(function (sum, value, index) {
+    var options = Object.assign({
+      minWidth: value
+    }, index < keys.length - 1 ? {
+      maxWidth: breakpointValues[index + 1] - 1
+    } : {});
+    var mediaQuery = __WEBPACK_IMPORTED_MODULE_0_json2mq___default()(options);
+    return Object.assign(sum, _defineProperty({}, keys[index], mediaQuery));
+  }, {});
+  return mediaQueries;
+}
+function transformValuesFromBreakpoints(breakpoints, values, currentBreakpoint) {
+  var findClosestValue = function findClosestValue(currentBreakpoint) {
+    if (values[currentBreakpoint] !== undefined) return values[currentBreakpoint];
+    var index = breakpoints.findIndex(function (b) {
+      return b === currentBreakpoint;
+    });
+    var newBreakpoint = index !== -1 || index !== 0 ? breakpoints[index - 1] : null;
+    if (!newBreakpoint) return values[index];
+    return values[newBreakpoint] !== undefined ? values[newBreakpoint] : findClosestValue(newBreakpoint);
+  };
+
+  return findClosestValue(currentBreakpoint);
+}
+function selectBreakpoints(breakpoints, currentBreakpoint) {
+  var index = breakpoints.findIndex(function (b) {
+    return b === currentBreakpoint;
+  });
+  return breakpoints.slice(index);
+}
+
+// USAGE
+// mq-layout(mq="lg")
+//   p I’m lg
+var component = {
+  props: {
+    mq: {
+      required: true,
+      type: String
+    }
+  },
+  computed: {
+    plusModifier: function plusModifier() {
+      return this.mq.slice(-1) === '+';
+    },
+    activeBreakpoints: function activeBreakpoints() {
+      var breakpoints = Object.keys(this.$mqAvailableBreakpoints);
+      var mq = this.plusModifier ? this.mq.slice(0, -1) : this.mq;
+      return this.plusModifier ? selectBreakpoints(breakpoints, mq) : [this.mq];
+    }
+  },
+  render: function render(h, props) {
+    var shouldRenderChildren = this.activeBreakpoints.includes(this.$mq);
+    return shouldRenderChildren ? h('div', this.$slots.default) : h();
+  }
+};
+
+var DEFAULT_BREAKPOINT = {
+  sm: 450,
+  md: 1250,
+  lg: Infinity
+};
+
+var install = function install(Vue) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      _ref$breakpoints = _ref.breakpoints,
+      breakpoints = _ref$breakpoints === void 0 ? DEFAULT_BREAKPOINT : _ref$breakpoints;
+
+  // Init reactive component
+  var reactorComponent = new Vue({
+    data: function data() {
+      return {
+        currentBreakpoint: null
+      };
+    }
+  });
+  var mediaQueries = convertBreakpointsToMediaQueries(breakpoints);
+  Object.keys(mediaQueries).map(function (key) {
+    var mediaQuery = mediaQueries[key];
+
+    var enter = function enter() {
+      reactorComponent.currentBreakpoint = key;
+    };
+
+    _subscribeToMediaQuery(mediaQuery, enter);
+  });
+
+  function _subscribeToMediaQuery(mediaQuery, enter) {
+    var mql = window.matchMedia(mediaQuery);
+
+    var cb = function cb(_ref2) {
+      var matches = _ref2.matches;
+      if (matches) enter();
+    };
+
+    mql.addListener(cb); //subscribing
+
+    cb(mql); //initial trigger
+  }
+
+  Vue.filter('mq', function (currentBreakpoint, values) {
+    return transformValuesFromBreakpoints(Object.keys(breakpoints), values, currentBreakpoint);
+  });
+  Vue.mixin({
+    computed: {
+      $mq: function $mq() {
+        return reactorComponent.currentBreakpoint;
+      }
+    }
+  });
+  Vue.prototype.$mqAvailableBreakpoints = breakpoints;
+  Vue.component('MqLayout', component);
+};
+
+var index = {
+  install: install
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index);
+
+
+/***/ }),
+/* 583 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var camel2hyphen = __webpack_require__(584);
+
+var isDimension = function (feature) {
+  var re = /[height|width]$/;
+  return re.test(feature);
+};
+
+var obj2mq = function (obj) {
+  var mq = '';
+  var features = Object.keys(obj);
+  features.forEach(function (feature, index) {
+    var value = obj[feature];
+    feature = camel2hyphen(feature);
+    // Add px to dimension features
+    if (isDimension(feature) && typeof value === 'number') {
+      value = value + 'px';
+    }
+    if (value === true) {
+      mq += feature;
+    } else if (value === false) {
+      mq += 'not ' + feature;
+    } else {
+      mq += '(' + feature + ': ' + value + ')';
+    }
+    if (index < features.length-1) {
+      mq += ' and '
+    }
+  });
+  return mq;
+};
+
+var json2mq = function (query) {
+  var mq = '';
+  if (typeof query === 'string') {
+    return query;
+  }
+  // Handling array of media queries
+  if (query instanceof Array) {
+    query.forEach(function (q, index) {
+      mq += obj2mq(q);
+      if (index < query.length-1) {
+        mq += ', '
+      }
+    });
+    return mq;
+  }
+  // Handling single media query
+  return obj2mq(query);
+};
+
+module.exports = json2mq;
+
+/***/ }),
+/* 584 */
+/***/ (function(module, exports) {
+
+var camel2hyphen = function (str) {
+  return str
+          .replace(/[A-Z]/g, function (match) {
+            return '-' + match.toLowerCase();
+          })
+          .toLowerCase();
+};
+
+module.exports = camel2hyphen;
 
 /***/ })
 /******/ ]);
