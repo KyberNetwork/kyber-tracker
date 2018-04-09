@@ -26,7 +26,7 @@ class KyberTradeCrawler {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
 
-        getLatestBlockNumber(next);
+        getLatestBlockNumber(next, "BurnedFeeModel", "BURNED_BLOCK_START");
       },
       processBlock: ['startBlockNumber', (ret, next) => {
         this.processBlock(ret.startBlockNumber, next);
