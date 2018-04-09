@@ -779,8 +779,38 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     display: block;
     width: 100%;
   }
+  .card{
+    border-radius: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    .chart-period-picker{
+      padding-bottom: 5px;
+      padding-left: 10px;
+      .full-width-btn-group{
+        display: inline-flex;
+      }
+    }
+  }
+  .card-header{
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+  }
+
   table tr,table th{
     border-radius: 0px !important;
+  }
+  #footer{
+    height: auto !important;
+    .row{
+      display: block;
+      .footer-menu,.footer-menu{
+        text-align: center !important;
+        padding-bottom: 10px;
+      }
+      .footer-icon{
+        margin: 0 15px !important;
+      }
+    }
   }
 }
 
@@ -1116,6 +1146,7 @@ html {
   letter-spacing: normal;
   text-align: center;
   color: #00d3a7;
+  background-color: white;
 }
 
 table.table-round {
