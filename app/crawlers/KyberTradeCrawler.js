@@ -71,6 +71,7 @@ class KyberTradeCrawler {
       block: (next) => {
         web3.eth.getBlock(blockNumber, true, next);
       },
+      /*
       processTradeTransactions: ['block', (ret, next) => {
         if (!ret.block) {
           return next(`Empty block response. Wait for the next run..`);
@@ -84,6 +85,7 @@ class KyberTradeCrawler {
           getKyberTrade(ret.block, tx, _next);
         }, next);
       }],
+      */
       processBurnedFeeTransactions: ['block', (ret, next) => {
         if (!ret.block) {
           return next(`Empty block response. Wait for the next run..`);

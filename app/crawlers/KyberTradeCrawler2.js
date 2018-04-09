@@ -181,10 +181,21 @@ class KyberTradeCrawler2 {
           record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
           break;
         case networkConfig.logTopics.feeToWallet:
+          
+          // these 2 fields should be saved to DB, so we could report by receiving (partner) wallet
+
+          // the reserve which pays commision, should be the same as "logTopics.burnFee" reserve
+          const payingReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));;
+          // the wallet receiving commision
+          const receivingWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          // although named "takerFee" here, it is not taker fee at all. It is the commision reserve pays partner
+          record.takerFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
           break;
         case networkConfig.logTopics.burnFee:
           record.reserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          record.burnFees = web3.eth.abi.decodeParameter('uint', web3.utils.bytesToHex(data.slice(32, 64)));
+          
+          // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
+          record.burnFees = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)));
           break;
       }
     });
@@ -210,21 +221,25 @@ class KyberTradeCrawler2 {
 
   _addNewTrade (exSession, record, callback) {
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
+    const CMCService = exSession.getService('CMCService');
     logger.info(`Add new trade: ${JSON.stringify(record)}`);
     async.auto({
       price: (next) => {
-        getCoinPrice('ETH', record.blockTimestamp, next);
+        //getCoinPrice('ETH', record.blockTimestamp, next);
+        CMCService.getHistoricalPrice('ETH', record.blockTimestamp * 1000, next);
       },
       model: ['price', (ret, next) => {
         const ethAddress = networkConfig.tokens.ETH.address.toLowerCase();
         if (record.takerTokenAddress.toLowerCase() === ethAddress) {
           record.takerPriceEth = 1;
-          record.takerPriceUsd = ret.price;
+          //record.takerPriceUsd = ret.price;
+          record.takerPriceUsd = ret.price.price_usd;
         }
 
         if (record.makerTokenAddress.toLowerCase() === ethAddress) {
           record.makerPriceEth = 1;
-          record.makerPriceUsd = ret.price;
+          //record.makerPriceUsd = ret.price;
+          record.makerPriceUsd = ret.price.price_usd;
         }
 
         KyberTradeModel.add(record, {
