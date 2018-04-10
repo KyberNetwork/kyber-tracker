@@ -6,12 +6,84 @@
         <span class="panel-title no-margin"> {{ title }} </span>
       </div>
 
-      <div v-if="!!getSearchResultTitle()" class="clear p-10">
+      <!-- <div v-if="!!getSearchResultTitle()" class="clear p-10">
         <b v-html="getSearchResultTitle()" />
-      </div>
+      </div> -->
 
-      <div v-if="!!getSearchResultMessage()" class="clear p-10">
-        <div v-html="getSearchResultMessage()" />
+      <div v-if="searchResult" class="clear p-10">
+        <!-- <div v-html="getSearchResultMessage()" /> -->
+
+
+        <div v-if="!searchResult.data">
+          {{searchResult.error}}
+        </div>
+
+        <div v-if="searchResult.isValid && searchResult.data">
+          
+
+
+
+          <!-- address detail ################## -->
+          <div class="address-detail-container">
+            <div class="wallet-title">
+              Address
+              <a class="wallet-address" target="_blank" :href="getTxEtherscanLink(searchResult.data.query)">{{ searchResult.data.query }}</a>
+            </div>
+
+            <div class="row wallet-value vdivide">
+              <div class="col border-right">
+                <div class="value-number">
+                  {{searchResult.data.numberTrades}}
+                </div>
+                <div class="value-label">
+                  Trades
+                </div>
+                
+              </div>
+              <div class="col">
+                <div class="value-number">
+                  {{searchResult.data.totalPartnerFee}} KNC
+                </div>
+                <div class="value-label">
+                  Collected Fees
+                </div>
+                
+              </div>
+            </div>
+
+
+            <div class="wallet-title">
+              Total  Trading Volume 
+            </div>
+
+            <div class="row wallet-value vdivide">
+              <div class="col border-right">
+                <div class="value-number">
+                  {{searchResult.data.totalEth}}
+                </div>
+                <div class="value-label">
+                  Value in ETH
+                </div>
+                
+              </div>
+              <div class="col">
+                <div class="value-number">
+                  {{searchResult.data.totalUsd}}
+                </div>
+                <div class="value-label">
+                  Value in USD*
+                </div>
+                
+              </div>
+            </div>
+
+
+            <div class="walet-note">
+              *USD Rates are calculated at trading time
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div v-if="!isHideDatepicker && rows && rows.length" class="datepicker-container">
@@ -173,15 +245,17 @@ export default {
     isHidePartnerCommission: {
       type: Boolean
     },
-    getSearchResultMessage: {
-      type: Function,
-      default: function () {
-        if (this.rows && this.rows.length) {
-          return '';
-        }
+    searchResult: {
+      // type: Function,
+      // default: function () {
+      //   if (this.rows && this.rows.length) {
+      //     return '';
+      //   }
 
-        return this.$t("trade_list.msg_no_result");
-      }
+      //   return this.$t("trade_list.msg_no_result");
+      // }
+       type: Object
+
     },
     getSearchResultTitle: {
       type: Function,
@@ -229,6 +303,9 @@ export default {
     };
   },
   methods: {
+    getTxEtherscanLink(tx) {
+      return network.endpoints.ethScan + "tx/" + tx;
+    },
     getRequestParams () {
       let params = {
         symbol: this.getFilterTokenSymbol(),

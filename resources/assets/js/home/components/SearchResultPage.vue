@@ -4,7 +4,7 @@
       :getFilterTokenSymbol="getFilterTokenSymbol"
       :fetch="requestSearch"
       :isHideDatepicker="false"
-      :getSearchResultMessage="getSearchResultMessage"
+      :searchResult="getSearchResultMessage()"
       :getSearchResultTitle="getSearchResultTitle"
       :searchFromDate="searchFromDate"
       :searchToDate="searchToDate"
@@ -71,20 +71,49 @@ export default {
     },
     getSearchResultMessage () {
       if(!util.isTxHash(this.$route.query.q) && !util.isAddress(this.$route.query.q)){
-        return '<span>'+ this.$t('search_page.invalid_query') +'</span>'
+        // let vaidQuery = this.$t('search_page.invalid_query')
+        // return <span>{{vaidQuery}}</span>
+        return {
+          isValid: false,
+          error: this.$t('search_page.invalid_query'),
+          data: null
+        }
       }
 
       if(util.isTxHash(this.$route.query.q) && !this.resultCount){
-        return '<span>'+ this.$t('search_page.no_txhash_data') +'</span>'
+        // let noTxHash = this.$t('search_page.no_txhash_data')
+        // return <span>{{noTxHash}}</span>
+        return {
+          isValid: true,
+          error: this.$t('search_page.no_txhash_data'),
+          data: null
+        }
       }
-      return '<span>' + this.$t('search_page.result_msg', [this.resultCount]) 
-            + '</br>' 
-            + this.$t('search_page.total_usd_msg', [this.totalUsd])
-            + '</br>' 
-            + this.$t('search_page.total_eth_msg', [this.totalEth])
-            + '</br>' 
-            + this.$t('search_page.total_fee', [this.totalPartnerFee])
-            + '</span>'
+     
+      // let returnDiv = <span>
+      //           {{resultMsg}}
+      //           <br/>
+      //           {{totalUsdMsg}}
+      //           <br/>
+      //           {{totalEthMsg}}
+      //           <br/> 
+      //           {{totalPartnerFee}}
+      //       </span>
+
+      //       console.log(returnDiv)
+
+            return {
+              isValid: true,
+              error: null,
+              data: {
+                numberTrades : this.resultCount,
+                totalUsd : this.totalUsd,
+                totalEth : this.totalEth,
+                totalPartnerFee : this.totalPartnerFee,
+                type: util.isAddress(this.$route.query.q) ? 'address' : 'txHash',
+                query: this.$route.query.q
+              }
+            }
     },
     requestSearch () {
       const currentPage = this.$refs.datatable.currentPage;
