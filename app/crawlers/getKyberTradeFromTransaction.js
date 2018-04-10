@@ -92,7 +92,7 @@ module.exports = (block, tx, callback) => {
 
       if (log.topics[0].toLowerCase() === Utils.getFeeToWalletTopicHash()) {
         const { reserveAddr, walletAddr, walletFee } = web3.eth.abi.decodeParameters(feeLogABI, log.data);
-        record.takerFee = walletFee;
+        record.commission = walletFee;
       }
 
     });

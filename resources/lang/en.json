@@ -42,6 +42,7 @@
     "network_volume": "24H VOLUME",
     "trades": "TRADES (24H)",
     "burned_fee": "FEES TO BURN (24H)",
+    "collected_fees": "COLLECTED FEES",
     "fees_to_burn": "FEES TO BURN",
     "fees_burned": "FEES BURNED",
     "knc_price": "KNC PRICE"
@@ -49,8 +50,9 @@
 
   "tooltip": {
     "network_volume": "Trading volume during the last 24 hours",
+    "collected_fees": "Total fees collected from reserves",
     "fees_to_burn": "Total fees set aside to burn so far",
-    "fees_burned": "Total fees that have already been burnt",
+    "fees_burned": "Total fees burnt so far",
     "knc_price": "Current KNC price",
     "knc_price_change_24": "% change compared with price at 24 hours ago"
   },
@@ -58,8 +60,9 @@
   "chart": {
     "title": {
       "network_volume": "Volume",
-      "network_fee": "Fees",
-      "fee_to_burn": "Burn",
+      "collected_fees": "Collected Fees",
+      "fees_burned": "Burned (Accumulated)",
+      "fee_to_burn": "Fees To Burn",
       "top_token": "Top Tokens",
       "token_volume": "{0} Volume",
       "label_volume": "Volume",
@@ -80,8 +83,9 @@
     "rate": "Rate",
     "description": "Description",
     "amount": "Amount",
+    "collected_fees": "Collected Fees",
     "fee_to_wallet": "Partner Commission",
-    "fee_to_burn": "Burn",
+    "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
     "exchange_from" : "From",
@@ -97,6 +101,7 @@
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
     "rate": "Rate",
+    "collected_fees": "Collected Fees",
     "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
     "for": " for "
@@ -117,7 +122,7 @@
     "total_eth_msg": "Total volume (ETH): {0}",
     "result_title": "Address: ",
     "tx_hash": "Tx hash: ",
-    "total_fee": "Total partner commission: {0} KNC",
+    "total_fee": "Total collected fees: {0} KNC",
     "no_txhash_data": "This transaction is not with Kyber Network",
     "invalid_query": "Your search string is not address or tx hash"
   },

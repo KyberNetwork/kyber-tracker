@@ -181,19 +181,12 @@ class KyberTradeCrawler2 {
           record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
           break;
         case networkConfig.logTopics.feeToWallet:
-          
-          // these 2 fields should be saved to DB, so we could report by receiving (partner) wallet
-
-          // the reserve which pays commision, should be the same as "logTopics.burnFee" reserve
-          const payingReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));;
-          // the wallet receiving commision
-          const receivingWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          // although named "takerFee" here, it is not taker fee at all. It is the commision reserve pays partner
-          record.takerFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.commissionReserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));;
+          record.commissionReceiveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          record.commission = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
           break;
         case networkConfig.logTopics.burnFee:
-          record.reserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          
+          record.burnReserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
           record.burnFees = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)));
           break;

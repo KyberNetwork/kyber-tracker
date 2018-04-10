@@ -42,6 +42,38 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
+  getBurnedFees(period, interval, symbol, callback) {
+    if (typeof symbol === 'function') {
+      callback = symbol;
+      symbol = null;
+    }
+
+    const url = `/api/fees/burned`;
+    return request
+            .get(url)
+            .query({ period, interval, symbol })
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
+  getCollectedFees(period, interval, symbol, callback) {
+    if (typeof symbol === 'function') {
+      callback = symbol;
+      symbol = null;
+    }
+
+    const url = `/api/fees/collected`;
+    return request
+            .get(url)
+            .query({ period, interval, symbol })
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
   getFeeToBurn(period, interval, symbol, callback) {
     if (typeof symbol === 'function') {
       callback = symbol;

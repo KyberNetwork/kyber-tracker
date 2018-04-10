@@ -49,6 +49,10 @@ module.exports = BaseEntity.extends({
       this.volumeUsd = this.makerTotalUsd || this.takerTotalUsd;
     }
 
+    if (!this.burnFees) this.burnFees = 0;
+    if (!this.commission) this.commission = 0;
+    this.collectedFees = ((new BigNumber(this.burnFees)).plus(new BigNumber(this.commission))).toString();
+
     this.minuteSeq = Math.floor(this.blockTimestamp / 60);
     this.hourSeq = Math.floor(this.blockTimestamp / 3600);
     this.daySeq = Math.floor(this.blockTimestamp / 86400);

@@ -47,12 +47,12 @@
 
     <b-row class="mt-20">
       <b-col sm="3"><label><b>{{ $t("trade_detail.fee_to_wallet") }}</b></label></b-col>
-      <b-col sm="9">{{ getTokenAmount(record.takerFee, 'KNC') }} KNC</b-col>
+      <b-col sm="9">{{ getTokenAmount(record.commission, 'KNC') }} KNC</b-col>
     </b-row>
 
     <b-row>
-      <b-col sm="3"><label><b>{{ $t("trade_detail.fee_to_burn") }}</b></label></b-col>
-      <b-col sm="9">{{ getTokenAmount(record.burnFees, 'KNC') }} KNC</b-col>
+      <b-col sm="3"><label><b>{{ $t("trade_detail.collected_fees") }}</b></label></b-col>
+      <b-col sm="9">{{ getTokenAmount(record.collectedFees, 'KNC') }} KNC</b-col>
     </b-row>
 
   </div>
@@ -89,8 +89,8 @@ export default {
         "gasLimit": "",
         "gasPrice": "",
         "gasUsed": "",
-        "makerFee": "0",
-        "takerFee": "0",
+        "collectedFees": "0",
+        "commission": "0",
         "burnFees": "",
       },
       tokens: _.keyBy(_.values(network.tokens), 'symbol')

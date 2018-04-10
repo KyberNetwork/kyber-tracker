@@ -239,18 +239,20 @@ module.exports = BaseService.extends({
           params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
       },
-      partnerFee: (next) => {
-        KyberTradeModel.sum('taker_fee', {
-          where: 'block_timestamp > ?',
-          params: [nowInSeconds - DAY_IN_SECONDS]
+      */
+      collectedFees: (next) => {
+        KyberTradeModel.sum('collected_fees', {
+          where: '1=1'
+          //where: 'block_timestamp > ?',
+          //params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
       },
-      */
       totalBurnedFee: (next) => {
         BurnedFeeModel.sum('amount', {
           where: '1=1'
         }, next);
       },
+      /*
       feeToBurn: (next) => {
         KyberTradeModel.sum('burn_fees', {
           where: '1=1'
@@ -258,6 +260,7 @@ module.exports = BaseService.extends({
           // params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
       },
+      */
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -267,16 +270,20 @@ module.exports = BaseService.extends({
       const volumeInETH = new BigNumber(ret.volumeEth.toString());
       //const feeInKNC = new BigNumber(ret.partnerFee.toString()).div(Math.pow(10, 18));
       //const feeInUSD = feeInKNC.times(ret.kncPrice);
-      const totalBurnedFee = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
-      const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
+
+      const burnedNoContract = 48.61873337;
+      const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
+      const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
+      //const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
+      const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
         networkVolumeEth:  volumeInETH.toFormat(2).toString() + " ETH",
-        //partnerFee: '$' + feeInUSD.toFormat(2).toString(),
+        collectedFees: collectedFees.toFormat(2).toString(),
         //tradeCount: ret.tradeCount,
         kncInfo: ret.kncInfo,
-        totalBurnedFee: totalBurnedFee.toFormat(2).toString(),
-        feeToBurn: feeToBurn.toFormat(2).toString()
+        totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
+        // feeToBurn: feeToBurn.toFormat(2).toString()
       };
 
       LocalCache.setSync(key, result, {ttl: Const.MINUTE_IN_MILLISECONDS});
@@ -367,8 +374,8 @@ module.exports = BaseService.extends({
           params: params,
         }, next);
       },
-      partnerFee: (next) => {
-        KyberTradeModel.sum('taker_fee', {
+      collectedFees: (next) => {
+        KyberTradeModel.sum('collected_fees', {
           where: whereClauses,
           params: params,
         }, next);
@@ -386,7 +393,7 @@ module.exports = BaseService.extends({
           totalCount: ret.count,
           volumeUsd: ret.volumeUsd,
           volumeEth: ret.volumeEth,
-          partnerFee: ret.partnerFee,
+          collectedFees: ret.collectedFees,
           maxPage: Math.ceil(ret.count / limit)
         }
       });
@@ -412,7 +419,7 @@ module.exports = BaseService.extends({
     const groupColumn = this._getGroupColumnByIntervalParam(interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
+    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
     let params = [fromDate, toDate];
 
     if (options.symbol) {
@@ -494,7 +501,166 @@ module.exports = BaseService.extends({
     });
   },
 
-  // Use for "Fees To Burn" chart
+  // Use for "Fees Burned" chart
+  getBurnedFees: function (options, callback) {
+    const BurnedFeeModel = this.getModel('BurnedFeeModel');
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+
+    let key = `burned-fee-${period}-${interval}`;
+
+    const cachedData = LocalCache.getSync(key);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
+
+    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
+    let params = [fromDate, toDate];
+
+    async.auto({
+      sum: (next) => {
+        BurnedFeeModel.sumGroupBy('amount/1000000000000000000', {
+          where: whereClauses,
+          params: params,
+          groupBy: [groupColumn],
+        }, next);
+      },
+      pastSum: (next) => {
+        BurnedFeeModel.sum('amount', {
+          where: 'block_timestamp < ?',
+          params: [fromDate]
+        }, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const burnedNoContract = 48.61873337;
+      const pastSum = new BigNumber((ret.pastSum || 0).toString()).div(Math.pow(10, 18)).toNumber();
+      let accuBurned = burnedNoContract + pastSum;
+      const returnData = [];
+      if (ret.sum.length) {
+
+        for (let i = 0; i < ret.sum.length; i++) {
+          accuBurned += (ret.sum[i].sum || 0);
+          returnData.push({
+            daySeq: ret.sum[i].daySeq,
+            hourSeq: ret.sum[i].hourSeq,
+            sum: accuBurned
+          })
+        }
+        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+        if (nowSeq > lastSeq) {
+          const nullData = {
+            [this._convertSeqColumnName(groupColumn)]: nowSeq,
+            sum: accuBurned
+          };
+          returnData.push(nullData);
+        }
+
+      } else {
+        const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+        returnData.push({
+          [this._convertSeqColumnName(groupColumn)]: firstSeq,
+          sum: 0
+        });
+        returnData.push({
+          [this._convertSeqColumnName(groupColumn)]: nowSeq,
+          sum: 0
+        });
+      }
+
+      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      return callback(null, returnData);
+    });
+  },
+
+  // Use for "Collected Fees" chart
+  getCollectedFees: function (options, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+
+    let key = `collected-fee-${period}-${interval}`;
+    if (options.symbol) {
+      key = options.symbol + '-' + key;
+    }
+
+    const cachedData = LocalCache.getSync(key);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
+
+    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
+    let params = [fromDate, toDate];
+
+    if (options.symbol) {
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+      params.push(options.symbol);
+      params.push(options.symbol);
+    }
+
+    async.auto({
+      sum: (next) => {
+        KyberTradeModel.sumGroupBy('collected_fees/1000000000000000000', {
+          where: whereClauses,
+          params: params,
+          groupBy: [groupColumn],
+        }, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const returnData = [];
+      if (ret.sum.length) {
+
+        for (let i = 0; i < ret.sum.length; i++) {
+          returnData.push({
+            daySeq: ret.sum[i].daySeq,
+            hourSeq: ret.sum[i].hourSeq,
+            sum: ret.sum[i].sum
+          })
+        }
+        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+        if (nowSeq > lastSeq) {
+          const nullData = {
+            [this._convertSeqColumnName(groupColumn)]: nowSeq,
+            sum: 0
+          };
+          returnData.push(nullData);
+        }
+
+      } else {
+        const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+        returnData.push({
+          [this._convertSeqColumnName(groupColumn)]: firstSeq,
+          sum: 0
+        });
+        returnData.push({
+          [this._convertSeqColumnName(groupColumn)]: nowSeq,
+          sum: 0
+        });
+      }
+
+      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      return callback(null, returnData);
+    });
+  },
+
+  // Use for "Fees To Burn" chart (not used)
   getToBurnFees: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
@@ -513,7 +679,7 @@ module.exports = BaseService.extends({
     const groupColumn = this._getGroupColumnByIntervalParam(interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
+    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
     let params = [fromDate, toDate];
 
     if (options.symbol) {
@@ -583,90 +749,6 @@ module.exports = BaseService.extends({
       return callback(null, returnData);
     });
   },
-
-  // Use for "partner commision" chart (currently not used by front-end)
-  getToWalletFees: function (options, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
-    const interval = options.interval || 'H1';
-    const period = options.period || 'D7';
-
-    let key = `to-wallet-fee-${period}-${interval}`;
-    if (options.symbol) {
-      key = options.symbol + '-' + key;
-    }
-
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
-
-    let whereClauses = 'block_timestamp > ? AND block_timestamp < ?';
-    let params = [fromDate, toDate];
-
-    if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-      params.push(options.symbol);
-      params.push(options.symbol);
-    }
-
-    KyberTradeModel.sumGroupBy('taker_fee', {
-      where: whereClauses,
-      params: params,
-      groupBy: [groupColumn]
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
-      }
-
-      LocalCache.setSync(key, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
-      return callback(null, ret);
-    });
-  },
-
-  // Seems not used anywhere
-  /*
-  getCountMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
-
-    let whereClauses = 'maker_address = ? AND block_timestamp > ? AND block_timestamp < ?';
-    let params = [markerAddress, fromDate, toDate];
-
-    KyberTradeModel.countGroupBy('maker_address', {
-      where: whereClauses,
-      params: params,
-      groupBy: ['maker_address']
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
-      }
-      return callback(null, ret);
-    });
-  },
-  */
-
-  // Seems not used anywhere
-  /*
-  getSumMarkerAddress: function (markerAddress, fromDate, toDate, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
-
-    let whereClauses = 'maker_address = ? AND block_timestamp > ? AND block_timestamp < ?';
-    let params = [markerAddress, fromDate, toDate];
-
-    KyberTradeModel.sumGroupBy('maker_total_usd', {
-      where: whereClauses,
-      params: params,
-      groupBy: ['maker_address']
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
-      }
-      return callback(null, ret);
-    });
-  },
-  */
 
   _getGroupColumnByIntervalParam: function (interval) {
     switch (interval) {

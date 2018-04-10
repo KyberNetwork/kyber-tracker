@@ -13,9 +13,9 @@
                 <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
                 <span class="topbar-value">{{ tradeCount }}</span>
               </li> -->
-              <li v-tooltip.bottom="$t('tooltip.fees_to_burn')">
-                <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
-                <span class="topbar-value">{{ feeToBurn }}</span>
+              <li v-tooltip.bottom="$t('tooltip.collected_fees')">
+                <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
+                <span class="topbar-value">{{ collectedFees }}</span>
               </li>
               <li v-tooltip.bottom="$t('tooltip.fees_burned')">
                 <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
@@ -178,7 +178,7 @@ export default {
       totalBurnedFee: "",
       searchString: "",
       pageTitle: "",
-      feeToBurn: "",
+      collectedFees: "",
       breadcrumbsItems: [],
       searchData: [],
       addressesMetamask: []
@@ -278,7 +278,7 @@ export default {
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
         this.totalBurnedFee = stats.totalBurnedFee + " KNC";
-        this.feeToBurn = stats.feeToBurn + " KNC";
+        this.collectedFees = stats.collectedFees + " KNC";
       });
 
       request
