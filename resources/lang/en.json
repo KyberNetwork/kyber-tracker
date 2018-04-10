@@ -35,8 +35,8 @@
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
     "search": "Wallet Details",
-    "network": "Network"
-
+    "network": "Network",
+    "trade_details": "Trade Details"
   },
 
   "filter": {

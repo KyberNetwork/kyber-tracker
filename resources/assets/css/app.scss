@@ -228,7 +228,7 @@ a {
   height: 56px;
   padding: 20px 0px;
   opacity: 0.9;
-  font-family: "Open Sans";
+  font-family: $code-font-openSans;
   font-size: 12px;
   font-weight: 600;
   font-style: normal;
@@ -809,6 +809,114 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       }
       .footer-icon{
         margin: 0 15px !important;
+      }
+    }
+  }
+}
+.trade-details-container{
+  .background-detail{
+    background-color: #f9fafc;
+  }
+  font-family: $code-font-openSans;
+  color: #0c0033;
+  letter-spacing: normal;
+  font-style: normal;
+  font-stretch: normal;
+  .left-trade-detail{
+    padding: 32px 15px 35px 30px;
+    .trade-time{
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.43;
+      text-align: left;
+      // text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    .left-trade-rate{
+      background-color: #ffffff;
+      box-shadow: 0 2px 2px 0 rgba(31, 52, 104, 0.29);
+      margin: 20px 0px;
+      /* align-items: center; */
+      // text-align: center;
+
+
+      font-size: 18px;
+      font-weight: 600;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: #0c0033;
+      .token-from{
+        padding: 18px 0 3px;
+      }
+      .token-to{
+        padding: 3px 0 18px;
+      }
+      .to{
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .usd-value{
+        font-size: 14px;
+        font-weight: normal;
+      }
+    }
+    .trade-note{
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+
+  .right-trade-detail{
+    padding: 32px 24px 35px 15px;
+    .trade-detail-title{
+      font-size: 14px;
+      font-weight: 600;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #0c0033 !important;
+      padding-bottom: 6px;
+    }
+    .trade-detail-link{
+      
+      font-size: 14px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #2ed573;
+      padding-bottom: 29px;
+    }
+    .rate-detail{
+      text-align: center;
+      .rate-detail-title{
+        font-size: 12px;
+        font-weight: 600;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #0c0033;
+        text-align: center;
+      }
+      .rate-detail-value{
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-align: left;
+        color: #0c0033;
+        padding-top: 10px;
+        text-align: center;
       }
     }
   }
