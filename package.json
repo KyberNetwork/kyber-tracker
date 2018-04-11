@@ -36,6 +36,7 @@
     "localforage": "^1.6.0",
     "lodash": "4.17.4",
     "moment": "2.20.1",
+    "node-telegram-bot-api": "^0.30.0",
     "nodemon": "1.13.3",
     "randomstring": "1.1.5",
     "require-directory": "^2.1.1",
