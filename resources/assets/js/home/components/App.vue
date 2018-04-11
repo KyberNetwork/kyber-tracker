@@ -421,13 +421,13 @@ export default {
       let logoUrl = "";
       switch (suggestion.item.type) {
         case "address":
-          logoUrl = "/images/address.svg";
+          logoUrl = "/images/address-icon.svg";
           break;
         case "txHash":
-          logoUrl = "/images/txhash.svg";
+          logoUrl = "/images/tx-hash-icon.svg";
           break;
         case "metamask":
-          logoUrl = "/images/metamask.svg";
+          logoUrl = "/images/metamask-icon.svg";
           break;
       }
       return (

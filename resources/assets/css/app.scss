@@ -1260,6 +1260,7 @@ html {
 #autosuggest{
   width: 100%;
   max-width: 365px;
+  position: relative;
 }
 #autosuggest__input{
   // padding-right: 49px;
@@ -1298,16 +1299,40 @@ html {
 .autosuggest__results{
   position: absolute;
   color: black;
-  top: 50px;
   z-index: 5;
   width: 100%;
-  background-color: white;
+  font-family: $code-font-openSans;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: left;
+  color: #0c0033;
   /* box-sizing: border-box; */
-  border: 1px solid #ced4da;
-  border-radius: 3px;
+  // border: 1px solid #ced4da;
+  // border-radius: 3px;
+  // border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
   ul{
-    padding: 5px;
+    padding: 0px;
+    margin: 0px;
   }
+
+  .autosuggest__results_item{
+    padding: 5px 15px;
+
+    span{
+      padding-left: 10px;
+    }
+  }
+
+  .autosuggest__results_item:hover{
+    background-color: #f5f3f6;
+  }
+
 }
 
 .history-logo{
