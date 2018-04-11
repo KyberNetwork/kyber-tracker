@@ -330,10 +330,6 @@ export default {
       const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, takerToken.decimal));
       return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
-    formatFeeToBurn(symbol, amount) {
-      const tokenInfo = this.tokens[symbol];
-      return Number(util.formatTokenAmount(amount, tokenInfo.decimal)).toFixed(3);
-    },
     formatTokenNumber (symbol, amount) {
       const tokenInfo = this.tokens[symbol];
       return util.formatTokenAmount(amount, tokenInfo.decimal);

@@ -5,9 +5,9 @@
     "exchange": "Exchange",
     "name": "Tên",
     "symbol": "Ký hiệu",
-    "volume_24h_usd": "Lượng giao dịch 24H (USD)",
-    "volume_24h_eth": "Lượng giao dịch 24H (ETH)",
-    "volume_24h_token": "Lượng giao dịch 24H (Token)",
+    "volume_24h_usd": "KL giao dịch 24H (USD)",
+    "volume_24h_eth": "KL giao dịch 24H (ETH)",
+    "volume_24h_token": "KL giao dịch 24H (Token)",
     "search": "Tìm kiếm",
     "network_activity": "Giao dịch gần nhất",
     "searchbox_placeholder" : "Tx Hash / địa chỉ ví",
@@ -51,11 +51,13 @@
     "fees_to_burn": "Phí sẽ đốt",
     "fees_burned": "Đã đốt",
     "knc_price": "Giá KNC",
-    "eth_price": "Giá ETH"
+    "eth_price": "Giá ETH",
+    "collected_fees": "Tổng phí"
   },
 
   "tooltip": {
     "network_volume": "Khối lượng giao dịch trong 24 giờ gần đây",
+    "collected_fees": "Tổng phí thu từ các quỹ",
     "fees_to_burn": "Tổng phí dành ra để đốt cho đến nay",
     "fees_burned": "Tổng phí đã đốt cho đến nay",
     "knc_price": "Giá hiện tại của KNC",
@@ -65,14 +67,15 @@
 
   "chart": {
     "title": {
-      "network_volume": "Khối lượng giao dịch",
-      "network_fee": "Phí giao dịch",
+      "network_volume": "KL giao dịch",
+      "collected_fees": "Phí",
+      "fees_burned": "Đã đốt (luỹ kế)",
       "fee_to_burn": "Phí sẽ đốt",
       "top_token": "Top Tokens",
       "token_volume": "{0} - Khối lượng giao dịch",
-      "label_volume": "Khối lượng giao dịch",
+      "label_volume": "KL giao dịch",
       "label_count": "Số giao dịch",
-      "label_total": "Khối lượng giao dịch"
+      "label_total": "KL giao dịch"
     },
     "label": {
       "to_burn": "Sẽ đốt"
@@ -86,6 +89,7 @@
     "rate": "Tỉ giá",
     "description": "Mô tả",
     "amount": "Số lượng",
+    "collected_fees": "Tổng phí",
     "fee_to_wallet": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt",
     "exchange": "Trao đổi",
@@ -103,6 +107,7 @@
     "maker_token": "Trao đổi sang",
     "maker_amount": "Số lượng",
     "rate": "Tỉ giá",
+    "collected_fees": "Tổng phí",
     "fee_to_wallet": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt",
     "for": " đổi lấy "
@@ -123,7 +128,7 @@
     "total_eth_msg": "Tổng khối lượng giao dịch (ETH): {0}",
     "result_title": "Địa chỉ: ",
     "tx_hash": "Tx hash: ",
-    "total_fee": "Tổng phí tích hợp: {0} KNC",
+    "total_fee": "Tổng phí: {0} KNC",
     "no_txhash_data": "Giao dịch này không được thực hiện với Kyber Network",
     "invalid_query": "Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"
   },

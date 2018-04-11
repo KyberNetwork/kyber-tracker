@@ -51,13 +51,15 @@
     "fees_to_burn": "Fees to burn",
     "fees_burned": "Burnt",
     "knc_price": "KNC Price",
-    "eth_price": "ETH Price"
+    "eth_price": "ETH Price",
+    "collected_fees": "Collected fees"
   },
 
   "tooltip": {
     "network_volume": "Trading volume during the last 24 hours",
+    "collected_fees": "Total fees collected from reserves",
     "fees_to_burn": "Total fees set aside to burn so far",
-    "fees_burned": "Total fees that have already been burnt",
+    "fees_burned": "Total fees burnt so far",
     "knc_price": "Current KNC price",
     "eth_price": "Current ETH price",
     "price_change_24": "% change compared with price at 24 hours ago"
@@ -65,8 +67,9 @@
 
   "chart": {
     "title": {
-      "network_volume": "Trade Volume",
-      "network_fee": "Network Fees",
+      "network_volume": "Volume",
+      "collected_fees": "Collected Fees",
+      "fees_burned": "Burned (Accumulated)",
       "fee_to_burn": "Fees To Burn",
       "top_token": "Top Tokens",
       "token_volume": "{0} Volume",
@@ -88,6 +91,7 @@
     "rate": "Rates",
     "description": "Description",
     "amount": "Amount",
+    "collected_fees": "Collected Fees",
     "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
@@ -105,6 +109,7 @@
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
     "rate": "Rate",
+    "collected_fees": "Collected Fees",
     "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
     "for": " for "
@@ -125,7 +130,7 @@
     "total_eth_msg": "Total volume (ETH): {0}",
     "result_title": "Address: ",
     "tx_hash": "Tx hash: ",
-    "total_fee": "Total partner commission: {0} KNC",
+    "total_fee": "Total collected fees: {0} KNC",
     "no_txhash_data": "This transaction is not with Kyber Network",
     "invalid_query": "Your search string is not address or tx hash"
   },

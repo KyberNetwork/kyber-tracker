@@ -55,7 +55,7 @@ a {
   .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
-    background-color: #30968e;
+    background-color: rgba(51,102,204,.75);
   }
 
   .dropdown-menu {
@@ -63,7 +63,7 @@ a {
   }
 
   .dropdown-item {
-    padding: 5px;
+    padding: 6px 6px 6px 10px;
   }
 
 }
@@ -173,7 +173,13 @@ a {
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
-    color: #000000;
+    color: rgba(16,4,55,.5);
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: transparent;
+    color: #0c0033;
   }
 
   button:hover, button:active, button:focus, .btn-active {
@@ -186,6 +192,18 @@ a {
 
 .card-header-tabs {
   outline: none;
+}
+
+.nav-tabs {
+  .nav-link {
+    color: rgba(16,4,55,.5);
+  }
+  .nav-link.active, .nav-link:hover {
+    color: #0c0033;
+  }
+  .nav-link:hover {
+    border-bottom: none;
+  }
 }
 
 .pagination {

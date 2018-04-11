@@ -4,11 +4,11 @@ const network         = require('../../config/network');
 const ExSession       = require('sota-core').load('common/ExSession');
 const logger          = require('sota-core').getLogger('getLatestBlockNumber');
 
-module.exports = (callback) => {
+module.exports = (callback, modelName = 'KyberTradeModel', startName = "BLOCK_START") => {
   const exSession = new ExSession();
-  const KyberTradeModel = exSession.getModel('KyberTradeModel');
+  const model = exSession.getModel(modelName);
 
-  KyberTradeModel.findOne({
+  model.findOne({
     orderBy: 'block_number DESC'
   }, (err, ret) => {
     exSession.destroy();
@@ -16,9 +16,10 @@ module.exports = (callback) => {
       return callback(err);
     }
 
-    if(process.env.BLOCK_START){
-      logger.info(`Crawler start with custom blocknumber: ${process.env.BLOCK_START}`);
-      return callback(null, +process.env.BLOCK_START)
+    const startBlock = process.env[startName];
+    if(startBlock){
+      logger.info(`Crawler start with custom block number ${startName}: ${startBlock}`);
+      return callback(null, +startBlock)
     }
 
     if (!ret) {

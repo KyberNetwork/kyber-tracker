@@ -1,6 +1,5 @@
 const _               = require('lodash');
 const async           = require('async');
-const BN              = require('bn.js');
 const exchangeLogABI  = require('../../config/abi/log_exchange');
 const feeLogABI       = require('../../config/abi/log_fee');
 const burnLogABI      = require('../../config/abi/log_burn');
@@ -71,7 +70,7 @@ module.exports = (block, tx, callback) => {
         record.takerTokenSymbol = srcToken.symbol;
         record.takerTokenAmount = srcAmount;
 
-        
+
         record.makerTokenAddress = destToken.address;
         record.makerTokenSymbol = destToken.symbol;
         record.makerTokenAmount = destAmount;
@@ -93,7 +92,7 @@ module.exports = (block, tx, callback) => {
 
       if (log.topics[0].toLowerCase() === Utils.getFeeToWalletTopicHash()) {
         const { reserveAddr, walletAddr, walletFee } = web3.eth.abi.decodeParameters(feeLogABI, log.data);
-        record.takerFee = walletFee;
+        record.commission = walletFee;
       }
 
     });

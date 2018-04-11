@@ -1,6 +1,5 @@
 const _               = require('lodash');
 const async           = require('async');
-const BN              = require('bn.js');
 const network         = require('../../config/network');
 const Utils           = require('../common/Utils');
 const ExSession       = require('sota-core').load('common/ExSession');
@@ -40,7 +39,12 @@ module.exports = (block, tx, callback) => {
     record.tx = tx.hash;
     record.blockNumber = tx.blockNumber;
     record.blockHash = tx.blockHash;
+    
     record.blockTimestamp = block.timestamp;
+    record.minuteSeq = Math.floor(record.blockTimestamp / 60);
+    record.hourSeq = Math.floor(record.blockTimestamp / 3600);
+    record.daySeq = Math.floor(record.blockTimestamp / 86400);
+
     record.burnerAddress = tx.from;
     record.burnerContract = tx.to;
 

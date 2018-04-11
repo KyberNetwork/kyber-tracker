@@ -35,7 +35,7 @@
             :elementId="'chart-volume'">
           </chart-volume>
         </b-tab>
-        <b-tab @click="onSelectTab('chartFee')" :title="$t('chart.title.fee_to_burn')">
+        <b-tab @click="onSelectTab('chartFee')" :title="$t('chart.title.collected_fees')">
           <chart-fee ref="chartFee"
             :elementId="'chart-fee'">
           </chart-fee>
@@ -128,20 +128,28 @@
         const interval = this.selectedInterval;
 
         this._refreshNetworkVolumeChart(period, interval);
-        this._refreshFeeToBurnChart(period, interval);
+        // this._refreshFeeToBurnChart(period, interval);
         // this._refreshTopTopkensChart(period);
+
+
+        this._refreshFeeChart(period, interval);
+        this._refreshFeeBurnedChart(period, interval);
       },
       _refreshNetworkVolumeChart(period, interval) {
         if (this.$refs.chartVolume) {
           this.$refs.chartVolume.refresh(period, interval);
         }
       },
-      _refreshFeeToBurnChart(period, interval) {
+      _refreshFeeChart(period, interval) {
         if (this.$refs.chartFee) {
-          this.$refs.chartFee.refresh(period, interval);
+          this.$refs.chartFee.refresh(period, interval, "getCollectedFees");
         }
       },
-
+      _refreshFeeBurnedChart(period, interval) {
+        if (this.$refs.chartBurned) {
+          this.$refs.chartBurned.refresh(period, interval, "getBurnedFees");
+        }
+      },
       _refreshTopTopkensChart(period) {
         if (this.$refs.chartToken) {
           this.$refs.chartToken.refresh(period);

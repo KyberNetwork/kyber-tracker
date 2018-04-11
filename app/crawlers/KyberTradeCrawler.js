@@ -26,10 +26,10 @@ class KyberTradeCrawler {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
 
-        getLatestBlockNumber(next);
+        getLatestBlockNumber(next, "BurnedFeeModel", "BURNED_BLOCK_START");
       },
       processBlock: ['startBlockNumber', (ret, next) => {
-        this.processBlock(ret.startBlockNumber + 1, next);
+        this.processBlock(ret.startBlockNumber, next);
       }],
     }, (err, ret) => {
       if (err) {
@@ -71,6 +71,7 @@ class KyberTradeCrawler {
       block: (next) => {
         web3.eth.getBlock(blockNumber, true, next);
       },
+      /*
       processTradeTransactions: ['block', (ret, next) => {
         if (!ret.block) {
           return next(`Empty block response. Wait for the next run..`);
@@ -84,6 +85,7 @@ class KyberTradeCrawler {
           getKyberTrade(ret.block, tx, _next);
         }, next);
       }],
+      */
       processBurnedFeeTransactions: ['block', (ret, next) => {
         if (!ret.block) {
           return next(`Empty block response. Wait for the next run..`);

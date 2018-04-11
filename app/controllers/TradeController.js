@@ -83,6 +83,41 @@ module.exports = AppController.extends({
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },
 
+  getBurnedFees: function (req, res) {
+    const [err, params] = new Checkit({
+      interval: ['string'],
+      period: ['string'],
+      fromDate: ['natural'],
+      toDate: ['natural']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getBurnedFees(params, this.ok.bind(this, req, res));
+  },
+
+  getCollectedFees: function (req, res) {
+    const [err, params] = new Checkit({
+      symbol: ['string'],
+      interval: ['string'],
+      period: ['string'],
+      fromDate: ['natural'],
+      toDate: ['natural']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getCollectedFees(params, this.ok.bind(this, req, res));
+  },
+
   getToBurnFees: function (req, res) {
     const [err, params] = new Checkit({
       symbol: ['string'],
@@ -119,10 +154,6 @@ module.exports = AppController.extends({
     TradeService.getToWalletFees(params, this.ok.bind(this, req, res));
   },
 
-  getBurnedFees: function (req, res) {
-    return res.badRequest(`TODO: implement me.`);
-  },
-
   search: function (req, res) {
     const [err, params] = new Checkit({
       q: ['required', 'string'],
@@ -141,6 +172,8 @@ module.exports = AppController.extends({
     TradeService.search(params, this.ok.bind(this, req, res));
   },
 
+  /*
+  NOT USED
   countMarkerAddress: function (req, res) {
     const [err, params] = new Checkit({
       markerAddress: ['required', 'string'],
@@ -180,5 +213,6 @@ module.exports = AppController.extends({
     const TradeService = req.getService('TradeService');
     TradeService.getSumMarkerAddress(params.markerAddress, fromDate, toDate, this.ok.bind(this, req, res));
   },
+  */
 
 });

@@ -122,7 +122,12 @@ export default {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
     },
     getTokenImageLink (symbol) {
-      return 'images/tokens/' + this.tokens[symbol].icon;
+      if (!!this.tokens[symbol].icon) {
+        return 'images/tokens/' + this.tokens[symbol].icon;
+      } else {
+        return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
+          symbol.toLowerCase() + ".svg";
+      }
     },
     toTokenDetails (symbol) {
       const tokenInfo = this.tokens[symbol];

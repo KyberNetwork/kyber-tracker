@@ -218,6 +218,7 @@ export default {
       totalBurnedFee: "",
       searchString: "",
       pageTitle: "",
+      collectedFees: "",
       feeToBurn: "",
       breadcrumbsItems: [],
       searchData: [],
@@ -255,11 +256,12 @@ export default {
         typeof window.i18n != "undefined" &&
         typeof window.i18n.locale != "undefined"
       ) {
+        moment.locale(window.i18n.locale);
         return window.i18n.locale;
       } else {
-        window.i18n.locale = "vi";
-        moment.locale("vi");
-        return "vi";
+        window.i18n.locale = "en";
+        moment.locale("en");
+        return "en";
       }
     },
 
@@ -267,15 +269,35 @@ export default {
       this.isOpenFee = !this.isOpenFee;
     },
 
-    getPriceChangeClass(priceChange) {
-      if (priceChange === 0) return "";
-      return priceChange < 0 ? "neg-value" : "pos-value";
+    customizeMoment(){
+      moment.updateLocale('vi', {
+        relativeTime : {
+            m:  "1 phút",
+            h:  "1 giờ",
+            d:  "1 ngày",
+            y:  "1 năm",
+        }
+      });
+
+      moment.updateLocale('en', {
+        relativeTime : {
+            m:  "1 min",
+            mm: "%d mins",
+            h:  "1 hour",
+            d:  "1 day",
+            y:  "1 year"
+        }
+      });
+    },
+    getPriceChangeClass() {
+      if (this.kncPriceChange24h === 0) return "";
+      return this.kncPriceChange24h < 0 ? "neg-value" : "pos-value";
     },
     async connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        console.log(
-          "Cannot connect to metamask. Please make sure you have metamask installed"
-        );
+        // console.log(
+        //  "Cannot connect to metamask. Please make sure you have metamask installed"
+        //);
         return;
       }
       var web3Service = new Web3Service(web3);
@@ -283,9 +305,9 @@ export default {
       let browser = bowser.name;
       if (browser != "Chrome" && browser != "Firefox") {
         if (!web3Service.isTrust()) {
-          console.log(
-            `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
-          );
+          // console.log(
+          //  `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
+          //);
           return;
         }
       }
@@ -319,6 +341,7 @@ export default {
             " %"
           : 0;
         this.feeToBurn = stats.feeToBurn + " KNC";
+        this.collectedFees = stats.collectedFees + " KNC";
       });
 
       request
@@ -545,6 +568,7 @@ export default {
   },
 
   mounted() {
+    this.customizeMoment();
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);

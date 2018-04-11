@@ -31,7 +31,7 @@ export default {
       resultCount: 0,
       totalUsd: 0,
       totalEth: 0,
-      totalPartnerFee: 0,
+      totalCollectedFees: 0,
       searchFromDate: null,
       searchToDate: null,
       tokens: _.keyBy(_.values(network.tokens), 'address')
@@ -137,7 +137,7 @@ export default {
               this.resultCount = pagination.totalCount;
               this.totalUsd = new BigNumber(pagination.volumeUsd).toFormat(2)
               this.totalEth = new BigNumber(pagination.volumeEth).toFormat(3);
-              this.totalPartnerFee = new BigNumber(pagination.partnerFee.toString()).div(Math.pow(10, 18)).toFormat(3);
+              this.totalCollectedFees = new BigNumber(pagination.collectedFees.toString()).div(Math.pow(10, 18)).toFormat(3);
 
               this.$refs.datatable.maxPage = pagination.maxPage;
             } else {

@@ -6,8 +6,13 @@
       "watch"             : false
     },
     {
-      "name"              : "kyber-crawler",
+      "name"              : "kyber-burned-crawler",
       "script"            : "crawl.js",
+      "watch"             : false
+    },
+    {
+      "name"              : "kyber-trade-crawler",
+      "script"            : "crawl2.js",
       "watch"             : false
     }
   ]

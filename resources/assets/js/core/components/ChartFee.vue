@@ -25,45 +25,55 @@
       };
     },
     methods: {
-      _buildChartData(feeData, interval) {
+      _buildChartData(feeData, interval, accumulated) {
         const labels = [];
-        const counts = [];
         const dataset = [];
-
+        let lastSum = feeData[0].sum;
         if (interval === 'H1') {
           const keyedVolumeData = _.keyBy(feeData, 'hourSeq');
           for (let seq = feeData[0].hourSeq; seq <= feeData[feeData.length - 1].hourSeq; seq++) {
             labels.push(seq * 3600 * 1000);
-            const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
+            let volume = 0;
+            if (keyedVolumeData[seq]) {
+              volume = keyedVolumeData[seq].sum;
+              lastSum = volume;
+            } else {
+              volume = (accumulated ? lastSum : 0);
+            }
             dataset.push(Math.round(volume * 100) / 100);
-            counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0)
           }
         } else if (interval === 'D1') {
           const keyedVolumeData = _.keyBy(feeData, 'daySeq');
           for (let seq = feeData[0].daySeq; seq <= feeData[feeData.length - 1].daySeq; seq++) {
             labels.push(seq * 3600 * 24 * 1000);
-            const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
+            let volume = 0;
+            if (keyedVolumeData[seq]) {
+              volume = keyedVolumeData[seq].sum;
+              lastSum = volume;
+            } else {
+              volume = (accumulated ? lastSum : 0);
+            }
             dataset.push(Math.round(volume * 100) / 100);
-            counts.push(keyedVolumeData[seq] ? keyedVolumeData[seq].count : 0)
           }
         }
 
         return {
           labels,
-          counts,
           datasets: [{
             data: dataset,
             pointRadius: 0,
-            backgroundColor: 'rgba(0,173,168,.3)',
-            borderColor: 'rgb(0,173,168)',
+            backgroundColor: (accumulated ? 'rgba(0,173,168,.3)' : 'rgba(0,173,168,.3)'),
+            borderColor: (accumulated ? 'rgb(0,173,168)' : 'rgb(0,173,168)'),
             borderWidth: 2,
             showLine: true,
             spanGaps: true,
+            cubicInterpolationMode: (accumulated ? 'monotone' : 'default')
+            //lineTension: 0
           }]
         };
       },
-      refresh(period, interval) {
-        AppRequest.getFeeToBurn(period, interval, (err, feeData) => {
+      refresh(period, interval, method) {
+        AppRequest[method].call(AppRequest, period, interval, (err, feeData) => {
           const ctx = document.getElementById(this.elementId);
 
           // Ignore render chart if the page has been changed and the chart element is omitted
@@ -71,7 +81,8 @@
             return;
           }
           
-          const data = this._buildChartData(feeData, interval);
+          const accumulated = (method === "getBurnedFees");
+          const data = this._buildChartData(feeData, interval, accumulated);
           const options = this._getChartOptions(interval);
 
           if (this.chartInstance) {
@@ -102,8 +113,7 @@
           },
           afterBody: (tooltipItem, data) => {
             const index = tooltipItem[0].index;
-            const label = this.$t('chart.label.to_burn') + ': ' + util.numberWithCommas(data.datasets[0].data[index])
-              + ' KNC';
+            const label = util.numberWithCommas(data.datasets[0].data[index]) + ' KNC';
             return [label];
           }
         };
