@@ -295,11 +295,11 @@ a {
   border-bottom-left-radius: 0;
 }
 
-.btn-search{
-  position: absolute;
-  top: 0;
-  right: 15px;
-}
+// .btn-search{
+//   position: absolute;
+//   top: 0;
+//   right: 15px;
+// }
 
 btn {
   cursor: pointer;
@@ -707,6 +707,17 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 @media (min-width: 576px) and (max-width: 779px) {
   .heading-summary {
     padding-left: 15px;
+  }
+}
+
+@media (max-width: 845px){
+  .navbar{
+    .heading-summary{
+      padding-left: 10px;
+    }
+    #autosuggest{
+      max-width: 100%;
+    }
   }
 }
 
@@ -1246,8 +1257,12 @@ html {
   }
 }
 
+#autosuggest{
+  width: 100%;
+  max-width: 365px;
+}
 #autosuggest__input{
-  padding-right: 49px;
+  // padding-right: 49px;
   width: 100%;
   height: 40px;
   border-radius: 0px;

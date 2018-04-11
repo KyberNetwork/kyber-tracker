@@ -1,8 +1,8 @@
 <template>
   <div id="wrapper">
     <div id="page-content">
-      <b-navbar toggleable="md" type="dark" class="heading-bar">
-        <div class="col no-padding col-md-6 col-12 col-sm-12">
+      <b-navbar toggleable="md" type="dark" class="heading-bar d-flex justify-content-between flex-column-reverse flex-sm-column-reverse flex-md-row align-items-start align-self-start">
+        <div class=" no-padding col-md-6">
           <ul class="heading-summary">
             <li>
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
@@ -53,9 +53,10 @@
         </div>
 
         
-        <div class="p-relative cursor-pointer col-md-6 col-12 col-sm-12 pt-2">
+        <div class="p-relative cursor-pointer  col-md-6 pt-2 d-flex justify-content-end">
 
           <vue-autosuggest
+            class="ajsbd"
             ref="seatchInputRef"
             :suggestions="[{
               data: [...this.addressesMetamask, ...this.searchData]
@@ -72,7 +73,7 @@
               autocomplete: 'off'
             }"
           />
-          <b-input-group-append class="btn-search pt-2">
+          <b-input-group-append class="btn-search">
             <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
               <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
             </b-btn>
