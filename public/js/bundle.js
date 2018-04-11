@@ -122488,7 +122488,7 @@ exports.default = {
         if (pagination) {
           _this.resultCount = pagination.totalCount;
           _this.totalUsd = new _bignumber2.default(pagination.volumeUsd).toFormat(2);
-          _this.totalEth = new _bignumber2.default(pagination.volumeEth).toFormat(3);
+          _this.totalEth = new _bignumber2.default(pagination.volumeEth.toString()).div(Math.pow(10, 18)).toFormat(3);
           _this.totalCollectedFees = new _bignumber2.default(pagination.collectedFees.toString()).div(Math.pow(10, 18)).toFormat(3);
 
           _this.$refs.datatable.maxPage = pagination.maxPage;
