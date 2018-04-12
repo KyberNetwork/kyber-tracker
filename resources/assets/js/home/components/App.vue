@@ -34,7 +34,8 @@
               <span class="topbar-value">{{ totalBurnedFee }}</span>
             </li> 
 
-            <i class="fas fa-caret-down fa-2x show-more"></i>
+            <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
+            <img class="show-more" src="/images/drop-down.svg"/>
 
             <!-- <li>
               <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
@@ -46,7 +47,7 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pr-3" v-click-outside="onClickOutside">
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3" v-click-outside="onClickOutside">
             <vue-autosuggest
               class="ajsbd"
               ref="seatchInputRef"
@@ -167,7 +168,7 @@
           <div class="col footer-menu">
             Copyright 2018 @ Kyber Network 
           </div>
-          <div class="col footer-menu text-right">
+          <div class="col footer-menu text-right footer-link">
             <div class="d-inline-block">
               <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
@@ -418,7 +419,7 @@ export default {
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
       this.$refs.headingSum.className = "heading-summary p-relative"
-      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pr-3'
+      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3'
 
     },
     isTxHash(hash) {
