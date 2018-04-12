@@ -108,6 +108,7 @@ a {
   padding: 10px 0;
   border-top: 1px solid #243c47;
   align-items: flex-start !important;
+  height: 75px;
 }
 
 .panel-title{
@@ -675,7 +676,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   list-style: none;
   margin: 0;
   padding: 10px 17px;
-  width: 100%;
+  // width: 100%;
   // overflow: hidden;
   line-height: 18px;
   height: 56px;
@@ -694,42 +695,130 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
 }
 
-@media (min-width: 576px) and (max-width: 992px) {
-  .heading-summary{
-    li {
-      width: 50%;
-      margin: 5px 0;
-    }
-  }
-}
+// @media (min-width: 576px) and (max-width: 992px) {
+//   .heading-summary{
+//     li {
+//       width: 50%;
+//       margin: 0;
+//     }
+//   }
+// }
 
 
-@media (min-width: 576px) and (max-width: 779px) {
-  .heading-summary {
-    padding-left: 15px;
-  }
-}
+// @media (min-width: 576px) and (max-width: 779px) {
+//   .heading-summary {
+//     padding-left: 15px;
+//   }
+// }
 
-@media (max-width: 845px){
+@media (min-width: 1040px){
   .navbar{
-    .heading-summary{
-      padding-left: 10px;
+    .show-more{
+      display: none;
     }
-    #autosuggest{
-      max-width: 100%;
+  }
+
+}
+@media (max-width: 1040px){
+  .navbar{
+    #total-burn-fee{
+      display: none;
+    }
+
+    .show-more{
+      display: block;
+    }
+    .heading-summary:hover{
+      height: 100px;
+      #total-burn-fee{
+        padding-top: 5px;
+        display: block;
+      }
     }
   }
 }
+
+@media (max-width: 970px){
+  .navbar{
+    #fee-to-burn{
+      display: none;
+    }
+
+    .heading-summary:hover{
+      #fee-to-burn{
+        padding-top: 5px;
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: 490px){
+  .navbar{
+    #eth-price{
+      display: none;
+    }
+    .heading-summary:hover{
+      #eth-price{
+        padding-top: 5px;
+        display: block;
+      }
+    }
+  }
+}
+@media (max-width: 220px){
+  .navbar{
+    #knc-price{
+      display: none;
+    }
+    .heading-summary:hover{
+      #knc-price{
+        padding-top: 5px;
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: 850px){
+  .navbar{
+    // .heading-summary{
+    //   padding-left: 10px;
+    // }
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.43;
+    letter-spacing: normal;
+
+    #autosuggest{
+      display: none;
+    }
+
+    .search-expand{
+      display: block !important;
+    }
+
+  }
+}
+
+
+@media (max-width: 470px){
+
+}
+
+
 
 @media (max-width: 575px){
-  .heading-summary{
-    margin: 0 15px;
+  // .heading-summary{
+  //   margin: 0 15px;
     
-    li {
-      width: 50%;
-      margin: 0;
-    }
-  }
+  //   li {
+  //     width: 50%;
+  //     margin: 0;
+  //   }
+  // }
   .container{
     padding: 0px;
   }
@@ -842,6 +931,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
   }
 }
+
+
+
 .trade-details-container{
   .background-detail{
     background-color: #f9fafc;
@@ -1259,8 +1351,9 @@ html {
 
 #autosuggest{
   width: 100%;
-  max-width: 365px;
+  width: 365px;
   position: relative;
+  margin-left: 15px;
 }
 #autosuggest__input{
   // padding-right: 49px;

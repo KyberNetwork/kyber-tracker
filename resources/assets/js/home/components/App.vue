@@ -1,14 +1,14 @@
 <template>
   <div id="wrapper">
     <div id="page-content">
-      <b-navbar toggleable="md" type="dark" class="heading-bar d-flex justify-content-between flex-column-reverse flex-sm-column-reverse flex-md-row align-items-start align-self-start">
-        <div class=" no-padding col-md-6">
-          <ul class="heading-summary">
-            <li>
+      <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12">
+        <div class="no-padding d-flex justify-content-between col-12 col-sm-12">
+          <ul ref="headingSum" class="heading-summary p-relative">
+            <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
             </li>
-            <li>
+            <li id="knc-price">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
               <span class="topbar-value">
                 {{ kncPrice }} 
@@ -16,69 +16,65 @@
               <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
             </li>
 
-            <li>
+            <li id="eth-price">
               <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
               <span class="topbar-value" >{{ ethPrice }} </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
             </li>
 
+            <li id="fee-to-burn">
+              <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
+              <span class="topbar-value">{{ feeToBurn }}</span>
+              
+            </li>
+                
+
+            <li id="total-burn-fee">
+              <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
+              <span class="topbar-value">{{ totalBurnedFee }}</span>
+            </li> 
+
+            <i class="fas fa-caret-down fa-2x show-more"></i>
+
             <!-- <li>
               <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
               <span class="topbar-value">{{ tradeCount }}</span>
-            </li> -->
+            </li> 
             <li class="network-fee" >
-                <div @click="onToggleFee()">
-                  <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
-                  <span class="topbar-value">{{ feeToBurn }}</span>
-                  <i class="fas fa-caret-down more-fee"></i>
-                </div>
                 
-
-                <div v-if="isOpenFee" class="fees-burned">
-                  <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
-                  <span class="topbar-value">{{ totalBurnedFee }}</span>
-                </div>
-
-              
-
-              
-          
             </li>
-            <!-- <li v-tooltip.bottom="$t('tooltip.fees_burned')">
-              <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
-              <span class="topbar-value">{{ totalBurnedFee }}</span>
-            </li> -->
-            
+             -->
           </ul>
+
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pr-3" v-click-outside="onClickOutside">
+            <vue-autosuggest
+              class="ajsbd"
+              ref="seatchInputRef"
+              :suggestions="[{
+                data: [...this.addressesMetamask, ...this.searchData]
+              }]"
+              @keyup.enter="doSearch"
+              @focus="onfocus"
+              :getSuggestionValue="getSuggestionValue"
+              :renderSuggestion="renderSuggestion"
+              :onSelected="onSelected"
+              :inputProps="{
+                id:'autosuggest__input', 
+                onInputChange: this.onInputChange, 
+                placeholder:$t('common.searchbox_placeholder'),
+                autocomplete: 'off'
+              }"
+            />
+            <b-input-group-append class="btn-search">
+              <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
+                <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+              </b-btn>
+            </b-input-group-append>
+          </div>
         </div>
 
         
-        <div class="p-relative cursor-pointer  col-md-6 pt-2 d-flex justify-content-end">
-
-          <vue-autosuggest
-            class="ajsbd"
-            ref="seatchInputRef"
-            :suggestions="[{
-              data: [...this.addressesMetamask, ...this.searchData]
-            }]"
-            @keyup.enter="doSearch"
-            @focus="onfocus"
-            :getSuggestionValue="getSuggestionValue"
-            :renderSuggestion="renderSuggestion"
-            :onSelected="onSelected"
-            :inputProps="{
-              id:'autosuggest__input', 
-              onInputChange: this.onInputChange, 
-              placeholder:$t('common.searchbox_placeholder'),
-              autocomplete: 'off'
-            }"
-          />
-          <b-input-group-append class="btn-search">
-            <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
-              <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
-            </b-btn>
-          </b-input-group-append>
-        </div>
+        
 
         
 
@@ -206,6 +202,8 @@ import network from "../../../../../config/network";
 import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
+import ClickOutside from 'vue-click-outside'
+
 export default {
   data() {
     return {
@@ -370,6 +368,14 @@ export default {
         });
     },
     doSearch() {
+      if(this.$mq == 'sm' || this.$mq == 'ml'){
+        if(!this.$refs.seatchInputRef.$el.className.includes("search-expand")){
+          this.$refs.seatchInputRef.$el.className = "search-expand ml-0"
+          this.$refs.headingSum.className = "d-none"
+          this.$refs.searchComponent.className += ' col-12'
+          return
+        } 
+      }
       if (!this.searchString) {
         return;
       }
@@ -408,6 +414,12 @@ export default {
         this.searchString = "";
         this.$refs.seatchInputRef.searchInput = "";
       });
+    },
+    onClickOutside(){
+      this.$refs.seatchInputRef.$el.className = ""
+      this.$refs.headingSum.className = "heading-summary p-relative"
+      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pr-3'
+
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
@@ -575,6 +587,9 @@ export default {
     this.loadBreadcumbs(this.$route);
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

@@ -39,7 +39,7 @@ Vue.use(VueAutosuggest)
 Vue.use(VueMq, {
   breakpoints: {
     sm: 450,
-    ml: 845,
+    ml: 850,
     md: 1250,
     lg: Infinity,
   }
