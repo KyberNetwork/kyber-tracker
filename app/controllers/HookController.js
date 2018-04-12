@@ -32,7 +32,7 @@ bot.onText(/\/register(.*)/, (msg, match) => {
             if (!err) {
                 bot.sendMessage(chatId, "Welcome back, you were already white listed.");
             } else {
-                db.put(key, getValue(msg), (err) => {
+                db.put(key, JSON.stringify(getValue(msg)), (err) => {
                     if (!err) {
                         bot.sendMessage(chatId, "Hi there, you are white listed! Now you can sleep sound at nights!");
                     } else {

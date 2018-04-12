@@ -568,11 +568,11 @@ module.exports = BaseService.extends({
         const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
         returnData.push({
           [this._convertSeqColumnName(groupColumn)]: firstSeq,
-          sum: 0
+          sum: accuBurned
         });
         returnData.push({
           [this._convertSeqColumnName(groupColumn)]: nowSeq,
-          sum: 0
+          sum: accuBurned
         });
       }
 
