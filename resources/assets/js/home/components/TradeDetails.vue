@@ -1,27 +1,36 @@
 <template>
-  <div class="col-sm-12 trade-details-container">
+  <div class="trade-details-container col-md-8 col-sm-10 col-12">
     <div class="panel-heading pb-16">
       <span class="no-margin panel-title">{{$t('navigator.trade_details')}} </span>
     </div>
 
     <div class="col-12 background-detail">
       <b-row>
-        <b-col sm="5 left-trade-detail">
+        <b-col sm="12 left-trade-detail">
           <div class="trade-time">
             <i class="far fa-clock"></i> {{ getDateInfo(record.blockTimestamp) }}
           </div>
 
-          <div class="left-trade-rate">
-            <div class="token-from">
-              <span>{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
-              <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>
-              <span class="usd-value">(${{ formatFiatCurrency(record.takerTotalUsd) }}) *</span>
+          <div class="left-trade-rate d-flex justify-content-around">
+            <div class="token col-5">
+              <span class="token-symbol">
+                 <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
+                <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>
+              </span>
+             
+              <br/>
+              <span class="usd-value">({{ formatFiatCurrency(record.takerTotalUsd) }}) USD*</span>
             </div>
-            <span class="to">to</span>
-            <div class="token-to">
-              <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
-              <token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link>
-              <span class="usd-value">(${{ formatFiatCurrency(record.makerTotalUsd) }}) *</span>
+            <!-- <span class="to">to</span> -->
+            <span class="entypo-right to col-2"></span>
+            <div class="token col-5">
+              <span class="token-symbol">
+                <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
+                <token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link>
+              </span>
+              
+              <br />
+              <span class="usd-value">(${{ formatFiatCurrency(record.makerTotalUsd) }}) USD*</span>
             </div>
             
           </div>
@@ -30,7 +39,7 @@
             <i>*USD Rates are calculated at trading time</i>
           </div>
         </b-col>
-        <b-col sm="7 right-trade-detail">
+        <b-col sm="12 right-trade-detail">
           <div class="trade-tx-hash">
             <div class="trade-detail-title">Transaction Hash</div>
             <div class="trade-detail-link">
@@ -44,36 +53,6 @@
               <router-link class="trade-detail-link" :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link>
             </div>
             
-          </div>
-
-          <div class="row rate-detail">
-            <div class="col">
-              <div class="rate-detail-title">
-                <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> RATE
-              </div>
-              <div class="rate-detail-value">
-                {{ Math.round(1/getRate(record)*100000000) / 100000000 }}
-              </div>
-              
-            </div>
-            <div class="col">
-              <div class="rate-detail-title">
-                FEES TO BURN
-              </div>
-              <div class="rate-detail-value">
-                {{ getTokenAmount(record.burnFees, 'KNC') }} KNC
-              </div>
-              
-            </div>
-            <div class="col">
-              <div class="rate-detail-title">
-                PARTNER COMMISSION
-              </div>
-              <div class="rate-detail-value">
-                {{ getTokenAmount(record.takerFee, 'KNC') }} KNC
-              </div>
-              
-            </div>
           </div>
         </b-col>
       </b-row>
@@ -138,6 +117,36 @@
 
 
 
+    </div>
+
+    <div class="row rate-detail">
+      <div class="col">
+        <div class="rate-detail-title">
+          <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> RATE
+        </div>
+        <div class="rate-detail-value">
+          {{ Math.round(1/getRate(record)*100000000) / 100000000 }}
+        </div>
+        
+      </div>
+      <div class="col">
+        <div class="rate-detail-title">
+          FEES TO BURN
+        </div>
+        <div class="rate-detail-value">
+          {{ getTokenAmount(record.burnFees, 'KNC') }} KNC
+        </div>
+        
+      </div>
+      <div class="col">
+        <div class="rate-detail-title">
+          PARTNER COMMISSION
+        </div>
+        <div class="rate-detail-value">
+          {{ getTokenAmount(record.takerFee, 'KNC') }} KNC
+        </div>
+        
+      </div>
     </div>
     
 

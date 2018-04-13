@@ -997,6 +997,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   word-wrap: break-word;
   .left-trade-detail{
     padding: 32px 15px 35px 30px;
+    border-bottom: solid 1px #d7d8d9;
     .trade-time{
       font-size: 14px;
       font-weight: 600;
@@ -1020,21 +1021,27 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       letter-spacing: normal;
       text-align: center;
       color: #0c0033;
-      .token-from{
-        padding: 18px 0 3px;
+      .token{
+        padding: 18px 0;
+        .token-symbol{
+          font-size: 24px;
+          letter-spacing: 1.8px;
+        }
       }
-      .token-to{
-        padding: 3px 0 18px;
-      }
+      // .token-to{
+      //   padding: 3px 0 18px;
+      // }
       .to{
-        font-size: 14px;
-        font-weight: 600;
+        // font-size: 14px;
+        // font-weight: 600;
+        padding-top: 30px;
       }
       .usd-value{
         font-size: 14px;
         font-weight: normal;
       }
     }
+    
     .trade-note{
       font-size: 12px;
       text-align: center;
@@ -1042,9 +1049,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 
   .right-trade-detail{
-    padding: 32px 24px 35px 15px;
+    padding: 32px 24px 0px 36px;
     .trade-detail-title{
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
       font-style: normal;
       font-stretch: normal;
@@ -1066,32 +1073,37 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       color: #2ed573;
       padding-bottom: 29px;
     }
-    .rate-detail{
+  }
+
+  .rate-detail{
+    text-align: center;
+    margin: 0;
+    padding: 15px 0;
+
+    .rate-detail-title{
+      font-size: 12px;
+      font-weight: 600;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #0c0033;
       text-align: center;
-      .rate-detail-title{
-        font-size: 12px;
-        font-weight: 600;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        text-align: left;
-        color: #0c0033;
-        text-align: center;
-      }
-      .rate-detail-value{
-        font-size: 16px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1;
-        letter-spacing: normal;
-        text-align: left;
-        color: #0c0033;
-        padding-top: 10px;
-        text-align: center;
-      }
     }
+    .rate-detail-value{
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1;
+      letter-spacing: normal;
+      text-align: left;
+      color: #0c0033;
+      padding-top: 10px;
+      text-align: center;
+    }
+    box-shadow: 0 2px 2px 0 rgba(31, 52, 104, 0.29);
   }
 }
 

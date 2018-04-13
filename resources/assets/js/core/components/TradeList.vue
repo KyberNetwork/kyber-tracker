@@ -162,7 +162,7 @@
       </div>
 
       <!-- small trade list for mobile -->
-      <div v-if="rows.length > 0 && ($mq !== 'md' && $mq !== 'lg')" class="table-responsive-wraper clear pt-10">
+      <div v-if="rows.length > 0 && ($mq !== 'md' && $mq !== 'lg')" class="table-responsive-wraper table-hover clear pt-10">
         <table class="table table-round table-striped">
           <thead>
             <tr>
@@ -172,7 +172,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(row, index) in rows" :item="row" :index="index">
+            <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
               <td class="pl-4">{{ getDateInfo(row, true) }}</td>
               <td class="text-left pl-4 trade-direction">
                 <b>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</b>
