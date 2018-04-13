@@ -14,7 +14,10 @@
      burner_contract: { type: 'string', length: 150 },
      reserve_contract: { type: 'string', length: 150 },
      reserve_wallet: { type: 'string', length: 150 },
-     amount: { type: 'string', length: 765 } },
+     amount: { type: 'string', length: 765 },
+     day_seq: { type: 'number', length: 11 },
+     hour_seq: { type: 'number', length: 11 },
+     minute_seq: { type: 'number', length: 11 } },
   KyberTradeModel: 
    { block_number: { type: 'number', length: 11 },
      block_hash: { type: 'string', length: 300 },
