@@ -721,7 +721,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 //   }
 // }
 
-@media (min-width: 1040px){
+@media (min-width: 1083px){
   .navbar{
     .show-more{
       display: none;
@@ -729,7 +729,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 
 }
-@media (max-width: 1040px){
+@media (max-width: 1083px){
   .navbar{
     #total-burn-fee{
       display: none;
@@ -752,7 +752,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-@media (max-width: 970px){
+@media (max-width: 960px){
   .navbar{
     #fee-to-burn{
       display: none;
@@ -767,7 +767,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-@media (max-width: 490px){
+@media (max-width: 470px){
   .navbar{
     #eth-price{
       display: none;
@@ -818,7 +818,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 
-@media (max-width: 420px){
+@media (max-width: 463px){
   .navbar{
     .heading-summary:hover{
       height: 130px;
@@ -1079,7 +1079,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     text-align: center;
     margin: 0;
     padding: 15px 0;
-
+    span{
+      color: #0c0033;
+    }
     .rate-detail-title{
       font-size: 12px;
       font-weight: 600;
@@ -1305,7 +1307,7 @@ html {
 
 .token-link {
   cursor: pointer;
-  color: #2A9A8D;
+  color: #2ed573;
 }
 
 .token-link:hover {

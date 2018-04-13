@@ -23,8 +23,8 @@
             </li>
 
             <li id="fee-to-burn">
-              <span class="light-text">{{ $t('status_bar.fees_to_burn') }}</span><br />
-              <span class="topbar-value">{{ feeToBurn }}</span>
+              <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
+              <span class="topbar-value">{{ collectedFee }}</span>
               
             </li>
                 
@@ -223,6 +223,7 @@ export default {
       pageTitle: "",
       collectedFees: "",
       feeToBurn: "",
+      collectedFee: "",
       breadcrumbsItems: [],
       searchData: [],
       addressesMetamask: [],
@@ -334,16 +335,18 @@ export default {
         this.networkVolume = stats.networkVolume;
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
-        this.totalBurnedFee = stats.feeToBurn
-          ? Math.round(
-              +stats.totalBurnedFee.replace(",", "") /
-                +stats.feeToBurn.replace(",", "") *
-                1000
-            ) /
-              10 +
-            " %"
-          : 0;
+        this.totalBurnedFee = stats.totalBurnedFee + " KNC";
+        // stats.feeToBurn
+        //   ? Math.round(
+        //       +stats.totalBurnedFee.replace(",", "") /
+        //         +stats.feeToBurn.replace(",", "") *
+        //         1000
+        //     ) /
+        //       10 +
+        //     " %"
+        //   : 0;
         this.feeToBurn = stats.feeToBurn + " KNC";
+        this.collectedFee = stats.collectedFees + " KNC"
         this.collectedFees = stats.collectedFees + " KNC";
       });
 
@@ -437,13 +440,14 @@ export default {
       let logoUrl ;
       switch (suggestion.item.type) {
         case "address":
-          logoUrl = <img class="history-logo" src="/images/metamask-icon.svg" />
+          logoUrl = <span class="entypo-layout history-logo"></span>
           break;
         case "txHash":
           logoUrl = <span class="entypo-switch history-logo"></span>
           break;
         case "metamask":
-          logoUrl = <span class="entypo-layout history-logo"></span>
+          logoUrl = <img class="history-logo" src="/images/metamask-icon.svg" />
+          
           break;
       }
       return (

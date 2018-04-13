@@ -145,12 +145,12 @@
               <td class="pl-4">{{ getDateInfo(row) }}</td>
               <td class="text-left pl-4">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</td>
               <!-- <td class="text-left no-padding-right"></td> -->
-              <td class="text-left"><i class="k k-angle right"></i></td>
+              <td><i class="k k-angle right"></i></td>
               <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} {{ row.makerTokenSymbol }}</td>
               <!-- <td class="text-left"></td> -->
               <td class="text-left pl-4">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }} {{ row.makerTokenSymbol }}</td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
-              <td v-if="!isHidePartnerCommission" class="text-left pl-4">{{ formatTokenNumber('KNC', row.takerFee) }} KNC</td>
+              <td v-if="!isHidePartnerCommission" class="text-left pl-4">{{ formatTokenNumber('KNC', row.commission) }} KNC</td>
               <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
