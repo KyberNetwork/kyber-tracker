@@ -58,6 +58,32 @@ function keepReq(req) {
     return false;
 }
 
+// Matches "/start[whatever] or start[whatever]"
+bot.onText(/\/?start(.*)/, (msg, match) => {
+    let text = "Please type a command.\n\n";
+    text += "Example:\n";
+    text += "/last to view summary for last 24h\n";
+    text += "You could also type 'last 7d' or 'last 10h'. ";
+    text += "It supports 'd' and 'h'.\n\n";
+    text += "/today to view summary for today (UTC time)\n";
+    text += "/yesterday to view summary for yesterday (UTC time)";
+    text += "\n\nThe '/' character is optional.";
+
+    bot.sendMessage(msg.chat.id, text);
+});
+
+// Matches "/help[whatever] or help[whatever]"
+bot.onText(/\/?help(.*)/, (msg, match) => {
+    let text = "/last to view summary for last 24h\n";
+    text += "You could also type 'last 7d' or 'last 10h'. ";
+    text += "It supports 'd' and 'h'.\n\n";
+    text += "/today to view summary for today (UTC time)\n";
+    text += "/yesterday to view summary for yesterday (UTC time)";
+    text += "\n\nThe '/' character is optional.";
+
+    bot.sendMessage(msg.chat.id, text);
+});
+
 // Matches "/register[whatever]"
 bot.onText(/\/register(.*)/, (msg, match) => {
     
@@ -93,11 +119,13 @@ function sendData(chatId, from, to, prefix, tellUtcTime) {
             logger.error(err);
         } else {
             let text = prefix  + " SUMMARY";
+            text += "\n=================";
             text += "\nVolume: " + format(ret.volumeEth) + " ETH ($" + format(ret.volumeUsd) + ")";
             text += "\nNumber of Tx: " + format(ret.tradeCount);
             text += "\nAverage ETH/Tx: " + round2(ret.volumeEth / ret.tradeCount);
             text += "\nBurn & Tax: " + format(ret.burnAndTax) + " KNC";
             text += "\n\nVIA PARTNER";
+            text += "\n=================";
             text += "\nVolume: " + format(ret.partnerVolumeEth) + " ETH (" + round(100 * ret.partnerVolumeEth / ret.volumeEth) + "%)";
             text += "\nNumber of Tx: " + format(ret.partnerCount) + " (" + round(100 * ret.partnerCount / ret.tradeCount) + "%)";
             text += "\nAverage ETH/Tx: " + round2(ret.partnerVolumeEth / ret.partnerCount);
@@ -122,6 +150,7 @@ bot.onText(/\/?last(.*)/, (msg, match) => {
     const parts = resp.match(/^(\d+)(H|D)$/);
     if (!parts || parts.length != 3) {
         bot.sendMessage(chatId, "Invalid syntax. Try 'last 1d', 'last 12h', or just 'last'.");
+        bot._res.sendStatus(200);
         return;
     }
 
