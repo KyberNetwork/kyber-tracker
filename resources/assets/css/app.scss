@@ -970,6 +970,19 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.trade-list{
+  .trade-direction{
+    position: relative;
+    .trade-direction-down-symbol{
+      position: absolute;
+      left: 5px;
+      top: 30px;
+      color: #1f3468;
+      opacity: 0.15;
+    }
+  }
+}
+
 
 
 .trade-details-container{
@@ -1466,7 +1479,7 @@ html {
       }
     }
     .suggest-text{
-      line-height: 2;
+      line-height: 2.1em;
     }
   }
 

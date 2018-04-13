@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="panel panel-default">
+    <div class="panel panel-default trade-list">
 
       <div v-if="!!title" class="panel-heading pt-56 pb-16">
         <span class="panel-title no-margin"> {{ title }} </span>
@@ -174,9 +174,10 @@
           <tbody>
             <tr v-for="(row, index) in rows" :item="row" :index="index">
               <td class="pl-4">{{ getDateInfo(row, true) }}</td>
-              <td class="text-left pl-4">
+              <td class="text-left pl-4 trade-direction">
                 <b>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</b>
                 <br/>
+                <span class="entypo-down-dir trade-direction-down-symbol"></span>
                 {{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} {{ row.makerTokenSymbol }}
               </td>
               <!-- <td class="text-left pl-4"></td> -->
