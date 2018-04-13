@@ -91,7 +91,8 @@
                   <img class="kyber-logo" src="/images/logo.png" />
                   <!-- <span class="inline-logo"></span> -->
                   <!-- <img src="/images/network.svg" /> -->
-                  <i class="fas fa-signal icon-second-header"></i>
+                  <!-- <i class="fas fa-signal icon-second-header"></i> -->
+                  <span class="entypo-chart-bar icon-second-heade"></span>
                   {{ $t('navigator.network') }}
                   
                 </router-link>
@@ -99,14 +100,16 @@
               <b-nav-item class="navbar">
                 <router-link to="/trades">
                 <!-- <img src="/images/trade.svg" /> -->
-                <i class="fas fa-exchange-alt icon-second-header"></i>
+                <!-- <i class="fas fa-exchange-alt icon-second-header"></i> -->
+                <span class="entypo-switch icon-second-heade"></span>
                 {{ $t('navigator.trades') }}
                 </router-link>
               </b-nav-item>
               <b-nav-item class="navbar">
                 <router-link to="/tokens">
                 <!-- <img src="/images/token.svg" /> -->
-                <i class="fas fa-database icon-second-header"></i>
+                <!-- <i class="fas fa-database icon-second-header"></i> -->
+                <span class="entypo-database icon-second-heade"></span>
                 {{ $t('navigator.tokens') }}
                 </router-link>
               </b-nav-item>
@@ -431,22 +434,25 @@ export default {
 
     renderSuggestion(suggestion) {
       // return suggestion.item.type + " - " + suggestion.item.addr;
-      let logoUrl = "";
+      let logoUrl ;
       switch (suggestion.item.type) {
         case "address":
-          logoUrl = "/images/address-icon.svg";
+          logoUrl = <img class="history-logo" src="/images/metamask-icon.svg" />
           break;
         case "txHash":
-          logoUrl = "/images/tx-hash-icon.svg";
+          logoUrl = <span class="entypo-switch history-logo"></span>
           break;
         case "metamask":
-          logoUrl = "/images/metamask-icon.svg";
+          logoUrl = <span class="entypo-layout history-logo"></span>
           break;
       }
       return (
-        <div>
-          <img class="history-logo" src={logoUrl} />
-          <span>
+        <div class="suggest-item-wrapper clearfix">
+          <div class="logo-suggest-wraper float-left text-center">
+            {logoUrl}
+          </div>
+          
+          <span class="suggest-text">
             {suggestion.item.addr.slice(0, 14)} ...{" "}
             {suggestion.item.addr.slice(-12)}{" "}
           </span>

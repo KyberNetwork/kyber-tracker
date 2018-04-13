@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
 @import 'settings.scss';
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+}
 
 body {
   color: $black;
@@ -867,6 +873,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 
 }
+.small-table{
+  .table-responsive {
+    display: table;
+  }
+}
 
 @media (min-width: 576px){
   .tracker-logo {
@@ -1442,10 +1453,20 @@ html {
   }
 
   .autosuggest__results_item{
-    padding: 5px 15px;
+    padding: 5px 0px;
+    height: 40px;
+    // span{
+    //   padding-left: 10px;
+    // }
+    .logo-suggest-wraper{
+      width: 50px;
 
-    span{
-      padding-left: 10px;
+      .history-logo{
+        font-size: 1.5em;
+      }
+    }
+    .suggest-text{
+      line-height: 2;
     }
   }
 
@@ -1455,10 +1476,7 @@ html {
 
 }
 
-.history-logo{
-  width: 25px;
-  padding: 3px;
-}
+
 
 .token-logo-detail{
   width: 25px;

@@ -11,7 +11,7 @@
     "search": "Search",
     "network_activity": "Latest Trade",
     "searchbox_placeholder" : "Tx Hash / Wallet Address",
-    "all_token": "All Token",
+    "all_token": "All Tokens",
     "see_all": "See All"
   },
 
@@ -31,7 +31,7 @@
     "trades": "Trade",
     "trade_history": "Trade History",
     "tokens": "Token",
-    "top_token": "Top Token",
+    "top_token": "Top Tokens",
     "trade_detail": "Trade Details",
     "token_detail": "Token Details",
     "search": "Wallet Details",

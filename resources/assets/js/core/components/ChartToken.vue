@@ -48,7 +48,7 @@
             data: dataset,
             pointRadius: 0,
             backgroundColor: [
-              '#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86'
+              '#2ed573', '#2ed573', '#2ed573', '#2ed573', '#2ed573'
             ],
             showLine: true,
             spanGaps: true,

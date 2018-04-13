@@ -39,12 +39,12 @@
       </b-tabs>
     </b-card>
 
-    <!-- <div class="panel-heading pt-56 pb-16">
+    <div class="panel-heading pt-56 pb-16">
       <h4 class="no-margin">{{ $t("common.all_token") }}</h4>
-    </div> -->
+    </div>
 
 
-    <data-table ref="datatable"
+    <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
         :title="getListTitle()"
         :getData="getList">
       <template slot="header">
@@ -71,6 +71,25 @@
         </tr>
       </template>
     </data-table>
+
+    <data-table v-if="($mq !== 'md' && $mq !== 'lg')" ref="datatable" class="small-table"
+        :title="getListTitle()"
+        :getData="getList">
+      <template slot="header">
+        <th class="text-right ">{{ $t("common.symbol") }}</th>
+        <th class="text-right ">{{ $t("common.volume_24h_usd") }}</th>
+        <th class="text-right ">{{ $t("common.volume_24h_eth") }}</th>
+      </template>
+
+      <template slot="body" scope="slot">
+        <tr @click="toTokenDetails(slot.item.symbol)">
+          <td  class="text-right pr-2">{{ slot.item.symbol }}</td>
+          <td class="text-right pr-2">{{ formatVolumeUSD(slot.item) }}</td>
+          <td class="text-right pr-2">{{ slot.item.volumeETH }}</td>
+        </tr>
+      </template>
+    </data-table>
+
 
   </div>
 </template>
