@@ -14,7 +14,10 @@
      burner_contract: { type: 'string', length: 150 },
      reserve_contract: { type: 'string', length: 150 },
      reserve_wallet: { type: 'string', length: 150 },
-     amount: { type: 'string', length: 765 } },
+     amount: { type: 'string', length: 765 },
+     day_seq: { type: 'number', length: 11 },
+     hour_seq: { type: 'number', length: 11 },
+     minute_seq: { type: 'number', length: 11 } },
   KyberTradeModel: 
    { block_number: { type: 'number', length: 11 },
      block_hash: { type: 'string', length: 300 },
@@ -52,8 +55,9 @@
      maker_total_usd: { type: 'number', length: 22 },
      taker_price_usd: { type: 'number', length: 22 },
      taker_total_usd: { type: 'number', length: 22 },
-     volume_eth: { type: 'number', length: 22 },
-     volume_usd: { type: 'number', length: 22 } },
+     volume_eth: { type: 'string', length: 150 },
+     volume_usd: { type: 'string', length: 150 },
+     maker_fee: { type: 'string', length: 765 } },
   UserModel: 
    { username: { type: 'string', length: 120 },
      avatar_url: { type: 'string', length: 768 },

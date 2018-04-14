@@ -104861,24 +104861,9 @@ var render = function() {
                         _vm._v(_vm._s(_vm.$t("trade_list.exchange_to")))
                       ]),
                       _vm._v(" "),
-                      _c(
-                        "th",
-                        {
-                          staticClass: "pl-4",
-                          attrs: {
-                            colspan: !_vm.isHidePartnerCommission ? 1 : 2
-                          }
-                        },
-                        [_vm._v(_vm._s(_vm.$t("trade_list.rate")))]
-                      ),
-                      _vm._v(" "),
-                      !_vm.isHidePartnerCommission
-                        ? _c(
-                            "th",
-                            { staticClass: "pl-4", attrs: { colspan: "2" } },
-                            [_vm._v(_vm._s(_vm.$t("trade_list.fee_to_wallet")))]
-                          )
-                        : _vm._e()
+                      _c("th", { staticClass: "pl-4", attrs: { colspan: 2 } }, [
+                        _vm._v(_vm._s(_vm.$t("trade_list.rate")))
+                      ])
                     ])
                   ]),
                   _vm._v(" "),
@@ -104928,16 +104913,6 @@ var render = function() {
                               _vm._s(row.makerTokenSymbol)
                           )
                         ]),
-                        _vm._v(" "),
-                        !_vm.isHidePartnerCommission
-                          ? _c("td", { staticClass: "text-left pl-4" }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatTokenNumber("KNC", row.commission)
-                                ) + " KNC"
-                              )
-                            ])
-                          : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "td",
@@ -106000,17 +105975,25 @@ exports.default = {
 
   methods: {
     _buildChartData: function _buildChartData(ret) {
+      var all = ret;
       ret = ret.slice(0, 5);
       var labels = [];
       var dataset = [];
       var volumeTokens = [];
       var volumeEths = [];
+      var percentETH = [];
 
+      var sum = all.map(function (i) {
+        return i.volumeEthNumber;
+      }).reduce(function (a, b) {
+        return a + b;
+      }, 0);
       for (var i = 0; i < ret.length; i++) {
         labels.push(ret[i].symbol);
         dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
         volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
         volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
+        percentETH.push(Math.round(ret[i].volumeEthNumber / sum * 1000) / 10);
       }
 
       return {
@@ -106023,7 +106006,8 @@ exports.default = {
           backgroundColor: ['#2ed573', '#2ed573', '#2ed573', '#2ed573', '#2ed573'],
           showLine: true,
           spanGaps: true
-        }]
+        }],
+        percentETH: percentETH
       };
     },
     _getChartOptions: function _getChartOptions() {
@@ -106040,7 +106024,7 @@ exports.default = {
         afterBody: function afterBody(tooltipItem, data) {
           var index = tooltipItem[0].index;
           var tokenSymbol = data.labels[index];
-          var usdText = _this.$t('ß.title.label_volume') + ' (USD): $' + _util2.default.numberWithCommas(data.datasets[0].data[index]);
+          var usdText = _this.$t('chart.title.label_volume') + ' (USD): $' + _util2.default.numberWithCommas(data.datasets[0].data[index]);
           var ethText = _this.$t('chart.title.label_volume') + ' (ETH): ' + _util2.default.numberWithCommas(data.volumeEths[index]);
           var tokenText = _this.$t('chart.title.label_volume') + ' (' + tokenSymbol + '): ' + _util2.default.numberWithCommas(data.volumeTokens[index]);
 
@@ -106113,11 +106097,11 @@ exports.default = {
             //   //...
             // ],
             formatter: function formatter(value, context) {
-              var sum = context.dataset.data.reduce(function (a, b) {
-                return a + b;
-              }, 0);
 
-              return Math.round(value / sum * 1000) / 10 + '%';
+              var dataIndex = context.dataIndex;
+              var percentETH = context.chart.data.percentETH;
+              // let sum = volumeEths.reduce((a,b) => (a + b), 0)
+              return percentETH[dataIndex] + ' %';
             }
           }
         },
@@ -106162,6 +106146,7 @@ exports.default = {
           _this2.chartInstance = undefined;
         }
 
+        console.log(data, options);
         _this2.chartInstance = new Chart(ctx, {
           type: 'horizontalBar',
           data: data,

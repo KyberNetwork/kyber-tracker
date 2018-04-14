@@ -27,17 +27,21 @@
     },
     methods: {
       _buildChartData(ret) {
+        const all = ret
         ret = ret.slice(0, 5);
         const labels = [];
         const dataset = [];
         const volumeTokens = [];
         const volumeEths = [];
+        const percentETH = [];
 
+        const sum = all.map(i => i.volumeEthNumber).reduce((a,b) => (a + b), 0)
         for (let i = 0; i < ret.length; i++) {
           labels.push(ret[i].symbol);
           dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
           volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
           volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
+          percentETH.push(Math.round(ret[i].volumeEthNumber/sum * 1000) / 10)
         }
 
         return {
@@ -52,7 +56,8 @@
             ],
             showLine: true,
             spanGaps: true,
-          }]
+          }],
+          percentETH
         };
       },
       _getChartOptions() {
@@ -68,7 +73,7 @@
           afterBody: (tooltipItem, data) => {
             const index = tooltipItem[0].index;
             const tokenSymbol = data.labels[index];
-            const usdText = this.$t('ß.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
+            const usdText = this.$t('chart.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
             const ethText = this.$t('chart.title.label_volume') + ' (ETH): ' + util.numberWithCommas(data.volumeEths[index]);
             const tokenText = this.$t('chart.title.label_volume') + ' (' +
               tokenSymbol + '): ' + util.numberWithCommas(data.volumeTokens[index]);
@@ -142,9 +147,12 @@
               //   //...
               // ],
               formatter: function(value, context) {
-                let sum = context.dataset.data.reduce((a,b) => (a + b), 0)
 
-                  return Math.round(value/sum * 1000) / 10 + '%';
+             
+                let dataIndex = context.dataIndex
+                let percentETH = context.chart.data.percentETH
+                // let sum = volumeEths.reduce((a,b) => (a + b), 0)
+                  return percentETH[dataIndex] + ' %';
               }
           },
           },
@@ -187,6 +195,7 @@
             this.chartInstance = undefined;
           }
 
+          console.log(data, options)
           this.chartInstance = new Chart(ctx, {
             type: 'horizontalBar',
             data: data,
