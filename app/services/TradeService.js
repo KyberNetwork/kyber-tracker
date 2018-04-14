@@ -75,10 +75,10 @@ module.exports = BaseService.extends({
     KyberTradeModel.findOne(tradeId, callback);
   },
 
-  // Use for totken list page & top token chart
+  // Use for token list page & top token chart
   getTopTokensList: function (fromDate, toDate, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    const CMCService = this.getService('CMCService');
+    //const CMCService = this.getService('CMCService');
 
     async.auto({
       takerTrades: (next) => {
@@ -192,6 +192,73 @@ module.exports = BaseService.extends({
     });
   },
 
+  getStats: function (fromDate, toDate, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+
+    async.auto({
+      volumeUsd: (next) => {
+        KyberTradeModel.sum('volume_usd', {
+          where: 'block_timestamp > ? AND block_timestamp <= ?',
+          params: [fromDate, toDate],
+        }, next);
+      },
+      volumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: 'block_timestamp > ? AND block_timestamp <= ?',
+          params: [fromDate, toDate],
+        }, next);
+      },
+      tradeCount: (next) => {
+        KyberTradeModel.count({
+          where: 'block_timestamp > ? AND block_timestamp <= ?',
+          params: [fromDate, toDate],
+        }, next);
+      },
+      burnAndTax: (next) => {
+        KyberTradeModel.sum('burn_fees', {
+          where: 'block_timestamp > ? AND block_timestamp <= ?',
+          params: [fromDate, toDate],
+        }, next);
+      },
+      commission: (next) => {
+        KyberTradeModel.sum('commission', {
+          where: 'block_timestamp > ? AND block_timestamp <= ?',
+          params: [fromDate, toDate],
+        }, next);
+      },
+      partnerCount: (next) => {
+        KyberTradeModel.count({
+          where: 'block_timestamp > ? AND block_timestamp <= ? AND commission_receive_address IS NOT NULL',
+          params: [fromDate, toDate],
+        }, next);
+      },
+      partnerVolumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: 'block_timestamp > ? AND block_timestamp <= ? AND commission_receive_address IS NOT NULL',
+          params: [fromDate, toDate],
+        }, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const burnAndTax = new BigNumber(ret.burnAndTax.toString()).div(Math.pow(10, 18));
+      const commission = new BigNumber(ret.commission.toString()).div(Math.pow(10, 18));
+      const result = {
+        volumeUsd: ret.volumeUsd,
+        volumeEth: ret.volumeEth,
+        tradeCount: ret.tradeCount,
+        burnAndTax: burnAndTax,
+        partnerCount: ret.partnerCount,
+        partnerVolumeEth: ret.partnerVolumeEth,
+        commission: commission
+      };
+
+      return callback(null, result);
+    });
+  },
+
   // Use for topbar items
   getStats24h: function (callback) {
     const key = 'stats24h';
@@ -207,7 +274,7 @@ module.exports = BaseService.extends({
   _getStats24h: function (key, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const BurnedFeeModel = this.getModel('BurnedFeeModel');
-    const CMCService = this.getService('CMCService');
+    //const CMCService = this.getService('CMCService');
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -218,20 +285,19 @@ module.exports = BaseService.extends({
           params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
+      /*
       volumeEth: (next) => {
         KyberTradeModel.sum('volume_eth', {
           where: 'block_timestamp > ?',
           params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
-      /*
       ethPrice: (next) => {
         CMCService.getCurrentPrice('ETH', next);
       },
       kncPrice: (next) => {
         CMCService.getCurrentPrice('KNC', next);
       },
-      */
       kncInfo: (next) => {
         CMCService.getCMCTokenInfo('KNC', next);
       },
@@ -272,7 +338,7 @@ module.exports = BaseService.extends({
       }
 
       const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
-      const volumeInETH = new BigNumber(ret.volumeEth.toString());
+      //const volumeInETH = new BigNumber(ret.volumeEth.toString());
       //const feeInKNC = new BigNumber(ret.partnerFee.toString()).div(Math.pow(10, 18));
       //const feeInUSD = feeInKNC.times(ret.kncPrice);
 
@@ -283,13 +349,14 @@ module.exports = BaseService.extends({
       const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
-        networkVolumeEth:  volumeInETH.toFormat(2).toString() + " ETH",
+        //networkVolumeEth:  volumeInETH.toFormat(2).toString() + " ETH",
         collectedFees: collectedFees.toFormat(2).toString(),
         //tradeCount: ret.tradeCount,
         kncInfo: ret.kncInfo,
         ethInfo: ret.ethInfo,
-        totalBurnedFee: burnedWithContract.toFormat(2).toString(),
-        feeToBurn: feeToBurn.toFormat(2).toString()
+        // totalBurnedFee: burnedWithContract.toFormat(2).toString(),
+        feeToBurn: feeToBurn.toFormat(2).toString(),
+        totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
       };
 
       LocalCache.setSync(key, result, {ttl: Const.MINUTE_IN_MILLISECONDS});
@@ -574,11 +641,11 @@ module.exports = BaseService.extends({
         const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
         returnData.push({
           [this._convertSeqColumnName(groupColumn)]: firstSeq,
-          sum: 0
+          sum: accuBurned
         });
         returnData.push({
           [this._convertSeqColumnName(groupColumn)]: nowSeq,
-          sum: 0
+          sum: accuBurned
         });
       }
 
