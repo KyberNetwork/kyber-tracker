@@ -19,7 +19,7 @@
               </span>
              
               <br/>
-              <span class="usd-value">({{ formatFiatCurrency(record.takerTotalUsd) }}) USD*</span>
+              <span v-if="record.takerTotalUsd" class="usd-value">({{ formatFiatCurrency(record.takerTotalUsd) }}) USD*</span>
             </div>
             <!-- <span class="to">to</span> -->
             <span class="entypo-right to col-2"></span>
@@ -30,7 +30,7 @@
               </span>
               
               <br />
-              <span class="usd-value">(${{ formatFiatCurrency(record.makerTotalUsd) }}) USD*</span>
+              <span v-if="record.makerTotalUsd" class="usd-value">(${{ formatFiatCurrency(record.makerTotalUsd) }}) USD*</span>
             </div>
             
           </div>

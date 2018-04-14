@@ -74,7 +74,7 @@
       </template>
     </data-table>
 
-    <data-table v-if="($mq !== 'md' && $mq !== 'lg')" ref="datatable" class="small-table"
+    <data-table v-if="($mq !== 'md' && $mq !== 'lg')" ref="datatable" class="small-table table-hover"
         :title="getListTitle()"
         :getData="getList">
       <template slot="header">

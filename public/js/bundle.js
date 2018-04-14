@@ -100547,8 +100547,7 @@ var render = function() {
         _c(
           "table",
           {
-            staticClass:
-              "table table-hover table-responsive table-round table-striped",
+            staticClass: "table table-responsive table-round table-striped",
             attrs: { responsive: "" }
           },
           [
@@ -121429,15 +121428,19 @@ var render = function() {
                       _vm._v(" "),
                       _c("br"),
                       _vm._v(" "),
-                      _c("span", { staticClass: "usd-value" }, [
-                        _vm._v(
-                          "(" +
-                            _vm._s(
-                              _vm.formatFiatCurrency(_vm.record.takerTotalUsd)
-                            ) +
-                            ") USD*"
-                        )
-                      ])
+                      _vm.record.takerTotalUsd
+                        ? _c("span", { staticClass: "usd-value" }, [
+                            _vm._v(
+                              "(" +
+                                _vm._s(
+                                  _vm.formatFiatCurrency(
+                                    _vm.record.takerTotalUsd
+                                  )
+                                ) +
+                                ") USD*"
+                            )
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("span", { staticClass: "entypo-right to col-2" }),
@@ -121468,15 +121471,19 @@ var render = function() {
                       _vm._v(" "),
                       _c("br"),
                       _vm._v(" "),
-                      _c("span", { staticClass: "usd-value" }, [
-                        _vm._v(
-                          "($" +
-                            _vm._s(
-                              _vm.formatFiatCurrency(_vm.record.makerTotalUsd)
-                            ) +
-                            ") USD*"
-                        )
-                      ])
+                      _vm.record.makerTotalUsd
+                        ? _c("span", { staticClass: "usd-value" }, [
+                            _vm._v(
+                              "($" +
+                                _vm._s(
+                                  _vm.formatFiatCurrency(
+                                    _vm.record.makerTotalUsd
+                                  )
+                                ) +
+                                ") USD*"
+                            )
+                          ])
+                        : _vm._e()
                     ])
                   ]
                 ),
@@ -122126,7 +122133,7 @@ var render = function() {
             "data-table",
             {
               ref: "datatable",
-              staticClass: "small-table",
+              staticClass: "small-table table-hover",
               attrs: { title: _vm.getListTitle(), getData: _vm.getList },
               scopedSlots: _vm._u([
                 {
