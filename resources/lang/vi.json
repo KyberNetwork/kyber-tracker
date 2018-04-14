@@ -32,11 +32,10 @@
     "trade_history": "Lịch sử giao dịch",
     "tokens": "Tokens",
     "top_token": "Top Token",
-    "trade_detail": "Chi tiết giao dịch",
+    "trade_details": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
     "search": "Thông tin ví",
-    "network": "Network",
-    "trade_details": "Trade Details"
+    "network": "Network"
   },
 
   "filter": {
@@ -100,17 +99,19 @@
 
   "trade_detail": {
     "transaction_hash": "Mã giao dịch",
+    "wallet": "Ví",
     "date": "Thời gian",
     "taker_address": "Người thực hiện",
     "taker_token": "Trao đổi từ",
     "taker_amount": "Số lượng",
     "maker_token": "Trao đổi sang",
     "maker_amount": "Số lượng",
-    "rate": "Tỉ giá",
-    "collected_fees": "Tổng phí",
+    "rate": "TỈ GIÁ {0}/{1}",
+    "collected_fees": "TỔNG PHÍ",
     "fee_to_wallet": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt",
-    "for": " đổi lấy "
+    "for": " đổi lấy ",
+    "trade_note": "Tỷ giá USD được tính tại thời điểm giao dịch"
   },
 
   "token_list": {
@@ -130,7 +131,7 @@
     "tx_hash": "Tx hash: ",
     "total_fee": "Tổng phí: {0} KNC",
     "no_txhash_data": "Giao dịch này không được thực hiện với Kyber Network",
-    "invalid_query": "Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"
+    "invalid_query": "Thông tin bạn tìm không phải mã giao dịch hoặc địa chỉ ví"
   },
 
   "main_page": {

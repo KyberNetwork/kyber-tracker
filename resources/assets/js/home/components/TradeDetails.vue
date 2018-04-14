@@ -36,19 +36,19 @@
           </div>
           
           <div class="trade-note">
-            <i>*USD Rates are calculated at trading time</i>
+            <i>*{{ $t("trade_detail.trade_note") }}</i>
           </div>
         </b-col>
         <b-col sm="12 right-trade-detail">
           <div class="trade-tx-hash">
-            <div class="trade-detail-title">Transaction Hash</div>
+            <div class="trade-detail-title">{{ $t("trade_detail.transaction_hash") }}</div>
             <div class="trade-detail-link">
               <a target="_blank" :href="getTxEtherscanLink(record.tx)">{{ record.tx }}</a>
             </div>
           </div>
 
           <div class="trade-detail-title">
-            <div class="trade-detail-title">Wallet</div>
+            <div class="trade-detail-title">{{ $t("trade_detail.wallet") }}</div>
             <div class="trade-detail-link">
               <router-link class="trade-detail-link" :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link>
             </div>
@@ -122,7 +122,9 @@
     <div class="row rate-detail">
       <div class="col">
         <div class="rate-detail-title">
-          <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> RATE
+          <!-- <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> 
+          RATE -->
+          {{$t("trade_detail.rate", [record.takerTokenSymbol, record.makerTokenSymbol])}}
         </div>
         <div class="rate-detail-value">
           {{ Math.round(1/getRate(record)*100000000) / 100000000 }}
@@ -131,7 +133,7 @@
       </div>
       <div class="col">
         <div class="rate-detail-title">
-          FEES TO BURN
+          {{$t("trade_detail.collected_fees")}}
         </div>
         <div class="rate-detail-value">
           {{ getTokenAmount(record.burnFees, 'KNC') }} KNC

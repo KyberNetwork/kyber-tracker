@@ -105975,7 +105975,10 @@ exports.default = {
   methods: {
     _buildChartData: function _buildChartData(ret) {
       var all = ret;
-      ret = ret.slice(0, 5);
+
+      ret = ret.filter(function (x) {
+        return x.symbol !== "ETH";
+      }).slice(0, 5);
       var labels = [];
       var dataset = [];
       var volumeTokens = [];
@@ -120480,6 +120483,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 var defaultChartOptions = {
@@ -120725,6 +120733,25 @@ var render = function() {
                   _c("chart-fee", {
                     ref: "chartFee",
                     attrs: { elementId: "chart-fee" }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-tab",
+                {
+                  attrs: { title: _vm.$t("chart.title.fees_burned") },
+                  on: {
+                    click: function($event) {
+                      _vm.onSelectTab("chartBurned")
+                    }
+                  }
+                },
+                [
+                  _c("chart-fee", {
+                    ref: "chartBurned",
+                    attrs: { elementId: "chart-burned" }
                   })
                 ],
                 1
@@ -121067,7 +121094,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -121359,6 +121386,8 @@ exports.default = {
 //
 //
 //
+//
+//
 
 /***/ }),
 /* 559 */
@@ -121489,14 +121518,16 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "trade-note" }, [
-                  _c("i", [_vm._v("*USD Rates are calculated at trading time")])
+                  _c("i", [
+                    _vm._v("*" + _vm._s(_vm.$t("trade_detail.trade_note")))
+                  ])
                 ])
               ]),
               _vm._v(" "),
               _c("b-col", { attrs: { sm: "12 right-trade-detail" } }, [
                 _c("div", { staticClass: "trade-tx-hash" }, [
                   _c("div", { staticClass: "trade-detail-title" }, [
-                    _vm._v("Transaction Hash")
+                    _vm._v(_vm._s(_vm.$t("trade_detail.transaction_hash")))
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "trade-detail-link" }, [
@@ -121515,7 +121546,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "trade-detail-title" }, [
                   _c("div", { staticClass: "trade-detail-title" }, [
-                    _vm._v("Wallet")
+                    _vm._v(_vm._s(_vm.$t("trade_detail.wallet")))
                   ]),
                   _vm._v(" "),
                   _c(
@@ -121544,23 +121575,18 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "row rate-detail" }, [
         _c("div", { staticClass: "col" }, [
-          _c(
-            "div",
-            { staticClass: "rate-detail-title" },
-            [
-              _c("token-link", {
-                staticClass: "token-link",
-                attrs: { symbol: _vm.record.takerTokenSymbol }
-              }),
-              _vm._v("/"),
-              _c("token-link", {
-                staticClass: "token-link",
-                attrs: { symbol: _vm.record.makerTokenSymbol }
-              }),
-              _vm._v(" RATE\n      ")
-            ],
-            1
-          ),
+          _c("div", { staticClass: "rate-detail-title" }, [
+            _vm._v(
+              "\n        " +
+                _vm._s(
+                  _vm.$t("trade_detail.rate", [
+                    _vm.record.takerTokenSymbol,
+                    _vm.record.makerTokenSymbol
+                  ])
+                ) +
+                "\n      "
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "rate-detail-value" }, [
             _vm._v(
@@ -121576,7 +121602,11 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "col" }, [
           _c("div", { staticClass: "rate-detail-title" }, [
-            _vm._v("\n        FEES TO BURN\n      ")
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.$t("trade_detail.collected_fees")) +
+                "\n      "
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "rate-detail-value" }, [
@@ -122846,13 +122876,13 @@ if (false) {
 /* 575 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_eth":"24H Volume (ETH)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Latest Trade","searchbox_placeholder":"Tx Hash / Wallet Address","all_token":"All Tokens","see_all":"See All"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Trade History","token_list":"Supported Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trade","trade_history":"Trade History","tokens":"Token","top_token":"Top Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details","network":"Network","trade_details":"Trade Details"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H Volume","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"Fees to burn","fees_burned":"Fees burned","knc_price":"KNC Price","eth_price":"ETH Price","collected_fees":"Collected fees"},"tooltip":{"network_volume":"Trading volume during the last 24 hours","collected_fees":"Total fees collected from reserves","fees_to_burn":"Total fees set aside to burn so far","fees_burned":"Total fees burnt so far","knc_price":"Current KNC price","eth_price":"Current ETH price","price_change_24":"% change compared with price at 24 hours ago"},"chart":{"title":{"network_volume":"Volume","collected_fees":"Collected Fees","fees_burned":"Burned (Accumulated)","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"{0} Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Trade History","address":"Address","date":"Time","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rates","description":"Description","amount":"Amount","collected_fees":"Collected Fees","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"From","exchange_to":"To"},"trade_detail":{"transaction_hash":"Transaction Hash","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"Rate","collected_fees":"Collected Fees","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","for":" for "},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Number of trades: {0}","total_usd_msg":"Total volume (USD): ${0}","total_eth_msg":"Total volume (ETH): {0}","result_title":"Address: ","tx_hash":"Tx hash: ","total_fee":"Total collected fees: {0} KNC","no_txhash_data":"This transaction is not with Kyber Network","invalid_query":"Your search string is not address or tx hash"},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Name","symbol":"Symbol","volume_24h_usd":"24H Volume (USD)","volume_24h_eth":"24H Volume (ETH)","volume_24h_token":"24H Volume (Token)","search":"Search","network_activity":"Latest Trade","searchbox_placeholder":"Tx Hash / Wallet Address","all_token":"All Tokens","see_all":"See All"},"page_title":{"home":"Home","trades":"Trades","tokens":"Tokens","trade_list":"Trade History","token_list":"Supported Tokens","trade_detail":"Trade Details","token_detail":"Token Details","search":"Wallet Details"},"navigator":{"home":"Home","trades":"Trade","trade_history":"Trade History","tokens":"Token","top_token":"Top Tokens","trade_details":"Trade Details","token_detail":"Token Details","search":"Wallet Details","network":"Network"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"24H Volume","trades":"TRADES (24H)","burned_fee":"FEES TO BURN (24H)","fees_to_burn":"Fees to burn","fees_burned":"Fees burned","knc_price":"KNC Price","eth_price":"ETH Price","collected_fees":"Collected fees"},"tooltip":{"network_volume":"Trading volume during the last 24 hours","collected_fees":"Total fees collected from reserves","fees_to_burn":"Total fees set aside to burn so far","fees_burned":"Total fees burnt so far","knc_price":"Current KNC price","eth_price":"Current ETH price","price_change_24":"% change compared with price at 24 hours ago"},"chart":{"title":{"network_volume":"Volume","collected_fees":"Collected Fees","fees_burned":"Burned (Accumulated)","fee_to_burn":"Fees To Burn","top_token":"Top Tokens","token_volume":"{0} Volume","label_volume":"Volume","label_count":"Trades","label_total":"Total"},"label":{"to_burn":"To burn"}},"trade_list":{"title":"Trade History","address":"Address","date":"Time","taker_token":"Exchange from","maker_token":"Exchange to","rate":"Rates","description":"Description","amount":"Amount","collected_fees":"Collected Fees","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","exchange":"Exchange","msg_no_result":"There's no trade found.","exchange_from":"From","exchange_to":"To"},"trade_detail":{"transaction_hash":"Transaction Hash","wallet":"Wallet","date":"Date","taker_address":"Wallet Address","taker_token":"Exchange From","taker_amount":"Amount","maker_token":"Exchange To","maker_amount":"Amount","rate":"{0}/{1} RATE","collected_fees":"COLLECTED FEES","fee_to_wallet":"Partner Commission","fee_to_burn":"Fees To Burn","for":" for ","trade_note":"USD Rates are calculated at trading time"},"token_list":{"title":"Trade Tokens","prev":"Prev","next":"Next","no":"No."},"search_page":{"title":"Wallet Details","no_result_msg":"No transactions found for wallet {0}","result_msg":"Number of trades: {0}","total_usd_msg":"Total volume (USD): ${0}","total_eth_msg":"Total volume (ETH): {0}","result_title":"Address: ","tx_hash":"Tx hash: ","total_fee":"Total collected fees: {0} KNC","no_txhash_data":"This transaction is not with Kyber Network","invalid_query":"Your search string is not address or transaction hash."},"main_page":{"home":"Home","feedback":"Product Feedback","help":"Help"}}
 
 /***/ }),
 /* 576 */
 /***/ (function(module, exports) {
 
-module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"KL giao dịch 24H (USD)","volume_24h_eth":"KL giao dịch 24H (ETH)","volume_24h_token":"KL giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Giao dịch gần nhất","searchbox_placeholder":"Tx Hash / địa chỉ ví","all_token":"Danh sách token","see_all":"Xem Tất Cả"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","trade_history":"Lịch sử giao dịch","tokens":"Tokens","top_token":"Top Token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví","network":"Network","trade_details":"Trade Details"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"Khối lượng giao dịch (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"Phí sẽ đốt","fees_burned":"Đã đốt","knc_price":"Giá KNC","eth_price":"Giá ETH","collected_fees":"Tổng phí"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","collected_fees":"Tổng phí thu từ các quỹ","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","eth_price":"Giá hiện tại của ETH","price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"KL giao dịch","collected_fees":"Phí","fees_burned":"Đã đốt (luỹ kế)","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"KL giao dịch","label_count":"Số giao dịch","label_total":"KL giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","collected_fees":"Tổng phí","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"Tỉ giá","collected_fees":"Tổng phí","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy "},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: ","tx_hash":"Tx hash: ","total_fee":"Tổng phí: {0} KNC","no_txhash_data":"Giao dịch này không được thực hiện với Kyber Network","invalid_query":"Thông tin bạn tìm không phải tx hash hoặc địa chỉ ví"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
+module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"Tên","symbol":"Ký hiệu","volume_24h_usd":"KL giao dịch 24H (USD)","volume_24h_eth":"KL giao dịch 24H (ETH)","volume_24h_token":"KL giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Giao dịch gần nhất","searchbox_placeholder":"Tx Hash / địa chỉ ví","all_token":"Danh sách token","see_all":"Xem Tất Cả"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","trade_history":"Lịch sử giao dịch","tokens":"Tokens","top_token":"Top Token","trade_details":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví","network":"Network"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"Khối lượng giao dịch (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"Phí sẽ đốt","fees_burned":"Đã đốt","knc_price":"Giá KNC","eth_price":"Giá ETH","collected_fees":"Tổng phí"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","collected_fees":"Tổng phí thu từ các quỹ","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","eth_price":"Giá hiện tại của ETH","price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"KL giao dịch","collected_fees":"Phí","fees_burned":"Đã đốt (luỹ kế)","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"KL giao dịch","label_count":"Số giao dịch","label_total":"KL giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","collected_fees":"Tổng phí","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","wallet":"Ví","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"TỈ GIÁ {0}/{1}","collected_fees":"TỔNG PHÍ","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy ","trade_note":"Tỷ giá USD được tính tại thời điểm giao dịch"},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: ","tx_hash":"Tx hash: ","total_fee":"Tổng phí: {0} KNC","no_txhash_data":"Giao dịch này không được thực hiện với Kyber Network","invalid_query":"Thông tin bạn tìm không phải mã giao dịch hoặc địa chỉ ví"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
 
 /***/ }),
 /* 577 */

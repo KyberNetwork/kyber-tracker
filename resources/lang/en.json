@@ -32,11 +32,10 @@
     "trade_history": "Trade History",
     "tokens": "Token",
     "top_token": "Top Tokens",
-    "trade_detail": "Trade Details",
+    "trade_details": "Trade Details",
     "token_detail": "Token Details",
     "search": "Wallet Details",
-    "network": "Network",
-    "trade_details": "Trade Details"
+    "network": "Network"
   },
 
   "filter": {
@@ -102,17 +101,19 @@
 
   "trade_detail": {
     "transaction_hash": "Transaction Hash",
+    "wallet": "Wallet",
     "date": "Date",
     "taker_address": "Wallet Address",
     "taker_token": "Exchange From",
     "taker_amount": "Amount",
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
-    "rate": "Rate",
-    "collected_fees": "Collected Fees",
+    "rate": "{0}/{1} RATE",
+    "collected_fees": "COLLECTED FEES",
     "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
-    "for": " for "
+    "for": " for ",
+    "trade_note": "USD Rates are calculated at trading time"
   },
 
   "token_list": {
@@ -132,7 +133,7 @@
     "tx_hash": "Tx hash: ",
     "total_fee": "Total collected fees: {0} KNC",
     "no_txhash_data": "This transaction is not with Kyber Network",
-    "invalid_query": "Your search string is not address or tx hash"
+    "invalid_query": "Your search string is not address or transaction hash."
   },
 
   "main_page": {

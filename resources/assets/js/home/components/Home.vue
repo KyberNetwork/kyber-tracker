@@ -40,6 +40,11 @@
             :elementId="'chart-fee'">
           </chart-fee>
         </b-tab>
+        <b-tab @click="onSelectTab('chartBurned')" :title="$t('chart.title.fees_burned')">
+          <chart-fee ref="chartBurned"
+            :elementId="'chart-burned'">
+          </chart-fee>
+        </b-tab>
         <!-- <b-tab @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
           <chart-token ref="chartToken"
             :elementId="'chart-token'">
