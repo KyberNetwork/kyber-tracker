@@ -52,22 +52,24 @@
         <th class="text-left pl-4">{{ $t("common.name") }}</th>
         <th class="text-left pl-4">{{ $t("common.symbol") }}</th>
         <th class="text-right pl-4">{{ $t("common.volume_24h_usd") }}</th>
-        <th class="text-right pl-4 pr-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th class="text-right pl-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th ></th>
         <!-- <th class="text-right">{{ $t("common.volume_24h_token") }}</th> -->
         <!-- <th></th> -->
       </template>
 
       <template slot="body" scope="slot">
-        <tr @click="toTokenDetails(slot.item.symbol)">
+        <tr>
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
           <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> {{ slot.item.name }}</td>
           <td  class="pl-4">{{ slot.item.symbol }}</td>
           <td class="text-right">{{ formatVolumeUSD(slot.item) }}</td>
-          <td class="text-right pr-4">{{ slot.item.volumeETH }}</td>
+          <td class="text-right">{{ slot.item.volumeETH }}</td>
           <!-- <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
           <td><span class="pull-right">
               <i class="k k-angle right"></i>
             </span></td> -->
+          <td class="pointer text-right pr-4" @click="toTokenDetails(slot.item.symbol)"><img src="/images/more.svg" /></td>
         </tr>
       </template>
     </data-table>

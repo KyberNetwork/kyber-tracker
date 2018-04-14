@@ -121687,7 +121687,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -121737,6 +121737,8 @@ var _chart2 = _interopRequireDefault(_chart);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
 //
 //
 //
@@ -122053,39 +122055,42 @@ var render = function() {
                   key: "body",
                   fn: function(slot) {
                     return [
-                      _c(
-                        "tr",
-                        {
-                          on: {
-                            click: function($event) {
-                              _vm.toTokenDetails(slot.item.symbol)
+                      _c("tr", [
+                        _c("td", { staticClass: "pl-4" }, [
+                          _c("img", {
+                            staticClass: "image-inline-td mr-1",
+                            attrs: {
+                              src: _vm.getTokenImageLink(slot.item.symbol)
                             }
-                          }
-                        },
-                        [
-                          _c("td", { staticClass: "pl-4" }, [
-                            _c("img", {
-                              staticClass: "image-inline-td mr-1",
-                              attrs: {
-                                src: _vm.getTokenImageLink(slot.item.symbol)
+                          }),
+                          _vm._v(" " + _vm._s(slot.item.name))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "pl-4" }, [
+                          _vm._v(_vm._s(slot.item.symbol))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          _vm._v(_vm._s(_vm.formatVolumeUSD(slot.item)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          _vm._v(_vm._s(slot.item.volumeETH))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "pointer text-right pr-4",
+                            on: {
+                              click: function($event) {
+                                _vm.toTokenDetails(slot.item.symbol)
                               }
-                            }),
-                            _vm._v(" " + _vm._s(slot.item.name))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "pl-4" }, [
-                            _vm._v(_vm._s(slot.item.symbol))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-right" }, [
-                            _vm._v(_vm._s(_vm.formatVolumeUSD(slot.item)))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-right pr-4" }, [
-                            _vm._v(_vm._s(slot.item.volumeETH))
-                          ])
-                        ]
-                      )
+                            }
+                          },
+                          [_c("img", { attrs: { src: "/images/more.svg" } })]
+                        )
+                      ])
                     ]
                   }
                 }
@@ -122105,9 +122110,11 @@ var render = function() {
                   _vm._v(_vm._s(_vm.$t("common.volume_24h_usd")))
                 ]),
                 _vm._v(" "),
-                _c("th", { staticClass: "text-right pl-4 pr-4" }, [
+                _c("th", { staticClass: "text-right pl-4" }, [
                   _vm._v(_vm._s(_vm.$t("common.volume_24h_eth")))
-                ])
+                ]),
+                _vm._v(" "),
+                _c("th")
               ])
             ],
             2
