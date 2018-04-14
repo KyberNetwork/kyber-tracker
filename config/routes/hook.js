@@ -1,6 +1,7 @@
 const hooks = {};
-hooks[process.env.ALARM_BOT_HOOK] = ['HookController.alarm'];
-hooks[process.env.ALARM_BOT_TG_HOOK] = ['HookController.haveChat'];
+hooks[process.env.ALARM_BOT_HOOK] = ['AlarmBotController.alarm'];
+hooks[process.env.ALARM_BOT_TG_HOOK] = ['AlarmBotController.haveChat'];
+hooks[process.env.TRACKER_BOT_TG_HOOK] = ['TrackerBotController.haveChat'];
 
 module.exports = {
     GET: hooks,
