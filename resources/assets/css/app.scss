@@ -807,11 +807,21 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     letter-spacing: normal;
 
     #autosuggest{
-      display: none;
+      // display: none;
+      visibility: hidden;
+      width: 0px;
+      
+    }
+    .search-button{
+      border-radius: 4px;
     }
 
     .search-expand{
-      display: block !important;
+      // display: block !important;
+      visibility: visible !important;
+      width: 100% !important;
+      width: 365px !important;
+
     }
 
   }
@@ -1421,6 +1431,9 @@ html {
   width: 365px;
   position: relative;
   margin-left: 15px;
+  -webkit-transition: width .5s ease;
+    -moz-transition: width .5s ease;
+    transition: width .5s ease;
 }
 #autosuggest__input{
   // padding-right: 49px;
@@ -1512,6 +1525,7 @@ html {
 }
 
 .see-all-trade{
+  margin-top: 56px;
   cursor: pointer;
   width: 116px;
   height: 36px;

@@ -15,6 +15,7 @@
     </b-card>
 
     <trade-list ref="datatable"
+      :title="getListTitle()"
       :getFilterTokenSymbol="getFilterTokenSymbol">
     </trade-list>
   </div>
@@ -68,6 +69,9 @@
         this.logoUrl = 'images/tokens/' + (this.symbol ? this.symbol.toLowerCase() : '') +  '.svg'
         this.refreshChartsData();
         this.$refs.datatable.fetch();
+      },
+      getListTitle() {
+        return this.$t("common.token_trade_history");
       },
       selectPeriod (period, interval) {
         this.selectedPeriod = period;

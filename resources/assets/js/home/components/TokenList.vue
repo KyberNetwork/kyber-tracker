@@ -40,7 +40,7 @@
     </b-card>
 
     <div class="panel-heading pt-56 pb-16">
-      <h4 class="no-margin">{{ $t("common.all_token") }}</h4>
+      <span class="no-margin panel-title">{{ $t("common.all_token") }}</span>
     </div>
 
 

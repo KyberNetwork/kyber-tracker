@@ -3,8 +3,8 @@
 
   "common": {
     "exchange": "Exchange",
-    "name": "Tên",
-    "symbol": "Ký hiệu",
+    "name": "TÊN",
+    "symbol": "KÝ HIỆU",
     "volume_24h_usd": "KL giao dịch 24H (USD)",
     "volume_24h_eth": "KL giao dịch 24H (ETH)",
     "volume_24h_token": "KL giao dịch 24H (Token)",
@@ -12,7 +12,8 @@
     "network_activity": "Giao dịch gần nhất",
     "searchbox_placeholder" : "Tx Hash / địa chỉ ví",
     "all_token": "Danh sách token",
-    "see_all": "Xem Tất Cả"
+    "see_all": "Xem Tất Cả",
+    "token_trade_history": "Lịch sử giao dịch token"
   },
 
   "page_title": {
@@ -31,7 +32,7 @@
     "trades": "Giao dịch",
     "trade_history": "Lịch sử giao dịch",
     "tokens": "Tokens",
-    "top_token": "Top Token",
+    "top_token": "Top token",
     "trade_details": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
     "search": "Thông tin ví",

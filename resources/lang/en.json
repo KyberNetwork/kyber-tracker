@@ -3,8 +3,8 @@
 
   "common": {
     "exchange": "Exchange",
-    "name": "Name",
-    "symbol": "Symbol",
+    "name": "NAME",
+    "symbol": "SYMBOL",
     "volume_24h_usd": "24H Volume (USD)",
     "volume_24h_eth": "24H Volume (ETH)",
     "volume_24h_token": "24H Volume (Token)",
@@ -12,7 +12,8 @@
     "network_activity": "Latest Trade",
     "searchbox_placeholder" : "Tx Hash / Wallet Address",
     "all_token": "All Tokens",
-    "see_all": "See All"
+    "see_all": "See All",
+    "token_trade_history": "Token trade history"
   },
 
   "page_title": {
@@ -31,7 +32,7 @@
     "trades": "Trade",
     "trade_history": "Trade History",
     "tokens": "Token",
-    "top_token": "Top Tokens",
+    "top_token": "Top tokens",
     "trade_details": "Trade Details",
     "token_detail": "Token Details",
     "search": "Wallet Details",
