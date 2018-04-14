@@ -996,9 +996,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   font-stretch: normal;
   word-wrap: break-word;
   .left-trade-detail{
-    padding: 32px 15px 35px 30px;
+    padding: 32px 15px 35px 15px;
     border-bottom: solid 1px #d7d8d9;
     .trade-time{
+      padding-left: 15px;
       font-size: 14px;
       font-weight: 600;
       line-height: 1.43;
@@ -1044,7 +1045,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     
     .trade-note{
       font-size: 12px;
-      text-align: center;
+      padding-left: 15px;
+      // text-align: center;
     }
   }
 

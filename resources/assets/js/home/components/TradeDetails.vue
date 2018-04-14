@@ -138,7 +138,7 @@
         </div>
         
       </div>
-      <div class="col">
+      <!-- <div class="col">
         <div class="rate-detail-title">
           PARTNER COMMISSION
         </div>
@@ -146,7 +146,7 @@
           {{ getTokenAmount(record.takerFee, 'KNC') }} KNC
         </div>
         
-      </div>
+      </div> -->
     </div>
     
 
