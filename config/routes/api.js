@@ -11,6 +11,7 @@ module.exports = {
     '/search'                       : ['TradeController.search'],
     
     '/currencies/convertiblePairs'  : ['CurrenciesController.getConvertiblePairs'],
+    '/test/custom_query'            : ['TestController.testCustomQuery'],
   },
   POST: {
     // Implement me.
