@@ -474,6 +474,9 @@ td {
 .table-responsive-wraper {
   overflow: auto;
 }
+.table-more{
+  color: #2ed573;
+}
 
 a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   color: #2ed573;
@@ -565,7 +568,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .light-text {
   color: rgba(255, 255, 255, 0.56);
-  font-size: 14px;
+  // font-size: 14px;
 }
 
 .datepicker-container {
@@ -683,7 +686,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   padding: 10px 17px;
   // width: 100%;
   // overflow: hidden;
-  line-height: 18px;
+  line-height: 20px;
   height: 56px;
 
   li {
@@ -729,7 +732,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 
 }
-@media (max-width: 1083px){
+@media (max-width: 1201px){
   .navbar{
     #total-burn-fee{
       display: none;
@@ -752,7 +755,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-@media (max-width: 960px){
+@media (max-width: 1085px){
   .navbar{
     #fee-to-burn{
       display: none;
@@ -767,7 +770,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-@media (max-width: 470px){
+@media (max-width: 965px){
   .navbar{
     #eth-price{
       display: none;
@@ -780,7 +783,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
   }
 }
-@media (max-width: 220px){
+@media (max-width: 440px){
   .navbar{
     #knc-price{
       display: none;
@@ -1010,7 +1013,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     border-bottom: solid 1px #d7d8d9;
     .trade-time{
       padding-left: 15px;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
       line-height: 1.43;
       text-align: left;
@@ -1054,7 +1057,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
     
     .trade-note{
-      font-size: 12px;
+      font-size: 14px;
       padding-left: 15px;
       // text-align: center;
     }
@@ -1075,7 +1078,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
     .trade-detail-link{
       
-      font-size: 14px;
+      font-size: 16px;
       font-weight: normal;
       font-style: normal;
       font-stretch: normal;
@@ -1328,7 +1331,7 @@ html {
 }
 
 .topbar-value {
-  font-size: 13px;
+  font-size: 16px;
 }
 
 
@@ -1450,13 +1453,16 @@ html {
 }
 #autosuggest__input::placeholder{
   font-size: 10px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
+  // font-weight: normal;
+  // font-style: normal;
+  // font-stretch: normal;
+  // line-height: normal;
+  // letter-spacing: normal;
+  margin: auto;
   text-align: left;
   color: #ffffff;
+  font-size: 14px !important;
+  vertical-align: middle;
   opacity: 0.7;
 }
 

@@ -155,7 +155,10 @@
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td> -->
-              <td class="pointer text-right pr-4" @click="onClickRow(row)"><img src="/images/more.svg" /></td>
+              <td class="pointer text-right pr-4" @click="onClickRow(row)">
+                <!-- <img src="/images/more.svg" /> -->
+                <span class="entypo-dot-3 table-more"></span>
+              </td>
             </tr>
           </tbody>
         </table>

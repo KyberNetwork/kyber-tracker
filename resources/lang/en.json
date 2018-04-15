@@ -13,7 +13,7 @@
     "searchbox_placeholder" : "Tx Hash / Wallet Address",
     "all_token": "All Tokens",
     "see_all": "See All",
-    "token_trade_history": "Token trade history"
+    "token_trade_history": "Token Trade History"
   },
 
   "page_title": {
@@ -32,7 +32,7 @@
     "trades": "Trade",
     "trade_history": "Trade History",
     "tokens": "Token",
-    "top_token": "Top tokens",
+    "top_token": "Top Tokens",
     "trade_details": "Trade Details",
     "token_detail": "Token Details",
     "search": "Wallet Details",
