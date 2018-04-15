@@ -242,12 +242,17 @@ export default {
       const makerToken = this.tokens[this.record.makerTokenSymbol];
       const takerToken = this.tokens[this.record.takerTokenSymbol];
 
+      console.log(makerToken, takerToken)
+
       const makerAmount = new BigNumber(
         this.record.makerTokenAmount.toString()
       ).div(Math.pow(10, makerToken.decimal));
+      
       const takerAmount = new BigNumber(
         this.record.takerTokenAmount.toString()
       ).div(Math.pow(10, takerToken.decimal));
+      console.log(makerAmount, takerAmount)
+      console.log(makerAmount.div(takerAmount).toNumber())
       return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
     formatFiatCurrency(amount) {
