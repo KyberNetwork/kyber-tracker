@@ -432,8 +432,12 @@ export default {
 
           this.pageTitle = this.$t("page_title.token_detail");
           if (tokenInfo) {
-            this.pageTitle = `<img class="token-logo-detail" src="images/tokens/${
-              tokenInfo.icon
+            const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
+            const path = tokenInfo.hidden ?  
+                ("https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true") :
+                ("images/tokens/" + icon);
+            this.pageTitle = `<img class="token-logo-detail" src="${
+              path
             }" /> <span>${tokenInfo.name}</span> <span class='sub-title'>(${
               tokenInfo.symbol
             })</span>`;

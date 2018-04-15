@@ -29,19 +29,31 @@ bot.onText(/^\/register (.+)$/, (msg, match) => {
 
         db.get(key, (err, val) => {
             if (!err) {
-                bot.sendMessage(chatId, "Welcome back, you were already white listed.");
+                bot.sendMessage(chatId, "Welcome back, you were *already* white listed.", {
+                    reply_to_message_id: msg.message_id,
+                    parse_mode: "Markdown"
+                });
             } else {
                 db.put(key, JSON.stringify(getValue(msg)), (err) => {
                     if (!err) {
-                        bot.sendMessage(chatId, "Hi there, you are white listed! Now you can sleep sound at nights!");
+                        bot.sendMessage(chatId,
+                            "Hi there, you are white listed! Now you can sleep sound at nights!",{
+                                reply_to_message_id: msg.message_id
+                            });
                     } else {
-                        bot.sendMessage(chatId, "Cannot white list you. Please try again later. If failure persists, contact my master.");
+                        bot.sendMessage(chatId,
+                            "Cannot white list you. Please try again later. If failure persists, contact my master.", {
+                                reply_to_message_id: msg.message_id
+                            });
                     }
                 })
             }
         })
     } else {
-        bot.sendMessage(chatId, "No, not this way. To know how I work, please contact my master.");
+        bot.sendMessage(chatId, "No, *not this way*. To know how I work, please contact my master.", {
+            reply_to_message_id: msg.message_id,
+            parse_mode: "Markdown"
+        });
     }
 });
 

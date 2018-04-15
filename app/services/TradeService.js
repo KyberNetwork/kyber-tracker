@@ -482,7 +482,7 @@ module.exports = BaseService.extends({
     }
 
     const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
     let params = [fromDate, toDate];
@@ -580,7 +580,7 @@ module.exports = BaseService.extends({
     }
 
     const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
     let params = [fromDate, toDate];
@@ -609,7 +609,14 @@ module.exports = BaseService.extends({
       let accuBurned = burnedNoContract + pastSum;
       const returnData = [];
       if (ret.sum.length) {
-
+        const startSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+        const firstSeq = ret.sum[0][this._convertSeqColumnName(groupColumn)];
+        if (startSeq < firstSeq) {
+          returnData.push({
+            [this._convertSeqColumnName(groupColumn)]: startSeq,
+            sum: accuBurned
+          });
+        }
         for (let i = 0; i < ret.sum.length; i++) {
           accuBurned += (ret.sum[i].sum || 0);
           returnData.push({
@@ -629,10 +636,10 @@ module.exports = BaseService.extends({
         }
 
       } else {
-        const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+        const startSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
         const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
         returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: firstSeq,
+          [this._convertSeqColumnName(groupColumn)]: startSeq,
           sum: accuBurned
         });
         returnData.push({
@@ -663,7 +670,7 @@ module.exports = BaseService.extends({
     }
 
     const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
     let params = [fromDate, toDate];
@@ -742,7 +749,7 @@ module.exports = BaseService.extends({
     }
 
     const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
     let params = [fromDate, toDate];
@@ -826,13 +833,22 @@ module.exports = BaseService.extends({
     }
   },
 
-  _getRequestDatePeriods: function (options, period) {
+  _getRequestDatePeriods: function (options, period, interval) {
     let toDate = options.toDate || Utils.nowInSeconds();
     let fromDate = options.fromDate;
 
     if (!fromDate) {
       fromDate = toDate - Const.CHART_PERIOD[period];
     }
+
+    // check if from < contract deploy date
+    const deployInSeconds = 1518203242;
+    if (fromDate < deployInSeconds) {
+      fromDate = deployInSeconds;
+    }
+
+    // it is neccessary to get from begining of interval
+    fromDate -= fromDate % Const.CHART_INTERVAL[interval];
 
     return [fromDate, toDate];
   },

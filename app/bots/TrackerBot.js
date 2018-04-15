@@ -123,7 +123,10 @@ function setupBot(bot) {
 
         const parts = resp.match(/^(\d+)(H|D)$/);
         if (!parts || parts.length != 3) {
-            bot.sendMessage(chatId, "Invalid syntax. Try 'last 1d', 'last 12h', or just 'last'.");
+            bot.sendMessage(chatId, "Invalid syntax. Try _last 1d_, _last 12h_, or just _last_.", {
+                reply_to_message_id: msg.message_id,
+                parse_mode: "Markdown"
+            });
             bot._tracker.finish();
             return;
         }

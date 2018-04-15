@@ -22,16 +22,11 @@ module.exports = BaseService.extends({
     let pairs = {}
 
     Object.keys(tokens).map(token => {
-      if(token.toUpperCase() !== "ETH"){
-        let pairOption = 
+      if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
         pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
           fromCurrencyCode: "ETH"
         }, asyncCallback)
-        // pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
-        //   token: "ETH",
-        //   fromCurrencyCode: token
-        // }, asyncCallback)
       }
     })
     if(pairs && Object.keys(pairs).length){

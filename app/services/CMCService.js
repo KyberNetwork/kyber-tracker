@@ -87,7 +87,7 @@ module.exports = BaseService.extends({
           return x.source == symbol && x.dest == base
         })
 
-        if(!rateData && !rateData.length){
+        if(!rateData || !rateData.length || !rateData[0].rate){
           return callback(`Cannot get token rate: ${symbol}`);
         }
 
