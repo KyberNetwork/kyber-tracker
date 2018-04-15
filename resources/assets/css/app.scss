@@ -742,7 +742,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       display: block;
     }
     .heading-summary:hover{
-      height: 100px;
+      height: 110px;
       #total-burn-fee{
         padding-top: 5px;
         display: block;
@@ -834,7 +834,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 @media (max-width: 463px){
   .navbar{
     .heading-summary:hover{
-      height: 130px;
+      height: 150px;
     }
   }
 }
