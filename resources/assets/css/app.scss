@@ -695,6 +695,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     margin-right: 15px;
     color: #fff;
     min-width: 105px;
+    padding-bottom: 10px;
   }
   .show-more{
     position: absolute;
@@ -744,7 +745,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     .heading-summary:hover{
       height: 110px;
       #total-burn-fee{
-        padding-top: 5px;
+        // padding-top: 5px;
         display: block;
       }
 
@@ -763,7 +764,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
     .heading-summary:hover{
       #fee-to-burn{
-        padding-top: 5px;
+        // padding-top: 5px;
         display: block;
       }
     }
@@ -777,7 +778,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
     .heading-summary:hover{
       #eth-price{
-        padding-top: 5px;
+        // padding-top: 5px;
         display: block;
       }
     }
@@ -790,7 +791,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
     .heading-summary:hover{
       #knc-price{
-        padding-top: 5px;
+        // padding-top: 5px;
         display: block;
       }
     }
@@ -831,7 +832,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 
-@media (max-width: 463px){
+@media (max-width: 493px){
   .navbar{
     .heading-summary:hover{
       height: 150px;

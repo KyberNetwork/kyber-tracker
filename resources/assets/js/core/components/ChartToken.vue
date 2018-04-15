@@ -153,7 +153,7 @@
                 let dataIndex = context.dataIndex
                 let percentETH = context.chart.data.percentETH
                 // let sum = volumeEths.reduce((a,b) => (a + b), 0)
-                  return percentETH[dataIndex] + ' %';
+                  return percentETH[dataIndex] + '%';
               }
           },
           },
