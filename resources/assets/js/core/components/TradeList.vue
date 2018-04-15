@@ -86,7 +86,7 @@
 
       </div>
 
-      <div v-if="!isHideDatepicker && rows && rows.length" class="datepicker-container">
+      <div v-if="!isHideDatepicker" class="datepicker-container">
         <span>{{ $t('filter.from') }}</span>
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
@@ -127,7 +127,7 @@
       
 
       <!-- trade list for large screen device -->
-      <div v-if="rows.length > 0 && ($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
+      <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
           <thead>
             <tr>
@@ -140,7 +140,7 @@
               <!-- <th></th> -->
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index">
               <td class="pl-4">{{ getDateInfo(row) }}</td>
               <td class="text-left pl-4">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</td>
@@ -165,7 +165,7 @@
       </div>
 
       <!-- small trade list for mobile -->
-      <div v-if="rows.length > 0 && ($mq !== 'md' && $mq !== 'lg')" class="table-responsive-wraper table-hover clear pt-10">
+      <div v-if="$mq !== 'md' && $mq !== 'lg'" class="table-responsive-wraper table-hover clear pt-10">
         <table class="table table-round table-striped">
           <thead>
             <tr>
@@ -174,7 +174,7 @@
               <th class="pl-4">{{ $t("trade_list.rate") }}</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
               <td class="pl-4">{{ getDateInfo(row, true) }}</td>
               <td class="text-left pl-4 trade-direction">
@@ -370,6 +370,7 @@ export default {
     searchFromDate (val) {
       const fromDate = val ? val.getTime() : 0;
       const toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
+
       if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
         window.EventBus.$emit('EVENT_COMMON_ERROR', `From-date must be equal or less than to-date`);
         window.setTimeout(() => {

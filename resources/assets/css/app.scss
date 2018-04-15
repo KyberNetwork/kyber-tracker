@@ -985,6 +985,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .trade-list{
+  min-height: 500px;
   .trade-direction{
     position: relative;
     .trade-direction-down-symbol{
