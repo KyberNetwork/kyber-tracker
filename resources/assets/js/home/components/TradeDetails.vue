@@ -127,7 +127,8 @@
           {{$t("trade_detail.rate", [record.takerTokenSymbol, record.makerTokenSymbol])}}
         </div>
         <div class="rate-detail-value">
-          {{ Math.round(1/getRate(record)*100000000) / 100000000 }}
+          <!-- {{ Math.round(1/getRate(record)*100000000) / 100000000 }} -->
+          {{getRate(record)}}
         </div>
         
       </div>
@@ -253,6 +254,7 @@ export default {
       ).div(Math.pow(10, takerToken.decimal));
       console.log(makerAmount, takerAmount)
       console.log(makerAmount.div(takerAmount).toNumber())
+      console.log(util.roundingNumber(makerAmount.div(takerAmount).toNumber()))
       return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
     formatFiatCurrency(amount) {
