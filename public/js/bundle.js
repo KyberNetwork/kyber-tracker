@@ -105974,11 +105974,11 @@ exports.default = {
 
   methods: {
     _buildChartData: function _buildChartData(ret) {
-      var all = ret;
-
-      ret = ret.filter(function (x) {
+      var all = ret.filter(function (x) {
         return x.symbol !== "ETH";
-      }).slice(0, 5);
+      });
+
+      ret = all.slice(0, 5);
       var labels = [];
       var dataset = [];
       var volumeTokens = [];

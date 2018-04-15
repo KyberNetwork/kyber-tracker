@@ -27,9 +27,9 @@
     },
     methods: {
       _buildChartData(ret) {
-        const all = ret
+        const all = ret.filter(x => x.symbol !== "ETH")
         
-        ret = ret.filter(x => x.symbol !== "ETH").slice(0, 5);
+        ret = all.slice(0, 5);
         const labels = [];
         const dataset = [];
         const volumeTokens = [];
