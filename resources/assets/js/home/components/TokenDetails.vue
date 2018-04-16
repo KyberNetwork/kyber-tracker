@@ -65,8 +65,12 @@
         }
 
         this.symbol = this.getFilterTokenSymbol();
-        this.tokenName = network.tokens[this.symbol].name
-        this.logoUrl = 'images/tokens/' + (this.symbol ? this.symbol.toLowerCase() : '') +  '.svg'
+        const tokenInfo = network.tokens[this.symbol];
+        this.tokenName = tokenInfo.name;
+        const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
+        this.logoUrl = tokenInfo.hidden ?  
+          ("https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true") :
+          ("images/tokens/" + icon);
         this.refreshChartsData();
         this.$refs.datatable.fetch();
       },
