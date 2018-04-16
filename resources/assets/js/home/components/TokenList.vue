@@ -86,7 +86,7 @@
         <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th>
       </template>
 
-      <template slot="body" scope="slot">
+      <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
         <tr @click="toTokenDetails(slot.item.symbol)">
           <td  class="text-left pl-4">{{ slot.item.symbol }}</td>
           <td class="text-right pr-4">{{ formatVolumeUSD(slot.item) }}</td>
@@ -143,7 +143,7 @@ export default {
       });
     },
     shouldShowToken (item) {
-      return (parseFloat(item.volumeToken) > 0) || !this.tokens[item.symbol].hidden;
+      return (item.volumeTokenNumber > 0) || !this.tokens[item.symbol].hidden;
     },
     formatVolumeUSD (item) {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);

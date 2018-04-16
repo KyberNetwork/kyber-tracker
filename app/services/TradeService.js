@@ -182,8 +182,12 @@ module.exports = BaseService.extends({
           volumeEthNumber: ethVolume.toNumber(),
         };
       }));
-
-      return callback(null, _.sortBy(tokens, (e) => {
+      
+      const supportedToken = _.filter(tokens, (e) => {
+        return (e.volumeTokenNumber > 0) || !network.tokens[e.symbol].hidden;
+      })
+      
+      return callback(null, _.sortBy(supportedToken, (e) => {
         return -e.volumeUSD;
       }));
     });

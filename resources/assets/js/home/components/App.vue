@@ -293,9 +293,9 @@ export default {
         }
       });
     },
-    getPriceChangeClass() {
-      if (this.kncPriceChange24h === 0) return "";
-      return this.kncPriceChange24h < 0 ? "neg-value" : "pos-value";
+    getPriceChangeClass(price) {
+      if (price === 0) return "";
+      return price < 0 ? "neg-value" : "pos-value";
     },
     async connectMetaMask(e) {
       if (typeof web3 === "undefined") {

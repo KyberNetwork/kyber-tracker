@@ -197,7 +197,6 @@
             this.chartInstance = undefined;
           }
 
-          console.log(data, options)
           this.chartInstance = new Chart(ctx, {
             type: 'horizontalBar',
             data: data,
