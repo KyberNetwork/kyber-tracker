@@ -1,5 +1,9 @@
 <template>
+  
   <div class="col-sm-12">
+    <div class="panel-heading pb-16">
+        <span class="no-margin panel-title">{{$t('navigator.network')}} </span>
+      </div>
     <b-card no-body>
       <div class="chart-period-picker">
         <b-button-group class="cus-pagination full-width-btn-group">
@@ -41,19 +45,29 @@
             :elementId="'chart-burned'">
           </chart-fee>
         </b-tab>
-        <b-tab @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
+        <!-- <b-tab @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
           <chart-token ref="chartToken"
             :elementId="'chart-token'">
           </chart-token>
-        </b-tab>
+        </b-tab> -->
       </b-tabs>
     </b-card>
     <trade-list ref="datatable"
                 :title="getListTitle()"
                 :getFilterTokenSymbol="getFilterTokenSymbol"
                 :isHidePartnerCommission="true"
+                :isHideDatepicker="true"
+                :isHidePaginate="true"
+                :pageSize="5"
                 >
     </trade-list>
+    <div class="text-center">
+      <router-link to="/trades">
+        <button type="button" class="btn btn-default see-all-trade mx-auto">{{ $t("common.see_all") }}</button>
+      </router-link>
+      
+    </div>
+    
 
   </div>
 </template>
@@ -121,9 +135,12 @@
         const interval = this.selectedInterval;
 
         this._refreshNetworkVolumeChart(period, interval);
+        // this._refreshFeeToBurnChart(period, interval);
+        // this._refreshTopTopkensChart(period);
+
+
         this._refreshFeeChart(period, interval);
         this._refreshFeeBurnedChart(period, interval);
-        this._refreshTopTopkensChart(period);
       },
       _refreshNetworkVolumeChart(period, interval) {
         if (this.$refs.chartVolume) {

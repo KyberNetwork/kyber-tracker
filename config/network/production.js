@@ -44,7 +44,7 @@ module.exports = {
       "decimal": 18
     },
     "EOS": {
-      "name": "Eos",
+      "name": "EOS",
       "symbol": "EOS",
       "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
       "decimal": 18

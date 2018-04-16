@@ -55,8 +55,9 @@
      maker_total_usd: { type: 'number', length: 22 },
      taker_price_usd: { type: 'number', length: 22 },
      taker_total_usd: { type: 'number', length: 22 },
-     volume_eth: { type: 'number', length: 22 },
-     volume_usd: { type: 'number', length: 22 } },
+     volume_eth: { type: 'string', length: 150 },
+     volume_usd: { type: 'string', length: 150 },
+     maker_fee: { type: 'string', length: 765 } },
   UserModel: 
    { username: { type: 'string', length: 120 },
      avatar_url: { type: 'string', length: 768 },

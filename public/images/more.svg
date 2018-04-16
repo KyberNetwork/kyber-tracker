@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="4px" viewBox="0 0 16 4" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>ellipsis</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M2.3048,6.3848 C1.3424,6.3848 0.5624,7.1656 0.5624,8.128 C0.5624,9.0904 1.3424,9.8704 2.3048,9.8704 C3.2672,9.8704 4.048,9.0904 4.048,8.128 C4.048,7.1656 3.2672,6.3848 2.3048,6.3848 L2.3048,6.3848 Z M7.8496,6.3848 C6.888,6.3848 6.1072,7.1656 6.1072,8.128 C6.1072,9.0904 6.888,9.8704 7.8496,9.8704 C8.812,9.8704 9.5928,9.0904 9.5928,8.128 C9.5928,7.1656 8.812,6.3848 7.8496,6.3848 L7.8496,6.3848 Z M13.3936,6.3848 C12.4312,6.3848 11.6512,7.1656 11.6512,8.128 C11.6512,9.0904 12.4312,9.8704 13.3936,9.8704 C14.356,9.8704 15.136,9.0904 15.136,8.128 C15.136,7.1656 14.356,6.3848 13.3936,6.3848 L13.3936,6.3848 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="table/cell-icon" transform="translate(-32.000000, -16.000000)">
+            <g id="ic/ellipsis" transform="translate(32.000000, 10.000000)">
+                <rect id="Rectangle-path" x="0" y="0" width="16" height="16"></rect>
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#000000" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <g id="Mixin/Fill/Accent-1" mask="url(#mask-2)" fill="#2ED573" fill-rule="evenodd">
+                    <g transform="translate(-32.800000, -6.400000)" id="Box">
+                        <rect x="0" y="0" width="80" height="32"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

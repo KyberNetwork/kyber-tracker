@@ -1,5 +1,10 @@
 <template>
   <div class="col-sm-12">
+    <div class="panel-heading pb-16">
+        <img class="token-logo-detail"  v-bind:src="this.logoUrl">
+        <span class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}</span>
+      </div>
+
     <b-card :header="$t('chart.title.token_volume', [getFilterTokenSymbol()])">
       <b-tab no-body active>
         <chart-volume ref="chartVolume"
@@ -10,7 +15,8 @@
     </b-card>
 
     <trade-list ref="datatable"
-                :getFilterTokenSymbol="getFilterTokenSymbol">
+      :title="getListTitle()"
+      :getFilterTokenSymbol="getFilterTokenSymbol">
     </trade-list>
   </div>
 </template>
@@ -46,6 +52,8 @@
         selectedInterval: 'D1',
         myChart: undefined,
         symbol: undefined,
+        tokenName: undefined,
+        logoUrl: undefined
       };
     },
 
@@ -57,8 +65,13 @@
         }
 
         this.symbol = this.getFilterTokenSymbol();
+        this.tokenName = network.tokens[this.symbol].name
+        this.logoUrl = 'images/tokens/' + (this.symbol ? this.symbol.toLowerCase() : '') +  '.svg'
         this.refreshChartsData();
         this.$refs.datatable.fetch();
+      },
+      getListTitle() {
+        return this.$t("common.token_trade_history");
       },
       selectPeriod (period, interval) {
         this.selectedPeriod = period;

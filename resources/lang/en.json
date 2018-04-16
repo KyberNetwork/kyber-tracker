@@ -3,14 +3,17 @@
 
   "common": {
     "exchange": "Exchange",
-    "name": "Name",
-    "symbol": "Symbol",
+    "name": "NAME",
+    "symbol": "SYMBOL",
     "volume_24h_usd": "24H Volume (USD)",
     "volume_24h_eth": "24H Volume (ETH)",
     "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
-    "network_activity": "Trade History",
-    "searchbox_placeholder" : "Tx Hash / Wallet Address"
+    "network_activity": "Latest Trade",
+    "searchbox_placeholder" : "Tx Hash / Wallet Address",
+    "all_token": "All Tokens",
+    "see_all": "See All",
+    "token_trade_history": "Token Trading History"
   },
 
   "page_title": {
@@ -26,11 +29,14 @@
 
   "navigator": {
     "home": "Home",
-    "trades": "Trades",
-    "tokens": "Tokens",
-    "trade_detail": "Trade Details",
+    "trades": "Trade",
+    "trade_history": "Trade History",
+    "tokens": "Token",
+    "top_token": "Top Tokens",
+    "trade_details": "Trade Details",
     "token_detail": "Token Details",
-    "search": "Wallet Details"
+    "search": "Wallet Details",
+    "network": "Network"
   },
 
   "filter": {
@@ -39,13 +45,14 @@
   },
 
   "status_bar": {
-    "network_volume": "24H VOLUME",
+    "network_volume": "24H Volume",
     "trades": "TRADES (24H)",
     "burned_fee": "FEES TO BURN (24H)",
-    "collected_fees": "COLLECTED FEES",
-    "fees_to_burn": "FEES TO BURN",
-    "fees_burned": "FEES BURNED",
-    "knc_price": "KNC PRICE"
+    "fees_to_burn": "Fees to burn",
+    "fees_burned": "Fees burned",
+    "knc_price": "KNC Price",
+    "eth_price": "ETH Price",
+    "collected_fees": "Collected fees"
   },
 
   "tooltip": {
@@ -54,7 +61,8 @@
     "fees_to_burn": "Total fees set aside to burn so far",
     "fees_burned": "Total fees burnt so far",
     "knc_price": "Current KNC price",
-    "knc_price_change_24": "% change compared with price at 24 hours ago"
+    "eth_price": "Current ETH price",
+    "price_change_24": "% change compared with price at 24 hours ago"
   },
 
   "chart": {
@@ -77,10 +85,10 @@
   "trade_list": {
     "title": "Trade History",
     "address": "Address",
-    "date": "Date",
+    "date": "Time",
     "taker_token": "Exchange from",
     "maker_token": "Exchange to",
-    "rate": "Rate",
+    "rate": "Rates",
     "description": "Description",
     "amount": "Amount",
     "collected_fees": "Collected Fees",
@@ -94,17 +102,19 @@
 
   "trade_detail": {
     "transaction_hash": "Transaction Hash",
+    "wallet": "Wallet",
     "date": "Date",
     "taker_address": "Wallet Address",
     "taker_token": "Exchange From",
     "taker_amount": "Amount",
     "maker_token": "Exchange To",
     "maker_amount": "Amount",
-    "rate": "Rate",
-    "collected_fees": "Collected Fees",
+    "rate": "{0}/{1} RATE",
+    "collected_fees": "COLLECTED FEES",
     "fee_to_wallet": "Partner Commission",
     "fee_to_burn": "Fees To Burn",
-    "for": " for "
+    "for": " for ",
+    "trade_note": "USD Rates are calculated at trading time"
   },
 
   "token_list": {
@@ -124,7 +134,7 @@
     "tx_hash": "Tx hash: ",
     "total_fee": "Total collected fees: {0} KNC",
     "no_txhash_data": "This transaction is not with Kyber Network",
-    "invalid_query": "Your search string is not address or tx hash"
+    "invalid_query": "Your search string is not address or transaction hash."
   },
 
   "main_page": {

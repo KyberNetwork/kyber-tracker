@@ -12,6 +12,7 @@
   import AppRequest from '../request/AppRequest';
   import util from '../helper/util';
   import network from '../../../../../config/network';
+  import datalabels from 'chartjs-plugin-datalabels'
 
   export default {
     props: {
@@ -26,17 +27,22 @@
     },
     methods: {
       _buildChartData(ret) {
-        ret = ret.slice(0, 5);
+        const all = ret.filter(x => x.symbol !== "ETH")
+        
+        ret = all.slice(0, 5);
         const labels = [];
         const dataset = [];
         const volumeTokens = [];
         const volumeEths = [];
+        const percentETH = [];
 
+        const sum = all.map(i => i.volumeEthNumber).reduce((a,b) => (a + b), 0)
         for (let i = 0; i < ret.length; i++) {
           labels.push(ret[i].symbol);
           dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
           volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
           volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
+          percentETH.push(Math.round(ret[i].volumeEthNumber/sum * 1000) / 10)
         }
 
         return {
@@ -47,11 +53,12 @@
             data: dataset,
             pointRadius: 0,
             backgroundColor: [
-              '#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86', '#3ABD86'
+              '#2ed573', '#2ed573', '#2ed573', '#2ed573', '#2ed573'
             ],
             showLine: true,
             spanGaps: true,
-          }]
+          }],
+          percentETH
         };
       },
       _getChartOptions() {
@@ -128,6 +135,29 @@
           legend: {
             display: false
           },
+          plugins: {
+            datalabels: {
+              display: true,
+              align: 'right',
+              anchor: 'end',
+              // color: [
+              //   'red',    // color for data at index 0
+              //   'blue',   // color for data at index 1
+              //   'green',  // color for data at index 2
+              //   'black',  // color for data at index 3
+              //   //...
+              // ],
+              formatter: function(value, context) {
+
+             
+                let dataIndex = context.dataIndex
+                let percentETH = context.chart.data.percentETH
+                // let sum = volumeEths.reduce((a,b) => (a + b), 0)
+                  return percentETH[dataIndex] + '%';
+              }
+          },
+          },
+          
           maintainAspectRatio: false
         };
       },
@@ -161,16 +191,17 @@
           
           const data = this._buildChartData(ret);
           const options = this._getChartOptions();
-
           if (this.chartInstance) {
             this.chartInstance.destroy();
             this.chartInstance = undefined;
           }
 
+          console.log(data, options)
           this.chartInstance = new Chart(ctx, {
             type: 'horizontalBar',
             data: data,
             options: options,
+            plugins: [datalabels]
           });
         });
       },

@@ -95,8 +95,8 @@ export default {
     return tokens[symbol];
   },
 
-  getDateInfo: function(timestamp) {
-    return moment(timestamp).fromNow();
+  getDateInfo: function(timestamp, isShort) {
+    return moment(timestamp).fromNow(isShort);
   },
 
   formatFiatCurrency: function (amount) {
