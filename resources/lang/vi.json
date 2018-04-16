@@ -4,10 +4,10 @@
   "common": {
     "exchange": "Exchange",
     "name": "TÊN",
-    "symbol": "KÝ HIỆU",
-    "volume_24h_usd": "KL giao dịch 24H (USD)",
-    "volume_24h_eth": "KL giao dịch 24H (ETH)",
-    "volume_24h_token": "KL giao dịch 24H (Token)",
+    "symbol": "MÃ",
+    "volume_24h_usd": "Giao dịch 24H (USD)",
+    "volume_24h_eth": "Giao dịch 24H (ETH)",
+    "volume_24h_token": "Giao dịch 24H (Token)",
     "search": "Tìm kiếm",
     "network_activity": "Giao dịch gần nhất",
     "searchbox_placeholder" : "Tx Hash / địa chỉ ví",
@@ -45,7 +45,7 @@
   },
 
   "status_bar": {
-    "network_volume": "KL giao dịch (24H)",
+    "network_volume": "Giao dịch (24H)",
     "trades": "SỐ GIAO DỊCH (24H)",
     "burned_fee": "PHÍ SẼ ĐỐT (24H)",
     "fees_to_burn": "Phí sẽ đốt",
