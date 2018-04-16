@@ -1527,7 +1527,70 @@ html {
 
 }
 
+.datepicker-container{
+  font-family: $code-font-openSans;
+  .vdp-datepicker input{
+    padding-left: 10px;
+    font-size: 16px;
+    border-radius: 3px;
+    border: solid 1px #1f3468;
+  }
 
+  .vdp-datepicker input:focus{
+    border-color: #2ed573;
+    // .calendar-icon > div:first-child:after{
+    //   background-image: url(/images/calendar-active.svg);
+    // }
+
+  }
+
+  .calendar-icon > div:first-child:after{
+    background-image: url(/images/calendar.svg);
+    right: 8px;
+    top: 6px;
+  }
+  .vdp-datepicker__calendar{
+    border-radius: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px 0 rgba(10, 59, 122, 0.1);
+    border: none;
+    top: 50px;
+    header{
+      margin-left: 20px;
+      margin-right: 20px;
+      .up{
+        font-size: 16px;
+        font-weight: bolder;
+        color: #0c0033;
+      }
+    }
+    div{
+      padding: 20px;
+    }
+    .timestamp{
+      font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    color: #0c0033;
+    }
+    .cell.selected, .vdp-datepicker__calendar .cell.selected.highlighted, .vdp-datepicker__calendar .cell.selected:hover{
+      background: #2ed573 !important;
+      border-radius: 50%;
+      color: #ffffff;
+    }
+    .cell.highlighted{
+      font-weight: bolder;
+      background: none;
+      color: #2ed573;
+    }
+    .cell.day-header{
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+      color: #7b7c8e;
+    }
+  }
+}
 
 .token-logo-detail{
   width: 25px;

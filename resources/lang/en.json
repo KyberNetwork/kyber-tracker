@@ -49,10 +49,10 @@
     "trades": "TRADES (24H)",
     "burned_fee": "FEES TO BURN (24H)",
     "fees_to_burn": "Fees to burn",
-    "fees_burned": "Fees burned",
+    "fees_burned": "Burnt Fees",
     "knc_price": "KNC Price",
     "eth_price": "ETH Price",
-    "collected_fees": "Collected fees"
+    "collected_fees": "Collected Fees"
   },
 
   "tooltip": {
