@@ -96662,7 +96662,9 @@ exports.default = {
 
           this.pageTitle = this.$t("page_title.token_detail");
           if (tokenInfo) {
-            this.pageTitle = "<img class=\"token-logo-detail\" src=\"images/tokens/" + tokenInfo.icon + "\" /> <span>" + tokenInfo.name + "</span> <span class='sub-title'>(" + tokenInfo.symbol + ")</span>";
+            var icon = tokenInfo.icon || tokenInfo.symbol.toLowerCase() + ".svg";
+            var path = tokenInfo.hidden ? "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true" : "images/tokens/" + icon;
+            this.pageTitle = "<img class=\"token-logo-detail\" src=\"" + path + "\" /> <span>" + tokenInfo.name + "</span> <span class='sub-title'>(" + tokenInfo.symbol + ")</span>";
           }
 
           this.breadcrumbsItems = [{
@@ -98812,6 +98814,10 @@ module.exports = function spread(callback) {
 "use strict";
 
 
+var _tokens;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 module.exports = {
   "endpoints": {
     "web3Providers": ["https://mainnet.infura.io", "https://node.kyber.network", "https://mew.giveth.io/"],
@@ -98833,11 +98839,10 @@ module.exports = {
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
   },
-  "tokens": {
+  "tokens": (_tokens = {
     "ETH": {
       "name": "Ethereum",
       "symbol": "ETH",
-      "icon": "eth.svg",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
       "cmcId": "ethereum"
@@ -98845,185 +98850,237 @@ module.exports = {
     "KNC": {
       "name": "Kyber Network",
       "symbol": "KNC",
-      "icon": "knc.svg",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
-      "decimal": 18,
-      "cmcId": "kyber-network"
+      "decimal": 18
     },
     "OMG": {
       "name": "OmiseGO",
       "symbol": "OMG",
-      "icon": "omg.svg",
       "address": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07",
-      "decimal": 18,
-      "cmcId": "omisego"
+      "decimal": 18
     },
     "EOS": {
       "name": "EOS",
       "symbol": "EOS",
-      "icon": "eos.svg",
       "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
-      "decimal": 18,
-      "cmcId": "eos"
+      "decimal": 18
     },
     "SNT": {
-      "name": "Status",
+      "name": "Status Network",
       "address": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
       "symbol": "SNT",
-      "icon": "snt.svg",
-      "decimal": 18,
-      "cmcId": "status"
+      "decimal": 18
     },
     "ELF": {
-      "name": "Aelf",
+      "name": "AELF",
       "address": "0xbf2179859fc6d5bee9bf9158632dc51678a4100e",
       "symbol": "ELF",
       "icon": "aelf.svg",
-      "decimal": 18,
-      "cmcId": "aelf"
+      "decimal": 18
     },
     "POWR": {
       "name": "Power Ledger",
       "address": "0x595832f8fc6bf59c85c527fec3740a1b7a361269",
       "symbol": "POWR",
       "icon": "pwr.svg",
-      "decimal": 6,
-      "cmcId": "power-ledger"
+      "decimal": 6
     },
     "MANA": {
       "name": "Decentraland",
       "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
       "symbol": "MANA",
-      "icon": "mana.svg",
-      "decimal": 18,
-      "cmcId": "decentraland"
+      "decimal": 18
     },
     "BAT": {
       "name": "Basic Attention Token",
       "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       "symbol": "BAT",
-      "icon": "bat.svg",
-      "decimal": 18,
-      "cmcId": "basic-attention-token"
+      "decimal": 18
     },
     "REQ": {
       "name": "Request",
       "address": "0x8f8221afbb33998d8584a2b05749ba73c37a938a",
       "symbol": "REQ",
-      "icon": "req.svg",
-      "decimal": 18,
-      "cmcId": "request-network"
+      "decimal": 18
     },
     "GTO": {
-      "name": "Gifto",
+      "name": "GIFTO",
       "address": "0xc5bbae50781be1669306b9e001eff57a2957b09d",
       "symbol": "GTO",
       "icon": "gifto.svg",
-      "decimal": 5,
-      "cmcId": "gifto"
+      "decimal": 5
     },
     "RDN": {
-      "name": "Raiden",
+      "name": "Raiden Network",
       "address": "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6",
       "symbol": "RDN",
-      "icon": "rdn.svg",
-      "decimal": 18,
-      "cmcId": "raiden-network-token"
+      "decimal": 18
     },
     "APPC": {
       "name": "AppCoins",
       "address": "0x1a7a8bd9106f2b8d977e08582dc7d24c723ab0db",
       "symbol": "APPC",
-      "icon": "appc.svg",
-      "decimal": 18,
-      "cmcId": "appcoins"
+      "decimal": 18
     },
     "ENG": {
       "name": "Enigma",
       "address": "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4",
       "symbol": "ENG",
-      "icon": "eng.svg",
-      "decimal": 8,
-      "cmcId": "enigma-project"
+      "decimal": 8
     },
     "SALT": {
       "name": "Salt",
       "address": "0x4156d3342d5c385a87d264f90653733592000581",
       "symbol": "SALT",
-      "icon": "salt.svg",
-      "decimal": 8,
-      "cmcId": "salt"
+      "decimal": 8
     },
     "BQX": {
-      "name": "Ethos",
+      "name": "ETHOS",
       "address": "0x5af2be193a6abca9c8817001f45744777db30756",
       "symbol": "BQX",
-      "decimal": 8,
-      "icon": "bqx.svg",
-      "cmcId": "ethos"
+      "decimal": 8
     },
-
     "ADX": {
       "name": "AdEx",
       "address": "0x4470BB87d77b963A013DB939BE332f927f2b992e",
       "decimal": 4,
-      "symbol": "ADX",
-      "icon": "adx.svg",
-      "cmcId": "adx-net"
+      "symbol": "ADX"
     },
     "AST": {
       "name": "AirSwap",
       "decimal": 4,
       "address": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
-
-      "symbol": "AST",
-      "icon": "ast.svg",
-      "cmcId": "airswap"
-
+      "symbol": "AST"
     },
     "RCN": {
       "name": "Ripio Credit Network",
       "decimal": 18,
       "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-
-      "symbol": "RCN",
-      "icon": "rcn.svg",
-      "cmcId": "ripio-credit-network"
-
+      "symbol": "RCN"
     },
     "ZIL": {
       "name": "Zilliqa",
       "decimal": 12,
       "address": "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
-
-      "symbol": "ZIL",
-      "icon": "zil.svg",
-      "cmcId": "zilliqa"
-
+      "symbol": "ZIL"
     },
     "LINK": {
       "name": "Chain Link",
       "decimal": 18,
       "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
-
-      "symbol": "LINK",
-      "icon": "link.svg",
-      "cmcId": "chainlink"
-
+      "symbol": "LINK"
     },
-
     "DAI": {
       "name": "Dai Stablecoin",
-      "decimal": 18,
       "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
-
       "symbol": "DAI",
-      "icon": "dai.svg",
-      "cmcId": "dai"
-
+      "decimal": 18
+    },
+    "AION": {
+      "name": "AION",
+      "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
+      "symbol": "AION",
+      "decimal": 8,
+      "hidden": true
+    },
+    "SUB": {
+      "name": "Substratum",
+      "address": "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a",
+      "symbol": "SUB",
+      "decimal": 2,
+      "hidden": true
+    },
+    "STORJ": {
+      "name": "Storj",
+      "address": "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac",
+      "symbol": "STORJ",
+      "decimal": 8,
+      "hidden": true
+    },
+    "CND": {
+      "name": "Cindicator",
+      "address": "0xd4c435f5b09f855c3317c8524cb1f586e42795fa",
+      "symbol": "CND",
+      "decimal": 18,
+      "hidden": true
+    },
+    "KIN": {
+      "name": "Kin",
+      "address": "0x818fc6c2ec5986bc6e2cbf00939d90556ab12ce5",
+      "symbol": "KIN",
+      "decimal": 18,
+      "hidden": true
+    },
+    "DENT": {
+      "name": "DENT",
+      "address": "0x3597bfd533a99c9aa083587b074434e61eb0a258",
+      "symbol": "DENT",
+      "decimal": 8,
+      "hidden": true
+    },
+    "TRX": {
+      "name": "Tronix",
+      "address": "0xf230b790e05390fc8295f4d3f60332c93bed42e2",
+      "symbol": "TRX",
+      "decimal": 6,
+      "hidden": true
+    },
+    "MKR": {
+      "name": "Maker",
+      "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+      "symbol": "MKR",
+      "decimal": 18,
+      "hidden": true
     }
-
-  },
+  }, _defineProperty(_tokens, "DAI", {
+    "name": "Dai Stablecoin",
+    "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+    "symbol": "DAI",
+    "decimal": 18,
+    "hidden": true
+  }), _defineProperty(_tokens, "ENJ", {
+    "name": "EnjinCoin",
+    "address": "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c",
+    "symbol": "ENJ",
+    "decimal": 18,
+    "hidden": true
+  }), _defineProperty(_tokens, "DGX", {
+    "name": "Digix Gold Token",
+    "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
+    "symbol": "DGX",
+    "decimal": 9,
+    "hidden": true
+  }), _defineProperty(_tokens, "DGD", {
+    "name": "DigixDAO",
+    "address": "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a",
+    "symbol": "DGD",
+    "decimal": 9,
+    "hidden": true
+  }), _defineProperty(_tokens, "VEN", {
+    "name": "VeChain",
+    "address": "0xd850942ef8811f2a866692a623011bde52a462c1",
+    "symbol": "VEN",
+    "decimal": 18,
+    "hidden": true
+  }), _defineProperty(_tokens, "MOT", {
+    "name": "Olympus Labs",
+    "address": "0x263c618480dbe35c300d8d5ecda19bbb986acaed",
+    "symbol": "MOT",
+    "decimal": 18,
+    "hidden": true
+  }), _defineProperty(_tokens, "ICX", {
+    "name": "ICON",
+    "address": "0xb5a5f22694352c15b00323844ad545abb2b11028",
+    "symbol": "ICX",
+    "decimal": 18,
+    "hidden": true
+  }), _defineProperty(_tokens, "ELEC", {
+    "name": "ElectrifyAsia",
+    "address": "0xd49ff13661451313ca1553fd6954bd1d9b6e02b9",
+    "symbol": "ELEC",
+    "decimal": 18,
+    "hidden": true
+  }), _tokens),
   "networkId": 1,
   "chainName": "Mainnet",
   "averageBlockTime": 15000,
@@ -120533,6 +120590,7 @@ exports.default = {
       tokens: _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol'),
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
+      selectedTab: 'chartVolume',
       volumeChart: undefined,
       feeToBurnChart: undefined,
       topTokenChart: undefined
@@ -120560,10 +120618,11 @@ exports.default = {
     selectPeriod: function selectPeriod(period, interval) {
       this.selectedPeriod = period;
       this.selectedInterval = interval;
-      this.refreshChartsData();
+      this._refeshChart();
     },
     onSelectTab: function onSelectTab(tabName) {
-      this.refreshChartsData();
+      this.selectedTab = tabName;
+      this._refeshChart();
     },
     refreshChartsData: function refreshChartsData() {
       var period = this.selectedPeriod;
@@ -120596,6 +120655,16 @@ exports.default = {
       if (this.$refs.chartToken) {
         this.$refs.chartToken.refresh(period);
       }
+    },
+    _refeshChart: function _refeshChart() {
+      var map = {
+        chartVolume: this._refreshNetworkVolumeChart,
+        chartFee: this._refreshFeeChart,
+        chartBurned: this._refreshFeeBurnedChart,
+        chartToken: this._refreshTopTopkensChart
+      };
+
+      map[this.selectedTab].call(this, this.selectedPeriod, this.selectedInterval);
     }
   },
 
@@ -120607,7 +120676,7 @@ exports.default = {
     }, 10000);
 
     this.refresh();
-    this.refreshChartsData();
+    //this._refreshNetworkVolumeChart();
   }
 };
 
@@ -121749,7 +121818,7 @@ exports = module.exports = __webpack_require__(14)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -121932,15 +122001,18 @@ exports.default = {
         toDate: now
       });
     },
+    shouldShowToken: function shouldShowToken(item) {
+      return parseFloat(item.volumeToken) > 0 || !this.tokens[item.symbol].hidden;
+    },
     formatVolumeUSD: function formatVolumeUSD(item) {
       return '$' + new _bignumber2.default(item.volumeUSD.toString()).toFormat(2);
     },
     getTokenImageLink: function getTokenImageLink(symbol) {
-      if (!!this.tokens[symbol].icon) {
-        return 'images/tokens/' + this.tokens[symbol].icon;
-      } else {
-        return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + symbol.toLowerCase() + ".svg";
+      var icon = this.tokens[symbol].icon || symbol.toLowerCase() + ".svg";
+      if (!this.tokens[symbol].hidden) {
+        return 'images/tokens/' + icon;
       }
+      return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
     },
     toTokenDetails: function toTokenDetails(symbol) {
       var tokenInfo = this.tokens[symbol];

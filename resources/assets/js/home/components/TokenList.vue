@@ -142,16 +142,19 @@ export default {
         toDate: now
       });
     },
+    shouldShowToken (item) {
+      return (parseFloat(item.volumeToken) > 0) || !this.tokens[item.symbol].hidden;
+    },
     formatVolumeUSD (item) {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
     },
     getTokenImageLink (symbol) {
-      if (!!this.tokens[symbol].icon) {
-        return 'images/tokens/' + this.tokens[symbol].icon;
-      } else {
-        return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
-          symbol.toLowerCase() + ".svg";
+      let icon = this.tokens[symbol].icon || (symbol.toLowerCase() + ".svg");
+      if (!this.tokens[symbol].hidden) {
+        return 'images/tokens/' + icon;
       }
+      return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
+         icon + "?sanitize=true";
     },
     toTokenDetails (symbol) {
       const tokenInfo = this.tokens[symbol];

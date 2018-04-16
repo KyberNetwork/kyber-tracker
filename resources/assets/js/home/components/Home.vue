@@ -97,6 +97,7 @@
         tokens: _.keyBy(_.values(network.tokens), 'symbol'),
         selectedPeriod: 'D30',
         selectedInterval: 'D1',
+        selectedTab: 'chartVolume',
         volumeChart: undefined,
         feeToBurnChart: undefined,
         topTokenChart: undefined,
@@ -123,10 +124,11 @@
       selectPeriod(period, interval) {
         this.selectedPeriod = period;
         this.selectedInterval = interval;
-        this.refreshChartsData();
+        this._refeshChart();
       },
       onSelectTab (tabName) {
-        this.refreshChartsData();
+        this.selectedTab = tabName;
+        this._refeshChart();
       },
       refreshChartsData() {
         const period = this.selectedPeriod;
@@ -159,6 +161,16 @@
         if (this.$refs.chartToken) {
           this.$refs.chartToken.refresh(period);
         }
+      },
+      _refeshChart() {
+        const map = {
+          chartVolume: this._refreshNetworkVolumeChart,
+          chartFee: this._refreshFeeChart,
+          chartBurned: this._refreshFeeBurnedChart,
+          chartToken: this._refreshTopTopkensChart
+        }
+
+        map[this.selectedTab].call(this, this.selectedPeriod, this.selectedInterval);
       }
     },
 
@@ -168,7 +180,7 @@
       }, 10000);
 
       this.refresh();
-      this.refreshChartsData();
+      //this._refreshNetworkVolumeChart();
     },
 
   }
