@@ -10,7 +10,7 @@
     "volume_24h_token": "24H Volume (Token)",
     "search": "Search",
     "network_activity": "Latest Trade",
-    "searchbox_placeholder" : "Tx Hash / Wallet Address",
+    "searchbox_placeholder" : "Tx Hash/ Wallet Address/ MetaMask",
     "all_token": "All Tokens",
     "see_all": "See All",
     "token_trade_history": "Token Trading History"
@@ -69,7 +69,7 @@
     "title": {
       "network_volume": "Volume",
       "collected_fees": "Collected Fees",
-      "fees_burned": "Burned (Accumulated)",
+      "fees_burned": "Burnt (Accumulated)",
       "fee_to_burn": "Fees To Burn",
       "top_token": "Top Tokens",
       "token_volume": "{0} Volume",

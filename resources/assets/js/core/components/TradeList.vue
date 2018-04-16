@@ -95,7 +95,6 @@
           :highlighted="highlightedToday"
           :disabled="disabledFromDates"
           :placeholder="$t('filter.from')"
-          :calendar-button-icon="'fa fa-calendar'"
           >
         </datepicker>
         <!-- <span>{{ $t('filter.to') }}</span> -->

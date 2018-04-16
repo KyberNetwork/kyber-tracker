@@ -8,7 +8,7 @@
       <b-row>
         <b-col sm="12 left-trade-detail">
           <div class="trade-time">
-            <i class="far fa-clock"></i> {{ getDateInfo(record.blockTimestamp) }}
+            <span class="entypo-clock"></span> {{ getDateInfo(record.blockTimestamp) }}
           </div>
 
           <div class="left-trade-rate d-flex justify-content-around">
