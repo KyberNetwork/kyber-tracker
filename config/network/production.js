@@ -44,7 +44,7 @@ module.exports = {
       "decimal": 18
     },
     "EOS": {
-      "name": "EOS",
+      "name": "Eos",
       "symbol": "EOS",
       "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
       "decimal": 18
@@ -213,13 +213,6 @@ module.exports = {
       "name": "Maker",
       "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
       "symbol": "MKR",
-      "decimal": 18,
-      "hidden": true
-    },
-    "DAI": {
-      "name": "Dai Stablecoin",
-      "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
-      "symbol": "DAI",
       "decimal": 18,
       "hidden": true
     },

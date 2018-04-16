@@ -58,7 +58,7 @@
         <!-- <th></th> -->
       </template>
 
-      <template slot="body" scope="slot">
+      <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
         <tr>
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
           <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> {{ slot.item.name }}</td>
