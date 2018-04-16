@@ -99010,6 +99010,17 @@ module.exports = {
       "icon": "link.svg",
       "cmcId": "chainlink"
 
+    },
+
+    "DAI": {
+      "name": "Dai Stablecoin",
+      "decimal": 18,
+      "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+
+      "symbol": "DAI",
+      "icon": "dai.svg",
+      "cmcId": "dai"
+
     }
 
   },

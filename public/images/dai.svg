@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>dai</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="13.9672627" cy="13.9672627" r="13.5"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="dai">
+            <circle id="Oval" stroke="#FEAE16" cx="13.9672627" cy="13.9672627" r="13"></circle>
+            <g id="Oval-Copy">
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <circle stroke="#FEAE16" stroke-width="1" cx="13.9672627" cy="13.9672627" r="13"></circle>
+            </g>
+            <g id="DAI" transform="translate(4.967263, 4.967263)" fill-rule="nonzero">
+                <rect id="Rectangle-path" fill="#FDC526" transform="translate(9.047575, 9.048913) rotate(-45.000000) translate(-9.047575, -9.048913) " x="2.78670592" y="2.78804373" width="12.5217392" height="12.5217392"></rect>
+                <polygon id="Shape" fill="#FEAE16" points="9.05086953 0.195652174 0.195652174 9.05086953 9.10760868 12.1813043 17.9041305 9.05086953"></polygon>
+                <polygon id="Shape" fill="#231F20" opacity="0.2" points="17.9608695 9.05086953 9.10760868 17.9041305 9.10760868 0.195652174"></polygon>
+                <polygon id="Shape" fill="#FEFEFE" points="9.10956519 2.30478261 3.23804348 8.46391305 7.2626087 8.46391305 9.10760868 6.70304348 11.0563043 8.46391305 15.1728261 8.46391305"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
