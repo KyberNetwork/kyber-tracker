@@ -10,7 +10,7 @@
     "volume_24h_token": "Giao dịch 24H (Token)",
     "search": "Tìm kiếm",
     "network_activity": "Giao dịch gần nhất",
-    "searchbox_placeholder" : "Tx Hash / địa chỉ ví",
+    "searchbox_placeholder" : "Mã giao dịch/Địa chỉ ví / Metamask",
     "all_token": "Danh sách token",
     "see_all": "Xem Tất Cả",
     "token_trade_history": "Lịch sử giao dịch token"

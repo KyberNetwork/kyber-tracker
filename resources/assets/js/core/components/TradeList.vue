@@ -87,21 +87,25 @@
       </div>
 
       <div v-if="!isHideDatepicker" class="datepicker-container">
-        <span>{{ $t('filter.from') }}</span>
+        <!-- <span>{{ $t('filter.from') }}</span> -->
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"
           :highlighted="highlightedToday"
-          :disabled="disabledFromDates">
+          :disabled="disabledFromDates"
+          :placeholder="$t('filter.from')"
+          >
         </datepicker>
-        <span>{{ $t('filter.to') }}</span>
+        <!-- <span>{{ $t('filter.to') }}</span> -->
         <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"
           :highlighted="highlightedToday"
-          :disabled="disabledToDates">
+          :disabled="disabledToDates"
+          :placeholder="$t('filter.to')"
+          >
         </datepicker>
       </div>
 

@@ -42,7 +42,7 @@
           dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
           volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
           volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
-          percentETH.push(Math.round(ret[i].volumeEthNumber/sum * 1000) / 10)
+          percentETH.push(sum ? Math.round(ret[i].volumeEthNumber/sum * 1000) / 10 : 0)
         }
 
         return {
@@ -152,8 +152,9 @@
              
                 let dataIndex = context.dataIndex
                 let percentETH = context.chart.data.percentETH
+                
                 // let sum = volumeEths.reduce((a,b) => (a + b), 0)
-                  return percentETH[dataIndex] + '%';
+                  return percentETH[dataIndex] ? percentETH[dataIndex] + '%' : '';
               }
           },
           },

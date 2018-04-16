@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="19px" viewBox="0 0 18 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M19.2,4.375 L18.3,4.375 L18.3,1.75 L16.5,1.75 L16.5,6.125 L15.6,6.125 L15.6,4.375 L9.3,4.375 L9.3,1.75 L7.5,1.75 L7.5,6.125 L6.6,6.125 L6.6,4.375 L4.8,4.375 C3.8073,4.375 3,5.16075 3,6.125 L3,17.5 C3,18.465125 3.8073,19.25 4.8,19.25 L19.2,19.25 C20.1927,19.25 21,18.465125 21,17.5 L21,6.125 C21,5.16075 20.1927,4.375 19.2,4.375 Z M19.1973,17.5 L4.8,17.5 L4.8,7.875 L19.2,7.875 L19.1973,17.5 Z" id="path-1"></path>
+    </defs>
+    <g id="🧐-Operation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Components" transform="translate(-459.000000, -509.000000)">
+            <g id="Icon/Calendar" transform="translate(456.000000, 508.000000)">
+                <rect id="Bounding-Box" x="0" y="0" width="24" height="21"></rect>
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Mask"></g>
+                <g id="Mixin/Fill/Accent-1" mask="url(#mask-2)" fill="#2ED573" fill-rule="evenodd">
+                    <rect id="Box" x="0" y="0" width="24" height="21"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

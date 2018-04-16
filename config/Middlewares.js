@@ -6,7 +6,8 @@ module.exports = {
    * Then put the name in this array
    */
   before: [
-    'requestLogger',
+    ...(process.env.NODE_ENV !== 'production' ? ['requestLogger'] : []),
+    // 'requestLogger',
     'cookieParser',
     'bodyParser',
     'bodyMultipart',
