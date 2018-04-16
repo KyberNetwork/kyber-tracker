@@ -156,23 +156,20 @@ module.exports = BaseService.extends({
 
         let volumeUSD = new BigNumber(0);
         if (takerUsds[symbol]) {
-          console.log("*********************^^^^^^^^^^^^^^^^")
-          console.log(takerUsds)
-          console.log(symbol)
-          volumeUSD = takerUsds[symbol].sum ? volumeUSD.plus(new BigNumber(takerUsds[symbol].sum.toString())) : new BigNumber(0);
+          volumeUSD = volumeUSD.plus(new BigNumber(takerUsds[symbol].sum.toString()));
         }
 
         if (makerUsds[symbol]) {
-          volumeUSD = makerUsds[symbol].sum ? volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString())) : new BigNumber(0);
+          volumeUSD = volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString()));
         }
 
         let ethVolume = new BigNumber(0);
         if (takerEth[symbol]) {
-          ethVolume = takerEth[symbol].sum ? ethVolume.plus(new BigNumber(takerEth[symbol].sum.toString())) : new BigNumber(0);
+          ethVolume = ethVolume.plus(new BigNumber(takerEth[symbol].sum.toString()));
         }
 
         if (makerEth[symbol]) {
-          ethVolume = makerEth[symbol].sum ? ethVolume.plus(new BigNumber(makerEth[symbol].sum.toString())) : new BigNumber(0);
+          ethVolume = ethVolume.plus(new BigNumber(makerEth[symbol].sum.toString()));
         }
 
         return {
@@ -180,7 +177,7 @@ module.exports = BaseService.extends({
           name: tokenConfig.name,
           volumeToken: tokenVolume.toFormat(4).toString(),
           volumeTokenNumber: tokenVolume.toNumber(),
-          volumeUSD: volumeUSD ? volumeUSD.toNumber() : 0,
+          volumeUSD: volumeUSD.toNumber(),
           volumeETH: ethVolume.toFormat(4).toString(),
           volumeEthNumber: ethVolume.toNumber(),
         };
@@ -301,10 +298,6 @@ module.exports = BaseService.extends({
       kncInfo: (next) => {
         CMCService.getCMCTokenInfo('KNC', next);
       },
-      ethInfo: (next) => {
-        CMCService.getCMCTokenInfo('ETH', next);
-      },
-      /*
       tradeCount: (next) => {
         KyberTradeModel.count({
           where: 'block_timestamp > ?',
@@ -324,7 +317,7 @@ module.exports = BaseService.extends({
           where: '1=1'
         }, next);
       },
-      
+      /*
       feeToBurn: (next) => {
         KyberTradeModel.sum('burn_fees', {
           where: '1=1'
@@ -332,6 +325,7 @@ module.exports = BaseService.extends({
           // params: [nowInSeconds - DAY_IN_SECONDS]
         }, next);
       },
+      */
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -345,18 +339,16 @@ module.exports = BaseService.extends({
       const burnedNoContract = 48.61873337;
       const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
       const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
-      const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
+      //const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
       const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
         //networkVolumeEth:  volumeInETH.toFormat(2).toString() + " ETH",
         collectedFees: collectedFees.toFormat(2).toString(),
         //tradeCount: ret.tradeCount,
-        kncInfo: ret.kncInfo,
-        ethInfo: ret.ethInfo,
-        // totalBurnedFee: burnedWithContract.toFormat(2).toString(),
-        feeToBurn: feeToBurn.toFormat(2).toString(),
+        //kncInfo: ret.kncInfo,
         totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
+        // feeToBurn: feeToBurn.toFormat(2).toString()
       };
 
       LocalCache.setSync(key, result, {ttl: Const.MINUTE_IN_MILLISECONDS});
