@@ -50,6 +50,9 @@ export default {
       return undefined;
     },
     getSearchResultTitle(){
+      console.log("+=============================")
+      console.log(util.isTxHash(this.$route.query.q))
+
       if(!util.isTxHash(this.$route.query.q) && !util.isAddress(this.$route.query.q)){
         return "<span class='long-address'>" + this.$route.query.q + "</span>";
       }

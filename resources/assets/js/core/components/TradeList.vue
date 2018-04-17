@@ -27,13 +27,13 @@
           <div class="address-detail-container">
             <div class="wallet-title">
               Address
-              <a class="wallet-address" target="_blank" :href="getTxEtherscanLink(searchResult.data.query)">{{ searchResult.data.query }}</a>
+              <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(searchResult.data.query)">{{ searchResult.data.query }}</a>
             </div>
 
             <div class="row wallet-value vdivide">
               <div class="col border-right">
                 <div class="value-number">
-                  {{searchResult.data.numberTrades}}
+                  {{searchResult.data.numberTrades || '0'}}
                 </div>
                 <div class="value-label">
                   Trades
@@ -42,7 +42,7 @@
               </div>
               <div class="col">
                 <div class="value-number">
-                  {{searchResult.data.totalPartnerFee}} KNC
+                  {{searchResult.data.totalPartnerFee || '0'}} KNC
                 </div>
                 <div class="value-label">
                   Collected Fees
@@ -313,6 +313,9 @@ export default {
   methods: {
     getTxEtherscanLink(tx) {
       return network.endpoints.ethScan + "tx/" + tx;
+    },
+    getAddressEtherscanLink(tx) {
+      return network.endpoints.ethScan + "address/" + tx;
     },
     getRequestParams () {
       let params = {

@@ -29,6 +29,9 @@ import routes from './routes';
 
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
+const ko = require('../../../lang/ko.json');
+const zh = require('../../../lang/zh.json');
+
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -59,7 +62,7 @@ Vue.component('datepicker', VueDatePicker);
 const locale = localStorage.getItem('locale') || 'en';
 const i18n = new VueI18n({
   locale: locale,
-  messages: { en, vi },
+  messages: { en, vi, ko, zh },
 });
 window.i18n = i18n;
 

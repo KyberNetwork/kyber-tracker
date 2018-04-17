@@ -1,0 +1,133 @@
+{
+  "website_title": "Kyber Network 跟踪网站",
+  "common": {
+    "exchange": "交易",
+    "name": "名称",
+    "symbol": "号码",
+    "volume_24h_usd": "24小时 交易量 (USD)",
+    "volume_24h_eth": "24小时 交易量 (ETH)",
+    "volume_24h_token": "24小时 交易量 (Token)",
+    "search": "搜索",
+    "network_activity": "最近交易",
+    "searchbox_placeholder": "交易哈希/ 钱包地址/ MetaMask",
+    "all_token": "代币名单",
+    "see_all": "查看全部",
+    "token_trade_history": "代币交易历史"
+  },
+  "page_title": {
+    "home": "主页",
+    "trades": "交易",
+    "tokens": "代币",
+    "trade_list": "交易历史",
+    "token_list": "支持的代币名单",
+    "trade_detail": "交易详情",
+    "token_detail": "代币详情",
+    "search": "钱包详情"
+  },
+  "navigator": {
+    "home": "主页",
+    "trades": "交易",
+    "trade_history": "交易历史",
+    "tokens": "代币",
+    "top_token": "交易量最高的代币",
+    "trade_details": "交易详情",
+    "token_detail": "代币详情",
+    "search": "钱包详情",
+    "network": "网络"
+  },
+  "filter": {
+    "from": "从",
+    "to": "到"
+  },
+  "status_bar": {
+    "network_volume": "24小时 交易量",
+    "trades": "交易次数 (24H)",
+    "burned_fee": "以销毁的费用 (24小时)",
+    "fees_to_burn": "以销毁的费用",
+    "fees_burned": "已销毁的费用",
+    "knc_price": "KNC 价格",
+    "eth_price": "ETH 价格",
+    "collected_fees": "总费用"
+  },
+  "tooltip": {
+    "network_volume": "最近24小时的交易量",
+    "collected_fees": "从储备库收取的总费用",
+    "fees_to_burn": "至今以销毁的总费用",
+    "fees_burned": "至今已销毁的总费用",
+    "knc_price": "KNC 最新价格 ",
+    "eth_price": "ETH 最新价格",
+    "price_change_24": "与24小时前价格相比的变化百分比"
+  },
+  "chart": {
+    "title": {
+      "network_volume": "交易量",
+      "collected_fees": "总费用",
+      "fees_burned": "已销毁 (积累)",
+      "fee_to_burn": "以销毁的费用",
+      "top_token": "交易量最高的代币",
+      "token_volume": "{0} 交易量",
+      "label_volume": "交易量",
+      "label_count": "交易次数",
+      "label_total": "总共"
+    },
+    "label": {
+      "to_burn": "以销毁"
+    }
+  },
+  "trade_list": {
+    "title": "交易历史",
+    "address": "地址",
+    "date": "时间",
+    "taker_token": "兑换从",
+    "maker_token": "到",
+    "rate": "汇率",
+    "description": "简述",
+    "amount": "数量",
+    "collected_fees": "总费用",
+    "fee_to_wallet": "合伙人佣金费用",
+    "fee_to_burn": "以销毁的费用",
+    "exchange": "交易",
+    "msg_no_result": "没有找到任何交易.",
+    "exchange_from": "从",
+    "exchange_to": "到"
+  },
+  "trade_detail": {
+    "transaction_hash": "交易哈希",
+    "wallet": "钱包",
+    "date": "时间",
+    "taker_address": "钱包地址",
+    "taker_token": "兑换从",
+    "taker_amount": "数量",
+    "maker_token": "到",
+    "maker_amount": "数量",
+    "rate": "{0}/{1} 汇率",
+    "collected_fees": "总费用",
+    "fee_to_wallet": "合伙人佣金费用",
+    "fee_to_burn": "以销毁的费用",
+    "for": " 为 ",
+    "trade_note": "USD 汇率在交易时间点计算"
+  },
+  "token_list": {
+    "title": "交易代币名单",
+    "prev": "上一页",
+    "next": "下一页",
+    "no": "序数."
+  },
+  "search_page": {
+    "title": "钱包详情",
+    "no_result_msg": "没有找到钱包的任何交易 {0}",
+    "result_msg": "交易次数: {0}",
+    "total_usd_msg": "交易总量 (USD): ${0}",
+    "total_eth_msg": "交易总量 (ETH): {0}",
+    "result_title": "地址: ",
+    "tx_hash": "交易哈希: ",
+    "total_fee": "总费用: {0} KNC",
+    "no_txhash_data": "此交易不由Kyber Network完成的",
+    "invalid_query": "您搜索的字符串不是交易哈希或钱包地址."
+  },
+  "main_page": {
+    "home": "主页",
+    "feedback": "产品反馈",
+    "help": "帮助"
+  }
+}
