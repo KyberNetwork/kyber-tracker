@@ -233,7 +233,7 @@
 
 import _ from 'lodash';
 import io from 'socket.io-client';
-import moment from 'moment';
+import moment,{ locale } from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
@@ -346,10 +346,17 @@ export default {
       return util.formatTokenAmount(amount, tokenInfo.decimal);
     },
     formatDatepicker (date) {
-      if (util.getLocale() === 'vi') {
-        return moment(date).format('DD/MM/YYYY');
-      } else {
-        return moment(date).format('DD MMM YYYY');
+      switch (util.getLocale()) {
+        case 'vi':
+          return moment(date).format('DD/MM/YYYY');
+          break;
+        case 'ko':
+          return moment(date).format('YYYY MM DD');
+          break;
+      
+        default:
+          return moment(date).format('DD MMM YYYY');
+          break;
       }
     },
     getTradeLink (id) {
@@ -370,7 +377,22 @@ export default {
   },
   computed: {
     locale () {
-      return util.getLocale();
+      let langPackage = util.getLocale() || 'en';
+      let dateLang = 'en'
+      switch (langPackage) {
+        case 'vi':
+          dateLang = 'vi'
+          break;
+        case 'kr':
+          dateLang = 'ko'
+          break;
+        case 'cn':
+          dateLang = 'zh'
+          break;
+        default: dateLang = 'en'
+          break;
+      }
+      return dateLang
     }
   },
   watch: {

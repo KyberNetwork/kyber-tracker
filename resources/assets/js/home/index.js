@@ -29,9 +29,14 @@ import routes from './routes';
 
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
-const ko = require('../../../lang/ko.json');
-const zh = require('../../../lang/zh.json');
+const kr = require('../../../lang/kr.json');
+const cn = require('../../../lang/cn.json');
 
+
+// require('moment/locale/zh-cn.js');
+// require('moment/locale/es.js');
+// require('moment/locale/fr.js');
+// require('moment/locale/nl.js');
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -59,17 +64,52 @@ Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
 
 
-const locale = localStorage.getItem('locale') || 'en';
+// const locale = localStorage.getItem('locale') || 'en';
+const locale = () => {
+  let langPackage = localStorage.getItem('locale') || 'en';
+
+  switch (langPackage) {
+    case 'vi':
+      return 'vi'
+      break;
+    case 'kr':
+      return 'ko'
+      break;
+    case 'cn':
+      return 'zh-cn'
+      break;
+    default: 
+      return 'en'
+      break;
+  }
+}
 const i18n = new VueI18n({
-  locale: locale,
-  messages: { en, vi, ko, zh },
+  locale: localStorage.getItem('locale') || 'en',
+  messages: { en, vi, kr, cn },
 });
 window.i18n = i18n;
 
 // moment.updateLocale('vi', {
+//   relativeTime : {
+//       past:   "%s",
+//       m:  "1 phút",
+//       h:  "1 giờ",
+//       d:  "1 ngày",
+//       y:  "1 năm",
+//   }
+// });
 
-// })
-moment.locale(locale);
+// moment.updateLocale('en', {
+//   relativeTime : {
+//       past:   "%s",
+//       m:  "1 min",
+//       mm: "%d mins",
+//       h:  "1 hour",
+//       d:  "1 day",
+//       y:  "1 year"
+//   }
+// });
+moment.locale(locale());
 
 const router = new VueRouter(routes);
 window.vueRouter = router;

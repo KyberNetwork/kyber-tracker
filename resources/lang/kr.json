@@ -7,7 +7,7 @@
     "volume_24h_usd": "24H (USD) 거래량",
     "volume_24h_eth": "24H (ETH) 거래량",
     "volume_24h_token": "24H 거래량(토큰)",
-    "search": "찾기",
+    "search": "검색",
     "network_activity": "최근 거래",
     "searchbox_placeholder": "트랜잭션 해시/지갑 주소 / Metamask",
     "all_token": "모든 토큰",
@@ -16,35 +16,35 @@
   },
   "page_title": {
     "home": "홈",
-    "trades": "환전",
+    "trades": "거래",
     "tokens": "토큰 목록",
     "trade_list": "거래 리스트",
     "token_list": "토큰 리스트",
     "trade_detail": "거래 세부 정보",
     "token_detail": "토큰 세부 정보",
-    "search": "지갑 정보"
+    "search": "검색"
   },
   "navigator": {
     "home": "홈",
-    "trades": "환전",
+    "trades": "거래",
     "trade_history": "거래 기록",
     "tokens": "토큰",
-    "top_token": "토큰 톱",
+    "top_token": "상위 거래 토큰",
     "trade_details": "거래 세부 정보",
     "token_detail": "토큰 세부 정보",
-    "search": "지갑 정보",
-    "network": "네트워크"
+    "search": "검색",
+    "network": "개요"
   },
   "filter": {
-    "from": "일부터",
-    "to": "일까지"
+    "from": "From",
+    "to": "To"
   },
   "status_bar": {
     "network_volume": "(24H) 거래량",
     "trades": "(24H) 거래액",
-    "burned_fee": "태우려는 비용 (24H)",
-    "fees_to_burn": "태우려는 비용",
-    "fees_burned": "태웠는 비용",
+    "burned_fee": "소각된 비용 (24H)",
+    "fees_to_burn": "소각될 비용",
+    "fees_burned": "소각된 비용",
     "knc_price": "KNC 가격",
     "eth_price": "ETH 가격",
     "collected_fees": "총비용"
@@ -56,22 +56,22 @@
     "fees_burned": "지금까지 태웠는 총비용",
     "knc_price": "KNC 현재 가격",
     "eth_price": "ETH 현재 가격",
-    "price_change_24": "24시간 전 가격 대비 변화율"
+    "price_change_24": "24시간 가격 변화"
   },
   "chart": {
     "title": {
       "network_volume": "거래량",
       "collected_fees": "비용",
-      "fees_burned": "태웠는 비용(누적)",
-      "fee_to_burn": "태우려는 비용",
-      "top_token": "토큰 톱",
+      "fees_burned": "누적 소각 비용",
+      "fee_to_burn": "소각될 비용",
+      "top_token": "상위 거래 토큰",
       "token_volume": "{0} - 거래량",
       "label_volume": "거래량",
       "label_count": "거래액",
-      "label_total": "거레량"
+      "label_total": "거래량"
     },
     "label": {
-      "to_burn": "태우려는 비용"
+      "to_burn": "소각될 비용"
     }
   },
   "trade_list": {
@@ -83,8 +83,8 @@
     "amount": "수량",
     "collected_fees": "총비용",
     "fee_to_wallet": "파트너 비용",
-    "fee_to_burn": "태우려는 비용",
-    "exchange": "환전",
+    "fee_to_burn": "소각될 비용",
+    "exchange": "거래",
     "msg_no_result": "거래가 없습니다.",
     "exchange_from": "보내는 곳",
     "exchange_to": "받는 곳"
@@ -101,15 +101,15 @@
     "rate": "환율 {0}/{1}",
     "collected_fees": "총비용",
     "fee_to_wallet": "파트너 비용",
-    "fee_to_burn": "태우려는 비용",
+    "fee_to_burn": "소각될 비용",
     "for": " 전환 ",
-    "trade_note": "USD 환율은 거래 시간에 계산됩니다"
+    "trade_note": "USD 환율은 거래 당시 기준입니다."
   },
   "token_list": {
     "title": "토큰 리스트",
     "prev": " < ",
     "next": " > ",
-    "no": "번호순"
+    "no": "no"
   },
   "search_page": {
     "title": "지갑 정보",
@@ -120,8 +120,8 @@
     "result_title": "주소: ",
     "tx_hash": "Tx hash: ",
     "total_fee": "총비용: {0} KNC",
-    "no_txhash_data": "이 거래는 카이버네트워크와 실현하지 않습니다",
-    "invalid_query": "검색하는 정보는 주소 또는 트랜잭션 해시가 아닙니다"
+    "no_txhash_data": "이 거래는 카이버네트워크로 진행되지 않았습니다",
+    "invalid_query": "검색 결과가 없습니다."
   },
   "main_page": {
     "home": "홈",

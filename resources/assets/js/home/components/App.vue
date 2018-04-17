@@ -185,8 +185,8 @@
                     </template>
                     <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
                     <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('ko')"><img src="images/locales/ko.svg" /> 한국어</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('zh')"><img src="images/locales/zh.svg" /> 中文</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('kr')"><img src="images/locales/kr.svg" /> 한국어</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('cn')"><img src="images/locales/cn.svg" /> 中文</b-dropdown-item>
                   </b-dropdown> 
               </li>
               </ul>
@@ -275,26 +275,6 @@ export default {
       this.isOpenFee = !this.isOpenFee;
     },
 
-    customizeMoment(){
-      moment.updateLocale('vi', {
-        relativeTime : {
-            m:  "1 phút",
-            h:  "1 giờ",
-            d:  "1 ngày",
-            y:  "1 năm",
-        }
-      });
-
-      moment.updateLocale('en', {
-        relativeTime : {
-            m:  "1 min",
-            mm: "%d mins",
-            h:  "1 hour",
-            d:  "1 day",
-            y:  "1 year"
-        }
-      });
-    },
     getPriceChangeClass(price) {
       if (price === 0) return "";
       return price < 0 ? "neg-value" : "pos-value";
@@ -598,7 +578,7 @@ export default {
   },
 
   mounted() {
-    this.customizeMoment();
+    // this.customizeMoment();
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);
