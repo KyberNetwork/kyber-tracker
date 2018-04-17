@@ -53,7 +53,7 @@
 
 
             <div class="wallet-title">
-              Total  Trading Volume 
+              Total Trading Volume 
             </div>
 
             <div class="row wallet-value vdivide">
