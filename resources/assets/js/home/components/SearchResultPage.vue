@@ -110,6 +110,7 @@ export default {
                 totalUsd : this.totalUsd,
                 totalEth : this.totalEth,
                 totalPartnerFee : this.totalPartnerFee,
+                totalCollectedFees: this.totalCollectedFees,
                 type: util.isAddress(this.$route.query.q) ? 'address' : 'txHash',
                 query: this.$route.query.q
               }
@@ -139,7 +140,6 @@ export default {
               this.totalEth = new BigNumber(pagination.volumeEth).toFormat(3);
 
               this.totalCollectedFees = new BigNumber(pagination.collectedFees.toString()).div(Math.pow(10, 18)).toFormat(3);
-
               this.$refs.datatable.maxPage = pagination.maxPage;
             } else {
               this.resultCount = 0;

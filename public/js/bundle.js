@@ -104856,7 +104856,8 @@ var render = function() {
                             _vm._v(
                               "\n                " +
                                 _vm._s(
-                                  _vm.searchResult.data.totalPartnerFee || "0"
+                                  _vm.searchResult.data.totalCollectedFees ||
+                                    "0"
                                 ) +
                                 " KNC\n              "
                             )
@@ -122979,6 +122980,7 @@ exports.default = {
           totalUsd: this.totalUsd,
           totalEth: this.totalEth,
           totalPartnerFee: this.totalPartnerFee,
+          totalCollectedFees: this.totalCollectedFees,
           type: _util2.default.isAddress(this.$route.query.q) ? 'address' : 'txHash',
           query: this.$route.query.q
         }
@@ -123009,7 +123011,6 @@ exports.default = {
           _this.totalEth = new _bignumber2.default(pagination.volumeEth).toFormat(3);
 
           _this.totalCollectedFees = new _bignumber2.default(pagination.collectedFees.toString()).div(Math.pow(10, 18)).toFormat(3);
-
           _this.$refs.datatable.maxPage = pagination.maxPage;
         } else {
           _this.resultCount = 0;

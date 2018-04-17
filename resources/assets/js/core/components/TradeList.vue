@@ -42,7 +42,7 @@
               </div>
               <div class="col">
                 <div class="value-number">
-                  {{searchResult.data.totalPartnerFee || '0'}} KNC
+                  {{searchResult.data.totalCollectedFees || '0'}} KNC
                 </div>
                 <div class="value-label">
                   Collected Fees
