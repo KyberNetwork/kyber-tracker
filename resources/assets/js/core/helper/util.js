@@ -87,8 +87,18 @@ export default {
     }
   },
 
-  getLocale: function() {
-    return localStorage.getItem('locale') || 'en';
+  getLocale: function(defaultVal) {
+    return localStorage.getItem('locale') || defaultVal || 'en';
+  },
+
+  getBrowserLanguage: function(){
+    const browserDefaultlanguage = navigator.language
+    let defaultLanguage = 'en'
+    if(browserDefaultlanguage){
+      const nation = browserDefaultlanguage.split('-')[0]
+      defaultLanguage = network.supportedLanguage.indexOf(nation) >= 0 ? nation : 'en'
+    }
+    return defaultLanguage
   },
 
   getTokenInfo: function (symbol) {

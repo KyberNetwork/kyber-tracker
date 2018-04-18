@@ -23,14 +23,16 @@ import VueMq from 'vue-mq'
 // import localforage from 'localforage';
 import routes from './routes';
 
+import network from '../../../../config/network'
+import util from "../core/helper/util"
 // localforage.config({
 //   name: 'KyberTracker'
 // });
 
 const en = require('../../../lang/en.json');
 const vi = require('../../../lang/vi.json');
-const kr = require('../../../lang/kr.json');
-const cn = require('../../../lang/cn.json');
+const ko = require('../../../lang/ko.json');
+const zh = require('../../../lang/zh.json');
 
 
 // require('moment/locale/zh-cn.js');
@@ -65,28 +67,15 @@ Vue.component('datepicker', VueDatePicker);
 
 
 // const locale = localStorage.getItem('locale') || 'en';
-const locale = () => {
-  let langPackage = localStorage.getItem('locale') || 'en';
-
-  switch (langPackage) {
-    case 'vi':
-      return 'vi'
-      break;
-    case 'kr':
-      return 'ko'
-      break;
-    case 'cn':
-      return 'zh-cn'
-      break;
-    default: 
-      return 'en'
-      break;
-  }
+const getMomentLanguage = () => {
+  let langPackage = util.getLocale(util.getBrowserLanguage())
+  return network.mappingLang_Moment[langPackage]
 }
+
 const i18n = new VueI18n({
-  locale: localStorage.getItem('locale') || 'en',
+  locale: util.getLocale(util.getBrowserLanguage()),
   fallbackLocale: 'en',
-  messages: { en, vi, kr, cn },
+  messages: { en, vi, ko, zh },
 });
 window.i18n = i18n;
 
@@ -110,7 +99,7 @@ moment.updateLocale('en', {
     y: "1 year"
   }
 });
-moment.locale(locale());
+moment.locale(getMomentLanguage());
 
 const router = new VueRouter(routes);
 window.vueRouter = router;

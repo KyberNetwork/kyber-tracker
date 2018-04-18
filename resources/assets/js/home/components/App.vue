@@ -185,8 +185,8 @@
                     </template>
                     <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
                     <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('kr')"><img src="images/locales/kr.svg" /> 한국어</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('cn')"><img src="images/locales/cn.svg" /> 中文</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('ko')"><img src="images/locales/ko.svg" /> 한국어</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('zh')"><img src="images/locales/zh.svg" /> 中文</b-dropdown-item>
                   </b-dropdown> 
               </li>
               </ul>
@@ -506,7 +506,7 @@ export default {
               to: { name: "trade-list" }
             },
             {
-              text: this.$t("navigator.trade_detail"),
+              text: this.$t("navigator.trade_details"),
               active: true
             }
           ];

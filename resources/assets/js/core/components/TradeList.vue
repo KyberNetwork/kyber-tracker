@@ -377,22 +377,7 @@ export default {
   },
   computed: {
     locale () {
-      let langPackage = util.getLocale() || 'en';
-      let dateLang = 'en'
-      switch (langPackage) {
-        case 'vi':
-          dateLang = 'vi'
-          break;
-        case 'kr':
-          dateLang = 'ko'
-          break;
-        case 'cn':
-          dateLang = 'zh'
-          break;
-        default: dateLang = 'en'
-          break;
-      }
-      return dateLang
+      return util.getLocale(util.getBrowserLanguage())
     }
   },
   watch: {

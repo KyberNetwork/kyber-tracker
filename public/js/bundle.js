@@ -22511,8 +22511,18 @@ exports.default = {
     }
   },
 
-  getLocale: function getLocale() {
-    return localStorage.getItem('locale') || 'en';
+  getLocale: function getLocale(defaultVal) {
+    return localStorage.getItem('locale') || defaultVal || 'en';
+  },
+
+  getBrowserLanguage: function getBrowserLanguage() {
+    var browserDefaultlanguage = navigator.language;
+    var defaultLanguage = 'en';
+    if (browserDefaultlanguage) {
+      var nation = browserDefaultlanguage.split('-')[0];
+      defaultLanguage = _network2.default.supportedLanguage.indexOf(nation) >= 0 ? nation : 'en';
+    }
+    return defaultLanguage;
   },
 
   getTokenInfo: function getTokenInfo(symbol) {
@@ -71930,6 +71940,14 @@ var _routes = __webpack_require__(546);
 
 var _routes2 = _interopRequireDefault(_routes);
 
+var _network = __webpack_require__(13);
+
+var _network2 = _interopRequireDefault(_network);
+
+var _util = __webpack_require__(11);
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // localforage.config({
@@ -71942,8 +71960,8 @@ var en = __webpack_require__(575);
 // import ImportAcount from '../core/components/ImportAccount.vue';
 
 var vi = __webpack_require__(576);
-var kr = __webpack_require__(577);
-var cn = __webpack_require__(578);
+var ko = __webpack_require__(588);
+var zh = __webpack_require__(589);
 
 // require('moment/locale/zh-cn.js');
 // require('moment/locale/es.js');
@@ -71976,28 +71994,15 @@ _vue2.default.component('paginate', _vuejsPaginate2.default);
 _vue2.default.component('datepicker', _vuejsDatepicker2.default);
 
 // const locale = localStorage.getItem('locale') || 'en';
-var locale = function locale() {
-  var langPackage = localStorage.getItem('locale') || 'en';
-
-  switch (langPackage) {
-    case 'vi':
-      return 'vi';
-      break;
-    case 'kr':
-      return 'ko';
-      break;
-    case 'cn':
-      return 'zh-cn';
-      break;
-    default:
-      return 'en';
-      break;
-  }
+var getMomentLanguage = function getMomentLanguage() {
+  var langPackage = _util2.default.getLocale(_util2.default.getBrowserLanguage());
+  return _network2.default.mappingLang_Moment[langPackage];
 };
+
 var i18n = new _vueI18n2.default({
-  locale: localStorage.getItem('locale') || 'en',
+  locale: _util2.default.getLocale(_util2.default.getBrowserLanguage()),
   fallbackLocale: 'en',
-  messages: { en: en, vi: vi, kr: kr, cn: cn }
+  messages: { en: en, vi: vi, ko: ko, zh: zh }
 });
 window.i18n = i18n;
 
@@ -72021,7 +72026,7 @@ _moment2.default.updateLocale('en', {
     y: "1 year"
   }
 });
-_moment2.default.locale(locale());
+_moment2.default.locale(getMomentLanguage());
 
 var router = new _vueRouter2.default(_routes2.default);
 window.vueRouter = router;
@@ -96673,7 +96678,7 @@ exports.default = {
             text: this.$t("navigator.trades"),
             to: { name: "trade-list" }
           }, {
-            text: this.$t("navigator.trade_detail"),
+            text: this.$t("navigator.trade_details"),
             active: true
           }];
           return;
@@ -99104,7 +99109,15 @@ module.exports = {
   "networkId": 1,
   "chainName": "Mainnet",
   "averageBlockTime": 15000,
-  "startBlockNumber": 5049196 // From contract was deployed firstly #5049196
+  "startBlockNumber": 5049196, // From contract was deployed firstly #5049196
+
+  "supportedLanguage": ["en", "vi", "ko", "zh"],
+  "mappingLang_Moment": {
+    "en": "en",
+    "vi": "vi",
+    "ko": "ko",
+    "zh": "zh-cn"
+  }
 };
 
 /***/ }),
@@ -100322,13 +100335,13 @@ var render = function() {
                           {
                             on: {
                               click: function($event) {
-                                _vm.changeLanguage("kr")
+                                _vm.changeLanguage("ko")
                               }
                             }
                           },
                           [
                             _c("img", {
-                              attrs: { src: "images/locales/kr.svg" }
+                              attrs: { src: "images/locales/ko.svg" }
                             }),
                             _vm._v(" 한국어")
                           ]
@@ -100339,13 +100352,13 @@ var render = function() {
                           {
                             on: {
                               click: function($event) {
-                                _vm.changeLanguage("cn")
+                                _vm.changeLanguage("zh")
                               }
                             }
                           },
                           [
                             _c("img", {
-                              attrs: { src: "images/locales/cn.svg" }
+                              attrs: { src: "images/locales/zh.svg" }
                             }),
                             _vm._v(" 中文")
                           ]
@@ -100985,23 +100998,7 @@ exports.default = {
   },
   computed: {
     locale: function locale() {
-      var langPackage = _util2.default.getLocale() || 'en';
-      var dateLang = 'en';
-      switch (langPackage) {
-        case 'vi':
-          dateLang = 'vi';
-          break;
-        case 'kr':
-          dateLang = 'ko';
-          break;
-        case 'cn':
-          dateLang = 'zh';
-          break;
-        default:
-          dateLang = 'en';
-          break;
-      }
-      return dateLang;
+      return _util2.default.getLocale(_util2.default.getBrowserLanguage());
     }
   },
   watch: {
@@ -123109,18 +123106,8 @@ module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"
 module.exports = {"website_title":"Kyber Network Tracker","common":{"exchange":"Exchange","name":"TÊN","symbol":"MÃ","volume_24h_usd":"Giao dịch 24H (USD)","volume_24h_eth":"Giao dịch 24H (ETH)","volume_24h_token":"Giao dịch 24H (Token)","search":"Tìm kiếm","network_activity":"Giao dịch gần nhất","searchbox_placeholder":"Mã giao dịch/Địa chỉ ví / Metamask","all_token":"Danh sách token","see_all":"Xem Tất Cả","token_trade_history":"Lịch sử giao dịch token"},"page_title":{"home":"Trang chính","trades":"Giao dịch","tokens":"Danh sách Tokens","trade_list":"Danh sách giao dịch","token_list":"Danh sách token","trade_detail":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví"},"navigator":{"home":"Trang chính","trades":"Giao dịch","trade_history":"Lịch sử giao dịch","tokens":"Tokens","top_token":"Top token","trade_details":"Chi tiết giao dịch","token_detail":"Chi tiết token","search":"Thông tin ví","network":"Network"},"filter":{"from":"Từ ngày","to":"Đến ngày"},"status_bar":{"network_volume":"Giao dịch (24H)","trades":"SỐ GIAO DỊCH (24H)","burned_fee":"PHÍ SẼ ĐỐT (24H)","fees_to_burn":"Phí sẽ đốt","fees_burned":"Đã đốt","knc_price":"Giá KNC","eth_price":"Giá ETH","collected_fees":"Tổng phí"},"tooltip":{"network_volume":"Khối lượng giao dịch trong 24 giờ gần đây","collected_fees":"Tổng phí thu từ các quỹ","fees_to_burn":"Tổng phí dành ra để đốt cho đến nay","fees_burned":"Tổng phí đã đốt cho đến nay","knc_price":"Giá hiện tại của KNC","eth_price":"Giá hiện tại của ETH","price_change_24":"Phần trăm thay đổi so với 24 giờ trước"},"chart":{"title":{"network_volume":"KL giao dịch","collected_fees":"Phí","fees_burned":"Đã đốt (luỹ kế)","fee_to_burn":"Phí sẽ đốt","top_token":"Top Tokens","token_volume":"{0} - Khối lượng giao dịch","label_volume":"KL giao dịch","label_count":"Số giao dịch","label_total":"KL giao dịch"},"label":{"to_burn":"Sẽ đốt"}},"trade_list":{"title":"Giao dịch gần đây","address":"Địa chỉ","date":"Thời gian","rate":"Tỉ giá","description":"Mô tả","amount":"Số lượng","collected_fees":"Tổng phí","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","exchange":"Trao đổi","msg_no_result":"Không tìm thấy giao dịch nào.","exchange_from":"Đổi từ","exchange_to":"Đổi sang"},"trade_detail":{"transaction_hash":"Mã giao dịch","wallet":"Ví","date":"Thời gian","taker_address":"Người thực hiện","taker_token":"Trao đổi từ","taker_amount":"Số lượng","maker_token":"Trao đổi sang","maker_amount":"Số lượng","rate":"TỈ GIÁ {0}/{1}","collected_fees":"TỔNG PHÍ","fee_to_wallet":"Phí tích hợp","fee_to_burn":"Phí sẽ đốt","for":" đổi lấy ","trade_note":"Tỷ giá USD được tính tại thời điểm giao dịch"},"wallet_detail":{"address":"Địa chỉ","trades":"Giao dịch","collected_fees":"Tổng phí","total_trading_volune":"Tổng khối lượng giao dịch","value_in_eth":"Giá trị theo ETH","value_in_usd":"Giá trị theo USD","notice":"Tỷ giá USD được tính tại thời điểm giao dịch"},"token_list":{"title":"Danh sách tokens","prev":" < ","next":" > ","no":"STT"},"search_page":{"title":"Thông tin ví","no_result_msg":"Không tìm thấy giao dịch nào của ví {0}","result_msg":"Số lần giao dịch: {0}","total_usd_msg":"Tổng khối lượng giao dịch (USD): ${0}","total_eth_msg":"Tổng khối lượng giao dịch (ETH): {0}","result_title":"Địa chỉ: ","tx_hash":"Tx hash: ","total_fee":"Tổng phí: {0} KNC","no_txhash_data":"Giao dịch này không được thực hiện với Kyber Network","invalid_query":"Thông tin bạn tìm không phải mã giao dịch hoặc địa chỉ ví"},"main_page":{"home":"Trang chủ","feedback":"Phản hồi","help":"Trợ giúp"}}
 
 /***/ }),
-/* 577 */
-/***/ (function(module, exports) {
-
-module.exports = {"website_title":"카이버네트워크 트래커","common":{"exchange":"거래","name":"이름","symbol":"심볼","volume_24h_usd":"24H (USD) 거래량","volume_24h_eth":"24H (ETH) 거래량","volume_24h_token":"24H 거래량(토큰)","search":"검색","network_activity":"최근 거래","searchbox_placeholder":"트랜잭션 해시/지갑 주소 / Metamask","all_token":"모든 토큰","see_all":"모두 보기","token_trade_history":"토큰 거래 기록"},"page_title":{"home":"홈","trades":"거래","tokens":"토큰 목록","trade_list":"거래 리스트","token_list":"토큰 리스트","trade_detail":"거래 세부 정보","token_detail":"토큰 세부 정보","search":"검색"},"navigator":{"home":"홈","trades":"거래","trade_history":"거래 기록","tokens":"토큰","top_token":"상위 거래 토큰","trade_details":"거래 세부 정보","token_detail":"토큰 세부 정보","search":"검색","network":"개요"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"(24H) 거래량","trades":"(24H) 거래액","burned_fee":"소각된 비용 (24H)","fees_to_burn":"소각될 비용","fees_burned":"소각된 비용","knc_price":"KNC 가격","eth_price":"ETH 가격","collected_fees":"총비용"},"tooltip":{"network_volume":" 최근 24시간 동안 거래량","collected_fees":"예비비에서 징수한 총비용","fees_to_burn":"지금까지 태우러 따로 떼어 놓는 총비용","fees_burned":"지금까지 태웠는 총비용","knc_price":"KNC 현재 가격","eth_price":"ETH 현재 가격","price_change_24":"24시간 가격 변화"},"chart":{"title":{"network_volume":"거래량","collected_fees":"비용","fees_burned":"누적 소각 비용","fee_to_burn":"소각될 비용","top_token":"상위 거래 토큰","token_volume":"{0} - 거래량","label_volume":"거래량","label_count":"거래액","label_total":"거래량"},"label":{"to_burn":"소각될 비용"}},"trade_list":{"title":"최근 거래","address":"주소","date":"시간","rate":"환율","description":"설명","amount":"수량","collected_fees":"총비용","fee_to_wallet":"파트너 비용","fee_to_burn":"소각될 비용","exchange":"거래","msg_no_result":"거래가 없습니다.","exchange_from":"보내는 곳","exchange_to":"받는 곳"},"trade_detail":{"transaction_hash":"트랜잭션 해시","wallet":"지갑","date":"시간","taker_address":"지갑 주소","taker_token":"보내는 곳","taker_amount":"수량","maker_token":"받는 곳","maker_amount":"수량","rate":"환율 {0}/{1}","collected_fees":"총비용","fee_to_wallet":"파트너 비용","fee_to_burn":"소각될 비용","for":" 전환 ","trade_note":"USD 환율은 거래 당시 기준입니다."},"wallet_detail":{"address":"주소","trades":"거래","collected_fees":"총비용","total_trading_volune":"모든 거래량","value_in_eth":" ETH와 같은 가치","value_in_usd":"USD와 같은 가치","notice":"USD 환율은 거래 당시 기준입니다"},"token_list":{"title":"토큰 리스트","prev":" < ","next":" > ","no":"no"},"search_page":{"title":"지갑 정보","no_result_msg":"지갑의 트랜잭션이 없습니다 {0}","result_msg":"거래 수: {0}","total_usd_msg":" 총 거래량 (USD): ${0}","total_eth_msg":"총 거래량 (ETH): {0}","result_title":"주소: ","tx_hash":"Tx hash: ","total_fee":"총비용: {0} KNC","no_txhash_data":"이 거래는 카이버네트워크로 진행되지 않았습니다","invalid_query":"검색 결과가 없습니다."},"main_page":{"home":"홈","feedback":"피드백","help":"도움말"}}
-
-/***/ }),
-/* 578 */
-/***/ (function(module, exports) {
-
-module.exports = {"website_title":"Kyber Network 跟踪网站","common":{"exchange":"交易","name":"名称","symbol":"符号","volume_24h_usd":"24小时 交易量 (USD)","volume_24h_eth":"24小时 交易量 (ETH)","volume_24h_token":"24小时 交易量 (Token)","search":"搜索","network_activity":"最近交易","searchbox_placeholder":"交易哈希/ 钱包地址/ MetaMask","all_token":"代币名单","see_all":"查看全部","token_trade_history":"代币交易历史"},"page_title":{"home":"主页","trades":"交易","tokens":"代币","trade_list":"交易历史","token_list":"支持的代币名单","trade_detail":"交易详情","token_detail":"代币详情","search":"钱包详情"},"navigator":{"home":"主页","trades":"交易历史","trade_history":"交易历史","tokens":"代币","top_token":"交易量排名（代币）","trade_details":"交易详情","token_detail":"代币详情","search":"钱包详情","network":"网络"},"filter":{"from":"从","to":"到"},"status_bar":{"network_volume":"24小时 交易量","trades":"交易次数 (24H)","burned_fee":"以销毁的费用 (24小时)","fees_to_burn":"以销毁的费用","fees_burned":"已销毁的费用","knc_price":"KNC 价格","eth_price":"ETH 价格","collected_fees":"总费用"},"tooltip":{"network_volume":"最近24小时的交易量","collected_fees":"从储备库收取的总费用","fees_to_burn":"至今以销毁的总费用","fees_burned":"至今已销毁的总费用","knc_price":"KNC 最新价格 ","eth_price":"ETH 最新价格","price_change_24":"与24小时前价格相比的变化百分比"},"chart":{"title":{"network_volume":"交易量","collected_fees":"总费用","fees_burned":"已销毁 (积累)","fee_to_burn":"以销毁的费用","top_token":"交易量排名（代币）","token_volume":"{0} 交易量","label_volume":"交易量","label_count":"交易次数","label_total":"总共"},"label":{"to_burn":"以销毁"}},"trade_list":{"title":"交易历史","address":"地址","date":"时间","taker_token":"从","maker_token":"换至","rate":"汇率","description":"简述","amount":"数量","collected_fees":"总费用","fee_to_wallet":"合伙人佣金费用","fee_to_burn":"以销毁的费用","exchange":"交易","msg_no_result":"没有找到任何交易.","exchange_from":"从","exchange_to":"换至"},"trade_detail":{"transaction_hash":"交易哈希","wallet":"钱包","date":"时间","taker_address":"钱包地址","taker_token":"从","taker_amount":"数量","maker_token":"换至","maker_amount":"数量","rate":"{0}/{1} 汇率","collected_fees":"总费用","fee_to_wallet":"合伙人佣金费用","fee_to_burn":"以销毁的费用","for":" 为 ","trade_note":"USD 汇率在交易时间点计算"},"wallet_detail":{"address":"地址","trades":"交易次数","collected_fees":"总费用","total_trading_volune":"交易总量","value_in_eth":"价值（ETH)","value_in_usd":"价值（USD)","notice":"USD 汇率在交易时间点计算"},"token_list":{"title":"交易代币名单","prev":"上一页","next":"下一页","no":"序数."},"search_page":{"title":"钱包详情","no_result_msg":"没有找到钱包的任何交易 {0}","result_msg":"交易次数: {0}","total_usd_msg":"交易总量 (USD): ${0}","total_eth_msg":"交易总量 (ETH): {0}","result_title":"地址: ","tx_hash":"交易哈希: ","total_fee":"总费用: {0} KNC","no_txhash_data":"此交易不由Kyber Network完成的","invalid_query":"您搜索的字符串不是交易哈希或钱包地址."},"main_page":{"home":"主页","feedback":"产品反馈","help":"帮助"}}
-
-/***/ }),
+/* 577 */,
+/* 578 */,
 /* 579 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -123350,6 +123337,23 @@ _chart2.default.controllers.LineWithLine = _chart2.default.controllers.line.exte
     }
   }
 });
+
+/***/ }),
+/* 583 */,
+/* 584 */,
+/* 585 */,
+/* 586 */,
+/* 587 */,
+/* 588 */
+/***/ (function(module, exports) {
+
+module.exports = {"website_title":"카이버네트워크 트래커","common":{"exchange":"거래","name":"이름","symbol":"심볼","volume_24h_usd":"24H (USD) 거래량","volume_24h_eth":"24H (ETH) 거래량","volume_24h_token":"24H 거래량(토큰)","search":"검색","network_activity":"최근 거래","searchbox_placeholder":"트랜잭션 해시/지갑 주소 / Metamask","all_token":"모든 토큰","see_all":"모두 보기","token_trade_history":"토큰 거래 기록"},"page_title":{"home":"홈","trades":"거래","tokens":"토큰 목록","trade_list":"거래 리스트","token_list":"토큰 리스트","trade_detail":"거래 세부 정보","token_detail":"토큰 세부 정보","search":"검색"},"navigator":{"home":"홈","trades":"거래","trade_history":"거래 기록","tokens":"토큰","top_token":"상위 거래 토큰","trade_details":"거래 세부 정보","token_detail":"토큰 세부 정보","search":"검색","network":"개요"},"filter":{"from":"From","to":"To"},"status_bar":{"network_volume":"(24H) 거래량","trades":"(24H) 거래액","burned_fee":"소각된 비용 (24H)","fees_to_burn":"소각될 비용","fees_burned":"소각된 비용","knc_price":"KNC 가격","eth_price":"ETH 가격","collected_fees":"총비용"},"tooltip":{"network_volume":" 최근 24시간 동안 거래량","collected_fees":"예비비에서 징수한 총비용","fees_to_burn":"지금까지 태우러 따로 떼어 놓는 총비용","fees_burned":"지금까지 태웠는 총비용","knc_price":"KNC 현재 가격","eth_price":"ETH 현재 가격","price_change_24":"24시간 가격 변화"},"chart":{"title":{"network_volume":"거래량","collected_fees":"비용","fees_burned":"누적 소각 비용","fee_to_burn":"소각될 비용","top_token":"상위 거래 토큰","token_volume":"{0} - 거래량","label_volume":"거래량","label_count":"거래액","label_total":"거래량"},"label":{"to_burn":"소각될 비용"}},"trade_list":{"title":"최근 거래","address":"주소","date":"시간","rate":"환율","description":"설명","amount":"수량","collected_fees":"총비용","fee_to_wallet":"파트너 비용","fee_to_burn":"소각될 비용","exchange":"거래","msg_no_result":"거래가 없습니다.","exchange_from":"보내는 곳","exchange_to":"받는 곳"},"trade_detail":{"transaction_hash":"트랜잭션 해시","wallet":"지갑","date":"시간","taker_address":"지갑 주소","taker_token":"보내는 곳","taker_amount":"수량","maker_token":"받는 곳","maker_amount":"수량","rate":"환율 {0}/{1}","collected_fees":"총비용","fee_to_wallet":"파트너 비용","fee_to_burn":"소각될 비용","for":" 전환 ","trade_note":"USD 환율은 거래 당시 기준입니다."},"wallet_detail":{"address":"주소","trades":"거래","collected_fees":"총비용","total_trading_volune":"모든 거래량","value_in_eth":" ETH와 같은 가치","value_in_usd":"USD와 같은 가치","notice":"USD 환율은 거래 당시 기준입니다"},"token_list":{"title":"토큰 리스트","prev":" < ","next":" > ","no":"no"},"search_page":{"title":"지갑 정보","no_result_msg":"지갑의 트랜잭션이 없습니다 {0}","result_msg":"거래 수: {0}","total_usd_msg":" 총 거래량 (USD): ${0}","total_eth_msg":"총 거래량 (ETH): {0}","result_title":"주소: ","tx_hash":"Tx hash: ","total_fee":"총비용: {0} KNC","no_txhash_data":"이 거래는 카이버네트워크로 진행되지 않았습니다","invalid_query":"검색 결과가 없습니다."},"main_page":{"home":"홈","feedback":"피드백","help":"도움말"}}
+
+/***/ }),
+/* 589 */
+/***/ (function(module, exports) {
+
+module.exports = {"website_title":"Kyber Network 跟踪网站","common":{"exchange":"交易","name":"名称","symbol":"符号","volume_24h_usd":"24小时 交易量 (USD)","volume_24h_eth":"24小时 交易量 (ETH)","volume_24h_token":"24小时 交易量 (Token)","search":"搜索","network_activity":"最近交易","searchbox_placeholder":"交易哈希/ 钱包地址/ MetaMask","all_token":"代币名单","see_all":"查看全部","token_trade_history":"代币交易历史"},"page_title":{"home":"主页","trades":"交易","tokens":"代币","trade_list":"交易历史","token_list":"支持的代币名单","trade_detail":"交易详情","token_detail":"代币详情","search":"钱包详情"},"navigator":{"home":"主页","trades":"交易历史","trade_history":"交易历史","tokens":"代币","top_token":"交易量排名（代币）","trade_details":"交易详情","token_detail":"代币详情","search":"钱包详情","network":"网络"},"filter":{"from":"从","to":"到"},"status_bar":{"network_volume":"24小时 交易量","trades":"交易次数 (24H)","burned_fee":"以销毁的费用 (24小时)","fees_to_burn":"以销毁的费用","fees_burned":"已销毁的费用","knc_price":"KNC 价格","eth_price":"ETH 价格","collected_fees":"总费用"},"tooltip":{"network_volume":"最近24小时的交易量","collected_fees":"从储备库收取的总费用","fees_to_burn":"至今以销毁的总费用","fees_burned":"至今已销毁的总费用","knc_price":"KNC 最新价格 ","eth_price":"ETH 最新价格","price_change_24":"与24小时前价格相比的变化百分比"},"chart":{"title":{"network_volume":"交易量","collected_fees":"总费用","fees_burned":"已销毁 (积累)","fee_to_burn":"以销毁的费用","top_token":"交易量排名（代币）","token_volume":"{0} 交易量","label_volume":"交易量","label_count":"交易次数","label_total":"总共"},"label":{"to_burn":"以销毁"}},"trade_list":{"title":"交易历史","address":"地址","date":"时间","taker_token":"从","maker_token":"换至","rate":"汇率","description":"简述","amount":"数量","collected_fees":"总费用","fee_to_wallet":"合伙人佣金费用","fee_to_burn":"以销毁的费用","exchange":"交易","msg_no_result":"没有找到任何交易.","exchange_from":"从","exchange_to":"换至"},"trade_detail":{"transaction_hash":"交易哈希","wallet":"钱包","date":"时间","taker_address":"钱包地址","taker_token":"从","taker_amount":"数量","maker_token":"换至","maker_amount":"数量","rate":"{0}/{1} 汇率","collected_fees":"总费用","fee_to_wallet":"合伙人佣金费用","fee_to_burn":"以销毁的费用","for":" 为 ","trade_note":"USD 汇率在交易时间点计算"},"wallet_detail":{"address":"地址","trades":"交易次数","collected_fees":"总费用","total_trading_volune":"交易总量","value_in_eth":"价值（ETH)","value_in_usd":"价值（USD)","notice":"USD 汇率在交易时间点计算"},"token_list":{"title":"交易代币名单","prev":"上一页","next":"下一页","no":"序数."},"search_page":{"title":"钱包详情","no_result_msg":"没有找到钱包的任何交易 {0}","result_msg":"交易次数: {0}","total_usd_msg":"交易总量 (USD): ${0}","total_eth_msg":"交易总量 (ETH): {0}","result_title":"地址: ","tx_hash":"交易哈希: ","total_fee":"总费用: {0} KNC","no_txhash_data":"此交易不由Kyber Network完成的","invalid_query":"您搜索的字符串不是交易哈希或钱包地址."},"main_page":{"home":"主页","feedback":"产品反馈","help":"帮助"}}
 
 /***/ })
 /******/ ]);
