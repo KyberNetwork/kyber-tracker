@@ -113,7 +113,7 @@
     "total_trading_volune": "모든 거래량",
     "value_in_eth": " ETH와 같은 가치",
     "value_in_usd": "USD와 같은 가치",
-    "noties": "USD 환율은 거래 당시 기준입니다"
+    "notice": "USD 환율은 거래 당시 기준입니다"
   },
 
 

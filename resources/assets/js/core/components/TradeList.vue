@@ -79,7 +79,7 @@
 
 
             <div class="walet-note">
-              *{{$t('wallet_detail.noties')}}
+              *{{$t('wallet_detail.notice')}}
             </div>
           </div>
         </div>
