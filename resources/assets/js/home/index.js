@@ -85,30 +85,31 @@ const locale = () => {
 }
 const i18n = new VueI18n({
   locale: localStorage.getItem('locale') || 'en',
+  fallbackLocale: 'en',
   messages: { en, vi, kr, cn },
 });
 window.i18n = i18n;
 
-// moment.updateLocale('vi', {
-//   relativeTime : {
-//       past:   "%s",
-//       m:  "1 phút",
-//       h:  "1 giờ",
-//       d:  "1 ngày",
-//       y:  "1 năm",
-//   }
-// });
+moment.updateLocale('vi', {
+  relativeTime: {
+    past: "%s trước",
+    m: "1 phút",
+    h: "1 giờ",
+    d: "1 ngày",
+    y: "1 năm",
+  }
+});
 
-// moment.updateLocale('en', {
-//   relativeTime : {
-//       past:   "%s",
-//       m:  "1 min",
-//       mm: "%d mins",
-//       h:  "1 hour",
-//       d:  "1 day",
-//       y:  "1 year"
-//   }
-// });
+moment.updateLocale('en', {
+  relativeTime: {
+    past: "%s ago",
+    m: "1 min",
+    mm: "%d mins",
+    h: "1 hour",
+    d: "1 day",
+    y: "1 year"
+  }
+});
 moment.locale(locale());
 
 const router = new VueRouter(routes);

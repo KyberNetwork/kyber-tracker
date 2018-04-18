@@ -71996,30 +71996,31 @@ var locale = function locale() {
 };
 var i18n = new _vueI18n2.default({
   locale: localStorage.getItem('locale') || 'en',
+  fallbackLocale: 'en',
   messages: { en: en, vi: vi, kr: kr, cn: cn }
 });
 window.i18n = i18n;
 
-// moment.updateLocale('vi', {
-//   relativeTime : {
-//       past:   "%s",
-//       m:  "1 phút",
-//       h:  "1 giờ",
-//       d:  "1 ngày",
-//       y:  "1 năm",
-//   }
-// });
+_moment2.default.updateLocale('vi', {
+  relativeTime: {
+    past: "%s trước",
+    m: "1 phút",
+    h: "1 giờ",
+    d: "1 ngày",
+    y: "1 năm"
+  }
+});
 
-// moment.updateLocale('en', {
-//   relativeTime : {
-//       past:   "%s",
-//       m:  "1 min",
-//       mm: "%d mins",
-//       h:  "1 hour",
-//       d:  "1 day",
-//       y:  "1 year"
-//   }
-// });
+_moment2.default.updateLocale('en', {
+  relativeTime: {
+    past: "%s ago",
+    m: "1 min",
+    mm: "%d mins",
+    h: "1 hour",
+    d: "1 day",
+    y: "1 year"
+  }
+});
 _moment2.default.locale(locale());
 
 var router = new _vueRouter2.default(_routes2.default);
@@ -96441,10 +96442,8 @@ exports.default = {
     },
     getLanguage: function getLanguage() {
       if (typeof window.i18n != "undefined" && typeof window.i18n.locale != "undefined") {
-        _moment2.default.locale(window.i18n.locale);
         return window.i18n.locale;
       } else {
-        window.i18n.locale = "en";
         _moment2.default.locale("en");
         return "en";
       }

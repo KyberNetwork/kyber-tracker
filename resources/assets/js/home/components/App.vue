@@ -262,10 +262,8 @@ export default {
         typeof window.i18n != "undefined" &&
         typeof window.i18n.locale != "undefined"
       ) {
-        moment.locale(window.i18n.locale);
         return window.i18n.locale;
       } else {
-        window.i18n.locale = "en";
         moment.locale("en");
         return "en";
       }
