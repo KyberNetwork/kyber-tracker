@@ -218,7 +218,9 @@ a {
   padding-left: 0;
   list-style: none;
   border-radius: .25rem;
-
+  .page-item.active .page-link{
+    z-index: unset;
+  }
   li.page-item {
     margin: 0 3px 0 0;
 

@@ -111,8 +111,8 @@
     "trades": "거래",
     "collected_fees": "총비용",
     "total_trading_volune": "모든 거래량",
-    "value_in_eth": " ETH와 같은 가치",
-    "value_in_usd": "USD와 같은 가치",
+    "value_in_eth": "가치 (ETH)",
+    "value_in_usd": "가치 (USD)",
     "notice": "USD 환율은 거래 당시 기준입니다"
   },
 
