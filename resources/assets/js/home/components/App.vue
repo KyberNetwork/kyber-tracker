@@ -200,7 +200,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment,{ locale } from "moment";
 import request from "superagent";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
@@ -579,6 +579,7 @@ export default {
 
   mounted() {
     // this.customizeMoment();
+    // this.changeLanguage(localStorage.getItem('locale') || 'en')
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);

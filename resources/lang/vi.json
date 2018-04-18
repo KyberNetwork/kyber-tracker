@@ -115,6 +115,17 @@
     "trade_note": "Tỷ giá USD được tính tại thời điểm giao dịch"
   },
 
+  "wallet_detail": {
+    "address": "Địa chỉ",
+    "trades": "Giao dịch",
+    "collected_fees": "Tổng phí",
+    "total_trading_volune": "Tổng khối lượng giao dịch",
+    "value_in_eth": "Giá trị theo ETH",
+    "value_in_usd": "Giá trị theo USD",
+    "noties": "Tỷ giá USD được tính tại thời điểm giao dịch"
+  },
+
+
   "token_list": {
     "title": "Danh sách tokens",
     "prev": " < ",
