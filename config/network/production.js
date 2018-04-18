@@ -270,4 +270,12 @@ module.exports = {
   "chainName": "Mainnet",
   "averageBlockTime": 15000,
   "startBlockNumber": 5049196, // From contract was deployed firstly #5049196
+
+  "supportedLanguage": ["en", "vi", "ko", "zh"],
+  "mappingLang_Moment": {
+    "en" : "en", 
+    "vi" : "vi", 
+    "ko" : "ko", 
+    "zh" : "zh-cn"
+  }
 };

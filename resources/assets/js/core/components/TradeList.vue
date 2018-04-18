@@ -26,7 +26,7 @@
           <!-- address detail ################## -->
           <div class="address-detail-container">
             <div class="wallet-title">
-              Address
+              {{$t('wallet_detail.address')}}:
               <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(searchResult.data.query)">{{ searchResult.data.query }}</a>
             </div>
 
@@ -36,7 +36,7 @@
                   {{searchResult.data.numberTrades || '0'}}
                 </div>
                 <div class="value-label">
-                  Trades
+                  {{$t('wallet_detail.trades')}}
                 </div>
                 
               </div>
@@ -45,7 +45,7 @@
                   {{searchResult.data.totalCollectedFees || '0'}} KNC
                 </div>
                 <div class="value-label">
-                  Collected Fees
+                  {{$t('wallet_detail.collected_fees')}}
                 </div>
                 
               </div>
@@ -53,7 +53,7 @@
 
 
             <div class="wallet-title">
-              Total Trading Volume 
+              {{$t('wallet_detail.total_trading_volune')}}
             </div>
 
             <div class="row wallet-value vdivide">
@@ -62,7 +62,7 @@
                   {{searchResult.data.totalEth}}
                 </div>
                 <div class="value-label">
-                  Value in ETH
+                  {{$t('wallet_detail.value_in_eth')}}
                 </div>
                 
               </div>
@@ -71,7 +71,7 @@
                   {{searchResult.data.totalUsd}}
                 </div>
                 <div class="value-label">
-                  Value in USD*
+                  {{$t('wallet_detail.value_in_usd')}}*
                 </div>
                 
               </div>
@@ -79,7 +79,7 @@
 
 
             <div class="walet-note">
-              *USD Rates are calculated at trading time
+              *{{$t('wallet_detail.notice')}}
             </div>
           </div>
         </div>
@@ -377,22 +377,7 @@ export default {
   },
   computed: {
     locale () {
-      let langPackage = util.getLocale() || 'en';
-      let dateLang = 'en'
-      switch (langPackage) {
-        case 'vi':
-          dateLang = 'vi'
-          break;
-        case 'kr':
-          dateLang = 'ko'
-          break;
-        case 'cn':
-          dateLang = 'zh'
-          break;
-        default: dateLang = 'en'
-          break;
-      }
-      return dateLang
+      return util.getLocale(util.getBrowserLanguage())
     }
   },
   watch: {

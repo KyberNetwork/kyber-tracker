@@ -29,7 +29,7 @@
     "trades": "交易历史",
     "trade_history": "交易历史",
     "tokens": "代币",
-    "top_token": "交易量最高的代币",
+    "top_token": "交易量排名（代币）",
     "trade_details": "交易详情",
     "token_detail": "代币详情",
     "search": "钱包详情",
@@ -62,9 +62,9 @@
     "title": {
       "network_volume": "交易量",
       "collected_fees": "总费用",
-      "fees_burned": "已销毁 (积累)",
+      "fees_burned": "已销毁 (累计)",
       "fee_to_burn": "以销毁的费用",
-      "top_token": "交易量最高的代币",
+      "top_token": "交易量排名（代币）",
       "token_volume": "{0} 交易量",
       "label_volume": "交易量",
       "label_count": "交易次数",
@@ -106,6 +106,15 @@
     "fee_to_burn": "以销毁的费用",
     "for": " 为 ",
     "trade_note": "USD 汇率在交易时间点计算"
+  },
+  "wallet_detail": {
+    "address": "地址",
+    "trades": "交易次数",
+    "collected_fees": "总费用",
+    "total_trading_volune": "交易总量",
+    "value_in_eth": "价值（ETH)",
+    "value_in_usd": "价值（USD)",
+    "notice": "USD 汇率在交易时间点计算"
   },
   "token_list": {
     "title": "交易代币名单",

@@ -185,8 +185,8 @@
                     </template>
                     <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
                     <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('kr')"><img src="images/locales/kr.svg" /> 한국어</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('cn')"><img src="images/locales/cn.svg" /> 中文</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('ko')"><img src="images/locales/ko.svg" /> 한국어</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('zh')"><img src="images/locales/zh.svg" /> 中文</b-dropdown-item>
                   </b-dropdown> 
               </li>
               </ul>
@@ -200,7 +200,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment,{ locale } from "moment";
 import request from "superagent";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
@@ -506,7 +506,7 @@ export default {
               to: { name: "trade-list" }
             },
             {
-              text: this.$t("navigator.trade_detail"),
+              text: this.$t("navigator.trade_details"),
               active: true
             }
           ];
@@ -577,6 +577,7 @@ export default {
 
   mounted() {
     // this.customizeMoment();
+    // this.changeLanguage(localStorage.getItem('locale') || 'en')
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);
