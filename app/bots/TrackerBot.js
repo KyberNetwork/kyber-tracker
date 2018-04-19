@@ -3,28 +3,49 @@ const logger = log4js.getLogger('TrackerBot');
 const Bot = require('node-telegram-bot-api');
 
 const commands = {
-    start: /^\/?start$/,
-    help: /^\/?help$/,
-    last: /^\/?last(.*)/,
-    today: /^\/?today$/,
-    yesterday: /^\/?yesterday$/
+    start: {
+        regex: /\b\/?start(?:@\w+)?\s*$/i
+    },
+    help: {
+        regex: /\b\/?help(?:@\w+)?\s*$/i
+    },
+    last: {
+        regex: /\b\/?last(?:@\w+)?(?:\s+(\w+))?\s*$/i,
+        needDb: true
+    },
+    today: {
+        regex: /\b\/?today(?:@\w+)?\s*$/i,
+        needDb: true
+    },
+    yesterday: {
+        regex: /\b\/?yesterday(?:@\w+)?\s*$/i,
+        needDb: true
+    },
+    burn: {
+        regex: /\b\/?burn(?:@\w+)?\s*$/i,
+        needDb: true
+    }
 }
 
 function keepReq(body) {
     if (!body.message) return false;
     if (!body.message.text) return false;
 
+    const text = body.message.text;
+
     const needDb = [
         commands.last,
         commands.today,
-        commands.yesterday
+        commands.yesterday,
+        commands.burn,
     ]
 
-    for (let i = 0; i < needDb.length; i++) {
-        if (!!body.message.text.match(needDb[i])) {
+    for (let key in commands) {
+        const value = commands[key];
+        if (value.needDb && !!text.match(value.regex)) {
             return true;
         }
-    };
+    }
 
     return false;
 }
@@ -167,6 +188,18 @@ function setupBot(bot) {
         const yestSeconds = todaySeconds - 24 * 60 * 60;
         
         sendData(bot, chatId, yestSeconds, todaySeconds, "YESTERDAY (UTC)", true);
+    });
+
+    // Matches "/burn or burn"
+    bot.onText(commands.burn, (msg, match) => {
+        const chatId = msg.chat.id;
+
+        const nowSeconds = Utils.nowInSeconds() + 100;
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0);
+        const todaySeconds = Math.floor(today.getTime() / 1000);
+        
+        sendData(bot, chatId, todaySeconds, nowSeconds, "TODAY (UTC)", true);
     });
 }
 
