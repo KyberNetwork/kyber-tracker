@@ -129,7 +129,7 @@
         >
       </paginate>
       
-
+      <!-- <button type="button" class="btn btn-default" @click="csvExport()">Export CSV</button> -->
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
@@ -311,6 +311,17 @@ export default {
     };
   },
   methods: {
+    // csvExport: function (users) {
+    //   console.log("================ export")
+    //   var csvContent = "data:text/csv;charset=utf-8,";
+    //   csvContent += this.rows.map(function(d){
+    //     console.log(d);
+    //     return JSON.stringify(d);
+    //   })
+    //   .join('\n') 
+    //   .replace(/(^\{)|(\}$)/mg, '');
+    //   window.open( encodeURI(csvContent) );
+    // },
     getTxEtherscanLink(tx) {
       return network.endpoints.ethScan + "tx/" + tx;
     },

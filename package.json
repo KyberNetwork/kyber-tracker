@@ -28,6 +28,7 @@
     "abi-decoder": "1.0.9",
     "async": "2.6.0",
     "axios": "0.17.1",
+    "babel-polyfill": "^6.26.0",
     "bignumber.js": "6.0.0",
     "bowser": "^1.9.3",
     "chartjs-plugin-datalabels": "^0.3.0",

@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
+import "babel-polyfill";
 
 import Vue from 'vue'
 import VueRouter from 'vue-router';

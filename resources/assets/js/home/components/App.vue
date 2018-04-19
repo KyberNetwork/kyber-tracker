@@ -277,7 +277,7 @@ export default {
       if (price === 0) return "";
       return price < 0 ? "neg-value" : "pos-value";
     },
-    async connectMetaMask(e) {
+    connectMetaMask(e) {
       if (typeof web3 === "undefined") {
         // console.log(
         //  "Cannot connect to metamask. Please make sure you have metamask installed"
@@ -297,14 +297,17 @@ export default {
       }
 
       try {
-        let addresses = await web3Service.getAllAddresses();
-        let suggestData = addresses.map(addr => {
-          return {
-            type: "metamask",
-            addr: addr
-          };
-        });
-        this.addressesMetamask = suggestData;
+        let address = web3.eth.accounts[0]
+        // let suggestData = addresses.map(addr => {
+        //   return {
+        //     type: "metamask",
+        //     addr: addr
+        //   };
+        // });
+        this.addressesMetamask = [{
+          type: "metamask",
+          addr: address
+        }];
       } catch (e) {
         console.log(e);
       }
@@ -356,7 +359,7 @@ export default {
     },
     doSearch() {
       if(this.$mq == 'sm' || this.$mq == 'ml'){
-        if(!this.$refs.seatchInputRef.$el.className.includes("search-expand")){
+        if(this.$refs.seatchInputRef.$el && this.$refs.seatchInputRef.$el.className.indexOf("search-expand") == -1){
           this.$refs.seatchInputRef.$el.className = "search-expand ml-0"
           this.$refs.headingSum.className = "d-none"
           this.$refs.searchComponent.className += ' col-12'

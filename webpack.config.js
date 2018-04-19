@@ -27,6 +27,7 @@ module.exports = () => {
   }
   return {
     entry: {
+      // 'polyfill': 'babel-polyfill',
       'bundle'     : './resources/assets/js/home/index.js',
     },
     output: {
