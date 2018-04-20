@@ -24,6 +24,24 @@ const commands = {
     burn: {
         regex: /\b\/?burn(?:@\w+)?\b/i,
         needDb: true
+    },
+    whenmoon: {
+        regex: /\b\/?(?:when)?\s?moon(?:@\w+)?\b/i
+    },
+    whitepaper: {
+        regex: /\b\/?(?:white)?\s?paper(?:@\w+)?\b/i
+    },
+    roadmap: {
+        regex: /\b\/?(?:road)\s?map(?:@\w+)?\b/i
+    },
+    lambo: {
+        regex: /\b\/?(?:when)?\s?lambo(?:@\w+)?\b/i
+    },
+    lang: {
+        regex: /\b\/?lang(?:@\w+)?\b/i
+    },
+    trade: {
+        regex: /\b\/?trade(?:@\w+)?\b/i
     }
 }
 
@@ -64,14 +82,15 @@ function mention(user) {
     }
 }
 
-function reply(bot, msg, markdown, autoMention = true) {
+function reply(bot, msg, markdown, autoMention = true, nopreview = false) {
     if (autoMention && msg.reply_to_message && msg.reply_to_message.from &&
         msg.reply_to_message.from.id != msg.from.id && !msg.reply_to_message.from.is_bot) {
         markdown = mention(msg.reply_to_message.from) + "\n" + markdown;
     }
     bot.sendMessage(msg.chat.id, markdown, {
         reply_to_message_id: msg.message_id,
-        parse_mode: "Markdown"
+        parse_mode: "Markdown",
+        disable_web_page_preview: !!nopreview
     });
 }
 
@@ -95,9 +114,17 @@ function sendData(bot, msg, from, to, prefix, tellUtcTime) {
         } else {
             let text = `*${prefix}* VOLUME`;
             text += "\n=================";
-            text += `\nVolume: *${format(ret.volumeEth)} ETH* ($${format(ret.volumeUsd)})`;
+            if (internal) {
+                text += `\nVolume: *${format(ret.volumeEth)} ETH* ($${format(ret.volumeUsd)})`;
+            } else {
+                text += `\nVolume: *$${format(ret.volumeUsd)}* ($${format(ret.volumeEth)} ETH)`;
+            }
             text += `\nNumber of Tx: *${format(ret.tradeCount)}*`;
-            text += `\nAverage ETH/Tx: *${average(ret.volumeEth, ret.tradeCount)}*`;
+            if (internal) {
+                text += `\nAverage ETH/Tx: *${average(ret.volumeEth, ret.tradeCount)}*`;
+            } else {
+                text += `\nAverage USD/Tx: *$${average(ret.volumeUsd, ret.tradeCount)}*`;
+            }
             if (internal) {
                 text += `\nBurn & Tax: *${format(ret.burnAndTax)} KNC*`;
                 text += "\n\nCOMMISSIONED PARTNER";
@@ -120,7 +147,6 @@ function sendData(bot, msg, from, to, prefix, tellUtcTime) {
 
 function setupBot(bot) {
 
-    // Matches "/start[whatever] or start[whatever]"
     bot.onText(commands.start.regex, (msg, match) => {
         let text = "Please type a command.\n\n";
         text += "Example:\n";
@@ -129,20 +155,57 @@ function setupBot(bot) {
         text += "It supports 'd' and 'h'.\n\n";
         text += "/today to view summary for today (UTC time)\n";
         text += "/yesterday to view summary for yesterday (UTC time)";
-        text += "\n\nThe '/' character is optional.";
+        text += "/burn to see how much KNC burned to date";
 
         reply(bot, msg, text);
     });
 
-    // Matches "/help[whatever] or help[whatever]"
     bot.onText(commands.help.regex, (msg, match) => {
         let text = "/last to view summary for last 24h\n";
         text += "You could also type 'last 7d' or 'last 10h'. ";
         text += "It supports 'd' and 'h'.\n\n";
         text += "/today to view summary for today (UTC time)\n";
         text += "/yesterday to view summary for yesterday (UTC time)";
-        text += "\n\nThe '/' character is optional.";
+        text += "/burn to see how much KNC burned to date";
 
+        reply(bot, msg, text);
+    });
+
+    bot.onText(commands.whenmoon.regex, (msg, match) => {
+        let text = "You could check the moon phases on https://www.timeanddate.com/moon/phases/";
+        reply(bot, msg, text);
+    });
+
+    bot.onText(commands.lambo.regex, (msg, match) => {
+        let text = "Check it out here https://when-lambo.com/";
+        reply(bot, msg, text);
+    });
+
+    bot.onText(commands.trade.regex, (msg, match) => {
+        let text = "Our exchange is live, you can trade now https://kyber.network/";
+        reply(bot, msg, text);
+    });
+
+    bot.onText(commands.lang.regex, (msg, match) => {
+        let text = "Kyber Network Official Telegram Groups.";
+        text += "\nEnglish @Kybernetwork";
+        text += "\nKorean @KyberKorea";
+        text += "\nChinese @KyberChinese";
+        text += "\nVietnamese @KyberVietnamese"
+        reply(bot, msg, text, true, true);
+    });
+
+    bot.onText(commands.whitepaper.regex, (msg, match) => {
+        let text = "Kyber Network White Paper is available in several languages.\n";
+        text += "[English](https://home.kyber.network/assets/KyberNetworkWhitepaper.pdf)";
+        text += "\n[한국어](https://home.kyber.network/assets/KyberNetworkWhitepaper-kr.pdf)";
+        text += "\n[中文](https://home.kyber.network/assets/KyberNetworkWhitepaper-cn.pdf)";
+        text += "\nVietnamese version will be available soon."
+        reply(bot, msg, text, true, true);
+    });
+
+    bot.onText(commands.roadmap.regex, (msg, match) => {
+        let text = "You could see the roadmap on Kyber Network home page https://home.kyber.network/";
         reply(bot, msg, text);
     });
 
