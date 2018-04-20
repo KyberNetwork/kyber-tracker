@@ -33,7 +33,9 @@
     "trade_details": "거래 세부 정보",
     "token_detail": "토큰 세부 정보",
     "search": "검색",
-    "network": "개요"
+    "network": "개요",
+    "volume": "거래량",
+    "go_to_exchange": "거래소로"
   },
   "filter": {
     "from": "From",

@@ -30,13 +30,15 @@
   "navigator": {
     "home": "Trang chính",
     "trades": "Giao dịch",
-    "trade_history": "Lịch sử giao dịch",
+    "trade_history": "Lịch sử",
     "tokens": "Tokens",
     "top_token": "Top token",
     "trade_details": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
     "search": "Thông tin ví",
-    "network": "Network"
+    "network": "Network",
+    "volume": "Khối lượng",
+    "go_to_exchange": "Giao dịch ngay"
   },
 
   "filter": {

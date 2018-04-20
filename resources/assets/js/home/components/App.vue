@@ -93,7 +93,7 @@
                   <!-- <img src="/images/network.svg" /> -->
                   <!-- <i class="fas fa-signal icon-second-header"></i> -->
                   <span class="entypo-chart-bar icon-second-heade"></span>
-                  {{ $t('navigator.network') }}
+                  {{ $t('navigator.volume') }}
                   
                 </router-link>
               </b-nav-item>
@@ -102,7 +102,7 @@
                 <!-- <img src="/images/trade.svg" /> -->
                 <!-- <i class="fas fa-exchange-alt icon-second-header"></i> -->
                 <span class="entypo-switch icon-second-heade"></span>
-                {{ $t('navigator.trades') }}
+                {{ $t('navigator.trade_history') }}
                 </router-link>
               </b-nav-item>
               <b-nav-item class="navbar">
@@ -153,7 +153,7 @@
           </b-navbar-nav> -->
         </div>
         <a href="https://kyber.network/" class="go-exchange">
-          <button type="button" class="btn btn-default btn-export">Go to Exchange</button>
+          <button type="button" class="btn btn-default btn-export">{{ $t('navigator.go_to_exchange') }}</button>
         </a>
       </b-navbar>
 
