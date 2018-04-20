@@ -193,10 +193,9 @@ module.exports = BaseService.extends({
     });
   },
 
-  getStats: function (fromDate, toDate, callback) {
+  getStats: function (fromDate, toDate, internal, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-
-    async.auto({
+    const funcs = {
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
           where: 'block_timestamp > ? AND block_timestamp <= ?',
@@ -214,38 +213,43 @@ module.exports = BaseService.extends({
           where: 'block_timestamp > ? AND block_timestamp <= ?',
           params: [fromDate, toDate],
         }, next);
-      },
-      burnAndTax: (next) => {
+      }
+    };
+
+    if (internal) {
+      funcs.burnAndTax = (next) => {
         KyberTradeModel.sum('burn_fees', {
           where: 'block_timestamp > ? AND block_timestamp <= ?',
           params: [fromDate, toDate],
         }, next);
-      },
-      commission: (next) => {
+      };
+      funcs.commission = (next) => {
         KyberTradeModel.sum('commission', {
           where: 'block_timestamp > ? AND block_timestamp <= ?',
           params: [fromDate, toDate],
         }, next);
-      },
-      partnerCount: (next) => {
+      };
+      funcs.partnerCount = (next) => {
         KyberTradeModel.count({
           where: 'block_timestamp > ? AND block_timestamp <= ? AND commission_receive_address IS NOT NULL',
           params: [fromDate, toDate],
         }, next);
-      },
-      partnerVolumeEth: (next) => {
+      };
+      funcs.partnerVolumeEth = (next) => {
         KyberTradeModel.sum('volume_eth', {
           where: 'block_timestamp > ? AND block_timestamp <= ? AND commission_receive_address IS NOT NULL',
           params: [fromDate, toDate],
         }, next);
-      }
-    }, (err, ret) => {
+      };
+    }
+
+    async.auto(funcs, (err, ret) => {
       if (err) {
         return callback(err);
       }
 
-      const burnAndTax = new BigNumber(ret.burnAndTax.toString()).div(Math.pow(10, 18));
-      const commission = new BigNumber(ret.commission.toString()).div(Math.pow(10, 18));
+      const burnAndTax = ret.burnAndTax ? new BigNumber(ret.burnAndTax.toString()).div(Math.pow(10, 18)) : undefined;
+      const commission = ret.commission ? new BigNumber(ret.commission.toString()).div(Math.pow(10, 18)) : undefined;
       const result = {
         volumeUsd: ret.volumeUsd,
         volumeEth: ret.volumeEth,
@@ -566,6 +570,39 @@ module.exports = BaseService.extends({
       }
 
       LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      return callback(null, returnData);
+    });
+  },
+
+  // Use for bot
+  getTotalBurnedFees: function (callback) {
+    const BurnedFeeModel = this.getModel('BurnedFeeModel');
+
+    let key = `burned-fee-total`;
+
+    const cachedData = LocalCache.getSync(key);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+
+
+    async.auto({
+      sum: (next) => {
+        BurnedFeeModel.sum('amount', {
+          where: '1 = 1'
+        }, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const burnedNoContract = 48.61873337;
+      const sum = new BigNumber((ret.sum || 0).toString()).div(Math.pow(10, 18)).toNumber();
+
+      const returnData = {burned: sum + burnedNoContract};
+      LocalCache.setSync(key, returnData, {ttl: 10 * Const.MINUTE_IN_MILLISECONDS});
       return callback(null, returnData);
     });
   },

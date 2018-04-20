@@ -13,6 +13,6 @@ module.exports = AppController.extends({
         res.sendStatus(200);
       }
     });
-  },
+  }
 
 });

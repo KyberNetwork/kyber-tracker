@@ -70,5 +70,10 @@ module.exports = {
         .on('error', function (err) {
             logger.error("Fail to get white listed telegram accounts to alarm!");
         })
+    },
+    support: (body) => {
+        if (!body.message) return false;
+        if (!body.message.text) return false;
+        return !!body.message.text.match(/^\/register (.+)$/);
     }
 }

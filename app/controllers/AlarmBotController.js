@@ -1,6 +1,7 @@
 const AppController           = require('./AppController');
 const Checkit                 = require('cc-checkit');
-const bot                     = require('../bots/AlarmBot');
+const alarmBot                = require('../bots/AlarmBot');
+const trackerBot              = require('../bots/TrackerBot');
 
 
 module.exports = AppController.extends({
@@ -18,13 +19,26 @@ module.exports = AppController.extends({
         return;
       }
 
-    bot.alarm();
+    alarmBot.alarm();
     res.sendStatus(200);
   },
 
   haveChat: function (req, res) {
-    bot.processRequest(req.body);
-    res.sendStatus(200);
+    if (alarmBot.support(req.body)) {
+      alarmBot.processRequest(req.body);
+      res.sendStatus(200);
+    } else {
+      trackerBot.processRequest(req.body, {
+        botToken: process.env.ALARM_BOT_TOKEN,
+        internal: true,
+        getService: (name = "TradeService") => {
+          return req.getService(name)
+        },
+        finish: () => {
+          res.sendStatus(200);
+        }
+      });
+    }
   },
 
 });
