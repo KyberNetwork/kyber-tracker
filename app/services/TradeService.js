@@ -378,6 +378,8 @@ module.exports = BaseService.extends({
     const limit = options.limit || 20;
     const fromDate = options.fromDate
     const toDate = options.toDate
+
+    const exportData = options.exportData
     // Transaction hash
 
     // console.log("+++++++++++****************")
@@ -389,7 +391,7 @@ module.exports = BaseService.extends({
     // Address
     else if (this._isAddress(q)) {
       // console.log("+++++++++ is address")
-      this._searchByAddress(q, page, limit, fromDate, toDate, callback);
+      this._searchByAddress(q, page, limit, fromDate, toDate, exportData,callback);
     }
     else {
       return callback(null, []);
@@ -404,7 +406,7 @@ module.exports = BaseService.extends({
     }, callback);
   },
 
-  _searchByAddress: function (address, page, limit, fromDate, toDate, callback) {
+  _searchByAddress: function (address, page, limit, fromDate, toDate, exportData, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     let whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?';
     let params = [address, address];
@@ -419,15 +421,22 @@ module.exports = BaseService.extends({
       params.push(toDate);
     }
 
+    let findObj = {
+      where: whereClauses,
+      params: params,
+      // limit: limit,
+      // offset: page * limit,
+      orderBy: 'block_timestamp DESC',
+    }
+
+    if(!exportData){
+      findObj.limit = limit
+      findObj.offset = page * limit
+    }
+
     async.auto({
       list: (next) => {
-        KyberTradeModel.find({
-          where: whereClauses,
-          params: params,
-          limit: limit,
-          offset: page * limit,
-          orderBy: 'block_timestamp DESC',
-        }, next);
+        KyberTradeModel.find(findObj, next);
       },
       count: (next) => {
         KyberTradeModel.count({

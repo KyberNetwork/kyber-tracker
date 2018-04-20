@@ -26,6 +26,17 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError);
   }
 
+  searchAllToExport (q, fromDate, toDate, callback) {
+    const url = `/api/search`;
+    return request
+            .get(url)
+            .query({ q, fromDate, toDate, exportData: true })
+            .then((res) => {
+              return callback(null, res.body);
+            })
+            .catch(this._handleError);
+  }
+
   getNetworkVolume(period, interval, symbol, callback) {
     if (typeof symbol === 'function') {
       callback = symbol;

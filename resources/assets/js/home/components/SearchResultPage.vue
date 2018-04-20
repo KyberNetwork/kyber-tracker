@@ -8,6 +8,7 @@
       :getSearchResultTitle="getSearchResultTitle"
       :searchFromDate="searchFromDate"
       :searchToDate="searchToDate"
+      :isShowExport="true"
     >
     </trade-list>
   </div>
@@ -145,7 +146,7 @@ export default {
               this.resultCount = 0;
             }
           });
-    }
+    },
   },
 
   computed: {
