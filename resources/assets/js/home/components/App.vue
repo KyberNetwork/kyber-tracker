@@ -152,6 +152,9 @@
             </form>
           </b-navbar-nav> -->
         </div>
+        <a href="https://kyber.network/" class="go-exchange">
+          <button type="button" class="btn btn-default btn-export">Go to Exchange</button>
+        </a>
       </b-navbar>
 
       <div class="container">

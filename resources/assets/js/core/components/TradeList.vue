@@ -129,7 +129,7 @@
         >
       </paginate>
       
-      <button v-if="isShowExport" type="button" class="btn btn-default btn-export" @click="csvExport()">Export CSV</button>
+      <button v-if="isShowExport" type="button" class="btn btn-default btn-export" @click="csvExport()">Export (CSV)</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
