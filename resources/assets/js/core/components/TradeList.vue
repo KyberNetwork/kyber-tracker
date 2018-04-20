@@ -235,11 +235,6 @@ import _ from 'lodash';
 import io from 'socket.io-client';
 import moment,{ locale } from 'moment';
 import BigNumber from 'bignumber.js';
-BigNumber.config({
-    FORMAT: {
-        groupSeparator: ' ',
-    }
-})
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
 import network from '../../../../../config/network';
