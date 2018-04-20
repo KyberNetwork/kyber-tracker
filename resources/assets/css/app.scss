@@ -1187,6 +1187,14 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+@media (max-width: 320px){
+  .datepicker-container {
+    .vdp-datepicker {
+      display: block;
+    }
+  }
+}
+
 @media (max-width: 576px){
   .datepicker-container {
     span {
@@ -1196,8 +1204,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
 
     .vdp-datepicker {
-      display: block;
-      float: right;
+      // display: block;
+      // float: right;
       position: static;
       margin: 0;
     }
