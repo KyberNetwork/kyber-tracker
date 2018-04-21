@@ -156,6 +156,7 @@ module.exports = AppController.extends({
 
   search: function (req, res) {
     const [err, params] = new Checkit({
+      exportData: ['string'],
       q: ['required', 'string'],
       page: ['natural'],
       limit: ['naturalNonZero'],

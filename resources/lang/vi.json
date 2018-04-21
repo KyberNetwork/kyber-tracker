@@ -30,13 +30,15 @@
   "navigator": {
     "home": "Trang chính",
     "trades": "Giao dịch",
-    "trade_history": "Lịch sử giao dịch",
+    "trade_history": "Lịch sử",
     "tokens": "Tokens",
     "top_token": "Top token",
     "trade_details": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
     "search": "Thông tin ví",
-    "network": "Network"
+    "network": "Network",
+    "volume": "Khối lượng",
+    "go_to_exchange": "Giao dịch ngay"
   },
 
   "filter": {
@@ -95,7 +97,8 @@
     "exchange": "Trao đổi",
     "msg_no_result": "Không tìm thấy giao dịch nào.",
     "exchange_from" : "Đổi từ",
-    "exchange_to" : "Đổi sang"
+    "exchange_to" : "Đổi sang",
+    "export_csv": "Xuất dữ liệu (CSV)"
   },
 
   "trade_detail": {
@@ -122,7 +125,9 @@
     "total_trading_volune": "Tổng khối lượng giao dịch",
     "value_in_eth": "Giá trị theo ETH",
     "value_in_usd": "Giá trị theo USD",
-    "notice": "Tỷ giá USD được tính tại thời điểm giao dịch"
+    "notice": "Tỷ giá USD được tính tại thời điểm giao dịch",
+    "wallet_detail": "Thông tin ví",
+    "history": "Lịch sử giao dịch"
   },
 
 

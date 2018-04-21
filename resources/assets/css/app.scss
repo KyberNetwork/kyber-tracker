@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,600i,700|Open+Sans:400,600,600i,700&subset=vietnamese');
 @import 'settings.scss';
 @import 'entypo.scss';
 
@@ -131,6 +131,24 @@ a {
   background-color: #1f3468;
   height: 60px;
   padding-left: 22px;
+
+  .go-exchange{
+    position: absolute;
+    right: 16px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    button{
+      font-size: 15px;
+      font-weight: 400;
+      font-family: $code-font-openSans;
+      color: #ffffff;
+      right: 16px;
+      border-radius: 4px;
+      background-color: #395497;
+    }
+  }
 
   a {
     color: #fff;
@@ -846,6 +864,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+@media (max-width: 430px){
+  .go-exchange{
+    display: none;
+  }
+}
 
 
 @media (max-width: 575px){
@@ -1002,6 +1025,26 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       opacity: 0.15;
     }
   }
+  .wallet-detail-title{
+    font-family: $code-font-openSans;
+    font-size: 24px;
+    font-weight: 600;
+    color: #3d464d;
+  }
+
+  .btn-export{
+    float: right;
+    margin-top: 10px;
+    border: solid 1px #56c7c4;
+    color: #00d3a7;
+    font-size: 14px;
+    line-height: 1.43;
+    float: left;
+    margin-left: 37px;
+    padding: 8px 16px;
+    background-color: white;
+    font-family: $code-font-openSans;
+  }
 }
 
 
@@ -1134,7 +1177,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .address-detail-container{
-  background-color: #f9fafc;
+  // background-color: #f9fafc;
+  box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);
   font-family: $code-font-openSans;
   color: #3d464d;
   letter-spacing: normal;

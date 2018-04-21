@@ -10,7 +10,7 @@
         <b v-html="getSearchResultTitle()" />
       </div> -->
 
-      <div v-if="searchResult" class="clear p-10">
+      <div v-if="searchResult" class="clear pb-10">
         <!-- <div v-html="getSearchResultMessage()" /> -->
 
 
@@ -18,10 +18,11 @@
           {{searchResult.error}}
         </div>
 
-        <div v-if="searchResult.isValid && searchResult.data">
-          
+        <div v-if="searchResult.isValid && searchResult.data">          
 
-
+          <div class="wallet-detail-title pb-16">
+            <span class="no-margin">{{$t('wallet_detail.wallet_detail')}} </span>
+          </div>
 
           <!-- address detail ################## -->
           <div class="address-detail-container">
@@ -82,11 +83,17 @@
               *{{$t('wallet_detail.notice')}}
             </div>
           </div>
+
+          <div class="wallet-detail-title pt-56 pb-16">
+            <span class="no-margin">{{$t('wallet_detail.history')}} </span>
+          </div>
+
+
         </div>
 
       </div>
 
-      <div v-if="!isHideDatepicker" class="datepicker-container">
+      <div v-if="!isHideDatepicker" class="datepicker-container pb-16">
         <!-- <span>{{ $t('filter.from') }}</span> -->
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
@@ -98,7 +105,7 @@
           >
         </datepicker>
         <!-- <span>{{ $t('filter.to') }}</span> -->
-        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon"
+        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon ml-2"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"
@@ -129,7 +136,7 @@
         >
       </paginate>
       
-      <!-- <button type="button" class="btn btn-default" @click="csvExport()">Export CSV</button> -->
+      <button v-if="isShowExport" type="button" class="btn btn-default btn-export" @click="csvExport()">{{ $t("trade_list.export_csv") }}</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
@@ -239,6 +246,8 @@ import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
 import network from '../../../../../config/network';
 
+const tokens = network.tokens;
+
 export default {
   props: {
     getFilterTokenSymbol: {
@@ -251,6 +260,9 @@ export default {
       type: Number,
     },
     isHidePartnerCommission: {
+      type: Boolean
+    },
+    isShowExport: {
       type: Boolean
     },
     searchResult: {
@@ -311,17 +323,44 @@ export default {
     };
   },
   methods: {
-    // csvExport: function (users) {
-    //   console.log("================ export")
-    //   var csvContent = "data:text/csv;charset=utf-8,";
-    //   csvContent += this.rows.map(function(d){
-    //     console.log(d);
-    //     return JSON.stringify(d);
-    //   })
-    //   .join('\n') 
-    //   .replace(/(^\{)|(\}$)/mg, '');
-    //   window.open( encodeURI(csvContent) );
-    // },
+    csvExport: function (users) {
+      const q = this.$route.query.q;
+      const fromDate = this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined
+      const toDate = this.searchToDate ? moment(this.searchToDate).endOf('day').unix() : undefined
+
+      AppRequest
+          .searchAllToExport(q, fromDate, toDate, (err, res) => {
+            const data = res.data;
+            var csvHeader = "data:text/csv;charset=utf-8,";
+            var csvContent = ""
+            csvContent += data.map(function(d){
+              let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
+              let fromToken = d.takerTokenSymbol
+              let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)) : new BigNumber(0)
+
+              let toToken = d.makerTokenSymbol
+              let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)) : new BigNumber(0)
+
+              let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
+
+              return `${time},${fromToken},${fromAmount.toString()},${toToken},${toAmount.toString()},${rate.toString()}`
+            })
+            .join('\n') 
+            .replace(/(^\{)|(\}$)/mg, '');
+            let csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,Rate\n' + csvContent
+
+            // window.open( encodeURI(csvData) );
+            let dataCSV = encodeURI(csvData);
+
+            let link = document.createElement('a');
+            link.setAttribute('href', dataCSV);
+            link.setAttribute('download', new Date().toUTCString() + " " + q);
+            link.click();
+          });
+
+
+      
+    },
     getTxEtherscanLink(tx) {
       return network.endpoints.ethScan + "tx/" + tx;
     },
