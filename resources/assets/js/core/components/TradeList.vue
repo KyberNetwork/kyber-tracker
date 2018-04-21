@@ -10,7 +10,7 @@
         <b v-html="getSearchResultTitle()" />
       </div> -->
 
-      <div v-if="searchResult" class="clear p-10">
+      <div v-if="searchResult" class="clear pb-10">
         <!-- <div v-html="getSearchResultMessage()" /> -->
 
 
@@ -18,10 +18,11 @@
           {{searchResult.error}}
         </div>
 
-        <div v-if="searchResult.isValid && searchResult.data">
-          
+        <div v-if="searchResult.isValid && searchResult.data">          
 
-
+          <div class="wallet-detail-title pb-16">
+            <span class="no-margin">{{$t('wallet_detail.wallet_detail')}} </span>
+          </div>
 
           <!-- address detail ################## -->
           <div class="address-detail-container">
@@ -82,11 +83,17 @@
               *{{$t('wallet_detail.notice')}}
             </div>
           </div>
+
+          <div class="wallet-detail-title pt-56 pb-16">
+            <span class="no-margin">{{$t('wallet_detail.history')}} </span>
+          </div>
+
+
         </div>
 
       </div>
 
-      <div v-if="!isHideDatepicker" class="datepicker-container">
+      <div v-if="!isHideDatepicker" class="datepicker-container pb-16">
         <!-- <span>{{ $t('filter.from') }}</span> -->
         <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
           :language="locale"
@@ -98,7 +105,7 @@
           >
         </datepicker>
         <!-- <span>{{ $t('filter.to') }}</span> -->
-        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon"
+        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon ml-2"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"

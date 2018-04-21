@@ -117,7 +117,9 @@
     "total_trading_volune": "交易总量",
     "value_in_eth": "价值（ETH)",
     "value_in_usd": "价值（USD)",
-    "notice": "USD 汇率在交易时间点计算"
+    "notice": "USD 汇率在交易时间点计算",
+    "wallet_detail": "钱包详情",
+    "history": "交易历史"
   },
   "token_list": {
     "title": "交易代币名单",

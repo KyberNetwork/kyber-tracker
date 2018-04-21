@@ -141,7 +141,7 @@ a {
     letter-spacing: normal;
     button{
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 400;
       font-family: $code-font-openSans;
       color: #ffffff;
       right: 16px;
@@ -1025,6 +1025,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       opacity: 0.15;
     }
   }
+  .wallet-detail-title{
+    font-family: $code-font-openSans;
+    font-size: 24px;
+    font-weight: 600;
+    color: #3d464d;
+  }
+
   .btn-export{
     float: right;
     margin-top: 10px;
@@ -1170,7 +1177,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .address-detail-container{
-  background-color: #f9fafc;
+  // background-color: #f9fafc;
+  box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);
   font-family: $code-font-openSans;
   color: #3d464d;
   letter-spacing: normal;

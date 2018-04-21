@@ -127,7 +127,9 @@
     "total_trading_volune": "Total Trading Volume",
     "value_in_eth": "Value in ETH",
     "value_in_usd": "Value in USD",
-    "notice": "USD Rates are calculated at trading time"
+    "notice": "USD Rates are calculated at trading time",
+    "wallet_detail": "Wallet Details",
+    "history": "History"
   },
 
   "token_list": {
