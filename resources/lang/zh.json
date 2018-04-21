@@ -91,7 +91,8 @@
     "exchange": "交易",
     "msg_no_result": "没有找到任何交易.",
     "exchange_from": "从",
-    "exchange_to": "换至"
+    "exchange_to": "换至",
+    "export_csv": "导出(CSV文件)"
   },
   "trade_detail": {
     "transaction_hash": "交易哈希",

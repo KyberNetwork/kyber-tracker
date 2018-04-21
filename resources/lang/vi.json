@@ -97,7 +97,8 @@
     "exchange": "Trao đổi",
     "msg_no_result": "Không tìm thấy giao dịch nào.",
     "exchange_from" : "Đổi từ",
-    "exchange_to" : "Đổi sang"
+    "exchange_to" : "Đổi sang",
+    "export_csv": "Xuất dữ liệu (CSV)"
   },
 
   "trade_detail": {

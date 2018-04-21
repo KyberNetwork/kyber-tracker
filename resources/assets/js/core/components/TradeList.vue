@@ -129,7 +129,7 @@
         >
       </paginate>
       
-      <button v-if="isShowExport" type="button" class="btn btn-default btn-export" @click="csvExport()">Export (CSV)</button>
+      <button v-if="isShowExport" type="button" class="btn btn-default btn-export" @click="csvExport()">{{ $t("trade_list.export_csv") }}</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
@@ -327,7 +327,7 @@ export default {
             var csvHeader = "data:text/csv;charset=utf-8,";
             var csvContent = ""
             csvContent += data.map(function(d){
-              let time = new Date(d.blockTimestamp).toUTCString().replace(",",'')
+              let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
               let fromToken = d.takerTokenSymbol
               let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)) : new BigNumber(0)
 
@@ -345,7 +345,6 @@ export default {
             // window.open( encodeURI(csvData) );
             let dataCSV = encodeURI(csvData);
 
-            console.log(csvData)
             let link = document.createElement('a');
             link.setAttribute('href', dataCSV);
             link.setAttribute('download', new Date().toUTCString() + " " + q);

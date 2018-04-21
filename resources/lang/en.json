@@ -99,7 +99,8 @@
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",
     "exchange_from" : "From",
-    "exchange_to" : "To"
+    "exchange_to" : "To",
+    "export_csv": "Export (CSV)"
   },
 
   "trade_detail": {
