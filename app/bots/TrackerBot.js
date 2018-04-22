@@ -4,44 +4,128 @@ const Bot = require('node-telegram-bot-api');
 
 const commands = {
     start: {
-        regex: /\b\/?start(?:@\w+)?\b/i
+        match: /\b\/?start(?:@\w+)?\b/i,
+        reply: `Please type a command.
+        
+Example:
+/last to view summary for last 24h
+You could also type 'last 7d' or 'last 10h'.
+It supports 'd' and 'h'.
+
+/today to view summary for today (UTC time)
+/yesterday to view summary for yesterday (UTC time)
+/burn to see how much KNC burned to date`,
+        replyOptions: {
+            no_reply: true
+        }
     },
     help: {
-        regex: /\b\/?help(?:@\w+)?\b/i
+        match: /\b\/?help(?:@\w+)?\b/i,
+        reply: `/last to view summary for last 24h
+You could also type 'last 7d' or 'last 10h'.
+It supports 'd' and 'h'.
+
+/today to view summary for today (UTC time)
+/yesterday to view summary for yesterday (UTC time)
+/burn to see how much KNC burned to date`
     },
     last: {
-        regex: /\b\/?last(?:@\w+)?(?:\s+(\w+))?\b/i,
-        needDb: true
+        match: /\b\/?last(?:@\w+)?(?:\s+(\w+))?\b/i,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const resp = (match[1] || "24H").trim().toUpperCase();
+            const seconds = parseSeconds(resp);
+            if (seconds < 0) {
+                reply(bot, msg, "Invalid syntax. Try _last 1d_, _last 12h_, or just /last.", {no_mention: true});
+                bot._context.finish();
+                return;
+            }
+    
+            const nowSeconds = Utils.nowInSeconds();
+            const sinceSeconds = nowSeconds - seconds;
+    
+            sendVolume(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
     },
     today: {
-        regex: /\b\/?today(?:@\w+)?\b/i,
-        needDb: true
+        match: /\b\/?today(?:@\w+)?\b/i,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            send1dVolume(bot, msg, todayStartInSeconds(), "TODAY (UTC)");
+        },
     },
     yesterday: {
-        regex: /\b\/?yesterday(?:@\w+)?\b/i,
-        needDb: true
+        match: /\b\/?yesterday(?:@\w+)?\b/i,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const from = todayStartInSeconds() - 24 * 60 * 60;
+            send1dVolume(bot, msg, from, "YESTERDAY (UTC)");
+        }
     },
     burn: {
-        regex: /\b\/?burn(?:@\w+)?\b/i,
-        needDb: true
+        match: /\b\/?burn(?:@\w+)?\b/i,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            bot._context.getService().getTotalBurnedFees((err, ret) => {
+                if (!!err) {
+                    reply(bot, msg, "An unknown error occurs. Please try again later.");
+                    bot._context.finish();
+                    logger.error(err);
+                } else {
+                    let text = `*${format(ret.burned)} KNC* has been burnt to date.`;
+                    reply(bot, msg, text, {parse_mode: "Markdown"});
+                }
+                bot._context.finish();
+            });
+        }
     },
     whenmoon: {
-        regex: /\b\/?(?:when)?\s?moon(?:@\w+)?\b/i
+        match: /\b\/?(?:when)?\s?moon(?:@\w+)?\b/i,
+        reply: "You can check the moon phases on https://www.timeanddate.com/moon/phases/"
     },
     whitepaper: {
-        regex: /\b\/?(?:white)?\s?paper(?:@\w+)?\b/i
+        match: /\b\/?(?:white)?\s?paper(?:@\w+)?\b/i,
+        reply: `Kyber Network White Paper is available in several languages.
+[English](https://home.kyber.network/assets/KyberNetworkWhitepaper.pdf)
+[한국어](https://home.kyber.network/assets/KyberNetworkWhitepaper-kr.pdf)
+[中文](https://home.kyber.network/assets/KyberNetworkWhitepaper-cn.pdf)
+Vietnamese version will be available soon.`,
+        replyOptions: {
+            parse_mode: "Markdown",
+            no_preview: true
+        }
     },
     roadmap: {
-        regex: /\b\/?(?:road)\s?map(?:@\w+)?\b/i
+        match: /\b\/?(?:road)\s?map(?:@\w+)?\b/i,
+        reply: "You can see the roadmap on Kyber Network home page https://home.kyber.network/#roadmap"
     },
     lambo: {
-        regex: /\b\/?(?:when)?\s?lambo(?:@\w+)?\b/i
+        match: /\b\/?(?:when)?\s?lambo(?:@\w+)?\b/i,
+        reply: "Check it out here https://when-lambo.com/"
     },
     lang: {
-        regex: /\b\/?lang(?:@\w+)?\b/i
+        match: /\b\/?lang(?:@\w+)?\b/i,
+        reply: `Kyber Network Official Telegram Groups.
+English @KyberNetwork
+한국어 @KyberKorea
+中文 @KyberChinese
+Tiếng Việt @KyberVietnamese`
     },
     trade: {
-        regex: /\b\/?trade(?:@\w+)?\b/i
+        match: /\b\/?trade(?:@\w+)?\b/i,
+        reply: "Our exchange is live, you can trade now https://kyber.network/"
+    },
+    kyber: {
+        match: /\b\/?kyber(?:@\w+)?\b/i,
+        reply: "http://starwars.wikia.com/wiki/Kyber_crystal"
+    },
+    tracker: {
+        match: /\b\/?track(?:er)?(?:@\w+)?\b/i,
+        reply: "https://tracker.kyber.network",
+    },
+    token: {
+        match: /\b\/?tokens?(?:@\w+)?\b/i,
+        reply: "List of supported tokens https://tracker.kyber.network#/tokens",
     }
 }
 
@@ -53,7 +137,7 @@ function keepReq(body) {
 
     for (let key in commands) {
         const value = commands[key];
-        if (value.needDb && !!text.match(value.regex)) {
+        if (value.needDb && !!text.match(value.match)) {
             return true;
         }
     }
@@ -82,15 +166,16 @@ function mention(user) {
     }
 }
 
-function reply(bot, msg, markdown, autoMention = true, nopreview = false) {
-    if (autoMention && msg.reply_to_message && msg.reply_to_message.from &&
+function reply(bot, msg, text, options) {
+    options = options || {};
+    if (!options.no_mention && msg.reply_to_message && msg.reply_to_message.from &&
         msg.reply_to_message.from.id != msg.from.id && !msg.reply_to_message.from.is_bot) {
-        markdown = mention(msg.reply_to_message.from) + "\n" + markdown;
+            text = mention(msg.reply_to_message.from) + "\n" + text;
     }
-    bot.sendMessage(msg.chat.id, markdown, {
-        reply_to_message_id: msg.message_id,
-        parse_mode: "Markdown",
-        disable_web_page_preview: !!nopreview
+    bot.sendMessage(msg.chat.id, text, {
+        reply_to_message_id: !options.no_reply ? msg.message_id : undefined,
+        parse_mode: !!options.parse_mode ? options.parse_mode : undefined,
+        disable_web_page_preview: !!options.no_preview
     });
 }
 
@@ -104,12 +189,13 @@ function average(volume, count) {
     return round2(volume / count);
 }
 
-function sendData(bot, msg, from, to, prefix, tellUtcTime) {
-    const TradeService = bot._tracker.getService();
-    const internal = !!bot._tracker.internal;
+function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
+    const TradeService = bot._context.getService();
+    const internal = !!bot._context.internal;
     TradeService.getStats(from, to, internal, (err, ret) => {
         if (!!err) {
             reply(bot, msg, "An unknown error occurs. Please try again later.");
+            bot._context.finish();
             logger.error(err);
         } else {
             let text = `*${prefix}* VOLUME`;
@@ -117,7 +203,7 @@ function sendData(bot, msg, from, to, prefix, tellUtcTime) {
             if (internal) {
                 text += `\nVolume: *${format(ret.volumeEth)} ETH* ($${format(ret.volumeUsd)})`;
             } else {
-                text += `\nVolume: *$${format(ret.volumeUsd)}* ($${format(ret.volumeEth)} ETH)`;
+                text += `\nVolume: *$${format(ret.volumeUsd)}* (${format(ret.volumeEth)} ETH)`;
             }
             text += `\nNumber of Tx: *${format(ret.tradeCount)}*`;
             if (internal) {
@@ -139,150 +225,67 @@ function sendData(bot, msg, from, to, prefix, tellUtcTime) {
                 text += `\n\nCurrent time in UTC: *${new Date().toUTCString()}*`;
             }
 
-            reply(bot, msg, text);
+            reply(bot, msg, text, {parse_mode: "Markdown"});
         }
-        bot._tracker.finish();
+        bot._context.finish();
     });
 }
 
+function send1dVolume(bot, msg, from, prefix){
+    const to = from + 24 * 60 * 60;
+    sendVolume(bot, msg, from, to, prefix, true)
+}
+
+function parseSeconds(resp) {
+    resp = (resp || "24H").trim().toUpperCase();
+
+    const parts = resp.match(/^(\d+)(H|D)$/);
+    if (!parts || parts.length != 3) {
+        return -1;
+    }
+
+    const duration = parseInt(parts[1]);
+    const type = parts[2];
+    let seconds = duration * 60 * 60;
+    if (type === "D") {
+        seconds *= 24;
+    }
+
+    return seconds;
+}
+
+function todayStartInSeconds(){
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    return Math.floor(today.getTime() / 1000);
+}
+
 function setupBot(bot) {
-
-    bot.onText(commands.start.regex, (msg, match) => {
-        let text = "Please type a command.\n\n";
-        text += "Example:\n";
-        text += "/last to view summary for last 24h\n";
-        text += "You could also type 'last 7d' or 'last 10h'. ";
-        text += "It supports 'd' and 'h'.\n\n";
-        text += "/today to view summary for today (UTC time)\n";
-        text += "/yesterday to view summary for yesterday (UTC time)";
-        text += "/burn to see how much KNC burned to date";
-
-        reply(bot, msg, text);
-    });
-
-    bot.onText(commands.help.regex, (msg, match) => {
-        let text = "/last to view summary for last 24h\n";
-        text += "You could also type 'last 7d' or 'last 10h'. ";
-        text += "It supports 'd' and 'h'.\n\n";
-        text += "/today to view summary for today (UTC time)\n";
-        text += "/yesterday to view summary for yesterday (UTC time)";
-        text += "/burn to see how much KNC burned to date";
-
-        reply(bot, msg, text);
-    });
-
-    bot.onText(commands.whenmoon.regex, (msg, match) => {
-        let text = "You could check the moon phases on https://www.timeanddate.com/moon/phases/";
-        reply(bot, msg, text);
-    });
-
-    bot.onText(commands.lambo.regex, (msg, match) => {
-        let text = "Check it out here https://when-lambo.com/";
-        reply(bot, msg, text);
-    });
-
-    bot.onText(commands.trade.regex, (msg, match) => {
-        let text = "Our exchange is live, you can trade now https://kyber.network/";
-        reply(bot, msg, text);
-    });
-
-    bot.onText(commands.lang.regex, (msg, match) => {
-        let text = "Kyber Network Official Telegram Groups.";
-        text += "\nEnglish @Kybernetwork";
-        text += "\nKorean @KyberKorea";
-        text += "\nChinese @KyberChinese";
-        text += "\nVietnamese @KyberVietnamese"
-        reply(bot, msg, text, true, true);
-    });
-
-    bot.onText(commands.whitepaper.regex, (msg, match) => {
-        let text = "Kyber Network White Paper is available in several languages.\n";
-        text += "[English](https://home.kyber.network/assets/KyberNetworkWhitepaper.pdf)";
-        text += "\n[한국어](https://home.kyber.network/assets/KyberNetworkWhitepaper-kr.pdf)";
-        text += "\n[中文](https://home.kyber.network/assets/KyberNetworkWhitepaper-cn.pdf)";
-        text += "\nVietnamese version will be available soon."
-        reply(bot, msg, text, true, true);
-    });
-
-    bot.onText(commands.roadmap.regex, (msg, match) => {
-        let text = "You could see the roadmap on Kyber Network home page https://home.kyber.network/";
-        reply(bot, msg, text);
-    });
-
-    // Matches "/last[whatever] or last[whatever]"
-    bot.onText(commands.last.regex, (msg, match) => {
-        const resp = (match[1] || "24h").trim().toUpperCase();
-
-        const parts = resp.match(/^(\d+)(H|D)$/);
-        if (!parts || parts.length != 3) {
-            reply(bot, msg, "Invalid syntax. Try _last 1d_, _last 12h_, or just /last.", false);
-            bot._tracker.finish();
-            return;
+    for (const key in commands) {
+        const value = commands[key];
+        let text = value.reply;
+        if (text) {
+            bot.onText(value.match, (msg, match) => {
+                if (text.call) {
+                    text.call(value, bot, msg, match);
+                } else {
+                    reply(bot, msg, text, value.replyOptions);
+                }
+            });
         }
-
-        const duration = parseInt(parts[1]);
-        const type = parts[2];
-        let seconds = duration * 60 * 60;
-        if (type === "D") {
-            seconds *= 24;
-        }
-
-        const nowSeconds = Utils.nowInSeconds();
-        const sinceSeconds = nowSeconds - seconds;
-
-        sendData(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
-    });
-
-    // Matches "/today or today"
-    bot.onText(commands.today.regex, (msg, match) => {
-
-        const nowSeconds = Utils.nowInSeconds() + 100;
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
-        const todaySeconds = Math.floor(today.getTime() / 1000);
-        
-        sendData(bot, msg, todaySeconds, nowSeconds, "TODAY (UTC)", true);
-    });
-
-    // Matches "/yesterday or yesterday"
-    bot.onText(commands.yesterday.regex, (msg, match) => {
-
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
-        const todaySeconds = Math.floor(today.getTime() / 1000);
-
-        const yestSeconds = todaySeconds - 24 * 60 * 60;
-        
-        sendData(bot, msg, yestSeconds, todaySeconds, "YESTERDAY (UTC)", true);
-    });
-
-    // Matches "/burn or burn"
-    bot.onText(commands.burn.regex, (msg, match) => {
-        const TradeService = bot._tracker.getService();
-        TradeService.getTotalBurnedFees((err, ret) => {
-            if (!!err) {
-                reply(bot, msg, "An unknown error occurs. Please try again later.");
-                logger.error(err);
-            } else {
-                let text = `*${format(ret.burned)} KNC* has been burnt to date.`;
-
-                reply(bot, msg, text);
-            }
-            bot._tracker.finish();
-        });
-    });
+    }
 };
 
 module.exports = {
-    processRequest: (body, options) => {
+    processRequest: (body, context) => {
         // new bot per req, to avoid concerns about simultanous requests
-        const bot = new Bot(options.botToken || process.env.TRACKER_BOT_TOKEN);
-        bot._tracker = options;
+        const bot = new Bot(context.botToken || process.env.TRACKER_BOT_TOKEN);
+        bot._context = context;
         setupBot(bot);
         bot.processUpdate(body);
 
         if (!keepReq(body)) {
-            options.finish();
+            context.finish();
         }
     }
 };
