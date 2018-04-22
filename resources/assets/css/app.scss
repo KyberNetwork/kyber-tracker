@@ -114,6 +114,11 @@ a {
   padding: 10px 0;
   border-top: 1px solid #243c47;
   align-items: flex-start !important;
+
+  -webkit-transition: height 2s ease;
+  -moz-transition: height 2s ease;
+  transition: height 2s ease;
+
 }
 
 .panel-title{
@@ -707,11 +712,18 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 .heading-summary {
   list-style: none;
   margin: 0;
-  padding: 10px 17px;
+  padding: 10px 17px 0 17px;
   // width: 100%;
   // overflow: hidden;
   line-height: 20px;
   height: 56px;
+  // -webkit-transition: height .5s ease;
+  //   -moz-transition: height .5s ease;
+  //   transition: height .5s ease;
+
+  &.header-expand{
+    height: auto !important;
+  }
 
   li {
     float: left;
@@ -719,11 +731,12 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     margin-right: 15px;
     color: #fff;
     min-width: 105px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
   }
   .show-more{
     position: absolute;
-    right: 15px;
+    right: 25px;
+    top: 4px;
   }
 }
 
@@ -755,70 +768,70 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       display: none;
     }
   }
-
 }
+
 @media (max-width: 1113px){
   .navbar{
-    #total-burn-fee{
-      display: none;
-    }
+    // #total-burn-fee{
+    //   display: none;
+    // }
 
     .show-more{
       display: block;
     }
-    .heading-summary:hover{
-      height: 110px;
-      #total-burn-fee{
-        // padding-top: 5px;
-        display: block;
-      }
+    // .heading-summary:hover{
+    //   height: 110px;
+    //   #total-burn-fee{
+    //     // padding-top: 5px;
+    //     display: block;
+    //   }
 
-      .show-more{
-        display: none;
-      }
-    }
+    //   .show-more{
+    //     display: none;
+    //   }
+    // }
   }
 }
 
 @media (max-width: 993px){
   .navbar{
-    #fee-to-burn{
-      display: none;
-    }
+    // #fee-to-burn{
+    //   display: none;
+    // }
 
-    .heading-summary:hover{
-      #fee-to-burn{
-        // padding-top: 5px;
-        display: block;
-      }
-    }
+    // .heading-summary:hover{
+    //   #fee-to-burn{
+    //     // padding-top: 5px;
+    //     display: block;
+    //   }
+    // }
   }
 }
 
 @media (max-width: 500px){
   .navbar{
-    #eth-price{
-      display: none;
-    }
-    .heading-summary:hover{
-      #eth-price{
-        // padding-top: 5px;
-        display: block;
-      }
-    }
+    // #eth-price{
+    //   display: none;
+    // }
+    // .heading-summary:hover{
+    //   #eth-price{
+    //     // padding-top: 5px;
+    //     display: block;
+    //   }
+    // }
   }
 }
 @media (max-width: 360px){
   .navbar{
-    #knc-price{
-      display: none;
-    }
-    .heading-summary:hover{
-      #knc-price{
-        // padding-top: 5px;
-        display: block;
-      }
-    }
+    // #knc-price{
+    //   display: none;
+    // }
+    // .heading-summary:hover{
+    //   #knc-price{
+    //     // padding-top: 5px;
+    //     display: block;
+    //   }
+    // }
   }
 }
 
@@ -857,11 +870,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 
 @media (max-width: 493px){
-  .navbar{
-    .heading-summary:hover{
-      height: 150px;
-    }
-  }
+  // .navbar{
+  //   .heading-summary:hover{
+  //     height: 150px;
+  //   }
+  // }
 }
 
 @media (max-width: 430px){

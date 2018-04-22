@@ -2,8 +2,8 @@
   <div id="wrapper">
     <div id="page-content">
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12">
-        <div class="no-padding d-flex justify-content-between col-12 col-sm-12">
-          <ul ref="headingSum" class="heading-summary p-relative">
+        <div class="no-padding d-flex justify-content-between col-12 col-sm-12" v-click-outside="onClickOutside">
+          <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
             <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
@@ -36,6 +36,7 @@
 
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
             <img class="show-more" src="/images/drop-down.svg"/>
+            
 
             <!-- <li>
               <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
@@ -47,7 +48,7 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3" v-click-outside="onClickOutside">
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3" >
             <vue-autosuggest
               class="ajsbd"
               ref="seatchInputRef"
@@ -407,6 +408,11 @@ export default {
         this.searchString = "";
         this.$refs.seatchInputRef.searchInput = "";
       });
+    },
+
+    clickHeading(){
+      console.log("++++++++++ click header")
+      this.$refs.headingSum.className = "heading-summary p-relative header-expand"
     },
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
