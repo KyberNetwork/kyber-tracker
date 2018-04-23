@@ -178,9 +178,9 @@
             <div class="d-inline-block">
               <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
-                <li><a href="https://kybernetwork.zendesk.com/hc/en-us" target="_blank"><img class="footer-icon" src="/images/zendesk.svg" /></a></li>
+                <li><a href="https://t.me/KyberTrackerBot" target="_blank"><img class="footer-icon" src="/images/telegram.svg" /></a></li>
                 <li><a href="https://twitter.com/KyberNetwork" target="_blank"><img class="footer-icon" src="/images/twitter.svg" /></a></li>
-                <li><a href="https://github.com/kyberNetwork/" target="_blank"><img class="footer-icon" src="/images/github.svg" /></a></li>
+                <li><a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank"><img class="footer-icon" src="/images/github.svg" /></a></li>
                 <li>
                   <b-dropdown class="change-language-button" no-caret right>
                     <template slot="button-content">

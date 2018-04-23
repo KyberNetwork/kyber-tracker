@@ -125,7 +125,10 @@ Tiếng Việt @KyberVietnamese`
     },
     kyber: {
         match: /\b\/?kyber(?:@\w+)?\b/i,
-        reply: "http://starwars.wikia.com/wiki/Kyber_crystal"
+        reply: "[http://starwars.wikia.com/wiki/Kyber_crystal](http://starwars.wikia.com/wiki/Kyber_crystal)",
+        replyOptions: {
+            parse_mode: "Markdown"
+        }
     },
     reddit: {
         match: /\b\/?reddit(?:@\w+)?\b/i,
@@ -144,7 +147,7 @@ Tiếng Việt @KyberVietnamese`
         reply: "https://www.facebook.com/kybernetwork/"
     },
     blog: {
-        match: /\b\/?(?:blog)?(?:medium)?(?:@\w+)?\b/i,
+        match: /\b\/?blog(?:@\w+)?\b/i,
         reply: "https://blog.kyber.network/"
     },
     tracker: {
@@ -206,6 +209,7 @@ function reply(bot, msg, text, options) {
     if (!options.no_mention && msg.reply_to_message && msg.reply_to_message.from &&
         msg.reply_to_message.from.id != msg.from.id && !msg.reply_to_message.from.is_bot) {
             text = mention(msg.reply_to_message.from) + "\n" + text;
+            options.parse_mode = "Markdown";
     }
     bot.sendMessage(msg.chat.id, text, {
         reply_to_message_id: !options.no_reply ? msg.message_id : undefined,
