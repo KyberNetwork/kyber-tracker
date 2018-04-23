@@ -27,7 +27,7 @@
 
             <li id="fee-to-burn">
               <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
-              <span class="topbar-value">{{ collectedFee }}</span>
+              <span class="topbar-value">{{ collectedFees }}</span>
               <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/>
             </li>
                 
@@ -182,9 +182,9 @@
             <div class="d-inline-block">
               <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
-                <li><a href="https://kybernetwork.zendesk.com/hc/en-us" target="_blank"><img class="footer-icon" src="/images/zendesk.svg" /></a></li>
+                <li><a href="https://t.me/KyberTrackerBot" target="_blank"><img class="footer-icon" src="/images/telegram.svg" /></a></li>
                 <li><a href="https://twitter.com/KyberNetwork" target="_blank"><img class="footer-icon" src="/images/twitter.svg" /></a></li>
-                <li><a href="https://github.com/kyberNetwork/" target="_blank"><img class="footer-icon" src="/images/github.svg" /></a></li>
+                <li><a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank"><img class="footer-icon" src="/images/github.svg" /></a></li>
                 <li>
                   <b-dropdown class="change-language-button" no-caret right>
                     <template slot="button-content">
@@ -232,9 +232,6 @@ export default {
       searchString: "",
       pageTitle: "",
       collectedFees: "",
-      feeToBurn: "",
-      collectedFee: "",
-      breadcrumbsItems: [],
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
@@ -302,9 +299,6 @@ export default {
     },
     connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        // console.log(
-        //  "Cannot connect to metamask. Please make sure you have metamask installed"
-        //);
         return;
       }
       var web3Service = new Web3Service(web3);
@@ -312,21 +306,12 @@ export default {
       let browser = bowser.name;
       if (browser != "Chrome" && browser != "Firefox") {
         if (!web3Service.isTrust()) {
-          // console.log(
-          //  `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
-          //);
           return;
         }
       }
 
       try {
         let address = web3.eth.accounts[0]
-        // let suggestData = addresses.map(addr => {
-        //   return {
-        //     type: "metamask",
-        //     addr: addr
-        //   };
-        // });
         this.addressesMetamask = [{
           type: "metamask",
           addr: address
@@ -342,17 +327,6 @@ export default {
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
         this.totalBurnedFee = stats.totalBurnedFee + " KNC";
-        // stats.feeToBurn
-        //   ? Math.round(
-        //       +stats.totalBurnedFee.replace(",", "") /
-        //         +stats.feeToBurn.replace(",", "") *
-        //         1000
-        //     ) /
-        //       10 +
-        //     " %"
-        //   : 0;
-        this.feeToBurn = stats.feeToBurn + " KNC";
-        this.collectedFee = stats.collectedFees + " KNC"
         this.collectedFees = stats.collectedFees + " KNC";
       });
 
@@ -360,7 +334,7 @@ export default {
         .get("https://api.coinmarketcap.com/v1/ticker/kyber-network/")
         .then(res => {
           const data = res.body[0];
-          if (!data || !data.id) {
+          if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
             return;
           }
 
@@ -372,7 +346,7 @@ export default {
         .get("https://api.coinmarketcap.com/v1/ticker/ethereum/")
         .then(res => {
           const data = res.body[0];
-          if (!data || !data.id) {
+          if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
             return;
           }
 
@@ -446,7 +420,6 @@ export default {
     },
 
     renderSuggestion(suggestion) {
-      // return suggestion.item.type + " - " + suggestion.item.addr;
       let logoUrl ;
       switch (suggestion.item.type) {
         case "address":
@@ -492,116 +465,6 @@ export default {
 
     onfocus() {
       this.connectMetaMask();
-    },
-
-    loadBreadcumbs(route) {
-      const routeName = route.name;
-
-      switch (routeName) {
-        case "trade-list":
-          this.pageTitle = this.$t("page_title.trade_list");
-          this.breadcrumbsItems = [
-            {
-              text: this.$t("navigator.home"),
-              to: { name: "home" }
-            },
-            {
-              text: this.$t("navigator.trades"),
-              active: true
-            }
-          ];
-          return;
-        case "token-list":
-          this.pageTitle = this.$t("page_title.token_list");
-          this.breadcrumbsItems = [
-            {
-              text: this.$t("navigator.home"),
-              to: { name: "home" }
-            },
-            {
-              text: this.$t("navigator.tokens"),
-              active: true
-            }
-          ];
-          return;
-        case "trade-details":
-          this.pageTitle = this.$t("page_title.trade_detail");
-          this.breadcrumbsItems = [
-            {
-              text: this.$t("navigator.home"),
-              to: { name: "home" }
-            },
-            {
-              text: this.$t("navigator.trades"),
-              to: { name: "trade-list" }
-            },
-            {
-              text: this.$t("navigator.trade_details"),
-              active: true
-            }
-          ];
-          return;
-        case "token-details":
-          const tokenInfo = _.find(_.values(network.tokens), token => {
-            return token.address === route.params.tokenAddr;
-          });
-
-          this.pageTitle = this.$t("page_title.token_detail");
-          if (tokenInfo) {
-            const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
-            const path = tokenInfo.hidden ?  
-                ("https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true") :
-                ("images/tokens/" + icon);
-            this.pageTitle = `<img class="token-logo-detail" src="${
-              path
-            }" /> <span>${tokenInfo.name}</span> <span class='sub-title'>(${
-              tokenInfo.symbol
-            })</span>`;
-          }
-
-          this.breadcrumbsItems = [
-            {
-              text: this.$t("navigator.home"),
-              to: { name: "home" }
-            },
-            {
-              text: this.$t("navigator.tokens"),
-              to: { name: "token-list" }
-            },
-            {
-              text: this.$t("navigator.token_detail"),
-              active: true
-            }
-          ];
-          return;
-        case "search":
-          this.pageTitle = this.$t("page_title.search");
-          this.breadcrumbsItems = [
-            {
-              text: this.$t("navigator.home"),
-              to: { name: "home" }
-            },
-            {
-              text: this.$t("navigator.search"),
-              active: true
-            }
-          ];
-          return;
-        case "home":
-          this.pageTitle = "";
-          this.breadcrumbsItems = [];
-          return;
-        default:
-          this.pageTitle = "";
-          this.breadcrumbsItems = [];
-          return;
-      }
-    }
-  },
-
-  watch: {
-    $route(toVal, fromVal) {
-      this.loadBreadcumbs(toVal);
     }
   },
 
@@ -610,8 +473,6 @@ export default {
     // this.changeLanguage(localStorage.getItem('locale') || 'en')
     window.addEventListener('resize', _.debounce(this.handleResize, 100))
     this.refresh();
-    this.connectMetaMask();
-    this.loadBreadcumbs(this.$route);
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
   },
@@ -623,38 +484,6 @@ export default {
 
 <style lang="scss">
 @import "../../../css/app.scss";
-.breadcrumbs {
-  width: 100%;
-  background-color: #dcdcdc;
-  .container-fluid {
-    padding: 0 30px;
-    -webkit-box-pack: justify !important;
-    -ms-flex-pack: justify !important;
-    display: -webkit-box !important;
-    display: -moz-box !important;
-    display: -ms-flexbox !important;
-    display: -webkit-flex !important;
-    display: flex !important;
-    -webkit-justify-content: space-between !important;
-    justify-content: space-between !important;
-    .breadcrumb {
-      float: right;
-      background: none;
-      margin: 0;
-    }
-    .title {
-      float: left;
-      justify-content: center;
-      align-self: center;
-      font-size: 16px;
-
-      .sub-title {
-        margin-left: 10px;
-        color: #868e96;
-      }
-    }
-  }
-}
 .navbar .router-link-exact-active {
   color: #2ed573 !important;
 }
