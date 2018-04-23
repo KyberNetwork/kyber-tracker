@@ -732,11 +732,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     color: #fff;
     min-width: 105px;
     padding-bottom: 15px;
+
+    position: relative;
   }
   .show-more{
     position: absolute;
-    right: 25px;
-    top: 4px;
+    right: -18px;
+    top: -6px;
   }
 }
 
@@ -764,9 +766,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 @media (min-width: 1030px){
   .navbar{
-    .show-more{
-      display: none;
-    }
+    // .show-more{
+    //   display: none;
+    // }
   }
 }
 
@@ -776,9 +778,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     //   display: none;
     // }
 
-    .show-more{
-      display: block;
-    }
+    // .show-more{
+    //   display: block;
+    // }
     // .heading-summary:hover{
     //   height: 110px;
     //   #total-burn-fee{

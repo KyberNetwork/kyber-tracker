@@ -7,6 +7,7 @@
             <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
+              <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/>
             </li>
             <li id="knc-price">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
@@ -14,18 +15,20 @@
                 {{ kncPrice }} 
                 </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+              <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/>
             </li>
 
             <li id="eth-price">
               <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
               <span class="topbar-value" >{{ ethPrice }} </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/>
             </li>
 
             <li id="fee-to-burn">
               <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
               <span class="topbar-value">{{ collectedFee }}</span>
-              
+              <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/>
             </li>
                 
 
@@ -35,7 +38,7 @@
             </li> 
 
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
-            <img class="show-more" src="/images/drop-down.svg"/>
+            <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
             
 
             <!-- <li>
@@ -213,6 +216,7 @@ import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
 import ClickOutside from 'vue-click-outside'
+import _ from'lodash'
 
 export default {
   data() {
@@ -233,8 +237,17 @@ export default {
       breadcrumbsItems: [],
       searchData: [],
       addressesMetamask: [],
-      isOpenFee: false
+      isOpenFee: false,
+      indexShowmore: -1
+
     };
+  },
+
+  // ready: function () {
+  //   window.addEventListener('resize', this.handleResize)
+  // },
+  beforeDestroy: function () {
+    window.removeEventListener('resize', this.handleResize)
   },
 
   computed: {
@@ -260,6 +273,12 @@ export default {
       window.i18n.locale = locale;
       moment.locale(locale);
       window.location.reload();
+    },
+    handleResize (event) {     
+      let arrayLi = this.$refs.headingSum.children
+      if(arrayLi && arrayLi.length){
+        this.indexShowmore = [...arrayLi].findIndex( x => x.offsetTop > 60) - 1
+      }
     },
     getLanguage() {
       if (
@@ -411,7 +430,6 @@ export default {
     },
 
     clickHeading(){
-      console.log("++++++++++ click header")
       this.$refs.headingSum.className = "heading-summary p-relative header-expand"
     },
     onClickOutside(){
@@ -590,6 +608,7 @@ export default {
   mounted() {
     // this.customizeMoment();
     // this.changeLanguage(localStorage.getItem('locale') || 'en')
+    window.addEventListener('resize', _.debounce(this.handleResize, 100))
     this.refresh();
     this.connectMetaMask();
     this.loadBreadcumbs(this.$route);
