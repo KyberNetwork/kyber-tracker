@@ -99,6 +99,14 @@ Vietnamese version will be available soon.`,
         match: /\b\/?(?:road)\s?map(?:@\w+)?\b/i,
         reply: "You can see the roadmap on Kyber Network home page https://home.kyber.network/#roadmap"
     },
+    team: {
+        match: /\b\/?team(?:@\w+)?\b/i,
+        reply: "Our team is here https://home.kyber.network/#team"
+    },
+    introduce: {
+        match: /\b\/?introduce(?:@\w+)?\b/i,
+        reply: "Check out our 2-minute introduction clip https://www.youtube.com/watch?v=lNNLr2D0yig"
+    },
     lambo: {
         match: /\b\/?(?:when)?\s?lambo(?:@\w+)?\b/i,
         reply: "Check it out here https://when-lambo.com/"
@@ -119,6 +127,26 @@ Tiếng Việt @KyberVietnamese`
         match: /\b\/?kyber(?:@\w+)?\b/i,
         reply: "http://starwars.wikia.com/wiki/Kyber_crystal"
     },
+    reddit: {
+        match: /\b\/?reddit(?:@\w+)?\b/i,
+        reply: "https://www.reddit.com/r/kybernetwork/"
+    },
+    github: {
+        match: /\b\/?github(?:@\w+)?\b/i,
+        reply: "https://github.com/kyberNetwork/"
+    },
+    twitter: {
+        match: /\b\/?twitter(?:@\w+)?\b/i,
+        reply: "https://twitter.com/KyberNetwork"
+    },
+    facebook: {
+        match: /\b\/?facebook(?:@\w+)?\b/i,
+        reply: "https://www.facebook.com/kybernetwork/"
+    },
+    blog: {
+        match: /\b\/?(?:blog)?(?:medium)?(?:@\w+)?\b/i,
+        reply: "https://blog.kyber.network/"
+    },
     tracker: {
         match: /\b\/?track(?:er)?(?:@\w+)?\b/i,
         reply: "https://tracker.kyber.network",
@@ -126,6 +154,13 @@ Tiếng Việt @KyberVietnamese`
     token: {
         match: /\b\/?tokens?(?:@\w+)?\b/i,
         reply: "List of supported tokens https://tracker.kyber.network#/tokens",
+    },
+    market: {
+        match: /\b\/?market?(?:@\w+)?\b/i,
+        reply: "You can trade KNC on [Kyber Network](https://kyber.network/) and many [other major exchanges](https://coinmarketcap.com/currencies/kyber-network/#markets)",
+        replyOptions: {
+            parse_mode: "Markdown"
+        }
     }
 }
 
