@@ -113872,13 +113872,19 @@ var render = function() {
               _vm._v(" "),
               _vm.searchResult.isValid && _vm.searchResult.data
                 ? _c("div", [
-                    _c("div", { staticClass: "wallet-detail-title pb-16" }, [
-                      _c("span", { staticClass: "no-margin" }, [
-                        _vm._v(
-                          _vm._s(_vm.$t("wallet_detail.wallet_detail")) + " "
-                        )
-                      ])
-                    ]),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "wallet-detail-title panel-heading pb-16"
+                      },
+                      [
+                        _c("span", { staticClass: "no-margin panel-title" }, [
+                          _vm._v(
+                            _vm._s(_vm.$t("wallet_detail.wallet_detail")) + " "
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "address-detail-container" }, [
                       _c("div", { staticClass: "wallet-title" }, [
@@ -114004,7 +114010,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "wallet-detail-title pt-56 pb-16" },
+                      {
+                        staticClass:
+                          "wallet-detail-title panel-heading pt-56 pb-16"
+                      },
                       [
                         _c("span", { staticClass: "no-margin" }, [
                           _vm._v(_vm._s(_vm.$t("wallet_detail.history")) + " ")

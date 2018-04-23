@@ -20,8 +20,8 @@
 
         <div v-if="searchResult.isValid && searchResult.data">          
 
-          <div class="wallet-detail-title pb-16">
-            <span class="no-margin">{{$t('wallet_detail.wallet_detail')}} </span>
+          <div class="wallet-detail-title panel-heading pb-16">
+            <span class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
           </div>
 
           <!-- address detail ################## -->
@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <div class="wallet-detail-title pt-56 pb-16">
+          <div class="wallet-detail-title panel-heading pt-56 pb-16">
             <span class="no-margin">{{$t('wallet_detail.history')}} </span>
           </div>
 
