@@ -110200,16 +110200,17 @@ exports.default = {
         csvContent += data.map(function (d) {
           var time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",", '');
           var fromToken = d.takerTokenSymbol;
-          var fromAmount = tokens[fromToken] ? new _bignumber2.default(d.takerTokenAmount.toString()).div(Math.pow(10, tokens[fromToken].decimal)) : new _bignumber2.default(0);
+          var fromAmount = tokens[fromToken] ? new _bignumber2.default(d.takerTokenAmount.toString()).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0;
 
           var toToken = d.makerTokenSymbol;
-          var toAmount = tokens[toToken] ? new _bignumber2.default(d.makerTokenAmount.toString()).div(Math.pow(10, tokens[toToken].decimal)) : new _bignumber2.default(0);
+          var toAmount = tokens[toToken] ? new _bignumber2.default(d.makerTokenAmount.toString()).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0;
 
-          var rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount);
+          // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
+          var usdAmount = d.volumeUsd ? d.volumeUsd.toString() : 0;
 
-          return time + ',' + fromToken + ',' + fromAmount.toString() + ',' + toToken + ',' + toAmount.toString() + ',' + rate.toString();
+          return time + ',' + fromToken + ',' + fromAmount + ',' + toToken + ',' + toAmount + ',' + usdAmount;
         }).join('\n').replace(/(^\{)|(\}$)/mg, '');
-        var csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,Rate\n' + csvContent;
+        var csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,USD Value\n' + csvContent;
 
         // window.open( encodeURI(csvData) );
         var dataCSV = encodeURI(csvData);
