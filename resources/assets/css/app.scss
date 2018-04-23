@@ -1264,14 +1264,26 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     .vdp-datepicker {
       // display: block;
       // float: right;
-      position: static;
+      position: relative;
       margin: 0;
+
+      &.from{
+        .vdp-datepicker__calendar {
+          left: 0px !important;
+        }
+      }
+
+      &.to{
+        .vdp-datepicker__calendar {
+          right: 0px !important;
+        }
+      }
     }
 
     .vdp-datepicker__calendar {
-      left: 10px !important;
-      right: 10px !important;
-      width: calc(100% - 20px) !important;
+      
+      
+      // width: calc(100% - 20px) !important;
 
       .cell {
         margin: 0;

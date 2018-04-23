@@ -95,7 +95,7 @@
 
       <div v-if="!isHideDatepicker" class="datepicker-container pb-16">
         <!-- <span>{{ $t('filter.from') }}</span> -->
-        <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
+        <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"
@@ -105,7 +105,7 @@
           >
         </datepicker>
         <!-- <span>{{ $t('filter.to') }}</span> -->
-        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon ml-2"
+        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon to ml-2"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"
