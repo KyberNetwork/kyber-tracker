@@ -20,8 +20,8 @@
 
         <div v-if="searchResult.isValid && searchResult.data">          
 
-          <div class="wallet-detail-title pb-16">
-            <span class="no-margin">{{$t('wallet_detail.wallet_detail')}} </span>
+          <div class="wallet-detail-title panel-heading pb-16">
+            <span class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
           </div>
 
           <!-- address detail ################## -->
@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <div class="wallet-detail-title pt-56 pb-16">
+          <div class="wallet-detail-title panel-heading pt-56 pb-16">
             <span class="no-margin">{{$t('wallet_detail.history')}} </span>
           </div>
 
@@ -95,7 +95,7 @@
 
       <div v-if="!isHideDatepicker" class="datepicker-container pb-16">
         <!-- <span>{{ $t('filter.from') }}</span> -->
-        <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon"
+        <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"
@@ -105,7 +105,7 @@
           >
         </datepicker>
         <!-- <span>{{ $t('filter.to') }}</span> -->
-        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon ml-2"
+        <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon to ml-2"
           :language="locale"
           :format="formatDatepicker"
           :clear-button="true"
@@ -136,7 +136,7 @@
         >
       </paginate>
       
-      <button v-if="isShowExport" type="button" class="btn btn-default btn-export" @click="csvExport()">{{ $t("trade_list.export_csv") }}</button>
+      <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="csvExport()">{{ $t("trade_list.export_csv") }}</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
@@ -336,18 +336,19 @@ export default {
             csvContent += data.map(function(d){
               let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
               let fromToken = d.takerTokenSymbol
-              let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)) : new BigNumber(0)
+              let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0
 
               let toToken = d.makerTokenSymbol
-              let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)) : new BigNumber(0)
+              let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0
 
-              let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
+              // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
+              let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0
 
-              return `${time},${fromToken},${fromAmount.toString()},${toToken},${toAmount.toString()},${rate.toString()}`
+              return `${time},${fromToken},${fromAmount},${toToken},${toAmount},${usdAmount}`
             })
             .join('\n') 
             .replace(/(^\{)|(\}$)/mg, '');
-            let csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,Rate\n' + csvContent
+            let csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,USD Value\n' + csvContent
 
             // window.open( encodeURI(csvData) );
             let dataCSV = encodeURI(csvData);

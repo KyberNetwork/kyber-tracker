@@ -5464,199 +5464,6 @@ module.exports = function (it) {
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _lodash = __webpack_require__(22);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _jquery = __webpack_require__(157);
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-var _bignumber = __webpack_require__(35);
-
-var _bignumber2 = _interopRequireDefault(_bignumber);
-
-var _moment = __webpack_require__(0);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _network = __webpack_require__(23);
-
-var _network2 = _interopRequireDefault(_network);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_bignumber2.default.config({ DECIMAL_PLACES: 6 });
-var tokens = _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol');
-
-var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-'(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-
-function kyberRoundingNumber(number) {
-  var MAX_DIGIS = 7,
-      SIZE = 3;
-  number = +number;
-  var numberStr = number.toString();
-  if (isNaN(number) || number <= 0) number = 0;
-  if (number < 1e-7) number = 0;
-  if (('' + Math.floor(number)).length >= MAX_DIGIS) {
-    return Math.floor(number).toLocaleString();
-  }
-
-  var count_0 = 0;
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = numberStr[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var j = _step.value;
-
-      if (j == '.') continue;
-      if (j == 0) count_0++;else break;
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  var precision = number.toPrecision(number < 1 && number > 0 ? MAX_DIGIS - count_0 : MAX_DIGIS),
-      arr = precision.split('.'),
-      intPart = arr[0],
-      i = intPart.length % SIZE || SIZE,
-      result = intPart.substr(0, i);
-
-  for (; i < intPart.length; i += SIZE) {
-    result += ',' + intPart.substr(i, SIZE);
-  }
-  if (arr[1]) {
-    result += '.' + arr[1];
-  }
-  return result;
-}
-
-exports.default = {
-
-  qs: function qs(key) {
-    key = key.replace(/[*+?^$.[]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
-    var match = location.search.match(new RegExp("[?&]" + key + "=([^&]+)(&|$)"));
-    return match && decodeURIComponent(match[1].replace(/\+/g, " "));
-  },
-
-  numberWithCommas: function numberWithCommas(x) {
-    //return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-  },
-
-  getAppEndpoint: function getAppEndpoint() {
-    return location.protocol + '//' + location.hostname + ':' + location.port;
-  },
-
-  getEndpointUrl: function getEndpointUrl(url) {
-    return Utils.getAppEndpoint() + url;
-  },
-
-  isValidUrl: function isValidUrl(url) {
-    return urlPattern.test(url);
-  },
-
-  growl: function growl(text, options) {
-    _jquery2.default.bootstrapGrowl(text, options);
-  },
-
-  vueRedirect: function vueRedirect(path) {
-    if (window.vueRouter) {
-      window.vueRouter.replace(path);
-    } else {
-      console.warn('[ERROR] Utils.vueRedirect: window.vueRouter does not initialized...');
-    }
-  },
-
-  getLocale: function getLocale(defaultVal) {
-    return localStorage.getItem('locale') || defaultVal || 'en';
-  },
-
-  getBrowserLanguage: function getBrowserLanguage() {
-    var browserDefaultlanguage = navigator.language;
-    var defaultLanguage = 'en';
-    if (browserDefaultlanguage) {
-      var nation = browserDefaultlanguage.split('-')[0];
-      defaultLanguage = _network2.default.supportedLanguage.indexOf(nation) >= 0 ? nation : 'en';
-    }
-    return defaultLanguage;
-  },
-
-  getTokenInfo: function getTokenInfo(symbol) {
-    return tokens[symbol];
-  },
-
-  getDateInfo: function getDateInfo(timestamp, isShort) {
-    return (0, _moment2.default)(timestamp).fromNow(isShort);
-  },
-
-  formatFiatCurrency: function formatFiatCurrency(amount) {
-    if (amount === 0) {
-      return '0';
-    }
-
-    if (!amount) {
-      return '';
-    }
-
-    var bn = new _bignumber2.default(amount.toString());
-    return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
-  },
-
-  formatTokenAmount: function formatTokenAmount(amount) {
-    var decimal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 18;
-    var decimalFormat = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
-
-    var bigNumber = new _bignumber2.default(amount.toString());
-    var result = bigNumber.div(Math.pow(10, decimal));
-    return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
-  },
-
-  roundingNumber: function roundingNumber(number) {
-    return kyberRoundingNumber(number);
-  },
-  isTxHash: function isTxHash(hash) {
-    return (/^0x([A-Fa-f0-9]{64})$/i.test(hash)
-    );
-  },
-  isAddress: function isAddress(address) {
-    return (/^(0x)?[0-9a-f]{40}$/i.test(address)
-    );
-  }
-
-};
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
  * @license
  * Lodash <https://lodash.com/>
@@ -22746,6 +22553,199 @@ exports.default = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(155)(module)))
 
 /***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lodash = __webpack_require__(21);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _jquery = __webpack_require__(157);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _bignumber = __webpack_require__(35);
+
+var _bignumber2 = _interopRequireDefault(_bignumber);
+
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _network = __webpack_require__(23);
+
+var _network2 = _interopRequireDefault(_network);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_bignumber2.default.config({ DECIMAL_PLACES: 6 });
+var tokens = _lodash2.default.keyBy(_lodash2.default.values(_network2.default.tokens), 'symbol');
+
+var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+'(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+
+function kyberRoundingNumber(number) {
+  var MAX_DIGIS = 7,
+      SIZE = 3;
+  number = +number;
+  var numberStr = number.toString();
+  if (isNaN(number) || number <= 0) number = 0;
+  if (number < 1e-7) number = 0;
+  if (('' + Math.floor(number)).length >= MAX_DIGIS) {
+    return Math.floor(number).toLocaleString();
+  }
+
+  var count_0 = 0;
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = numberStr[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var j = _step.value;
+
+      if (j == '.') continue;
+      if (j == 0) count_0++;else break;
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  var precision = number.toPrecision(number < 1 && number > 0 ? MAX_DIGIS - count_0 : MAX_DIGIS),
+      arr = precision.split('.'),
+      intPart = arr[0],
+      i = intPart.length % SIZE || SIZE,
+      result = intPart.substr(0, i);
+
+  for (; i < intPart.length; i += SIZE) {
+    result += ',' + intPart.substr(i, SIZE);
+  }
+  if (arr[1]) {
+    result += '.' + arr[1];
+  }
+  return result;
+}
+
+exports.default = {
+
+  qs: function qs(key) {
+    key = key.replace(/[*+?^$.[]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
+    var match = location.search.match(new RegExp("[?&]" + key + "=([^&]+)(&|$)"));
+    return match && decodeURIComponent(match[1].replace(/\+/g, " "));
+  },
+
+  numberWithCommas: function numberWithCommas(x) {
+    //return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  },
+
+  getAppEndpoint: function getAppEndpoint() {
+    return location.protocol + '//' + location.hostname + ':' + location.port;
+  },
+
+  getEndpointUrl: function getEndpointUrl(url) {
+    return Utils.getAppEndpoint() + url;
+  },
+
+  isValidUrl: function isValidUrl(url) {
+    return urlPattern.test(url);
+  },
+
+  growl: function growl(text, options) {
+    _jquery2.default.bootstrapGrowl(text, options);
+  },
+
+  vueRedirect: function vueRedirect(path) {
+    if (window.vueRouter) {
+      window.vueRouter.replace(path);
+    } else {
+      console.warn('[ERROR] Utils.vueRedirect: window.vueRouter does not initialized...');
+    }
+  },
+
+  getLocale: function getLocale(defaultVal) {
+    return localStorage.getItem('locale') || defaultVal || 'en';
+  },
+
+  getBrowserLanguage: function getBrowserLanguage() {
+    var browserDefaultlanguage = navigator.language;
+    var defaultLanguage = 'en';
+    if (browserDefaultlanguage) {
+      var nation = browserDefaultlanguage.split('-')[0];
+      defaultLanguage = _network2.default.supportedLanguage.indexOf(nation) >= 0 ? nation : 'en';
+    }
+    return defaultLanguage;
+  },
+
+  getTokenInfo: function getTokenInfo(symbol) {
+    return tokens[symbol];
+  },
+
+  getDateInfo: function getDateInfo(timestamp, isShort) {
+    return (0, _moment2.default)(timestamp).fromNow(isShort);
+  },
+
+  formatFiatCurrency: function formatFiatCurrency(amount) {
+    if (amount === 0) {
+      return '0';
+    }
+
+    if (!amount) {
+      return '';
+    }
+
+    var bn = new _bignumber2.default(amount.toString());
+    return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
+  },
+
+  formatTokenAmount: function formatTokenAmount(amount) {
+    var decimal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 18;
+    var decimalFormat = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
+
+    var bigNumber = new _bignumber2.default(amount.toString());
+    var result = bigNumber.div(Math.pow(10, decimal));
+    return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
+  },
+
+  roundingNumber: function roundingNumber(number) {
+    return kyberRoundingNumber(number);
+  },
+  isTxHash: function isTxHash(hash) {
+    return (/^0x([A-Fa-f0-9]{64})$/i.test(hash)
+    );
+  },
+  isAddress: function isAddress(address) {
+    return (/^(0x)?[0-9a-f]{40}$/i.test(address)
+    );
+  }
+
+};
+
+/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23098,7 +23098,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -75570,7 +75570,7 @@ var _network = __webpack_require__(23);
 
 var _network2 = _interopRequireDefault(_network);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -105040,7 +105040,7 @@ exports = module.exports = __webpack_require__(29)(undefined);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Montserrat:400,600,600i,700|Open+Sans:400,600,600i,700&subset=vietnamese);", ""]);
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: 'entypo';\n  font-style: normal;\n  font-weight: normal;\n  src: url(\"/font/entypo/entypo.eot\");\n  src: url(\"/font/entypo/entypo-iefix.eot\") format(\"eot\"), url(\"/font/entypo/entypo.woff\") format(\"woff\"), url(\"/font/entypo/entypo.ttf\") format(\"truetype\");\n}\n.entypo-note:before {\n  content: \"\\266A\";\n}\n.entypo-note-beamed:before {\n  content: \"\\266B\";\n}\n.entypo-music:before {\n  content: \"\\1F3B5\";\n}\n.entypo-search:before {\n  content: \"\\1F50D\";\n}\n.entypo-flashlight:before {\n  content: \"\\1F526\";\n}\n.entypo-mail:before {\n  content: \"\\2709\";\n}\n.entypo-heart:before {\n  content: \"\\2665\";\n}\n.entypo-heart-empty:before {\n  content: \"\\2661\";\n}\n.entypo-star:before {\n  content: \"\\2605\";\n}\n.entypo-star-empty:before {\n  content: \"\\2606\";\n}\n.entypo-user:before {\n  content: \"\\1F464\";\n}\n.entypo-users:before {\n  content: \"\\1F465\";\n}\n.entypo-user-add:before {\n  content: \"\\E700\";\n}\n.entypo-video:before {\n  content: \"\\1F3AC\";\n}\n.entypo-picture:before {\n  content: \"\\1F304\";\n}\n.entypo-camera:before {\n  content: \"\\1F4F7\";\n}\n.entypo-layout:before {\n  content: \"\\268F\";\n}\n.entypo-menu:before {\n  content: \"\\2630\";\n}\n.entypo-check:before {\n  content: \"\\2713\";\n}\n.entypo-cancel:before {\n  content: \"\\2715\";\n}\n.entypo-cancel-circled:before {\n  content: \"\\2716\";\n}\n.entypo-cancel-squared:before {\n  content: \"\\274E\";\n}\n.entypo-plus:before {\n  content: \"+\";\n}\n.entypo-plus-circled:before {\n  content: \"\\2795\";\n}\n.entypo-plus-squared:before {\n  content: \"\\229E\";\n}\n.entypo-minus:before {\n  content: \"-\";\n}\n.entypo-minus-circled:before {\n  content: \"\\2796\";\n}\n.entypo-minus-squared:before {\n  content: \"\\229F\";\n}\n.entypo-help:before {\n  content: \"\\2753\";\n}\n.entypo-help-circled:before {\n  content: \"\\E704\";\n}\n.entypo-info:before {\n  content: \"\\2139\";\n}\n.entypo-info-circled:before {\n  content: \"\\E705\";\n}\n.entypo-back:before {\n  content: \"\\1F519\";\n}\n.entypo-home:before {\n  content: \"\\2302\";\n}\n.entypo-link:before {\n  content: \"\\1F517\";\n}\n.entypo-attach:before {\n  content: \"\\1F4CE\";\n}\n.entypo-lock:before {\n  content: \"\\1F512\";\n}\n.entypo-lock-open:before {\n  content: \"\\1F513\";\n}\n.entypo-eye:before {\n  content: \"\\E70A\";\n}\n.entypo-tag:before {\n  content: \"\\E70C\";\n}\n.entypo-bookmark:before {\n  content: \"\\1F516\";\n}\n.entypo-bookmarks:before {\n  content: \"\\1F4D1\";\n}\n.entypo-flag:before {\n  content: \"\\2691\";\n}\n.entypo-thumbs-up:before {\n  content: \"\\1F44D\";\n}\n.entypo-thumbs-down:before {\n  content: \"\\1F44E\";\n}\n.entypo-download:before {\n  content: \"\\1F4E5\";\n}\n.entypo-upload:before {\n  content: \"\\1F4E4\";\n}\n.entypo-upload-cloud:before {\n  content: \"\\E711\";\n}\n.entypo-reply:before {\n  content: \"\\E712\";\n}\n.entypo-reply-all:before {\n  content: \"\\E713\";\n}\n.entypo-forward:before {\n  content: \"\\27A6\";\n}\n.entypo-quote:before {\n  content: \"\\275E\";\n}\n.entypo-code:before {\n  content: \"\\E714\";\n}\n.entypo-export:before {\n  content: \"\\E715\";\n}\n.entypo-pencil:before {\n  content: \"\\270E\";\n}\n.entypo-feather:before {\n  content: \"\\2712\";\n}\n.entypo-print:before {\n  content: \"\\E716\";\n}\n.entypo-retweet:before {\n  content: \"\\E717\";\n}\n.entypo-keyboard:before {\n  content: \"\\2328\";\n}\n.entypo-comment:before {\n  content: \"\\E718\";\n}\n.entypo-chat:before {\n  content: \"\\E720\";\n}\n.entypo-bell:before {\n  content: \"\\1F514\";\n}\n.entypo-attention:before {\n  content: \"\\26A0\";\n}\n.entypo-alert:before {\n  content: \"\\1F4A5'\";\n}\n.entypo-vcard:before {\n  content: \"\\E722\";\n}\n.entypo-address:before {\n  content: \"\\E723\";\n}\n.entypo-location:before {\n  content: \"\\E724\";\n}\n.entypo-map:before {\n  content: \"\\E727\";\n}\n.entypo-direction:before {\n  content: \"\\27A2\";\n}\n.entypo-compass:before {\n  content: \"\\E728\";\n}\n.entypo-cup:before {\n  content: \"\\2615\";\n}\n.entypo-trash:before {\n  content: \"\\E729\";\n}\n.entypo-doc:before {\n  content: \"\\E730\";\n}\n.entypo-docs:before {\n  content: \"\\E736\";\n}\n.entypo-doc-landscape:before {\n  content: \"\\E737\";\n}\n.entypo-doc-text:before {\n  content: \"\\1F4C4\";\n}\n.entypo-doc-text-inv:before {\n  content: \"\\E731\";\n}\n.entypo-newspaper:before {\n  content: \"\\1F4F0\";\n}\n.entypo-book-open:before {\n  content: \"\\1F4D6\";\n}\n.entypo-book:before {\n  content: \"\\1F4D5\";\n}\n.entypo-folder:before {\n  content: \"\\1F4C1\";\n}\n.entypo-archive:before {\n  content: \"\\E738\";\n}\n.entypo-box:before {\n  content: \"\\1F4E6\";\n}\n.entypo-rss:before {\n  content: \"\\E73A\";\n}\n.entypo-phone:before {\n  content: \"\\1F4DE\";\n}\n.entypo-cog:before {\n  content: \"\\2699\";\n}\n.entypo-tools:before {\n  content: \"\\2692\";\n}\n.entypo-share:before {\n  content: \"\\E73C\";\n}\n.entypo-shareable:before {\n  content: \"\\E73E\";\n}\n.entypo-basket:before {\n  content: \"\\E73D\";\n}\n.entypo-bag:before {\n  content: \"\\1F45C'\";\n}\n.entypo-calendar:before {\n  content: \"\\1F4C5\";\n}\n.entypo-login:before {\n  content: \"\\E740\";\n}\n.entypo-logout:before {\n  content: \"\\E741\";\n}\n.entypo-mic:before {\n  content: \"\\1F3A4\";\n}\n.entypo-mute:before {\n  content: \"\\1F507\";\n}\n.entypo-sound:before {\n  content: \"\\1F50A\";\n}\n.entypo-volume:before {\n  content: \"\\E742\";\n}\n.entypo-clock:before {\n  content: \"\\1F554\";\n}\n.entypo-hourglass:before {\n  content: \"\\23F3\";\n}\n.entypo-lamp:before {\n  content: \"\\1F4A1\";\n}\n.entypo-light-down:before {\n  content: \"\\1F505\";\n}\n.entypo-light-up:before {\n  content: \"\\1F506\";\n}\n.entypo-adjust:before {\n  content: \"\\25D1\";\n}\n.entypo-block:before {\n  content: \"\\1F6AB\";\n}\n.entypo-resize-full:before {\n  content: \"\\E744\";\n}\n.entypo-resize-small:before {\n  content: \"\\E746\";\n}\n.entypo-popup:before {\n  content: \"\\E74C\";\n}\n.entypo-publish:before {\n  content: \"\\E74D\";\n}\n.entypo-window:before {\n  content: \"\\E74E\";\n}\n.entypo-arrow-combo:before {\n  content: \"\\E74F\";\n}\n.entypo-down-circled:before {\n  content: \"\\E758\";\n}\n.entypo-left-circled:before {\n  content: \"\\E759\";\n}\n.entypo-right-circled:before {\n  content: \"\\E75A\";\n}\n.entypo-up-circled:before {\n  content: \"\\E75B\";\n}\n.entypo-down-open:before {\n  content: \"\\E75C\";\n}\n.entypo-left-open:before {\n  content: \"\\E75D\";\n}\n.entypo-right-open:before {\n  content: \"\\E75E\";\n}\n.entypo-up-open:before {\n  content: \"\\E75F\";\n}\n.entypo-down-open-mini:before {\n  content: \"\\E760\";\n}\n.entypo-left-open-mini:before {\n  content: \"\\E761\";\n}\n.entypo-right-open-mini:before {\n  content: \"\\E762\";\n}\n.entypo-up-open-mini:before {\n  content: \"\\E763\";\n}\n.entypo-down-open-big:before {\n  content: \"\\E764\";\n}\n.entypo-left-open-big:before {\n  content: \"\\E765\";\n}\n.entypo-right-open-big:before {\n  content: \"\\E766\";\n}\n.entypo-up-open-big:before {\n  content: \"\\E767\";\n}\n.entypo-down:before {\n  content: \"\\2B07\";\n}\n.entypo-left:before {\n  content: \"\\2B05\";\n}\n.entypo-right:before {\n  content: \"\\27A1\";\n}\n.entypo-up:before {\n  content: \"\\2B06\";\n}\n.entypo-down-dir:before {\n  content: \"\\25BE\";\n}\n.entypo-left-dir:before {\n  content: \"\\25C2\";\n}\n.entypo-right-dir:before {\n  content: \"\\25B8\";\n}\n.entypo-up-dir:before {\n  content: \"\\25B4\";\n}\n.entypo-down-bold:before {\n  content: \"\\E4B0\";\n}\n.entypo-left-bold:before {\n  content: \"\\E4AD\";\n}\n.entypo-right-bold:before {\n  content: \"\\E4AE\";\n}\n.entypo-up-bold:before {\n  content: \"\\E4AF\";\n}\n.entypo-down-thin:before {\n  content: \"\\2193\";\n}\n.entypo-left-thin:before {\n  content: \"\\2190\";\n}\n.entypo-right-thin:before {\n  content: \"\\2192\";\n}\n.entypo-up-thin:before {\n  content: \"\\2191\";\n}\n.entypo-ccw:before {\n  content: \"\\27F2\";\n}\n.entypo-cw:before {\n  content: \"\\27F3\";\n}\n.entypo-arrows-ccw:before {\n  content: \"\\1F504\";\n}\n.entypo-level-down:before {\n  content: \"\\21B3\";\n}\n.entypo-level-up:before {\n  content: \"\\21B0\";\n}\n.entypo-shuffle:before {\n  content: \"\\1F500\";\n}\n.entypo-loop:before {\n  content: \"\\1F501\";\n}\n.entypo-switch:before {\n  content: \"\\21C6\";\n}\n.entypo-play:before {\n  content: \"\\25B6\";\n}\n.entypo-stop:before {\n  content: \"\\25A0\";\n}\n.entypo-pause:before {\n  content: \"\\2389\";\n}\n.entypo-record:before {\n  content: \"\\26AB\";\n}\n.entypo-to-end:before {\n  content: \"\\23ED\";\n}\n.entypo-to-start:before {\n  content: \"\\23EE\";\n}\n.entypo-fast-forward:before {\n  content: \"\\23E9\";\n}\n.entypo-fast-backward:before {\n  content: \"\\23EA\";\n}\n.entypo-progress-0:before {\n  content: \"\\E768\";\n}\n.entypo-progress-1:before {\n  content: \"\\E769\";\n}\n.entypo-progress-2:before {\n  content: \"\\E76A\";\n}\n.entypo-progress-3:before {\n  content: \"\\E76B\";\n}\n.entypo-target:before {\n  content: \"\\1F3AF\";\n}\n.entypo-palette:before {\n  content: \"\\1F3A8\";\n}\n.entypo-list:before {\n  content: \"\\E005\";\n}\n.entypo-list-add:before {\n  content: \"\\E003\";\n}\n.entypo-signal:before {\n  content: \"\\1F4F6\";\n}\n.entypo-trophy:before {\n  content: \"\\1F3C6\";\n}\n.entypo-battery:before {\n  content: \"\\1F50B\";\n}\n.entypo-back-in-time:before {\n  content: \"\\E771\";\n}\n.entypo-monitor:before {\n  content: \"\\1F4BB\";\n}\n.entypo-mobile:before {\n  content: \"\\1F4F1\";\n}\n.entypo-network:before {\n  content: \"\\E776\";\n}\n.entypo-cd:before {\n  content: \"\\1F4BF\";\n}\n.entypo-inbox:before {\n  content: \"\\E777\";\n}\n.entypo-install:before {\n  content: \"\\E778\";\n}\n.entypo-globe:before {\n  content: \"\\1F30E\";\n}\n.entypo-cloud:before {\n  content: \"\\2601\";\n}\n.entypo-cloud-thunder:before {\n  content: \"\\26C8\";\n}\n.entypo-flash:before {\n  content: \"\\26A1\";\n}\n.entypo-moon:before {\n  content: \"\\263D\";\n}\n.entypo-flight:before {\n  content: \"\\2708\";\n}\n.entypo-paper-plane:before {\n  content: \"\\E79B\";\n}\n.entypo-leaf:before {\n  content: \"\\1F342\";\n}\n.entypo-lifebuoy:before {\n  content: \"\\E788\";\n}\n.entypo-mouse:before {\n  content: \"\\E789\";\n}\n.entypo-briefcase:before {\n  content: \"\\1F4BC\";\n}\n.entypo-suitcase:before {\n  content: \"\\E78E\";\n}\n.entypo-dot:before {\n  content: \"\\E78B\";\n}\n.entypo-dot-2:before {\n  content: \"\\E78C\";\n}\n.entypo-dot-3:before {\n  content: \"\\E78D\";\n}\n.entypo-brush:before {\n  content: \"\\E79A\";\n}\n.entypo-magnet:before {\n  content: \"\\E7A1\";\n}\n.entypo-infinity:before {\n  content: \"\\221E\";\n}\n.entypo-erase:before {\n  content: \"\\232B\";\n}\n.entypo-chart-pie:before {\n  content: \"\\E751\";\n}\n.entypo-chart-line:before {\n  content: \"\\1F4C8\";\n}\n.entypo-chart-bar:before {\n  content: \"\\1F4CA\";\n}\n.entypo-chart-area:before {\n  content: \"\\1F53E\";\n}\n.entypo-tape:before {\n  content: \"\\2707\";\n}\n.entypo-graduation-cap:before {\n  content: \"\\1F393\";\n}\n.entypo-language:before {\n  content: \"\\E752\";\n}\n.entypo-ticket:before {\n  content: \"\\1F3AB\";\n}\n.entypo-water:before {\n  content: \"\\1F4A6\";\n}\n.entypo-droplet:before {\n  content: \"\\1F4A7\";\n}\n.entypo-air:before {\n  content: \"\\E753\";\n}\n.entypo-credit-card:before {\n  content: \"\\1F4B3\";\n}\n.entypo-floppy:before {\n  content: \"\\1F4BE\";\n}\n.entypo-clipboard:before {\n  content: \"\\1F4CB\";\n}\n.entypo-megaphone:before {\n  content: \"\\1F4E3\";\n}\n.entypo-database:before {\n  content: \"\\E754\";\n}\n.entypo-drive:before {\n  content: \"\\E755\";\n}\n.entypo-bucket:before {\n  content: \"\\E756\";\n}\n.entypo-thermometer:before {\n  content: \"\\E757\";\n}\n.entypo-key:before {\n  content: \"\\1F511\";\n}\n.entypo-flow-cascade:before {\n  content: \"\\E790\";\n}\n.entypo-flow-branch:before {\n  content: \"\\E791\";\n}\n.entypo-flow-tree:before {\n  content: \"\\E792\";\n}\n.entypo-flow-line:before {\n  content: \"\\E793\";\n}\n.entypo-flow-parallel:before {\n  content: \"\\E794\";\n}\n.entypo-rocket:before {\n  content: \"\\1F680\";\n}\n.entypo-gauge:before {\n  content: \"\\E7A2\";\n}\n.entypo-traffic-cone:before {\n  content: \"\\E7A3\";\n}\n.entypo-cc:before {\n  content: \"\\E7A5\";\n}\n.entypo-cc-by:before {\n  content: \"\\E7A6\";\n}\n.entypo-cc-nc:before {\n  content: \"\\E7A7\";\n}\n.entypo-cc-nc-eu:before {\n  content: \"\\E7A8\";\n}\n.entypo-cc-nc-jp:before {\n  content: \"\\E7A9\";\n}\n.entypo-cc-sa:before {\n  content: \"\\E7AA\";\n}\n.entypo-cc-nd:before {\n  content: \"\\E7AB\";\n}\n.entypo-cc-pd:before {\n  content: \"\\E7AC\";\n}\n.entypo-cc-zero:before {\n  content: \"\\E7AD\";\n}\n.entypo-cc-share:before {\n  content: \"\\E7AE\";\n}\n.entypo-cc-remix:before {\n  content: \"\\E7AF\";\n}\n.entypo-github:before {\n  content: \"\\F300\";\n}\n.entypo-github-circled:before {\n  content: \"\\F301\";\n}\n.entypo-flickr:before {\n  content: \"\\F303\";\n}\n.entypo-flickr-circled:before {\n  content: \"\\F304\";\n}\n.entypo-vimeo:before {\n  content: \"\\F306\";\n}\n.entypo-vimeo-circled:before {\n  content: \"\\F307\";\n}\n.entypo-twitter:before {\n  content: \"\\F309\";\n}\n.entypo-twitter-circled:before {\n  content: \"\\F30A\";\n}\n.entypo-facebook:before {\n  content: \"\\F30C\";\n}\n.entypo-facebook-circled:before {\n  content: \"\\F30D\";\n}\n.entypo-facebook-squared:before {\n  content: \"\\F30E\";\n}\n.entypo-gplus:before {\n  content: \"\\F30F\";\n}\n.entypo-gplus-circled:before {\n  content: \"\\F310\";\n}\n.entypo-pinterest:before {\n  content: \"\\F312\";\n}\n.entypo-pinterest-circled:before {\n  content: \"\\F313\";\n}\n.entypo-tumblr:before {\n  content: \"\\F315\";\n}\n.entypo-tumblr-circled:before {\n  content: \"\\F316\";\n}\n.entypo-linkedin:before {\n  content: \"\\F318\";\n}\n.entypo-linkedin-circled:before {\n  content: \"\\F319\";\n}\n.entypo-dribbble:before {\n  content: \"\\F31B\";\n}\n.entypo-dribbble-circled:before {\n  content: \"\\F31C\";\n}\n.entypo-stumbleupon:before {\n  content: \"\\F31E\";\n}\n.entypo-stumbleupon-circled:before {\n  content: \"\\F31F\";\n}\n.entypo-lastfm:before {\n  content: \"\\F321\";\n}\n.entypo-lastfm-circled:before {\n  content: \"\\F322\";\n}\n.entypo-rdio:before {\n  content: \"\\F324\";\n}\n.entypo-rdio-circled:before {\n  content: \"\\F325\";\n}\n.entypo-spotify:before {\n  content: \"\\F327\";\n}\n.entypo-spotify-circled:before {\n  content: \"\\F328\";\n}\n.entypo-qq:before {\n  content: \"\\F32A\";\n}\n.entypo-instagrem:before {\n  content: \"\\F32D\";\n}\n.entypo-dropbox:before {\n  content: \"\\F330\";\n}\n.entypo-evernote:before {\n  content: \"\\F333\";\n}\n.entypo-flattr:before {\n  content: \"\\F336\";\n}\n.entypo-skype:before {\n  content: \"\\F339\";\n}\n.entypo-skype-circled:before {\n  content: \"\\F33A\";\n}\n.entypo-renren:before {\n  content: \"\\F33C\";\n}\n.entypo-sina-weibo:before {\n  content: \"\\F33F\";\n}\n.entypo-paypal:before {\n  content: \"\\F342\";\n}\n.entypo-picasa:before {\n  content: \"\\F345\";\n}\n.entypo-soundcloud:before {\n  content: \"\\F348\";\n}\n.entypo-mixi:before {\n  content: \"\\F34B\";\n}\n.entypo-behance:before {\n  content: \"\\F34E\";\n}\n.entypo-google-circles:before {\n  content: \"\\F351\";\n}\n.entypo-vkontakte:before {\n  content: \"\\F354\";\n}\n.entypo-smashing:before {\n  content: \"\\F357\";\n}\n.entypo-sweden:before {\n  content: \"\\F601\";\n}\n.entypo-db-shape:before {\n  content: \"\\F600\";\n}\n.entypo-logo-db:before {\n  content: \"\\F603\";\n}\n\n/* entypo */\n[class*=\"entypo-\"]:before {\n  font-family: 'entypo', sans-serif;\n}\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n  color: #2a4552;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2ed573;\n}\n:focus {\n  outline: none;\n}\n.table th, .table td {\n  border-top: none;\n}\n.pointer {\n  cursor: pointer;\n}\n.table-striped tbody tr:nth-of-type(even) {\n  background-color: rgba(31, 52, 104, 0.02);\n}\n.table-striped tbody tr:nth-of-type(odd) {\n  background-color: transparent !important;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n  color: #fff;\n  text-decoration: none;\n  background-color: rgba(51, 102, 204, 0.75);\n}\n.change-language-button .dropdown-menu {\n  padding: 0;\n}\n.change-language-button .dropdown-item {\n  padding: 6px 6px 6px 10px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n  align-items: flex-start !important;\n}\n.panel-title {\n  font-size: 24px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.25;\n  letter-spacing: normal;\n  text-align: left;\n  color: #3d464d;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n  height: 60px;\n  padding-left: 22px;\n}\n.second-heading-bar .go-exchange {\n    position: absolute;\n    right: 16px;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n.second-heading-bar .go-exchange button {\n      font-size: 15px;\n      font-weight: 400;\n      font-family: \"Open Sans\";\n      color: #ffffff;\n      right: 16px;\n      border-radius: 4px;\n      background-color: #395497;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n    fill: #fff;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #2ed573;\n    fill: #2ed573;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-right: 20px;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: rgba(255, 255, 255, 0);\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: rgba(16, 4, 55, 0.5);\n  cursor: pointer;\n}\n.cus-pagination button:hover {\n  background-color: transparent;\n  color: #0c0033;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #e9ecf1;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.nav-tabs .nav-link {\n  color: rgba(16, 4, 55, 0.5);\n}\n.nav-tabs .nav-link.active, .nav-tabs .nav-link:hover {\n  color: #0c0033;\n}\n.nav-tabs .nav-link:hover {\n  border-bottom: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination .page-item.active .page-link {\n    z-index: unset;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #e7e9ec;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dadce2;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 20px 0px;\n  opacity: 0.9;\n  font-family: \"Open Sans\";\n  font-size: 12px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  text-align: left;\n  color: #1f3468;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu .footer-icon {\n      height: 20px;\n      width: 20px;\n      margin-left: 25px;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\n.table-more {\n  color: #2ed573;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #2ed573;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 40px;\n  background-color: #f4f4f4;\n}\n.card-header .nav-item {\n    font-size: 12px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: center;\n}\n.card-header a[aria-selected=\"false\"] {\n    color: #100437;\n    opacity: 0.5;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {\n  border: 1px solid #4cd137 !important;\n  border-radius: 50%;\n}\n.pos-value {\n  color: #4cd137 !important;\n}\n.neg-value {\n  color: #e84118 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.full-width-btn-group button {\n  font-size: 10px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.2;\n  letter-spacing: normal;\n  text-align: center;\n}\n.full-width-btn-group .btn-active {\n  margin-right: 0 !important;\n  color: #2ed573;\n}\n.full-width-btn-group .btn-secondary {\n  margin-right: 0 !important;\n  color: #0c0033;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 17px;\n  line-height: 20px;\n  height: 56px;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 15px;\n    color: #fff;\n    min-width: 105px;\n    padding-bottom: 10px;\n}\n.heading-summary .show-more {\n    position: absolute;\n    right: 15px;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (min-width: 1030px) {\n.navbar .show-more {\n    display: none;\n}\n}\n@media (max-width: 1113px) {\n.navbar #total-burn-fee {\n    display: none;\n}\n.navbar .show-more {\n    display: block;\n}\n.navbar .heading-summary:hover {\n    height: 110px;\n}\n.navbar .heading-summary:hover #total-burn-fee {\n      display: block;\n}\n.navbar .heading-summary:hover .show-more {\n      display: none;\n}\n}\n@media (max-width: 993px) {\n.navbar #fee-to-burn {\n    display: none;\n}\n.navbar .heading-summary:hover #fee-to-burn {\n    display: block;\n}\n}\n@media (max-width: 500px) {\n.navbar #eth-price {\n    display: none;\n}\n.navbar .heading-summary:hover #eth-price {\n    display: block;\n}\n}\n@media (max-width: 360px) {\n.navbar #knc-price {\n    display: none;\n}\n.navbar .heading-summary:hover #knc-price {\n    display: block;\n}\n}\n@media (max-width: 850px) {\n.navbar {\n    font-size: 14px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.43;\n    letter-spacing: normal;\n}\n.navbar #autosuggest {\n      visibility: hidden;\n      width: 0px;\n}\n.navbar .search-button {\n      border-radius: 4px;\n}\n.navbar .search-expand {\n      visibility: visible !important;\n      width: 100% !important;\n      width: 365px !important;\n}\n}\n@media (max-width: 493px) {\n.navbar .heading-summary:hover {\n    height: 150px;\n}\n}\n@media (max-width: 430px) {\n.go-exchange {\n    display: none;\n}\n}\n@media (max-width: 575px) {\n.container {\n    padding: 0px;\n}\n.kyber-logo {\n    display: none;\n}\n.navbar-nav {\n    display: flex;\n    flex-direction: row;\n}\n.navbar-nav .navbar {\n      padding: 0;\n}\n.navbar-nav li {\n      padding: 10px !important;\n}\n.pt-40, .pt-56 {\n    padding-top: 20px;\n}\n.panel-heading {\n    padding-left: 15px;\n}\n.datepicker-container {\n    padding-left: 15px;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n.small-table .table-responsive {\n  display: table;\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n.card {\n    border-radius: 0px;\n    border-top: none;\n    border-left: none;\n    border-right: none;\n}\n.card .chart-period-picker {\n      padding-bottom: 5px;\n      padding-left: 10px;\n}\n.card .chart-period-picker .full-width-btn-group {\n        display: inline-flex;\n}\n.card-header {\n    border-top: 1px solid rgba(0, 0, 0, 0.125);\n}\ntable tr, table th {\n    border-radius: 0px !important;\n}\n#footer {\n    height: auto !important;\n    background-color: #ffffff;\n    padding-bottom: 0;\n    font-size: 12px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: left;\n    color: #1f3468;\n}\n#footer .row {\n      display: block;\n}\n#footer .row .footer-menu, #footer .row .footer-menu {\n        text-align: center !important;\n        padding-bottom: 10px;\n}\n#footer .row .footer-icon {\n        margin: 0 15px !important;\n}\n#footer .row .footer-link {\n        background-color: #f4f5f4;\n        padding: 20px 0;\n}\n}\n.trade-list {\n  min-height: 500px;\n}\n.trade-list .trade-direction {\n    position: relative;\n}\n.trade-list .trade-direction .trade-direction-down-symbol {\n      position: absolute;\n      left: 5px;\n      top: 30px;\n      color: #1f3468;\n      opacity: 0.15;\n}\n.trade-list .wallet-detail-title {\n    font-family: \"Open Sans\";\n    font-size: 24px;\n    font-weight: 600;\n    color: #3d464d;\n}\n.trade-list .btn-export {\n    float: right;\n    margin-top: 10px;\n    border: solid 1px #56c7c4;\n    color: #00d3a7;\n    font-size: 14px;\n    line-height: 1.43;\n    float: left;\n    margin-left: 37px;\n    padding: 8px 16px;\n    background-color: white;\n    font-family: \"Open Sans\";\n}\n.trade-details-container {\n  font-family: \"Open Sans\";\n  color: #0c0033;\n  letter-spacing: normal;\n  font-style: normal;\n  font-stretch: normal;\n  word-wrap: break-word;\n}\n.trade-details-container .background-detail {\n    background-color: #f9fafc;\n}\n.trade-details-container .left-trade-detail {\n    padding: 32px 15px 35px 15px;\n    border-bottom: solid 1px #d7d8d9;\n}\n.trade-details-container .left-trade-detail .trade-time {\n      padding-left: 15px;\n      font-size: 16px;\n      font-weight: 600;\n      line-height: 1.43;\n      text-align: left;\n}\n.trade-details-container .left-trade-detail .left-trade-rate {\n      background-color: #ffffff;\n      box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);\n      margin: 20px 0px;\n      /* align-items: center; */\n      font-size: 18px;\n      font-weight: 600;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: center;\n      color: #0c0033;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .token {\n        padding: 18px 0;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .token .token-symbol {\n          font-size: 24px;\n          letter-spacing: 1.8px;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .to {\n        padding-top: 30px;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .usd-value {\n        font-size: 14px;\n        font-weight: normal;\n}\n.trade-details-container .left-trade-detail .trade-note {\n      font-size: 14px;\n      padding-left: 15px;\n}\n.trade-details-container .right-trade-detail {\n    padding: 32px 24px 0px 36px;\n}\n.trade-details-container .right-trade-detail .trade-detail-title {\n      font-size: 16px;\n      font-weight: 600;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: left;\n      color: #0c0033 !important;\n      padding-bottom: 6px;\n}\n.trade-details-container .right-trade-detail .trade-detail-link {\n      font-size: 16px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: left;\n      color: #2ed573;\n      padding-bottom: 29px;\n}\n.trade-details-container .rate-detail {\n    text-align: center;\n    margin: 0;\n    padding: 15px 0;\n    box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);\n}\n.trade-details-container .rate-detail span {\n      color: #0c0033;\n}\n.trade-details-container .rate-detail .rate-detail-title {\n      font-size: 12px;\n      font-weight: 600;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: left;\n      color: #0c0033;\n      text-align: center;\n}\n.trade-details-container .rate-detail .rate-detail-value {\n      font-size: 16px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: 1;\n      letter-spacing: normal;\n      text-align: left;\n      color: #0c0033;\n      padding-top: 10px;\n      text-align: center;\n}\n.address-detail-container {\n  box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);\n  font-family: \"Open Sans\";\n  color: #3d464d;\n  letter-spacing: normal;\n  font-style: normal;\n  font-stretch: normal;\n  word-wrap: break-word;\n}\n.address-detail-container .border-right {\n    border-right: dashed 1.2px #cbcdcf;\n}\n.address-detail-container .wallet-title {\n    font-size: 16px;\n    font-weight: 600;\n    padding: 14px 20px 12px 20px;\n    background-color: #f5f6f7;\n}\n.address-detail-container .wallet-title .wallet-address {\n      font-size: 16px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #2ed573;\n}\n.address-detail-container .wallet-value {\n    text-align: center;\n    padding-top: 32px;\n    padding-bottom: 39px;\n}\n.address-detail-container .wallet-value .value-number {\n      font-size: 24px;\n      line-height: 1;\n}\n.address-detail-container .walet-note {\n    font-size: 12px;\n    font-style: italic;\n    line-height: 1.17;\n    letter-spacing: 1px;\n    color: #0c0033;\n    padding-left: 20px;\n    padding-bottom: 10px;\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 320px) {\n.datepicker-container .vdp-datepicker {\n    display: block;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    position: static;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    left: 10px !important;\n    right: 10px !important;\n    width: calc(100% - 20px) !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n      margin: 0;\n      padding: 0;\n      clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      clear: both;\n      text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n      clear: none;\n      float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n      clear: none;\n      float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n      clear: none;\n      text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 11px !important;\n  right: 33px !important;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.kyber-logo {\n  height: 46px;\n  margin-right: 45px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 45px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.icon-second-header {\n  margin-right: 5px;\n}\n.p-relative {\n  position: relative;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo .router-link-active {\n  white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2ed573;\n}\n.token-link:hover {\n  color: #2ed573;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 16px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest {\n  width: 100%;\n  width: 365px;\n  position: relative;\n  margin-left: 15px;\n  -webkit-transition: width .5s ease;\n  -moz-transition: width .5s ease;\n  transition: width .5s ease;\n}\n#autosuggest__input {\n  width: 100%;\n  height: 40px;\n  border-radius: 4px 0px 0px 4px;\n  background-color: #1f3468;\n  border-style: none;\n  color: #ffffff;\n  outline: none;\n  box-shadow: none !important;\n  border: none !important;\n}\n#autosuggest__input::placeholder {\n  font-size: 10px;\n  margin: auto;\n  text-align: left;\n  color: #ffffff;\n  font-size: 14px !important;\n  vertical-align: middle;\n  opacity: 0.7;\n  padding-left: 16px;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  z-index: 5;\n  width: 100%;\n  font-family: \"Open Sans\";\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #0c0033;\n  /* box-sizing: border-box; */\n  background-color: #ffffff;\n  box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);\n}\n.autosuggest__results ul {\n    padding: 0px;\n    margin: 0px;\n}\n.autosuggest__results .autosuggest__results_item {\n    padding: 5px 0px;\n    height: 40px;\n}\n.autosuggest__results .autosuggest__results_item .logo-suggest-wraper {\n      width: 50px;\n}\n.autosuggest__results .autosuggest__results_item .logo-suggest-wraper .history-logo {\n        font-size: 1.5em;\n}\n.autosuggest__results .autosuggest__results_item .suggest-text {\n      line-height: 2.1em;\n}\n.autosuggest__results .autosuggest__results_item:hover {\n    background-color: #f5f3f6;\n}\n.datepicker-container {\n  font-family: \"Open Sans\";\n}\n.datepicker-container .vdp-datepicker input {\n    padding-left: 10px;\n    font-size: 16px;\n    border-radius: 3px;\n    border: solid 1px #1f3468;\n}\n.datepicker-container .vdp-datepicker input::placeholder {\n    color: #1f3468;\n    opacity: 0.8;\n    font-weight: normal;\n}\n.datepicker-container .vdp-datepicker input:focus {\n    border-color: #2ed573;\n}\n.datepicker-container .vdp-datepicker input:focus::placeholder {\n      color: #2ed573;\n      opacity: 0.8;\n      font-weight: normal;\n}\n.datepicker-container .calendar-icon > div:first-child:after {\n    background-image: url(/images/calendar.svg);\n    right: 8px;\n    top: 6px;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    border-radius: 3px;\n    background-color: #ffffff;\n    box-shadow: 0 8px 16px 0 rgba(10, 59, 122, 0.1);\n    border: none;\n    top: 50px;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      margin-left: 20px;\n      margin-right: 20px;\n}\n.datepicker-container .vdp-datepicker__calendar header .up {\n        font-size: 16px;\n        font-weight: bolder;\n        color: #0c0033;\n}\n.datepicker-container .vdp-datepicker__calendar div {\n      padding: 20px;\n}\n.datepicker-container .vdp-datepicker__calendar .timestamp {\n      font-size: 16px;\n      line-height: 1.5;\n      text-align: center;\n      color: #0c0033;\n}\n.datepicker-container .vdp-datepicker__calendar .cell.selected, .datepicker-container .vdp-datepicker__calendar .vdp-datepicker__calendar .cell.selected.highlighted, .datepicker-container .vdp-datepicker__calendar .vdp-datepicker__calendar .cell.selected:hover {\n      background: #2ed573 !important;\n      border-radius: 50%;\n      color: #ffffff;\n}\n.datepicker-container .vdp-datepicker__calendar .cell.highlighted {\n      font-weight: bolder;\n      background: none;\n      color: #2ed573;\n}\n.datepicker-container .vdp-datepicker__calendar .cell.day-header {\n      font-size: 10px;\n      font-weight: bold;\n      text-align: center;\n      color: #7b7c8e;\n}\n.token-logo-detail {\n  width: 25px;\n  vertical-align: text-bottom;\n}\n.see-all-trade {\n  margin-top: 56px;\n  cursor: pointer;\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n  background-color: white;\n}\ntable.table-round th {\n  border-top: 0;\n}\ntable.table-round tr:first-child th:first-child {\n  border-top-left-radius: 6px;\n}\ntable.table-round tr:first-child th:last-child {\n  border-top-right-radius: 6px;\n}\n.breadcrumbs {\n  width: 100%;\n  background-color: #dcdcdc;\n}\n.breadcrumbs .container-fluid {\n    padding: 0 30px;\n    -webkit-box-pack: justify !important;\n    -ms-flex-pack: justify !important;\n    display: -webkit-box !important;\n    display: -moz-box !important;\n    display: -ms-flexbox !important;\n    display: -webkit-flex !important;\n    display: flex !important;\n    -webkit-justify-content: space-between !important;\n    justify-content: space-between !important;\n}\n.breadcrumbs .container-fluid .breadcrumb {\n      float: right;\n      background: none;\n      margin: 0;\n}\n.breadcrumbs .container-fluid .title {\n      float: left;\n      justify-content: center;\n      align-self: center;\n      font-size: 16px;\n}\n.breadcrumbs .container-fluid .title .sub-title {\n        margin-left: 10px;\n        color: #868e96;\n}\n.navbar .router-link-exact-active {\n  color: #2ed573 !important;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: 'entypo';\n  font-style: normal;\n  font-weight: normal;\n  src: url(\"/font/entypo/entypo.eot\");\n  src: url(\"/font/entypo/entypo-iefix.eot\") format(\"eot\"), url(\"/font/entypo/entypo.woff\") format(\"woff\"), url(\"/font/entypo/entypo.ttf\") format(\"truetype\");\n}\n.entypo-note:before {\n  content: \"\\266A\";\n}\n.entypo-note-beamed:before {\n  content: \"\\266B\";\n}\n.entypo-music:before {\n  content: \"\\1F3B5\";\n}\n.entypo-search:before {\n  content: \"\\1F50D\";\n}\n.entypo-flashlight:before {\n  content: \"\\1F526\";\n}\n.entypo-mail:before {\n  content: \"\\2709\";\n}\n.entypo-heart:before {\n  content: \"\\2665\";\n}\n.entypo-heart-empty:before {\n  content: \"\\2661\";\n}\n.entypo-star:before {\n  content: \"\\2605\";\n}\n.entypo-star-empty:before {\n  content: \"\\2606\";\n}\n.entypo-user:before {\n  content: \"\\1F464\";\n}\n.entypo-users:before {\n  content: \"\\1F465\";\n}\n.entypo-user-add:before {\n  content: \"\\E700\";\n}\n.entypo-video:before {\n  content: \"\\1F3AC\";\n}\n.entypo-picture:before {\n  content: \"\\1F304\";\n}\n.entypo-camera:before {\n  content: \"\\1F4F7\";\n}\n.entypo-layout:before {\n  content: \"\\268F\";\n}\n.entypo-menu:before {\n  content: \"\\2630\";\n}\n.entypo-check:before {\n  content: \"\\2713\";\n}\n.entypo-cancel:before {\n  content: \"\\2715\";\n}\n.entypo-cancel-circled:before {\n  content: \"\\2716\";\n}\n.entypo-cancel-squared:before {\n  content: \"\\274E\";\n}\n.entypo-plus:before {\n  content: \"+\";\n}\n.entypo-plus-circled:before {\n  content: \"\\2795\";\n}\n.entypo-plus-squared:before {\n  content: \"\\229E\";\n}\n.entypo-minus:before {\n  content: \"-\";\n}\n.entypo-minus-circled:before {\n  content: \"\\2796\";\n}\n.entypo-minus-squared:before {\n  content: \"\\229F\";\n}\n.entypo-help:before {\n  content: \"\\2753\";\n}\n.entypo-help-circled:before {\n  content: \"\\E704\";\n}\n.entypo-info:before {\n  content: \"\\2139\";\n}\n.entypo-info-circled:before {\n  content: \"\\E705\";\n}\n.entypo-back:before {\n  content: \"\\1F519\";\n}\n.entypo-home:before {\n  content: \"\\2302\";\n}\n.entypo-link:before {\n  content: \"\\1F517\";\n}\n.entypo-attach:before {\n  content: \"\\1F4CE\";\n}\n.entypo-lock:before {\n  content: \"\\1F512\";\n}\n.entypo-lock-open:before {\n  content: \"\\1F513\";\n}\n.entypo-eye:before {\n  content: \"\\E70A\";\n}\n.entypo-tag:before {\n  content: \"\\E70C\";\n}\n.entypo-bookmark:before {\n  content: \"\\1F516\";\n}\n.entypo-bookmarks:before {\n  content: \"\\1F4D1\";\n}\n.entypo-flag:before {\n  content: \"\\2691\";\n}\n.entypo-thumbs-up:before {\n  content: \"\\1F44D\";\n}\n.entypo-thumbs-down:before {\n  content: \"\\1F44E\";\n}\n.entypo-download:before {\n  content: \"\\1F4E5\";\n}\n.entypo-upload:before {\n  content: \"\\1F4E4\";\n}\n.entypo-upload-cloud:before {\n  content: \"\\E711\";\n}\n.entypo-reply:before {\n  content: \"\\E712\";\n}\n.entypo-reply-all:before {\n  content: \"\\E713\";\n}\n.entypo-forward:before {\n  content: \"\\27A6\";\n}\n.entypo-quote:before {\n  content: \"\\275E\";\n}\n.entypo-code:before {\n  content: \"\\E714\";\n}\n.entypo-export:before {\n  content: \"\\E715\";\n}\n.entypo-pencil:before {\n  content: \"\\270E\";\n}\n.entypo-feather:before {\n  content: \"\\2712\";\n}\n.entypo-print:before {\n  content: \"\\E716\";\n}\n.entypo-retweet:before {\n  content: \"\\E717\";\n}\n.entypo-keyboard:before {\n  content: \"\\2328\";\n}\n.entypo-comment:before {\n  content: \"\\E718\";\n}\n.entypo-chat:before {\n  content: \"\\E720\";\n}\n.entypo-bell:before {\n  content: \"\\1F514\";\n}\n.entypo-attention:before {\n  content: \"\\26A0\";\n}\n.entypo-alert:before {\n  content: \"\\1F4A5'\";\n}\n.entypo-vcard:before {\n  content: \"\\E722\";\n}\n.entypo-address:before {\n  content: \"\\E723\";\n}\n.entypo-location:before {\n  content: \"\\E724\";\n}\n.entypo-map:before {\n  content: \"\\E727\";\n}\n.entypo-direction:before {\n  content: \"\\27A2\";\n}\n.entypo-compass:before {\n  content: \"\\E728\";\n}\n.entypo-cup:before {\n  content: \"\\2615\";\n}\n.entypo-trash:before {\n  content: \"\\E729\";\n}\n.entypo-doc:before {\n  content: \"\\E730\";\n}\n.entypo-docs:before {\n  content: \"\\E736\";\n}\n.entypo-doc-landscape:before {\n  content: \"\\E737\";\n}\n.entypo-doc-text:before {\n  content: \"\\1F4C4\";\n}\n.entypo-doc-text-inv:before {\n  content: \"\\E731\";\n}\n.entypo-newspaper:before {\n  content: \"\\1F4F0\";\n}\n.entypo-book-open:before {\n  content: \"\\1F4D6\";\n}\n.entypo-book:before {\n  content: \"\\1F4D5\";\n}\n.entypo-folder:before {\n  content: \"\\1F4C1\";\n}\n.entypo-archive:before {\n  content: \"\\E738\";\n}\n.entypo-box:before {\n  content: \"\\1F4E6\";\n}\n.entypo-rss:before {\n  content: \"\\E73A\";\n}\n.entypo-phone:before {\n  content: \"\\1F4DE\";\n}\n.entypo-cog:before {\n  content: \"\\2699\";\n}\n.entypo-tools:before {\n  content: \"\\2692\";\n}\n.entypo-share:before {\n  content: \"\\E73C\";\n}\n.entypo-shareable:before {\n  content: \"\\E73E\";\n}\n.entypo-basket:before {\n  content: \"\\E73D\";\n}\n.entypo-bag:before {\n  content: \"\\1F45C'\";\n}\n.entypo-calendar:before {\n  content: \"\\1F4C5\";\n}\n.entypo-login:before {\n  content: \"\\E740\";\n}\n.entypo-logout:before {\n  content: \"\\E741\";\n}\n.entypo-mic:before {\n  content: \"\\1F3A4\";\n}\n.entypo-mute:before {\n  content: \"\\1F507\";\n}\n.entypo-sound:before {\n  content: \"\\1F50A\";\n}\n.entypo-volume:before {\n  content: \"\\E742\";\n}\n.entypo-clock:before {\n  content: \"\\1F554\";\n}\n.entypo-hourglass:before {\n  content: \"\\23F3\";\n}\n.entypo-lamp:before {\n  content: \"\\1F4A1\";\n}\n.entypo-light-down:before {\n  content: \"\\1F505\";\n}\n.entypo-light-up:before {\n  content: \"\\1F506\";\n}\n.entypo-adjust:before {\n  content: \"\\25D1\";\n}\n.entypo-block:before {\n  content: \"\\1F6AB\";\n}\n.entypo-resize-full:before {\n  content: \"\\E744\";\n}\n.entypo-resize-small:before {\n  content: \"\\E746\";\n}\n.entypo-popup:before {\n  content: \"\\E74C\";\n}\n.entypo-publish:before {\n  content: \"\\E74D\";\n}\n.entypo-window:before {\n  content: \"\\E74E\";\n}\n.entypo-arrow-combo:before {\n  content: \"\\E74F\";\n}\n.entypo-down-circled:before {\n  content: \"\\E758\";\n}\n.entypo-left-circled:before {\n  content: \"\\E759\";\n}\n.entypo-right-circled:before {\n  content: \"\\E75A\";\n}\n.entypo-up-circled:before {\n  content: \"\\E75B\";\n}\n.entypo-down-open:before {\n  content: \"\\E75C\";\n}\n.entypo-left-open:before {\n  content: \"\\E75D\";\n}\n.entypo-right-open:before {\n  content: \"\\E75E\";\n}\n.entypo-up-open:before {\n  content: \"\\E75F\";\n}\n.entypo-down-open-mini:before {\n  content: \"\\E760\";\n}\n.entypo-left-open-mini:before {\n  content: \"\\E761\";\n}\n.entypo-right-open-mini:before {\n  content: \"\\E762\";\n}\n.entypo-up-open-mini:before {\n  content: \"\\E763\";\n}\n.entypo-down-open-big:before {\n  content: \"\\E764\";\n}\n.entypo-left-open-big:before {\n  content: \"\\E765\";\n}\n.entypo-right-open-big:before {\n  content: \"\\E766\";\n}\n.entypo-up-open-big:before {\n  content: \"\\E767\";\n}\n.entypo-down:before {\n  content: \"\\2B07\";\n}\n.entypo-left:before {\n  content: \"\\2B05\";\n}\n.entypo-right:before {\n  content: \"\\27A1\";\n}\n.entypo-up:before {\n  content: \"\\2B06\";\n}\n.entypo-down-dir:before {\n  content: \"\\25BE\";\n}\n.entypo-left-dir:before {\n  content: \"\\25C2\";\n}\n.entypo-right-dir:before {\n  content: \"\\25B8\";\n}\n.entypo-up-dir:before {\n  content: \"\\25B4\";\n}\n.entypo-down-bold:before {\n  content: \"\\E4B0\";\n}\n.entypo-left-bold:before {\n  content: \"\\E4AD\";\n}\n.entypo-right-bold:before {\n  content: \"\\E4AE\";\n}\n.entypo-up-bold:before {\n  content: \"\\E4AF\";\n}\n.entypo-down-thin:before {\n  content: \"\\2193\";\n}\n.entypo-left-thin:before {\n  content: \"\\2190\";\n}\n.entypo-right-thin:before {\n  content: \"\\2192\";\n}\n.entypo-up-thin:before {\n  content: \"\\2191\";\n}\n.entypo-ccw:before {\n  content: \"\\27F2\";\n}\n.entypo-cw:before {\n  content: \"\\27F3\";\n}\n.entypo-arrows-ccw:before {\n  content: \"\\1F504\";\n}\n.entypo-level-down:before {\n  content: \"\\21B3\";\n}\n.entypo-level-up:before {\n  content: \"\\21B0\";\n}\n.entypo-shuffle:before {\n  content: \"\\1F500\";\n}\n.entypo-loop:before {\n  content: \"\\1F501\";\n}\n.entypo-switch:before {\n  content: \"\\21C6\";\n}\n.entypo-play:before {\n  content: \"\\25B6\";\n}\n.entypo-stop:before {\n  content: \"\\25A0\";\n}\n.entypo-pause:before {\n  content: \"\\2389\";\n}\n.entypo-record:before {\n  content: \"\\26AB\";\n}\n.entypo-to-end:before {\n  content: \"\\23ED\";\n}\n.entypo-to-start:before {\n  content: \"\\23EE\";\n}\n.entypo-fast-forward:before {\n  content: \"\\23E9\";\n}\n.entypo-fast-backward:before {\n  content: \"\\23EA\";\n}\n.entypo-progress-0:before {\n  content: \"\\E768\";\n}\n.entypo-progress-1:before {\n  content: \"\\E769\";\n}\n.entypo-progress-2:before {\n  content: \"\\E76A\";\n}\n.entypo-progress-3:before {\n  content: \"\\E76B\";\n}\n.entypo-target:before {\n  content: \"\\1F3AF\";\n}\n.entypo-palette:before {\n  content: \"\\1F3A8\";\n}\n.entypo-list:before {\n  content: \"\\E005\";\n}\n.entypo-list-add:before {\n  content: \"\\E003\";\n}\n.entypo-signal:before {\n  content: \"\\1F4F6\";\n}\n.entypo-trophy:before {\n  content: \"\\1F3C6\";\n}\n.entypo-battery:before {\n  content: \"\\1F50B\";\n}\n.entypo-back-in-time:before {\n  content: \"\\E771\";\n}\n.entypo-monitor:before {\n  content: \"\\1F4BB\";\n}\n.entypo-mobile:before {\n  content: \"\\1F4F1\";\n}\n.entypo-network:before {\n  content: \"\\E776\";\n}\n.entypo-cd:before {\n  content: \"\\1F4BF\";\n}\n.entypo-inbox:before {\n  content: \"\\E777\";\n}\n.entypo-install:before {\n  content: \"\\E778\";\n}\n.entypo-globe:before {\n  content: \"\\1F30E\";\n}\n.entypo-cloud:before {\n  content: \"\\2601\";\n}\n.entypo-cloud-thunder:before {\n  content: \"\\26C8\";\n}\n.entypo-flash:before {\n  content: \"\\26A1\";\n}\n.entypo-moon:before {\n  content: \"\\263D\";\n}\n.entypo-flight:before {\n  content: \"\\2708\";\n}\n.entypo-paper-plane:before {\n  content: \"\\E79B\";\n}\n.entypo-leaf:before {\n  content: \"\\1F342\";\n}\n.entypo-lifebuoy:before {\n  content: \"\\E788\";\n}\n.entypo-mouse:before {\n  content: \"\\E789\";\n}\n.entypo-briefcase:before {\n  content: \"\\1F4BC\";\n}\n.entypo-suitcase:before {\n  content: \"\\E78E\";\n}\n.entypo-dot:before {\n  content: \"\\E78B\";\n}\n.entypo-dot-2:before {\n  content: \"\\E78C\";\n}\n.entypo-dot-3:before {\n  content: \"\\E78D\";\n}\n.entypo-brush:before {\n  content: \"\\E79A\";\n}\n.entypo-magnet:before {\n  content: \"\\E7A1\";\n}\n.entypo-infinity:before {\n  content: \"\\221E\";\n}\n.entypo-erase:before {\n  content: \"\\232B\";\n}\n.entypo-chart-pie:before {\n  content: \"\\E751\";\n}\n.entypo-chart-line:before {\n  content: \"\\1F4C8\";\n}\n.entypo-chart-bar:before {\n  content: \"\\1F4CA\";\n}\n.entypo-chart-area:before {\n  content: \"\\1F53E\";\n}\n.entypo-tape:before {\n  content: \"\\2707\";\n}\n.entypo-graduation-cap:before {\n  content: \"\\1F393\";\n}\n.entypo-language:before {\n  content: \"\\E752\";\n}\n.entypo-ticket:before {\n  content: \"\\1F3AB\";\n}\n.entypo-water:before {\n  content: \"\\1F4A6\";\n}\n.entypo-droplet:before {\n  content: \"\\1F4A7\";\n}\n.entypo-air:before {\n  content: \"\\E753\";\n}\n.entypo-credit-card:before {\n  content: \"\\1F4B3\";\n}\n.entypo-floppy:before {\n  content: \"\\1F4BE\";\n}\n.entypo-clipboard:before {\n  content: \"\\1F4CB\";\n}\n.entypo-megaphone:before {\n  content: \"\\1F4E3\";\n}\n.entypo-database:before {\n  content: \"\\E754\";\n}\n.entypo-drive:before {\n  content: \"\\E755\";\n}\n.entypo-bucket:before {\n  content: \"\\E756\";\n}\n.entypo-thermometer:before {\n  content: \"\\E757\";\n}\n.entypo-key:before {\n  content: \"\\1F511\";\n}\n.entypo-flow-cascade:before {\n  content: \"\\E790\";\n}\n.entypo-flow-branch:before {\n  content: \"\\E791\";\n}\n.entypo-flow-tree:before {\n  content: \"\\E792\";\n}\n.entypo-flow-line:before {\n  content: \"\\E793\";\n}\n.entypo-flow-parallel:before {\n  content: \"\\E794\";\n}\n.entypo-rocket:before {\n  content: \"\\1F680\";\n}\n.entypo-gauge:before {\n  content: \"\\E7A2\";\n}\n.entypo-traffic-cone:before {\n  content: \"\\E7A3\";\n}\n.entypo-cc:before {\n  content: \"\\E7A5\";\n}\n.entypo-cc-by:before {\n  content: \"\\E7A6\";\n}\n.entypo-cc-nc:before {\n  content: \"\\E7A7\";\n}\n.entypo-cc-nc-eu:before {\n  content: \"\\E7A8\";\n}\n.entypo-cc-nc-jp:before {\n  content: \"\\E7A9\";\n}\n.entypo-cc-sa:before {\n  content: \"\\E7AA\";\n}\n.entypo-cc-nd:before {\n  content: \"\\E7AB\";\n}\n.entypo-cc-pd:before {\n  content: \"\\E7AC\";\n}\n.entypo-cc-zero:before {\n  content: \"\\E7AD\";\n}\n.entypo-cc-share:before {\n  content: \"\\E7AE\";\n}\n.entypo-cc-remix:before {\n  content: \"\\E7AF\";\n}\n.entypo-github:before {\n  content: \"\\F300\";\n}\n.entypo-github-circled:before {\n  content: \"\\F301\";\n}\n.entypo-flickr:before {\n  content: \"\\F303\";\n}\n.entypo-flickr-circled:before {\n  content: \"\\F304\";\n}\n.entypo-vimeo:before {\n  content: \"\\F306\";\n}\n.entypo-vimeo-circled:before {\n  content: \"\\F307\";\n}\n.entypo-twitter:before {\n  content: \"\\F309\";\n}\n.entypo-twitter-circled:before {\n  content: \"\\F30A\";\n}\n.entypo-facebook:before {\n  content: \"\\F30C\";\n}\n.entypo-facebook-circled:before {\n  content: \"\\F30D\";\n}\n.entypo-facebook-squared:before {\n  content: \"\\F30E\";\n}\n.entypo-gplus:before {\n  content: \"\\F30F\";\n}\n.entypo-gplus-circled:before {\n  content: \"\\F310\";\n}\n.entypo-pinterest:before {\n  content: \"\\F312\";\n}\n.entypo-pinterest-circled:before {\n  content: \"\\F313\";\n}\n.entypo-tumblr:before {\n  content: \"\\F315\";\n}\n.entypo-tumblr-circled:before {\n  content: \"\\F316\";\n}\n.entypo-linkedin:before {\n  content: \"\\F318\";\n}\n.entypo-linkedin-circled:before {\n  content: \"\\F319\";\n}\n.entypo-dribbble:before {\n  content: \"\\F31B\";\n}\n.entypo-dribbble-circled:before {\n  content: \"\\F31C\";\n}\n.entypo-stumbleupon:before {\n  content: \"\\F31E\";\n}\n.entypo-stumbleupon-circled:before {\n  content: \"\\F31F\";\n}\n.entypo-lastfm:before {\n  content: \"\\F321\";\n}\n.entypo-lastfm-circled:before {\n  content: \"\\F322\";\n}\n.entypo-rdio:before {\n  content: \"\\F324\";\n}\n.entypo-rdio-circled:before {\n  content: \"\\F325\";\n}\n.entypo-spotify:before {\n  content: \"\\F327\";\n}\n.entypo-spotify-circled:before {\n  content: \"\\F328\";\n}\n.entypo-qq:before {\n  content: \"\\F32A\";\n}\n.entypo-instagrem:before {\n  content: \"\\F32D\";\n}\n.entypo-dropbox:before {\n  content: \"\\F330\";\n}\n.entypo-evernote:before {\n  content: \"\\F333\";\n}\n.entypo-flattr:before {\n  content: \"\\F336\";\n}\n.entypo-skype:before {\n  content: \"\\F339\";\n}\n.entypo-skype-circled:before {\n  content: \"\\F33A\";\n}\n.entypo-renren:before {\n  content: \"\\F33C\";\n}\n.entypo-sina-weibo:before {\n  content: \"\\F33F\";\n}\n.entypo-paypal:before {\n  content: \"\\F342\";\n}\n.entypo-picasa:before {\n  content: \"\\F345\";\n}\n.entypo-soundcloud:before {\n  content: \"\\F348\";\n}\n.entypo-mixi:before {\n  content: \"\\F34B\";\n}\n.entypo-behance:before {\n  content: \"\\F34E\";\n}\n.entypo-google-circles:before {\n  content: \"\\F351\";\n}\n.entypo-vkontakte:before {\n  content: \"\\F354\";\n}\n.entypo-smashing:before {\n  content: \"\\F357\";\n}\n.entypo-sweden:before {\n  content: \"\\F601\";\n}\n.entypo-db-shape:before {\n  content: \"\\F600\";\n}\n.entypo-logo-db:before {\n  content: \"\\F603\";\n}\n\n/* entypo */\n[class*=\"entypo-\"]:before {\n  font-family: 'entypo', sans-serif;\n}\nbody {\n  color: #2c2c2c;\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n  min-width: 350px;\n  color: #2a4552;\n}\nh1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {\n  font-family: \"Montserrat\", \"My-Montserrat\", sans-serif;\n}\na {\n  color: #2ed573;\n}\n:focus {\n  outline: none;\n}\n.table th, .table td {\n  border-top: none;\n}\n.pointer {\n  cursor: pointer;\n}\n.table-striped tbody tr:nth-of-type(even) {\n  background-color: rgba(31, 52, 104, 0.02);\n}\n.table-striped tbody tr:nth-of-type(odd) {\n  background-color: transparent !important;\n}\n.change-language-button button:first-child, .change-language-button button:first-child:hover, .change-language-button button:first-child:active {\n  background: transparent !important;\n  outline: none !important;\n  border: none !important;\n  color: #2a4552 !important;\n  box-shadow: none !important;\n}\n.change-language-button .dropdown-toggle::after {\n  vertical-align: middle;\n}\n.change-language-button .dropdown-item:hover {\n  color: #fff;\n  text-decoration: none;\n  background-color: rgba(51, 102, 204, 0.75);\n}\n.change-language-button .dropdown-menu {\n  padding: 0;\n}\n.change-language-button .dropdown-item {\n  padding: 6px 6px 6px 10px;\n}\n.network-fee {\n  position: relative;\n}\n.fees-burned {\n  position: absolute;\n  z-index: 9;\n  top: 47px;\n  background-color: #31467d;\n  border-radius: 3px;\n  padding: 10px;\n  left: -10px;\n  right: -20px;\n}\n.more-fee {\n  position: relative;\n  left: 30px;\n  bottom: 10;\n}\n.search-button {\n  border-radius: 0px 4px 4px 0px;\n  background-color: #31467d;\n  width: 49px;\n  height: 40px;\n}\n.search-button svg {\n    fill: #fff;\n    vertical-align: middle;\n    margin-top: -3px;\n    margin-bottom: -3px;\n}\n.heading-bar {\n  background-color: #192a56;\n  color: rgba(255, 255, 255, 0.56);\n  min-height: 0px !important;\n  padding: 10px 0;\n  border-top: 1px solid #243c47;\n  align-items: flex-start !important;\n  -webkit-transition: height 2s ease;\n  -moz-transition: height 2s ease;\n  transition: height 2s ease;\n}\n.panel-title {\n  font-size: 24px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.25;\n  letter-spacing: normal;\n  text-align: left;\n  color: #3d464d;\n}\n.second-heading-bar {\n  background-color: #1f3468;\n  height: 60px;\n  padding-left: 22px;\n}\n.second-heading-bar .go-exchange {\n    position: absolute;\n    right: 16px;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n.second-heading-bar .go-exchange button {\n      font-size: 15px;\n      font-weight: 400;\n      font-family: \"Open Sans\";\n      color: #ffffff;\n      right: 16px;\n      border-radius: 4px;\n      background-color: #395497;\n}\n.second-heading-bar a {\n    color: #fff;\n    text-decoration: none;\n    fill: #fff;\n}\n.second-heading-bar a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n    color: #2ed573;\n    fill: #2ed573;\n}\n.second-heading-bar .nav-item {\n    padding-top: 0;\n    padding-bottom: 0;\n    padding-right: 20px;\n}\n.search-form {\n  width: 100%;\n}\n.search-box-container {\n  min-width: 30%;\n}\n.btn-outline-primary {\n  background-color: #f4f4f4;\n  border: none;\n  border-radius: 0;\n  cursor: pointer;\n  display: block;\n  outline: none;\n}\n.cus-pagination button {\n  border-radius: 0;\n  background-color: rgba(255, 255, 255, 0);\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n  color: rgba(16, 4, 55, 0.5);\n  cursor: pointer;\n}\n.cus-pagination button:hover {\n  background-color: transparent;\n  color: #0c0033;\n}\n.cus-pagination button:hover, .cus-pagination button:active, .cus-pagination button:focus, .cus-pagination .btn-active {\n  background-color: #e9ecf1;\n  outline: none !important;\n  border: none !important;\n  box-shadow: none !important;\n}\n.card-header-tabs {\n  outline: none;\n}\n.nav-tabs .nav-link {\n  color: rgba(16, 4, 55, 0.5);\n}\n.nav-tabs .nav-link.active, .nav-tabs .nav-link:hover {\n  color: #0c0033;\n}\n.nav-tabs .nav-link:hover {\n  border-bottom: none;\n}\n.pagination {\n  display: -ms-flexbox;\n  display: flex;\n  padding-left: 0;\n  list-style: none;\n  border-radius: .25rem;\n}\n.pagination .page-item.active .page-link {\n    z-index: unset;\n}\n.pagination li.page-item {\n    margin: 0 3px 0 0;\n}\n.pagination li.page-item a.page-link {\n      background-color: #e7e9ec;\n      border: none;\n      border-radius: 0;\n      color: currentColor;\n      cursor: pointer;\n      display: block;\n      outline: none;\n      padding: 10px 15px;\n}\n.pagination li.page-item.active a.page-link {\n    background-color: #dadce2;\n}\n.long-address {\n  word-break: break-all;\n}\n#footer {\n  position: absolute;\n  width: 100%;\n  clear: both;\n  bottom: 0;\n  height: 56px;\n  padding: 20px 0px;\n  opacity: 0.9;\n  font-family: \"Open Sans\";\n  font-size: 12px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  text-align: left;\n  color: #1f3468;\n  background-color: #f4f5f4;\n}\n#footer .footer-menu {\n    font-size: 0.8rem;\n}\n#footer .footer-menu .footer-icon {\n      height: 20px;\n      width: 20px;\n      margin-left: 25px;\n}\n#footer .footer-menu ul.links {\n      padding: 0;\n      list-style: none;\n      margin: 0px;\n      margin-bottom: 5px;\n}\n#footer .footer-menu ul.links li {\n        display: inline-block;\n}\n#footer .footer-menu ul.links li a {\n          display: block;\n}\n#footer .footer-menu .d-inline-block {\n      display: inline-block;\n}\n.input-group > .input-group-append > .btn {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\nbtn {\n  cursor: pointer;\n}\n.no-margin {\n  margin: 0 !important;\n}\n.no-padding {\n  padding: 0;\n}\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.datepicker-container {\n  padding-top: 10px;\n  float: left;\n}\n.datepicker-container .vdp-datepicker {\n    display: inline-block;\n    margin-right: 5px;\n    line-height: 34px;\n    padding: 0;\n}\n.datepicker-container .vdp-datepicker input[type=\"text\"] {\n      width: 150px;\n}\n.datepicker-container span {\n    display: inline-block;\n    margin-right: 5px;\n    height: 40px;\n    line-height: 40px;\n}\n.home-pagination-block {\n  float: right;\n  padding: 10px 0 10px 0;\n  margin: 0;\n}\n.home-pagination-block .page-item .page-link {\n    text-align: center;\n}\n.clear {\n  clear: both;\n  display: block;\n}\n.pt-10 {\n  padding-top: 10px;\n}\n.pt-20 {\n  padding-top: 20px;\n}\n.pb-16 {\n  padding-bottom: 16px;\n}\n.pb-20 {\n  padding-bottom: 20px;\n}\n.pb-40 {\n  padding-bottom: 40px;\n}\n.pt-40 {\n  padding-top: 40px;\n}\n.pt-56 {\n  padding-top: 56px;\n}\n.mt-20 {\n  margin-top: 20px;\n}\n.mb-20 {\n  margin-bottom: 20px;\n}\n.p-20 {\n  padding: 20px 0;\n}\n.p-10 {\n  padding: 10px 0;\n}\n.ml-10 {\n  margin-left: 10px;\n}\n.pr-10 {\n  padding-right: 10px !important;\n}\n.k {\n  width: 10px;\n  height: 9px;\n  display: inline-block;\n  background-repeat: no-repeat;\n  background-size: contain;\n  -moz-transition: transform .2s;\n  -webkit-transition: transform .2s;\n  transition: transform .2s;\n}\n.text-left {\n  text-align: left;\n}\n.k.k-angle {\n  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMiA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0OC4yICg0NzMyNykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+b3Blbl9NQjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJCX0hvbWVfMV9FeGNoYW5nZSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNzkuMDAwMDAwLCAtMjM4LjAwMDAwMCkiPgogICAgICAgIDxnIGlkPSJNeUJhbGFuY2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtNC4wMDAwMDApIiBmaWxsPSIjMkMyQzJDIj4KICAgICAgICAgICAgPGcgaWQ9Im9wZW5fbXliYWxhbmNlIj4KICAgICAgICAgICAgICAgIDxnIGlkPSJvcGVuX01CIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTc5LjAwMDAwMCwgMjQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGUtNiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMy40NzM2ODQsIDMuNzg5NDc0KSByb3RhdGUoNDUuMDAwMDAwKSB0cmFuc2xhdGUoLTMuNDczNjg0LCAtMy43ODk0NzQpICIgeD0iLTAuNjMxNTc4OTQ3IiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDguNTI2MzE2LCAzLjc4OTQ3NCkgc2NhbGUoLTEsIDEpIHJvdGF0ZSg0NS4wMDAwMDApIHRyYW5zbGF0ZSgtOC41MjYzMTYsIC0zLjc4OTQ3NCkgIiB4PSI0LjQyMTA1MjYzIiB5PSIzLjE1Nzg5NDc0IiB3aWR0aD0iOC4yMTA1MjYzMiIgaGVpZ2h0PSIxLjI2MzE1Nzg5Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==);\n}\n.k.right {\n  -moz-transform: rotate(270deg);\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\ntd .k-angle {\n  padding-top: 17px;\n}\ntd .td-inline-symbol {\n  display: inline-block;\n  min-width: 60px;\n  text-align: left;\n  margin-left: 5px;\n}\ntd .td-inline-number {\n  min-width: 100px;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: right;\n}\n.table-hover td:hover {\n  cursor: pointer;\n}\n.table-responsive-wraper {\n  overflow: auto;\n}\n.table-more {\n  color: #2ed573;\n}\na:hover, .second-heading-bar a:active, .second-heading-bar a:focus {\n  color: #2ed573;\n}\n.cursor-pointer, .cursor-pointer:focus, .cursor-pointer:hover, .cursor-pointer:active {\n  cursor: pointer !important;\n}\n.cursor-pointer .btn, .cursor-pointer:focus .btn, .cursor-pointer:hover .btn, .cursor-pointer:active .btn {\n    cursor: pointer !important;\n}\n.table thead th {\n  font-weight: normal;\n  padding: 15px 6px;\n  height: 40px;\n  background-color: #1f3468;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #ffffff;\n}\n.table th, .table td {\n  white-space: nowrap;\n  padding: 20px 6px;\n  line-height: 20px;\n  height: 20px;\n  vertical-align: middle;\n}\n.card-header {\n  min-height: 40px;\n  background-color: #f4f4f4;\n}\n.card-header .nav-item {\n    font-size: 12px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: center;\n}\n.card-header a[aria-selected=\"false\"] {\n    color: #100437;\n    opacity: 0.5;\n}\n.calendar-icon {\n  cursor: pointer;\n}\n.calendar-icon > div:first-child {\n  position: relative;\n}\n.calendar-icon > div:first-child:after {\n  content: \"\";\n  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjJweCIgaGVpZ2h0PSIyMnB4IiB2aWV3Qm94PSIwIDAgMzYgMzYiIHhtbDpzcGFjZT0icHJlc2VydmUiPgoJPGcgZmlsbD0iI2RmZGJkYiI+CgkJPHBhdGggZD0iTTMwLjIyNCwzLjk0OGgtMS4wOThWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1Yy0xLjQ3NCwwLTIuNjcsMS4yMzMtMi42NywyLjc1djEuMTk3aC0yLjc0VjIuNzUgICAgYzAtMS41MTctMS4xOTctMi43NS0yLjY3LTIuNzVjLTEuNDczLDAtMi42NywxLjIzMy0yLjY3LDIuNzV2MS4xOTdoLTIuNzRWMi43NWMwLTEuNTE3LTEuMTk3LTIuNzUtMi42Ny0yLjc1ICAgIGMtMS40NzMsMC0yLjY3LDEuMjMzLTIuNjcsMi43NXYxLjE5N0g2LjIyNGMtMi4zNDMsMC00LjI1LDEuOTA3LTQuMjUsNC4yNXYyNGMwLDIuMzQzLDEuOTA3LDQuMjUsNC4yNSw0LjI1aDI0ICAgIGMyLjM0NCwwLDQuMjUtMS45MDcsNC4yNS00LjI1di0yNEMzNC40NzQsNS44NTUsMzIuNTY3LDMuOTQ4LDMwLjIyNCwzLjk0OHogTTI1LjI4NiwyLjc1YzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjUgICAgYzAuNjQ2LDAsMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNCwxLjI1LTEuMTcsMS4yNWMtMC42NDUsMC0xLjE3LTAuNTYxLTEuMTctMS4yNVYyLjc1eiBNMTcuMjA2LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogTTkuMTI1LDIuNzUgICAgYzAtMC42ODksMC41MjUtMS4yNSwxLjE3LTEuMjVzMS4xNywwLjU2MSwxLjE3LDEuMjV2NC44OTZjMCwwLjY4OS0wLjUyNSwxLjI1LTEuMTcsMS4yNXMtMS4xNy0wLjU2MS0xLjE3LTEuMjVWMi43NXogICAgIE0zMS45NzQsMzIuMTk4YzAsMC45NjUtMC43ODUsMS43NS0xLjc1LDEuNzVoLTI0Yy0wLjk2NSwwLTEuNzUtMC43ODUtMS43NS0xLjc1di0yMmgyNy41VjMyLjE5OHoiIGZpbGw9IiNkZmRiZGIiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjE0LjYyNiIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg5Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIxNC42MjYiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4OSIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMTQuNjI2IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODkiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTUiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSIxMi44NTciIHk9IjIwLjA4NCIgd2lkdGg9IjQuNTk2IiBoZWlnaHQ9IjQuMDg2Ii8+CgkJPHJlY3QgeD0iMTguOTk1IiB5PSIyMC4wODQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjAuMDg0IiB3aWR0aD0iNC41OTYiIGhlaWdodD0iNC4wODYiLz4KCQk8cmVjdCB4PSI2LjcyNCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjEyLjg1NyIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjE4Ljk5NSIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NSIgaGVpZ2h0PSI0LjA4NiIvPgoJCTxyZWN0IHg9IjI1LjEyOCIgeT0iMjUuNTQiIHdpZHRoPSI0LjU5NiIgaGVpZ2h0PSI0LjA4NiIvPgoJPC9nPgoKPC9zdmc+);\n  position: absolute;\n  right: 7px;\n  top: 8px;\n  height: 22px;\n  width: 22px;\n  display: block;\n  background-repeat: no-repeat;\n}\n.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {\n  border: 1px solid #4cd137 !important;\n  border-radius: 50%;\n}\n.pos-value {\n  color: #4cd137 !important;\n}\n.neg-value {\n  color: #e84118 !important;\n}\n.light-text {\n  color: rgba(255, 255, 255, 0.56);\n}\n.datepicker-container span {\n  margin-right: 0;\n}\n.vdp-datepicker .vdp-datepicker__calendar {\n  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);\n  border-radius: 5px;\n}\n.vdp-datepicker input {\n  padding-left: 5px;\n  border: 1px solid rgba(0, 0, 0, 0.125);\n  border-radius: 5px;\n  position: relative;\n  z-index: 2;\n  background: transparent;\n  cursor: pointer;\n}\n.vdp-datepicker input:hover, .vdp-datepicker input:active, .vdp-datepicker input:focus {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n}\n.vdp-datepicker .vdp-datepicker__clear-button {\n  position: absolute;\n  right: 34px;\n  top: 0px;\n  font-size: 20PX;\n  font-style: normal;\n  font-family: sans-serif;\n  color: #ddd;\n  z-index: 3;\n}\n.vdp-datepicker .vdp-datepicker__clear-button:hover {\n  color: #bbb;\n}\n.home-breadcrumb {\n  background: transparent;\n  margin: 0;\n  float: right;\n  padding-right: 0;\n}\n.big-heading {\n  padding: 12px 0;\n  margin: 0;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n}\n.no-margin-right {\n  margin-right: 0 !important;\n}\n.no-margin-right > * {\n    margin-right: 0 !important;\n}\n.no-margin-right .btn-secondary {\n    margin-right: 0 !important;\n}\n.full-width-btn-group button {\n  font-size: 10px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.2;\n  letter-spacing: normal;\n  text-align: center;\n}\n.full-width-btn-group .btn-active {\n  margin-right: 0 !important;\n  color: #2ed573;\n}\n.full-width-btn-group .btn-secondary {\n  margin-right: 0 !important;\n  color: #0c0033;\n}\n.no-padding-right {\n  padding-right: 0 !important;\n}\n.no-padding-right > * {\n    padding-right: 0 !important;\n}\n.no-padding-left {\n  padding-left: 0 !important;\n}\n.inline-arrow {\n  padding-left: 12px;\n  line-height: 20px;\n  height: 20px;\n  display: inline-block;\n  vertical-align: middle;\n}\n.heading-summary {\n  list-style: none;\n  margin: 0;\n  padding: 10px 17px 0 17px;\n  line-height: 20px;\n  height: 56px;\n  overflow: hidden;\n  -webkit-transition: height .5s ease;\n  -moz-transition: height .5s ease;\n  transition: height .5s ease;\n}\n.heading-summary.header-expand {\n    height: auto !important;\n}\n.heading-summary li {\n    float: left;\n    float: left;\n    margin-right: 15px;\n    color: #fff;\n    min-width: 105px;\n    padding-bottom: 15px;\n    position: relative;\n}\n.heading-summary .show-more {\n    position: absolute;\n    right: -18px;\n    top: -6px;\n}\n.text-logo {\n  white-space: normal;\n  display: inline-block;\n  vertical-align: middle;\n}\n@media (max-width: 850px) {\n.navbar {\n    font-size: 14px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.43;\n    letter-spacing: normal;\n}\n.navbar #autosuggest {\n      visibility: hidden;\n      width: 0px;\n}\n.navbar .search-button {\n      border-radius: 4px;\n}\n.navbar .search-expand {\n      visibility: visible !important;\n      width: 100% !important;\n      width: 365px !important;\n}\n}\n@media (max-width: 430px) {\n.go-exchange {\n    display: none;\n}\n}\n@media (max-width: 575px) {\n.container {\n    padding: 0px;\n}\n.kyber-logo {\n    display: none;\n}\n.navbar-nav {\n    display: flex;\n    flex-direction: row;\n}\n.navbar-nav .navbar {\n      padding: 0;\n}\n.navbar-nav li {\n      padding: 10px !important;\n}\n.pt-40, .pt-56 {\n    padding-top: 20px;\n}\n.panel-heading {\n    padding-left: 15px;\n}\n.datepicker-container {\n    padding-left: 15px;\n}\n.search-box-container {\n    width: calc(100% - 80px);\n}\n.second-heading-bar {\n    padding: 15px;\n}\n}\n.small-table .table-responsive {\n  display: table;\n}\n@media (min-width: 576px) {\n.tracker-logo {\n    padding-left: 0;\n}\n.tracker-logo a {\n      padding-left: 0 !important;\n}\n}\n@media (min-width: 720px) {\n.table-responsive {\n    display: table;\n}\n}\n@media (max-width: 780px) {\n.full-width-btn-group {\n    display: flex;\n}\n.full-width-btn-group .btn {\n      flex: 1;\n}\n.full-width-pagination {\n    display: flex;\n    width: 100%;\n}\n.full-width-pagination li {\n      flex: 1;\n}\n.chart-period-picker {\n    position: static !important;\n    display: block;\n    width: 100%;\n}\n.card {\n    border-radius: 0px;\n    border-top: none;\n    border-left: none;\n    border-right: none;\n}\n.card .chart-period-picker {\n      padding-bottom: 5px;\n      padding-left: 10px;\n}\n.card .chart-period-picker .full-width-btn-group {\n        display: inline-flex;\n}\n.card-header {\n    border-top: 1px solid rgba(0, 0, 0, 0.125);\n}\ntable tr, table th {\n    border-radius: 0px !important;\n}\n#footer {\n    height: auto !important;\n    background-color: #ffffff;\n    padding-bottom: 0;\n    font-size: 12px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    text-align: left;\n    color: #1f3468;\n}\n#footer .row {\n      display: block;\n}\n#footer .row .footer-menu, #footer .row .footer-menu {\n        text-align: center !important;\n        padding-bottom: 10px;\n}\n#footer .row .footer-icon {\n        margin: 0 15px !important;\n}\n#footer .row .footer-link {\n        background-color: #f4f5f4;\n        padding: 20px 0;\n}\n}\n.trade-list {\n  min-height: 500px;\n}\n.trade-list .trade-direction {\n    position: relative;\n}\n.trade-list .trade-direction .trade-direction-down-symbol {\n      position: absolute;\n      left: 5px;\n      top: 30px;\n      color: #1f3468;\n      opacity: 0.15;\n}\n.trade-list .wallet-detail-title {\n    font-family: \"Open Sans\";\n    font-size: 24px;\n    font-weight: 600;\n    color: #3d464d;\n}\n.trade-list .btn-export {\n    float: right;\n    margin-top: 10px;\n    border: solid 1px #56c7c4;\n    color: #00d3a7;\n    font-size: 14px;\n    line-height: 1.43;\n    float: left;\n    margin-left: 37px;\n    padding: 8px 16px;\n    background-color: white;\n    font-family: \"Open Sans\";\n}\n.trade-details-container {\n  font-family: \"Open Sans\";\n  color: #0c0033;\n  letter-spacing: normal;\n  font-style: normal;\n  font-stretch: normal;\n  word-wrap: break-word;\n}\n.trade-details-container .background-detail {\n    background-color: #f9fafc;\n}\n.trade-details-container .left-trade-detail {\n    padding: 32px 15px 35px 15px;\n    border-bottom: solid 1px #d7d8d9;\n}\n.trade-details-container .left-trade-detail .trade-time {\n      padding-left: 15px;\n      font-size: 16px;\n      font-weight: 600;\n      line-height: 1.43;\n      text-align: left;\n}\n.trade-details-container .left-trade-detail .left-trade-rate {\n      background-color: #ffffff;\n      box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);\n      margin: 20px 0px;\n      /* align-items: center; */\n      font-size: 18px;\n      font-weight: 600;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: center;\n      color: #0c0033;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .token {\n        padding: 18px 0;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .token .token-symbol {\n          font-size: 24px;\n          letter-spacing: 1.8px;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .to {\n        padding-top: 30px;\n}\n.trade-details-container .left-trade-detail .left-trade-rate .usd-value {\n        font-size: 14px;\n        font-weight: normal;\n}\n.trade-details-container .left-trade-detail .trade-note {\n      font-size: 14px;\n      padding-left: 15px;\n}\n.trade-details-container .right-trade-detail {\n    padding: 32px 24px 0px 36px;\n}\n.trade-details-container .right-trade-detail .trade-detail-title {\n      font-size: 16px;\n      font-weight: 600;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: left;\n      color: #0c0033 !important;\n      padding-bottom: 6px;\n}\n.trade-details-container .right-trade-detail .trade-detail-link {\n      font-size: 16px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: left;\n      color: #2ed573;\n      padding-bottom: 29px;\n}\n.trade-details-container .rate-detail {\n    text-align: center;\n    margin: 0;\n    padding: 15px 0;\n    box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);\n}\n.trade-details-container .rate-detail span {\n      color: #0c0033;\n}\n.trade-details-container .rate-detail .rate-detail-title {\n      font-size: 12px;\n      font-weight: 600;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: left;\n      color: #0c0033;\n      text-align: center;\n}\n.trade-details-container .rate-detail .rate-detail-value {\n      font-size: 16px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: 1;\n      letter-spacing: normal;\n      text-align: left;\n      color: #0c0033;\n      padding-top: 10px;\n      text-align: center;\n}\n.address-detail-container {\n  box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);\n  font-family: \"Open Sans\";\n  color: #3d464d;\n  letter-spacing: normal;\n  font-style: normal;\n  font-stretch: normal;\n  word-wrap: break-word;\n}\n.address-detail-container .border-right {\n    border-right: dashed 1.2px #cbcdcf;\n}\n.address-detail-container .wallet-title {\n    font-size: 16px;\n    font-weight: 600;\n    padding: 14px 20px 12px 20px;\n    background-color: #f5f6f7;\n}\n.address-detail-container .wallet-title .wallet-address {\n      font-size: 16px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #2ed573;\n}\n.address-detail-container .wallet-value {\n    text-align: center;\n    padding-top: 32px;\n    padding-bottom: 39px;\n}\n.address-detail-container .wallet-value .value-number {\n      font-size: 24px;\n      line-height: 1;\n}\n.address-detail-container .walet-note {\n    font-size: 12px;\n    font-style: italic;\n    line-height: 1.17;\n    letter-spacing: 1px;\n    color: #0c0033;\n    padding-left: 20px;\n    padding-bottom: 10px;\n}\n@media (min-width: 576px) and (max-width: 730px) {\n.vdp-datepicker__calendar {\n    left: -80px;\n}\n}\n@media (max-width: 320px) {\n.datepicker-container .vdp-datepicker {\n    display: block;\n}\n}\n@media (max-width: 576px) {\n.datepicker-container span {\n    display: block;\n    float: left;\n    clear: left;\n}\n.datepicker-container .vdp-datepicker {\n    position: relative;\n    margin: 0;\n}\n.datepicker-container .vdp-datepicker.from .vdp-datepicker__calendar {\n      left: 0px !important;\n}\n.datepicker-container .vdp-datepicker.to .vdp-datepicker__calendar {\n      right: 0px !important;\n}\n.datepicker-container .vdp-datepicker__calendar .cell {\n    margin: 0;\n    padding: 0;\n    clear: none;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n    clear: both;\n    text-align: center;\n}\n.datepicker-container .vdp-datepicker__calendar .next {\n    clear: none;\n    float: right;\n}\n.datepicker-container .vdp-datepicker__calendar .prev {\n    clear: none;\n    float: left;\n}\n.datepicker-container .vdp-datepicker__calendar .up {\n    clear: none;\n    text-align: center;\n}\n.trade-details-container label {\n    margin: 10px 0 0 0;\n}\n}\n.chart-period-picker {\n  position: absolute;\n  top: 11px !important;\n  right: 33px !important;\n}\n.image-inline-td {\n  display: inline-block;\n  width: 26px;\n  vertical-align: middle;\n  height: 26px;\n  margin-top: -3px;\n}\n.kyber-logo {\n  height: 46px;\n  margin-right: 45px;\n}\n.inline-logo {\n  background-image: url(/images/logo_nav_light.svg);\n  background-repeat: no-repeat;\n  width: 30px;\n  height: 46px;\n  background-position: center center;\n  margin-right: 45px;\n  vertical-align: middle;\n  display: inline-block;\n}\n.icon-second-header {\n  margin-right: 5px;\n}\n.p-relative {\n  position: relative;\n}\n.change-language-button > .btn {\n  padding: 0 !important;\n}\n.tracker-logo .router-link-active {\n  white-space: nowrap;\n}\nbody {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n}\nhtml {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n* html #wrapper {\n  height: 100%;\n}\n#wrapper {\n  min-height: 100%;\n  position: relative;\n}\n#page-content {\n  padding-bottom: 115px;\n  overflow-x: hidden;\n}\n.token-link {\n  cursor: pointer;\n  color: #2ed573;\n}\n.token-link:hover {\n  color: #2ed573;\n  text-decoration: underline;\n}\n.topbar-value {\n  font-size: 16px;\n}\n.tooltip {\n  display: block !important;\n  z-index: 5;\n}\n.tooltip .tooltip-inner {\n    background: black;\n    color: white;\n    border-radius: 16px;\n    padding: 5px 10px 4px;\n}\n.tooltip .tooltip-arrow {\n    width: 0;\n    height: 0;\n    border-style: solid;\n    position: absolute;\n    margin: 5px;\n    border-color: black;\n    z-index: 1;\n}\n.tooltip[x-placement^=\"top\"] {\n    margin-bottom: 5px;\n}\n.tooltip[x-placement^=\"top\"] .tooltip-arrow {\n      border-width: 5px 5px 0 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      bottom: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"bottom\"] {\n    margin-top: 5px;\n}\n.tooltip[x-placement^=\"bottom\"] .tooltip-arrow {\n      border-width: 0 5px 5px 5px;\n      border-left-color: transparent !important;\n      border-right-color: transparent !important;\n      border-top-color: transparent !important;\n      top: -5px;\n      left: calc(50% - 5px);\n      margin-top: 0;\n      margin-bottom: 0;\n}\n.tooltip[x-placement^=\"right\"] {\n    margin-left: 5px;\n}\n.tooltip[x-placement^=\"right\"] .tooltip-arrow {\n      border-width: 5px 5px 5px 0;\n      border-left-color: transparent !important;\n      border-top-color: transparent !important;\n      border-bottom-color: transparent !important;\n      left: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[x-placement^=\"left\"] {\n    margin-right: 5px;\n}\n.tooltip[x-placement^=\"left\"] .tooltip-arrow {\n      border-width: 5px 0 5px 5px;\n      border-top-color: transparent !important;\n      border-right-color: transparent !important;\n      border-bottom-color: transparent !important;\n      right: -5px;\n      top: calc(50% - 5px);\n      margin-left: 0;\n      margin-right: 0;\n}\n.tooltip[aria-hidden='true'] {\n    visibility: hidden;\n    opacity: 0;\n    transition: opacity .15s, visibility .15s;\n}\n.tooltip[aria-hidden='false'] {\n    visibility: visible;\n    opacity: 1;\n    transition: opacity .15s;\n}\n#autosuggest {\n  width: 100%;\n  width: 365px;\n  position: relative;\n  margin-left: 15px;\n  -webkit-transition: width .5s ease;\n  -moz-transition: width .5s ease;\n  transition: width .5s ease;\n}\n#autosuggest__input {\n  width: 100%;\n  height: 40px;\n  border-radius: 4px 0px 0px 4px;\n  background-color: #1f3468;\n  border-style: none;\n  color: #ffffff;\n  outline: none;\n  box-shadow: none !important;\n  border: none !important;\n}\n#autosuggest__input::placeholder {\n  font-size: 10px;\n  margin: auto;\n  text-align: left;\n  color: #ffffff;\n  font-size: 14px !important;\n  vertical-align: middle;\n  opacity: 0.7;\n  padding-left: 16px;\n}\n.autosuggest__results_item {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.autosuggest__results {\n  position: absolute;\n  color: black;\n  z-index: 5;\n  width: 100%;\n  font-family: \"Open Sans\";\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: left;\n  color: #0c0033;\n  /* box-sizing: border-box; */\n  background-color: #ffffff;\n  box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);\n}\n.autosuggest__results ul {\n    padding: 0px;\n    margin: 0px;\n}\n.autosuggest__results .autosuggest__results_item {\n    padding: 5px 0px;\n    height: 40px;\n}\n.autosuggest__results .autosuggest__results_item .logo-suggest-wraper {\n      width: 50px;\n}\n.autosuggest__results .autosuggest__results_item .logo-suggest-wraper .history-logo {\n        font-size: 1.5em;\n}\n.autosuggest__results .autosuggest__results_item .suggest-text {\n      line-height: 2.1em;\n}\n.autosuggest__results .autosuggest__results_item:hover {\n    background-color: #f5f3f6;\n}\n.datepicker-container {\n  font-family: \"Open Sans\";\n}\n.datepicker-container .vdp-datepicker input {\n    padding-left: 10px;\n    font-size: 16px;\n    border-radius: 3px;\n    border: solid 1px #1f3468;\n}\n.datepicker-container .vdp-datepicker input::placeholder {\n    color: #1f3468;\n    opacity: 0.8;\n    font-weight: normal;\n}\n.datepicker-container .vdp-datepicker input:focus {\n    border-color: #2ed573;\n}\n.datepicker-container .vdp-datepicker input:focus::placeholder {\n      color: #2ed573;\n      opacity: 0.8;\n      font-weight: normal;\n}\n.datepicker-container .calendar-icon > div:first-child:after {\n    background-image: url(/images/calendar.svg);\n    right: 8px;\n    top: 6px;\n}\n.datepicker-container .vdp-datepicker__calendar {\n    border-radius: 3px;\n    background-color: #ffffff;\n    box-shadow: 0 8px 16px 0 rgba(10, 59, 122, 0.1);\n    border: none;\n    top: 50px;\n}\n.datepicker-container .vdp-datepicker__calendar header {\n      margin-left: 20px;\n      margin-right: 20px;\n}\n.datepicker-container .vdp-datepicker__calendar header .up {\n        font-size: 16px;\n        font-weight: bolder;\n        color: #0c0033;\n}\n.datepicker-container .vdp-datepicker__calendar div {\n      padding: 20px;\n}\n.datepicker-container .vdp-datepicker__calendar .timestamp {\n      font-size: 16px;\n      line-height: 1.5;\n      text-align: center;\n      color: #0c0033;\n}\n.datepicker-container .vdp-datepicker__calendar .cell.selected, .datepicker-container .vdp-datepicker__calendar .vdp-datepicker__calendar .cell.selected.highlighted, .datepicker-container .vdp-datepicker__calendar .vdp-datepicker__calendar .cell.selected:hover {\n      background: #2ed573 !important;\n      border-radius: 50%;\n      color: #ffffff;\n}\n.datepicker-container .vdp-datepicker__calendar .cell.highlighted {\n      font-weight: bolder;\n      background: none;\n      color: #2ed573;\n}\n.datepicker-container .vdp-datepicker__calendar .cell.day-header {\n      font-size: 10px;\n      font-weight: bold;\n      text-align: center;\n      color: #7b7c8e;\n}\n.token-logo-detail {\n  width: 25px;\n  vertical-align: text-bottom;\n}\n.see-all-trade {\n  margin-top: 56px;\n  cursor: pointer;\n  width: 116px;\n  height: 36px;\n  border-radius: 3px;\n  border: solid 1px #56c7c4;\n  font-size: 14px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.43;\n  letter-spacing: normal;\n  text-align: center;\n  color: #00d3a7;\n  background-color: white;\n}\ntable.table-round th {\n  border-top: 0;\n}\ntable.table-round tr:first-child th:first-child {\n  border-top-left-radius: 6px;\n}\ntable.table-round tr:first-child th:last-child {\n  border-top-right-radius: 6px;\n}\n.navbar .router-link-exact-active {\n  color: #2ed573 !important;\n}\n", ""]);
 
 // exports
 
@@ -105101,7 +105101,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -105125,9 +105125,17 @@ var _vueClickOutside = __webpack_require__(776);
 
 var _vueClickOutside2 = _interopRequireDefault(_vueClickOutside);
 
+var _lodash = __webpack_require__(21);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
+//
+//
+//
 //
 //
 //
@@ -105346,15 +105354,21 @@ exports.default = {
       searchString: "",
       pageTitle: "",
       collectedFees: "",
-      feeToBurn: "",
-      collectedFee: "",
-      breadcrumbsItems: [],
       searchData: [],
       addressesMetamask: [],
-      isOpenFee: false
+      isOpenFee: false,
+      indexShowmore: -1
+
     };
   },
 
+
+  // ready: function () {
+  //   window.addEventListener('resize', this.handleResize)
+  // },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
 
   computed: {
     formatedKNCPriceChange24h: function formatedKNCPriceChange24h() {
@@ -105380,6 +105394,14 @@ exports.default = {
       _moment2.default.locale(locale);
       window.location.reload();
     },
+    handleResize: function handleResize(event) {
+      var arrayLi = this.$refs.headingSum.children;
+      if (arrayLi && arrayLi.length) {
+        this.indexShowmore = [].concat(_toConsumableArray(arrayLi)).findIndex(function (x) {
+          return x.offsetTop > 60;
+        }) - 1;
+      }
+    },
     getLanguage: function getLanguage() {
       if (typeof window.i18n != "undefined" && typeof window.i18n.locale != "undefined") {
         return window.i18n.locale;
@@ -105397,9 +105419,6 @@ exports.default = {
     },
     connectMetaMask: function connectMetaMask(e) {
       if (typeof web3 === "undefined") {
-        // console.log(
-        //  "Cannot connect to metamask. Please make sure you have metamask installed"
-        //);
         return;
       }
       var web3Service = new _web2.default(web3);
@@ -105407,21 +105426,12 @@ exports.default = {
       var browser = _bowser2.default.name;
       if (browser != "Chrome" && browser != "Firefox") {
         if (!web3Service.isTrust()) {
-          // console.log(
-          //  `Metamask is not supported on ${browser}, you can use Chrome or Firefox instead.`
-          //);
           return;
         }
       }
 
       try {
         var address = web3.eth.accounts[0];
-        // let suggestData = addresses.map(addr => {
-        //   return {
-        //     type: "metamask",
-        //     addr: addr
-        //   };
-        // });
         this.addressesMetamask = [{
           type: "metamask",
           addr: address
@@ -105438,23 +105448,12 @@ exports.default = {
         _this.networkFee = stats.networkFee;
         _this.tradeCount = stats.tradeCount;
         _this.totalBurnedFee = stats.totalBurnedFee + " KNC";
-        // stats.feeToBurn
-        //   ? Math.round(
-        //       +stats.totalBurnedFee.replace(",", "") /
-        //         +stats.feeToBurn.replace(",", "") *
-        //         1000
-        //     ) /
-        //       10 +
-        //     " %"
-        //   : 0;
-        _this.feeToBurn = stats.feeToBurn + " KNC";
-        _this.collectedFee = stats.collectedFees + " KNC";
         _this.collectedFees = stats.collectedFees + " KNC";
       });
 
       _superagent2.default.get("https://api.coinmarketcap.com/v1/ticker/kyber-network/").then(function (res) {
         var data = res.body[0];
-        if (!data || !data.id) {
+        if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
           return;
         }
 
@@ -105464,7 +105463,7 @@ exports.default = {
 
       _superagent2.default.get("https://api.coinmarketcap.com/v1/ticker/ethereum/").then(function (res) {
         var data = res.body[0];
-        if (!data || !data.id) {
+        if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
           return;
         }
 
@@ -105522,6 +105521,9 @@ exports.default = {
         _this2.$refs.seatchInputRef.searchInput = "";
       });
     },
+    clickHeading: function clickHeading() {
+      this.$refs.headingSum.className = "heading-summary p-relative header-expand";
+    },
     onClickOutside: function onClickOutside() {
       this.$refs.seatchInputRef.$el.className = "";
       this.$refs.headingSum.className = "heading-summary p-relative";
@@ -105538,7 +105540,6 @@ exports.default = {
     renderSuggestion: function renderSuggestion(suggestion) {
       var h = this.$createElement;
 
-      // return suggestion.item.type + " - " + suggestion.item.addr;
       var logoUrl = void 0;
       switch (suggestion.item.type) {
         case "address":
@@ -105582,101 +105583,14 @@ exports.default = {
     },
     onfocus: function onfocus() {
       this.connectMetaMask();
-    },
-    loadBreadcumbs: function loadBreadcumbs(route) {
-      var routeName = route.name;
-
-      switch (routeName) {
-        case "trade-list":
-          this.pageTitle = this.$t("page_title.trade_list");
-          this.breadcrumbsItems = [{
-            text: this.$t("navigator.home"),
-            to: { name: "home" }
-          }, {
-            text: this.$t("navigator.trades"),
-            active: true
-          }];
-          return;
-        case "token-list":
-          this.pageTitle = this.$t("page_title.token_list");
-          this.breadcrumbsItems = [{
-            text: this.$t("navigator.home"),
-            to: { name: "home" }
-          }, {
-            text: this.$t("navigator.tokens"),
-            active: true
-          }];
-          return;
-        case "trade-details":
-          this.pageTitle = this.$t("page_title.trade_detail");
-          this.breadcrumbsItems = [{
-            text: this.$t("navigator.home"),
-            to: { name: "home" }
-          }, {
-            text: this.$t("navigator.trades"),
-            to: { name: "trade-list" }
-          }, {
-            text: this.$t("navigator.trade_details"),
-            active: true
-          }];
-          return;
-        case "token-details":
-          var tokenInfo = _.find(_.values(_network2.default.tokens), function (token) {
-            return token.address === route.params.tokenAddr;
-          });
-
-          this.pageTitle = this.$t("page_title.token_detail");
-          if (tokenInfo) {
-            var icon = tokenInfo.icon || tokenInfo.symbol.toLowerCase() + ".svg";
-            var path = tokenInfo.hidden ? "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true" : "images/tokens/" + icon;
-            this.pageTitle = "<img class=\"token-logo-detail\" src=\"" + path + "\" /> <span>" + tokenInfo.name + "</span> <span class='sub-title'>(" + tokenInfo.symbol + ")</span>";
-          }
-
-          this.breadcrumbsItems = [{
-            text: this.$t("navigator.home"),
-            to: { name: "home" }
-          }, {
-            text: this.$t("navigator.tokens"),
-            to: { name: "token-list" }
-          }, {
-            text: this.$t("navigator.token_detail"),
-            active: true
-          }];
-          return;
-        case "search":
-          this.pageTitle = this.$t("page_title.search");
-          this.breadcrumbsItems = [{
-            text: this.$t("navigator.home"),
-            to: { name: "home" }
-          }, {
-            text: this.$t("navigator.search"),
-            active: true
-          }];
-          return;
-        case "home":
-          this.pageTitle = "";
-          this.breadcrumbsItems = [];
-          return;
-        default:
-          this.pageTitle = "";
-          this.breadcrumbsItems = [];
-          return;
-      }
-    }
-  },
-
-  watch: {
-    $route: function $route(toVal, fromVal) {
-      this.loadBreadcumbs(toVal);
     }
   },
 
   mounted: function mounted() {
     // this.customizeMoment();
     // this.changeLanguage(localStorage.getItem('locale') || 'en')
+    window.addEventListener('resize', _lodash2.default.debounce(this.handleResize, 100));
     this.refresh();
-    this.connectMetaMask();
-    this.loadBreadcumbs(this.$route);
     this.searchData = _store2.default.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
   },
@@ -106814,7 +106728,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -107813,7 +107727,8 @@ module.exports = {
       "name": "Kyber Network",
       "symbol": "KNC",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
-      "decimal": 18
+      "decimal": 18,
+      "cmcId": "kyber-network"
     },
     "OMG": {
       "name": "OmiseGO",
@@ -108900,6 +108815,14 @@ var render = function() {
             _c(
               "div",
               {
+                directives: [
+                  {
+                    name: "click-outside",
+                    rawName: "v-click-outside",
+                    value: _vm.onClickOutside,
+                    expression: "onClickOutside"
+                  }
+                ],
                 staticClass:
                   "no-padding d-flex justify-content-between col-12 col-sm-12"
               },
@@ -108908,7 +108831,12 @@ var render = function() {
                   "ul",
                   {
                     ref: "headingSum",
-                    staticClass: "heading-summary p-relative"
+                    staticClass: "heading-summary p-relative",
+                    on: {
+                      click: function($event) {
+                        _vm.clickHeading()
+                      }
+                    }
                   },
                   [
                     _c("li", { attrs: { id: "network-volume" } }, [
@@ -108919,7 +108847,14 @@ var render = function() {
                       _vm._v(" "),
                       _c("span", { staticClass: "topbar-value" }, [
                         _vm._v(_vm._s(_vm.networkVolume))
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      this.indexShowmore == 0
+                        ? _c("img", {
+                            staticClass: "show-more",
+                            attrs: { src: "/images/drop-down.svg" }
+                          })
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("li", { attrs: { id: "knc-price" } }, [
@@ -108947,7 +108882,14 @@ var render = function() {
                             "(" + _vm._s(_vm.formatedKNCPriceChange24h) + ")"
                           )
                         ]
-                      )
+                      ),
+                      _vm._v(" "),
+                      this.indexShowmore == 1
+                        ? _c("img", {
+                            staticClass: "show-more",
+                            attrs: { src: "/images/drop-down.svg" }
+                          })
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("li", { attrs: { id: "eth-price" } }, [
@@ -108971,7 +108913,14 @@ var render = function() {
                             "(" + _vm._s(_vm.formatedETHPriceChange24h) + ")"
                           )
                         ]
-                      )
+                      ),
+                      _vm._v(" "),
+                      this.indexShowmore == 2
+                        ? _c("img", {
+                            staticClass: "show-more",
+                            attrs: { src: "/images/drop-down.svg" }
+                          })
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("li", { attrs: { id: "fee-to-burn" } }, [
@@ -108981,8 +108930,15 @@ var render = function() {
                       _c("br"),
                       _vm._v(" "),
                       _c("span", { staticClass: "topbar-value" }, [
-                        _vm._v(_vm._s(_vm.collectedFee))
-                      ])
+                        _vm._v(_vm._s(_vm.collectedFees))
+                      ]),
+                      _vm._v(" "),
+                      this.indexShowmore == 3
+                        ? _c("img", {
+                            staticClass: "show-more",
+                            attrs: { src: "/images/drop-down.svg" }
+                          })
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c("li", { attrs: { id: "total-burn-fee" } }, [
@@ -108994,26 +108950,13 @@ var render = function() {
                       _c("span", { staticClass: "topbar-value" }, [
                         _vm._v(_vm._s(_vm.totalBurnedFee))
                       ])
-                    ]),
-                    _vm._v(" "),
-                    _c("img", {
-                      staticClass: "show-more",
-                      attrs: { src: "/images/drop-down.svg" }
-                    })
+                    ])
                   ]
                 ),
                 _vm._v(" "),
                 _c(
                   "div",
                   {
-                    directives: [
-                      {
-                        name: "click-outside",
-                        rawName: "v-click-outside",
-                        value: _vm.onClickOutside,
-                        expression: "onClickOutside"
-                      }
-                    ],
                     ref: "searchComponent",
                     staticClass:
                       "p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3"
@@ -109189,14 +109132,14 @@ var render = function() {
               "a",
               {
                 staticClass: "go-exchange",
-                attrs: { href: "https://kyber.network/" }
+                attrs: { href: "https://kyber.network/", target: "_blank" }
               },
               [
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-default btn-export",
-                    attrs: { type: "button", target: "_blank" }
+                    staticClass: "btn btn-default pointer",
+                    attrs: { type: "button" }
                   },
                   [_vm._v(_vm._s(_vm.$t("navigator.go_to_exchange")))]
                 )
@@ -109341,16 +109284,11 @@ var staticRenderFns = [
     return _c("li", [
       _c(
         "a",
-        {
-          attrs: {
-            href: "https://kybernetwork.zendesk.com/hc/en-us",
-            target: "_blank"
-          }
-        },
+        { attrs: { href: "https://t.me/KyberTrackerBot", target: "_blank" } },
         [
           _c("img", {
             staticClass: "footer-icon",
-            attrs: { src: "/images/zendesk.svg" }
+            attrs: { src: "/images/telegram.svg" }
           })
         ]
       )
@@ -109383,7 +109321,10 @@ var staticRenderFns = [
       _c(
         "a",
         {
-          attrs: { href: "https://github.com/kyberNetwork/", target: "_blank" }
+          attrs: {
+            href: "https://github.com/kyberNetwork/kyber-tracker/",
+            target: "_blank"
+          }
         },
         [
           _c("img", {
@@ -109782,7 +109723,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -109802,7 +109743,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -110143,16 +110084,17 @@ exports.default = {
         csvContent += data.map(function (d) {
           var time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",", '');
           var fromToken = d.takerTokenSymbol;
-          var fromAmount = tokens[fromToken] ? new _bignumber2.default(d.takerTokenAmount.toString()).div(Math.pow(10, tokens[fromToken].decimal)) : new _bignumber2.default(0);
+          var fromAmount = tokens[fromToken] ? new _bignumber2.default(d.takerTokenAmount.toString()).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0;
 
           var toToken = d.makerTokenSymbol;
-          var toAmount = tokens[toToken] ? new _bignumber2.default(d.makerTokenAmount.toString()).div(Math.pow(10, tokens[toToken].decimal)) : new _bignumber2.default(0);
+          var toAmount = tokens[toToken] ? new _bignumber2.default(d.makerTokenAmount.toString()).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0;
 
-          var rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount);
+          // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
+          var usdAmount = d.volumeUsd ? d.volumeUsd.toString() : 0;
 
-          return time + ',' + fromToken + ',' + fromAmount.toString() + ',' + toToken + ',' + toAmount.toString() + ',' + rate.toString();
+          return time + ',' + fromToken + ',' + fromAmount + ',' + toToken + ',' + toAmount + ',' + usdAmount;
         }).join('\n').replace(/(^\{)|(\}$)/mg, '');
-        var csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,Rate\n' + csvContent;
+        var csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,USD Value\n' + csvContent;
 
         // window.open( encodeURI(csvData) );
         var dataCSV = encodeURI(csvData);
@@ -113814,13 +113756,19 @@ var render = function() {
               _vm._v(" "),
               _vm.searchResult.isValid && _vm.searchResult.data
                 ? _c("div", [
-                    _c("div", { staticClass: "wallet-detail-title pb-16" }, [
-                      _c("span", { staticClass: "no-margin" }, [
-                        _vm._v(
-                          _vm._s(_vm.$t("wallet_detail.wallet_detail")) + " "
-                        )
-                      ])
-                    ]),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "wallet-detail-title panel-heading pb-16"
+                      },
+                      [
+                        _c("span", { staticClass: "no-margin panel-title" }, [
+                          _vm._v(
+                            _vm._s(_vm.$t("wallet_detail.wallet_detail")) + " "
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "address-detail-container" }, [
                       _c("div", { staticClass: "wallet-title" }, [
@@ -113946,7 +113894,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "wallet-detail-title pt-56 pb-16" },
+                      {
+                        staticClass:
+                          "wallet-detail-title panel-heading pt-56 pb-16"
+                      },
                       [
                         _c("span", { staticClass: "no-margin" }, [
                           _vm._v(_vm._s(_vm.$t("wallet_detail.history")) + " ")
@@ -113964,7 +113915,7 @@ var render = function() {
               { staticClass: "datepicker-container pb-16" },
               [
                 _c("datepicker", {
-                  staticClass: "calendar-icon",
+                  staticClass: "calendar-icon from",
                   attrs: {
                     name: "searchFromDate",
                     language: _vm.locale,
@@ -113984,7 +113935,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("datepicker", {
-                  staticClass: "calendar-icon ml-2",
+                  staticClass: "calendar-icon to ml-2",
                   attrs: {
                     name: "searchToDate",
                     language: _vm.locale,
@@ -114034,7 +113985,7 @@ var render = function() {
           ? _c(
               "button",
               {
-                staticClass: "btn btn-default btn-export",
+                staticClass: "btn btn-default btn-export pointer",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
@@ -114381,7 +114332,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -114401,7 +114352,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -114548,7 +114499,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -114564,7 +114515,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -114855,7 +114806,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -114871,7 +114822,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -115156,7 +115107,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -115172,7 +115123,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -129606,7 +129557,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -129626,7 +129577,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -130109,7 +130060,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -130129,7 +130080,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -130348,7 +130299,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -130368,7 +130319,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -130973,7 +130924,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -130993,7 +130944,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -131586,7 +131537,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -131606,7 +131557,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -131904,7 +131855,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(21);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -131924,7 +131875,7 @@ var _AppRequest = __webpack_require__(33);
 
 var _AppRequest2 = _interopRequireDefault(_AppRequest);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -132162,7 +132113,7 @@ module.exports = {"website_title":"Kyber Network 跟踪网站","common":{"exchan
 
 
 __webpack_require__(906);
-__webpack_require__(21);
+__webpack_require__(22);
 __webpack_require__(907);
 __webpack_require__(908);
 
@@ -132282,7 +132233,7 @@ var _axios = __webpack_require__(352);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(22);
 
 var _util2 = _interopRequireDefault(_util);
 

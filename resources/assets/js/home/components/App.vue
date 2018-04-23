@@ -2,11 +2,12 @@
   <div id="wrapper">
     <div id="page-content">
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12">
-        <div class="no-padding d-flex justify-content-between col-12 col-sm-12">
-          <ul ref="headingSum" class="heading-summary p-relative">
+        <div class="no-padding d-flex justify-content-between col-12 col-sm-12" v-click-outside="onClickOutside">
+          <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
             <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
+              <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/>
             </li>
             <li id="knc-price">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
@@ -14,18 +15,20 @@
                 {{ kncPrice }} 
                 </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+              <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/>
             </li>
 
             <li id="eth-price">
               <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
               <span class="topbar-value" >{{ ethPrice }} </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/>
             </li>
 
             <li id="fee-to-burn">
               <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
               <span class="topbar-value">{{ collectedFees }}</span>
-              
+              <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/>
             </li>
                 
 
@@ -35,7 +38,8 @@
             </li> 
 
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
-            <img class="show-more" src="/images/drop-down.svg"/>
+            <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
+            
 
             <!-- <li>
               <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
@@ -47,7 +51,7 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3" v-click-outside="onClickOutside">
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3" >
             <vue-autosuggest
               class="ajsbd"
               ref="seatchInputRef"
@@ -152,8 +156,8 @@
             </form>
           </b-navbar-nav> -->
         </div>
-        <a href="https://kyber.network/" class="go-exchange">
-          <button type="button" class="btn btn-default btn-export" target="_blank">{{ $t('navigator.go_to_exchange') }}</button>
+        <a href="https://kyber.network/" class="go-exchange" target="_blank">
+          <button type="button" class="btn btn-default pointer">{{ $t('navigator.go_to_exchange') }}</button>
         </a>
       </b-navbar>
 
@@ -212,6 +216,7 @@ import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
 import ClickOutside from 'vue-click-outside'
+import _ from'lodash'
 
 export default {
   data() {
@@ -229,8 +234,17 @@ export default {
       collectedFees: "",
       searchData: [],
       addressesMetamask: [],
-      isOpenFee: false
+      isOpenFee: false,
+      indexShowmore: -1
+
     };
+  },
+
+  // ready: function () {
+  //   window.addEventListener('resize', this.handleResize)
+  // },
+  beforeDestroy: function () {
+    window.removeEventListener('resize', this.handleResize)
   },
 
   computed: {
@@ -256,6 +270,12 @@ export default {
       window.i18n.locale = locale;
       moment.locale(locale);
       window.location.reload();
+    },
+    handleResize (event) {     
+      let arrayLi = this.$refs.headingSum.children
+      if(arrayLi && arrayLi.length){
+        this.indexShowmore = [...arrayLi].findIndex( x => x.offsetTop > 60) - 1
+      }
     },
     getLanguage() {
       if (
@@ -382,6 +402,10 @@ export default {
         this.$refs.seatchInputRef.searchInput = "";
       });
     },
+
+    clickHeading(){
+      this.$refs.headingSum.className = "heading-summary p-relative header-expand"
+    },
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
       this.$refs.headingSum.className = "heading-summary p-relative"
@@ -445,6 +469,9 @@ export default {
   },
 
   mounted() {
+    // this.customizeMoment();
+    // this.changeLanguage(localStorage.getItem('locale') || 'en')
+    window.addEventListener('resize', _.debounce(this.handleResize, 100))
     this.refresh();
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
