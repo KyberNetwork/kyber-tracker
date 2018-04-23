@@ -79,7 +79,7 @@ It supports 'd' and 'h'.
         }
     },
     price: {
-        match: /\b\/?price(?:@\w+)?\b/i,
+        match: /\b\/?(?:price|rates?)(?:@\w+)?\b/i,
         needDb: true,
         reply: (bot, msg, match) => {
             bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
@@ -95,7 +95,7 @@ KNC/BTC: *${ret.price_btc}*
 2h change: *${emoji(ret.percent_change_24h)}*
 7d change: *${emoji(ret.percent_change_7d)}*
 
-Last updated: ${seconds} ago.
+Last updated: ${seconds} seconds ago.
 Credit: CoinMarketCap`;
                     reply(bot, msg, text, {parse_mode: "Markdown"});
                 }
@@ -136,7 +136,7 @@ Vietnamese version will be available soon.`,
         reply: "Check it out here https://when-lambo.com/"
     },
     lang: {
-        match: /\b\/?lang(?:@\w+)?\b/i,
+        match: /\b\/?(?:lang|groups?)(?:@\w+)?\b/i,
         reply: `Kyber Network Official Telegram Groups.
 English @KyberNetwork
 한국어 @KyberKorea
@@ -222,7 +222,6 @@ function format(n) {
 
 function sign(n) {
     if (n > 0) return "+" + n;
-    if (n < 0) return "-" + n;
     return n;
 }
 
