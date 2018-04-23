@@ -35,7 +35,8 @@ module.exports = {
       "name": "Kyber Network",
       "symbol": "KNC",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
-      "decimal": 18
+      "decimal": 18,
+      "cmcId": "kyber-network"
     },
     "OMG": {
       "name": "OmiseGO",

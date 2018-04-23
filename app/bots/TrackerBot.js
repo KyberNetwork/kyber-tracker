@@ -69,10 +69,34 @@ It supports 'd' and 'h'.
             bot._context.getService().getTotalBurnedFees((err, ret) => {
                 if (!!err) {
                     reply(bot, msg, "An unknown error occurs. Please try again later.");
-                    bot._context.finish();
                     logger.error(err);
                 } else {
                     let text = `*${format(ret.burned)} KNC* has been burnt to date.`;
+                    reply(bot, msg, text, {parse_mode: "Markdown"});
+                }
+                bot._context.finish();
+            });
+        }
+    },
+    price: {
+        match: /\b\/?price(?:@\w+)?\b/i,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
+                if (!!err) {
+                    reply(bot, msg, "An unknown error occurs. Please try again later.");
+                    logger.error(err);
+                } else {
+                    console.log(ret);
+                    const seconds = Math.floor((new Date().getTime() - ret.last_updated * 1000)/1000);
+                    const text = `KNC/USD: *${ret.price_usd}*
+KNC/BTC: *${ret.price_btc}*
+1h change: *${emoji(ret.percent_change_1h)}*
+2h change: *${emoji(ret.percent_change_24h)}*
+7d change: *${emoji(ret.percent_change_7d)}*
+
+Last updated: ${seconds} ago.
+Credit: CoinMarketCap`;
                     reply(bot, msg, text, {parse_mode: "Markdown"});
                 }
                 bot._context.finish();
@@ -196,6 +220,23 @@ function format(n) {
     return round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function sign(n) {
+    if (n > 0) return "+" + n;
+    if (n < 0) return "-" + n;
+    return n;
+}
+
+function emoji(n) {
+    let text = sign(n) + "%";
+    if (n > 9.9) {
+        text = text + "🚀";
+    } else if (n < -9.9) {
+        text = text + "😢";
+    }
+
+    return text;
+}
+
 function mention(user) {
     if (user.username) {
         return `[@${user.username}](tg://user?id=${user.id})`;
@@ -206,7 +247,7 @@ function mention(user) {
 
 function reply(bot, msg, text, options) {
     options = options || {};
-    if (!options.no_mention && msg.reply_to_message && msg.reply_to_message.from &&
+    if (!options.no_mention && !!msg.reply_to_message && !!msg.reply_to_message.from &&
         msg.reply_to_message.from.id != msg.from.id && !msg.reply_to_message.from.is_bot) {
             text = mention(msg.reply_to_message.from) + "\n" + text;
             options.parse_mode = "Markdown";
