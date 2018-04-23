@@ -713,13 +713,12 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   list-style: none;
   margin: 0;
   padding: 10px 17px 0 17px;
-  // width: 100%;
-  // overflow: hidden;
   line-height: 20px;
   height: 56px;
-  // -webkit-transition: height .5s ease;
-  //   -moz-transition: height .5s ease;
-  //   transition: height .5s ease;
+  overflow: hidden;
+  -webkit-transition: height .5s ease;
+    -moz-transition: height .5s ease;
+    transition: height .5s ease;
 
   &.header-expand{
     height: auto !important;
