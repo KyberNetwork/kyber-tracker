@@ -156,8 +156,8 @@
             </form>
           </b-navbar-nav> -->
         </div>
-        <a href="https://kyber.network/" class="go-exchange">
-          <button type="button" class="btn btn-default btn-export" target="_blank">{{ $t('navigator.go_to_exchange') }}</button>
+        <a href="https://kyber.network/" class="go-exchange" target="_blank">
+          <button type="button" class="btn btn-default pointer">{{ $t('navigator.go_to_exchange') }}</button>
         </a>
       </b-navbar>
 

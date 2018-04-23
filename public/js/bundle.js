@@ -109246,14 +109246,14 @@ var render = function() {
               "a",
               {
                 staticClass: "go-exchange",
-                attrs: { href: "https://kyber.network/" }
+                attrs: { href: "https://kyber.network/", target: "_blank" }
               },
               [
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-default btn-export",
-                    attrs: { type: "button", target: "_blank" }
+                    staticClass: "btn btn-default pointer",
+                    attrs: { type: "button" }
                   },
                   [_vm._v(_vm._s(_vm.$t("navigator.go_to_exchange")))]
                 )
@@ -114092,7 +114092,7 @@ var render = function() {
           ? _c(
               "button",
               {
-                staticClass: "btn btn-default btn-export",
+                staticClass: "btn btn-default btn-export pointer",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
