@@ -125,7 +125,7 @@ a {
 
 .panel-title{
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 500;
   font-style: normal;
   font-stretch: normal;
   line-height: 1.25;
@@ -893,7 +893,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   // }
 }
 
-@media (max-width: 525px){
+@media (max-width: 540px){
   .go-exchange{
     .text-go{
       display: none;
@@ -1361,7 +1361,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 .kyber-logo{
   // width: 30px;
-  height: 46px;
+  height: 40px;
   margin-right: 45px;
 }
 
