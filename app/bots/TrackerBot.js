@@ -92,7 +92,7 @@ It supports 'd' and 'h'.
                     const text = `KNC/USD: *${ret.price_usd}*
 KNC/BTC: *${ret.price_btc}*
 1h change: *${emoji(ret.percent_change_1h)}*
-2h change: *${emoji(ret.percent_change_24h)}*
+24h change: *${emoji(ret.percent_change_24h)}*
 7d change: *${emoji(ret.percent_change_7d)}*
 
 Last updated: ${seconds} seconds ago.
