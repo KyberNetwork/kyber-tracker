@@ -29,7 +29,9 @@ a {
 .table th, .table td {
   border-top: none;
 }
-
+.font-semi-bold{
+  font-weight: 600;
+}
 .pointer{
   cursor: pointer;
 }
@@ -891,7 +893,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   // }
 }
 
-@media (max-width: 674px){
+@media (max-width: 525px){
   .go-exchange{
     .text-go{
       display: none;
@@ -907,7 +909,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 
-@media (max-width: 575px){
+@media (max-width: 674px){
   // .heading-summary{
   //   margin: 0 15px;
     

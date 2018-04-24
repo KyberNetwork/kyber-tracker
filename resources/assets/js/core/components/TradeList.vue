@@ -154,12 +154,12 @@
           <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index">
               <td class="pl-4">{{ getDateInfo(row) }}</td>
-              <td class="text-left pl-4">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</td>
+              <td class="text-left pl-4 font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</td>
               <!-- <td class="text-left no-padding-right"></td> -->
               <td><i class="k k-angle right"></i></td>
               <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} {{ row.makerTokenSymbol }}</td>
               <!-- <td class="text-left"></td> -->
-              <td class="text-left pl-4">1 {{ row.takerTokenSymbol }} = {{ getRate(row) }} {{ row.makerTokenSymbol }}</td>
+              <td class="text-left pl-4">1 <span class="font-semi-bold">{{ row.takerTokenSymbol }}</span> = {{ getRate(row) }} <span class="font-semi-bold">{{ row.makerTokenSymbol }}</span></td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
               <!-- <td v-if="!isHidePartnerCommission" class="text-left pl-4">{{ formatTokenNumber('KNC', row.commission) }} KNC</td> -->
               <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
@@ -189,14 +189,14 @@
             <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
               <td class="pl-4">{{ getDateInfo(row, true) }}</td>
               <td class="text-left pl-4 trade-direction">
-                <b>{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</b>
+                <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</span>
                 <br/>
                 <span class="entypo-down-dir trade-direction-down-symbol"></span>
                 {{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} {{ row.makerTokenSymbol }}
               </td>
               <!-- <td class="text-left pl-4"></td> -->
               <td class="text-left pl-4">
-                <b>{{ row.takerTokenSymbol }}/{{ row.makerTokenSymbol }}</b>
+                <span class="font-semi-bold">{{ row.takerTokenSymbol }}/{{ row.makerTokenSymbol }}</span>
                 <br/>
                 {{ getRate(row) }}
               </td>
