@@ -19,7 +19,7 @@ function getValue(msg) {
 }
 
 // Matches "/register [password]"
-bot.onText(/^\/register (.+)$/, (msg, match) => {
+bot.onText(/^\/register(?:@\w+)? (.+)$/, (msg, match) => {
     
     const chatId = msg.chat.id;
     const password = match[1]; // the captured "password"
@@ -62,7 +62,7 @@ module.exports = {
     processRequest: (body) => {
         bot.processUpdate(body);
     },
-    alarm: () => {
+    alarm: (params) => {
         db.createKeyStream()
         .on('data', function (data) {
             bot.sendMessage(data.substr(3), params.message);
@@ -74,6 +74,6 @@ module.exports = {
     support: (body) => {
         if (!body.message) return false;
         if (!body.message.text) return false;
-        return !!body.message.text.match(/^\/register (.+)$/);
+        return !!body.message.text.match(/^\/register(?:@\w+)? (.+)$/);
     }
 }

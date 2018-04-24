@@ -19,7 +19,7 @@ module.exports = AppController.extends({
         return;
       }
 
-    alarmBot.alarm();
+    alarmBot.alarm(params);
     res.sendStatus(200);
   },
 

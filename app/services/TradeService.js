@@ -193,6 +193,15 @@ module.exports = BaseService.extends({
     });
   },
 
+  getPartners: function (fromDate, toDate, callback) {
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    KyberTradeModel.sumGroupBy('volume_eth', {
+      where: 'block_timestamp > ? AND block_timestamp <= ?',
+      params: [fromDate, toDate],
+      groupBy: ['commission_receive_address']
+    }, callback);
+  },
+
   getStats: function (fromDate, toDate, internal, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const funcs = {

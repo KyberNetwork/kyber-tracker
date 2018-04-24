@@ -82,7 +82,7 @@ It supports 'd' and 'h'.
         match: /\b\/?(?:price|rates?)(?:@\w+)?\b/i,
         needDb: true,
         reply: (bot, msg, match) => {
-            if (msg.chat.type === "supergroup") {
+            if (!bot._context.internal && msg.chat.type === "supergroup") {
                 reply(bot, msg, "Please go to @kyberprice for price discussion.");
             } else {
                 bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
