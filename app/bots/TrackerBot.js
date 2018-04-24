@@ -82,14 +82,16 @@ It supports 'd' and 'h'.
         match: /\b\/?(?:price|rates?)(?:@\w+)?\b/i,
         needDb: true,
         reply: (bot, msg, match) => {
-            bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
-                if (!!err) {
-                    reply(bot, msg, "An unknown error occurs. Please try again later.");
-                    logger.error(err);
-                } else {
-                    console.log(ret);
-                    const seconds = Math.floor((new Date().getTime() - ret.last_updated * 1000)/1000);
-                    const text = `KNC/USD: *${ret.price_usd}*
+            if (msg.chat.type === "supergroup") {
+                reply(bot, msg, "Please go to @kyberprice for price discussion.");
+            } else {
+                bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
+                    if (!!err) {
+                        reply(bot, msg, "An unknown error occurs. Please try again later.");
+                        logger.error(err);
+                    } else {
+                        const seconds = Math.floor((new Date().getTime() - ret.last_updated * 1000)/1000);
+                        const text = `KNC/USD: *${ret.price_usd}*
 KNC/BTC: *${ret.price_btc}*
 1h change: *${emoji(ret.percent_change_1h)}*
 24h change: *${emoji(ret.percent_change_24h)}*
@@ -97,10 +99,12 @@ KNC/BTC: *${ret.price_btc}*
 
 Last updated: ${seconds} seconds ago.
 Credit: CoinMarketCap`;
-                    reply(bot, msg, text, {parse_mode: "Markdown"});
-                }
-                bot._context.finish();
-            });
+                        reply(bot, msg, text, {parse_mode: "Markdown"});
+                    }
+                });
+            }
+            // send http 200
+            bot._context.finish();
         }
     },
     whenmoon: {
