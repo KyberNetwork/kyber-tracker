@@ -144,8 +144,8 @@ a {
   }
 
   .go-exchange{
-    position: absolute;
-    right: 16px;
+    // position: absolute;
+    // right: 16px;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
@@ -893,7 +893,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   // }
 }
 
-@media (max-width: 540px){
+@media (max-width: 610px){
   .go-exchange{
     .text-go{
       display: none;
@@ -909,7 +909,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 
-@media (max-width: 674px){
+@media (max-width: 712px){
   // .heading-summary{
   //   margin: 0 15px;
     
@@ -1427,6 +1427,7 @@ html {
 }
 
 #page-content {
+  min-width: 404px;
   padding-bottom: 115px;
   overflow-x: hidden;
 }
