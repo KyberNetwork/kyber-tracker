@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,600i,700|Open+Sans:400,500,600,600i,700&subset=vietnamese');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400,500,600,600i,700|Open+Sans:400,500,600,600i,700&subset=vietnamese');
 @import 'settings.scss';
 @import 'entypo.scss';
 
@@ -140,7 +140,7 @@ a {
   padding-left: 22px;
   .navbar-nav{
     font-size: 16px !important;
-    font-weight: 300;
+    font-weight: 400;
   }
 
   .go-exchange{
@@ -752,7 +752,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .show-more{
     position: absolute;
     right: -18px;
-    top: -6px;
+    top: -4px;
   }
 }
 
@@ -857,7 +857,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     //   padding-left: 10px;
     // }
     // font-size: 14px;
-    font-weight: 500;
+    // font-weight: 500;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.43;
