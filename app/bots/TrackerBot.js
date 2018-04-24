@@ -36,7 +36,10 @@ It supports 'd' and 'h'.
             const resp = (match[1] || "24H").trim().toUpperCase();
             const seconds = parseSeconds(resp);
             if (seconds < 0) {
-                reply(bot, msg, "Invalid syntax. Try _last 1d_, _last 12h_, or just /last.", {no_mention: true});
+                reply(bot, msg, "Invalid syntax. Try _last 1d_, _last 12h_, or just /last.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
                 bot._context.finish();
                 return;
             }
@@ -45,6 +48,28 @@ It supports 'd' and 'h'.
             const sinceSeconds = nowSeconds - seconds;
     
             sendVolume(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
+    },
+    partner: {
+        match: /\b\/?partners?(?:@\w+)?(?:\s+(\w+))?\b/i,
+        internal: true,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const resp = (match[1] || "24H").trim().toUpperCase();
+            const seconds = parseSeconds(resp);
+            if (seconds < 0) {
+                reply(bot, msg, "Invalid syntax. Try _partner 1d_, _partner 12h_, or just /partner.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
+                bot._context.finish();
+                return;
+            }
+    
+            const nowSeconds = Utils.nowInSeconds();
+            const sinceSeconds = nowSeconds - seconds;
+    
+            sendPartnerSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
         }
     },
     today: {
@@ -278,7 +303,6 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
     TradeService.getStats(from, to, internal, (err, ret) => {
         if (!!err) {
             reply(bot, msg, "An unknown error occurs. Please try again later.");
-            bot._context.finish();
             logger.error(err);
         } else {
             let text = `*${prefix}* VOLUME`;
@@ -306,6 +330,45 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
 
             if (tellUtcTime) {
                 text += `\n\nCurrent time in UTC: *${new Date().toUTCString()}*`;
+            }
+
+            reply(bot, msg, text, {parse_mode: "Markdown"});
+        }
+        bot._context.finish();
+    });
+}
+
+function formatAddress(addr) {
+    if (!addr) return "No partner";
+    if (addr === '0xb9E29984Fe50602E7A619662EBED4F90D93824C7') return "imToken";
+    if (addr === '0xDD61803d4a56C597E0fc864F7a20eC7158c6cBA5') return "Cipher"
+
+    return addr.substr(0, 4) + "…" + addr.substr(-2);
+}
+
+function sendPartnerSummary(bot, msg, from, to, prefix) {
+    const TradeService = bot._context.getService();
+    TradeService.getPartners(from, to, (err, ret) => {
+        if (!!err) {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        } else {
+            let text = `*${prefix}*\nVOLUME BY PARTNER`;
+            text += "\n=================";
+            if (!ret || !Array.isArray(ret) || ret.length === 0) {
+                text = "There is no transactions."
+            } else {
+                ret.sort((a, b) => {
+                    return b.sum - a.sum;
+                });
+                let total = 0;
+                ret.forEach((item) => {
+                    total += item.sum;
+                })
+                ret.forEach((item) => {
+                    text += "\n" + formatAddress(item.commissionReceiveAddress) + ": *" + format(item.sum) + " ETH* (" +
+                        + percent(item.sum, total) + "%)";
+                });
             }
 
             reply(bot, msg, text, {parse_mode: "Markdown"});
@@ -346,6 +409,14 @@ function todayStartInSeconds(){
 function setupBot(bot) {
     for (const key in commands) {
         const value = commands[key];
+
+        if (!!value.internal && !bot._context.internal) {
+            if (!!value.needDb) {
+                bot._context.finish();
+            }
+            return;
+        }
+
         let text = value.reply;
         if (text) {
             bot.onText(value.match, (msg, match) => {
