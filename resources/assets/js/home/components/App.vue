@@ -85,7 +85,7 @@
 
       </b-navbar>
 
-      <b-navbar toggleable="sm" type="dark" class="second-heading-bar">
+      <b-navbar toggleable="sm" type="dark" class="second-heading-bar d-flex justify-content-between">
         <div>
           <!-- <b-navbar-toggle target="nav_collapse"></b-navbar-toggle> -->
           <!-- <b-collapse is-nav id="nav_collapse"> -->
