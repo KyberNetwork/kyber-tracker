@@ -136,6 +136,10 @@ a {
   background-color: #1f3468;
   height: 60px;
   padding-left: 22px;
+  .navbar-nav{
+    font-size: 16px !important;
+    font-weight: 300;
+  }
 
   .go-exchange{
     position: absolute;
@@ -144,9 +148,18 @@ a {
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
+    .icon-go{
+      font-size: 20px;
+      vertical-align: middle;
+    }
+    .text-go{
+      padding-left: 5px;
+      vertical-align: middle;
+    }
     button{
+      padding: 3px 23px 1px;
       font-size: 15px;
-      font-weight: 400;
+      font-weight: 200;
       font-family: $code-font-openSans;
       color: #ffffff;
       right: 16px;
@@ -841,7 +854,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     // .heading-summary{
     //   padding-left: 10px;
     // }
-    font-size: 14px;
+    // font-size: 14px;
     font-weight: 500;
     font-style: normal;
     font-stretch: normal;
@@ -878,9 +891,18 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   // }
 }
 
-@media (max-width: 430px){
+@media (max-width: 520px){
   .go-exchange{
-    display: none;
+    .text-go{
+      display: none;
+    }
+    .icon-go{
+      font-size: 24px !important;
+    }
+    button{
+      padding: 0px !important;
+      background-color: transparent !important;
+    }
   }
 }
 
