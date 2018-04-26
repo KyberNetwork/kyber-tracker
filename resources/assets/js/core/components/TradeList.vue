@@ -21,7 +21,8 @@
         <div v-if="searchResult.isValid && searchResult.data">          
 
           <div class="wallet-detail-title panel-heading pb-16">
-            <span class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
+            <span v-if="!partner" class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
+            <span v-else class="no-margin panel-title">{{$t('wallet_detail.partner_details')}} </span>
           </div>
 
           <!-- address detail ################## -->
@@ -256,6 +257,7 @@ import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
 import network from '../../../../../config/network';
+const partner = network.partner
 
 const tokens = network.tokens;
 
@@ -380,6 +382,7 @@ export default {
       return network.endpoints.ethScan + "tx/" + tx;
     },
     getAddressEtherscanLink(tx) {
+      if(!util.isAddress(tx)) tx=partner[tx.toLowerCase()]
       return network.endpoints.ethScan + "address/" + tx;
     },
     getRequestParams () {

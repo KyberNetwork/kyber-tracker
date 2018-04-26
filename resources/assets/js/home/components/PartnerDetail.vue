@@ -92,7 +92,7 @@ export default {
           totalPartnerFee : this.totalPartnerFee,
           totalCollectedFees: this.totalCollectedFees,
           type: util.isAddress(this.$route.query.q) ? 'address' : 'txHash',
-          query: this.$route.query.q
+          query: this.$route.params.partnerId.toUpperCase()
         }
       }
     },

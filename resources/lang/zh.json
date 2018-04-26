@@ -120,6 +120,7 @@
     "value_in_usd": "价值（USD)",
     "notice": "USD 汇率在交易时间点计算",
     "wallet_detail": "钱包详情",
+    "partner_details": "Partner Details",
     "history": "交易历史",
     "commission": "Commission"
   },
