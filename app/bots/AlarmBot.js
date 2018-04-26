@@ -29,7 +29,7 @@ bot.onText(/^\/register(?:@\w+)? (.+)$/, (msg, match) => {
 
         db.get(key, (err, val) => {
             if (!err) {
-                bot.sendMessage(chatId, "Welcome back, you were *already* white listed.", {
+                bot.sendMessage(chatId, "Welcome back, this conversation were *already* white-listed.", {
                     reply_to_message_id: msg.message_id,
                     parse_mode: "Markdown"
                 });
@@ -37,12 +37,12 @@ bot.onText(/^\/register(?:@\w+)? (.+)$/, (msg, match) => {
                 db.put(key, JSON.stringify(getValue(msg)), (err) => {
                     if (!err) {
                         bot.sendMessage(chatId,
-                            "Hi there, you are white listed! Now you can sleep sound at nights!",{
+                            "Success! This conversation is now white-listed.",{
                                 reply_to_message_id: msg.message_id
                             });
                     } else {
                         bot.sendMessage(chatId,
-                            "Cannot white list you. Please try again later. If failure persists, contact my master.", {
+                            "Cannot whitelist this conversation. Please try again later. If failure persists, contact my master.", {
                                 reply_to_message_id: msg.message_id
                             });
                     }
@@ -65,10 +65,11 @@ module.exports = {
     alarm: (params) => {
         db.createKeyStream()
         .on('data', function (data) {
-            bot.sendMessage(data.substr(3), params.message);
+            const text = "============\n‼️ ATTENTION ‼️============\n" + params.message; 
+            bot.sendMessage(data.substr(3), text);
         })
         .on('error', function (err) {
-            logger.error("Fail to get white listed telegram accounts to alarm!");
+            logger.error("Fail to get white-listed telegram conversations to alarm!");
         })
     },
     support: (body) => {

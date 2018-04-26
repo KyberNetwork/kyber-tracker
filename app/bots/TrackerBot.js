@@ -30,7 +30,7 @@ It supports 'd' and 'h'.
 /burn to see how much KNC burned to date`
     },
     last: {
-        match: /\b\/?last(?:@\w+)?(?:\s+(\w+))?\b/i,
+        match: /\b\/?(?:last|volume)(?:@\w+)?(?:\s+(\w+))?\b/i,
         needDb: true,
         reply: (bot, msg, match) => {
             const resp = (match[1] || "24H").trim().toUpperCase();
@@ -217,10 +217,18 @@ Tiếng Việt @KyberVietnamese`
         replyOptions: {
             parse_mode: "Markdown"
         }
-    }
+    },
+    thank: {
+        match: /\b\/?thanks?(?:@\w+)?\b/i,
+        reply: "You are welcome",
+    },
+    like: {
+        match: /\b\/?(?:like|love)(?:@\w+)?\b/i,
+        reply: "Thank you",
+    },
 }
 
-function keepReq(body) {
+function keepReq(bot, body) {
     if (!body.message) return false;
     if (!body.message.text) return false;
 
@@ -228,8 +236,18 @@ function keepReq(body) {
 
     for (let key in commands) {
         const value = commands[key];
-        if (value.needDb && !!text.match(value.match)) {
-            return true;
+
+        if (!!text.match(value.match)) {
+            if (!!value.internal && !bot._context.internal) {
+                return false;
+            }
+
+            if (value.needDb) {
+                return true;
+            }
+
+            // skip after first match, cause we only setup first match
+            break;
         }
     }
 
@@ -284,6 +302,18 @@ function reply(bot, msg, text, options) {
         reply_to_message_id: !options.no_reply ? msg.message_id : undefined,
         parse_mode: !!options.parse_mode ? options.parse_mode : undefined,
         disable_web_page_preview: !!options.no_preview
+        /*
+        reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: 'Volume by Partner',
+                  callback_data: 'partner'
+                }
+              ]
+            ]
+          }
+          */
     });
 }
 
@@ -320,7 +350,7 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
             }
             if (internal) {
                 text += `\nBurn & Tax: *${format(ret.burnAndTax)} KNC*`;
-                text += "\n\nCOMMISSIONED PARTNER";
+                text += "\n\nCOMMISSIONED PARTNERS";
                 text += "\n=================";
                 text += `\nVolume: *${format(ret.partnerVolumeEth)} ETH* (${percent(ret.partnerVolumeEth, ret.volumeEth)}%)`;
                 text += `\nNumber of Tx: *${format(ret.partnerCount)}* (${percent(ret.partnerCount, ret.tradeCount)}%)`;
@@ -341,7 +371,10 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
 function formatAddress(addr) {
     if (!addr) return "No partner";
     if (addr === '0xb9E29984Fe50602E7A619662EBED4F90D93824C7') return "imToken";
-    if (addr === '0xDD61803d4a56C597E0fc864F7a20eC7158c6cBA5') return "Cipher"
+    if (addr === '0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D') return "MEW";
+    if (addr === '0xf1aa99c69715f423086008eb9d06dc1e35cc504d') return "Trust";
+    if (addr === '0xDD61803d4a56C597E0fc864F7a20eC7158c6cBA5') return "Cipher";
+    if (addr === '0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c') return "Olympus";
 
     return addr.substr(0, 4) + "…" + addr.substr(-2);
 }
@@ -369,6 +402,8 @@ function sendPartnerSummary(bot, msg, from, to, prefix) {
                     text += "\n" + formatAddress(item.commissionReceiveAddress) + ": *" + format(item.sum) + " ETH* (" +
                         + percent(item.sum, total) + "%)";
                 });
+
+                text += "\n-----\nTOTAL: *" + format(total) + " ETH*";
             }
 
             reply(bot, msg, text, {parse_mode: "Markdown"});
@@ -406,26 +441,33 @@ function todayStartInSeconds(){
     return Math.floor(today.getTime() / 1000);
 }
 
-function setupBot(bot) {
+function setupBot(bot, body) {
+    if (!body.message) return;
+    if (!body.message.text) return;
+
+    const msgText = body.message.text;
     for (const key in commands) {
         const value = commands[key];
 
-        if (!!value.internal && !bot._context.internal) {
-            if (!!value.needDb) {
-                bot._context.finish();
-            }
-            return;
-        }
+        if (!!msgText.match(value.match)) {
 
-        let text = value.reply;
-        if (text) {
-            bot.onText(value.match, (msg, match) => {
-                if (text.call) {
-                    text.call(value, bot, msg, match);
-                } else {
-                    reply(bot, msg, text, value.replyOptions);
-                }
-            });
+            if (!!value.internal && !bot._context.internal) {
+                return;
+            }
+
+            let text = value.reply;
+            if (text) {
+                bot.onText(value.match, (msg, match) => {
+                    if (text.call) {
+                        text.call(value, bot, msg, match);
+                    } else {
+                        reply(bot, msg, text, value.replyOptions);
+                    }
+                });
+            }
+
+            // only setup first match, cause we have new tracker bot each request
+            break;
         }
     }
 };
@@ -435,10 +477,10 @@ module.exports = {
         // new bot per req, to avoid concerns about simultanous requests
         const bot = new Bot(context.botToken || process.env.TRACKER_BOT_TOKEN);
         bot._context = context;
-        setupBot(bot);
+        setupBot(bot, body);
         bot.processUpdate(body);
 
-        if (!keepReq(body)) {
+        if (!keepReq(bot, body)) {
             context.finish();
         }
     }
