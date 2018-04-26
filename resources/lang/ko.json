@@ -85,6 +85,7 @@
     "amount": "수량",
     "collected_fees": "총비용",
     "fee_to_wallet": "파트너 비용",
+    "commission": "Commission",
     "fee_to_burn": "소각될 비용",
     "exchange": "거래",
     "msg_no_result": "거래가 없습니다.",

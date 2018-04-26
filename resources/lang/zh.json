@@ -87,6 +87,7 @@
     "amount": "数量",
     "collected_fees": "总费用",
     "fee_to_wallet": "合伙人佣金费用",
+    "commission": "Commission",
     "fee_to_burn": "以销毁的费用",
     "exchange": "交易",
     "msg_no_result": "没有找到任何交易.",

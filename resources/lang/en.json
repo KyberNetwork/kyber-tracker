@@ -95,6 +95,7 @@
     "amount": "Amount",
     "collected_fees": "Collected Fees",
     "fee_to_wallet": "Partner Commission",
+    "commission": "Commission",
     "fee_to_burn": "Fees To Burn",
     "exchange": "Exchange",
     "msg_no_result": "There's no trade found.",

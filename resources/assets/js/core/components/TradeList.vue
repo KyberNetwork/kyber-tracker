@@ -157,7 +157,7 @@
               <th colspan="2" class="pl-4">{{ $t("trade_list.exchange_from") }}</th>
               <th class="pl-4">{{ $t("trade_list.exchange_to") }}</th>
               <th v-bind:colspan="partner ? 1 : 2" class="pl-4">{{ $t("trade_list.rate") }}</th>
-              <th v-if="partner" colspan="2" class="pl-4" >{{ $t("trade_list.fee_to_wallet") }}</th>
+              <th v-if="partner" colspan="2" class="pl-4" >{{ $t("trade_list.commission") }}</th>
               <!-- <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th> -->
               <!-- <th></th> -->
             </tr>

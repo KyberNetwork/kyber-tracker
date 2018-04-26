@@ -93,6 +93,7 @@
     "amount": "Số lượng",
     "collected_fees": "Tổng phí",
     "fee_to_wallet": "Phí tích hợp",
+    "commission": "Commission",
     "fee_to_burn": "Phí sẽ đốt",
     "exchange": "Trao đổi",
     "msg_no_result": "Không tìm thấy giao dịch nào.",
