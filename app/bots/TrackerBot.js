@@ -73,6 +73,28 @@ It supports 'd' and 'h'.
             sendPartnerSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
         }
     },
+    trader: {
+        match: /\b\/?(?:traders?|investors?)(?:@\w+)?(?:\s+(\w+))?\b/i,
+        internal: true,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const resp = (match[1] || "24H").trim().toUpperCase();
+            const seconds = parseSeconds(resp);
+            if (seconds < 0) {
+                reply(bot, msg, "Invalid syntax. Try _trader 1d_, _trader 12h_, or just /trader.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
+                bot._context.finish();
+                return;
+            }
+    
+            const nowSeconds = Utils.nowInSeconds();
+            const sinceSeconds = nowSeconds - seconds;
+    
+            sendTraderSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
+    },
     today: {
         match: /\b\/?today(?:@\w+)?\b/i,
         needDb: true,
@@ -174,7 +196,7 @@ English @KyberNetwork
 Tiếng Việt @KyberVietnamese`
     },
     trade: {
-        match: /\b\/?trade(?:@\w+)?\b/i,
+        match: /\b\/?(?:trade|exchange)(?:@\w+)?\b/i,
         reply: "Our exchange is live, you can trade now https://kyber.network/"
     },
     kyber: {
@@ -251,6 +273,14 @@ Tiếng Việt @KyberVietnamese`
     request: {
         match: /\b\/?request(?:@\w+)?\b/i,
         reply: "https://docs.google.com/forms/d/e/1FAIpQLSdXIGrbUxj3PYHcLGArWxx800DAS8tZSKGQhY4yIeYD1FrClg/viewform",
+    },
+    wallet: {
+        match: /\b\/?wallets?(?:@\w+)?\b/i,
+        internal: true,
+        reply: "_wallet_ has multiple meanings. Please use /trader or /partner commands.",
+        replyOptions: {
+            parse_mode: "Markdown"
+        }
     }
 }
 
@@ -437,6 +467,55 @@ function sendPartnerSummary(bot, msg, from, to, prefix) {
         }
         bot._context.finish();
     });
+}
+
+function sendTraderSummary(bot, msg, from, to, prefix) {
+    const TradeService = bot._context.getService();
+    TradeService.getTraders(from, to, (err, ret) => {
+        if (!!err) {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        } else {
+            let text = `*${prefix}*\nVOLUME BY TRADER`;
+            text += "\n=================";
+            if (!ret || !Array.isArray(ret) || ret.length === 0) {
+                text = "There is no transactions."
+            } else {
+                ret.sort((a, b) => {
+                    return b.sum - a.sum;
+                });
+                let total = 0;
+                ret.forEach((item) => {
+                    total += item.sum;
+                })
+
+                let top5 = 0;
+                let count = 5;
+                if (ret.length < count) count = ret.length;
+                for (let i = 0; i < count; i++) {
+                    let item = ret[i];
+                    top5 += item.sum;
+                    console.log(item);
+                    text += "\n" + traderLink(item.takerAddress) + ": *$" + format(item.sum) + "* (" +
+                        percent(item.sum, total) + "%)";
+                }
+
+                const others = total - top5;
+                text += "\nOthers: *$" + format(others) + "* (" +
+                            percent(others, total) + "%)";
+
+                text += "\n-----\nTOTAL: *$" + format(total) + "*";
+            }
+
+            reply(bot, msg, text, {parse_mode: "Markdown", no_preview: true});
+        }
+        bot._context.finish();
+    });
+}
+
+function traderLink(addr) {
+    const shortAddress = addr.substr(0, 4) + "…" + addr.substr(-2);
+    return `[${shortAddress}](https://tracker.kyber.network/#/search?q=${addr})`;
 }
 
 function tokenLink(symbol) {
