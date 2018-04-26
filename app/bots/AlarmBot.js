@@ -65,7 +65,7 @@ module.exports = {
     alarm: (params) => {
         db.createKeyStream()
         .on('data', function (data) {
-            const text = "============\n‼️ ATTENTION ‼️============\n" + params.message; 
+            const text = "=================\n‼️ ATTENTION ‼️\n=================\n" + params.message; 
             bot.sendMessage(data.substr(3), text);
         })
         .on('error', function (err) {

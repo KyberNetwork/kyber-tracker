@@ -1,3 +1,4 @@
+const network = require('../../config/network');
 const Utils = require('sota-core').load('util/Utils');
 const logger = log4js.getLogger('TrackerBot');
 const Bot = require('node-telegram-bot-api');
@@ -200,7 +201,7 @@ Tiếng Việt @KyberVietnamese`
         reply: "https://www.facebook.com/kybernetwork/"
     },
     blog: {
-        match: /\b\/?blog(?:@\w+)?\b/i,
+        match: /\b\/?(?:blog|medium)(?:@\w+)?\b/i,
         reply: "https://blog.kyber.network/"
     },
     tracker: {
@@ -209,7 +210,24 @@ Tiếng Việt @KyberVietnamese`
     },
     token: {
         match: /\b\/?tokens?(?:@\w+)?\b/i,
-        reply: "List of supported tokens https://tracker.kyber.network#/tokens",
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const resp = (match[1] || "24H").trim().toUpperCase();
+            const seconds = parseSeconds(resp);
+            if (seconds < 0) {
+                reply(bot, msg, "Invalid syntax. Try _token 1d_, _token 12h_, or just /token.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
+                bot._context.finish();
+                return;
+            }
+    
+            const nowSeconds = Utils.nowInSeconds();
+            const sinceSeconds = nowSeconds - seconds;
+    
+            sendTokenSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
     },
     market: {
         match: /\b\/?market?(?:@\w+)?\b/i,
@@ -319,7 +337,7 @@ function reply(bot, msg, text, options) {
 
 function percent(a, b) {
     if (!b) return "N/A ";
-    return round(100 * a / b);
+    return round(100 * (a || 0) / b);
 }
 
 function average(volume, count) {
@@ -400,13 +418,59 @@ function sendPartnerSummary(bot, msg, from, to, prefix) {
                 })
                 ret.forEach((item) => {
                     text += "\n" + formatAddress(item.commissionReceiveAddress) + ": *" + format(item.sum) + " ETH* (" +
-                        + percent(item.sum, total) + "%)";
+                        percent(item.sum, total) + "%)";
                 });
 
                 text += "\n-----\nTOTAL: *" + format(total) + " ETH*";
             }
 
             reply(bot, msg, text, {parse_mode: "Markdown"});
+        }
+        bot._context.finish();
+    });
+}
+
+function tokenLink(symbol) {
+    const address = network.tokens[symbol].address;
+    return `[${symbol}](https://tracker.kyber.network/#/tokens/${address})`;
+}
+
+function sendTokenSummary(bot, msg, from, to, prefix) {
+    const TradeService = bot._context.getService();
+    TradeService.getTopTokensList(from, to, (err, ret) => {
+        if (!!err) {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        } else {
+            let text = `*${prefix}*\nVOLUME BY TOKEN`;
+            text += "\n=================";
+            if (!ret || !Array.isArray(ret) || ret.length === 0) {
+                text = "There is no transactions."
+            } else {
+                
+                let total = 0;
+                let top5 = 0;
+                for (let i = 0; i <=5; i++) {
+                    let item = ret[i];
+                    if (i == 0) {
+                        total = item.volumeUSD;
+                    } else {
+                        top5 += item.volumeUSD;
+                        text += "\n" + tokenLink(item.symbol) + ": *$" + format(item.volumeUSD) + "* (" +
+                            percent(item.volumeUSD, total) + "%)";
+                    }
+                }
+
+                const others = total - top5;
+                text += "\nOthers: *$" + format(others) + "* (" +
+                            percent(others, total) + "%)";
+
+                text += "\n-----\nTOTAL: *$" + format(total) + "*";
+
+                text += "\n\n[See full list](https://tracker.kyber.network#/tokens)";
+            }
+
+            reply(bot, msg, text, {parse_mode: "Markdown", no_preview: true});
         }
         bot._context.finish();
     });
