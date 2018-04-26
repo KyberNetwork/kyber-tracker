@@ -50,6 +50,17 @@
                 </div>
                 
               </div>
+
+
+              <div v-if="partner" class="col border-left">
+                <div class="value-number">
+                  {{searchResult.data.commission || '0'}} KNC
+                </div>
+                <div class="value-label">
+                  {{$t('wallet_detail.commission')}}
+                </div>
+                
+              </div>
             </div>
 
 
@@ -145,8 +156,8 @@
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
               <th colspan="2" class="pl-4">{{ $t("trade_list.exchange_from") }}</th>
               <th class="pl-4">{{ $t("trade_list.exchange_to") }}</th>
-              <th v-bind:colspan="2" class="pl-4">{{ $t("trade_list.rate") }}</th>
-              <!-- <th v-if="!isHidePartnerCommission" colspan="2" class="pl-4" >{{ $t("trade_list.fee_to_wallet") }}</th> -->
+              <th v-bind:colspan="partner ? 1 : 2" class="pl-4">{{ $t("trade_list.rate") }}</th>
+              <th v-if="partner" colspan="2" class="pl-4" >{{ $t("trade_list.fee_to_wallet") }}</th>
               <!-- <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th> -->
               <!-- <th></th> -->
             </tr>
@@ -161,7 +172,7 @@
               <!-- <td class="text-left"></td> -->
               <td class="text-left pl-4">1 <span class="font-semi-bold">{{ row.takerTokenSymbol }}</span> = {{ getRate(row) }} <span class="font-semi-bold">{{ row.makerTokenSymbol }}</span></td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
-              <!-- <td v-if="!isHidePartnerCommission" class="text-left pl-4">{{ formatTokenNumber('KNC', row.commission) }} KNC</td> -->
+              <td v-if="partner" class="text-left pl-4">{{ formatTokenNumber('KNC', row.commission) }} KNC</td>
               <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
@@ -276,6 +287,9 @@ export default {
       // }
        type: Object
 
+    },
+    partner:{
+      type: Boolean
     },
     getSearchResultTitle: {
       type: Function,

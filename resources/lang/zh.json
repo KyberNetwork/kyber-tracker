@@ -119,7 +119,8 @@
     "value_in_usd": "价值（USD)",
     "notice": "USD 汇率在交易时间点计算",
     "wallet_detail": "钱包详情",
-    "history": "交易历史"
+    "history": "交易历史",
+    "commission": "Commission"
   },
   "token_list": {
     "title": "交易代币名单",

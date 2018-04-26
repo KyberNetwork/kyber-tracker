@@ -26,6 +26,17 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError);
   }
 
+  getPartnerDetail (partnerId, page=0, limit=20, fromDate, toDate, callback) {
+    const url = `/api/partner/${partnerId}`;
+    return request
+            .get(url)
+            .query({limit, page, fromDate, toDate })
+            .then((res) => {
+              return callback(null, res.body);
+            })
+            .catch(this._handleError);
+  }
+
   searchAllToExport (q, fromDate, toDate, callback) {
     const url = `/api/search`;
     return request

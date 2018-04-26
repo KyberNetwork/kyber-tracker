@@ -129,7 +129,8 @@
     "value_in_usd": "Value in USD",
     "notice": "USD Rates are calculated at trading time",
     "wallet_detail": "Wallet Details",
-    "history": "History"
+    "history": "History",
+    "commission": "Commission"
   },
 
   "token_list": {

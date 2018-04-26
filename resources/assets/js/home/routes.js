@@ -4,6 +4,7 @@ import TradeDetails   from './components/TradeDetails.vue';
 import TokenList      from './components/TokenList.vue';
 import TokenDetails   from './components/TokenDetails.vue';
 import SearchResult   from './components/SearchResultPage.vue';
+import PartnerDetail  from './components/PartnerDetail.vue';
 
 export default {
   routes: [
@@ -13,5 +14,7 @@ export default {
     { path: '/tokens',            name: 'token-list',     component: TokenList },
     { path: '/tokens/:tokenAddr', name: 'token-details',  component: TokenDetails },
     { path: '/search',            name: 'search',         component: SearchResult },
-  ]
+    { path: '/partner/:partnerId',name: 'partner-detail', component: PartnerDetail },
+  ],
+  // mode: 'history'
 };

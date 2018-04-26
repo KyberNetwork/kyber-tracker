@@ -1225,7 +1225,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   word-wrap: break-word;
   .border-right{
     border-right: dashed 1.2px #cbcdcf;
-
+  }
+  .border-left{
+    border-left: dashed 1.2px #cbcdcf;
   }
   .wallet-title{
     font-size: 16px;
