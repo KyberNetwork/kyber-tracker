@@ -244,6 +244,14 @@ Tiếng Việt @KyberVietnamese`
         match: /\b\/?(?:like|love)(?:@\w+)?\b/i,
         reply: "Thank you",
     },
+    kyc: {
+        match: /\b\/?kyc(?:@\w+)?\b/i,
+        reply: "https://account.kyber.network/users/sign_in",
+    },
+    request: {
+        match: /\b\/?request(?:@\w+)?\b/i,
+        reply: "https://docs.google.com/forms/d/e/1FAIpQLSdXIGrbUxj3PYHcLGArWxx800DAS8tZSKGQhY4yIeYD1FrClg/viewform",
+    }
 }
 
 function keepReq(bot, body) {
@@ -388,11 +396,12 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
 
 function formatAddress(addr) {
     if (!addr) return "No partner";
-    if (addr === '0xb9E29984Fe50602E7A619662EBED4F90D93824C7') return "imToken";
-    if (addr === '0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D') return "MEW";
-    if (addr === '0xf1aa99c69715f423086008eb9d06dc1e35cc504d') return "Trust";
-    if (addr === '0xDD61803d4a56C597E0fc864F7a20eC7158c6cBA5') return "Cipher";
-    if (addr === '0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c') return "Olympus";
+    const lowAddr = addr.toLowerCase();
+    if (lowAddr === '0xb9e29984fe50602e7a619662ebed4f90d93824c7') return "imToken";
+    if (lowAddr === '0xdecaf9cd2367cdbb726e904cd6397edfcae6068d') return "MEW";
+    if (lowAddr === '0xf1aa99c69715f423086008eb9d06dc1e35cc504d') return "Trust";
+    if (lowAddr === '0xdd61803d4a56c597e0fc864f7a20ec7158c6cba5') return "Cipher";
+    if (lowAddr === '0x09227deaee08a5ba9d6eb057f922adfad191c36c') return "Olympus";
 
     return addr.substr(0, 4) + "…" + addr.substr(-2);
 }
