@@ -265,7 +265,21 @@ module.exports = {
       "symbol": "ELEC",
       "decimal": 18,
       "hidden": true
-    }
+    },
+    "IOST": {
+      "name": "IOStoken",
+      "address": "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab",
+      "symbol": "IOST",
+      "decimal": 18,
+      "hidden": true
+    },
+    "STORM": {
+      "name": "Storm",
+      "address": "0xd0a4b8946cb52f0661273bfbc6fd0e0c75fc6433",
+      "symbol": "STORM",
+      "decimal": 18,
+      "hidden": true
+    },
   },
   "networkId": 1,
   "chainName": "Mainnet",
