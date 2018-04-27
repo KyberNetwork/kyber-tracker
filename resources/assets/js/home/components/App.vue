@@ -407,7 +407,14 @@ export default {
     },
 
     clickHeading(){
-      this.$refs.headingSum.className = "heading-summary p-relative header-expand"
+      let headerClass = this.$refs.headingSum.className
+      if(headerClass.indexOf("header-expand") !== -1 ){
+        this.$refs.headingSum.className = "heading-summary p-relative"
+      } else {
+        this.$refs.headingSum.className = "heading-summary p-relative header-expand"
+      }
+      // 
+      
     },
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""

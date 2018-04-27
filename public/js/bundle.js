@@ -105549,7 +105549,13 @@ exports.default = {
       });
     },
     clickHeading: function clickHeading() {
-      this.$refs.headingSum.className = "heading-summary p-relative header-expand";
+      var headerClass = this.$refs.headingSum.className;
+      if (headerClass.indexOf("header-expand") !== -1) {
+        this.$refs.headingSum.className = "heading-summary p-relative";
+      } else {
+        this.$refs.headingSum.className = "heading-summary p-relative header-expand";
+      }
+      // 
     },
     onClickOutside: function onClickOutside() {
       this.$refs.seatchInputRef.$el.className = "";
