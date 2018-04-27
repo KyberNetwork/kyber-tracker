@@ -4,7 +4,7 @@ const async = require('async');
 const util = require('util');
 const BigNumber = require('bignumber.js');
 const network = require('../../config/network');
-const partner = network.partner
+const partners = network.partners
 const Const = require('../common/Const');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
@@ -410,7 +410,7 @@ module.exports = BaseService.extends({
 
 
     if(!this._isAddress(partnerId)){
-      if(partner[partnerId]) partnerId = partner[partnerId]
+      if(partners[partnerId]) partnerId = partners[partnerId]
       else return callback(null, []);
     } 
     

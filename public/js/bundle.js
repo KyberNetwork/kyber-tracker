@@ -108005,7 +108005,7 @@ module.exports = {
   "averageBlockTime": 15000,
   "startBlockNumber": 5049196, // From contract was deployed firstly #5049196
 
-  "partner": {
+  "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
     "imtoken": "0xb9E29984Fe50602E7A619662EBED4F90D93824C7",
     "trust": "0xf1aa99c69715f423086008eb9d06dc1e35cc504d",
@@ -109809,7 +109809,7 @@ var _network2 = _interopRequireDefault(_network);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var partner = _network2.default.partner; //
+var partners = _network2.default.partners; //
 //
 //
 //
@@ -110152,7 +110152,7 @@ exports.default = {
       return _network2.default.endpoints.ethScan + "tx/" + tx;
     },
     getAddressEtherscanLink: function getAddressEtherscanLink(tx) {
-      if (!_util2.default.isAddress(tx)) tx = partner[tx.toLowerCase()];
+      if (!_util2.default.isAddress(tx)) tx = partners[tx.toLowerCase()];
       return _network2.default.endpoints.ethScan + "address/" + tx;
     },
     getRequestParams: function getRequestParams() {
@@ -132414,7 +132414,7 @@ var _chart2 = _interopRequireDefault(_chart);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var partner = _network2.default.partner; //
+var partners = _network2.default.partners; //
 //
 //
 //
@@ -132472,7 +132472,7 @@ exports.default = {
       "</span>";
     },
     getSearchResultMessage: function getSearchResultMessage() {
-      if (!_util2.default.isAddress(this.$route.params.partnerId) && !partner[this.$route.params.partnerId]) {
+      if (!_util2.default.isAddress(this.$route.params.partnerId) && !partners[this.$route.params.partnerId]) {
 
         return {
           isValid: false,

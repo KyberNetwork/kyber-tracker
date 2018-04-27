@@ -25,7 +25,7 @@ import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 import network from '../../../../../config/network';
-const partner = network.partner;
+const partners = network.partners;
 const tokens = network.tokens;
 import Chart from 'chart.js';
 
@@ -75,7 +75,7 @@ export default {
             "</span>";
     },
     getSearchResultMessage () {
-      if(!util.isAddress(this.$route.params.partnerId) && !partner[this.$route.params.partnerId]){
+      if(!util.isAddress(this.$route.params.partnerId) && !partners[this.$route.params.partnerId]){
 
         return {
           isValid: false,
