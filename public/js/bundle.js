@@ -132480,7 +132480,7 @@ exports.default = {
           totalPartnerFee: this.totalPartnerFee,
           totalCollectedFees: this.totalCollectedFees,
           type: _util2.default.isAddress(this.$route.query.q) ? 'address' : 'txHash',
-          query: this.$route.params.partnerId.toUpperCase()
+          query: this.$route.params.partnerId
         }
       };
     },
