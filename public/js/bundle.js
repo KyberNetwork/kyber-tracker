@@ -105614,10 +105614,16 @@ exports.default = {
   },
 
   mounted: function mounted() {
+    var _this3 = this;
+
     // this.customizeMoment();
     // this.changeLanguage(localStorage.getItem('locale') || 'en')
     this.handleResize();
-    window.addEventListener('resize', _lodash2.default.debounce(this.handleResize, 500));
+    this.debouncedOnResize = _lodash2.default.debounce(this.handleResize, 500);
+    window.addEventListener('resize', function () {
+      _this3.indexShowmore = -1;
+      _this3.debouncedOnResize();
+    });
     this.refresh();
     this.searchData = _store2.default.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
