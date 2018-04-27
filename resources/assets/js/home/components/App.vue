@@ -474,7 +474,8 @@ export default {
   mounted() {
     // this.customizeMoment();
     // this.changeLanguage(localStorage.getItem('locale') || 'en')
-    window.addEventListener('resize', _.debounce(this.handleResize, 100))
+    this.handleResize()
+    window.addEventListener('resize', _.debounce(this.handleResize, 500))
     this.refresh();
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute

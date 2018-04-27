@@ -188,18 +188,18 @@
       </div>
 
       <!-- small trade list for mobile -->
-      <div v-if="$mq !== 'md' && $mq !== 'lg'" class="table-responsive-wraper table-hover clear pt-10">
-        <table class="table table-round table-striped">
+      <div v-if="$mq !== 'md' && $mq !== 'lg'" class=" clear pt-10">
+        <table class="table table-hover  table-striped">
           <thead>
             <tr>
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
-              <th class="pl-4">{{ $t("trade_list.exchange_from") }} > {{ $t("trade_list.exchange_to") }}</th>
+              <th class="pl-4">{{ $t("trade_list.pair") }}</th>
               <th class="pl-4">{{ $t("trade_list.rate") }}</th>
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
-              <td class="pl-4">{{ getDateInfo(row, true) }}</td>
+              <td class="pl-4">{{ getDateInfo(row, false) }}</td>
               <td class="text-left pl-4 trade-direction">
                 <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</span>
                 <br/>

@@ -91,6 +91,7 @@
     "msg_no_result": "거래가 없습니다.",
     "exchange_from": "보내는 곳",
     "exchange_to": "받는 곳",
+    "pair": "거래쌍",
     "export_csv": "출력(CSV파일)"
   },
   "trade_detail": {

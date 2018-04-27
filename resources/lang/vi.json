@@ -99,6 +99,7 @@
     "msg_no_result": "Không tìm thấy giao dịch nào.",
     "exchange_from" : "Đổi từ",
     "exchange_to" : "Đổi sang",
+    "pair": "Cặp",
     "export_csv": "Xuất dữ liệu (CSV)"
   },
 
@@ -129,9 +130,9 @@
     "value_in_usd": "Giá trị theo USD",
     "notice": "Tỷ giá USD được tính tại thời điểm giao dịch",
     "wallet_detail": "Thông tin ví",
-    "partner_details": "Partner Details",
+    "partner_details": "Thông tin đối tác",
     "history": "Lịch sử giao dịch",
-    "commission": "Phí tích hợp"
+    "commission": "PHÍ TÍCH HỢP"
   },
 
 

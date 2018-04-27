@@ -161,6 +161,7 @@ export default {
         .searchTrades(q, currentPage, pageSize, fromDate, toDate, true, (err, res) => {
           const data = res.data;
           var csvHeader = "data:text/csv;charset=utf-8,";
+          var notice = "*USD Rates are calculated at transaction time\n"
           var csvContent = ""
           csvContent += data.map(function(d){
             let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
@@ -177,7 +178,7 @@ export default {
           })
           .join('\n') 
           .replace(/(^\{)|(\}$)/mg, '');
-          let csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,USD Value\n' + csvContent
+          let csvData = csvHeader + notice + 'Time,From Token,From Amount,To Token,To Amount,USD Value*\n' + csvContent
 
           // window.open( encodeURI(csvData) );
           let dataCSV = encodeURI(csvData);

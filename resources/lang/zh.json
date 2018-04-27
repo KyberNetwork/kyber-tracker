@@ -93,6 +93,7 @@
     "msg_no_result": "没有找到任何交易.",
     "exchange_from": "从",
     "exchange_to": "换至",
+    "pair": "交易对",
     "export_csv": "导出(CSV文件)"
   },
   "trade_detail": {
