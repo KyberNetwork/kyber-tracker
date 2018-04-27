@@ -274,7 +274,7 @@ export default {
       moment.locale(locale);
       window.location.reload();
     },
-    handleResize (event) {    
+    handleResize (event) { 
       let arrayLi = this.$refs.headingSum.children
       if(arrayLi && arrayLi.length){
         this.indexShowmore = [...arrayLi].findIndex( x => x.offsetTop > 60) - 1
@@ -472,17 +472,18 @@ export default {
   },
 
   mounted() {
-    // this.customizeMoment();
-    // this.changeLanguage(localStorage.getItem('locale') || 'en')
-    this.handleResize()
+    
+    this.refresh();
+    this.searchData = store.get("searchData") || [];
+    window.setInterval(this.refresh, 60000); // Refresh each minute
+
+
     this.debouncedOnResize = _.debounce(this.handleResize, 500)
     window.addEventListener('resize', () => {
       this.indexShowmore = -1
       this.debouncedOnResize()
     })
-    this.refresh();
-    this.searchData = store.get("searchData") || [];
-    window.setInterval(this.refresh, 60000); // Refresh each minute
+    this.handleResize()
   },
   directives: {
     ClickOutside
