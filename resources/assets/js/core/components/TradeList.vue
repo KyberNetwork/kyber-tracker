@@ -21,7 +21,8 @@
         <div v-if="searchResult.isValid && searchResult.data">          
 
           <div class="wallet-detail-title panel-heading pb-16">
-            <span class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
+            <span v-if="!partner" class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
+            <span v-else class="no-margin panel-title">{{$t('wallet_detail.partner_details')}} </span>
           </div>
 
           <!-- address detail ################## -->
@@ -47,6 +48,17 @@
                 </div>
                 <div class="value-label">
                   {{$t('wallet_detail.collected_fees')}}
+                </div>
+                
+              </div>
+
+
+              <div v-if="partner" class="col border-left">
+                <div class="value-number">
+                  {{searchResult.data.commission || '0'}} KNC
+                </div>
+                <div class="value-label">
+                  {{$t('wallet_detail.commission')}}
                 </div>
                 
               </div>
@@ -136,7 +148,7 @@
         >
       </paginate>
       
-      <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="csvExport()">{{ $t("trade_list.export_csv") }}</button>
+      <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
@@ -145,8 +157,8 @@
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
               <th colspan="2" class="pl-4">{{ $t("trade_list.exchange_from") }}</th>
               <th class="pl-4">{{ $t("trade_list.exchange_to") }}</th>
-              <th v-bind:colspan="2" class="pl-4">{{ $t("trade_list.rate") }}</th>
-              <!-- <th v-if="!isHidePartnerCommission" colspan="2" class="pl-4" >{{ $t("trade_list.fee_to_wallet") }}</th> -->
+              <th v-bind:colspan="partner ? 1 : 2" class="pl-4">{{ $t("trade_list.rate") }}</th>
+              <th v-if="partner" colspan="2" class="pl-4" >{{ $t("trade_list.commission") }}</th>
               <!-- <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th> -->
               <!-- <th></th> -->
             </tr>
@@ -161,7 +173,7 @@
               <!-- <td class="text-left"></td> -->
               <td class="text-left pl-4">1 <span class="font-semi-bold">{{ row.takerTokenSymbol }}</span> = {{ getRate(row) }} <span class="font-semi-bold">{{ row.makerTokenSymbol }}</span></td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
-              <!-- <td v-if="!isHidePartnerCommission" class="text-left pl-4">{{ formatTokenNumber('KNC', row.commission) }} KNC</td> -->
+              <td v-if="partner" class="text-left pl-4">{{ formatTokenNumber('KNC', row.commission) }} KNC</td>
               <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
@@ -176,18 +188,18 @@
       </div>
 
       <!-- small trade list for mobile -->
-      <div v-if="$mq !== 'md' && $mq !== 'lg'" class="table-responsive-wraper table-hover clear pt-10">
-        <table class="table table-round table-striped">
+      <div v-if="$mq !== 'md' && $mq !== 'lg'" class=" clear pt-10">
+        <table class="table table-hover  table-striped">
           <thead>
             <tr>
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
-              <th class="pl-4">{{ $t("trade_list.exchange_from") }} > {{ $t("trade_list.exchange_to") }}</th>
+              <th class="pl-4">{{ $t("trade_list.pair") }}</th>
               <th class="pl-4">{{ $t("trade_list.rate") }}</th>
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
-              <td class="pl-4">{{ getDateInfo(row, true) }}</td>
+              <td class="pl-4">{{ getDateInfo(row, false) }}</td>
               <td class="text-left pl-4 trade-direction">
                 <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</span>
                 <br/>
@@ -245,6 +257,7 @@ import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
 import network from '../../../../../config/network';
+const partners = network.partners
 
 const tokens = network.tokens;
 
@@ -277,6 +290,9 @@ export default {
        type: Object
 
     },
+    partner:{
+      type: Boolean
+    },
     getSearchResultTitle: {
       type: Function,
       default: () => ""
@@ -293,6 +309,9 @@ export default {
             this.maxPage = pagination.maxPage;
           });
       }
+    },
+    exportData: {
+      type: Function
     },
     isHideDatepicker: {
       type: Boolean,
@@ -323,49 +342,11 @@ export default {
     };
   },
   methods: {
-    csvExport: function (users) {
-      const q = this.$route.query.q;
-      const fromDate = this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined
-      const toDate = this.searchToDate ? moment(this.searchToDate).endOf('day').unix() : undefined
-
-      AppRequest
-          .searchAllToExport(q, fromDate, toDate, (err, res) => {
-            const data = res.data;
-            var csvHeader = "data:text/csv;charset=utf-8,";
-            var csvContent = ""
-            csvContent += data.map(function(d){
-              let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
-              let fromToken = d.takerTokenSymbol
-              let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0
-
-              let toToken = d.makerTokenSymbol
-              let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0
-
-              // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
-              let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0
-
-              return `${time},${fromToken},${fromAmount},${toToken},${toAmount},${usdAmount}`
-            })
-            .join('\n') 
-            .replace(/(^\{)|(\}$)/mg, '');
-            let csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,USD Value\n' + csvContent
-
-            // window.open( encodeURI(csvData) );
-            let dataCSV = encodeURI(csvData);
-
-            let link = document.createElement('a');
-            link.setAttribute('href', dataCSV);
-            link.setAttribute('download', new Date().toUTCString() + " " + q);
-            link.click();
-          });
-
-
-      
-    },
     getTxEtherscanLink(tx) {
       return network.endpoints.ethScan + "tx/" + tx;
     },
     getAddressEtherscanLink(tx) {
+      if(!util.isAddress(tx)) tx=partners[tx.toLowerCase()]
       return network.endpoints.ethScan + "address/" + tx;
     },
     getRequestParams () {
@@ -418,6 +399,9 @@ export default {
         name: 'trade-details',
         params: {
           id: row.id
+        },
+        query: { 
+          partner: true 
         }
       });
     },

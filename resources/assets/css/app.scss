@@ -10,7 +10,7 @@
 body {
   color: $black;
   font-family: $code-font-family;
-  min-width: 350px;
+  min-width: 330px;
   color: #2a4552;
 }
 
@@ -28,6 +28,7 @@ a {
 
 .table th, .table td {
   border-top: none;
+  white-space: normal !important;
 }
 .font-semi-bold{
   font-weight: 500;
@@ -737,6 +738,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
   &.header-expand{
     height: auto !important;
+    img.show-more{
+      -webkit-transform: rotate(180deg);     /* Chrome and other webkit browsers */
+      -moz-transform: rotate(180deg);        /* FF */
+      -o-transform: rotate(180deg);          /* Opera */
+      -ms-transform: rotate(180deg);         /* IE9 */
+      transform: rotate(180deg); 
+    }
   }
 
   li {
@@ -894,6 +902,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 @media (max-width: 610px){
+  .icon-second-heade{
+    display: none
+  }
   .go-exchange{
     .text-go{
       display: none;
@@ -1225,7 +1236,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   word-wrap: break-word;
   .border-right{
     border-right: dashed 1.2px #cbcdcf;
-
+  }
+  .border-left{
+    border-left: dashed 1.2px #cbcdcf;
   }
   .wallet-title{
     font-size: 16px;
@@ -1427,7 +1440,7 @@ html {
 }
 
 #page-content {
-  min-width: 404px;
+  min-width: 330px;
   padding-bottom: 115px;
   overflow-x: hidden;
 }

@@ -15,27 +15,42 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
-  searchTrades (q, page=0, limit=20, fromDate, toDate, callback) {
+  searchTrades (q, page=0, limit=20, fromDate, toDate, exportData, callback) {
     const url = `/api/search`;
+    let queryParams = { q, limit, page, fromDate, toDate }
+    if(exportData) queryParams.exportData = true
     return request
             .get(url)
-            .query({ q, limit, page, fromDate, toDate })
+            .query(queryParams)
             .then((res) => {
               return callback(null, res.body);
             })
             .catch(this._handleError);
   }
 
-  searchAllToExport (q, fromDate, toDate, callback) {
-    const url = `/api/search`;
+  getPartnerDetail (partnerId, page=0, limit=20, fromDate, toDate, exportData, callback) {
+    const url = `/api/partner/${partnerId}`;
+    let queryParams = {limit, page, fromDate, toDate }
+    if(exportData) queryParams.exportData = true
     return request
             .get(url)
-            .query({ q, fromDate, toDate, exportData: true })
+            .query(queryParams)
             .then((res) => {
               return callback(null, res.body);
             })
             .catch(this._handleError);
   }
+
+  // searchAllToExport (q, fromDate, toDate, callback) {
+  //   const url = `/api/search`;
+  //   return request
+  //           .get(url)
+  //           .query({ q, fromDate, toDate, exportData: true })
+  //           .then((res) => {
+  //             return callback(null, res.body);
+  //           })
+  //           .catch(this._handleError);
+  // }
 
   getNetworkVolume(period, interval, symbol, callback) {
     if (typeof symbol === 'function') {

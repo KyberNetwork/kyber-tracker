@@ -9,6 +9,7 @@ module.exports = {
     '/fees/collected'               : ['TradeController.getCollectedFees'],
     '/fees/burned'                  : ['TradeController.getBurnedFees'],
     '/search'                       : ['TradeController.search'],
+    '/partner/:partnerId'           : ['TradeController.getPartnerDetail'],
     
     '/currencies/convertiblePairs'  : ['CurrenciesController.getConvertiblePairs'],
   },

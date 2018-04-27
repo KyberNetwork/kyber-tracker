@@ -87,11 +87,13 @@
     "amount": "数量",
     "collected_fees": "总费用",
     "fee_to_wallet": "合伙人佣金费用",
+    "commission": "佣金",
     "fee_to_burn": "以销毁的费用",
     "exchange": "交易",
     "msg_no_result": "没有找到任何交易.",
     "exchange_from": "从",
     "exchange_to": "换至",
+    "pair": "交易对",
     "export_csv": "导出(CSV文件)"
   },
   "trade_detail": {
@@ -106,6 +108,7 @@
     "rate": "{0}/{1} 汇率",
     "collected_fees": "总费用",
     "fee_to_wallet": "合伙人佣金费用",
+    "commission": "佣金",
     "fee_to_burn": "以销毁的费用",
     "for": " 为 ",
     "trade_note": "USD 汇率在交易时间点计算"
@@ -119,7 +122,9 @@
     "value_in_usd": "价值（USD)",
     "notice": "USD 汇率在交易时间点计算",
     "wallet_detail": "钱包详情",
-    "history": "交易历史"
+    "partner_details": "合作伙伴详情",
+    "history": "交易历史",
+    "commission": "佣金"
   },
   "token_list": {
     "title": "交易代币名单",

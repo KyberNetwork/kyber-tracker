@@ -93,11 +93,13 @@
     "amount": "Số lượng",
     "collected_fees": "Tổng phí",
     "fee_to_wallet": "Phí tích hợp",
+    "commission": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt",
     "exchange": "Trao đổi",
     "msg_no_result": "Không tìm thấy giao dịch nào.",
     "exchange_from" : "Đổi từ",
     "exchange_to" : "Đổi sang",
+    "pair": "Cặp",
     "export_csv": "Xuất dữ liệu (CSV)"
   },
 
@@ -113,6 +115,7 @@
     "rate": "TỈ GIÁ {0}/{1}",
     "collected_fees": "TỔNG PHÍ",
     "fee_to_wallet": "Phí tích hợp",
+    "commission": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt",
     "for": " đổi lấy ",
     "trade_note": "Tỷ giá USD được tính tại thời điểm giao dịch"
@@ -127,7 +130,9 @@
     "value_in_usd": "Giá trị theo USD",
     "notice": "Tỷ giá USD được tính tại thời điểm giao dịch",
     "wallet_detail": "Thông tin ví",
-    "history": "Lịch sử giao dịch"
+    "partner_details": "Thông tin đối tác",
+    "history": "Lịch sử giao dịch",
+    "commission": "PHÍ TÍCH HỢP"
   },
 
 
