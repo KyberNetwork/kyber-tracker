@@ -150,18 +150,23 @@ bot.onText(commands.list, (msg, match) => {
     const password = match[1]; // the captured "password"
 
     if (password === process.env.ALARM_BOT_PWD) {
-        let text = "REGISTERED:";
-        db.createKeyStream()
+        let text = "";
+        let count = 0;
+        db.createValueStream()
             .on('data', function (data) {
-                const id = data.substr(3);
-                text += `\n${id}`;
+                count++;
+                const chat = JSON.parse(data).chat;
+                text += `\n${count}. ${chat.type} ${chat.username ? ("@" + chat.username) : chat.title} (ID: ${chat.id})`;
             })
             .on('error', function (err) {
                 logger.error(err);
             })
             .on('end', function () {
-                text = text || "No registered users or groups."
-                console.log(text);
+                if (!text.length) {
+                    text = "No registered users or groups.";
+                } else {
+                    text = "REGISTERED: " + count + text;
+                }
                 bot.sendMessage(chatId, text, {
                     reply_to_message_id: msg.message_id,
                     parse_mode: "Markdown"
@@ -183,10 +188,14 @@ module.exports = {
         db.createKeyStream()
         .on('data', function (data) {
             const text = "================\n‼️ ATTENTION ‼️\n================\n" + params.message; 
-            bot.sendMessage(data.substr(3), text);
+            try {
+                bot.sendMessage(data.substr(3), text);
+            } catch(err) {
+                logger.error(err);
+            }
         })
         .on('error', function (err) {
-            logger.error("Fail to get white-listed telegram conversations to alarm!");
+            logger.error(err);
         })
     },
     support: support

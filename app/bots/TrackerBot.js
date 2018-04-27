@@ -15,7 +15,8 @@ It supports 'd' and 'h'.
 
 /today to view summary for today (UTC time)
 /yesterday to view summary for yesterday (UTC time)
-/burn to see how much KNC burned to date`,
+/burn to see how much KNC burned to date
+/token to see volume by token`,
         replyOptions: {
             no_reply: true
         }
@@ -28,7 +29,8 @@ It supports 'd' and 'h'.
 
 /today to view summary for today (UTC time)
 /yesterday to view summary for yesterday (UTC time)
-/burn to see how much KNC burned to date`
+/burn to see how much KNC burned to date
+/token to see volume by token`
     },
     last: {
         match: /\b\/?(?:last|volume)(?:@\w+)?(?:\s+(\w+))?\b/i,
@@ -127,7 +129,7 @@ It supports 'd' and 'h'.
         }
     },
     price: {
-        match: /\b\/?(?:price|rates?)(?:@\w+)?\b/i,
+        match: /\b\/?(?:(?:kyber)?price|rates?)(?:@\w+)?\b/i,
         needDb: true,
         reply: (bot, msg, match) => {
             if (!bot._context.internal && msg.chat.type === "supergroup") {
@@ -358,18 +360,6 @@ function reply(bot, msg, text, options) {
         reply_to_message_id: !options.no_reply ? msg.message_id : undefined,
         parse_mode: !!options.parse_mode ? options.parse_mode : undefined,
         disable_web_page_preview: !!options.no_preview
-        /*
-        reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: 'Volume by Partner',
-                  callback_data: 'partner'
-                }
-              ]
-            ]
-          }
-          */
     });
 }
 
@@ -424,16 +414,25 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
     });
 }
 
-function formatAddress(addr) {
+function partnerLink(addr) {
     if (!addr) return "No partner";
-    const lowAddr = addr.toLowerCase();
-    if (lowAddr === '0xb9e29984fe50602e7a619662ebed4f90d93824c7') return "imToken";
-    if (lowAddr === '0xdecaf9cd2367cdbb726e904cd6397edfcae6068d') return "MEW";
-    if (lowAddr === '0xf1aa99c69715f423086008eb9d06dc1e35cc504d') return "Trust";
-    if (lowAddr === '0xdd61803d4a56c597e0fc864f7a20ec7158c6cba5') return "Cipher";
-    if (lowAddr === '0x09227deaee08a5ba9d6eb057f922adfad191c36c') return "Olympus";
 
-    return addr.substr(0, 4) + "…" + addr.substr(-2);
+    let name = null;
+    let lowerAddr = addr.toLowerCase();
+    if (network.partners) {
+        for (let key in network.partners) {
+            if (network.partners[key].toLowerCase() === lowerAddr) {
+                name = key;
+                break;
+            }
+        }
+    }
+
+    if (!name) {
+        name = addr.substr(0, 4) + "…" + addr.substr(-2);
+    }
+
+    return `[${name}](https://tracker.kyber.network/#/partner/${addr})`;
 }
 
 function sendPartnerSummary(bot, msg, from, to, prefix) {
@@ -456,14 +455,14 @@ function sendPartnerSummary(bot, msg, from, to, prefix) {
                     total += item.sum;
                 })
                 ret.forEach((item) => {
-                    text += "\n" + formatAddress(item.commissionReceiveAddress) + ": *" + format(item.sum) + " ETH* (" +
+                    text += "\n" + partnerLink(item.commissionReceiveAddress) + ": *" + format(item.sum) + " ETH* (" +
                         percent(item.sum, total) + "%)";
                 });
 
                 text += "\n-----\nTOTAL: *" + format(total) + " ETH*";
             }
 
-            reply(bot, msg, text, {parse_mode: "Markdown"});
+            reply(bot, msg, text, {parse_mode: "Markdown", no_preview: true});
         }
         bot._context.finish();
     });
