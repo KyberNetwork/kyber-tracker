@@ -148,7 +148,7 @@
         >
       </paginate>
       
-      <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="csvExport()">{{ $t("trade_list.export_csv") }}</button>
+      <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         <table class="table table-responsive table-round table-striped">
@@ -310,6 +310,9 @@ export default {
           });
       }
     },
+    exportData: {
+      type: Function
+    },
     isHideDatepicker: {
       type: Boolean,
       default: false,
@@ -339,45 +342,6 @@ export default {
     };
   },
   methods: {
-    csvExport: function (users) {
-      const q = this.$route.query.q;
-      const fromDate = this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined
-      const toDate = this.searchToDate ? moment(this.searchToDate).endOf('day').unix() : undefined
-
-      AppRequest
-          .searchAllToExport(q, fromDate, toDate, (err, res) => {
-            const data = res.data;
-            var csvHeader = "data:text/csv;charset=utf-8,";
-            var csvContent = ""
-            csvContent += data.map(function(d){
-              let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
-              let fromToken = d.takerTokenSymbol
-              let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0
-
-              let toToken = d.makerTokenSymbol
-              let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0
-
-              // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
-              let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0
-
-              return `${time},${fromToken},${fromAmount},${toToken},${toAmount},${usdAmount}`
-            })
-            .join('\n') 
-            .replace(/(^\{)|(\}$)/mg, '');
-            let csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,USD Value\n' + csvContent
-
-            // window.open( encodeURI(csvData) );
-            let dataCSV = encodeURI(csvData);
-
-            let link = document.createElement('a');
-            link.setAttribute('href', dataCSV);
-            link.setAttribute('download', new Date().toUTCString() + " " + q);
-            link.click();
-          });
-
-
-      
-    },
     getTxEtherscanLink(tx) {
       return network.endpoints.ethScan + "tx/" + tx;
     },
@@ -435,6 +399,9 @@ export default {
         name: 'trade-details',
         params: {
           id: row.id
+        },
+        query: { 
+          partner: true 
         }
       });
     },

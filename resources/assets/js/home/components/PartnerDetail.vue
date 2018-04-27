@@ -3,6 +3,7 @@
     <trade-list ref="datatable"
       :getFilterTokenSymbol="getFilterTokenSymbol"
       :fetch="requestSearch"
+      :exportData="exportData"
       :isHideDatepicker="false"
       :searchResult="getSearchResultMessage()"
       :getSearchResultTitle="getSearchResultTitle"
@@ -25,6 +26,7 @@ import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 import network from '../../../../../config/network';
 const partner = network.partner;
+const tokens = network.tokens;
 import Chart from 'chart.js';
 
 export default {
@@ -104,7 +106,7 @@ export default {
       const toDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
 
       AppRequest
-          .getPartnerDetail(partnerId, currentPage, pageSize, fromDate, toDate, (err, res) => {
+          .getPartnerDetail(partnerId, currentPage, pageSize, fromDate, toDate, false, (err, res) => {
             const data = res.data;
             if (data && data.id > 0) {
               this.$router.push(`/trades/${data.id}`);
@@ -126,6 +128,46 @@ export default {
             }
           });
     },
+
+    exportData (){
+      const currentPage = this.$refs.datatable.currentPage;
+      const pageSize = this.$refs.datatable.pageSize || 20;
+      const partnerId = this.$route.params.partnerId;
+      const fromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
+      const toDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
+
+      AppRequest
+          .getPartnerDetail(partnerId, currentPage, pageSize, fromDate, toDate, true, (err, res) => {
+            const data = res.data;
+
+            var csvHeader = "data:text/csv;charset=utf-8,";
+            var csvContent = ""
+            csvContent += data.map(function(d){
+              let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
+              let fromToken = d.takerTokenSymbol
+              let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0
+
+              let toToken = d.makerTokenSymbol
+              let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0
+              let commission = d.commission ? new BigNumber(d.commission.toString()).div(Math.pow(10, 18)).toString() : 0
+              // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
+              let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0
+
+              return `${time},${fromToken},${fromAmount},${toToken},${toAmount},${usdAmount},${commission}`
+            })
+            .join('\n') 
+            .replace(/(^\{)|(\}$)/mg, '');
+            let csvData = csvHeader + 'Time,From Token,From Amount,To Token,To Amount,USD Value, Commission(KNC)\n' + csvContent
+
+            // window.open( encodeURI(csvData) );
+            let dataCSV = encodeURI(csvData);
+
+            let link = document.createElement('a');
+            link.setAttribute('href', dataCSV);
+            link.setAttribute('download', new Date().toUTCString() + " " + partnerId);
+            link.click();
+          });
+    }
   },
 
   computed: {

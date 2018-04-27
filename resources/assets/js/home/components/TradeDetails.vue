@@ -137,19 +137,19 @@
           {{$t("trade_detail.collected_fees")}}
         </div>
         <div class="rate-detail-value">
-          {{ getTokenAmount(record.burnFees, 'KNC') }} KNC
+          {{ getTokenAmount(record.collectedFees, 'KNC') }} KNC
         </div>
         
       </div>
-      <!-- <div class="col">
+      <div v-if="$route.query.partner" class="col">
         <div class="rate-detail-title">
-          PARTNER COMMISSION
+          {{$t("trade_detail.commission")}}
         </div>
         <div class="rate-detail-value">
-          {{ getTokenAmount(record.takerFee, 'KNC') }} KNC
+          {{ getTokenAmount(record.commission, 'KNC') }} KNC
         </div>
         
-      </div> -->
+      </div>
     </div>
     
 

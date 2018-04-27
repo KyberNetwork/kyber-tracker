@@ -85,7 +85,7 @@
     "amount": "수량",
     "collected_fees": "총비용",
     "fee_to_wallet": "파트너 비용",
-    "commission": "Commission",
+    "commission": "파트너 비용",
     "fee_to_burn": "소각될 비용",
     "exchange": "거래",
     "msg_no_result": "거래가 없습니다.",
@@ -105,6 +105,7 @@
     "rate": "환율 {0}/{1}",
     "collected_fees": "총비용",
     "fee_to_wallet": "파트너 비용",
+    "commission": "파트너 비용",
     "fee_to_burn": "소각될 비용",
     "for": " 전환 ",
     "trade_note": "USD 환율은 거래 당시 기준입니다."
@@ -119,9 +120,9 @@
     "value_in_usd": "가치 (USD)",
     "notice": "USD 환율은 거래 당시 기준입니다",
     "wallet_detail": "지갑 정보",
-    "partner_details": "Partner Details",
+    "partner_details": "파트너 세부 정보",
     "history": "최근 거래",
-    "commission": "Commission"
+    "commission": "파트너 비용"
   },
 
 

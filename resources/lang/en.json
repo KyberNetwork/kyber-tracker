@@ -116,6 +116,7 @@
     "rate": "{0}/{1} RATE",
     "collected_fees": "COLLECTED FEES",
     "fee_to_wallet": "Partner Commission",
+    "commission": "COMMISSION",
     "fee_to_burn": "Fees To Burn",
     "for": " for ",
     "trade_note": "USD Rates are calculated at trading time"
