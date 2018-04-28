@@ -132461,7 +132461,7 @@ exports.default = {
       "</span>";
     },
     getSearchResultMessage: function getSearchResultMessage() {
-      if (!_util2.default.isAddress(this.$route.params.partnerId) && !partners[this.$route.params.partnerId]) {
+      if (!this.$route.params.partnerId || !_util2.default.isAddress(this.$route.params.partnerId) && !partners[this.$route.params.partnerId.toLowerCase()]) {
 
         return {
           isValid: false,
