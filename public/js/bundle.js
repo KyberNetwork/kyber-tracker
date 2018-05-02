@@ -105113,6 +105113,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _data$beforeDestroy$c;
+
 var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
@@ -105154,6 +105156,8 @@ var _lodash = __webpack_require__(20);
 var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
 //
@@ -105367,7 +105371,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 
-exports.default = {
+exports.default = (_data$beforeDestroy$c = {
   data: function data() {
     return {
       networkVolume: "",
@@ -105620,28 +105624,29 @@ exports.default = {
 
   updated: function updated() {
     this.handleResize();
-  },
-
-  mounted: function mounted() {
-    var _this3 = this;
-
-    this.refresh();
-    this.searchData = _store2.default.get("searchData") || [];
-    window.setInterval(this.refresh, 60000); // Refresh each minute
-
-
-    // this.debouncedOnResize = _.debounce(this.handleResize, 500)
-    window.addEventListener('resize', function () {
-      _this3.indexShowmore = -1;
-      _this3.handleResize();
-    });
-    this.handleResize();
-  },
-
-  directives: {
-    ClickOutside: _vueClickOutside2.default
   }
-};
+
+}, _defineProperty(_data$beforeDestroy$c, "beforeDestroy", function beforeDestroy() {
+  // window.removeEventListener('resize', this.handleResize)
+  window.clearInterval(this.intervalResize);
+}), _defineProperty(_data$beforeDestroy$c, "mounted", function mounted() {
+  var _this3 = this;
+
+  this.refresh();
+  this.searchData = _store2.default.get("searchData") || [];
+  window.setInterval(this.refresh, 60000); // Refresh each minute
+
+  this.intervalResize = window.setInterval(this.handleResize, 2000);
+
+  // this.debouncedOnResize = _.debounce(this.handleResize, 500)
+  window.addEventListener('resize', function () {
+    _this3.indexShowmore = -1;
+    _this3.handleResize();
+  });
+  this.handleResize();
+}), _defineProperty(_data$beforeDestroy$c, "directives", {
+  ClickOutside: _vueClickOutside2.default
+}), _data$beforeDestroy$c);
 
 /***/ }),
 /* 747 */
