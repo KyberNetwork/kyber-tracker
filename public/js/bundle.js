@@ -105385,7 +105385,6 @@ exports.default = {
       addressesMetamask: [],
       isOpenFee: false,
       indexShowmore: -1
-
     };
   },
 
@@ -105619,6 +105618,10 @@ exports.default = {
     }
   },
 
+  updated: function updated() {
+    this.handleResize();
+  },
+
   mounted: function mounted() {
     var _this3 = this;
 
@@ -105627,10 +105630,10 @@ exports.default = {
     window.setInterval(this.refresh, 60000); // Refresh each minute
 
 
-    this.debouncedOnResize = _lodash2.default.debounce(this.handleResize, 500);
+    // this.debouncedOnResize = _.debounce(this.handleResize, 500)
     window.addEventListener('resize', function () {
       _this3.indexShowmore = -1;
-      _this3.debouncedOnResize();
+      _this3.handleResize();
     });
     this.handleResize();
   },
