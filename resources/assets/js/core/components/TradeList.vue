@@ -401,7 +401,7 @@ export default {
           id: row.id
         },
         query: { 
-          partner: true 
+          partner: this.partner 
         }
       });
     },
