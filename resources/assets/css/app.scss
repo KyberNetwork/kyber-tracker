@@ -515,6 +515,9 @@ td {
 .table-responsive-wraper {
   overflow: auto;
 }
+table.table-round th {
+  vertical-align: top;
+}
 .table-more{
   color: #2ed573;
 }
