@@ -164,7 +164,7 @@
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
-            <tr v-for="(row, index) in rows" :item="row" :index="index">
+            <tr v-for="(row, index) in rows" :item="row" v-if="!(tokens[row.takerTokenSymbol].hidden || tokens[row.makerTokenSymbol].hidden)" :index="index">
               <td class="pl-4">{{ getDateInfo(row) }}</td>
               <td class="text-left pl-4 font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</td>
               <!-- <td class="text-left no-padding-right"></td> -->
@@ -198,7 +198,7 @@
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
-            <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
+            <tr v-for="(row, index) in rows" v-if="!(tokens[row.takerTokenSymbol].hidden || tokens[row.makerTokenSymbol].hidden)" :item="row" :index="index" @click="onClickRow(row)">
               <td class="pl-4">{{ getDateInfo(row, false) }}</td>
               <td class="text-left pl-4 trade-direction">
                 <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} {{ row.takerTokenSymbol }}</span>
@@ -401,7 +401,7 @@ export default {
           id: row.id
         },
         query: { 
-          partner: true 
+          partner: this.partner 
         }
       });
     },

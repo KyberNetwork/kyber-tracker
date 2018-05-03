@@ -239,7 +239,6 @@ export default {
       addressesMetamask: [],
       isOpenFee: false,
       indexShowmore: -1
-
     };
   },
 
@@ -478,17 +477,28 @@ export default {
     }
   },
 
+  updated: function () {
+    this.handleResize()
+  },
+
+  beforeDestroy: function () {
+    // window.removeEventListener('resize', this.handleResize)
+    window.clearInterval(this.intervalResize)
+  },
+
   mounted() {
     
     this.refresh();
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
 
+    this.intervalResize = window.setInterval(this.handleResize, 2000);
 
-    this.debouncedOnResize = _.debounce(this.handleResize, 500)
+
+    // this.debouncedOnResize = _.debounce(this.handleResize, 500)
     window.addEventListener('resize', () => {
       this.indexShowmore = -1
-      this.debouncedOnResize()
+      this.handleResize()
     })
     this.handleResize()
   },

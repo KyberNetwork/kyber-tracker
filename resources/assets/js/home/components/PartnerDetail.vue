@@ -75,7 +75,7 @@ export default {
             "</span>";
     },
     getSearchResultMessage () {
-      if(!util.isAddress(this.$route.params.partnerId) && !partners[this.$route.params.partnerId]){
+      if(!this.$route.params.partnerId || (!util.isAddress(this.$route.params.partnerId) && !partners[this.$route.params.partnerId.toLowerCase()])){
 
         return {
           isValid: false,
