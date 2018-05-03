@@ -29,7 +29,7 @@ module.exports = {
       "symbol": "ETH",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
-      "cmcId": "ethereum",
+      "cmcId": "ethereum"
     },
     "KNC": {
       "name": "Kyber Network",
@@ -226,7 +226,7 @@ module.exports = {
       "hidden": true
     },
     "DGX": {
-      "name": "Digix Gold Token",
+      "name": "Digix Gold",
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
       "decimal": 9,
