@@ -115425,7 +115425,7 @@ exports.default = {
             display: true,
             align: 'right',
             anchor: function anchor(context) {
-              console.log(context);
+              // console.log(context)
               return 'end';
             },
             // color: [

@@ -147,7 +147,7 @@
               display: true,
               align: 'right',
               anchor: function(context) {
-                console.log(context)
+                // console.log(context)
                 return 'end'
               },
               // color: [
