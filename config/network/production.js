@@ -123,6 +123,7 @@ module.exports = {
       "name" : "ETHOS",
       "address": "0x5af2be193a6abca9c8817001f45744777db30756",
       "symbol": "BQX",
+      "cmcSymbol": "ETHOS",
       "decimal": 8
     },
     "ADX": {
@@ -249,8 +250,7 @@ module.exports = {
       "name": "Olympus Labs",
       "address": "0x263c618480dbe35c300d8d5ecda19bbb986acaed",
       "symbol": "MOT",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     },
     "ICX": {
       "name": "ICON",
