@@ -114,7 +114,8 @@ a {
   background-color: #192a56;
   color: rgba(255, 255, 255, 0.56);
   min-height: 0px !important;
-  padding: 10px 0;
+  // padding: 10px 0;
+  padding-top: 10px;
   border-top: 1px solid #243c47;
   align-items: flex-start !important;
 
@@ -733,7 +734,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   margin: 0;
   padding: 10px 17px 0 17px;
   line-height: 20px;
-  height: 56px;
+  height: 65px;
   overflow: hidden;
   -webkit-transition: height .5s ease;
     -moz-transition: height .5s ease;
