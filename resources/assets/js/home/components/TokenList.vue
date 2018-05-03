@@ -143,7 +143,7 @@ export default {
       });
     },
     shouldShowToken (item) {
-      return (item.volumeTokenNumber > 0) || !this.tokens[item.symbol].hidden;
+      return !this.tokens[item.symbol].hidden;
     },
     formatVolumeUSD (item) {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
