@@ -102,6 +102,9 @@
             beginAtZero: true,
             fontFamily: "Montserrat, My-Montserrat, sans-serif",
             fontSize: 12,
+            gridLines: {
+              offsetGridLines: true
+          },
             callback: (label, index, labels) => {
               if (index === 0) {
                 return " ";
@@ -135,11 +138,18 @@
           legend: {
             display: false
           },
+          options: {
+            barPercentage: 0.5,
+          },
+          
           plugins: {
             datalabels: {
               display: true,
               align: 'right',
-              anchor: 'end',
+              anchor: function(context) {
+                // console.log(context)
+                return 'end'
+              },
               // color: [
               //   'red',    // color for data at index 0
               //   'blue',   // color for data at index 1
@@ -155,7 +165,11 @@
                 
                 // let sum = volumeEths.reduce((a,b) => (a + b), 0)
                   return percentETH[dataIndex] ? percentETH[dataIndex] + '%' : '';
-              }
+              },
+              // display: function(context) {
+              //   console.log(context)
+              //     return context.dataIndex % 2; // display labels with an odd index
+              // }
           },
           },
           
