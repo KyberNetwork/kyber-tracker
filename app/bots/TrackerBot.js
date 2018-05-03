@@ -175,11 +175,11 @@ Vietnamese version will be available soon.`,
     },
     roadmap: {
         match: /\b\/?(?:road)\s?map(?:@\w+)?\b/i,
-        reply: "You can see the roadmap on Kyber Network home page https://home.kyber.network/#roadmap"
+        reply: "You can see the roadmap on Kyber Network home page https://home.kyber.network/about/company/#roadmap"
     },
     team: {
         match: /\b\/?team(?:@\w+)?\b/i,
-        reply: "Our team is here https://home.kyber.network/#team"
+        reply: "Our team is here https://home.kyber.network/about/company/#team"
     },
     introduce: {
         match: /\b\/?introduce(?:@\w+)?\b/i,
@@ -188,6 +188,10 @@ Vietnamese version will be available soon.`,
     lambo: {
         match: /\b\/?(?:when)?\s?lambo(?:@\w+)?\b/i,
         reply: "Check it out here https://when-lambo.com/"
+    },
+    cmc: {
+        match: /\b\/?cmc(?:@\w+)?\b/i,
+        reply: "https://coinmarketcap.com/exchanges/kyber-network/"
     },
     lang: {
         match: /\b\/?(?:lang|groups?)(?:@\w+)?\b/i,

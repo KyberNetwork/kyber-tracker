@@ -185,7 +185,7 @@ module.exports = BaseService.extends({
       }));
       
       const supportedToken = _.filter(tokens, (e) => {
-        return (e.volumeTokenNumber > 0) || !network.tokens[e.symbol].hidden;
+        return !network.tokens[e.symbol].hidden;
       })
       
       return callback(null, _.sortBy(supportedToken, (e) => {

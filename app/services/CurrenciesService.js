@@ -22,8 +22,9 @@ module.exports = BaseService.extends({
     let pairs = {}
 
     Object.keys(tokens).map(token => {
-      if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
-        pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
+      if((token !== "ETH") && !tokens[token].hidden){
+        const cmcName = tokens[token].cmcSymbol || token;
+        pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
           fromCurrencyCode: "ETH"
         }, asyncCallback)
@@ -132,7 +133,7 @@ module.exports = BaseService.extends({
       const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
       const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
       return callback( null , {
-        "symbol": tokenData.symbol,
+        "symbol": tokenData.cmcSymbol || tokenData.symbol,
         "name": tokenData.name,
         // "code": tokenData.symbol,
         "contractAddress": tokenData.address,
