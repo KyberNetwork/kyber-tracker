@@ -115332,7 +115332,7 @@ exports.default = {
         datasets: [{
           data: dataset,
           pointRadius: 0,
-          backgroundColor: ['#2ed573', '#2ed573', '#2ed573', '#2ed573', '#2ed573'],
+          backgroundColor: ["#2ed573", "#2ed573", "#2ed573", "#2ed573", "#2ed573"],
           showLine: true,
           spanGaps: true
         }],
@@ -115353,9 +115353,9 @@ exports.default = {
         afterBody: function afterBody(tooltipItem, data) {
           var index = tooltipItem[0].index;
           var tokenSymbol = data.labels[index];
-          var usdText = _this.$t('chart.title.label_volume') + ' (USD): $' + _util2.default.numberWithCommas(data.datasets[0].data[index]);
-          var ethText = _this.$t('chart.title.label_volume') + ' (ETH): ' + _util2.default.numberWithCommas(data.volumeEths[index]);
-          var tokenText = _this.$t('chart.title.label_volume') + ' (' + tokenSymbol + '): ' + _util2.default.numberWithCommas(data.volumeTokens[index]);
+          var usdText = _this.$t("chart.title.label_volume") + " (USD): $" + _util2.default.numberWithCommas(data.datasets[0].data[index]);
+          var ethText = _this.$t("chart.title.label_volume") + " (ETH): " + _util2.default.numberWithCommas(data.volumeEths[index]);
+          var tokenText = _this.$t("chart.title.label_volume") + " (" + tokenSymbol + "): " + _util2.default.numberWithCommas(data.volumeTokens[index]);
 
           if (tokenSymbol === "ETH") {
             return [usdText, tokenText];
@@ -115387,18 +115387,18 @@ exports.default = {
             if (index === 0) {
               return " ";
             }
-            return '$' + _util2.default.numberWithCommas(label / 1000) + "k";
+            return "$" + _util2.default.numberWithCommas(label / 1000) + "k";
           }
         }
       };
 
       return {
         tooltips: {
-          mode: 'index',
-          axis: 'y',
+          mode: "index",
+          axis: "y",
           intersect: false,
           fontFamily: "Montserrat, My-Montserrat, sans-serif",
-          backgroundColor: 'rgba(25, 46, 59, 0.8)',
+          backgroundColor: "rgba(25, 46, 59, 0.8)",
           titleFontSize: 14,
           titleFontColor: "#f8f8f8",
           bodyFontSize: 14,
@@ -115416,17 +115416,19 @@ exports.default = {
         legend: {
           display: false
         },
-        options: {
-          barPercentage: 0.5
+        layout: {
+          padding: {
+            right: 30
+          }
         },
 
         plugins: {
           datalabels: {
             display: true,
-            align: 'right',
+            align: "right",
             anchor: function anchor(context) {
               // console.log(context)
-              return 'end';
+              return "end";
             },
             // color: [
             //   'red',    // color for data at index 0
@@ -115436,12 +115438,11 @@ exports.default = {
             //   //...
             // ],
             formatter: function formatter(value, context) {
-
               var dataIndex = context.dataIndex;
               var percentETH = context.chart.data.percentETH;
 
               // let sum = volumeEths.reduce((a,b) => (a + b), 0)
-              return percentETH[dataIndex] ? percentETH[dataIndex] + '%' : '';
+              return percentETH[dataIndex] ? percentETH[dataIndex] + "%" : "";
             }
             // display: function(context) {
             //   console.log(context)
@@ -115459,16 +115460,16 @@ exports.default = {
       var now = Date.now() / 1000 | 0;
       var start = void 0;
       switch (period) {
-        case 'H24':
+        case "H24":
           start = now - 60 * 60 * 24;
           break;
-        case 'D7':
+        case "D7":
           start = now - 60 * 60 * 24 * 7;
           break;
-        case 'D30':
+        case "D30":
           start = now - 60 * 60 * 24 * 30;
           break;
-        case 'Y1':
+        case "Y1":
           start = now - 60 * 60 * 24 * 365;
           break;
         default:
@@ -115491,7 +115492,7 @@ exports.default = {
         }
 
         _this2.chartInstance = new Chart(ctx, {
-          type: 'horizontalBar',
+          type: "horizontalBar",
           data: data,
           options: options,
           plugins: [_chartjsPluginDatalabels2.default]
