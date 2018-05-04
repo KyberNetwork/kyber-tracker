@@ -107969,7 +107969,8 @@ module.exports = {
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
       "decimal": 9,
-      "hidden": true
+      "hidden": true,
+      "icon": "dgx.png"
     },
     "DGD": {
       "name": "DigixDAO",
@@ -131289,9 +131290,9 @@ exports.default = {
     },
     getTokenImageLink: function getTokenImageLink(symbol) {
       var icon = this.tokens[symbol].icon || symbol.toLowerCase() + ".svg";
-      if (!this.tokens[symbol].hidden) {
-        return 'images/tokens/' + icon;
-      }
+      // if (!this.tokens[symbol].hidden) {
+      //   return 'images/tokens/' + icon;
+      // }
       return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
     },
     toTokenDetails: function toTokenDetails(symbol) {

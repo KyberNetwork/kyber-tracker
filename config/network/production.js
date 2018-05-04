@@ -229,7 +229,8 @@ module.exports = {
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
       "decimal": 9,
-      "hidden": true
+      // "hidden": true,
+      "icon": "dgx.png"
     },
     "DGD": {
       "name": "DigixDAO",
