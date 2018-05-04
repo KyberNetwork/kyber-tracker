@@ -156,7 +156,7 @@ export default {
         },
         layout: {
             padding: {
-                right: 30,
+                right: 50,
             }
         },
 
