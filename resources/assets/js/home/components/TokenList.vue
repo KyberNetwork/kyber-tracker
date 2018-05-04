@@ -150,9 +150,9 @@ export default {
     },
     getTokenImageLink (symbol) {
       let icon = this.tokens[symbol].icon || (symbol.toLowerCase() + ".svg");
-      if (!this.tokens[symbol].hidden) {
-        return 'images/tokens/' + icon;
-      }
+      // if (!this.tokens[symbol].hidden) {
+      //   return 'images/tokens/' + icon;
+      // }
       return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
          icon + "?sanitize=true";
     },
