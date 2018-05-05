@@ -22,7 +22,8 @@ module.exports = BaseService.extends({
     let pairs = {}
 
     Object.keys(tokens).map(token => {
-      if((token !== "ETH") && !tokens[token].hidden){
+      // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
+      if((token.toUpperCase() !== "ETH") && helper.shouldShowToken(token)){
         const cmcName = tokens[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
@@ -140,7 +141,7 @@ module.exports = BaseService.extends({
         "decimals": tokenData.decimal,
         currentPrice: currentPrice.toNumber(),
         lastPrice: lastPrice,
-        lastTimestamp: ret.lastTrade.blockTimestamp,
+        lastTimestamp: ret.lastTrade ? ret.lastTrade.blockTimestamp : null,
         baseVolume: ret.baseVolume,
         quoteVolume: quoteVolume
       })

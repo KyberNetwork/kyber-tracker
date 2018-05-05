@@ -122,6 +122,13 @@ export default {
     return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
+  shouldShowToken (tokenSymbol) {
+    // return !this.tokens[item.symbol].hidden;
+    if(!tokens[tokenSymbol].hidden) return true;
+    if (typeof tokens[tokenSymbol].hidden != 'number') return false;
+    return new Date().getTime() - tokens[tokenSymbol].hidden > 0 ;
+  },
+
   formatTokenAmount: function (amount, decimal=18, decimalFormat = 3) {
     const bigNumber = new BigNumber(amount.toString());
     let result = bigNumber.div(Math.pow(10, decimal));

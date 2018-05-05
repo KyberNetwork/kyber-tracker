@@ -11,14 +11,21 @@ const BaseService = require('sota-core').load('service/BaseService');
 const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
 const logger = require('sota-core').getLogger('TradeService');
 
+const UtilsHelper           = require('../common/Utils');
+
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
   getTradesList: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
-    let whereClauses = '1=1';
     let params = [];
+
+    const supportedTokenList = _.filter(network.tokens, (e) => {
+      return UtilsHelper.shouldShowToken(e.symbol)
+    }).map( x => x.symbol).join('\',\'')
+
+    let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}'))`;
 
     if (options.symbol) {
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
@@ -185,7 +192,8 @@ module.exports = BaseService.extends({
       }));
       
       const supportedToken = _.filter(tokens, (e) => {
-        return !network.tokens[e.symbol].hidden;
+        // return (e.volumeTokenNumber > 0) || !network.tokens[e.symbol].hidden;
+        return UtilsHelper.shouldShowToken(e.symbol)
       })
       
       return callback(null, _.sortBy(supportedToken, (e) => {

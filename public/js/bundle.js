@@ -22712,6 +22712,14 @@ exports.default = {
     return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
+  shouldShowToken: function shouldShowToken(tokenSymbol) {
+    // return !this.tokens[item.symbol].hidden;
+    if (!tokens[tokenSymbol].hidden) return true;
+    if (typeof tokens[tokenSymbol].hidden != 'number') return false;
+    return new Date().getTime() - tokens[tokenSymbol].hidden > 0;
+  },
+
+
   formatTokenAmount: function formatTokenAmount(amount) {
     var decimal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 18;
     var decimalFormat = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
@@ -107863,6 +107871,7 @@ module.exports = {
       "name": "ETHOS",
       "address": "0x5af2be193a6abca9c8817001f45744777db30756",
       "symbol": "BQX",
+      "cmcSymbol": "ETHOS",
       "decimal": 8
     },
     "ADX": {
@@ -107965,11 +107974,11 @@ module.exports = {
       "hidden": true
     },
     "DGX": {
-      "name": "Digix Gold Token",
+      "name": "Digix Gold",
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
       "decimal": 9,
-      // "hidden": true,
+      "hidden": 1525438800000,
       "icon": "dgx.png"
     },
     "DGD": {
@@ -107990,8 +107999,7 @@ module.exports = {
       "name": "Olympus Labs",
       "address": "0x263c618480dbe35c300d8d5ecda19bbb986acaed",
       "symbol": "MOT",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     },
     "ICX": {
       "name": "ICON",
@@ -108011,15 +108019,13 @@ module.exports = {
       "name": "IOStoken",
       "address": "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab",
       "symbol": "IOST",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     },
     "STORM": {
       "name": "Storm",
       "address": "0xd0a4b8946cb52f0661273bfbc6fd0e0c75fc6433",
       "symbol": "STORM",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     }
   },
   "networkId": 1,
@@ -110236,8 +110242,15 @@ exports.default = {
     clickToPage: function clickToPage(page) {
       this.currentPage = this.$refs.topPaginator.selected = this.$refs.bottomPaginator.selected = page - 1;
       this.fetch();
+    },
+    shouldShowRow: function shouldShowRow(row) {
+      var taker = tokens[row.takerTokenSymbol].hidden;
+      var maker = tokens[row.makerTokenSymbol].hidden;
+
+      return _util2.default.shouldShowToken(row.takerTokenSymbol) && _util2.default.shouldShowToken(row.makerTokenSymbol);
     }
   },
+
   computed: {
     locale: function locale() {
       return _util2.default.getLocale(_util2.default.getBrowserLanguage());
@@ -114154,101 +114167,90 @@ var render = function() {
                     ? _c(
                         "tbody",
                         _vm._l(_vm.rows, function(row, index) {
-                          return !(
-                            _vm.tokens[row.takerTokenSymbol].hidden ||
-                            _vm.tokens[row.makerTokenSymbol].hidden
-                          )
-                            ? _c("tr", { attrs: { item: row, index: index } }, [
-                                _c("td", { staticClass: "pl-4" }, [
-                                  _vm._v(_vm._s(_vm.getDateInfo(row)))
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "text-left pl-4 font-semi-bold"
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.formatTokenNumber(
-                                          row.takerTokenSymbol,
-                                          row.takerTokenAmount
-                                        )
-                                      ) +
-                                        " " +
-                                        _vm._s(row.takerTokenSymbol)
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _vm._m(0, true, false),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "text-left pl-4" }, [
+                          return _c(
+                            "tr",
+                            { attrs: { item: row, index: index } },
+                            [
+                              _c("td", { staticClass: "pl-4" }, [
+                                _vm._v(_vm._s(_vm.getDateInfo(row)))
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "text-left pl-4 font-semi-bold"
+                                },
+                                [
                                   _vm._v(
                                     _vm._s(
                                       _vm.formatTokenNumber(
-                                        row.makerTokenSymbol,
-                                        row.makerTokenAmount
+                                        row.takerTokenSymbol,
+                                        row.takerTokenAmount
                                       )
                                     ) +
                                       " " +
-                                      _vm._s(row.makerTokenSymbol)
+                                      _vm._s(row.takerTokenSymbol)
                                   )
-                                ]),
-                                _vm._v(" "),
-                                _c("td", { staticClass: "text-left pl-4" }, [
-                                  _vm._v("1 "),
-                                  _c(
-                                    "span",
-                                    { staticClass: "font-semi-bold" },
-                                    [_vm._v(_vm._s(row.takerTokenSymbol))]
-                                  ),
-                                  _vm._v(
-                                    " = " + _vm._s(_vm.getRate(row)) + " "
-                                  ),
-                                  _c(
-                                    "span",
-                                    { staticClass: "font-semi-bold" },
-                                    [_vm._v(_vm._s(row.makerTokenSymbol))]
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _vm.partner
-                                  ? _c(
-                                      "td",
-                                      { staticClass: "text-left pl-4" },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.formatTokenNumber(
-                                              "KNC",
-                                              row.commission
-                                            )
-                                          ) + " KNC"
-                                        )
-                                      ]
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm._m(0, true, false),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-left pl-4" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.formatTokenNumber(
+                                      row.makerTokenSymbol,
+                                      row.makerTokenAmount
                                     )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "pointer text-right pr-4",
-                                    on: {
-                                      click: function($event) {
-                                        _vm.onClickRow(row)
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("span", {
-                                      staticClass: "entypo-dot-3 table-more"
-                                    })
-                                  ]
+                                  ) +
+                                    " " +
+                                    _vm._s(row.makerTokenSymbol)
                                 )
-                              ])
-                            : _vm._e()
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-left pl-4" }, [
+                                _vm._v("1 "),
+                                _c("span", { staticClass: "font-semi-bold" }, [
+                                  _vm._v(_vm._s(row.takerTokenSymbol))
+                                ]),
+                                _vm._v(" = " + _vm._s(_vm.getRate(row)) + " "),
+                                _c("span", { staticClass: "font-semi-bold" }, [
+                                  _vm._v(_vm._s(row.makerTokenSymbol))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _vm.partner
+                                ? _c("td", { staticClass: "text-left pl-4" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.formatTokenNumber(
+                                          "KNC",
+                                          row.commission
+                                        )
+                                      ) + " KNC"
+                                    )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "pointer text-right pr-4",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.onClickRow(row)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", {
+                                    staticClass: "entypo-dot-3 table-more"
+                                  })
+                                ]
+                              )
+                            ]
+                          )
                         })
                       )
                     : _vm._e()
@@ -114280,93 +114282,77 @@ var render = function() {
                   ? _c(
                       "tbody",
                       _vm._l(_vm.rows, function(row, index) {
-                        return !(
-                          _vm.tokens[row.takerTokenSymbol].hidden ||
-                          _vm.tokens[row.makerTokenSymbol].hidden
-                        )
-                          ? _c(
-                              "tr",
-                              {
-                                attrs: { item: row, index: index },
-                                on: {
-                                  click: function($event) {
-                                    _vm.onClickRow(row)
-                                  }
-                                }
-                              },
+                        return _c(
+                          "tr",
+                          {
+                            attrs: { item: row, index: index },
+                            on: {
+                              click: function($event) {
+                                _vm.onClickRow(row)
+                              }
+                            }
+                          },
+                          [
+                            _c("td", { staticClass: "pl-4" }, [
+                              _vm._v(_vm._s(_vm.getDateInfo(row, false)))
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              { staticClass: "text-left pl-4 trade-direction" },
                               [
-                                _c("td", { staticClass: "pl-4" }, [
-                                  _vm._v(_vm._s(_vm.getDateInfo(row, false)))
+                                _c("span", { staticClass: "font-semi-bold" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.formatTokenNumber(
+                                        row.takerTokenSymbol,
+                                        row.takerTokenAmount
+                                      )
+                                    ) +
+                                      " " +
+                                      _vm._s(row.takerTokenSymbol)
+                                  )
                                 ]),
                                 _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass:
-                                      "text-left pl-4 trade-direction"
-                                  },
-                                  [
-                                    _c(
-                                      "span",
-                                      { staticClass: "font-semi-bold" },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.formatTokenNumber(
-                                              row.takerTokenSymbol,
-                                              row.takerTokenAmount
-                                            )
-                                          ) +
-                                            " " +
-                                            _vm._s(row.takerTokenSymbol)
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("br"),
-                                    _vm._v(" "),
-                                    _c("span", {
-                                      staticClass:
-                                        "entypo-down-dir trade-direction-down-symbol"
-                                    }),
-                                    _vm._v(
-                                      "\n              " +
-                                        _vm._s(
-                                          _vm.formatTokenNumber(
-                                            row.makerTokenSymbol,
-                                            row.makerTokenAmount
-                                          )
-                                        ) +
-                                        " " +
-                                        _vm._s(row.makerTokenSymbol) +
-                                        "\n            "
-                                    )
-                                  ]
-                                ),
+                                _c("br"),
                                 _vm._v(" "),
-                                _c("td", { staticClass: "text-left pl-4" }, [
-                                  _c(
-                                    "span",
-                                    { staticClass: "font-semi-bold" },
-                                    [
-                                      _vm._v(
-                                        _vm._s(row.takerTokenSymbol) +
-                                          "/" +
-                                          _vm._s(row.makerTokenSymbol)
+                                _c("span", {
+                                  staticClass:
+                                    "entypo-down-dir trade-direction-down-symbol"
+                                }),
+                                _vm._v(
+                                  "\n              " +
+                                    _vm._s(
+                                      _vm.formatTokenNumber(
+                                        row.makerTokenSymbol,
+                                        row.makerTokenAmount
                                       )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("br"),
-                                  _vm._v(
-                                    "\n              " +
-                                      _vm._s(_vm.getRate(row)) +
-                                      "\n            "
-                                  )
-                                ])
+                                    ) +
+                                    " " +
+                                    _vm._s(row.makerTokenSymbol) +
+                                    "\n            "
+                                )
                               ]
-                            )
-                          : _vm._e()
+                            ),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-left pl-4" }, [
+                              _c("span", { staticClass: "font-semi-bold" }, [
+                                _vm._v(
+                                  _vm._s(row.takerTokenSymbol) +
+                                    "/" +
+                                    _vm._s(row.makerTokenSymbol)
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(_vm.getRate(row)) +
+                                  "\n            "
+                              )
+                            ])
+                          ]
+                        )
                       })
                     )
                   : _vm._e()
@@ -114759,11 +114745,10 @@ exports.default = {
 
         var data = _this._buildChartData(volumeData, interval);
         var options = _this._getChartOptions(interval);
-
         if (_this.chartInstance) {
           _this.chartInstance.config.data = data;
           _this.chartInstance.options = options;
-          _this.chartInstance.update();
+          _this.chartInstance.update(0);
         } else {
           _this.chartInstance = new Chart(ctx, {
             type: 'LineWithLine',
@@ -115064,21 +115049,24 @@ exports.default = {
 
         var accumulated = method === "getBurnedFees";
         var data = _this._buildChartData(feeData, interval, accumulated);
-        var options = _this._getChartOptions(interval);
+        var options = _this._getChartOptions(interval, accumulated);
 
         if (_this.chartInstance) {
-          _this.chartInstance.destroy();
-          _this.chartInstance = undefined;
+          // this.chartInstance.destroy();
+          // this.chartInstance = undefined;
+          _this.chartInstance.config.data = data;
+          _this.chartInstance.options = options;
+          _this.chartInstance.update(0);
+        } else {
+          _this.chartInstance = new Chart(ctx, {
+            type: 'LineWithLine',
+            data: data,
+            options: options
+          });
         }
-
-        _this.chartInstance = new Chart(ctx, {
-          type: 'LineWithLine',
-          data: data,
-          options: options
-        });
       });
     },
-    _getChartOptions: function _getChartOptions(interval) {
+    _getChartOptions: function _getChartOptions(interval, accumulated) {
       var callbacks = {
         title: function title(tooltipItem, data) {
           var index = tooltipItem[0].index;
@@ -115106,7 +115094,7 @@ exports.default = {
           fontSize: 12,
           maxTicksLimit: 5,
           callback: function callback(label, index, labels) {
-            return _util2.default.numberWithCommas(label) + ' KNC';
+            return accumulated ? _util2.default.numberWithCommas(label / 1000) + 'k KNC' : _util2.default.numberWithCommas(label) + ' KNC';
           }
         }
       };
@@ -129934,6 +129922,7 @@ exports.default = {
 
     this._refreshInterval = window.setInterval(function () {
       _this.refresh();
+      _this._refeshChart();
     }, 10000);
 
     this.refresh();
@@ -131099,7 +131088,7 @@ exports = module.exports = __webpack_require__(25)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -131283,7 +131272,8 @@ exports.default = {
       });
     },
     shouldShowToken: function shouldShowToken(item) {
-      return !this.tokens[item.symbol].hidden;
+      // return !this.tokens[item.symbol].hidden;
+      return _util2.default.shouldShowToken(item.symbol);
     },
     formatVolumeUSD: function formatVolumeUSD(item) {
       return '$' + new _bignumber2.default(item.volumeUSD.toString()).toFormat(2);
@@ -131472,50 +131462,48 @@ var render = function() {
                 {
                   key: "body",
                   fn: function(slot) {
-                    return _vm.shouldShowToken(slot.item)
-                      ? [
-                          _c("tr", [
-                            _c("td", { staticClass: "pl-4" }, [
-                              _c("img", {
-                                staticClass: "image-inline-td mr-1",
-                                attrs: {
-                                  src: _vm.getTokenImageLink(slot.item.symbol)
-                                }
-                              }),
-                              _vm._v(" " + _vm._s(slot.item.name))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-left pl-1" }, [
-                              _vm._v(_vm._s(slot.item.symbol))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-left pl-5" }, [
-                              _vm._v(_vm._s(_vm.formatVolumeUSD(slot.item)))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-left pl-5" }, [
-                              _vm._v(_vm._s(slot.item.volumeETH))
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticClass: "pointer text-right pr-5",
-                                on: {
-                                  click: function($event) {
-                                    _vm.toTokenDetails(slot.item.symbol)
-                                  }
-                                }
-                              },
-                              [
-                                _c("span", {
-                                  staticClass: "entypo-dot-3 table-more"
-                                })
-                              ]
-                            )
-                          ])
-                        ]
-                      : undefined
+                    return [
+                      _c("tr", [
+                        _c("td", { staticClass: "pl-4" }, [
+                          _c("img", {
+                            staticClass: "image-inline-td mr-1",
+                            attrs: {
+                              src: _vm.getTokenImageLink(slot.item.symbol)
+                            }
+                          }),
+                          _vm._v(" " + _vm._s(slot.item.name))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-left pl-1" }, [
+                          _vm._v(_vm._s(slot.item.symbol))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-left pl-5" }, [
+                          _vm._v(_vm._s(_vm.formatVolumeUSD(slot.item)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-left pl-5" }, [
+                          _vm._v(_vm._s(slot.item.volumeETH))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            staticClass: "pointer text-right pr-5",
+                            on: {
+                              click: function($event) {
+                                _vm.toTokenDetails(slot.item.symbol)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", {
+                              staticClass: "entypo-dot-3 table-more"
+                            })
+                          ]
+                        )
+                      ])
+                    ]
                   }
                 }
               ])

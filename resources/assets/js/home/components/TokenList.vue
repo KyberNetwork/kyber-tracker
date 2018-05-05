@@ -58,7 +58,7 @@
         <!-- <th></th> -->
       </template>
 
-      <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
+      <template slot="body" scope="slot">
         <tr>
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
           <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> {{ slot.item.name }}</td>
@@ -143,7 +143,8 @@ export default {
       });
     },
     shouldShowToken (item) {
-      return !this.tokens[item.symbol].hidden;
+      // return !this.tokens[item.symbol].hidden;
+      return util.shouldShowToken(item.symbol)
     },
     formatVolumeUSD (item) {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
