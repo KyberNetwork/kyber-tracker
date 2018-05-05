@@ -86,15 +86,18 @@
           const options = this._getChartOptions(interval);
 
           if (this.chartInstance) {
-            this.chartInstance.destroy();
-            this.chartInstance = undefined;
+            // this.chartInstance.destroy();
+            // this.chartInstance = undefined;
+            this.chartInstance.config.data = data;
+            this.chartInstance.options = options;
+            this.chartInstance.update(0);
+          } else {
+            this.chartInstance = new Chart(ctx, {
+              type: 'LineWithLine',
+              data: data,
+              options: options,
+            });
           }
-
-          this.chartInstance = new Chart(ctx, {
-            type: 'LineWithLine',
-            data: data,
-            options: options,
-          });
         });
       },
       _getChartOptions(interval) {

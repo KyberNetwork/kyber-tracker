@@ -114768,11 +114768,10 @@ exports.default = {
 
         var data = _this._buildChartData(volumeData, interval);
         var options = _this._getChartOptions(interval);
-
         if (_this.chartInstance) {
           _this.chartInstance.config.data = data;
           _this.chartInstance.options = options;
-          _this.chartInstance.update();
+          _this.chartInstance.update(0);
         } else {
           _this.chartInstance = new Chart(ctx, {
             type: 'LineWithLine',
@@ -115076,15 +115075,18 @@ exports.default = {
         var options = _this._getChartOptions(interval);
 
         if (_this.chartInstance) {
-          _this.chartInstance.destroy();
-          _this.chartInstance = undefined;
+          // this.chartInstance.destroy();
+          // this.chartInstance = undefined;
+          _this.chartInstance.config.data = data;
+          _this.chartInstance.options = options;
+          _this.chartInstance.update(0);
+        } else {
+          _this.chartInstance = new Chart(ctx, {
+            type: 'LineWithLine',
+            data: data,
+            options: options
+          });
         }
-
-        _this.chartInstance = new Chart(ctx, {
-          type: 'LineWithLine',
-          data: data,
-          options: options
-        });
       });
     },
     _getChartOptions: function _getChartOptions(interval) {
@@ -129943,6 +129945,7 @@ exports.default = {
 
     this._refreshInterval = window.setInterval(function () {
       _this.refresh();
+      _this._refeshChart();
     }, 10000);
 
     this.refresh();

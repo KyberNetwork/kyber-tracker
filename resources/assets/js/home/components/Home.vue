@@ -177,6 +177,7 @@
     mounted() {
       this._refreshInterval = window.setInterval(() => {
         this.refresh();
+        this._refeshChart();
       }, 10000);
 
       this.refresh();
