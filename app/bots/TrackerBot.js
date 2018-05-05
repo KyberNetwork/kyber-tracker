@@ -5,36 +5,50 @@ const Bot = require('node-telegram-bot-api');
 
 const commands = {
     start: {
-        match: /\b\/?start(?:@\w+)?\b/i,
-        reply: `Please type a command.
-        
+        match: /^\/?start(?:@\w+)?$/i,
+        releaseReq: true,
+        reply: (bot, msg, match) => {
+            let text = `Please type a command.
+
 Example:
-/last to view summary for last 24h
+/last to see volume for last 24h
 You could also type 'last 7d' or 'last 10h'.
 It supports 'd' and 'h'.
 
-/today to view summary for today (UTC time)
-/yesterday to view summary for yesterday (UTC time)
+`;
+            if (!bot._context.internal){
+                text += `/today to see volume for today (UTC time)
+/yesterday to see volume for yesterday (UTC time)
 /burn to see how much KNC burned to date
-/token to see volume by token`,
-        replyOptions: {
-            no_reply: true
+/token to see volume by token`;
+            } else {
+                text += "Other common used commands: /today, /yesterday, /token, /partner, /trader, /price.";
+            }
+            reply(bot, msg, text, {no_reply: true});
         }
     },
     help: {
-        match: /\b\/?help(?:@\w+)?\b/i,
-        reply: `/last to view summary for last 24h
+        match: /^\/?help(?:@\w+)?$/i,
+        releaseReq: true,
+        reply: (bot, msg, match) => {
+            let text = `/last to see volume for last 24h
 You could also type 'last 7d' or 'last 10h'.
 It supports 'd' and 'h'.
 
-/today to view summary for today (UTC time)
-/yesterday to view summary for yesterday (UTC time)
+`;
+            if (!bot._context.internal){
+                text += `/today to see volume for today (UTC time)
+/yesterday to see volume for yesterday (UTC time)
 /burn to see how much KNC burned to date
-/token to see volume by token`
+/token to see volume by token`;
+            } else {
+                text += "Other common used commands: /today, /yesterday, /token, /partner, /trader, /price.";
+            }
+            reply(bot, msg, text, {no_reply: true});
+        }
     },
     last: {
-        match: /\b\/?(?:last|volume)(?:@\w+)?(?:\s+(\w+))?\b/i,
-        needDb: true,
+        match: /^\/?(?:last|volume)(?:@\w+)?(?:\s+(\w+))?$/i,
         reply: (bot, msg, match) => {
             const resp = (match[1] || "24H").trim().toUpperCase();
             const seconds = parseSeconds(resp);
@@ -54,9 +68,8 @@ It supports 'd' and 'h'.
         }
     },
     partner: {
-        match: /\b\/?partners?(?:@\w+)?(?:\s+(\w+))?\b/i,
+        match: /^\/?partners?(?:@\w+)?(?:\s+(\w+))?$/i,
         internal: true,
-        needDb: true,
         reply: (bot, msg, match) => {
             const resp = (match[1] || "24H").trim().toUpperCase();
             const seconds = parseSeconds(resp);
@@ -76,9 +89,8 @@ It supports 'd' and 'h'.
         }
     },
     trader: {
-        match: /\b\/?(?:traders?|investors?)(?:@\w+)?(?:\s+(\w+))?\b/i,
+        match: /^\/?(?:traders?|investors?)(?:@\w+)?(?:\s+(\w+))?$/i,
         internal: true,
-        needDb: true,
         reply: (bot, msg, match) => {
             const resp = (match[1] || "24H").trim().toUpperCase();
             const seconds = parseSeconds(resp);
@@ -98,23 +110,20 @@ It supports 'd' and 'h'.
         }
     },
     today: {
-        match: /\b\/?today(?:@\w+)?\b/i,
-        needDb: true,
+        match: /^\/?today(?:@\w+)?$/i,
         reply: (bot, msg, match) => {
             send1dVolume(bot, msg, todayStartInSeconds(), "TODAY (UTC)");
         },
     },
     yesterday: {
-        match: /\b\/?yesterday(?:@\w+)?\b/i,
-        needDb: true,
+        match: /^\/?yesterday(?:@\w+)?$/i,
         reply: (bot, msg, match) => {
             const from = todayStartInSeconds() - 24 * 60 * 60;
             send1dVolume(bot, msg, from, "YESTERDAY (UTC)");
         }
     },
     burn: {
-        match: /\b\/?burn(?:@\w+)?\b/i,
-        needDb: true,
+        match: /^\/?burnt?(?:@\w+)?$/i,
         reply: (bot, msg, match) => {
             bot._context.getService().getTotalBurnedFees((err, ret) => {
                 if (!!err) {
@@ -129,8 +138,7 @@ It supports 'd' and 'h'.
         }
     },
     price: {
-        match: /\b\/?(?:(?:kyber)?price|rates?)(?:@\w+)?\b/i,
-        needDb: true,
+        match: /^\/?(?:(?:kyber)?price|rates?)(?:@\w+)?$/i,
         reply: (bot, msg, match) => {
             if (!bot._context.internal && msg.chat.type === "supergroup") {
                 reply(bot, msg, "Please go to @kyberprice for price discussion.");
@@ -158,11 +166,11 @@ Credit: CoinMarketCap`;
         }
     },
     whenmoon: {
-        match: /\b\/?(?:when)?\s?moon(?:@\w+)?\b/i,
+        match: /^\/?(?:when)?\s?moon(?:@\w+)?$/i,
         reply: "You can check the moon phases on https://www.timeanddate.com/moon/phases/"
     },
     whitepaper: {
-        match: /\b\/?(?:white)?\s?paper(?:@\w+)?\b/i,
+        match: /^\/?(?:white)?\s?paper(?:@\w+)?$/i,
         reply: `Kyber Network White Paper is available in several languages.
 [English](https://home.kyber.network/assets/KyberNetworkWhitepaper.pdf)
 [한국어](https://home.kyber.network/assets/KyberNetworkWhitepaper-kr.pdf)
@@ -174,27 +182,27 @@ Vietnamese version will be available soon.`,
         }
     },
     roadmap: {
-        match: /\b\/?(?:road)\s?map(?:@\w+)?\b/i,
+        match: /^\/?(?:road)\s?map(?:@\w+)?$/i,
         reply: "You can see the roadmap on Kyber Network home page https://home.kyber.network/about/company/#roadmap"
     },
     team: {
-        match: /\b\/?team(?:@\w+)?\b/i,
+        match: /^\/?team(?:@\w+)?$/i,
         reply: "Our team is here https://home.kyber.network/about/company/#team"
     },
     introduce: {
-        match: /\b\/?introduce(?:@\w+)?\b/i,
+        match: /^\/?introduce(?:@\w+)?$/i,
         reply: "Check out our 2-minute introduction clip https://www.youtube.com/watch?v=lNNLr2D0yig"
     },
     lambo: {
-        match: /\b\/?(?:when)?\s?lambo(?:@\w+)?\b/i,
+        match: /^\/?(?:when)?\s?lambo(?:@\w+)?$/i,
         reply: "Check it out here https://when-lambo.com/"
     },
     cmc: {
-        match: /\b\/?cmc(?:@\w+)?\b/i,
+        match: /^\/?cmc(?:@\w+)?$/i,
         reply: "https://coinmarketcap.com/exchanges/kyber-network/"
     },
     lang: {
-        match: /\b\/?(?:lang|groups?)(?:@\w+)?\b/i,
+        match: /^\/?(?:lang|groups?)(?:@\w+)?$/i,
         reply: `Kyber Network Official Telegram Groups.
 English @KyberNetwork
 한국어 @KyberKorea
@@ -202,43 +210,42 @@ English @KyberNetwork
 Tiếng Việt @KyberVietnamese`
     },
     trade: {
-        match: /\b\/?(?:trade|exchange)(?:@\w+)?\b/i,
+        match: /^\/?(?:trade|exchange)(?:@\w+)?$/i,
         reply: "Our exchange is live, you can trade now https://kyber.network/"
     },
     kyber: {
-        match: /\b\/?kyber(?:@\w+)?\b/i,
+        match: /^\/?kyber(?:@\w+)?$/i,
         reply: "[http://starwars.wikia.com/wiki/Kyber_crystal](http://starwars.wikia.com/wiki/Kyber_crystal)",
         replyOptions: {
             parse_mode: "Markdown"
         }
     },
     reddit: {
-        match: /\b\/?reddit(?:@\w+)?\b/i,
+        match: /^\/?reddit(?:@\w+)?$/i,
         reply: "https://www.reddit.com/r/kybernetwork/"
     },
     github: {
-        match: /\b\/?github(?:@\w+)?\b/i,
+        match: /^\/?github(?:@\w+)?$/i,
         reply: "https://github.com/kyberNetwork/"
     },
     twitter: {
-        match: /\b\/?twitter(?:@\w+)?\b/i,
+        match: /^\/?twitter(?:@\w+)?$/i,
         reply: "https://twitter.com/KyberNetwork"
     },
     facebook: {
-        match: /\b\/?facebook(?:@\w+)?\b/i,
+        match: /^\/?facebook(?:@\w+)?$/i,
         reply: "https://www.facebook.com/kybernetwork/"
     },
     blog: {
-        match: /\b\/?(?:blog|medium)(?:@\w+)?\b/i,
+        match: /^\/?(?:blog|medium)(?:@\w+)?$/i,
         reply: "https://blog.kyber.network/"
     },
     tracker: {
-        match: /\b\/?track(?:er)?(?:@\w+)?\b/i,
+        match: /^\/?track(?:er)?(?:@\w+)?$/i,
         reply: "https://tracker.kyber.network",
     },
     token: {
-        match: /\b\/?tokens?(?:@\w+)?\b/i,
-        needDb: true,
+        match: /^\/?tokens?(?:@\w+)?$/i,
         reply: (bot, msg, match) => {
             const resp = (match[1] || "24H").trim().toUpperCase();
             const seconds = parseSeconds(resp);
@@ -258,30 +265,30 @@ Tiếng Việt @KyberVietnamese`
         }
     },
     market: {
-        match: /\b\/?market?(?:@\w+)?\b/i,
+        match: /^\/?market?(?:@\w+)?$/i,
         reply: "You can trade KNC on [Kyber Network](https://kyber.network/) and many [other major exchanges](https://coinmarketcap.com/currencies/kyber-network/#markets)",
         replyOptions: {
             parse_mode: "Markdown"
         }
     },
     thank: {
-        match: /\b\/?thanks?(?:@\w+)?\b/i,
+        match: /^\/?thanks?(?:@\w+)?$/i,
         reply: "You are welcome",
     },
     like: {
-        match: /\b\/?(?:like|love)(?:@\w+)?\b/i,
+        match: /^\/?(?:like|love)(?:@\w+)?$/i,
         reply: "Thank you",
     },
     kyc: {
-        match: /\b\/?kyc(?:@\w+)?\b/i,
+        match: /^\/?kyc(?:@\w+)?$/i,
         reply: "https://account.kyber.network/users/sign_in",
     },
     request: {
-        match: /\b\/?request(?:@\w+)?\b/i,
+        match: /^\/?request(?:@\w+)?$/i,
         reply: "https://docs.google.com/forms/d/e/1FAIpQLSdXIGrbUxj3PYHcLGArWxx800DAS8tZSKGQhY4yIeYD1FrClg/viewform",
     },
     wallet: {
-        match: /\b\/?wallets?(?:@\w+)?\b/i,
+        match: /^\/?wallets?(?:@\w+)?$/i,
         internal: true,
         reply: "_wallet_ has multiple meanings. Please use /trader or /partner commands.",
         replyOptions: {
@@ -300,11 +307,13 @@ function keepReq(bot, body) {
         const value = commands[key];
 
         if (!!text.match(value.match)) {
+            // if it is internal command & this is public bot
+            // so no need to handle
             if (!!value.internal && !bot._context.internal) {
                 return false;
             }
 
-            if (value.needDb) {
+            if (!value.releaseReq && !!value.reply.call) {
                 return true;
             }
 
@@ -601,14 +610,17 @@ function setupBot(bot, body) {
     if (!body.message.text) return;
 
     const msgText = body.message.text;
+    let matchFound = false;
     for (const key in commands) {
         const value = commands[key];
 
         if (!!msgText.match(value.match)) {
 
             if (!!value.internal && !bot._context.internal) {
-                return;
+                break;
             }
+
+            matchFound = true;
 
             let text = value.reply;
             if (text) {
@@ -624,6 +636,14 @@ function setupBot(bot, body) {
             // only setup first match, cause we have new tracker bot each request
             break;
         }
+    }
+
+    if (!matchFound) {
+        bot.on('message', (msg) => {
+            if (msg.text.startsWith("/") || msg.chat.type === "private") {
+                reply(bot, msg, "Invalid command. Try /help.");
+            }
+          });
     }
 };
 
