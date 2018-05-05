@@ -68,9 +68,7 @@
         const tokenInfo = network.tokens[this.symbol];
         this.tokenName = tokenInfo.name;
         const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
-        this.logoUrl = tokenInfo.hidden ?  
-          ("https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true") :
-          ("images/tokens/" + icon);
+        this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
         this.refreshChartsData();
         this.$refs.datatable.fetch();
       },
