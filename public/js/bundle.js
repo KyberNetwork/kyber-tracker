@@ -115049,7 +115049,7 @@ exports.default = {
 
         var accumulated = method === "getBurnedFees";
         var data = _this._buildChartData(feeData, interval, accumulated);
-        var options = _this._getChartOptions(interval);
+        var options = _this._getChartOptions(interval, accumulated);
 
         if (_this.chartInstance) {
           // this.chartInstance.destroy();
@@ -115066,7 +115066,7 @@ exports.default = {
         }
       });
     },
-    _getChartOptions: function _getChartOptions(interval) {
+    _getChartOptions: function _getChartOptions(interval, accumulated) {
       var callbacks = {
         title: function title(tooltipItem, data) {
           var index = tooltipItem[0].index;
@@ -115094,7 +115094,7 @@ exports.default = {
           fontSize: 12,
           maxTicksLimit: 5,
           callback: function callback(label, index, labels) {
-            return _util2.default.numberWithCommas(label) + ' KNC';
+            return accumulated ? _util2.default.numberWithCommas(label / 1000) + 'k KNC' : _util2.default.numberWithCommas(label) + ' KNC';
           }
         }
       };

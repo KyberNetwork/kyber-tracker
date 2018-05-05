@@ -83,7 +83,7 @@
           
           const accumulated = (method === "getBurnedFees");
           const data = this._buildChartData(feeData, interval, accumulated);
-          const options = this._getChartOptions(interval);
+          const options = this._getChartOptions(interval, accumulated);
 
           if (this.chartInstance) {
             // this.chartInstance.destroy();
@@ -100,7 +100,7 @@
           }
         });
       },
-      _getChartOptions(interval) {
+      _getChartOptions(interval, accumulated) {
         const callbacks = {
           title: (tooltipItem, data) => {
             const index = tooltipItem[0].index;
@@ -129,7 +129,7 @@
             fontSize: 12,
             maxTicksLimit: 5,
             callback: (label, index, labels) => {
-              return util.numberWithCommas(label) + ' KNC';
+              return accumulated ? util.numberWithCommas(label/1000) + 'k KNC' :  util.numberWithCommas(label) + ' KNC';
             }
           }
         };
