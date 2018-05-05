@@ -27,6 +27,13 @@ module.exports = {
     return tokensByAddress[address.toLowerCase()] || null;
   },
 
+  shouldShowToken: function(tokenSymbol) {
+    // return !this.tokens[item.symbol].hidden;
+    if(!tokens[tokenSymbol].hidden) return true;
+    if (typeof tokens[tokenSymbol].hidden != 'number') return false;
+    return new Date().getTime() - tokens[tokenSymbol].hidden > 0 ;
+  },
+
   getStringExp10: function(decimal) {
     return '1' + '0'.repeat(decimal);
   },

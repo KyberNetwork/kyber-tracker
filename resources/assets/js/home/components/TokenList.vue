@@ -144,12 +144,7 @@ export default {
     },
     shouldShowToken (item) {
       // return !this.tokens[item.symbol].hidden;
-      console.log(this.tokens[item.symbol])
-      if(!this.tokens[item.symbol].hidden) return true;
-      if (typeof this.tokens[item.symbol].hidden != 'number') return false;
-      console.log(item.symbol)
-      console.log(new Date().getTime() - this.tokens[item.symbol].hidden > 0)
-      return new Date().getTime() - this.tokens[item.symbol].hidden > 0 ;
+      return util.shouldShowToken(item.symbol)
     },
     formatVolumeUSD (item) {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);

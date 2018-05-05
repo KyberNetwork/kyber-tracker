@@ -414,24 +414,9 @@ export default {
       let taker = tokens[row.takerTokenSymbol].hidden
       let maker = tokens[row.makerTokenSymbol].hidden
 
-      return this.shouldShowToken(row.takerTokenSymbol) && this.shouldShowToken(row.makerTokenSymbol)
-      // if(!tokens[row.takerTokenSymbol].hidden && !tokens[row.makerTokenSymbol].hidden) return true;
-      // // return !this.tokens[item.symbol].hidden;
-      // // if(!this.tokens[item.symbol].hidden) return true;
-      // console.log(new Date().getTime() - tokens[row.takerTokenSymbol].hidden)
-      // console.log(new Date().getTime() - tokens[row.makerTokenSymbol].hidden)
-
-      // if (typeof tokens[row.takerTokenSymbol].hidden != 'number' || typeof tokens[row.makerTokenSymbol].hidden != 'number') return false;
-      
-      // return new Date().getTime() - tokens[row.takerTokenSymbol].hidden > 0 && new Date().getTime() - tokens[row.makerTokenSymbol].hidden > 0;
-    },
-
-    shouldShowToken (tokenSymbol) {
-      // return !this.tokens[item.symbol].hidden;
-      if(!this.tokens[tokenSymbol].hidden) return true;
-      if (typeof this.tokens[tokenSymbol].hidden != 'number') return false;
-      return new Date().getTime() - this.tokens[tokenSymbol].hidden > 0 ;
-    },
+      return util.shouldShowToken(row.takerTokenSymbol) && util.shouldShowToken(row.makerTokenSymbol)
+     
+    }
   },
 
   

@@ -30,14 +30,13 @@ module.exports = {
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
       "cmcId": "ethereum",
-      "hidden": 1525377581000,
     },
     "KNC": {
       "name": "Kyber Network",
       "symbol": "KNC",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
       "decimal": 18,
-      "cmcId": "kyber-network"
+      "cmcId": "kyber-network",
     },
     "OMG": {
       "name": "OmiseGO",
@@ -49,7 +48,7 @@ module.exports = {
       "name": "EOS",
       "symbol": "EOS",
       "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
-      "decimal": 18
+      "decimal": 18,
     },
     "SNT": {
       "name": "Status Network",

@@ -22712,6 +22712,14 @@ exports.default = {
     return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
+  shouldShowToken: function shouldShowToken(tokenSymbol) {
+    // return !this.tokens[item.symbol].hidden;
+    if (!tokens[tokenSymbol].hidden) return true;
+    if (typeof tokens[tokenSymbol].hidden != 'number') return false;
+    return new Date().getTime() - tokens[tokenSymbol].hidden > 0;
+  },
+
+
   formatTokenAmount: function formatTokenAmount(amount) {
     var decimal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 18;
     var decimalFormat = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
@@ -107969,7 +107977,7 @@ module.exports = {
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
       "decimal": 9,
-      // "hidden": true,
+      "hidden": 1525438800000,
       "icon": "dgx.png"
     },
     "DGD": {
@@ -110236,8 +110244,15 @@ exports.default = {
     clickToPage: function clickToPage(page) {
       this.currentPage = this.$refs.topPaginator.selected = this.$refs.bottomPaginator.selected = page - 1;
       this.fetch();
+    },
+    shouldShowRow: function shouldShowRow(row) {
+      var taker = tokens[row.takerTokenSymbol].hidden;
+      var maker = tokens[row.makerTokenSymbol].hidden;
+
+      return _util2.default.shouldShowToken(row.takerTokenSymbol) && _util2.default.shouldShowToken(row.makerTokenSymbol);
     }
   },
+
   computed: {
     locale: function locale() {
       return _util2.default.getLocale(_util2.default.getBrowserLanguage());
@@ -114154,10 +114169,7 @@ var render = function() {
                     ? _c(
                         "tbody",
                         _vm._l(_vm.rows, function(row, index) {
-                          return !(
-                            _vm.tokens[row.takerTokenSymbol].hidden ||
-                            _vm.tokens[row.makerTokenSymbol].hidden
-                          )
+                          return _vm.shouldShowRow(row)
                             ? _c("tr", { attrs: { item: row, index: index } }, [
                                 _c("td", { staticClass: "pl-4" }, [
                                   _vm._v(_vm._s(_vm.getDateInfo(row)))
@@ -114280,10 +114292,7 @@ var render = function() {
                   ? _c(
                       "tbody",
                       _vm._l(_vm.rows, function(row, index) {
-                        return !(
-                          _vm.tokens[row.takerTokenSymbol].hidden ||
-                          _vm.tokens[row.makerTokenSymbol].hidden
-                        )
+                        return _vm.shouldShowRow(row)
                           ? _c(
                               "tr",
                               {
@@ -131099,7 +131108,7 @@ exports = module.exports = __webpack_require__(25)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -131283,7 +131292,8 @@ exports.default = {
       });
     },
     shouldShowToken: function shouldShowToken(item) {
-      return !this.tokens[item.symbol].hidden;
+      // return !this.tokens[item.symbol].hidden;
+      return _util2.default.shouldShowToken(item.symbol);
     },
     formatVolumeUSD: function formatVolumeUSD(item) {
       return '$' + new _bignumber2.default(item.volumeUSD.toString()).toFormat(2);

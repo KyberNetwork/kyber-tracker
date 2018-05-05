@@ -11,6 +11,8 @@ const BaseService = require('sota-core').load('service/BaseService');
 const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
 const logger = require('sota-core').getLogger('TradeService');
 
+const UtilsHelper           = require('../common/Utils');
+
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
@@ -185,7 +187,8 @@ module.exports = BaseService.extends({
       }));
       
       const supportedToken = _.filter(tokens, (e) => {
-        return (e.volumeTokenNumber > 0) || !network.tokens[e.symbol].hidden;
+        // return (e.volumeTokenNumber > 0) || !network.tokens[e.symbol].hidden;
+        return (e.volumeTokenNumber > 0) || UtilsHelper.shouldShowToken(e.symbol)
       })
       
       return callback(null, _.sortBy(supportedToken, (e) => {
