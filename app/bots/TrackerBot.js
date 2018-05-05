@@ -1,3 +1,4 @@
+const network = require('../../config/network');
 const Utils = require('sota-core').load('util/Utils');
 const logger = log4js.getLogger('TrackerBot');
 const Bot = require('node-telegram-bot-api');
@@ -14,7 +15,8 @@ It supports 'd' and 'h'.
 
 /today to view summary for today (UTC time)
 /yesterday to view summary for yesterday (UTC time)
-/burn to see how much KNC burned to date`,
+/burn to see how much KNC burned to date
+/token to see volume by token`,
         replyOptions: {
             no_reply: true
         }
@@ -27,16 +29,20 @@ It supports 'd' and 'h'.
 
 /today to view summary for today (UTC time)
 /yesterday to view summary for yesterday (UTC time)
-/burn to see how much KNC burned to date`
+/burn to see how much KNC burned to date
+/token to see volume by token`
     },
     last: {
-        match: /\b\/?last(?:@\w+)?(?:\s+(\w+))?\b/i,
+        match: /\b\/?(?:last|volume)(?:@\w+)?(?:\s+(\w+))?\b/i,
         needDb: true,
         reply: (bot, msg, match) => {
             const resp = (match[1] || "24H").trim().toUpperCase();
             const seconds = parseSeconds(resp);
             if (seconds < 0) {
-                reply(bot, msg, "Invalid syntax. Try _last 1d_, _last 12h_, or just /last.", {no_mention: true});
+                reply(bot, msg, "Invalid syntax. Try _last 1d_, _last 12h_, or just /last.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
                 bot._context.finish();
                 return;
             }
@@ -45,6 +51,50 @@ It supports 'd' and 'h'.
             const sinceSeconds = nowSeconds - seconds;
     
             sendVolume(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
+    },
+    partner: {
+        match: /\b\/?partners?(?:@\w+)?(?:\s+(\w+))?\b/i,
+        internal: true,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const resp = (match[1] || "24H").trim().toUpperCase();
+            const seconds = parseSeconds(resp);
+            if (seconds < 0) {
+                reply(bot, msg, "Invalid syntax. Try _partner 1d_, _partner 12h_, or just /partner.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
+                bot._context.finish();
+                return;
+            }
+    
+            const nowSeconds = Utils.nowInSeconds();
+            const sinceSeconds = nowSeconds - seconds;
+    
+            sendPartnerSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
+    },
+    trader: {
+        match: /\b\/?(?:traders?|investors?)(?:@\w+)?(?:\s+(\w+))?\b/i,
+        internal: true,
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const resp = (match[1] || "24H").trim().toUpperCase();
+            const seconds = parseSeconds(resp);
+            if (seconds < 0) {
+                reply(bot, msg, "Invalid syntax. Try _trader 1d_, _trader 12h_, or just /trader.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
+                bot._context.finish();
+                return;
+            }
+    
+            const nowSeconds = Utils.nowInSeconds();
+            const sinceSeconds = nowSeconds - seconds;
+    
+            sendTraderSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
         }
     },
     today: {
@@ -79,28 +129,32 @@ It supports 'd' and 'h'.
         }
     },
     price: {
-        match: /\b\/?price(?:@\w+)?\b/i,
+        match: /\b\/?(?:(?:kyber)?price|rates?)(?:@\w+)?\b/i,
         needDb: true,
         reply: (bot, msg, match) => {
-            bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
-                if (!!err) {
-                    reply(bot, msg, "An unknown error occurs. Please try again later.");
-                    logger.error(err);
-                } else {
-                    console.log(ret);
-                    const seconds = Math.floor((new Date().getTime() - ret.last_updated * 1000)/1000);
-                    const text = `KNC/USD: *${ret.price_usd}*
+            if (!bot._context.internal && msg.chat.type === "supergroup") {
+                reply(bot, msg, "Please go to @kyberprice for price discussion.");
+            } else {
+                bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
+                    if (!!err) {
+                        reply(bot, msg, "An unknown error occurs. Please try again later.");
+                        logger.error(err);
+                    } else {
+                        const seconds = Math.floor((new Date().getTime() - ret.last_updated * 1000)/1000);
+                        const text = `KNC/USD: *${ret.price_usd}*
 KNC/BTC: *${ret.price_btc}*
 1h change: *${emoji(ret.percent_change_1h)}*
-2h change: *${emoji(ret.percent_change_24h)}*
+24h change: *${emoji(ret.percent_change_24h)}*
 7d change: *${emoji(ret.percent_change_7d)}*
 
-Last updated: ${seconds} ago.
+Last updated: ${seconds} seconds ago.
 Credit: CoinMarketCap`;
-                    reply(bot, msg, text, {parse_mode: "Markdown"});
-                }
-                bot._context.finish();
-            });
+                        reply(bot, msg, text, {parse_mode: "Markdown"});
+                    }
+                });
+            }
+            // send http 200
+            bot._context.finish();
         }
     },
     whenmoon: {
@@ -121,11 +175,11 @@ Vietnamese version will be available soon.`,
     },
     roadmap: {
         match: /\b\/?(?:road)\s?map(?:@\w+)?\b/i,
-        reply: "You can see the roadmap on Kyber Network home page https://home.kyber.network/#roadmap"
+        reply: "You can see the roadmap on Kyber Network home page https://home.kyber.network/about/company/#roadmap"
     },
     team: {
         match: /\b\/?team(?:@\w+)?\b/i,
-        reply: "Our team is here https://home.kyber.network/#team"
+        reply: "Our team is here https://home.kyber.network/about/company/#team"
     },
     introduce: {
         match: /\b\/?introduce(?:@\w+)?\b/i,
@@ -135,8 +189,12 @@ Vietnamese version will be available soon.`,
         match: /\b\/?(?:when)?\s?lambo(?:@\w+)?\b/i,
         reply: "Check it out here https://when-lambo.com/"
     },
+    cmc: {
+        match: /\b\/?cmc(?:@\w+)?\b/i,
+        reply: "https://coinmarketcap.com/exchanges/kyber-network/"
+    },
     lang: {
-        match: /\b\/?lang(?:@\w+)?\b/i,
+        match: /\b\/?(?:lang|groups?)(?:@\w+)?\b/i,
         reply: `Kyber Network Official Telegram Groups.
 English @KyberNetwork
 한국어 @KyberKorea
@@ -144,7 +202,7 @@ English @KyberNetwork
 Tiếng Việt @KyberVietnamese`
     },
     trade: {
-        match: /\b\/?trade(?:@\w+)?\b/i,
+        match: /\b\/?(?:trade|exchange)(?:@\w+)?\b/i,
         reply: "Our exchange is live, you can trade now https://kyber.network/"
     },
     kyber: {
@@ -171,7 +229,7 @@ Tiếng Việt @KyberVietnamese`
         reply: "https://www.facebook.com/kybernetwork/"
     },
     blog: {
-        match: /\b\/?blog(?:@\w+)?\b/i,
+        match: /\b\/?(?:blog|medium)(?:@\w+)?\b/i,
         reply: "https://blog.kyber.network/"
     },
     tracker: {
@@ -180,7 +238,24 @@ Tiếng Việt @KyberVietnamese`
     },
     token: {
         match: /\b\/?tokens?(?:@\w+)?\b/i,
-        reply: "List of supported tokens https://tracker.kyber.network#/tokens",
+        needDb: true,
+        reply: (bot, msg, match) => {
+            const resp = (match[1] || "24H").trim().toUpperCase();
+            const seconds = parseSeconds(resp);
+            if (seconds < 0) {
+                reply(bot, msg, "Invalid syntax. Try _token 1d_, _token 12h_, or just /token.", {
+                    parse_mode: "Markdown",
+                    no_mention: true
+                });
+                bot._context.finish();
+                return;
+            }
+    
+            const nowSeconds = Utils.nowInSeconds();
+            const sinceSeconds = nowSeconds - seconds;
+    
+            sendTokenSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
     },
     market: {
         match: /\b\/?market?(?:@\w+)?\b/i,
@@ -188,10 +263,34 @@ Tiếng Việt @KyberVietnamese`
         replyOptions: {
             parse_mode: "Markdown"
         }
+    },
+    thank: {
+        match: /\b\/?thanks?(?:@\w+)?\b/i,
+        reply: "You are welcome",
+    },
+    like: {
+        match: /\b\/?(?:like|love)(?:@\w+)?\b/i,
+        reply: "Thank you",
+    },
+    kyc: {
+        match: /\b\/?kyc(?:@\w+)?\b/i,
+        reply: "https://account.kyber.network/users/sign_in",
+    },
+    request: {
+        match: /\b\/?request(?:@\w+)?\b/i,
+        reply: "https://docs.google.com/forms/d/e/1FAIpQLSdXIGrbUxj3PYHcLGArWxx800DAS8tZSKGQhY4yIeYD1FrClg/viewform",
+    },
+    wallet: {
+        match: /\b\/?wallets?(?:@\w+)?\b/i,
+        internal: true,
+        reply: "_wallet_ has multiple meanings. Please use /trader or /partner commands.",
+        replyOptions: {
+            parse_mode: "Markdown"
+        }
     }
 }
 
-function keepReq(body) {
+function keepReq(bot, body) {
     if (!body.message) return false;
     if (!body.message.text) return false;
 
@@ -199,8 +298,18 @@ function keepReq(body) {
 
     for (let key in commands) {
         const value = commands[key];
-        if (value.needDb && !!text.match(value.match)) {
-            return true;
+
+        if (!!text.match(value.match)) {
+            if (!!value.internal && !bot._context.internal) {
+                return false;
+            }
+
+            if (value.needDb) {
+                return true;
+            }
+
+            // skip after first match, cause we only setup first match
+            break;
         }
     }
 
@@ -222,7 +331,6 @@ function format(n) {
 
 function sign(n) {
     if (n > 0) return "+" + n;
-    if (n < 0) return "-" + n;
     return n;
 }
 
@@ -261,7 +369,7 @@ function reply(bot, msg, text, options) {
 
 function percent(a, b) {
     if (!b) return "N/A ";
-    return round(100 * a / b);
+    return round(100 * (a || 0) / b);
 }
 
 function average(volume, count) {
@@ -275,7 +383,6 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
     TradeService.getStats(from, to, internal, (err, ret) => {
         if (!!err) {
             reply(bot, msg, "An unknown error occurs. Please try again later.");
-            bot._context.finish();
             logger.error(err);
         } else {
             let text = `*${prefix}* VOLUME`;
@@ -293,7 +400,7 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
             }
             if (internal) {
                 text += `\nBurn & Tax: *${format(ret.burnAndTax)} KNC*`;
-                text += "\n\nCOMMISSIONED PARTNER";
+                text += "\n\nCOMMISSIONED PARTNERS";
                 text += "\n=================";
                 text += `\nVolume: *${format(ret.partnerVolumeEth)} ETH* (${percent(ret.partnerVolumeEth, ret.volumeEth)}%)`;
                 text += `\nNumber of Tx: *${format(ret.partnerCount)}* (${percent(ret.partnerCount, ret.tradeCount)}%)`;
@@ -306,6 +413,155 @@ function sendVolume(bot, msg, from, to, prefix, tellUtcTime) {
             }
 
             reply(bot, msg, text, {parse_mode: "Markdown"});
+        }
+        bot._context.finish();
+    });
+}
+
+function partnerLink(addr) {
+    if (!addr) return "No partner";
+
+    let name = null;
+    let lowerAddr = addr.toLowerCase();
+    if (network.partners) {
+        for (let key in network.partners) {
+            if (network.partners[key].toLowerCase() === lowerAddr) {
+                name = key;
+                break;
+            }
+        }
+    }
+
+    if (!name) {
+        name = addr.substr(0, 4) + "…" + addr.substr(-2);
+    }
+
+    return `[${name}](https://tracker.kyber.network/#/partner/${addr})`;
+}
+
+function sendPartnerSummary(bot, msg, from, to, prefix) {
+    const TradeService = bot._context.getService();
+    TradeService.getPartners(from, to, (err, ret) => {
+        if (!!err) {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        } else {
+            let text = `*${prefix}*\nVOLUME BY PARTNER`;
+            text += "\n=================";
+            if (!ret || !Array.isArray(ret) || ret.length === 0) {
+                text = "There is no transactions."
+            } else {
+                ret.sort((a, b) => {
+                    return b.sum - a.sum;
+                });
+                let total = 0;
+                ret.forEach((item) => {
+                    total += item.sum;
+                })
+                ret.forEach((item) => {
+                    text += "\n" + partnerLink(item.commissionReceiveAddress) + ": *" + format(item.sum) + " ETH* (" +
+                        percent(item.sum, total) + "%)";
+                });
+
+                text += "\n-----\nTOTAL: *" + format(total) + " ETH*";
+            }
+
+            reply(bot, msg, text, {parse_mode: "Markdown", no_preview: true});
+        }
+        bot._context.finish();
+    });
+}
+
+function sendTraderSummary(bot, msg, from, to, prefix) {
+    const TradeService = bot._context.getService();
+    TradeService.getTraders(from, to, (err, ret) => {
+        if (!!err) {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        } else {
+            let text = `*${prefix}*\nVOLUME BY TRADER`;
+            text += "\n=================";
+            if (!ret || !Array.isArray(ret) || ret.length === 0) {
+                text = "There is no transactions."
+            } else {
+                ret.sort((a, b) => {
+                    return b.sum - a.sum;
+                });
+                let total = 0;
+                ret.forEach((item) => {
+                    total += item.sum;
+                })
+
+                let top5 = 0;
+                let count = 5;
+                if (ret.length < count) count = ret.length;
+                for (let i = 0; i < count; i++) {
+                    let item = ret[i];
+                    top5 += item.sum;
+                    console.log(item);
+                    text += "\n" + traderLink(item.takerAddress) + ": *$" + format(item.sum) + "* (" +
+                        percent(item.sum, total) + "%)";
+                }
+
+                const others = total - top5;
+                text += "\nOthers: *$" + format(others) + "* (" +
+                            percent(others, total) + "%)";
+
+                text += "\n-----\nTOTAL: *$" + format(total) + "*";
+            }
+
+            reply(bot, msg, text, {parse_mode: "Markdown", no_preview: true});
+        }
+        bot._context.finish();
+    });
+}
+
+function traderLink(addr) {
+    const shortAddress = addr.substr(0, 4) + "…" + addr.substr(-2);
+    return `[${shortAddress}](https://tracker.kyber.network/#/search?q=${addr})`;
+}
+
+function tokenLink(symbol) {
+    const address = network.tokens[symbol].address;
+    return `[${symbol}](https://tracker.kyber.network/#/tokens/${address})`;
+}
+
+function sendTokenSummary(bot, msg, from, to, prefix) {
+    const TradeService = bot._context.getService();
+    TradeService.getTopTokensList(from, to, (err, ret) => {
+        if (!!err) {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        } else {
+            let text = `*${prefix}*\nVOLUME BY TOKEN`;
+            text += "\n=================";
+            if (!ret || !Array.isArray(ret) || ret.length === 0) {
+                text = "There is no transactions."
+            } else {
+                
+                let total = 0;
+                let top5 = 0;
+                for (let i = 0; i <=5; i++) {
+                    let item = ret[i];
+                    if (i == 0) {
+                        total = item.volumeUSD;
+                    } else {
+                        top5 += item.volumeUSD;
+                        text += "\n" + tokenLink(item.symbol) + ": *$" + format(item.volumeUSD) + "* (" +
+                            percent(item.volumeUSD, total) + "%)";
+                    }
+                }
+
+                const others = total - top5;
+                text += "\nOthers: *$" + format(others) + "* (" +
+                            percent(others, total) + "%)";
+
+                text += "\n-----\nTOTAL: *$" + format(total) + "*";
+
+                text += "\n\n[See full list](https://tracker.kyber.network#/tokens)";
+            }
+
+            reply(bot, msg, text, {parse_mode: "Markdown", no_preview: true});
         }
         bot._context.finish();
     });
@@ -340,18 +596,33 @@ function todayStartInSeconds(){
     return Math.floor(today.getTime() / 1000);
 }
 
-function setupBot(bot) {
+function setupBot(bot, body) {
+    if (!body.message) return;
+    if (!body.message.text) return;
+
+    const msgText = body.message.text;
     for (const key in commands) {
         const value = commands[key];
-        let text = value.reply;
-        if (text) {
-            bot.onText(value.match, (msg, match) => {
-                if (text.call) {
-                    text.call(value, bot, msg, match);
-                } else {
-                    reply(bot, msg, text, value.replyOptions);
-                }
-            });
+
+        if (!!msgText.match(value.match)) {
+
+            if (!!value.internal && !bot._context.internal) {
+                return;
+            }
+
+            let text = value.reply;
+            if (text) {
+                bot.onText(value.match, (msg, match) => {
+                    if (text.call) {
+                        text.call(value, bot, msg, match);
+                    } else {
+                        reply(bot, msg, text, value.replyOptions);
+                    }
+                });
+            }
+
+            // only setup first match, cause we have new tracker bot each request
+            break;
         }
     }
 };
@@ -361,10 +632,10 @@ module.exports = {
         // new bot per req, to avoid concerns about simultanous requests
         const bot = new Bot(context.botToken || process.env.TRACKER_BOT_TOKEN);
         bot._context = context;
-        setupBot(bot);
+        setupBot(bot, body);
         bot.processUpdate(body);
 
-        if (!keepReq(body)) {
+        if (!keepReq(bot, body)) {
             context.finish();
         }
     }

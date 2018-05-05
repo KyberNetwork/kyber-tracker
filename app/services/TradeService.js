@@ -197,6 +197,42 @@ module.exports = BaseService.extends({
     });
   },
 
+  _aggregate: function (options, fromDate, toDate, callback) {
+    const type = options.type || (!!options.groupBy ? "sumGroupBy" : "sum");
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    const sqlOptions = {
+      where: 'block_timestamp > ? AND block_timestamp <= ?',
+      params: [fromDate, toDate]
+    }
+    if (options.groupBy) {
+      sqlOptions.groupBy = options.groupBy;
+    }
+
+    KyberTradeModel[type](options.column, sqlOptions, callback);
+  },
+
+  getPartners: function (fromDate, toDate, callback) {
+    this._aggregate({
+      column: 'volume_eth',
+      groupBy: 'commission_receive_address'
+    }, fromDate, toDate, callback)
+    /*
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    KyberTradeModel.sumGroupBy('volume_eth', {
+      where: 'block_timestamp > ? AND block_timestamp <= ?',
+      params: [fromDate, toDate],
+      groupBy: ['commission_receive_address']
+    }, callback);
+    */
+  },
+
+  getTraders: function (fromDate, toDate, callback) {
+    this._aggregate({
+      column: 'volume_usd',
+      groupBy: 'taker_address'
+    }, fromDate, toDate, callback)
+  },
+
   getStats: function (fromDate, toDate, internal, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const funcs = {

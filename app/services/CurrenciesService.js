@@ -133,7 +133,7 @@ module.exports = BaseService.extends({
       const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
       const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
       return callback( null , {
-        "symbol": tokenData.symbol,
+        "symbol": tokenData.cmcSymbol || tokenData.symbol,
         "name": tokenData.name,
         // "code": tokenData.symbol,
         "contractAddress": tokenData.address,

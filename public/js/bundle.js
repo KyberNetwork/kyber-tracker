@@ -107871,6 +107871,7 @@ module.exports = {
       "name": "ETHOS",
       "address": "0x5af2be193a6abca9c8817001f45744777db30756",
       "symbol": "BQX",
+      "cmcSymbol": "ETHOS",
       "decimal": 8
     },
     "ADX": {
@@ -107973,7 +107974,7 @@ module.exports = {
       "hidden": true
     },
     "DGX": {
-      "name": "Digix Gold Token",
+      "name": "Digix Gold",
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
       "decimal": 9,
@@ -107998,8 +107999,7 @@ module.exports = {
       "name": "Olympus Labs",
       "address": "0x263c618480dbe35c300d8d5ecda19bbb986acaed",
       "symbol": "MOT",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     },
     "ICX": {
       "name": "ICON",
@@ -108019,15 +108019,13 @@ module.exports = {
       "name": "IOStoken",
       "address": "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab",
       "symbol": "IOST",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     },
     "STORM": {
       "name": "Storm",
       "address": "0xd0a4b8946cb52f0661273bfbc6fd0e0c75fc6433",
       "symbol": "STORM",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     }
   },
   "networkId": 1,
