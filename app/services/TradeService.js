@@ -19,8 +19,13 @@ module.exports = BaseService.extends({
   getTradesList: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
-    let whereClauses = '1=1';
     let params = [];
+
+    const supportedTokenList = _.filter(network.tokens, (e) => {
+      return UtilsHelper.shouldShowToken(e.symbol)
+    }).map( x => x.symbol).join('\',\'')
+
+    let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}'))`;
 
     if (options.symbol) {
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
