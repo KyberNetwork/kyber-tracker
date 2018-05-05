@@ -24,7 +24,8 @@ module.exports = BaseService.extends({
     Object.keys(tokens).map(token => {
       // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
       if((token.toUpperCase() !== "ETH") && helper.shouldShowToken(token)){
-        pairs["ETH_" + token] = (asyncCallback) => this._getCurrencyInfo({
+        const cmcName = tokens[token].cmcSymbol || token;
+        pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
           fromCurrencyCode: "ETH"
         }, asyncCallback)
