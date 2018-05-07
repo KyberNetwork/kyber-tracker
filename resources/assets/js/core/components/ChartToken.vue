@@ -222,7 +222,6 @@ export default {
 
         const data = this._buildChartData(ret);
         const options = this._getChartOptions();
-        console.log(this.chartInstance)
         if (this.chartInstance) {
           // this.chartInstance.destroy();
           // this.chartInstance = undefined;
