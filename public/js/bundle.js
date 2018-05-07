@@ -115475,17 +115475,23 @@ exports.default = {
 
         var data = _this2._buildChartData(ret);
         var options = _this2._getChartOptions();
+        console.log(_this2.chartInstance);
         if (_this2.chartInstance) {
-          _this2.chartInstance.destroy();
-          _this2.chartInstance = undefined;
-        }
+          // this.chartInstance.destroy();
+          // this.chartInstance = undefined;
 
-        _this2.chartInstance = new Chart(ctx, {
-          type: "horizontalBar",
-          data: data,
-          options: options,
-          plugins: [_chartjsPluginDatalabels2.default]
-        });
+          _this2.chartInstance.config.data = data;
+          _this2.chartInstance.options = options;
+          _this2.chartInstance.plugins = [_chartjsPluginDatalabels2.default];
+          _this2.chartInstance.update(0);
+        } else {
+          _this2.chartInstance = new Chart(ctx, {
+            type: "horizontalBar",
+            data: data,
+            options: options,
+            plugins: [_chartjsPluginDatalabels2.default]
+          });
+        }
       });
     }
   }
@@ -131088,7 +131094,7 @@ exports = module.exports = __webpack_require__(25)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -131253,6 +131259,7 @@ exports.default = {
 
   methods: {
     refresh: function refresh() {
+      console.log("+++++++++++++++++");
       this.$refs.datatable.fetch();
       this.refreshTopTopkensChart(this.selectedPeriod);
     },
@@ -131302,12 +131309,20 @@ exports.default = {
       if (this.$refs.chartToken) {
         this.$refs.chartToken.refresh(period);
       }
+    },
+    beforeDestroy: function beforeDestroy() {
+      window.clearInterval(this._refreshInterval);
     }
   },
 
   watch: {},
 
   mounted: function mounted() {
+    var _this = this;
+
+    this._refreshInterval = window.setInterval(function () {
+      _this.refresh();
+    }, 10000);
     this.refresh();
   }
 };

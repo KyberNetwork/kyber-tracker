@@ -123,6 +123,7 @@ export default {
 
   methods: {
     refresh () {
+      console.log("+++++++++++++++++")
       this.$refs.datatable.fetch();
       this.refreshTopTopkensChart(this.selectedPeriod);
     },
@@ -174,6 +175,10 @@ export default {
       if (this.$refs.chartToken) {
         this.$refs.chartToken.refresh(period);
       }
+    },
+
+    beforeDestroy() {
+      window.clearInterval(this._refreshInterval);
     }
   },
 
@@ -182,6 +187,9 @@ export default {
   },
 
   mounted() {
+    this._refreshInterval = window.setInterval(() => {
+        this.refresh();
+      }, 10000);
     this.refresh();
   }
 
