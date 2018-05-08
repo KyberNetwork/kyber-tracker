@@ -354,7 +354,7 @@ module.exports = {
     },
     "BLZ": {
       "name": "Bluzelle",
-      "address": "	0x5732046a883704404f284ce41ffadd5b007fd668",
+      "address": "0x5732046a883704404f284ce41ffadd5b007fd668",
       "symbol": "BLZ",
       "decimal": 18,
       "hidden": true
