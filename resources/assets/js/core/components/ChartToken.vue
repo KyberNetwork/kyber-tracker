@@ -223,16 +223,21 @@ export default {
         const data = this._buildChartData(ret);
         const options = this._getChartOptions();
         if (this.chartInstance) {
-          this.chartInstance.destroy();
-          this.chartInstance = undefined;
-        }
-
-        this.chartInstance = new Chart(ctx, {
-          type: "horizontalBar",
-          data: data,
-          options: options,
-          plugins: [datalabels]
-        });
+          // this.chartInstance.destroy();
+          // this.chartInstance = undefined;
+          
+          this.chartInstance.config.data = data;
+          this.chartInstance.options = options;
+          this.chartInstance.plugins = [datalabels];
+          this.chartInstance.update(0);
+        } else {
+          this.chartInstance = new Chart(ctx, {
+            type: "horizontalBar",
+            data: data,
+            options: options,
+            plugins: [datalabels]
+          });
+        }        
       });
     }
   }

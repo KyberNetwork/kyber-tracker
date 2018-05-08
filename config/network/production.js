@@ -278,6 +278,117 @@ module.exports = {
       "symbol": "STORM",
       "decimal": 18
     },
+
+    "WAX": {
+      "name": "WAX",
+      "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
+      "symbol": "WAX",
+      "decimal": 8,
+      "hidden": true
+    },
+    "ABT": {
+      "name": "Arcblock",
+      "address": "0xb98d4c97425d9908e66e53a6fdf673acca0be986",
+      "symbol": "ABT",
+      "decimal": 18,
+      "hidden": true
+    },
+    "GVT": {
+      "name": "Genesis Vision",
+      "address": "0x103c3A209da59d3E7C4A89307e66521e081CFDF0",
+      "symbol": "GVT",
+      "decimal": 18,
+      "hidden": true
+    },
+
+    "SRN": {
+      "name": "SIRIN LABS Token",
+      "address": "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25",
+      "symbol": "SRN",
+      "decimal": 18,
+      "hidden": true
+    },
+    "NAS": {
+      "name": "Nebulas",
+      "address": "0x5d65D971895Edc438f465c17DB6992698a52318D",
+      "symbol": "NAS",
+      "decimal": 18,
+      "hidden": true
+    },
+    "QASH": {
+      "name": "QASH",
+      "address": "0x618e75ac90b12c6049ba3b27f5d5f8651b0037f6",
+      "symbol": "QASH",
+      "decimal": 6,
+      "hidden": true
+    },
+    "BTM": {
+      "name": "Bytom",
+      "address": "0xcb97e65f07da24d46bcdd078ebebd7c6e6e3d750",
+      "symbol": "BTM",
+      "decimal": 8,
+      "hidden": true
+    },
+
+
+    "AE": {
+      "name": "Aeternity",
+      "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
+      "symbol": "AE",
+      "decimal": 18,
+      "hidden": true
+    },
+    "PPT": {
+      "name": "Populous",
+      "address": "0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a",
+      "symbol": "PPT",
+      "decimal": 8,
+      "hidden": true
+    },
+    "CVC": {
+      "name": "Civic",
+      "address": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
+      "symbol": "CVC",
+      "decimal": 8,
+      "hidden": true
+    },
+    "BLZ": {
+      "name": "Bluzelle",
+      "address": "0x5732046a883704404f284ce41ffadd5b007fd668",
+      "symbol": "BLZ",
+      "decimal": 18,
+      "hidden": true
+    },
+    "MTL": {
+      "name": "Metal",
+      "address": "0xF433089366899D83a9f26A773D59ec7eCF30355e",
+      "symbol": "MTL",
+      "decimal": 8,
+      "hidden": true
+    },
+    "REP": {
+      "name": "Augur",
+      "address": "0xe94327d07fc17907b4db788e5adf2ed424addff6",
+      "symbol": "REP",
+      "decimal": 18,
+      "hidden": true
+    },
+    "WINGS": {
+      "name": "Wings",
+      "address": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
+      "symbol": "WINGS",
+      "decimal": 18,
+      "hidden": true
+    },
+    "LRC": {
+      "name": "Loopring",
+      "address": "0xef68e7c694f40c8202821edf525de3782458639f",
+      "symbol": "LRC",
+      "decimal": 18,
+      "hidden": true
+    },
+
+
   },
   "networkId": 1,
   "chainName": "Mainnet",
