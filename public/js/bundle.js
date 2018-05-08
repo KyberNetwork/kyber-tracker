@@ -107978,7 +107978,6 @@ module.exports = {
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
       "decimal": 9,
-      "hidden": 1525438800000,
       "icon": "dgx.png"
     },
     "DGD": {
@@ -131933,7 +131932,7 @@ exports.default = {
       var tokenInfo = _network2.default.tokens[this.symbol];
       this.tokenName = tokenInfo.name;
       var icon = tokenInfo.icon || tokenInfo.symbol.toLowerCase() + ".svg";
-      this.logoUrl = tokenInfo.hidden ? "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true" : "images/tokens/" + icon;
+      this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
       this.refreshChartsData();
       this.$refs.datatable.fetch();
     },
