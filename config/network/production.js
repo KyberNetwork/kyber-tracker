@@ -287,7 +287,7 @@ module.exports = {
       "hidden": true
     },
     "ABT": {
-      "name": "Arcblock",
+      "name": "ArcBlock",
       "address": "0xb98d4c97425d9908e66e53a6fdf673acca0be986",
       "symbol": "ABT",
       "decimal": 18,
