@@ -291,7 +291,7 @@ module.exports = {
       "address": "0xb98d4c97425d9908e66e53a6fdf673acca0be986",
       "symbol": "ABT",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1525957200000
     },
     "GVT": {
       "name": "Genesis Vision",
