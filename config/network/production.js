@@ -223,7 +223,7 @@ module.exports = {
       "address": "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c",
       "symbol": "ENJ",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1526302800000
     },
     "DGX": {
       "name": "Digix Gold",
