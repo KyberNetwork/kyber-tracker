@@ -22,7 +22,7 @@ It supports 'd' and 'h'.
 /burn to see how much KNC burned to date
 /token to see volume by token`;
             } else {
-                text += "Other common used commands: /today, /yesterday, /token, /partner, /trader, /price.";
+                text += "Other common used commands: /today, /yesterday, /burn, /token, /partner, /trader, /price.";
             }
             reply(bot, msg, text, {no_reply: true});
         }
@@ -42,7 +42,7 @@ It supports 'd' and 'h'.
 /burn to see how much KNC burned to date
 /token to see volume by token`;
             } else {
-                text += "Other common used commands: /today, /yesterday, /token, /partner, /trader, /price.";
+                text += "Other common used commands: /today, /yesterday, /burn, /token, /partner, /trader, /price.";
             }
             reply(bot, msg, text, {no_reply: true});
         }
@@ -202,7 +202,7 @@ Vietnamese version will be available soon.`,
         reply: "https://coinmarketcap.com/exchanges/kyber-network/"
     },
     lang: {
-        match: /^\/?(?:lang|groups?)(?:@\w+)?$/i,
+        match: /^\/?(?:language|groups?)(?:@\w+)?$/i,
         reply: `Kyber Network Official Telegram Groups.
 English @KyberNetwork
 한국어 @KyberKorea

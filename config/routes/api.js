@@ -11,7 +11,11 @@ module.exports = {
     '/search'                       : ['TradeController.search'],
     '/partner/:partnerId'           : ['TradeController.getPartnerDetail'],
     
+    // legacy
     '/currencies/convertiblePairs'  : ['CurrenciesController.getConvertiblePairs'],
+    // same as above, but easier to remember & type
+    '/tokens/pairs'                 : ['CurrenciesController.getConvertiblePairs'],
+    '/tokens/supported'             : ['CurrenciesController.getSupportedTokens'],
   },
   POST: {
     // Implement me.

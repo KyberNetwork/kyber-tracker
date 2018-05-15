@@ -9,25 +9,16 @@ const logger                  = log4js.getLogger('CurrenciesController');
 module.exports = AppController.extends({
   classname: 'CurrenciesController',
 
-  getConvertiblePairs: function (req, res) {
-
-    // console.log("################# get covertiple pairs ")
-    
-    // const [err, params] = new Checkit({
-    //   symbol: ['string'],
-    //   page: ['required', 'natural'],
-    //   limit: ['required', 'naturalNonZero'],
-    //   fromDate: ['naturalNonZero'],
-    //   toDate: ['naturalNonZero'],
-    // }).validateSync(req.allParams);
-
-    // if (err) {
-    //   res.badRequest(err.toString());
-    //   return;
-    // }
-
+  getSupportedTokens: function (req, res) {
     const CurrenciesService = req.getService('CurrenciesService');
-    //CurrenciesService.getConvertiblePairs(this.ok.bind(this, req, res));
+    const path = `https://${req.hostname}`;
+    CurrenciesService.getSupportedTokens(path, (err, ret) => {
+      res.json(ret);
+    });
+  },
+
+  getConvertiblePairs: function (req, res) {
+    const CurrenciesService = req.getService('CurrenciesService');
     CurrenciesService.getConvertiblePairs((err, ret) => {
       res.json(ret);
     });

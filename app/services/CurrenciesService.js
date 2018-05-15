@@ -16,6 +16,31 @@ const tokens = network.tokens;
 module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
+  getSupportedTokens: function (path, callback) {
+    if(!tokens) return callback(null, []);
+
+    const ret = [];
+    Object.keys(tokens).forEach(symbol => {
+      if (helper.shouldShowToken(symbol)) {
+        const token = tokens[symbol];
+        const iconFile = symbol.toLowerCase();
+        ret.push({
+          symbol: token.cmcName || token.symbol || symbol,
+          name: token.name,
+          decimals: token.decimal,
+          contractAddress: token.address,
+          icon: {
+            "1x": `${path}/images/tokens/png/${iconFile}.1x.png`,
+            "2x": `${path}/images/tokens/png/${iconFile}.2x.png`,
+            "3x": `${path}/images/tokens/png/${iconFile}.3x.png`
+          }
+        });
+      }
+    })
+
+    callback(null, ret);
+  },
+
   getConvertiblePairs: function (callback) {
     if(!tokens) return callback(null, {});
 

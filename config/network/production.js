@@ -222,8 +222,7 @@ module.exports = {
       "name": "EnjinCoin",
       "address": "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c",
       "symbol": "ENJ",
-      "decimal": 18,
-      "hidden": 1526302800000
+      "decimal": 18
     },
     "DGX": {
       "name": "Digix Gold",
@@ -290,8 +289,7 @@ module.exports = {
       "name": "ArcBlock",
       "address": "0xb98d4c97425d9908e66e53a6fdf673acca0be986",
       "symbol": "ABT",
-      "decimal": 18,
-      "hidden": 1525957200000
+      "decimal": 18
     },
     "GVT": {
       "name": "Genesis Vision",
