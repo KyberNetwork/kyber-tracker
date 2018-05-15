@@ -23,17 +23,13 @@ module.exports = BaseService.extends({
     Object.keys(tokens).forEach(symbol => {
       if (helper.shouldShowToken(symbol)) {
         const token = tokens[symbol];
-        const iconFile = symbol.toLowerCase();
+        const id = token.cmcName || token.symbol || symbol;
         ret.push({
-          symbol: token.cmcName || token.symbol || symbol,
+          symbol: id,
           name: token.name,
           decimals: token.decimal,
           contractAddress: token.address,
-          icon: {
-            "1x": `${path}/images/tokens/png/${iconFile}.1x.png`,
-            "2x": `${path}/images/tokens/png/${iconFile}.2x.png`,
-            "3x": `${path}/images/tokens/png/${iconFile}.3x.png`
-          }
+          iconID: id.toLowerCase();
         });
       }
     })

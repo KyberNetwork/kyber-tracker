@@ -64,3 +64,6 @@ credentials
 public/js/bundle.js
 db/level
 db/telegram
+
+# Ignore MAC file
+.DS_Store
