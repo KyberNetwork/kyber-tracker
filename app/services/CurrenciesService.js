@@ -23,13 +23,13 @@ module.exports = BaseService.extends({
     Object.keys(tokens).forEach(symbol => {
       if (helper.shouldShowToken(symbol)) {
         const token = tokens[symbol];
-        const id = token.cmcName || token.symbol || symbol;
+        const id = token.symbol || symbol;
         ret.push({
           symbol: id,
           name: token.name,
           decimals: token.decimal,
           contractAddress: token.address,
-          iconID: id.toLowerCase();
+          iconID: id.toLowerCase()
         });
       }
     })
