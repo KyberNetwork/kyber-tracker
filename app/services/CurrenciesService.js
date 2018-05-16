@@ -26,6 +26,7 @@ module.exports = BaseService.extends({
         const id = token.symbol || symbol;
         ret.push({
           symbol: id,
+          cmcName: token.cmcSymbol || id,
           name: token.name,
           decimals: token.decimal,
           contractAddress: token.address,
