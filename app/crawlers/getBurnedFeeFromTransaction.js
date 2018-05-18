@@ -4,6 +4,8 @@ const network         = require('../../config/network');
 const Utils           = require('../common/Utils');
 const ExSession       = require('sota-core').load('common/ExSession');
 const logger          = require('sota-core').getLogger('getKyberTradeFromTransaction');
+const request         = require('superagent');
+const BigNumber       = require('bignumber.js');
 
 const web3            = Utils.getWeb3Instance();
 const abiDecoder      = Utils.getKyberABIDecoder();
@@ -90,6 +92,39 @@ function insertRecord(data, callback) {
     }],
     commit: ['insert', (ret, next) => {
       exSession.commit(next);
+      const mins = Math.floor((Date.now() / 1000 - data.blockTimestamp) / 60);
+      if (mins > 5) return;
+      
+      let notifyGroups = (process.env.NOTIFY_GROUPS || "").split(";");
+      if (!notifyGroups || !notifyGroups.length) return;
+
+      const amount = (new BigNumber(data.amount).div(Math.pow(10, 18))).toFormat(3);
+      const link = `https://etherscan.io/tx/${data.tx}`;
+
+      const text = encodeURIComponent(`${amount} KNC has just been burnt ${mins} minutes ago, see details at ${link}`);
+
+      const botToken = process.env.TRACKER_BOT_TOKEN;
+      const sanityLog = (e) => {
+        return JSON.stringify(e).replace(botToken, "TRACKER_BOT_TOKEN");
+      };
+
+      notifyGroups.forEach((group) => {
+        if (!group) return;
+        try {
+          const uri = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${group}&text=${text}`;
+          request
+            .get(uri)
+            .end((err, response) => {
+              if (err) {
+                logger.error(sanityLog(err));
+                return;
+              }
+              logger.info(text);
+            });
+        } catch (e) {
+          logger.error(sanityLog(e));
+        }
+      });
     }]
   }, (err, ret) => {
     exSession.destroy();
