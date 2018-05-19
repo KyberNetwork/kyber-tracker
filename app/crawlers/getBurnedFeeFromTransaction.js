@@ -93,7 +93,7 @@ function insertRecord(data, callback) {
     commit: ['insert', (ret, next) => {
       exSession.commit(next);
       const mins = Math.floor((Date.now() / 1000 - data.blockTimestamp) / 60);
-      if (mins > 5) return;
+      if (mins > 30) return;
       
       let notifyGroups = (process.env.NOTIFY_GROUPS || "").split(";");
       if (!notifyGroups || !notifyGroups.length) return;
@@ -101,7 +101,7 @@ function insertRecord(data, callback) {
       const amount = (new BigNumber(data.amount).div(Math.pow(10, 18))).toFormat(3);
       const link = `https://etherscan.io/tx/${data.tx}`;
 
-      const text = encodeURIComponent(`${amount} KNC has just been burnt ${mins} minutes ago, see details at ${link}`);
+      const text = encodeURIComponent(`${amount} KNC was burnt just ${mins} minutes ago ${link}`);
 
       const botToken = process.env.TRACKER_BOT_TOKEN;
       const sanityLog = (e) => {
