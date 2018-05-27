@@ -92,16 +92,23 @@ function insertRecord(data, callback) {
     }],
     commit: ['insert', (ret, next) => {
       exSession.commit(next);
+
+      if (ret.existed) {
+        return;
+      }
+
       const mins = Math.floor((Date.now() / 1000 - data.blockTimestamp) / 60);
       if (mins > 30) return;
+
+      const amount = new BigNumber(data.amount).div(Math.pow(10, 18));
+      if (amount.lt(100)) return;
       
       let notifyGroups = (process.env.NOTIFY_GROUPS || "").split(";");
       if (!notifyGroups || !notifyGroups.length) return;
 
-      const amount = (new BigNumber(data.amount).div(Math.pow(10, 18))).toFormat(3);
       const link = `https://etherscan.io/tx/${data.tx}`;
 
-      const text = encodeURIComponent(`${amount} KNC was burnt just ${mins} minutes ago ${link}`);
+      const text = encodeURIComponent(`${amount.toFormat(1)} KNC was burnt just ${mins} minutes ago ${link}`);
 
       const botToken = process.env.TRACKER_BOT_TOKEN;
       const sanityLog = (e) => {

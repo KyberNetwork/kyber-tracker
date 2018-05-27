@@ -14,6 +14,11 @@
       "name"              : "kyber-trade-crawler",
       "script"            : "crawl2.js",
       "watch"             : false
+    },
+    {
+      "name"              : "kyber-rate-crawler",
+      "script"            : "crawl3.js",
+      "watch"             : false
     }
   ]
 }

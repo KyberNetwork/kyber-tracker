@@ -5,8 +5,10 @@ const BigNumber = require('bignumber.js');
 const getWeb3Instance = require('./getWeb3Instance');
 const kyberABI = require('../../config/abi/kyber');
 const burnedFeeABI = require('../../config/abi/burned_fee');
+const wrapperABI = require('../../config/abi/wrapper');
 abiDecoder.addABI(kyberABI);
 abiDecoder.addABI(burnedFeeABI);
+abiDecoder.addABI(wrapperABI);
 
 const network = require('../../config/network');
 const tokens = network.tokens;
@@ -78,6 +80,31 @@ module.exports = {
       return bigA.plus(bigB)
     }, new BigNumber(initState))
     .toString()
+  },
+
+  getRateTokenArray: function() {
+    let supportedTokens = [];
+    let supportedAddressArray = []
+    Object.keys(tokens).forEach(symbol => {
+      if (this.shouldShowToken(symbol) && symbol !== "ETH") {
+        supportedAddressArray.push(tokens[symbol].address);
+        supportedTokens.push(tokens[symbol]);
+      }
+    })
+
+    const ethArray = Array(supportedAddressArray.length).fill(tokens.ETH.address);
+
+    const srcArray = supportedAddressArray.concat(ethArray);
+    const destArray = ethArray.concat(supportedAddressArray);
+    const qtyArray = Array(srcArray.length).fill("0x0");
+
+    return {
+      supportedTokens: supportedTokens,
+      supportedAddressArray: supportedAddressArray,
+      srcArray: srcArray,
+      destArray: destArray,
+      qtyArray: qtyArray
+    }
   }
 
 };

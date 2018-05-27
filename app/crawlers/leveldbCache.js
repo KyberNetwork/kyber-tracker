@@ -21,7 +21,7 @@ function getBlockTimestamp (blockNumber, callback) {
       return;
     }
 
-    if (isNaN(ret)) {
+    if (!ret || isNaN(ret)) {
       logger.warn(`Invalid saved data for block ${blockNumber}. Will remove from db...`);
       db.del(key, (err) => {
         if (err) {

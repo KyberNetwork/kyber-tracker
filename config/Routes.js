@@ -5,6 +5,7 @@ const routeGroups = [
   { prefix: '',             routes: require('./routes/web') },
   { prefix: '/api',         routes: require('./routes/api') },
   { prefix: '/webhooks',         routes: require('./routes/hook') },
+  { prefix: '/chart',         routes: require('./routes/chart') },
 ];
 
 const allRoutes = {};
