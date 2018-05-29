@@ -9,18 +9,11 @@ const logger                  = log4js.getLogger('ChartController');
 
 const supportedTokens = Utils.getRateTokenArray().supportedTokens;
 
-function cors(res) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    return res;
-}
-
 module.exports = AppController.extends({
   classname: 'ChartController',
 
   config: function (req, res) {
-      cors(res).json({
+      Utils.cors(res).json({
         supported_resolutions: ['60','120','240','360','720','D','W','M'],
         supports_group_request: false,
         supports_marks: false,
@@ -33,6 +26,7 @@ module.exports = AppController.extends({
   },
 
   symbols: function (req, res) {
+    Utils.cors(res);
     const [err, params] = new Checkit({
         symbol: ['string', 'required']
     }).validateSync(req.allParams);
@@ -44,11 +38,14 @@ module.exports = AppController.extends({
 
     const token = network.tokens[params.symbol];
     if (!token || !Utils.shouldShowToken(params.symbol)) {
-        res.badRequest("Symbol not supported.");
+        res.json({
+            s: "error",
+            errmsg: "unknown_symbol " + params.symbol
+        });
         return;
     }
 
-    cors(res).json({
+    res.json({
         name: token.symbol,
         ticker: token.symbol,
         description: token.name,
@@ -56,9 +53,9 @@ module.exports = AppController.extends({
         session: "24x7",
         //exchange: "Kyber Network",
         listed_exchange: "Kyber Network",
-        timezone: "Asia/Singapore",
-        minmov: 1,
-        pricescale: 1000000,
+        timezone: token.timezone || "Asia/Singapore",
+        minmov: token.minmov || 1,
+        pricescale: token.pricescale || 1000000,
         minmove2: 0,
         fractional: false,
         has_intraday: true,
@@ -71,18 +68,19 @@ module.exports = AppController.extends({
         has_empty_bars: true,
         force_session_rebuild: false,
         has_no_volume: true,
-        volume_precision: 3,
+        volume_precision: token.volume_precision || 3,
         data_status: "pulsed",
         expired: false,
         //expiration_date: null,
-        //sector: "Some sector",
-        //industry: "Some industry",
+        sector: token.sector,
+        industry: token.industry,
         currency_code: "ETH"
     });
 
   },
 
   search: function (req, res) {
+    Utils.cors(res);
     const [err, params] = new Checkit({
         query: ['string'],
         limit:  ['naturalNonZero']
@@ -109,16 +107,17 @@ module.exports = AppController.extends({
         }
     });
 
-    cors(res).json(ret);
+    res.json(ret);
 
   },
 
   history: function (req, res) {
+    Utils.cors(res);
     const [err, params] = new Checkit({
         symbol: ['string', 'required'],
-        resolution:  ['string', 'required'],
-        from:  ['naturalNonZero', 'required'],
-        to:  ['naturalNonZero', 'required'],
+        resolution: ['string', 'required'],
+        from: ['naturalNonZero', 'required'],
+        to: ['naturalNonZero', 'required'],
         rateType: ['string', 'required']
     }).validateSync(req.allParams);
 
@@ -168,13 +167,13 @@ module.exports = AppController.extends({
             });
         }
 
-        cors(res).json(data);
+        res.json(data);
     });
 
   },
 
   time: function (req, res) {
-    cors(res).send("" + Math.floor(Date.now() / 1000));
+    Utils.cors(res).send("" + Math.floor(Date.now() / 1000));
   },
 
 });

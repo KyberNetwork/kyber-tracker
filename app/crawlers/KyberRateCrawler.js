@@ -232,8 +232,8 @@ class KyberRateCrawler {
 
     for (let i = 0; i < len; i++) {
       const quoteSymbol = supportedTokens[i].symbol;
-      const sellExpected = this._sellRate(expectedArray[i]);
-      const buyExpected = this._buyRate(expectedArray[len + i]);
+      let sellExpected = this._sellRate(expectedArray[i]);
+      let buyExpected = this._buyRate(expectedArray[len + i]);
       if (this._isValidRate(sellExpected) || this._isValidRate(buyExpected)) {
         if (!this._isValidRate(sellExpected)) sellExpected = 0;
         if (!this._isValidRate(buyExpected)) buyExpected = 0;

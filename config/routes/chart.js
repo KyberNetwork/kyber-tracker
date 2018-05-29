@@ -3,7 +3,7 @@ module.exports = {
       '/config' : ['ChartController.config'],
       '/symbols' : ['ChartController.symbols'],
       '/search' : ['ChartController.search'],
-      '/:rateType/history' : ['ChartController.history'],
+      '/history' : ['ChartController.history'],
       '/time' : ['ChartController.time'],
     },
     POST: {

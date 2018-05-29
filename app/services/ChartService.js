@@ -31,7 +31,7 @@ module.exports = BaseService.extends({
             from rate
             where ${col} > 0 AND quote_symbol = ?
             AND block_timestamp >= ? AND block_timestamp <= ?
-            group by ${seqCol}`
+            group by ${seqCol}`;
 
         const params = [options.symbol, options.from, options.to];
 

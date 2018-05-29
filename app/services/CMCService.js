@@ -52,7 +52,7 @@ module.exports = BaseService.extends({
   },
 
   getCurrentRate: function (symbol, base, callback) {
-    const key = 'price-' + symbol;
+    const key = 'kyber-rate-' + symbol;
     const cachedData = LocalCache.getSync(key);
 
     if (cachedData) {

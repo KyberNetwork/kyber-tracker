@@ -167,7 +167,7 @@ module.exports = {
       "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
       "symbol": "AION",
       "decimal": 8,
-      "hidden": 1527555600000
+      "hidden": 1527598800000
     },
     "SUB": {
       "name": "Substratum",
@@ -334,7 +334,7 @@ module.exports = {
       "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
       "symbol": "AE",
       "decimal": 18,
-      "hidden": 1527555600000
+      "hidden": 1527598800000
     },
     "PPT": {
       "name": "Populous",
@@ -355,7 +355,7 @@ module.exports = {
       "address": "0x5732046a883704404f284ce41ffadd5b007fd668",
       "symbol": "BLZ",
       "decimal": 18,
-      "hidden": 1527555600000
+      "hidden": 1527598800000
     },
     "MTL": {
       "name": "Metal",
@@ -385,7 +385,13 @@ module.exports = {
       "decimal": 18,
       "hidden": true
     },
-
+    "PAL": {
+      "name": "PolicyPal",
+      "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
+      "symbol": "PAL",
+      "decimal": 18,
+      "hidden": 1527771600000
+    }
 
   },
   "networkId": 1,

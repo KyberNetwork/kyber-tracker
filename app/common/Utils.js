@@ -33,7 +33,7 @@ module.exports = {
     // return !this.tokens[item.symbol].hidden;
     if(!tokens[tokenSymbol].hidden) return true;
     if (typeof tokens[tokenSymbol].hidden != 'number') return false;
-    return new Date().getTime() - tokens[tokenSymbol].hidden > 0 ;
+    return (Date.now() >= tokens[tokenSymbol].hidden);
   },
 
   getStringExp10: function(decimal) {
@@ -105,6 +105,13 @@ module.exports = {
       destArray: destArray,
       qtyArray: qtyArray
     }
+  },
+
+  cors: function(res) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,HEAD,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    return res;
   }
 
 };

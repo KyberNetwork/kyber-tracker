@@ -8,6 +8,7 @@ const Const = require('../common/Const');
 const helper = require('../common/Utils');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
+const ExSession = require('sota-core').load('common/ExSession');
 const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
 const logger = require('sota-core').getLogger('CurrenciesService');
 
@@ -16,26 +17,87 @@ const tokens = network.tokens;
 module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
-  getSupportedTokens: function (path, callback) {
-    if(!tokens) return callback(null, []);
+  getAllRateInfo: function (callback) {
 
-    const ret = [];
-    Object.keys(tokens).forEach(symbol => {
-      if (helper.shouldShowToken(symbol)) {
-        const token = tokens[symbol];
-        const id = token.symbol || symbol;
-        ret.push({
-          symbol: id,
-          cmcName: token.cmcSymbol || id,
-          name: token.name,
-          decimals: token.decimal,
-          contractAddress: token.address,
-          iconID: id.toLowerCase()
-        });
+    const db = this._getDbConnection();
+    const tradeAdapter = db.model().getSlaveAdapter();
+    const rateAdapter = db.model('RateModel').getSlaveAdapter();
+
+    let pairs = {}
+
+    Object.keys(tokens).forEach(token => {
+      if((token.toUpperCase() !== "ETH") && helper.shouldShowToken(token)){
+        pairs[token] = (asyncCallback) => this._getRateInfo(token, {
+          tradeAdapter: tradeAdapter,
+          rateAdapter: rateAdapter
+        }, asyncCallback)
       }
     })
+    async.auto(pairs, (err, ret) => {
+      db.destroy();
+      callback(err, ret);
+    });
+  },
 
-    callback(null, ret);
+  _getDbConnection: function () {
+    let exSession = null;
+
+    return {
+      model: (modelName) => {
+        modelName = modelName || 'KyberTradeModel';
+        let model = this._exSession?this.getModel(modelName):undefined;
+        if (!model) {
+          exSession = new ExSession();
+          model = exSession.getModel(modelName);
+        }
+        return model;
+      },
+      destroy: () => {
+        if (exSession) {
+          exSession.destroy();
+          exSession = null;
+        }
+      }
+    };
+  },
+
+  _getRateInfo: function(symbol, options, callback) {
+
+    const tradeAdapter = options.tradeAdapter;
+    const rateAdapter = options.rateAdapter;
+
+    const nowInSeconds = Utils.nowInSeconds();
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
+
+    // volume SQL
+    const tradeWhere = "block_timestamp >= ? AND (maker_token_symbol = ? OR taker_token_symbol = ?)";
+    const tradeSql = `select IFNULL(sum(volume_eth),0) as ETH, IFNULL(sum(volume_usd),0) as USD from kyber_trade where ${tradeWhere}`;
+    const tradeParams = [dayAgo, symbol, symbol];
+
+    // 24h price SQL
+    const lastSql = `SELECT mid_expected as '24h' FROM rate
+      WHERE quote_symbol = ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+    const lastParams = [symbol];
+
+    // 7 days points
+    //const pointSql = "select FLOOR(AVG(block_timestamp)) as timestamp, AVG(mid_expected) as rate from rate " +
+    const pointSql = "select AVG(mid_expected) as rate from rate " +
+      "where quote_symbol = ? AND mid_expected > 0 AND block_timestamp >= ? group by h6_seq";
+    const pointParams = [symbol, weekAgo];
+
+    async.auto({
+      volume: (next) => {
+        tradeAdapter.execRaw(tradeSql, tradeParams, next);
+      },
+      rate: (next) => {
+        rateAdapter.execRaw(lastSql, lastParams, next);
+      },
+      points: (next) => {
+        rateAdapter.execRaw(pointSql, pointParams, next);
+      }
+    }, callback);
   },
 
   getConvertiblePairs: function (callback) {
@@ -57,8 +119,6 @@ module.exports = BaseService.extends({
       async.auto(
         pairs,
         (err, ret) => {
-          //let arrayBaseVolume = Object.keys(ret).map( pairKey => ret[pairKey].baseVolume)
-          //let sum = helper.sumBig(arrayBaseVolume, 0)
           return callback(null, ret);
         })
     } else {
@@ -87,18 +147,6 @@ module.exports = BaseService.extends({
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
     async.auto({
-      // volumeBuy: (next) => {
-      //   KyberTradeModel.sum('taker_total_usd', {
-      //     where: 'taker_token_symbol = ? AND block_timestamp > ?',
-      //     params: [tokenSymbol, nowInSeconds - DAY_IN_SECONDS],
-      //   }, next);
-      // },
-      // volumeSell: (next) => {
-      //   KyberTradeModel.sum('maker_total_usd', {
-      //     where: 'maker_token_symbol = ? AND block_timestamp > ?',
-      //     params: [tokenSymbol, nowInSeconds - DAY_IN_SECONDS],
-      //   }, next);
-      // },
       baseVolume: (next) => {
         KyberTradeModel.sum('volume_eth', {
           where: 'block_timestamp > ? AND ((maker_token_symbol = ? AND taker_token_symbol = ?) OR (maker_token_symbol = ? AND taker_token_symbol = ?))',

@@ -3,40 +3,84 @@ const async                   = require('async');
 const AppController           = require('./AppController');
 const Checkit                 = require('cc-checkit');
 const Const                   = require('../common/Const');
-const Utils                   = require('sota-core').load('util/Utils');
+const Utils                   = require('../common/Utils');
+const LocalCache              = require('sota-core').load('cache/foundation/LocalCache');
 const logger                  = log4js.getLogger('CurrenciesController');
 
 module.exports = AppController.extends({
   classname: 'CurrenciesController',
 
   getSupportedTokens: function (req, res) {
-    const CurrenciesService = req.getService('CurrenciesService');
-    const path = `https://${req.hostname}`;
-    CurrenciesService.getSupportedTokens(path, (err, ret) => {
-      res.json(ret);
+    Utils.cors(res);
+
+    const ret = [];
+    Object.keys(tokens).forEach(symbol => {
+      if (helper.shouldShowToken(symbol)) {
+        const token = tokens[symbol];
+        const id = token.symbol || symbol;
+        ret.push({
+          symbol: id,
+          cmcName: token.cmcSymbol || id,
+          name: token.name,
+          decimals: token.decimal,
+          contractAddress: token.address,
+          iconID: id.toLowerCase()
+        });
+      }
     });
+
+    res.json(ret);
   },
 
   getConvertiblePairs: function (req, res) {
+    Utils.cors(res);
+
     const CurrenciesService = req.getService('CurrenciesService');
     CurrenciesService.getConvertiblePairs((err, ret) => {
       res.json(ret);
     });
   },
 
-  getCurrencyInfo: function (req, res) {
-    const [err, params] = new Checkit({
-      token: ['string', 'required'],
-      fromCurrencyCode: ['string', 'required']
-    }).validateSync(req.allParams);
+  getAllRateInfo: function (req, res) {
+    Utils.cors(res);
+    const service = req.getService('CurrenciesService');
+    
+    const CACHE_KEY = 'allrates';
+    const cachedData = LocalCache.getSync(CACHE_KEY);
+    const CACHE_TTL = 10 * Const.MINUTE_IN_MILLISECONDS;
+    const PRELOAD_TIMING = CACHE_TTL - 20000; // 20 seconds
 
-    if (err) {
-      res.badRequest(err.toString());
-      return;
+    if (cachedData) {
+      res.json(cachedData.value);
+      if (Date.now() - cachedData.timestamp < PRELOAD_TIMING) {
+        return;
+      }
     }
 
-    const CurrenciesService = req.getService('CurrenciesService');
-    CurrenciesService.getCurrencyInfo(params, this.ok.bind(this, req, res));
+    service.getAllRateInfo((err, ret) => {
+      if (err) {
+        logger.error(err);
+        res.json(ret);
+        return;
+      }
+      // pack the result
+      const pack = {};
+      Object.keys(ret).forEach((symbol) => {
+        const token = ret[symbol];
+        const item = pack[symbol] = {
+          e: token.volume[0].ETH,
+          u: token.volume[0].USD,
+          r: token.rate.length?token.rate[0]["24h"]:0,
+          p: []
+        };
+        token.points.forEach((p) => {
+          item.p.push(p.rate);
+        });
+      });
+      LocalCache.setSync(CACHE_KEY, {timestamp: Date.now(), value: pack},
+        {ttl: CACHE_TTL});
+      !cachedData && res.json(pack);
+    });
   }
 
 });
