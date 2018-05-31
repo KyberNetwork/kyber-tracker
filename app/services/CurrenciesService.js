@@ -107,7 +107,9 @@ module.exports = BaseService.extends({
 
     Object.keys(tokens).map(token => {
       // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
-      if((token.toUpperCase() !== "ETH") && helper.shouldShowToken(token)){
+      if((token.toUpperCase() !== "ETH") && 
+          !tokens[token].delisted &&
+          helper.shouldShowToken(token)){
         const cmcName = tokens[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
@@ -115,16 +117,8 @@ module.exports = BaseService.extends({
         }, asyncCallback)
       }
     })
-    if(pairs && Object.keys(pairs).length){
-      async.auto(
-        pairs,
-        (err, ret) => {
-          return callback(null, ret);
-        })
-    } else {
-      return callback(null, {});
-    }
-    
+
+    async.auto(pairs, callback);
   },
 
   _getCurrencyInfo: function (options, callback) {

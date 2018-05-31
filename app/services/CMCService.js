@@ -87,12 +87,13 @@ module.exports = BaseService.extends({
           return x.source == symbol && x.dest == base
         })
 
-        if(!rateData || !rateData.length || !rateData[0].rate){
-          return callback(`Cannot get token rate: ${symbol}`);
+        if(!rateData || !rateData.length){
+          return callback(null, {rate:0});
         }
 
-        logger.debug(`Current price of [${symbol}] is: $${rateData[0].rate}`);
-        LocalCache.setSync(key, rateData[0], { ttl: Const.MINUTE_IN_MILLISECONDS });
+        if (rateData[0].rate) {
+          LocalCache.setSync(key, rateData[0], { ttl: Const.MINUTE_IN_MILLISECONDS });
+        }
         return callback(null, rateData[0]);
       });
   },

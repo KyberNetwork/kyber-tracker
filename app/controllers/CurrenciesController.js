@@ -4,6 +4,7 @@ const AppController           = require('./AppController');
 const Checkit                 = require('cc-checkit');
 const Const                   = require('../common/Const');
 const Utils                   = require('../common/Utils');
+const network                 = require('../../config/network');
 const LocalCache              = require('sota-core').load('cache/foundation/LocalCache');
 const logger                  = log4js.getLogger('CurrenciesController');
 
@@ -14,8 +15,9 @@ module.exports = AppController.extends({
     Utils.cors(res);
 
     const ret = [];
+    const tokens = network.tokens;
     Object.keys(tokens).forEach(symbol => {
-      if (helper.shouldShowToken(symbol)) {
+      if (Utils.shouldShowToken(symbol) && !tokens[symbol].delisted) {
         const token = tokens[symbol];
         const id = token.symbol || symbol;
         ret.push({

@@ -97,7 +97,7 @@ module.exports = AppController.extends({
     let counter = 0;
     supportedTokens.forEach((token) => {
         if (counter > limit) return;
-        if (!query || token.symbol.indexOf(query) >= 0) {
+        if (!token.delisted && (!query || token.symbol.indexOf(query) >= 0)) {
             ret.push({
                 symbol: token.symbol,
                 full_name: token.symbol,
