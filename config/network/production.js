@@ -167,8 +167,7 @@ module.exports = {
       "name": "AION",
       "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
       "symbol": "AION",
-      "decimal": 8,
-      "hidden": 1527598800000
+      "decimal": 8
     },
     "SUB": {
       "name": "Substratum",
@@ -263,8 +262,7 @@ module.exports = {
       "name": "ElectrifyAsia",
       "address": "0xd49ff13661451313ca1553fd6954bd1d9b6e02b9",
       "symbol": "ELEC",
-      "decimal": 18,
-      "hidden": true
+      "decimal": 18
     },
     "IOST": {
       "name": "IOStoken",
@@ -334,8 +332,7 @@ module.exports = {
       "name": "Aeternity",
       "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
       "symbol": "AE",
-      "decimal": 18,
-      "hidden": 1527598800000
+      "decimal": 18
     },
     "PPT": {
       "name": "Populous",
@@ -355,8 +352,7 @@ module.exports = {
       "name": "Bluzelle",
       "address": "0x5732046a883704404f284ce41ffadd5b007fd668",
       "symbol": "BLZ",
-      "decimal": 18,
-      "hidden": 1527598800000
+      "decimal": 18
     },
     "MTL": {
       "name": "Metal",
@@ -387,11 +383,17 @@ module.exports = {
       "hidden": true
     },
     "PAL": {
-      "name": "PolicyPal",
+      "name": "PolicyPal Network",
       "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
       "symbol": "PAL",
+      "decimal": 18
+    },
+    "COFI": {
+      "name": "CoinFi",
+      "address": "0x3136ef851592acf49ca4c825131e364170fa32b3",
+      "symbol": "COFI",
       "decimal": 18,
-      "hidden": 1527771600000
+      "hidden": true
     }
 
   },

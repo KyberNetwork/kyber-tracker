@@ -4,7 +4,6 @@ const network               = require('../../config/network');
 const kyberABI              = require('../../config/abi/kyber');
 const wrapperABI            = require('../../config/abi/wrapper');
 const getLatestBlockNumber  = require('./getLatestBlockNumber');
-const getBlockTimestamp     = require('./leveldbCache').getBlockTimestamp;
 const Utils                 = require('../common/Utils');
 const Resolution            = require('../common/Resolution');
 const ExSession             = require('sota-core').load('common/ExSession');
@@ -98,11 +97,11 @@ class KyberRateCrawler {
       blockTimestamps: ['rates', (ret, next) => {
         const blockTimestamps = {};
         async.each(blocks.numbers, (blockNumber, _next) => {
-          getBlockTimestamp(blockNumber, (_err, timestamp) => {
+          web3.eth.getBlock(blockNumber, (_err, block) => {
             if (_err) {
               return _next(err);
             }
-            blockTimestamps[blockNumber] = timestamp;
+            blockTimestamps[blockNumber] = block.timestamp;
             _next(null, null);
           });
         }, (_err) => {
