@@ -390,8 +390,7 @@ module.exports = {
       "name": "PolicyPal Network ",
       "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
       "symbol": "PAL",
-      "decimal": 18,
-      "hidden": 1527728400000
+      "decimal": 18
     },
 
     "BBO": {
