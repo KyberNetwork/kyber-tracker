@@ -394,6 +394,13 @@ module.exports = {
       "hidden": 1527728400000
     },
 
+    "BBO": {
+      "name": "Bigbom",
+      "address": "0x84f7c44b6fed1080f647e354d552595be2cc602f",
+      "symbol": "BBO",
+      "decimal": 18,
+      "hidden": true
+    },
 
   },
   "networkId": 1,
