@@ -92,7 +92,7 @@
             <b-navbar-nav>
               <b-nav-item class="navbar tracker-logo">
                 <router-link to="/">
-                  <img class="kyber-logo" src="/images/logo.png" />
+                  <img class="kyber-logo" src="/images/logo.svg" />
                   <!-- <span class="inline-logo"></span> -->
                   <!-- <img src="/images/network.svg" /> -->
                   <!-- <i class="fas fa-signal icon-second-header"></i> -->
