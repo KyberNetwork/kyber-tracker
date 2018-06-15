@@ -394,6 +394,12 @@ module.exports = {
       "symbol": "COFI",
       "decimal": 18,
       "hidden": true
+    },
+    "BBO": {
+      "name": "Bigbom",
+      "address": "0x84f7c44b6fed1080f647e354d552595be2cc602f",
+      "symbol": "BBO",
+      "decimal": 18
     }
 
   },
