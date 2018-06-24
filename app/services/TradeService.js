@@ -104,7 +104,6 @@ module.exports = BaseService.extends({
         }, next);
       },
       takerUsds: (next) => {
-        // KyberTradeModel.sumGroupBy('taker_total_usd', {
         KyberTradeModel.sumGroupBy('volume_usd', {
           where: 'block_timestamp > ? AND block_timestamp < ?',
           params: [fromDate, toDate],
@@ -112,7 +111,6 @@ module.exports = BaseService.extends({
         }, next);
       },
       makerUsds: (next) => {
-        // KyberTradeModel.sumGroupBy('maker_total_usd', {
         KyberTradeModel.sumGroupBy('volume_usd', {
           where: 'block_timestamp > ? AND block_timestamp < ?',
           params: [fromDate, toDate],

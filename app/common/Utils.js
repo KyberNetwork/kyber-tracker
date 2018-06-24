@@ -40,24 +40,8 @@ module.exports = {
     return '1' + '0'.repeat(decimal);
   },
 
-  getExchangeTopicHash: function() {
-    return network.logTopics.exchange;
-  },
-
-  getFeeToWalletTopicHash: function() {
-    return network.logTopics.feeToWallet;
-  },
-
-  getBurnFeesTopicHash: function() {
-    return network.logTopics.burnFee;
-  },
-
   getERC20TransferTopicHash: function () {
     return network.logTopics.erc20Transfer;
-  },
-
-  getKyberNetworkContractAddress: function() {
-    return network.contractAddresses.network;
   },
 
   getKNCTokenAddress: function() {
@@ -71,7 +55,7 @@ module.exports = {
 
     addr = addr.toLowerCase();
 
-    return addr === contractAddresses.feeBurner1 || addr === contractAddresses.feeBurner2;
+    return addr === contractAddresses.feeBurner1 || addr === contractAddresses.feeBurner2 ||  addr === contractAddresses.feeBurner3;
   },
   sumBig(arrayParams, initState) {
     return arrayParams.reduce((a, b) => {
@@ -112,6 +96,10 @@ module.exports = {
     res.header('Access-Control-Allow-Methods', 'GET,POST,HEAD,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     return res;
+  },
+
+  fromWei: function(value, decimals) {
+    return (new BigNumber(value).div(Math.pow(10, decimals || 18))).toNumber();
   }
 
 };

@@ -13,14 +13,17 @@ module.exports = {
   "contractAddresses": {
     "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
     "network": "0x964f35fae36d75b1e72770e244f6595b68508cf5",
+    "network2": "TODO: confirm",
     "wrapper": "0x533e6d1ffa2b96cf9c157475c76c38d1b13bc584",
     "feeBurner1": "0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e",
     "feeBurner2": "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706",
+    "feeBurner3": "TODO: confirm",
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
     "feeToWallet": "0x366bc34352215bf0bd3b527cfd6718605e1f5938777e42bcd8ed92f578368f52",
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
+    "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
   },
   "tokens": {
@@ -407,6 +410,7 @@ module.exports = {
   "chainName": "Mainnet",
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
+  "startBlockNumber2": 10000000, // TODO: kyber 2.0 start block
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

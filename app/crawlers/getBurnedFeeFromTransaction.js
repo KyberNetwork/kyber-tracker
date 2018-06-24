@@ -3,7 +3,7 @@ const async           = require('async');
 const network         = require('../../config/network');
 const Utils           = require('../common/Utils');
 const ExSession       = require('sota-core').load('common/ExSession');
-const logger          = require('sota-core').getLogger('getKyberTradeFromTransaction');
+const logger          = require('sota-core').getLogger('getBurnedFeeFromTransaction');
 const request         = require('superagent');
 const BigNumber       = require('bignumber.js');
 

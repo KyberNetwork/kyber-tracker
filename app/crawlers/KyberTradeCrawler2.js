@@ -1,8 +1,6 @@
 const _                           = require('lodash');
 const async                       = require('async');
 const getLatestBlockNumber        = require('./getLatestBlockNumber');
-const getKyberTrade               = require('./getKyberTradeFromTransaction');
-const getBurnedFeeFromTransaction = require('./getBurnedFeeFromTransaction');
 const getBlockTimestamp           = require('./leveldbCache').getBlockTimestamp;
 const getCoinPrice                = require('./leveldbCache').getCoinPrice;
 const Utils                       = require('../common/Utils');
@@ -101,14 +99,17 @@ class KyberTradeCrawler2 {
           toBlock: web3.utils.toHex(toBlockNumber),
           address: [
             networkConfig.contractAddresses.network,
+            networkConfig.contractAddresses.network2,
             networkConfig.contractAddresses.feeBurner1,
             networkConfig.contractAddresses.feeBurner2,
+            networkConfig.contractAddresses.feeBurner3,
           ],
           topics: [
             [
               networkConfig.logTopics.exchange,
               networkConfig.logTopics.feeToWallet,
-              networkConfig.logTopics.burnFee
+              networkConfig.logTopics.burnFee,
+              networkConfig.logTopics.etherReceival
             ]
           ]
         }, (err, ret) => {
@@ -190,6 +191,9 @@ class KyberTradeCrawler2 {
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
           record.burnFees = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)));
           break;
+        case networkConfig.logTopics.etherReceival:
+          record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
+          break;
       }
     });
 
@@ -224,16 +228,14 @@ class KyberTradeCrawler2 {
       model: ['price', (ret, next) => {
         const ethAddress = networkConfig.tokens.ETH.address.toLowerCase();
         if (record.takerTokenAddress.toLowerCase() === ethAddress) {
-          record.takerPriceEth = 1;
-          //record.takerPriceUsd = ret.price;
-          record.takerPriceUsd = ret.price.price_usd;
+          record.volumeEth = Utils.fromWei(record.takerTokenAmount);
         }
 
         if (record.makerTokenAddress.toLowerCase() === ethAddress) {
-          record.makerPriceEth = 1;
-          //record.makerPriceUsd = ret.price;
-          record.makerPriceUsd = ret.price.price_usd;
+          record.volumeEth = Utils.fromWei(record.makerTokenAmount);
         }
+
+        record.volumeUsd = record.volumeEth * ret.price.price_usd;
 
         KyberTradeModel.add(record, {
           isInsertIgnore: true
