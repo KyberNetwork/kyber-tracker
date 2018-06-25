@@ -14,7 +14,7 @@ module.exports = {
     "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
     "network": "0x964f35fae36d75b1e72770e244f6595b68508cf5",
     "network2": "TODO: confirm",
-    "wrapper": "0x533e6d1ffa2b96cf9c157475c76c38d1b13bc584",
+    "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
     "feeBurner1": "0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e",
     "feeBurner2": "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706",
     "feeBurner3": "TODO: confirm",
