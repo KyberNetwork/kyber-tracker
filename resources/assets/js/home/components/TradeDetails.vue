@@ -17,9 +17,6 @@
                  <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
                 <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>
               </span>
-             
-              <br/>
-              <span v-if="record.volumeUsd" class="usd-value">({{ formatFiatCurrency(record.volumeUsd) }}) USD*</span>
             </div>
             <!-- <span class="to">to</span> -->
             <span class="entypo-right to col-2"></span>
@@ -28,15 +25,12 @@
                 <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
                 <token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link>
               </span>
-              
-              <br />
-              <span v-if="record.volumeUsd" class="usd-value">(${{ formatFiatCurrency(record.volumeUsd) }}) USD*</span>
             </div>
             
           </div>
           
-          <div class="trade-note">
-            <i>*{{ $t("trade_detail.trade_note") }}</i>
+          <div v-if="record.volumeUsd" class="trade-note">
+            <i>{{ $t("trade_detail.trade_note", [formatFiatCurrency(record.volumeUsd)]) }}</i>
           </div>
         </b-col>
         <b-col sm="12 right-trade-detail">

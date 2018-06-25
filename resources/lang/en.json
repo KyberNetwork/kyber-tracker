@@ -120,7 +120,7 @@
     "commission": "COMMISSION",
     "fee_to_burn": "Fees To Burn",
     "for": " for ",
-    "trade_note": "USD Rates are calculated at transaction time"
+    "trade_note": "Transaction USD Value: {0} USD"
   },
 
   "wallet_detail": {
@@ -130,7 +130,7 @@
     "total_trading_volune": "Total Trading Volume",
     "value_in_eth": "Value in ETH",
     "value_in_usd": "Value in USD",
-    "notice": "USD Rates are calculated at trading time",
+    "notice": "USD Rates are calculated at transaction time",
     "wallet_detail": "Wallet Details",
     "partner_details": "Partner Details",
     "history": "History",
