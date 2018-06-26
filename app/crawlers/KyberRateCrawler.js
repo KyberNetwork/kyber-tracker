@@ -161,7 +161,7 @@ class KyberRateCrawler {
 
   _getRatesFromBlockPromise(blockNo) {
     let networkAddr = (blockNo < network.startBlockNumber2) ? 
-      network.contractAddresses.network : network.contractAddresses.network2;
+      network.contractAddresses.networks[0] : network.contractAddresses.networks[1];
     return wrapperContract.methods.getExpectedRates(
       networkAddr,
       rateTokenArrays.srcArray,

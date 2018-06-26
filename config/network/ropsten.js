@@ -1,23 +1,12 @@
 module.exports = {
   "endpoints": {
-    "web3Providers": [
-      "https://ropsten.infura.io",
-      "https://node.kyber.network",
-      "https://mew.giveth.io/"
-    ],
-    "ws": "wss://ropsten.infura.io/ws",
-    "cmcApi": "https://api.coinmarketcap.com",
-    "ethScan": "https://ropsten.etherscan.io/",
-    "gasStation": "https://ethgasstation.info/json/ethgasAPI.json",
+    "web3Provider":"https://ropsten.infura.io",
+    "ethScan": "https://ropsten.etherscan.io/"
   },
   "contractAddresses": {
-    "reserve": "0x0FC1CF3e7DD049F7B42e6823164A64F76fC06Be0",
-    "network": "0x0a56d8a49E71da8d7F9C65F95063dB48A3C9560B",
-    "network2": "TODO: confirm",
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
-    "feeBurner1": "0x89B5c470559b80e541E53eF78244edD112c7C58A",
-    "feeBurner2": "0x89B5c470559b80e541E53eF78244edD112c7C58A",
-    "feeBurner3": "TODO: confirm",
+    "networks": ["0x0a56d8a49E71da8d7F9C65F95063dB48A3C9560B"],
+    "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A"]
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -100,8 +89,7 @@ module.exports = {
       "decimal": 5
     }
   },
-  "networkId": 3,
-  "chainName": "Ropsten",
+  
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
   "startBlockNumber2": 10000000, // TODO: kyber 2.0 start block

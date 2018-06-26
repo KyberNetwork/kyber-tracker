@@ -52,11 +52,9 @@ module.exports = {
     if (!addr) {
       return false;
     }
-
-    addr = addr.toLowerCase();
-
-    return addr === contractAddresses.feeBurner1 || addr === contractAddresses.feeBurner2 ||  addr === contractAddresses.feeBurner3;
+    return this.containNoCase(contractAddresses.feeBurners, addr);
   },
+  
   sumBig(arrayParams, initState) {
     return arrayParams.reduce((a, b) => {
       let bigA = a ? new BigNumber(a.toString()) : new BigNumber(0)
@@ -100,6 +98,23 @@ module.exports = {
 
   fromWei: function(value, decimals) {
     return (new BigNumber(value).div(Math.pow(10, decimals || 18))).toNumber();
+  },
+
+  equalNocase: function(text1, text2) {
+    if (text1 === text2) return true;
+    if (!text1 || !text2) return false;
+
+    return text1.toLowerCase() === text2.toLowerCase();
+  },
+
+  containNoCase: function(array, text) {
+    for(let i = 0; i < array.length; i++) {
+      if (this.equalNocase(array[i], text)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 };

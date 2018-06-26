@@ -1,23 +1,12 @@
 module.exports = {
   "endpoints": {
-    "web3Providers": [
-      "https://mainnet.infura.io",
-      "https://node.kyber.network",
-      "https://mew.giveth.io/"
-    ],
-    "ws": "wss://mainnet.infura.io/ws",
-    "cmcApi": "https://api.coinmarketcap.com",
+    "web3Providers": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
-    "gasStation": "https://ethgasstation.info/json/ethgasAPI.json",
   },
   "contractAddresses": {
-    "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
-    "network": "0x964f35fae36d75b1e72770e244f6595b68508cf5",
-    "network2": "TODO: confirm",
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
-    "feeBurner1": "0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e",
-    "feeBurner2": "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706",
-    "feeBurner3": "TODO: confirm",
+    "networks": ["0x964f35fae36d75b1e72770e244f6595b68508cf5"],
+    "feeBurners": ["0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e", "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706"]
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -406,8 +395,6 @@ module.exports = {
     }
 
   },
-  "networkId": 1,
-  "chainName": "Mainnet",
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
   "startBlockNumber2": 10000000, // TODO: kyber 2.0 start block

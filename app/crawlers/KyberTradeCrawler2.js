@@ -97,13 +97,7 @@ class KyberTradeCrawler2 {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: [
-            networkConfig.contractAddresses.network,
-            networkConfig.contractAddresses.network2,
-            networkConfig.contractAddresses.feeBurner1,
-            networkConfig.contractAddresses.feeBurner2,
-            networkConfig.contractAddresses.feeBurner3,
-          ],
+          address: networkConfig.contractAddresses.networks.concat(networkConfig.contractAddresses.feeBurners),
           topics: [
             [
               networkConfig.logTopics.exchange,
