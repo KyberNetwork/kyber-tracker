@@ -400,8 +400,33 @@ module.exports = {
       "address": "0x84f7c44b6fed1080f647e354d552595be2cc602f",
       "symbol": "BBO",
       "decimal": 18
-    }
+    },
 
+
+
+
+    "POLY": {
+      "name": "Polymath",
+      "address": "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec",
+      "symbol": "POLY",
+      "decimal": 18,
+      "hidden": true
+    },
+    "LBA": {
+      "name": "Libra Credit",
+      "address": "0xfe5f141bf94fe84bc28ded0ab966c16b17490657",
+      "symbol": "LBA",
+      "decimal": 18,
+      "hidden": true
+    },
+
+    "EDU": {
+      "name": "EduCoin",
+      "address": "0xf263292e14d9d8ecd55b58dad1f1df825a874b7c",
+      "symbol": "EDU",
+      "decimal": 18,
+      "hidden": true
+    },
   },
   "networkId": 1,
   "chainName": "Mainnet",
