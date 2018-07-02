@@ -338,7 +338,7 @@ module.exports = {
       "address": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
       "symbol": "CVC",
       "decimal": 8,
-      "hidden": true
+      "hidden": 1530277200000
     },
     "BLZ": {
       "name": "Bluzelle",
@@ -392,8 +392,33 @@ module.exports = {
       "address": "0x84f7c44b6fed1080f647e354d552595be2cc602f",
       "symbol": "BBO",
       "decimal": 18
-    }
+    },
 
+
+
+
+    "POLY": {
+      "name": "Polymath",
+      "address": "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec",
+      "symbol": "POLY",
+      "decimal": 18,
+      "hidden": 1530277200000
+    },
+    "LBA": {
+      "name": "Libra Credit",
+      "address": "0xfe5f141bf94fe84bc28ded0ab966c16b17490657",
+      "symbol": "LBA",
+      "decimal": 18,
+      "hidden": 1530277200000
+    },
+
+    "EDU": {
+      "name": "EduCoin",
+      "address": "0xf263292e14d9d8ecd55b58dad1f1df825a874b7c",
+      "symbol": "EDU",
+      "decimal": 18,
+      "hidden": 1530277200000
+    },
   },
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,

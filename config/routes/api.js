@@ -17,6 +17,8 @@ module.exports = {
     '/tokens/pairs'                 : ['CurrenciesController.getConvertiblePairs'],
     '/tokens/supported'             : ['CurrenciesController.getSupportedTokens'],
     '/tokens/rates'                 : ['CurrenciesController.getAllRateInfo'],
+
+    '/tickers'                      : ['CurrenciesController.getPair24hData'],
   },
   POST: {
     // Implement me.

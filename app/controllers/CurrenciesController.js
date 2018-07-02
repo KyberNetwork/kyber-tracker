@@ -25,8 +25,7 @@ module.exports = AppController.extends({
           cmcName: token.cmcSymbol || id,
           name: token.name,
           decimals: token.decimal,
-          contractAddress: token.address,
-          iconID: id.toLowerCase()
+          contractAddress: token.address
         });
       }
     });
@@ -37,8 +36,33 @@ module.exports = AppController.extends({
   getConvertiblePairs: function (req, res) {
     Utils.cors(res);
 
+    const CACHE_KEY = 'getConvertiblePairs';
+    const cachedData = LocalCache.getSync(CACHE_KEY);
+    if (cachedData) {
+      res.json(cachedData);
+      return;
+    }
+
     const CurrenciesService = req.getService('CurrenciesService');
     CurrenciesService.getConvertiblePairs((err, ret) => {
+      LocalCache.setSync(CACHE_KEY, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      res.json(ret);
+    });
+  },
+
+  getPair24hData: function (req, res) {
+    Utils.cors(res);
+
+    const CACHE_KEY = 'getPair24hData';
+    const cachedData = LocalCache.getSync(CACHE_KEY);
+    if (cachedData) {
+      res.json(cachedData);
+      return;
+    }
+
+    const CurrenciesService = req.getService('CurrenciesService');
+    CurrenciesService.getPair24hData((err, ret) => {
+      LocalCache.setSync(CACHE_KEY, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
       res.json(ret);
     });
   },

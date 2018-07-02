@@ -51,6 +51,42 @@ module.exports = BaseService.extends({
       });
   },
 
+  getAllRates: function(callback) {
+    const key = 'kyber-all-rates';
+    const cachedData = LocalCache.getSync(key);
+
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+
+    request
+      .get(`https://production-cache.kyber.network/getRate`)
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+
+        if(!response || !response.body || !response.body.data || !response.body.data.length){
+          return callback("Cannot get rate from production cache.");
+        }
+
+        const body = response.body;
+        body.getRate = function(source, dest) {
+          var rate = this.data.filter(x => {
+            return x.source == source && x.dest == dest;
+          });
+
+          if (!rate || !rate.length) return 0;
+          
+          return new BigNumber(rate[0].rate).div(Math.pow(10, network.tokens[dest].decimal)).toNumber();
+        }
+
+        LocalCache.setSync(key, body, { ttl: Const.MINUTE_IN_MILLISECONDS });
+
+        return callback(null, body);
+      });
+  },
+
   getCurrentRate: function (symbol, base, callback) {
     const key = 'kyber-rate-' + symbol;
     const cachedData = LocalCache.getSync(key);
