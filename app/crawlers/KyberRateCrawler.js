@@ -99,7 +99,7 @@ class KyberRateCrawler {
         async.each(blocks.numbers, (blockNumber, _next) => {
           web3.eth.getBlock(blockNumber, (_err, block) => {
             if (_err) {
-              return _next(err);
+              return _next(_err);
             }
             blockTimestamps[blockNumber] = block.timestamp;
             _next(null, null);

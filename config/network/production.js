@@ -1,6 +1,6 @@
 module.exports = {
   "endpoints": {
-    "web3Providers": "https://mainnet.infura.io",
+    "web3Provider": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
   },
   "contractAddresses": {
