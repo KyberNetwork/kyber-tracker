@@ -96,8 +96,6 @@ bot.onText(commands.unregister, (msg, match) => {
     
     let chatId = msg.chat.id;
 
-    console.log(match)
-
     if (match.length > 2 && typeof(match[1]) !== "undefined") {
         if (match[1] === process.env.ALARM_BOT_PWD) {
             chatId = match[2].trim();

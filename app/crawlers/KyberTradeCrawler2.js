@@ -1,5 +1,6 @@
 const _                           = require('lodash');
 const async                       = require('async');
+const BigNumber                   = require('bignumber.js');
 const getLatestBlockNumber        = require('./getLatestBlockNumber');
 const getBlockTimestamp           = require('./leveldbCache').getBlockTimestamp;
 const getCoinPrice                = require('./leveldbCache').getCoinPrice;
@@ -97,7 +98,9 @@ class KyberTradeCrawler2 {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: networkConfig.contractAddresses.networks.concat(networkConfig.contractAddresses.feeBurners),
+          address: networkConfig.contractAddresses.networks
+            .concat(networkConfig.contractAddresses.feeBurners)
+            .concat(networkConfig.contractAddresses.reserves),
           topics: [
             [
               networkConfig.logTopics.exchange,
@@ -181,9 +184,11 @@ class KyberTradeCrawler2 {
           record.commission = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
           break;
         case networkConfig.logTopics.burnFee:
+          // For token-token, burns twice but should from same reserve
           record.burnReserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
-          record.burnFees = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)));
+          // Note for token-token, burnFees twich
+          record.burnFees = new BigNumber((record.burnFees || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))).toString();
           break;
         case networkConfig.logTopics.etherReceival:
           record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));

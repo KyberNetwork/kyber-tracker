@@ -305,7 +305,6 @@ module.exports = BaseService.extends({
         options.rateAdapter.execRaw(lastSql, lastParams, next);
       }
     }, (err, ret) => {
-      console.log(ret);
       if (err) {
         return callback(err);
       }
@@ -314,11 +313,11 @@ module.exports = BaseService.extends({
         timestamp: nowInMs,
         quote_symbol: tokenSymbol,
         base_symbol: baseSymbol,
-        past_24h_high: ret.rate[0].past_24h_high || 0,
-        past_24h_low: ret.rate[0].past_24h_low || 0,
-        usd_24h_volume: ret.trade[0].usd_24h_volume || 0,
-        current_bid: ret.latest[0].current_bid || 0,
-        current_ask: ret.latest[0].current_ask || 0
+        past_24h_high: ret.rate.length ? (ret.rate[0].past_24h_high || 0) : 0,
+        past_24h_low: ret.rate.length ? (ret.rate[0].past_24h_low || 0) : 0,
+        usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) :0,
+        current_bid: ret.latest.length ? (ret.latest[0].current_bid || 0) : 0,
+        current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0
       })
     })
   },

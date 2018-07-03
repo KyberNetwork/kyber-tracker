@@ -6,7 +6,8 @@ module.exports = {
   "contractAddresses": {
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
     "networks": ["0x964f35fae36d75b1e72770e244f6595b68508cf5"],
-    "feeBurners": ["0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e", "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706"]
+    "feeBurners": ["0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e", "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706"],
+    "reserves": []
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
