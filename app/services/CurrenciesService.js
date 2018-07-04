@@ -118,7 +118,7 @@ module.exports = BaseService.extends({
       }
     })
 
-    async.auto(pairs, callback);
+    async.auto(pairs, 10, callback);
   },
 
   _getCurrencyInfo: function (options, callback) {
@@ -232,7 +232,7 @@ module.exports = BaseService.extends({
 
     pairs.allRates = this.getService('CMCService').getAllRates;
 
-    async.auto(pairs, function(err, pairs){
+    async.auto(pairs, 10, function(err, pairs){
       if (!err) {
         const rates = pairs.allRates;
         delete pairs.allRates;
