@@ -7,7 +7,7 @@ module.exports = {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
     "networks": ["0x0a56d8a49E71da8d7F9C65F95063dB48A3C9560B"],
     "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A"],
-    "reserves": []
+    "workers": []
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -93,7 +93,7 @@ module.exports = {
   
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
-  "startBlockNumber2": 10000000, // TODO: kyber 2.0 start block
+  "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

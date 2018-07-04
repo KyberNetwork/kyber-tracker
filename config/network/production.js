@@ -7,7 +7,7 @@ module.exports = {
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
     "networks": ["0x964f35fae36d75b1e72770e244f6595b68508cf5"],
     "feeBurners": ["0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e", "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706"],
-    "reserves": []
+    "workers": []
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -269,7 +269,6 @@ module.exports = {
       "symbol": "STORM",
       "decimal": 18
     },
-
     "WAX": {
       "name": "WAX",
       "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
@@ -290,7 +289,6 @@ module.exports = {
       "decimal": 18,
       "hidden": true
     },
-
     "SRN": {
       "name": "SIRIN LABS Token",
       "address": "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25",
@@ -319,8 +317,6 @@ module.exports = {
       "decimal": 8,
       "hidden": true
     },
-
-
     "AE": {
       "name": "Aeternity",
       "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
@@ -338,8 +334,7 @@ module.exports = {
       "name": "Civic",
       "address": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
       "symbol": "CVC",
-      "decimal": 8,
-      "hidden": 1530277200000
+      "decimal": 8
     },
     "BLZ": {
       "name": "Bluzelle",
@@ -394,36 +389,30 @@ module.exports = {
       "symbol": "BBO",
       "decimal": 18
     },
-
-
-
-
     "POLY": {
       "name": "Polymath",
       "address": "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec",
       "symbol": "POLY",
-      "decimal": 18,
-      "hidden": 1530277200000
+      "decimal": 18
     },
     "LBA": {
       "name": "Libra Credit",
       "address": "0xfe5f141bf94fe84bc28ded0ab966c16b17490657",
       "symbol": "LBA",
-      "decimal": 18,
-      "hidden": 1530277200000
+      "decimal": 18
     },
-
     "EDU": {
       "name": "EduCoin",
       "address": "0xf263292e14d9d8ecd55b58dad1f1df825a874b7c",
       "symbol": "EDU",
-      "decimal": 18,
-      "hidden": 1530277200000
+      "decimal": 18
     },
   },
+
+  "preburntAmount": 48.61873337,
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
-  "startBlockNumber2": 10000000, // TODO: kyber 2.0 start block
+  "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

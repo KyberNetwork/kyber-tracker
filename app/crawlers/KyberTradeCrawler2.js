@@ -100,7 +100,7 @@ class KyberTradeCrawler2 {
           toBlock: web3.utils.toHex(toBlockNumber),
           address: networkConfig.contractAddresses.networks
             .concat(networkConfig.contractAddresses.feeBurners)
-            .concat(networkConfig.contractAddresses.reserves),
+            .concat(networkConfig.contractAddresses.workers),
           topics: [
             [
               networkConfig.logTopics.exchange,

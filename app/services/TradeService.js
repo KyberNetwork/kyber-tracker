@@ -387,7 +387,7 @@ module.exports = BaseService.extends({
       //const feeInKNC = new BigNumber(ret.partnerFee.toString()).div(Math.pow(10, 18));
       //const feeInUSD = feeInKNC.times(ret.kncPrice);
 
-      const burnedNoContract = 48.61873337;
+      const burnedNoContract = network.preburntAmount || 0;
       const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
       const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
       //const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));

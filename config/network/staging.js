@@ -5,9 +5,9 @@ module.exports = {
     },
     "contractAddresses": {
       "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
-      "networks": ["0x3257073d3b80bae378db8dea32519938910d05cc"],
-      "feeBurners": ["0x2d25de5790EaDb57BcC141A43e21A5Cf8c3C3fd3"],
-      "reserves": ["0x44f854eA73eEc7a10C9ff0E003D1ec076ac18197"]
+      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D"],
+      "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6"],
+      "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C"]
     },
     "logTopics": {
       "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -414,8 +414,8 @@ module.exports = {
       },
     },
     "averageBlockTime": 15000,
-    "startBlockNumber": 5897000,
-    "startBlockNumber2": 10000000, // TODO: kyber 2.0 start block
+    "startBlockNumber": 5700000,
+    "startBlockNumberV2": 5899403,
   
     "partners": {
       "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
