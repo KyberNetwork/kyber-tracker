@@ -47,6 +47,10 @@ module.exports = (block, tx, callback) => {
     record.hourSeq = Math.floor(record.blockTimestamp / 3600);
     record.daySeq = Math.floor(record.blockTimestamp / 86400);
 
+    const dt = new Date(record.blockTimestamp * 1000);
+    record.year = dt.getUTCFullYear();
+    record.month = record.year + ('0' + (dt.getUTCMonth() + 1)).substr(-2);
+
     record.burnerAddress = tx.from;
     record.burnerContract = tx.to;
 

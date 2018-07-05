@@ -15,6 +15,8 @@
      reserve_contract: { type: 'string', length: 150 },
      reserve_wallet: { type: 'string', length: 150 },
      amount: { type: 'string', length: 765 },
+     year: { type: 'number', length: 4 },
+     month: { type: 'number', length: 6 },
      day_seq: { type: 'number', length: 11 },
      hour_seq: { type: 'number', length: 11 },
      minute_seq: { type: 'number', length: 11 } },
@@ -40,6 +42,8 @@
      minute_seq: { type: 'number', length: 11 },
      hour_seq: { type: 'number', length: 11 },
      day_seq: { type: 'number', length: 11 },
+     month: { type: 'number', length: 6 },
+     year: { type: 'number', length: 4 },
      volume_eth: { type: 'number', length: 22 },
      volume_usd: { type: 'number', length: 22 } },
   RateModel: 

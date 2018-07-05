@@ -20,6 +20,10 @@ module.exports = BaseEntity.extends({
     this.hourSeq = Math.floor(this.blockTimestamp / 3600);
     this.daySeq = Math.floor(this.blockTimestamp / 86400);
 
+    const dt = new Date(this.blockTimestamp * 1000);
+    this.year = dt.getUTCFullYear();
+    this.month = this.year + ('0' + (dt.getUTCMonth() + 1)).substr(-2);
+
     return this;
   },
 
