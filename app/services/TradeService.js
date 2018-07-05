@@ -688,7 +688,7 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      const burnedNoContract = 48.61873337;
+      const burnedNoContract = network.preburntAmount || 0;
       const sum = new BigNumber((ret.sum || 0).toString()).div(Math.pow(10, 18)).toNumber();
 
       const returnData = {burned: sum + burnedNoContract};
@@ -735,7 +735,7 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      const burnedNoContract = 48.61873337;
+      const burnedNoContract = network.preburntAmount || 0;
       const pastSum = new BigNumber((ret.pastSum || 0).toString()).div(Math.pow(10, 18)).toNumber();
       let accuBurned = burnedNoContract + pastSum;
       const returnData = [];
