@@ -85,119 +85,72 @@ module.exports = BaseService.extends({
 
   // Use for token list page & top token chart
   getTopTokensList: function (fromDate, toDate, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
-    //const CMCService = this.getService('CMCService');
 
-    async.auto({
-      takerTrades: (next) => {
-        KyberTradeModel.sumGroupBy('taker_token_amount', {
-          where: 'block_timestamp > ? AND block_timestamp < ?',
-          params: [fromDate, toDate],
-          groupBy: ['taker_token_symbol']
-        }, next);
-      },
-      makerTrades: (next) => {
-        KyberTradeModel.sumGroupBy('maker_token_amount', {
-          where: 'block_timestamp > ? AND block_timestamp < ?',
-          params: [fromDate, toDate],
-          groupBy: ['maker_token_symbol']
-        }, next);
-      },
-      takerUsds: (next) => {
-        KyberTradeModel.sumGroupBy('volume_usd', {
-          where: 'block_timestamp > ? AND block_timestamp < ?',
-          params: [fromDate, toDate],
-          groupBy: ['taker_token_symbol']
-        }, next);
-      },
-      makerUsds: (next) => {
-        KyberTradeModel.sumGroupBy('volume_usd', {
-          where: 'block_timestamp > ? AND block_timestamp < ?',
-          params: [fromDate, toDate],
-          groupBy: ['maker_token_symbol']
-        }, next);
-      },
-      takerEth: (next) => {
-        KyberTradeModel.sumGroupBy('volume_eth', {
-          where: 'block_timestamp > ? AND block_timestamp < ?',
-          params: [fromDate, toDate],
-          groupBy: ['maker_token_symbol']
-        }, next);
-      },
-      makerEth: (next) => {
-        KyberTradeModel.sumGroupBy('volume_eth', {
-          where: 'block_timestamp > ? AND block_timestamp < ?',
-          params: [fromDate, toDate],
-          groupBy: ['taker_token_symbol']
-        }, next);
-      },
-      /* prices: (next) => {
-        CMCService.getPriceOfAllTokens(next);
-      } */
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    const makeSql = (side, obj) => {
+      obj = obj || {};
+      obj[side] = (callback) => {
+        const sql = `select ${side}_token_symbol as symbol,
+          sum(${side}_token_amount) as token,
+          sum(volume_eth) as eth,
+          sum(volume_usd) as usd
+        from kyber_trade
+        where block_timestamp > ? AND block_timestamp < ?
+        group by ${side}_token_symbol`;
+        adapter.execRaw(sql, [fromDate, toDate], callback);
       }
+      return obj;
+    }
 
-      // const prices = ret.prices;
-      const takerTrades = _.keyBy(ret.takerTrades, 'takerTokenSymbol');
-      const makerTrades = _.keyBy(ret.makerTrades, 'makerTokenSymbol');
-      const takerUsds = _.keyBy(ret.takerUsds, 'takerTokenSymbol');
-      const makerUsds = _.keyBy(ret.makerUsds, 'makerTokenSymbol');
-      const takerEth = _.keyBy(ret.takerEth, 'makerTokenSymbol');
-      const makerEth = _.keyBy(ret.makerEth, 'takerTokenSymbol');
-      const tokens = _.compact(_.map(network.tokens, (tokenConfig) => {
-        const symbol = tokenConfig.symbol;
-
-        let tokenVolume = new BigNumber(0);
-        if (takerTrades[symbol]) {
-          tokenVolume = tokenVolume.plus(new BigNumber(takerTrades[symbol].sum.toString()));
+    async.auto(makeSql('maker', makeSql('taker')),
+      (err, ret) => {
+        if (err) {
+          return callback(err);
         }
+  
+        const takers = _.keyBy(ret.taker, 'symbol');
+        const makers = _.keyBy(ret.maker, 'symbol');
 
-        if (makerTrades[symbol]) {
-          tokenVolume = tokenVolume.plus(new BigNumber(makerTrades[symbol].sum.toString()));
-        }
+        const sumProp = (symbol, prop, decimals) => {
+          let val = new BigNumber(0);
+          if (takers[symbol]) val = val.plus((takers[symbol][prop] || 0).toString());
+          if (makers[symbol]) val = val.plus((makers[symbol][prop] || 0).toString());
 
-        tokenVolume = tokenVolume.div(Math.pow(10, tokenConfig.decimal));
-
-        let volumeUSD = new BigNumber(0);
-        if (takerUsds[symbol]) {
-          volumeUSD = volumeUSD.plus(new BigNumber(takerUsds[symbol].sum.toString()));
-        }
-
-        if (makerUsds[symbol]) {
-          volumeUSD = volumeUSD.plus(new BigNumber(makerUsds[symbol].sum.toString()));
-        }
-
-        let ethVolume = new BigNumber(0);
-        if (takerEth[symbol]) {
-          ethVolume = ethVolume.plus(new BigNumber(takerEth[symbol].sum.toString()));
-        }
-
-        if (makerEth[symbol]) {
-          ethVolume = ethVolume.plus(new BigNumber(makerEth[symbol].sum.toString()));
-        }
-
-        return {
-          symbol: tokenConfig.symbol,
-          name: tokenConfig.name,
-          volumeToken: tokenVolume.toFormat(4).toString(),
-          volumeTokenNumber: tokenVolume.toNumber(),
-          volumeUSD: volumeUSD.toNumber(),
-          volumeETH: ethVolume.toFormat(4).toString(),
-          volumeEthNumber: ethVolume.toNumber(),
+          if (decimals) {
+            return val.div(Math.pow(10, decimals));
+          }
+          return val;
         };
-      }));
-      
-      const supportedToken = _.filter(tokens, (e) => {
-        // return (e.volumeTokenNumber > 0) || !network.tokens[e.symbol].hidden;
-        return UtilsHelper.shouldShowToken(e.symbol)
-      })
-      
-      return callback(null, _.sortBy(supportedToken, (e) => {
-        return -e.volumeUSD;
-      }));
-    });
+
+        const supportedTokens = [];
+
+        Object.keys(network.tokens).forEach((symbol) => {
+          if (UtilsHelper.shouldShowToken(symbol)){
+            const token = network.tokens[symbol];
+
+            const tokenVolume = sumProp(symbol, 'token', token.decimal);   
+            const volumeUSD = sumProp(symbol, 'usd'); 
+            const ethVolume = sumProp(symbol, 'eth');
+
+            supportedTokens.push({
+              symbol: token.symbol,
+              name: token.name,
+              volumeToken: tokenVolume.toFormat(4).toString(),
+              volumeTokenNumber: tokenVolume.toNumber(),
+              volumeUSD: volumeUSD.toNumber(),
+              volumeETH: ethVolume.toFormat(4).toString(),
+              volumeEthNumber: ethVolume.toNumber(),
+            })
+
+          }
+        });
+
+        return callback(null, _.sortBy(supportedTokens, (e) => {
+          return -e.volumeUSD;
+        }));
+      });
+    
   },
 
   _aggregate: function (options, fromDate, toDate, callback) {

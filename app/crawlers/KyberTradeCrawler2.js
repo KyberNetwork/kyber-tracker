@@ -35,10 +35,10 @@ class KyberTradeCrawler2 {
       let timer = networkConfig.averageBlockTime;
       if (err) {
         logger.error(err);
-        logger.info(`Crawler will be restarted in a few seconds...`);
-        timer = 1000;
+        logger.info(`Crawler will be restarted in 5 seconds...`);
+        timer = 5000;
       } else {
-        logger.info(`Already processed the newest block. Crawler will be restarted in a few seconds...`);
+        logger.info(`Already processed the newest block. Crawler will be restarted in 1 block...`);
       }
 
       setTimeout(() => {

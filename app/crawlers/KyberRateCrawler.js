@@ -38,16 +38,19 @@ class KyberRateCrawler {
         this.processBlocks(next);
       }],
     }, (err, ret) => {
+      let timer = network.averageBlockTime * PARALLEL_QUERY_SIZE;
       if (err) {
         logger.error(err);
+        timer = 15000;
+        logger.info(`Crawler will be restart in ${timer} ms...`);
+
       } else {
-        //logger.info(`Finish crawling...`);
+        logger.info(`Crawler will be restart in ${PARALLEL_QUERY_SIZE} blocks...`);
       }
 
-      logger.info(`Crawler will be restart in 4 blocks...`);
       setTimeout(() => {
         this.start();
-      }, network.averageBlockTime * 4);
+      }, timer);
     });
   }
 

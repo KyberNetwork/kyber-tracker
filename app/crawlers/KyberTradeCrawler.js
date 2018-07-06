@@ -39,10 +39,10 @@ class KyberTradeCrawler {
         logger.info(`Finish crawling...`);
       }
 
-      logger.info(`Crawler will be restart in 15 seconds...`);
+      logger.info(`Crawler will be restart in 20 blocks...`);
       setTimeout(() => {
         this.start();
-      }, network.averageBlockTime);
+      }, network.averageBlockTime * 20);
     });
   }
 
