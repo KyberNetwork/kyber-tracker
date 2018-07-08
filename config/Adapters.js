@@ -5,13 +5,12 @@ module.exports = {
     type: Const.DATA_SOURCE_TYPE.MYSQL,
     connectionLimit: 15,
     waitForConnections: true,
-    queueLimit: 30
+    queueLimit: 5
   },
   'mysql-slave': {
     type: Const.DATA_SOURCE_TYPE.MYSQL,
     connectionLimit: 100,
-    waitForConnections: true,
-    queueLimit: 200
+    waitForConnections: false
   },
   'mysql-master-test': {
     type: Const.DATA_SOURCE_TYPE.MYSQL,

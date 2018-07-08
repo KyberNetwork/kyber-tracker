@@ -79,26 +79,59 @@ module.exports = AppController.extends({
     });
   },
 
+  _waitForCache: function (key, timeout, callback){
+    if (timeout <= 0) {
+      return callback("timeout", null);
+    }
+
+    let value = LocalCache.getSync(key);
+    if(!value) {
+      setTimeout(() => {
+        this._waitForCache(key, timeout - 150, callback)
+      }, 150);
+    } else {
+      callback(null, value);
+    }
+  },
+
   getAllRateInfo: function (req, res) {
     Utils.cors(res);
     const service = req.getService('CurrenciesService');
     
     const CACHE_KEY = 'allrates';
-    const cachedData = LocalCache.getSync(CACHE_KEY);
+    const CACHE_FLAG = 'allrates-flag';
     const CACHE_TTL = 10 * Const.MINUTE_IN_MILLISECONDS;
-    const PRELOAD_TIMING = CACHE_TTL - 20000; // 20 seconds
+    const PRELOAD_TIMING = CACHE_TTL - 60000; // 60 seconds
+
+    const cachedData = LocalCache.getSync(CACHE_KEY);
 
     if (cachedData) {
       res.json(cachedData.value);
-      if (Date.now() - cachedData.timestamp < PRELOAD_TIMING) {
+      if (Date.now() - cachedData.timestamp < PRELOAD_TIMING ||
+       LocalCache.getSync(CACHE_FLAG) == '1') {
         return;
       }
+    }
+
+    if (LocalCache.getSync(CACHE_FLAG) == '1') {
+      this._waitForCache(CACHE_KEY, 6000, (err, cacheValue) => {
+        if (err) {
+          LocalCache.setSync(CACHE_FLAG, '0');
+          res.json({error: err});
+        } else {
+          res.json(cacheValue.value);
+        }
+      });
+      return;
+    } else {
+      LocalCache.setSync(CACHE_FLAG, '1');
     }
 
     var loadData = () => {
       try {
         service.getAllRateInfo((err, ret) => {
           if (err) {
+            LocalCache.setSync(CACHE_FLAG, '0');
             logger.error(err);
             !cachedData && res.json(ret);
             return;
@@ -119,6 +152,7 @@ module.exports = AppController.extends({
           });
           LocalCache.setSync(CACHE_KEY, {timestamp: Date.now(), value: pack},
             {ttl: CACHE_TTL});
+          LocalCache.setSync(CACHE_FLAG, '0');
           !cachedData && res.json(pack);
         });
       } catch (exception) {
@@ -127,11 +161,11 @@ module.exports = AppController.extends({
       }
     };
 
-    if (!cachedData) {
+    //if (!cachedData) {
       loadData();
-    } else {
-      setTimeout(loadData, 100);
-    }
+    //} else {
+    //  setTimeout(loadData, 100);
+    //}
   }
 
 });
