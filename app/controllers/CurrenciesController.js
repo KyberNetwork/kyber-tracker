@@ -45,6 +45,12 @@ module.exports = AppController.extends({
 
     const CurrenciesService = req.getService('CurrenciesService');
     CurrenciesService.getConvertiblePairs((err, ret) => {
+      if (err) {
+        logger.error(err);
+        res.json(ret);
+        return;
+      }
+
       LocalCache.setSync(CACHE_KEY, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
       res.json(ret);
     });
@@ -62,6 +68,12 @@ module.exports = AppController.extends({
 
     const CurrenciesService = req.getService('CurrenciesService');
     CurrenciesService.getPair24hData((err, ret) => {
+      if (err) {
+        logger.error(err);
+        res.json(ret);
+        return;
+      }
+
       LocalCache.setSync(CACHE_KEY, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
       res.json(ret);
     });
@@ -83,30 +95,43 @@ module.exports = AppController.extends({
       }
     }
 
-    service.getAllRateInfo((err, ret) => {
-      if (err) {
-        logger.error(err);
-        res.json(ret);
-        return;
-      }
-      // pack the result
-      const pack = {};
-      Object.keys(ret).forEach((symbol) => {
-        const token = ret[symbol];
-        const item = pack[symbol] = {
-          e: token.volume[0].ETH,
-          u: token.volume[0].USD,
-          r: token.rate.length?token.rate[0]["24h"]:0,
-          p: []
-        };
-        token.points.forEach((p) => {
-          item.p.push(p.rate);
+    var loadData = () => {
+      try {
+        service.getAllRateInfo((err, ret) => {
+          if (err) {
+            logger.error(err);
+            !cachedData && res.json(ret);
+            return;
+          }
+          // pack the result
+          const pack = {};
+          Object.keys(ret).forEach((symbol) => {
+            const token = ret[symbol];
+            const item = pack[symbol] = {
+              //e: token.volume[0].ETH,
+              //u: token.volume[0].USD,
+              r: token.rate.length?token.rate[0]["24h"]:0,
+              p: []
+            };
+            token.points.forEach((p) => {
+              item.p.push(p.rate);
+            });
+          });
+          LocalCache.setSync(CACHE_KEY, {timestamp: Date.now(), value: pack},
+            {ttl: CACHE_TTL});
+          !cachedData && res.json(pack);
         });
-      });
-      LocalCache.setSync(CACHE_KEY, {timestamp: Date.now(), value: pack},
-        {ttl: CACHE_TTL});
-      !cachedData && res.json(pack);
-    });
+      } catch (exception) {
+        logger.error(exception);
+        !cachedData && res.json([]);
+      }
+    };
+
+    if (!cachedData) {
+      loadData();
+    } else {
+      setTimeout(loadData, 100);
+    }
   }
 
 });

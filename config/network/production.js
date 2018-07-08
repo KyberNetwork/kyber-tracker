@@ -412,7 +412,7 @@ module.exports = {
   "preburntAmount": 48.61873337,
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
-  "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
+  "startBlockNumberV2": 5926056,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

@@ -10,7 +10,8 @@ module.exports = {
   'mysql-slave': {
     type: Const.DATA_SOURCE_TYPE.MYSQL,
     connectionLimit: 100,
-    waitForConnections: false
+    waitForConnections: true,
+    queueLimit: 200
   },
   'mysql-master-test': {
     type: Const.DATA_SOURCE_TYPE.MYSQL,
