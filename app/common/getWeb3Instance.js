@@ -1,5 +1,6 @@
+const network = require('../../config/network');
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io'));
+const web3 = new Web3(new Web3.providers.HttpProvider(network.endpoints.web3Provider));
 const formatters = require('web3-core-helpers').formatters;
 
 web3.extend({

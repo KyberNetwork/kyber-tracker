@@ -3,13 +3,13 @@ const Const = require('sota-core').load('common/Const');
 module.exports = {
   'mysql-master': {
     type: Const.DATA_SOURCE_TYPE.MYSQL,
-    connectionLimit: 10,
+    connectionLimit: 15,
     waitForConnections: true,
-    queueLimit: 5
+    queueLimit: 30
   },
   'mysql-slave': {
     type: Const.DATA_SOURCE_TYPE.MYSQL,
-    connectionLimit: 50,
+    connectionLimit: 100,
     waitForConnections: false
   },
   'mysql-master-test': {

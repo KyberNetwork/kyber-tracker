@@ -1,8 +1,7 @@
 const _                           = require('lodash');
 const async                       = require('async');
+const BigNumber                   = require('bignumber.js');
 const getLatestBlockNumber        = require('./getLatestBlockNumber');
-const getKyberTrade               = require('./getKyberTradeFromTransaction');
-const getBurnedFeeFromTransaction = require('./getBurnedFeeFromTransaction');
 const getBlockTimestamp           = require('./leveldbCache').getBlockTimestamp;
 const getCoinPrice                = require('./leveldbCache').getCoinPrice;
 const Utils                       = require('../common/Utils');
@@ -36,10 +35,10 @@ class KyberTradeCrawler2 {
       let timer = networkConfig.averageBlockTime;
       if (err) {
         logger.error(err);
-        logger.info(`Crawler will be restarted in a few seconds...`);
-        timer = 1000;
+        logger.info(`Crawler will be restarted in 5 seconds...`);
+        timer = 5000;
       } else {
-        logger.info(`Already processed the newest block. Crawler will be restarted in a few seconds...`);
+        logger.info(`Already processed the newest block. Crawler will be restarted in 1 block...`);
       }
 
       setTimeout(() => {
@@ -99,16 +98,15 @@ class KyberTradeCrawler2 {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: [
-            networkConfig.contractAddresses.network,
-            networkConfig.contractAddresses.feeBurner1,
-            networkConfig.contractAddresses.feeBurner2,
-          ],
+          address: networkConfig.contractAddresses.networks
+            .concat(networkConfig.contractAddresses.feeBurners)
+            .concat(networkConfig.contractAddresses.workers),
           topics: [
             [
               networkConfig.logTopics.exchange,
               networkConfig.logTopics.feeToWallet,
-              networkConfig.logTopics.burnFee
+              networkConfig.logTopics.burnFee,
+              networkConfig.logTopics.etherReceival
             ]
           ]
         }, (err, ret) => {
@@ -186,9 +184,14 @@ class KyberTradeCrawler2 {
           record.commission = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
           break;
         case networkConfig.logTopics.burnFee:
+          // For token-token, burns twice but should from same reserve
           record.burnReserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
-          record.burnFees = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)));
+          // Note for token-token, burnFees twich
+          record.burnFees = new BigNumber((record.burnFees || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))).toString();
+          break;
+        case networkConfig.logTopics.etherReceival:
+          record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
           break;
       }
     });
@@ -224,16 +227,14 @@ class KyberTradeCrawler2 {
       model: ['price', (ret, next) => {
         const ethAddress = networkConfig.tokens.ETH.address.toLowerCase();
         if (record.takerTokenAddress.toLowerCase() === ethAddress) {
-          record.takerPriceEth = 1;
-          //record.takerPriceUsd = ret.price;
-          record.takerPriceUsd = ret.price.price_usd;
+          record.volumeEth = Utils.fromWei(record.takerTokenAmount);
         }
 
         if (record.makerTokenAddress.toLowerCase() === ethAddress) {
-          record.makerPriceEth = 1;
-          //record.makerPriceUsd = ret.price;
-          record.makerPriceUsd = ret.price.price_usd;
+          record.volumeEth = Utils.fromWei(record.makerTokenAmount);
         }
+
+        record.volumeUsd = record.volumeEth * ret.price.price_usd;
 
         KyberTradeModel.add(record, {
           isInsertIgnore: true

@@ -507,7 +507,7 @@ function sendTraderSummary(bot, msg, from, to, prefix) {
                 for (let i = 0; i < count; i++) {
                     let item = ret[i];
                     top5 += item.sum;
-                    console.log(item);
+    
                     text += "\n" + traderLink(item.takerAddress) + ": *$" + format(item.sum) + "* (" +
                         percent(item.sum, total) + "%)";
                 }

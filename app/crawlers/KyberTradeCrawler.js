@@ -1,7 +1,6 @@
 const _                     = require('lodash');
 const async                 = require('async');
 const network               = require('../../config/network');
-const getKyberTrade         = require('./getKyberTradeFromTransaction');
 const getLatestBlockNumber  = require('./getLatestBlockNumber');
 const getBurnedFeeFromTransaction     = require('./getBurnedFeeFromTransaction');
 const Utils                 = require('../common/Utils');
@@ -15,7 +14,9 @@ const REQUIRED_CONFIRMATION = 7;
 
 /**
  * Traversal through all blocks from the moment contract was deployed
- * Find and record all transactions in local database
+ * Find and record all burned fees in local database
+ * NOTE: this class is currently only use for collecting burned fees
+ * Trade data are crawled by KyberTradeCrawler2
  */
 class KyberTradeCrawler {
 
@@ -38,10 +39,10 @@ class KyberTradeCrawler {
         logger.info(`Finish crawling...`);
       }
 
-      logger.info(`Crawler will be restart in 15 seconds...`);
+      logger.info(`Crawler will be restart in 20 blocks...`);
       setTimeout(() => {
         this.start();
-      }, network.averageBlockTime);
+      }, network.averageBlockTime * 20);
     });
   }
 
@@ -71,21 +72,6 @@ class KyberTradeCrawler {
       block: (next) => {
         web3.eth.getBlock(blockNumber, true, next);
       },
-      /*
-      processTradeTransactions: ['block', (ret, next) => {
-        if (!ret.block) {
-          return next(`Empty block response. Wait for the next run..`);
-        }
-
-        const transactions = _.filter(ret.block.transactions, (tx) => {
-          return tx.to && tx.to.toLowerCase() === network.contractAddresses.network;
-        });
-
-        async.each(transactions, (tx, _next) => {
-          getKyberTrade(ret.block, tx, _next);
-        }, next);
-      }],
-      */
       processBurnedFeeTransactions: ['block', (ret, next) => {
         if (!ret.block) {
           return next(`Empty block response. Wait for the next run..`);

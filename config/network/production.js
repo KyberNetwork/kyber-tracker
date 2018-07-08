@@ -1,26 +1,19 @@
 module.exports = {
   "endpoints": {
-    "web3Providers": [
-      "https://mainnet.infura.io",
-      "https://node.kyber.network",
-      "https://mew.giveth.io/"
-    ],
-    "ws": "wss://mainnet.infura.io/ws",
-    "cmcApi": "https://api.coinmarketcap.com",
+    "web3Provider": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
-    "gasStation": "https://ethgasstation.info/json/ethgasAPI.json",
   },
   "contractAddresses": {
-    "reserve": "0x63825c174ab367968ec60f061753d3bbd36a0d8f",
-    "network": "0x964f35fae36d75b1e72770e244f6595b68508cf5",
-    "wrapper": "0x533e6d1ffa2b96cf9c157475c76c38d1b13bc584",
-    "feeBurner1": "0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e",
-    "feeBurner2": "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706",
+    "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
+    "networks": ["0x964f35fae36d75b1e72770e244f6595b68508cf5", "0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
+    "feeBurners": ["0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e", "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706", "0xed4f53268bfdFF39B36E8786247bA3A02Cf34B04"],
+    "workers": ["0x91a502C678605fbCe581eae053319747482276b9"]
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
     "feeToWallet": "0x366bc34352215bf0bd3b527cfd6718605e1f5938777e42bcd8ed92f578368f52",
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
+    "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
   },
   "tokens": {
@@ -276,7 +269,6 @@ module.exports = {
       "symbol": "STORM",
       "decimal": 18
     },
-
     "WAX": {
       "name": "WAX",
       "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
@@ -297,7 +289,6 @@ module.exports = {
       "decimal": 18,
       "hidden": true
     },
-
     "SRN": {
       "name": "SIRIN LABS Token",
       "address": "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25",
@@ -326,8 +317,6 @@ module.exports = {
       "decimal": 8,
       "hidden": true
     },
-
-
     "AE": {
       "name": "Aeternity",
       "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
@@ -345,8 +334,7 @@ module.exports = {
       "name": "Civic",
       "address": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
       "symbol": "CVC",
-      "decimal": 8,
-      "hidden": 1530277200000
+      "decimal": 8
     },
     "BLZ": {
       "name": "Bluzelle",
@@ -401,37 +389,30 @@ module.exports = {
       "symbol": "BBO",
       "decimal": 18
     },
-
-
-
-
     "POLY": {
       "name": "Polymath",
       "address": "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec",
       "symbol": "POLY",
-      "decimal": 18,
-      "hidden": 1530277200000
+      "decimal": 18
     },
     "LBA": {
       "name": "Libra Credit",
       "address": "0xfe5f141bf94fe84bc28ded0ab966c16b17490657",
       "symbol": "LBA",
-      "decimal": 18,
-      "hidden": 1530277200000
+      "decimal": 18
     },
-
     "EDU": {
       "name": "EduCoin",
       "address": "0xf263292e14d9d8ecd55b58dad1f1df825a874b7c",
       "symbol": "EDU",
-      "decimal": 18,
-      "hidden": 1530277200000
+      "decimal": 18
     },
   },
-  "networkId": 1,
-  "chainName": "Mainnet",
+
+  "preburntAmount": 48.61873337,
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
+  "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

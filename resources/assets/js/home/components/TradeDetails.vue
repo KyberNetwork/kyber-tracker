@@ -17,9 +17,6 @@
                  <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
                 <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>
               </span>
-             
-              <br/>
-              <span v-if="record.takerTotalUsd" class="usd-value">({{ formatFiatCurrency(record.takerTotalUsd) }}) USD*</span>
             </div>
             <!-- <span class="to">to</span> -->
             <span class="entypo-right to col-2"></span>
@@ -28,15 +25,12 @@
                 <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
                 <token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link>
               </span>
-              
-              <br />
-              <span v-if="record.makerTotalUsd" class="usd-value">(${{ formatFiatCurrency(record.makerTotalUsd) }}) USD*</span>
             </div>
             
           </div>
           
-          <div class="trade-note">
-            <i>*{{ $t("trade_detail.trade_note") }}</i>
+          <div v-if="record.volumeUsd" class="trade-note">
+            <i>{{ $t("trade_detail.trade_note", [formatFiatCurrency(record.volumeUsd)]) }}</i>
           </div>
         </b-col>
         <b-col sm="12 right-trade-detail">
@@ -56,66 +50,6 @@
           </div>
         </b-col>
       </b-row>
-
-
-
-
-
-      <!-- <b-row>
-        <b-col sm="3"><label><b>{{ $t("trade_detail.transaction_hash") }}</b></label></b-col>
-        <b-col sm="9"><a class="long-address" target="_blank" :href="getTxEtherscanLink(record.tx)">{{ record.tx }}</a></b-col>
-      </b-row>
-
-      <b-row>
-        <b-col sm="3"><label><b>{{ $t("trade_detail.date") }}</b></label></b-col>
-        <b-col sm="9">{{ getDateInfo(record.blockTimestamp) }}</b-col>
-      </b-row>
-
-      <b-row class="mt-20">
-        <b-col sm="3"><label><b>{{ $t("trade_detail.taker_address") }}</b></label></b-col>
-        <b-col sm="9"><router-link class="long-address" :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link></b-col>
-      </b-row>
-
-      <b-row class="mt-20">
-        <b-col sm="3"><label><b>{{ $t("trade_detail.taker_token") }}</b></label></b-col>
-        <b-col sm="9">
-          <span>{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
-          <span>{{ record.takerTokenSymbol }}</span>
-          <span>(${{ formatFiatCurrency(record.takerTotalUsd) }})</span>
-        </b-col>
-      </b-row>
-
-      <b-row>
-        <b-col sm="3"><label><b>{{ $t("trade_detail.maker_token") }}</b></label></b-col>
-        <b-col sm="9">
-          <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
-          <span>{{ record.makerTokenSymbol }}</span>
-          <span>(${{ formatFiatCurrency(record.makerTotalUsd) }})</span>
-        </b-col>
-      </b-row>
-
-      <b-row>
-        <b-col sm="3"><label><b>{{ $t("trade_detail.rate") }}</b></label></b-col>
-        <b-col sm="9">
-          <span>1</span>
-          <span><token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link></span>
-          <span> {{ $t("trade_detail.for") }} </span>
-          <span>{{ getRate(record) }}</span>
-          <span><token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link></span>
-        </b-col>
-      </b-row>
-
-      <b-row class="mt-20">
-        <b-col sm="3"><label><b>{{ $t("trade_detail.fee_to_wallet") }}</b></label></b-col>
-        <b-col sm="9">{{ getTokenAmount(record.takerFee, 'KNC') }} KNC</b-col>
-      </b-row>
-
-      <b-row>
-        <b-col sm="3"><label><b>{{ $t("trade_detail.fee_to_burn") }}</b></label></b-col>
-        <b-col sm="9">{{ getTokenAmount(record.burnFees, 'KNC') }} KNC</b-col>
-      </b-row> -->
-
-
 
     </div>
 
@@ -181,12 +115,7 @@ export default {
         takerTokenAddress: "",
         takerTokenSymbol: "",
         takerTokenAmount: "",
-        takerTotalUsd: "",
-        gasLimit: "",
-        gasPrice: "",
-        gasUsed: "",
-        makerFee: "0",
-        takerFee: "0",
+        volumeUsd: "",
         burnFees: ""
       },
       tokens: _.keyBy(_.values(network.tokens), "symbol")

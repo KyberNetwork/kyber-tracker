@@ -1,0 +1,15 @@
+ALTER TABLE kyber_trade DROP COLUMN maker_price_btc;
+ALTER TABLE kyber_trade DROP COLUMN maker_price_eth;
+ALTER TABLE kyber_trade DROP COLUMN maker_price_usd;
+ALTER TABLE kyber_trade DROP COLUMN taker_price_btc;
+ALTER TABLE kyber_trade DROP COLUMN taker_price_eth;
+ALTER TABLE kyber_trade DROP COLUMN taker_price_usd;
+ALTER TABLE kyber_trade DROP COLUMN gas_limit;
+ALTER TABLE kyber_trade DROP COLUMN gas_price;
+ALTER TABLE kyber_trade DROP COLUMN gas_used;
+ALTER TABLE kyber_trade DROP COLUMN maker_total_btc;
+ALTER TABLE kyber_trade DROP COLUMN maker_total_eth;
+ALTER TABLE kyber_trade DROP COLUMN maker_total_usd;
+ALTER TABLE kyber_trade DROP COLUMN taker_total_btc;
+ALTER TABLE kyber_trade DROP COLUMN taker_total_eth;
+ALTER TABLE kyber_trade DROP COLUMN taker_total_usd;

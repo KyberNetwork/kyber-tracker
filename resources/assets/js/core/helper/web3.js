@@ -1,6 +1,3 @@
-
-
-
 export default class Web3Service {
   constructor(web3Instance) {
     this.web3 = web3Instance

@@ -40,24 +40,8 @@ module.exports = {
     return '1' + '0'.repeat(decimal);
   },
 
-  getExchangeTopicHash: function() {
-    return network.logTopics.exchange;
-  },
-
-  getFeeToWalletTopicHash: function() {
-    return network.logTopics.feeToWallet;
-  },
-
-  getBurnFeesTopicHash: function() {
-    return network.logTopics.burnFee;
-  },
-
   getERC20TransferTopicHash: function () {
     return network.logTopics.erc20Transfer;
-  },
-
-  getKyberNetworkContractAddress: function() {
-    return network.contractAddresses.network;
   },
 
   getKNCTokenAddress: function() {
@@ -68,11 +52,9 @@ module.exports = {
     if (!addr) {
       return false;
     }
-
-    addr = addr.toLowerCase();
-
-    return addr === contractAddresses.feeBurner1 || addr === contractAddresses.feeBurner2;
+    return this.containNoCase(contractAddresses.feeBurners, addr);
   },
+  
   sumBig(arrayParams, initState) {
     return arrayParams.reduce((a, b) => {
       let bigA = a ? new BigNumber(a.toString()) : new BigNumber(0)
@@ -112,6 +94,27 @@ module.exports = {
     res.header('Access-Control-Allow-Methods', 'GET,POST,HEAD,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     return res;
+  },
+
+  fromWei: function(value, decimals) {
+    return (new BigNumber(value).div(Math.pow(10, decimals || 18))).toNumber();
+  },
+
+  equalNocase: function(text1, text2) {
+    if (text1 === text2) return true;
+    if (!text1 || !text2) return false;
+
+    return text1.toLowerCase() === text2.toLowerCase();
+  },
+
+  containNoCase: function(array, text) {
+    for(let i = 0; i < array.length; i++) {
+      if (this.equalNocase(array[i], text)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 };

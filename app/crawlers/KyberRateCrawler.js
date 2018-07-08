@@ -38,16 +38,19 @@ class KyberRateCrawler {
         this.processBlocks(next);
       }],
     }, (err, ret) => {
+      let timer = network.averageBlockTime * PARALLEL_QUERY_SIZE;
       if (err) {
         logger.error(err);
+        timer = 15000;
+        logger.info(`Crawler will be restart in ${timer} ms...`);
+
       } else {
-        //logger.info(`Finish crawling...`);
+        logger.info(`Crawler will be restart in ${PARALLEL_QUERY_SIZE} blocks...`);
       }
 
-      logger.info(`Crawler will be restart in 4 blocks...`);
       setTimeout(() => {
         this.start();
-      }, network.averageBlockTime * 4);
+      }, timer);
     });
   }
 
@@ -99,7 +102,7 @@ class KyberRateCrawler {
         async.each(blocks.numbers, (blockNumber, _next) => {
           web3.eth.getBlock(blockNumber, (_err, block) => {
             if (_err) {
-              return _next(err);
+              return _next(_err);
             }
             blockTimestamps[blockNumber] = block.timestamp;
             _next(null, null);
@@ -160,8 +163,12 @@ class KyberRateCrawler {
   }
 
   _getRatesFromBlockPromise(blockNo) {
+    let networkAddr = network.contractAddresses.networks[0];
+    if (network.contractAddresses.networks.length > 1 && blockNo >= network.startBlockNumberV2) {
+      networkAddr = network.contractAddresses.networks[1];
+    }
     return wrapperContract.methods.getExpectedRates(
-      network.contractAddresses.network,
+      networkAddr,
       rateTokenArrays.srcArray,
       rateTokenArrays.destArray,
       rateTokenArrays.qtyArray).call(undefined, blockNo);

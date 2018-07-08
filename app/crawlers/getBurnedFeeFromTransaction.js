@@ -3,7 +3,7 @@ const async           = require('async');
 const network         = require('../../config/network');
 const Utils           = require('../common/Utils');
 const ExSession       = require('sota-core').load('common/ExSession');
-const logger          = require('sota-core').getLogger('getKyberTradeFromTransaction');
+const logger          = require('sota-core').getLogger('getBurnedFeeFromTransaction');
 const request         = require('superagent');
 const BigNumber       = require('bignumber.js');
 
@@ -46,6 +46,10 @@ module.exports = (block, tx, callback) => {
     record.minuteSeq = Math.floor(record.blockTimestamp / 60);
     record.hourSeq = Math.floor(record.blockTimestamp / 3600);
     record.daySeq = Math.floor(record.blockTimestamp / 86400);
+
+    const dt = new Date(record.blockTimestamp * 1000);
+    record.year = dt.getUTCFullYear();
+    record.month = record.year + ('0' + (dt.getUTCMonth() + 1)).substr(-2);
 
     record.burnerAddress = tx.from;
     record.burnerContract = tx.to;
