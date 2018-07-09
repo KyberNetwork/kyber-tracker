@@ -20,7 +20,7 @@ module.exports = BaseService.extends({
   getAllRateInfo: function (callback) {
 
     const db = this._getDbConnection();
-    const tradeAdapter = db.model().getSlaveAdapter();
+    //const tradeAdapter = db.model().getSlaveAdapter();
     const rateAdapter = db.model('RateModel').getSlaveAdapter();
 
     let pairs = {}
@@ -28,7 +28,7 @@ module.exports = BaseService.extends({
     Object.keys(tokens).forEach(token => {
       if((token.toUpperCase() !== "ETH") && helper.shouldShowToken(token)){
         pairs[token] = (asyncCallback) => this._getRateInfo(token, {
-          tradeAdapter: tradeAdapter,
+          //tradeAdapter: tradeAdapter,
           rateAdapter: rateAdapter
         }, asyncCallback)
       }
@@ -63,23 +63,26 @@ module.exports = BaseService.extends({
 
   _getRateInfo: function(symbol, options, callback) {
 
-    const tradeAdapter = options.tradeAdapter;
+    //const tradeAdapter = options.tradeAdapter;
     const rateAdapter = options.rateAdapter;
 
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const hour30Ago = nowInSeconds - 30 * 60 * 60;
     const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
 
     // volume SQL
+    /*
     const tradeWhere = "block_timestamp >= ? AND (maker_token_symbol = ? OR taker_token_symbol = ?)";
     const tradeSql = `select IFNULL(sum(volume_eth),0) as ETH, IFNULL(sum(volume_usd),0) as USD from kyber_trade where ${tradeWhere}`;
     const tradeParams = [dayAgo, symbol, symbol];
+    */
 
     // 24h price SQL
     const lastSql = `SELECT mid_expected as '24h' FROM rate
-      WHERE quote_symbol = ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
-    const lastParams = [symbol];
+      WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+    const lastParams = [symbol, hour30Ago];
 
     // 7 days points
     //const pointSql = "select FLOOR(AVG(block_timestamp)) as timestamp, AVG(mid_expected) as rate from rate " +
@@ -88,14 +91,31 @@ module.exports = BaseService.extends({
     const pointParams = [symbol, weekAgo];
 
     async.auto({
+      /*
       volume: (next) => {
-        tradeAdapter.execRaw(tradeSql, tradeParams, next);
+        try {
+          tradeAdapter.execRaw(tradeSql, tradeParams, next);
+        } catch (ex) {
+          logger.error(ex);
+          next(ex, {});
+        }
       },
+      */
       rate: (next) => {
-        rateAdapter.execRaw(lastSql, lastParams, next);
+        try {
+          rateAdapter.execRaw(lastSql, lastParams, next);
+        } catch (ex) {
+          logger.error(ex);
+          next(ex, {});
+        }
       },
       points: (next) => {
-        rateAdapter.execRaw(pointSql, pointParams, next);
+        try {
+          rateAdapter.execRaw(pointSql, pointParams, next);
+        } catch (ex) {
+          logger.error(ex);
+          next(ex, {});
+        }
       }
     }, callback);
   },
