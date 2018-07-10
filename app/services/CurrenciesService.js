@@ -292,15 +292,16 @@ module.exports = BaseService.extends({
 
     let tokenSymbol = options.token
     let baseSymbol = options.fromCurrencyCode
+    let tokenData = tokens[tokenSymbol]
 
     const nowInMs = Date.now();
     const nowInSeconds = Math.floor(nowInMs / 1000);
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
-
+    const KyberTradeModel = this.getModel('KyberTradeModel');
     // volume SQL
     const tradeWhere = 'block_timestamp > ? AND (maker_token_symbol = ?  OR  taker_token_symbol = ?)';
-    const tradeSql = `select IFNULL(sum(volume_usd),0) as usd_24h_volume from kyber_trade where ${tradeWhere}`;
+    const tradeSql = `select IFNULL(sum(volume_usd),0) as usd_24h_volume, IFNULL(sum(volume_eth),0) as eth_24h_volume from kyber_trade where ${tradeWhere}`;
     const tradeParams = [dayAgo, tokenSymbol, tokenSymbol];
 
     // 24h price SQL
@@ -314,6 +315,14 @@ module.exports = BaseService.extends({
       ORDER BY block_number DESC LIMIT 1`;
     const lastParams = [tokenSymbol];
 
+    //volume token base
+    const volumeSql = `SELECT sum(volume_) as volume FROM 
+    (SELECT IFNULL(sum(maker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND maker_token_symbol = ?
+      UNION ALL
+      SELECT IFNULL(sum(taker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
+    )a`;
+    const volumeParams = [dayAgo, tokenSymbol, dayAgo, tokenSymbol];
+
     async.auto({
       trade: (next) => {
         options.tradeAdapter.execRaw(tradeSql, tradeParams, next);
@@ -323,12 +332,38 @@ module.exports = BaseService.extends({
       },
       latest: (next) => {
         options.rateAdapter.execRaw(lastSql, lastParams, next);
+      },
+      volume: (next) => {
+        options.tradeAdapter.execRaw(volumeSql, volumeParams, next);
+      },
+      lastTrade: (next) => {
+        KyberTradeModel.findOne({
+          where: 'taker_token_symbol = ? OR maker_token_symbol = ?',
+          params: [tokenSymbol, tokenSymbol],
+          orderBy: 'block_timestamp DESC',
+        }, next)
       }
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
+      let lastPrice = 0
+      if(ret.lastTrade){
+        let bigMakerAmount = ret.lastTrade.makerTokenAmount ? new BigNumber(ret.lastTrade.makerTokenAmount) : new BigNumber(0)
+        let bigTakerAmount = ret.lastTrade.takerTokenAmount ? new BigNumber(ret.lastTrade.takerTokenAmount) : new BigNumber(0)
 
+        if(ret.lastTrade.takerTokenSymbol != tokenSymbol && !bigMakerAmount.isZero()){
+          let amountTaker = ret.lastTrade.volumeEth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
+          let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
+          lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
+        }
+        else if(ret.lastTrade.makerTokenSymbol != tokenSymbol && !bigTakerAmount.isZero()){
+          let amountMaker = ret.lastTrade.volumeEth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
+          let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))          
+          lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
+        }
+      }
+      const quoteVolume = ret.volume[0].volume ? new BigNumber(ret.volume[0].volume.toString()).div(Math.pow(10, tokenData.decimal)).toNumber() : 0
       return callback( null , {
         timestamp: nowInMs,
         quote_symbol: tokenSymbol,
@@ -337,7 +372,10 @@ module.exports = BaseService.extends({
         past_24h_low: ret.rate.length ? (ret.rate[0].past_24h_low || 0) : 0,
         usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) :0,
         current_bid: ret.latest.length ? (ret.latest[0].current_bid || 0) : 0,
-        current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0
+        current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0,
+        volume_token: quoteVolume,
+        last_traded: lastPrice,
+        eth_24h_volume: ret.trade.length ? (ret.trade[0].eth_24h_volume || 0) :0,
       })
     })
   },
