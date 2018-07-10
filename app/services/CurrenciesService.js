@@ -339,19 +339,7 @@ module.exports = BaseService.extends({
           params: [tokenSymbol, tokenSymbol],
           orderBy: 'block_timestamp DESC',
         }, next)
-      },
-      quoteVolumeTaker: (next) => {
-        KyberTradeModel.sum('taker_token_amount', {
-          where: 'block_timestamp > ? AND taker_token_symbol = ?',
-          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
-        }, next);
-      },
-      quoteVolumeMaker: (next) => {
-        KyberTradeModel.sum('maker_token_amount', {
-          where: 'block_timestamp > ? AND maker_token_symbol = ?',
-          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
-        }, next);
-      },
+      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
