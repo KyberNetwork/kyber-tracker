@@ -292,12 +292,13 @@ module.exports = BaseService.extends({
 
     let tokenSymbol = options.token
     let baseSymbol = options.fromCurrencyCode
+    let tokenData = tokens[tokenSymbol]
 
     const nowInMs = Date.now();
     const nowInSeconds = Math.floor(nowInMs / 1000);
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
-
+    const KyberTradeModel = this.getModel('KyberTradeModel');
     // volume SQL
     const tradeWhere = 'block_timestamp > ? AND (maker_token_symbol = ?  OR  taker_token_symbol = ?)';
     const tradeSql = `select IFNULL(sum(volume_usd),0) as usd_24h_volume from kyber_trade where ${tradeWhere}`;
@@ -323,12 +324,43 @@ module.exports = BaseService.extends({
       },
       latest: (next) => {
         options.rateAdapter.execRaw(lastSql, lastParams, next);
+      },
+      quoteVolumeMaker: (next) => {
+        KyberTradeModel.sum('maker_token_amount', {
+          where: 'block_timestamp > ? AND maker_token_symbol = ?',
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
+        }, next);
+      },
+      lastTrade: (next) => {
+        KyberTradeModel.findOne({
+          where: 'taker_token_symbol = ? OR maker_token_symbol = ?',
+          params: [tokenSymbol, tokenSymbol],
+          orderBy: 'block_timestamp DESC',
+        }, next)
       }
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
+      let lastPrice = 0
+      if(ret.lastTrade){
+        let bigMakerAmount = ret.lastTrade.makerTokenAmount ? new BigNumber(ret.lastTrade.makerTokenAmount) : new BigNumber(0)
+        let bigTakerAmount = ret.lastTrade.takerTokenAmount ? new BigNumber(ret.lastTrade.takerTokenAmount) : new BigNumber(0)
 
+        if(ret.lastTrade.takerTokenSymbol != tokenSymbol && !bigMakerAmount.isZero()){
+          let amountTaker = ret.lastTrade.volumeEth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
+          let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
+          lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
+        }
+        else if(ret.lastTrade.makerTokenSymbol != tokenSymbol && !bigTakerAmount.isZero()){
+          let amountMaker = ret.lastTrade.volumeEth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
+          let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))          
+          lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
+        }
+      }
+      let bigQuoteVolumeMaker = ret.quoteVolumeMaker ? new BigNumber(ret.quoteVolumeMaker.toString()) : new BigNumber(0)
+      let bigQuoteVolumeTaker = ret.quoteVolumeTaker ? new BigNumber(ret.quoteVolumeTaker.toString()) : new BigNumber(0)
+      const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
       return callback( null , {
         timestamp: nowInMs,
         quote_symbol: tokenSymbol,
@@ -337,7 +369,9 @@ module.exports = BaseService.extends({
         past_24h_low: ret.rate.length ? (ret.rate[0].past_24h_low || 0) : 0,
         usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) :0,
         current_bid: ret.latest.length ? (ret.latest[0].current_bid || 0) : 0,
-        current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0
+        current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0,
+        volume_token:quoteVolume,
+        last_traded:lastPrice,
       })
     })
   },
