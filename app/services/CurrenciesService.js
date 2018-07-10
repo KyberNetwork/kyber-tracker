@@ -315,6 +315,11 @@ module.exports = BaseService.extends({
       ORDER BY block_number DESC LIMIT 1`;
     const lastParams = [tokenSymbol];
 
+    //volume base
+    const volumeSql = `SELECT sum(taker_token_amount +maker_token_amount) as volume, sum(volume_eth) as volume_eth from kyber_trade where block_timestamp > ?
+    AND (maker_token_symbol = ? OR taker_token_symbol = ?)`;
+    const volumeParams = [nowInSeconds - DAY_IN_SECONDS, tokenSymbol,tokenSymbol];
+
     async.auto({
       trade: (next) => {
         options.tradeAdapter.execRaw(tradeSql, tradeParams, next);
@@ -325,11 +330,8 @@ module.exports = BaseService.extends({
       latest: (next) => {
         options.rateAdapter.execRaw(lastSql, lastParams, next);
       },
-      quoteVolumeMaker: (next) => {
-        KyberTradeModel.sum('maker_token_amount', {
-          where: 'block_timestamp > ? AND maker_token_symbol = ?',
-          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
-        }, next);
+      volume: (next) => {
+        options.tradeAdapter.execRaw(volumeSql, volumeParams, next);
       },
       lastTrade: (next) => {
         KyberTradeModel.findOne({
@@ -337,7 +339,19 @@ module.exports = BaseService.extends({
           params: [tokenSymbol, tokenSymbol],
           orderBy: 'block_timestamp DESC',
         }, next)
-      }
+      },
+      quoteVolumeTaker: (next) => {
+        KyberTradeModel.sum('taker_token_amount', {
+          where: 'block_timestamp > ? AND taker_token_symbol = ?',
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
+        }, next);
+      },
+      quoteVolumeMaker: (next) => {
+        KyberTradeModel.sum('maker_token_amount', {
+          where: 'block_timestamp > ? AND maker_token_symbol = ?',
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
+        }, next);
+      },
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -358,9 +372,8 @@ module.exports = BaseService.extends({
           lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
         }
       }
-      let bigQuoteVolumeMaker = ret.quoteVolumeMaker ? new BigNumber(ret.quoteVolumeMaker.toString()) : new BigNumber(0)
-      let bigQuoteVolumeTaker = ret.quoteVolumeTaker ? new BigNumber(ret.quoteVolumeTaker.toString()) : new BigNumber(0)
-      const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
+      const quoteVolume = ret.volume[0].volume ? new BigNumber(ret.volume[0].volume.toString()).div(Math.pow(10, tokenData.decimal)).toNumber() : 0
+      const baseVolume = ret.volume[0].volume_eth ? ret.volume[0].volume_eth: 0
       return callback( null , {
         timestamp: nowInMs,
         quote_symbol: tokenSymbol,
@@ -372,6 +385,7 @@ module.exports = BaseService.extends({
         current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0,
         volume_token:quoteVolume,
         last_traded:lastPrice,
+        baseVolume: baseVolume,
       })
     })
   },
