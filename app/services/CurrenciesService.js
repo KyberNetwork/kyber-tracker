@@ -371,11 +371,11 @@ module.exports = BaseService.extends({
         past_24h_high: ret.rate.length ? (ret.rate[0].past_24h_high || 0) : 0,
         past_24h_low: ret.rate.length ? (ret.rate[0].past_24h_low || 0) : 0,
         usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) :0,
+        eth_24h_volume: ret.trade.length ? (ret.trade[0].eth_24h_volume || 0) :0,
+        token_24h_volume: quoteVolume,
         current_bid: ret.latest.length ? (ret.latest[0].current_bid || 0) : 0,
         current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0,
-        volume_token: quoteVolume,
-        last_traded: lastPrice,
-        eth_24h_volume: ret.trade.length ? (ret.trade[0].eth_24h_volume || 0) :0,
+        last_traded: lastPrice
       })
     })
   },
