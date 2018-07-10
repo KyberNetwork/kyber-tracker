@@ -316,9 +316,12 @@ module.exports = BaseService.extends({
     const lastParams = [tokenSymbol];
 
     //volume base
-    const volumeSql = `SELECT sum(taker_token_amount +maker_token_amount) as volume, sum(volume_eth) as volume_eth from kyber_trade where block_timestamp > ?
-    AND (maker_token_symbol = ? OR taker_token_symbol = ?)`;
-    const volumeParams = [nowInSeconds - DAY_IN_SECONDS, tokenSymbol,tokenSymbol];
+    const volumeSql = `SELECT sum(volume_) as volume, sum(volume_eth_) as volume_eth FROM 
+    (SELECT IFNULL(sum(maker_token_amount),0) as volume_, IFNULL(sum(volume_eth),0) as volume_eth_ FROM kyber_trade where block_timestamp > ? AND maker_token_symbol = ?
+      UNION ALL
+      SELECT IFNULL(sum(taker_token_amount),0) as volume_, IFNULL(sum(volume_eth),0) as volume_eth_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
+    )a`;
+    const volumeParams = [nowInSeconds - DAY_IN_SECONDS, tokenSymbol, nowInSeconds - DAY_IN_SECONDS, tokenSymbol];
 
     async.auto({
       trade: (next) => {
