@@ -321,7 +321,7 @@ module.exports = BaseService.extends({
       UNION ALL
       SELECT IFNULL(sum(taker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
     )a`;
-    const volumeParams = [dayAgo, tokenSymbol, nowInSeconds - DAY_IN_SECONDS, tokenSymbol];
+    const volumeParams = [dayAgo, tokenSymbol, dayAgo, tokenSymbol];
 
     async.auto({
       trade: (next) => {
