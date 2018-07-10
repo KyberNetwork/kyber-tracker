@@ -166,6 +166,19 @@ module.exports = AppController.extends({
     //} else {
     //  setTimeout(loadData, 100);
     //}
-  }
+  },
 
+  // rate 24h change
+  get24hChangeData: function (req, res) {
+    Utils.cors(res);
+    const service = req.getService('CurrenciesService');
+    service.get24hChangeData((err, ret) => {
+      if (err) {
+        logger.error(err);
+        res.json(ret);
+        return;
+      }
+      res.json(ret);
+    });
+  },
 });

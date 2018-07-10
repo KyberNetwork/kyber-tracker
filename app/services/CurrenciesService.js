@@ -380,4 +380,78 @@ module.exports = BaseService.extends({
     })
   },
 
+  // get 24h change by eth
+  get24hChangeData: function (callback) {
+    if(!tokens) return callback(null, {});
+
+    // let pairs = {}
+
+    Object.keys(tokens).map(token => {
+      // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
+      if((token.toUpperCase() !== "ETH") && 
+          !tokens[token].delisted &&
+          helper.shouldShowToken(token)){
+        const cmcName = tokens[token].cmcSymbol || token;
+        pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
+          rateAdapter: this.getModel('RateModel').getSlaveAdapter(),
+          token: token,
+          fromCurrencyCode: "ETH"
+        }, asyncCallback)
+      }
+    })
+
+    // async.auto(pairs, 10, callback);
+  },
+  
+  _get24hChangeData: function (options, callback) {
+    if(!options.token || !tokens[options.token]){
+      return callback("token not supported")
+    }
+
+    if(!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]){
+      return callback("base not supported")
+    }
+
+    let tokenSymbol = options.token
+    let baseSymbol = options.fromCurrencyCode
+    let tokenData = tokens[tokenSymbol]
+
+    const nowInMs = Date.now();
+    const nowInSeconds = Math.floor(nowInMs / 1000);
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const hour30Ago = nowInSeconds - 30 * 60 * 60;
+
+    // 24h price SQL
+    const lastSql = `SELECT mid_expected as 'rate24h' FROM rate
+     WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+    const lastParams = [tokenSymbol, hour30Ago];
+
+    const rateNowSql = `SELECT mid_expected as rateNow FROM rate WHERE quote_symbol = ? ORDER BY block_timestamp DESC limit 1`;
+    const rateNowParams = [tokenSymbol];
+    async.auto({
+      rate: (next) => {
+        options.rateAdapter.execRaw(lastSql, lastParams, next);
+      },
+      rateNow: (next) => {
+        options.rateAdapter.execRaw(rateNowSql,rateNowParams, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+      const old_rate = ret.rate[0].rate24h;
+      const rate_now = ret.rateNow[0].rateNow;
+      const change_24h = (rate_now - old_rate)*100/old_rate;
+      return callback( null , {
+        timestamp: nowInMs,
+        token_name: tokenData.name,
+        token_symbol: tokenSymbol,
+        base_symbol: baseSymbol,
+        token_address: tokenData.address,
+        eth_rate: rate_now,
+        change_24h: change_24h,
+      })
+    })
+  },
 });

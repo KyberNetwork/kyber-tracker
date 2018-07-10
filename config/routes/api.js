@@ -19,6 +19,9 @@ module.exports = {
     '/tokens/rates'                 : ['CurrenciesController.getAllRateInfo'],
 
     '/tickers'                      : ['CurrenciesController.getPair24hData'],
+
+    // 24h change info kyber mobile
+    '/change24h'                    : ['CurrenciesController.get24hChangeData'],
   },
   POST: {
     // Implement me.
