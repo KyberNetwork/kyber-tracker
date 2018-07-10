@@ -301,7 +301,7 @@ module.exports = BaseService.extends({
     const KyberTradeModel = this.getModel('KyberTradeModel');
     // volume SQL
     const tradeWhere = 'block_timestamp > ? AND (maker_token_symbol = ?  OR  taker_token_symbol = ?)';
-    const tradeSql = `select IFNULL(sum(volume_usd),0) as usd_24h_volume from kyber_trade where ${tradeWhere}`;
+    const tradeSql = `select IFNULL(sum(volume_usd),0) as usd_24h_volume, IFNULL(sum(volume_eth),0) as eth_24h_volume from kyber_trade where ${tradeWhere}`;
     const tradeParams = [dayAgo, tokenSymbol, tokenSymbol];
 
     // 24h price SQL
@@ -315,13 +315,13 @@ module.exports = BaseService.extends({
       ORDER BY block_number DESC LIMIT 1`;
     const lastParams = [tokenSymbol];
 
-    //volume base
-    const volumeSql = `SELECT sum(volume_) as volume, sum(volume_eth_) as volume_eth FROM 
-    (SELECT IFNULL(sum(maker_token_amount),0) as volume_, IFNULL(sum(volume_eth),0) as volume_eth_ FROM kyber_trade where block_timestamp > ? AND maker_token_symbol = ?
+    //volume token base
+    const volumeSql = `SELECT sum(volume_) as volume FROM 
+    (SELECT IFNULL(sum(maker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND maker_token_symbol = ?
       UNION ALL
-      SELECT IFNULL(sum(taker_token_amount),0) as volume_, IFNULL(sum(volume_eth),0) as volume_eth_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
+      SELECT IFNULL(sum(taker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
     )a`;
-    const volumeParams = [nowInSeconds - DAY_IN_SECONDS, tokenSymbol, nowInSeconds - DAY_IN_SECONDS, tokenSymbol];
+    const volumeParams = [dayAgo, tokenSymbol, nowInSeconds - DAY_IN_SECONDS, tokenSymbol];
 
     async.auto({
       trade: (next) => {
@@ -364,7 +364,6 @@ module.exports = BaseService.extends({
         }
       }
       const quoteVolume = ret.volume[0].volume ? new BigNumber(ret.volume[0].volume.toString()).div(Math.pow(10, tokenData.decimal)).toNumber() : 0
-      const baseVolume = ret.volume[0].volume_eth ? ret.volume[0].volume_eth: 0
       return callback( null , {
         timestamp: nowInMs,
         quote_symbol: tokenSymbol,
@@ -374,9 +373,9 @@ module.exports = BaseService.extends({
         usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) :0,
         current_bid: ret.latest.length ? (ret.latest[0].current_bid || 0) : 0,
         current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0,
-        volume_token:quoteVolume,
-        last_traded:lastPrice,
-        baseVolume: baseVolume,
+        volume_token: quoteVolume,
+        last_traded: lastPrice,
+        eth_24h_volume: ret.trade.length ? (ret.trade[0].eth_24h_volume || 0) :0,
       })
     })
   },
