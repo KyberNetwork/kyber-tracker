@@ -171,6 +171,12 @@ module.exports = AppController.extends({
   // rate 24h change
   get24hChangeData: function (req, res) {
     Utils.cors(res);
+    const CACHE_KEY = 'get24hChangeData';
+    const cachedData = LocalCache.getSync(CACHE_KEY);
+    if (cachedData) {
+      res.json(cachedData);
+      return;
+    }
     const service = req.getService('CurrenciesService');
     service.get24hChangeData((err, ret) => {
       if (err) {
@@ -178,6 +184,8 @@ module.exports = AppController.extends({
         res.json(ret);
         return;
       }
+      // cache 5'
+      LocalCache.setSync(CACHE_KEY, ret, {ttl: 5*Const.MINUTE_IN_MILLISECONDS});
       res.json(ret);
     });
   },

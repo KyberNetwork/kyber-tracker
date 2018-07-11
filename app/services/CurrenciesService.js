@@ -384,7 +384,7 @@ module.exports = BaseService.extends({
   get24hChangeData: function (callback) {
     if(!tokens) return callback(null, {});
 
-    // let pairs = {}
+    let pairs = {}
 
     Object.keys(tokens).map(token => {
       // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
@@ -400,7 +400,7 @@ module.exports = BaseService.extends({
       }
     })
 
-    // async.auto(pairs, 10, callback);
+    async.auto(pairs, 10, callback);
   },
   
   _get24hChangeData: function (options, callback) {
@@ -423,12 +423,20 @@ module.exports = BaseService.extends({
     const hour30Ago = nowInSeconds - 30 * 60 * 60;
 
     // 24h price SQL
-    const lastSql = `SELECT mid_expected as 'rate24h' FROM rate
-     WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
-    const lastParams = [tokenSymbol, hour30Ago];
+    // const lastSql = `SELECT mid_expected as 'rate24h' FROM rate
+    //  WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+    // const lastParams = [tokenSymbol, hour30Ago];
 
-    const rateNowSql = `SELECT mid_expected as rateNow FROM rate WHERE quote_symbol = ? ORDER BY block_timestamp DESC limit 1`;
+    const lastSql = `SELECT IF(
+        (SELECT count(*) from kyber_tracker.rate where quote_symbol = ? AND block_timestamp < ? AND block_timestamp >= ? AND mid_expected > 0) > 0, 
+        (SELECT mid_expected FROM rate WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1),
+        (SELECT mid_expected FROM rate WHERE quote_symbol = ? AND mid_expected > 0 ORDER BY block_timestamp ASC LIMIT 1 )
+       ) as 'rate24h'`;
+    const lastParams = [tokenSymbol, dayAgo, hour30Ago, tokenSymbol, hour30Ago, tokenSymbol];
+
+    const rateNowSql = `SELECT mid_expected as rateNow FROM rate WHERE quote_symbol = ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
     const rateNowParams = [tokenSymbol];
+
     async.auto({
       rate: (next) => {
         options.rateAdapter.execRaw(lastSql, lastParams, next);
@@ -440,9 +448,12 @@ module.exports = BaseService.extends({
       if (err) {
         return callback(err);
       }
-      const old_rate = ret.rate[0].rate24h;
-      const rate_now = ret.rateNow[0].rateNow;
-      const change_24h = (rate_now - old_rate)*100/old_rate;
+      const old_rate = ret.rate[0].rate24h || 0;
+      const rate_now = ret.rateNow[0].rateNow || 0;
+      var change_24h = 0;
+      if(old_rate !== 0){
+        change_24h = (rate_now - old_rate)*100/old_rate;
+      }
       return callback( null , {
         timestamp: nowInMs,
         token_name: tokenData.name,
