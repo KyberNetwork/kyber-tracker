@@ -114,7 +114,7 @@ module.exports = AppController.extends({
     }
 
     if (LocalCache.getSync(CACHE_FLAG) == '1') {
-      this._waitForCache(CACHE_KEY, 6000, (err, cacheValue) => {
+      this._waitForCache(CACHE_KEY, 10000, (err, cacheValue) => {
         if (err) {
           LocalCache.setSync(CACHE_FLAG, '0');
           res.json({error: err});
