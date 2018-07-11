@@ -171,14 +171,30 @@ module.exports = AppController.extends({
   // rate 24h change
   get24hChangeData: function (req, res) {
     Utils.cors(res);
-    const CACHE_KEY = 'get24hChangeData';
+    const [err, params] = new Checkit({
+      usd: ['string'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+        res.badRequest(err.toString());
+        return;
+    }
+    var CACHE_KEY = 'get24hChangeData';
+    if(params.usd){
+      if(params.usd!=="1"){
+        res.badRequest("please request follow rule.");
+        return;
+      }
+      CACHE_KEY += 'usd';
+    }
+    logger.info(CACHE_KEY);
     const cachedData = LocalCache.getSync(CACHE_KEY);
     if (cachedData) {
       res.json(cachedData);
       return;
     }
     const service = req.getService('CurrenciesService');
-    service.get24hChangeData((err, ret) => {
+    service.get24hChangeData(params,(err, ret) => {
       if (err) {
         logger.error(err);
         res.json(ret);

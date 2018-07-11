@@ -381,9 +381,9 @@ module.exports = BaseService.extends({
   },
 
   // get 24h change by eth
-  get24hChangeData: function (callback) {
+  get24hChangeData: function (options, callback) {
     if(!tokens) return callback(null, {});
-
+    
     let pairs = {}
 
     Object.keys(tokens).map(token => {
@@ -395,12 +395,49 @@ module.exports = BaseService.extends({
         pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
           rateAdapter: this.getModel('RateModel').getSlaveAdapter(),
           token: token,
-          fromCurrencyCode: "ETH"
+          fromCurrencyCode: "ETH",
         }, asyncCallback)
       }
     })
-
-    async.auto(pairs, 10, callback);
+    if(options.usd){
+      const nowInMs = Date.now();
+      const DAY_IN_MSSECONDS = 24 * 60 * 60 * 1000;
+      const dayAgo = nowInMs - DAY_IN_MSSECONDS;
+      this.getService('CMCService').getHistoricalPrice('ETH', nowInMs, (err, ret)=>{
+        if (!err) {
+          pairs.price_now_eth = ret.price_usd
+        }
+      });
+      this.getService('CMCService').getHistoricalPrice('ETH', dayAgo, (err, ret)=>{
+        if (!err) {
+          pairs.price_24h_eth = ret.price_usd
+        }
+      });
+    }
+    // async.auto(pairs, 10, callback);
+    async.auto(pairs, 10, function(err, pairs){
+      if(pairs.price_now_eth && pairs.price_24h_eth){
+        const price_now_eth = pairs.price_now_eth;
+        const price_24h_eth = pairs.price_24h_eth;
+        delete pairs.price_now_eth;
+        delete pairs.price_24h_eth;
+        if (!err) {
+          Object.values(pairs).forEach((value) => {
+            var change_usd_24h = "-";
+            if(value.rate_eth_now && value.old_rate_eth){
+              change_usd_24h=0
+              if(value.old_rate_eth !== 0){
+                change_usd_24h = (((value.rate_eth_now*price_now_eth) - (value.old_rate_eth*price_24h_eth))*100)/(value.old_rate_eth*price_24h_eth);
+              }
+            }
+            value.change_usd_24h = change_usd_24h
+            delete value.old_rate_eth;
+          });
+        }
+      }
+      
+      callback(err, pairs);
+    });
   },
   
   _get24hChangeData: function (options, callback) {
@@ -421,38 +458,36 @@ module.exports = BaseService.extends({
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
     const hour30Ago = nowInSeconds - 30 * 60 * 60;
+    const hour18Ago = nowInSeconds - 18 * 60 * 60;
+    const hour1Ago = nowInSeconds - 1 * 60 * 60;
 
     // 24h price SQL
-    // const lastSql = `SELECT mid_expected as 'rate24h' FROM rate
-    //  WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
-    // const lastParams = [tokenSymbol, hour30Ago];
+    const lastSql = `SELECT mid_expected as 'rate_eth_24h' FROM rate
+     WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+    const lastParams = [tokenSymbol, hour30Ago, hour18Ago];
 
-    const lastSql = `SELECT IF(
-        (SELECT count(*) from kyber_tracker.rate where quote_symbol = ? AND block_timestamp < ? AND block_timestamp >= ? AND mid_expected > 0) > 0, 
-        (SELECT mid_expected FROM rate WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1),
-        (SELECT mid_expected FROM rate WHERE quote_symbol = ? AND mid_expected > 0 ORDER BY block_timestamp ASC LIMIT 1 )
-       ) as 'rate24h'`;
-    const lastParams = [tokenSymbol, dayAgo, hour30Ago, tokenSymbol, hour30Ago, tokenSymbol];
-
-    const rateNowSql = `SELECT mid_expected as rateNow FROM rate WHERE quote_symbol = ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
-    const rateNowParams = [tokenSymbol];
-
+    const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
+    const rateNowParams = [tokenSymbol, hour1Ago];
+    
     async.auto({
       rate: (next) => {
         options.rateAdapter.execRaw(lastSql, lastParams, next);
       },
       rateNow: (next) => {
-        options.rateAdapter.execRaw(rateNowSql,rateNowParams, next);
+        options.rateAdapter.execRaw(rateNowSql, rateNowParams, next);
       }
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
-      const old_rate = ret.rate[0].rate24h || 0;
-      const rate_now = ret.rateNow[0].rateNow || 0;
-      var change_24h = 0;
-      if(old_rate !== 0){
-        change_24h = (rate_now - old_rate)*100/old_rate;
+      const old_rate_eth = ret.rate.length ? ret.rate[0].rate_eth_24h || 0 : null;
+      const rate_eth_now = ret.rateNow.length ? ret.rateNow[0].rate_eth_now || 0 : null;
+      var change_eth_24h = "-";
+      if(old_rate_eth && rate_eth_now){
+        change_eth_24h=0
+        if(old_rate_eth !== 0){
+          change_eth_24h = (rate_eth_now - old_rate_eth)*100/old_rate_eth;
+        }
       }
       return callback( null , {
         timestamp: nowInMs,
@@ -460,8 +495,9 @@ module.exports = BaseService.extends({
         token_symbol: tokenSymbol,
         base_symbol: baseSymbol,
         token_address: tokenData.address,
-        eth_rate: rate_now,
-        change_24h: change_24h,
+        rate_eth_now: rate_eth_now,
+        old_rate_eth: old_rate_eth,
+        change_eth_24h: change_eth_24h,
       })
     })
   },
