@@ -26,7 +26,9 @@ module.exports = BaseService.extends({
     let pairs = {}
 
     Object.keys(tokens).forEach(token => {
-      if((token.toUpperCase() !== "ETH") && helper.shouldShowToken(token)){
+      if((token.toUpperCase() !== "ETH") &&
+          !tokens[token].delisted &&
+          helper.shouldShowToken(token)){
         pairs[token] = (asyncCallback) => this._getRateInfo(token, {
           //tradeAdapter: tradeAdapter,
           rateAdapter: rateAdapter
@@ -399,41 +401,46 @@ module.exports = BaseService.extends({
         }, asyncCallback)
       }
     })
+
     if(options.usd){
       const nowInMs = Date.now();
       const DAY_IN_MSSECONDS = 24 * 60 * 60 * 1000;
       const dayAgo = nowInMs - DAY_IN_MSSECONDS;
-      this.getService('CMCService').getHistoricalPrice('ETH', nowInMs, (err, ret)=>{
-        if (!err) {
-          pairs.price_now_eth = ret.price_usd
-        }
-      });
-      this.getService('CMCService').getHistoricalPrice('ETH', dayAgo, (err, ret)=>{
-        if (!err) {
-          pairs.price_24h_eth = ret.price_usd
-        }
-      });
+      const cmcFunc = this.getService('CMCService').getHistoricalPrice;
+      pairs.price_now_eth = (callback) => {
+        cmcFunc('ETH', nowInMs, callback);
+      }
+      pairs.price_24h_eth = (callback) => {
+        cmcFunc('ETH', dayAgo, callback);
+      }
     }
+    
     // async.auto(pairs, 10, callback);
     async.auto(pairs, 10, function(err, pairs){
-      if(pairs.price_now_eth && pairs.price_24h_eth){
-        const price_now_eth = pairs.price_now_eth;
-        const price_24h_eth = pairs.price_24h_eth;
+      if (err) {
+        callback(e, pairs);
+        return;
+      }
+
+      if (pairs.price_now_eth && pairs.price_24h_eth){
+
+        const price_now_eth = pairs.price_now_eth.price_usd;
+        const price_24h_eth = pairs.price_24h_eth.price_usd;
         delete pairs.price_now_eth;
         delete pairs.price_24h_eth;
-        if (!err) {
-          Object.values(pairs).forEach((value) => {
-            var change_usd_24h = "-";
-            if(value.rate_eth_now && value.old_rate_eth){
-              change_usd_24h=0
-              if(value.old_rate_eth !== 0){
-                change_usd_24h = (((value.rate_eth_now*price_now_eth) - (value.old_rate_eth*price_24h_eth))*100)/(value.old_rate_eth*price_24h_eth);
-              }
+
+        Object.values(pairs).forEach((value) => {
+          let change_usd_24h = "-";
+          if (value.rate_eth_now && value.old_rate_eth){
+            change_usd_24h=0
+            if (value.old_rate_eth !== 0){
+              change_usd_24h = (((value.rate_eth_now*price_now_eth) - (value.old_rate_eth*price_24h_eth))*100)/(value.old_rate_eth*price_24h_eth);
             }
-            value.change_usd_24h = change_usd_24h
-            delete value.old_rate_eth;
-          });
-        }
+          }
+          value.change_usd_24h = change_usd_24h
+          delete value.old_rate_eth;
+        });
+        
       }
       
       callback(err, pairs);
