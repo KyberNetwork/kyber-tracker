@@ -406,12 +406,12 @@ module.exports = BaseService.extends({
       const nowInMs = Date.now();
       const DAY_IN_MSSECONDS = 24 * 60 * 60 * 1000;
       const dayAgo = nowInMs - DAY_IN_MSSECONDS;
-      const cmcFunc = this.getService('CMCService').getHistoricalPrice;
+      const cmcService = this.getService('CMCService');
       pairs.price_now_eth = (callback) => {
-        cmcFunc('ETH', nowInMs, callback);
+        cmcService.getHistoricalPrice('ETH', nowInMs, callback);
       }
       pairs.price_24h_eth = (callback) => {
-        cmcFunc('ETH', dayAgo, callback);
+        cmcService.getHistoricalPrice('ETH', dayAgo, callback);
       }
     }
     
@@ -430,19 +430,25 @@ module.exports = BaseService.extends({
         delete pairs.price_24h_eth;
 
         Object.values(pairs).forEach((value) => {
-          let change_usd_24h = "-";
+          let change_usd_24h = "-", rate_usd_24h = "-";
           if (value.rate_eth_now && value.old_rate_eth){
             change_usd_24h=0
             if (value.old_rate_eth !== 0){
               change_usd_24h = (((value.rate_eth_now*price_now_eth) - (value.old_rate_eth*price_24h_eth))*100)/(value.old_rate_eth*price_24h_eth);
             }
           }
+          if (value.rate_eth_now ){
+            rate_usd_24h = value.rate_eth_now * price_now_eth
+          }
           value.change_usd_24h = change_usd_24h
+          value.rate_usd_24h = rate_usd_24h
           delete value.old_rate_eth;
         });
-        
+      }else{
+        Object.values(pairs).forEach((value) => {
+          delete value.old_rate_eth;
+        });
       }
-      
       callback(err, pairs);
     });
   },
@@ -457,7 +463,7 @@ module.exports = BaseService.extends({
     }
 
     let tokenSymbol = options.token
-    let baseSymbol = options.fromCurrencyCode
+    // let baseSymbol = options.fromCurrencyCode
     let tokenData = tokens[tokenSymbol]
 
     const nowInMs = Date.now();
@@ -500,7 +506,8 @@ module.exports = BaseService.extends({
         timestamp: nowInMs,
         token_name: tokenData.name,
         token_symbol: tokenSymbol,
-        base_symbol: baseSymbol,
+        token_decimal : tokenData.decimal,
+        // base_symbol: baseSymbol,
         token_address: tokenData.address,
         rate_eth_now: rate_eth_now,
         old_rate_eth: old_rate_eth,
