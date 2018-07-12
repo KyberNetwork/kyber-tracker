@@ -421,16 +421,15 @@ module.exports = BaseService.extends({
         callback(e, pairs);
         return;
       }
-
+      let price_now_eth = "-";
+      let price_24h_eth = "-";
       if (pairs.price_now_eth && pairs.price_24h_eth){
-
-        const price_now_eth = pairs.price_now_eth.price_usd;
-        const price_24h_eth = pairs.price_24h_eth.price_usd;
+        price_now_eth = pairs.price_now_eth.price_usd;
+        price_24h_eth = pairs.price_24h_eth.price_usd;
         delete pairs.price_now_eth;
         delete pairs.price_24h_eth;
-
         Object.values(pairs).forEach((value) => {
-          let change_usd_24h = "-", rate_usd_24h = "-";
+          let change_usd_24h = "-", rate_usd_now = "-";
           if (value.rate_eth_now && value.old_rate_eth){
             change_usd_24h=0
             if (value.old_rate_eth !== 0){
@@ -438,16 +437,34 @@ module.exports = BaseService.extends({
             }
           }
           if (value.rate_eth_now ){
-            rate_usd_24h = value.rate_eth_now * price_now_eth
+            rate_usd_now = value.rate_eth_now * price_now_eth
           }
           value.change_usd_24h = change_usd_24h
-          value.rate_usd_24h = rate_usd_24h
+          value.rate_usd_now = rate_usd_now
           delete value.old_rate_eth;
         });
       }else{
         Object.values(pairs).forEach((value) => {
           delete value.old_rate_eth;
         });
+      }
+      //add ETH_ETH
+      pairs["ETH_ETH"]={
+        timestamp:Date.now(),
+        token_name:tokens["ETH"].name,
+        token_symbol: tokens["ETH"].symbol,
+        token_decimal: tokens["ETH"].decimal,
+        token_address: tokens["ETH"].address,
+        rate_eth_now: 1,
+        change_eth_24h: "-",
+      }
+      if(options.usd){
+        var change_usd_24h = "-"
+        if(price_now_eth !== "-" && price_24h_eth !== "-" && price_24h_eth!==0){
+          change_usd_24h = (price_now_eth - price_24h_eth)*100/price_24h_eth
+        }
+        pairs["ETH_ETH"].change_usd_24h = change_usd_24h;
+        pairs["ETH_ETH"].rate_usd_now = price_now_eth;
       }
       callback(err, pairs);
     });
