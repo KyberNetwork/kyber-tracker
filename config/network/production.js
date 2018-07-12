@@ -407,6 +407,56 @@ module.exports = {
       "symbol": "EDU",
       "decimal": 18
     },
+
+    "POE": {
+      "name": "Po.et",
+      "address": "0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195",
+      "symbol": "POE",
+      "decimal": 8,
+      "hidden": true
+    },
+    "PAY": {
+      "name": "TenX",
+      "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280",
+      "symbol": "PAY",
+      "decimal": 18,
+      "hidden": true
+    },
+    "CHAT": {
+      "name": "Chatcoin",
+      "address": "0x442bc47357919446eabc18c7211e57a13d983469",
+      "symbol": "CHAT",
+      "decimal": 18,
+      "hidden": true
+    },
+    "DTA": {
+      "name": "Data",
+      "address": "0x69b148395ce0015c13e36bffbad63f49ef874e03",
+      "symbol": "DTA",
+      "decimal": 18,
+      "hidden": true
+    },
+    "BNT": {
+      "name": "Bancor",
+      "address": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
+      "symbol": "BNT",
+      "decimal": 18,
+      "hidden": true
+    },
+    "TUSD": {
+      "name": "TrueUSD",
+      "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
+      "symbol": "TUSD",
+      "decimal": 18,
+      "hidden": true
+    },
+    "TOMO": {
+      "name": "Tomocoin",
+      "address": "0x8b353021189375591723E7384262F45709A3C3dC",
+      "symbol": "TOMO",
+      "decimal": 18,
+      "hidden": true
+    },
   },
 
   "preburntAmount": 48.61873337,
