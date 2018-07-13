@@ -8,7 +8,13 @@ const Resolution              = require('../common/Resolution');
 const logger                  = log4js.getLogger('ChartController');
 
 const supportedTokens = Utils.getRateTokenArray().supportedTokens;
-
+const redis = require('redis');
+const port = process.env.REDISPOST || 6379;
+const host = process.env.REDISHOST || '127.0.0.1';
+const client = redis.createClient(port, host);
+client.on('error', (err) => {
+  logger.error(err);
+});
 module.exports = AppController.extends({
   classname: 'ChartController',
 
@@ -112,64 +118,81 @@ module.exports = AppController.extends({
   },
 
   history: function (req, res) {
-    Utils.cors(res);
-    const [err, params] = new Checkit({
-        symbol: ['string', 'required'],
-        resolution: ['string', 'required'],
-        from: ['naturalNonZero', 'required'],
-        to: ['naturalNonZero', 'required'],
-        rateType: ['string', 'required']
-    }).validateSync(req.allParams);
+      Utils.cors(res);
+      const [err, params] = new Checkit({
+          symbol: ['string', 'required'],
+          resolution: ['string', 'required'],
+          from: ['naturalNonZero', 'required'],
+          to: ['naturalNonZero', 'required'],
+          rateType: ['string', 'required']
+      }).validateSync(req.allParams);
 
-    if (err) {
-        res.badRequest(err.toString());
-        return;
-    }
+      if (err) {
+          res.badRequest(err.toString());
+          return;
+      }
 
-    if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
-        res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
-        return;
-    }
+      if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
+          res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
+          return;
+      }
 
-    params.seqType = Resolution.toColumn(params.resolution);
-    if (!params.seqType) {
-        res.badRequest("Unsupported resolution.");
-        return;
-    }
+      params.seqType = Resolution.toColumn(params.resolution);
+      if (!params.seqType) {
+          res.badRequest("Unsupported resolution.");
+          return;
+      }
+      var date = new Date(params.to * 1000);
+      const dateDetails = Utils.getDateDetails(date);
+      const minutes = Math.floor(dateDetails.minutes / 10) * 10
 
-    const service = req.getService('ChartService');
-    service.history(params, (err, ret) => {
-        if (err) {
-            logger.error(err);
-            return;
-        }
+      const key_cache = params.symbol + dateDetails.year + dateDetails.month + dateDetails.day + dateDetails.hour + minutes;
+      const service = req.getService('ChartService');
+      client.get(key_cache, function (error, result) {
+          if (error) {
+              logger.error(error);
+              return;
+          }
+          if (result) {
+              // the result exists in our cache - return it to our user immediately
+              res.json(JSON.parse(result));
+          } else {
+              service.history(params, (err, ret) => {
+                  if (err) {
+                      logger.error(err);
+                      return;
+                  }
+                  var data = {
+                      t: [],
+                      o: [],
+                      h: [],
+                      l: [],
+                      c: [],
+                      //v: []
+                  };
+                  if (ret.length === 0) {
+                      data.s = "no_data";
+                  } else {
+                      data.s = "ok";
+                      ret.forEach((value) => {
+                          if (value.seq == 0) return;
+                          data.t.push(Resolution.toTimestamp(params.resolution, value.seq));
+                          data.o.push(parseFloat(value.open));
+                          data.h.push(value.high);
+                          data.l.push(value.low);
+                          data.c.push(parseFloat(value.close));
+                          // data.v.push(0); //volume
+                      });
+                  }
+                  res.json(data);
 
-        var data ={
-            t: [],
-            o: [],
-            h: [],
-            l: [],
-            c: [],
-            //v: []
-        };
-        if (ret.length === 0){
-            data.s = "no_data";
-        } else {
-            data.s = "ok";
-            ret.forEach((value) => {
-                if (value.seq == 0) return;
-                data.t.push(Resolution.toTimestamp(params.resolution, value.seq));
-                data.o.push(parseFloat(value.open));
-                data.h.push(value.high);
-                data.l.push(value.low);
-                data.c.push(parseFloat(value.close));
-                // data.v.push(0); //volume
-            });
-        }
-
-        res.json(data);
-    });
-
+                  //add to cache with rateType = sell and time 60
+                  if (params.rateType === 'sell' && params.resolution === '60') {
+                      client.setex(key_cache, 10 * 60, JSON.stringify(data));
+                  }
+              });
+          }
+      });
   },
 
   time: function (req, res) {
