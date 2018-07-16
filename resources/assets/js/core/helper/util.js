@@ -126,7 +126,13 @@ export default {
     // return !this.tokens[item.symbol].hidden;
     if(!tokens[tokenSymbol].hidden) return true;
     if (typeof tokens[tokenSymbol].hidden != 'number') return false;
-    return new Date().getTime() - tokens[tokenSymbol].hidden > 0 ;
+    return Date.now() >= tokens[tokenSymbol].hidden;
+  },
+
+  isNewToken (tokenSymbol) {
+    var bornMs = tokens[tokenSymbol].hidden;
+    if (typeof bornMs != 'number') return false;
+    return Date.now() <= bornMs + 24 * 60 * 60 * 1000;
   },
 
   formatTokenAmount: function (amount, decimal=18, decimalFormat = 3) {

@@ -140,8 +140,9 @@ It supports 'd' and 'h'.
     price: {
         match: /^\/?(?:(?:kyber)?price|rates?)(?:@\w+)?$/i,
         reply: (bot, msg, match) => {
-            if (!bot._context.internal && msg.chat.type === "supergroup") {
-                reply(bot, msg, "Please go to @kyberprice for price discussion.");
+            if (!bot._context.internal &&
+                msg.chat.type === "supergroup" && msg.chat.username !== "kyberprice") {
+                reply(bot, msg, "Chat private to me or go to @kyberprice for price discussion.");
             } else {
                 bot._context.getService("CMCService").getCMCTokenInfo("KNC", (err, ret) => {
                     if (!!err) {
@@ -210,8 +211,8 @@ English @KyberNetwork
 Tiếng Việt @KyberVietnamese`
     },
     trade: {
-        match: /^\/?(?:trade|exchange)(?:@\w+)?$/i,
-        reply: "Our exchange is live, you can trade now https://kyber.network/"
+        match: /^\/?(?:trade|exchange|swap)(?:@\w+)?$/i,
+        reply: "KyberSwap https://kyber.network/swap"
     },
     kyber: {
         match: /^\/?kyber(?:@\w+)?$/i,
@@ -281,7 +282,7 @@ Tiếng Việt @KyberVietnamese`
     },
     kyc: {
         match: /^\/?kyc(?:@\w+)?$/i,
-        reply: "https://account.kyber.network/users/sign_in",
+        reply: "https://kyber.network/users/sign_in",
     },
     request: {
         match: /^\/?request(?:@\w+)?$/i,

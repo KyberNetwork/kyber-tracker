@@ -21,7 +21,7 @@ module.exports = BaseService.extends({
 
     const db = this._getDbConnection();
     //const tradeAdapter = db.model().getSlaveAdapter();
-    const rateAdapter = db.model('RateModel').getSlaveAdapter();
+    const rateAdapter = db.model('Rate7dModel').getSlaveAdapter();
 
     let pairs = {}
 
@@ -72,6 +72,7 @@ module.exports = BaseService.extends({
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
     const hour30Ago = nowInSeconds - 30 * 60 * 60;
+    const hour18Ago = nowInSeconds - 18 * 60 * 60;
     const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
 
     // volume SQL
@@ -83,8 +84,8 @@ module.exports = BaseService.extends({
 
     // 24h price SQL
     const lastSql = `SELECT mid_expected as '24h' FROM rate
-      WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
-    const lastParams = [symbol, hour30Ago];
+      WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+    const lastParams = [symbol, hour30Ago, hour18Ago];
 
     // 7 days points
     //const pointSql = "select FLOOR(AVG(block_timestamp)) as timestamp, AVG(mid_expected) as rate from rate " +
@@ -245,7 +246,7 @@ module.exports = BaseService.extends({
           helper.shouldShowToken(token)){
         pairs["ETH_" + token] = (asyncCallback) => this._getPair24hData({
           tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
-          rateAdapter: this.getModel('RateModel').getSlaveAdapter(),
+          rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
           token: token,
           fromCurrencyCode: "ETH"
         }, asyncCallback)
@@ -308,7 +309,7 @@ module.exports = BaseService.extends({
 
     // 24h price SQL
     const rateSql = `SELECT max(buy_expected) as 'past_24h_high', min(sell_expected) as 'past_24h_low' FROM rate
-      WHERE quote_symbol = ? AND block_timestamp > ? AND sell_expected > 0`;
+      WHERE quote_symbol = ? AND block_timestamp > ? AND buy_expected > 0 AND sell_expected > 0`;
     const rateParams = [tokenSymbol, dayAgo];
 
     // last price SQL
@@ -395,7 +396,7 @@ module.exports = BaseService.extends({
           helper.shouldShowToken(token)){
         const cmcName = tokens[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
-          rateAdapter: this.getModel('RateModel').getSlaveAdapter(),
+          rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
           token: token,
           fromCurrencyCode: "ETH",
         }, asyncCallback)

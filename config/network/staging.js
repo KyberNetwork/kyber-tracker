@@ -5,9 +5,9 @@ module.exports = {
     },
     "contractAddresses": {
       "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
-      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D"],
-      "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6"],
-      "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C"]
+      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D", "0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
+      "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6", "0xed4f53268bfdFF39B36E8786247bA3A02Cf34B04"],
+      "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C", "0x91a502C678605fbCe581eae053319747482276b9"]
     },
     "logTopics": {
       "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -167,7 +167,7 @@ module.exports = {
         "address": "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a",
         "symbol": "SUB",
         "decimal": 2,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "STORJ": {
         "name": "Storj",
@@ -271,11 +271,11 @@ module.exports = {
       },
   
       "WAX": {
-        "name": "WAX",
+        "name": "Wax",
         "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
         "symbol": "WAX",
         "decimal": 8,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "ABT": {
         "name": "ArcBlock",
@@ -419,49 +419,49 @@ module.exports = {
         "address": "0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195",
         "symbol": "POE",
         "decimal": 8,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "PAY": {
         "name": "TenX",
         "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280",
         "symbol": "PAY",
         "decimal": 18,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "CHAT": {
         "name": "Chatcoin",
         "address": "0x442bc47357919446eabc18c7211e57a13d983469",
         "symbol": "CHAT",
         "decimal": 18,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "DTA": {
         "name": "Data",
         "address": "0x69b148395ce0015c13e36bffbad63f49ef874e03",
         "symbol": "DTA",
         "decimal": 18,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "BNT": {
         "name": "Bancor",
         "address": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
         "symbol": "BNT",
         "decimal": 18,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "TUSD": {
         "name": "TrueUSD",
         "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
         "symbol": "TUSD",
         "decimal": 18,
-        "hidden": true
+        "hidden": 1531486800000
       },
       "TOMO": {
         "name": "Tomocoin",
         "address": "0x8b353021189375591723E7384262F45709A3C3dC",
         "symbol": "TOMO",
         "decimal": 18,
-        "hidden": true
+        "hidden": 1531486800000
       },
     },
     "averageBlockTime": 15000,
