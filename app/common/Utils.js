@@ -116,20 +116,4 @@ module.exports = {
 
     return false;
   },
-
-  getDateDetails: function (date) {
-    const month = date.getUTCMonth() + 1;
-    const day = date.getUTCDate();
-    const year = date.getUTCFullYear();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
-    return {
-      year: year,
-      month: month,
-      day: day,
-      hour: hour,
-      minutes: minutes
-    }
-  }
-
 };
