@@ -346,24 +346,10 @@ module.exports = {
         "symbol": "BLZ",
         "decimal": 18
       },
-      "MTL": {
-        "name": "Metal",
-        "address": "0xF433089366899D83a9f26A773D59ec7eCF30355e",
-        "symbol": "MTL",
-        "decimal": 8,
-        "hidden": true
-      },
       "REP": {
         "name": "Augur",
         "address": "0xe94327d07fc17907b4db788e5adf2ed424addff6",
         "symbol": "REP",
-        "decimal": 18,
-        "hidden": true
-      },
-      "WINGS": {
-        "name": "Wings",
-        "address": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
-        "symbol": "WINGS",
         "decimal": 18,
         "hidden": true
       },
@@ -463,6 +449,49 @@ module.exports = {
         "decimal": 18,
         "hidden": 1531486800000
       },
+
+      "MDS": {
+        "name": "MediShares",
+        "address": "0x66186008C1050627F979d464eABb258860563dbE",
+        "symbol": "MDS",
+        "decimal": 18,
+        "hidden": 1531797717126
+      },
+      "LEND": {
+        "name": "EthLend",
+        "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
+        "symbol": "LEND",
+        "decimal": 18,
+        "hidden": 1531797717126
+      },
+      "WINGS": {
+        "name": "Wings",
+        "address": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
+        "symbol": "WINGS",
+        "decimal": 18,
+        "hidden": 1531797717126
+      },
+      "MTL": {
+        "name": "Metal",
+        "address": "0xF433089366899D83a9f26A773D59ec7eCF30355e",
+        "symbol": "MTL",
+        "decimal": 8,
+        "hidden": 1531797717126
+      },
+      "WAB": {
+        "name": "WaBi",
+        "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
+        "symbol": "WAB",
+        "decimal": 18,
+        "hidden": 1531797717126
+      },
+      "NULS": {
+        "name": "Nuls",
+        "address": "0xb91318f35bdb262e9423bc7c7c2a3a93dd93c92c",
+        "symbol": "NULS",
+        "decimal": 18,
+        "hidden": 1531797717126
+      }
     },
     "averageBlockTime": 15000,
     "startBlockNumber": 5700000,
