@@ -478,10 +478,10 @@ module.exports = {
         "decimal": 8,
         "hidden": 1531797717126
       },
-      "WAB": {
+      "WABI": {
         "name": "WaBi",
         "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
-        "symbol": "WAB",
+        "symbol": "WABI",
         "decimal": 18,
         "hidden": 1531797717126
       },
