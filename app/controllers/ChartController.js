@@ -8,13 +8,6 @@ const Resolution              = require('../common/Resolution');
 const logger                  = log4js.getLogger('ChartController');
 
 const supportedTokens = Utils.getRateTokenArray().supportedTokens;
-const redis = require('redis');
-const port = process.env.REDISPOST || 6379;
-const host = process.env.REDISHOST || '127.0.0.1';
-const client = redis.createClient(port, host);
-client.on('error', (err) => {
-  logger.error(err);
-});
 module.exports = AppController.extends({
   classname: 'ChartController',
 
@@ -142,58 +135,27 @@ module.exports = AppController.extends({
           res.badRequest("Unsupported resolution.");
           return;
       }
-      var date = new Date(params.to * 1000);
-      const dateDetails = Utils.getDateDetails(date);
-      const minutes = Math.floor(dateDetails.minutes / 10) * 10
 
-      const key_cache = params.symbol + dateDetails.year + dateDetails.month + dateDetails.day + dateDetails.hour + minutes;
-      const service = req.getService('ChartService');
-      client.get(key_cache, function (error, result) {
-          if (error) {
-              logger.error(error);
-              return;
+      const time_exprire = {
+        ttl: 10 * 60 * 1000
+      }
+      const chartService = req.getService('ChartService');
+      const redisCacheService = req.getService('RedisCacheService');
+      async.auto({
+          cacheData: (next) => redisCacheService._process_chart_history1h({
+              chartService: chartService,
+              token: params.symbol,
+              params: params,
+              time_exprire: time_exprire
+          },next)
+      }, function (err, ret) {
+          if (err) {
+              logger.error(err)
+              return callback(err);
           }
-          if (result) {
-              // the result exists in our cache - return it to our user immediately
-              res.json(JSON.parse(result));
-          } else {
-              service.history(params, (err, ret) => {
-                  if (err) {
-                      logger.error(err);
-                      return;
-                  }
-                  var data = {
-                      t: [],
-                      o: [],
-                      h: [],
-                      l: [],
-                      c: [],
-                      //v: []
-                  };
-                  if (ret.length === 0) {
-                      data.s = "no_data";
-                  } else {
-                      data.s = "ok";
-                      ret.forEach((value) => {
-                          if (value.seq == 0) return;
-                          data.t.push(Resolution.toTimestamp(params.resolution, value.seq));
-                          data.o.push(parseFloat(value.open));
-                          data.h.push(value.high);
-                          data.l.push(value.low);
-                          data.c.push(parseFloat(value.close));
-                          // data.v.push(0); //volume
-                      });
-                  }
-                  res.json(data);
-
-                  //add to cache with rateType = sell and time 60
-                  if (params.rateType === 'sell' && params.resolution === '60') {
-                      client.setex(key_cache, 10 * 60, JSON.stringify(data));
-                  }
-              });
-          }
-      });
-  },
+          res.json(ret.cacheData);
+      })
+},
 
   time: function (req, res) {
     Utils.cors(res).send("" + Math.floor(Date.now() / 1000));

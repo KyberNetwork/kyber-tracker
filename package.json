@@ -39,6 +39,7 @@
     "localforage": "^1.6.0",
     "lodash": "4.17.4",
     "moment": "2.20.1",
+    "node-schedule": "^1.3.0",
     "node-telegram-bot-api": "^0.30.0",
     "nodemon": "1.13.3",
     "randomstring": "1.1.5",

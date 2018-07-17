@@ -1,16 +1,16 @@
 require('dotenv').config();
 const path        = require('path');
 const SotaCore    = require('sota-core');
-
+const schedule = require('node-schedule');
 const app = SotaCore.createApp({
   rootDir: path.resolve('.')
 });
 app.start();
 
-process.nextTick(() => {
-  const KyberCreateCache = require('./app/crawlers/KyberCreateCache');
-  const createCache = new KyberCreateCache();
-  createCache.start();
+const KyberCreateCache = require('./app/crawlers/KyberCreateCache');
+const createCache = new KyberCreateCache();
+var j = schedule.scheduleJob('*/10 * * * *', function(){
+  createCache.start_chart_history_1h();
 });
 
 module.exports = app;
