@@ -26,6 +26,8 @@ class HistoryCacheRefresher extends BaseJob {
     const time_exprire = {
       ttl: 15 * 60 * 1000
     }
+    
+
     Object.keys(tokens).map(token => {
       if ((token.toUpperCase() !== "ETH") &&
         !tokens[token].delisted &&
@@ -37,11 +39,21 @@ class HistoryCacheRefresher extends BaseJob {
           from: day31Ago,
           to: nowInSeconds
         }
-        pairs[token] = (asyncCallback) => redisCacheService._process_chart_history1h({
+        let conditionCreateCache = false;
+        if (params.rateType === 'sell' && params.resolution === '60') {
+          conditionCreateCache = true;
+        }
+        const minutes = Math.floor(params.to / 600)
+
+        const key_cache = "chart_history_1h_" + params.symbol + minutes;
+
+        pairs[token] = (asyncCallback) => redisCacheService._process_chart_history({
           chartService: chartService,
           token: token,
           params: params,
-          time_exprire: time_exprire
+          time_exprire: time_exprire,
+          conditionCreateCache: conditionCreateCache,
+          key_cache: key_cache
         }, asyncCallback);
       }
     })

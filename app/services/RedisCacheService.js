@@ -19,7 +19,7 @@ module.exports = BaseService.extends({
     RedisCache.getAsync(options.key_cache, callback);
   },
 
-  _process_chart_history1h: function (options, callback) {
+  _process_chart_history: function (options, callback) {
     if (!options.token || !tokens[options.token]) {
       return callback("token not supported")
     }
@@ -28,12 +28,8 @@ module.exports = BaseService.extends({
     // logger.info(options.params.from, options.params.to)
     options.params.seqType = Resolution.toColumn(options.params.resolution);
 
-    // key 10'
-    const minutes = Math.floor(options.params.to / 600)
-
-    const key_cache = "chart_history_1h_" + options.params.symbol + minutes;
     this_.getCacheByKey({
-      key_cache: key_cache
+      key_cache: options.key_cache
     }, function (err, ret) {
       if (err) {
         logger.error(err)
@@ -49,12 +45,11 @@ module.exports = BaseService.extends({
             logger.error(err);
             return callback(err);
           }
-          options.data = res.getDataToCache;
 
           //add to cache with rateType = sell and time 60
-          if (options.params.rateType === 'sell' && options.params.resolution === '60') {
+          if (options.conditionCreateCache) {
             this_.setCacheByKey({
-              key_cache: key_cache,
+              key_cache: options.key_cache,
               data: res.getDataToCache,
               time_exprire: options.time_exprire
             }, function (err, res_1) {
@@ -62,10 +57,10 @@ module.exports = BaseService.extends({
                 logger.info(err)
                 callback(err)
               }
-              logger.info("create key " + key_cache + " on redis " +res_1)
+              logger.info("create key " + options.key_cache + " on redis " +res_1)
             });
           }
-          return callback(null, options.data)
+          return callback(null, res.getDataToCache)
         });
       } else {
         return callback(null, JSON.parse(ret));

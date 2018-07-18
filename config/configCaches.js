@@ -1,4 +1,4 @@
 module.exports = [{
-  when: "*/1 * * * *",
+  when: "*/10 * * * *",
   run: 'HistoryCacheRefresher'
 }];

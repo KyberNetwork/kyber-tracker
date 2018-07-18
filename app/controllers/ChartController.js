@@ -139,14 +139,23 @@ module.exports = AppController.extends({
       const time_exprire = {
         ttl: 10 * 60 * 1000
       }
+      let conditionCreateCache = false;
+      if (params.rateType === 'sell' && params.resolution === '60') {
+          conditionCreateCache = true;
+      }
+      const minutes = Math.floor(params.to / 600)
+
+      const key_cache = "chart_history_1h_" + params.symbol + minutes;
       const chartService = req.getService('ChartService');
       const redisCacheService = req.getService('RedisCacheService');
       async.auto({
-          cacheData: (next) => redisCacheService._process_chart_history1h({
+          cacheData: (next) => redisCacheService._process_chart_history({
               chartService: chartService,
               token: params.symbol,
               params: params,
-              time_exprire: time_exprire
+              time_exprire: time_exprire,
+              conditionCreateCache: conditionCreateCache,
+              key_cache: key_cache
           },next)
       }, function (err, ret) {
           if (err) {
