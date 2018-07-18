@@ -22,7 +22,7 @@
     },
     {
       "name"              : "kyber-create-cache",
-      "script"            : "createCache.js",
+      "script"            : "schedule.js",
       "watch"             : false
     }
   ]
