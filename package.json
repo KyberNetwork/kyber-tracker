@@ -13,7 +13,7 @@
     "test": "LOG_LEVEL=ERROR NODE_ENV=test node_modules/.bin/mocha -R spec --timeout 30000 test/index.js",
     "server": "node server.js",
     "crawler": "node crawl.js",
-    "createCache": "node createCache"
+    "createCache": "node schedule.js"
   },
   "repository": {
     "type": "git",

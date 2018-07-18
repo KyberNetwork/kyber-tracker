@@ -17,6 +17,6 @@ class BaseJob {
       logger.info(`Create Cache ${options.create_job.constructor.name} will be restart in ${options.time}`);
     });
   };
-  executeJob() {};
+  executeJob() {throw new Error('Implement me.');};
 }
 module.exports = BaseJob;

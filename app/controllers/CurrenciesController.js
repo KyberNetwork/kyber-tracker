@@ -37,22 +37,27 @@ module.exports = AppController.extends({
     Utils.cors(res);
 
     const CACHE_KEY = 'getConvertiblePairs';
-    const cachedData = LocalCache.getSync(CACHE_KEY);
-    if (cachedData) {
-      res.json(cachedData);
-      return;
-    }
-
     const CurrenciesService = req.getService('CurrenciesService');
-    CurrenciesService.getConvertiblePairs((err, ret) => {
+    const redisCacheService = req.getService('RedisCacheService');
+    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
       if (err) {
-        logger.error(err);
+        logger.error(err)
         res.json(ret);
         return;
       }
-
-      LocalCache.setSync(CACHE_KEY, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
-      res.json(ret);
+      if (ret) {
+        res.send(ret);
+        return;
+      }
+      CurrenciesService.getConvertiblePairs((err, rett) => {
+        if (err) {
+          logger.error(err);
+          res.json(rett);
+          return;
+        }
+        redisCacheService.setCacheByKey(CACHE_KEY, rett, {ttl: 5*Const.MINUTE_IN_MILLISECONDS});
+        res.json(rett);
+      });
     });
   },
 
@@ -60,22 +65,27 @@ module.exports = AppController.extends({
     Utils.cors(res);
 
     const CACHE_KEY = 'getPair24hData';
-    const cachedData = LocalCache.getSync(CACHE_KEY);
-    if (cachedData) {
-      res.json(cachedData);
-      return;
-    }
-
     const CurrenciesService = req.getService('CurrenciesService');
-    CurrenciesService.getPair24hData((err, ret) => {
+    const redisCacheService = req.getService('RedisCacheService');
+    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
       if (err) {
-        logger.error(err);
+        logger.error(err)
         res.json(ret);
         return;
       }
-
-      LocalCache.setSync(CACHE_KEY, ret, {ttl: Const.MINUTE_IN_MILLISECONDS});
-      res.json(ret);
+      if (ret) {
+        res.send(ret);
+        return;
+      }
+      CurrenciesService.getPair24hData((err, rett) => {
+        if (err) {
+          logger.error(err);
+          res.json(rett);
+          return;
+        }
+        redisCacheService.setCacheByKey(CACHE_KEY, rett, {ttl: Const.MINUTE_IN_MILLISECONDS});
+        res.json(rett);
+      });
     });
   },
 
@@ -187,22 +197,29 @@ module.exports = AppController.extends({
       }
       CACHE_KEY += 'usd';
     }
-    logger.info(CACHE_KEY);
-    const cachedData = LocalCache.getSync(CACHE_KEY);
-    if (cachedData) {
-      res.json(cachedData);
-      return;
-    }
     const service = req.getService('CurrenciesService');
-    service.get24hChangeData(params,(err, ret) => {
+    const redisCacheService = req.getService('RedisCacheService');
+    
+    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
       if (err) {
-        logger.error(err);
+        logger.error(err)
         res.json(ret);
         return;
       }
-      // cache 5'
-      LocalCache.setSync(CACHE_KEY, ret, {ttl: 5*Const.MINUTE_IN_MILLISECONDS});
-      res.json(ret);
+      if (ret) {
+        res.send(ret);
+        return;
+      }
+      service.get24hChangeData(params,(err, rett) => {
+        if (err) {
+          logger.error(err);
+          res.json(rett);
+          return;
+        }
+        // cache 5'
+        redisCacheService.setCacheByKey(CACHE_KEY, rett, {ttl: 5*Const.MINUTE_IN_MILLISECONDS});
+        res.json(rett);
+      });
     });
   },
 });

@@ -11,26 +11,27 @@ const tokens = network.tokens;
 module.exports = BaseService.extends({
   classname: 'RedisCacheService',
 
-  setCacheByKey: function (options, callback) {
-    RedisCache.setAsync(options.key_cache, JSON.stringify(options.data), options.time_exprire, callback);
+  setCacheByKey: function (key_cache, data, time_exprire) {
+    RedisCache.setAsync(key_cache, JSON.stringify(data), time_exprire, function (err, ret) {
+      if (err) {
+        logger.error(err)
+      }
+      logger.info("create key " + key_cache + " on redis " + ret)
+    });
   },
 
-  getCacheByKey: function (options, callback) {
-    RedisCache.getAsync(options.key_cache, callback);
+  getCacheByKey: function (key_cache, callBack) {
+    RedisCache.getAsync(key_cache, callBack);
   },
 
   _process_chart_history: function (options, callback) {
     if (!options.token || !tokens[options.token]) {
       return callback("token not supported")
     }
-    var this_ = this;
-
     // logger.info(options.params.from, options.params.to)
     options.params.seqType = Resolution.toColumn(options.params.resolution);
 
-    this_.getCacheByKey({
-      key_cache: options.key_cache
-    }, function (err, ret) {
+    RedisCache.getAsync(options.key_cache, function (err, ret) {
       if (err) {
         logger.error(err)
         return callback(err);
@@ -48,16 +49,12 @@ module.exports = BaseService.extends({
 
           //add to cache with rateType = sell and time 60
           if (options.conditionCreateCache) {
-            this_.setCacheByKey({
-              key_cache: options.key_cache,
-              data: res.getDataToCache,
-              time_exprire: options.time_exprire
-            }, function (err, res_1) {
+            RedisCache.setAsync(options.key_cache, JSON.stringify(res.getDataToCache), options.time_exprire, function (err, rett) {
               if (err) {
                 logger.info(err)
                 callback(err)
               }
-              logger.info("create key " + options.key_cache + " on redis " +res_1)
+              logger.info("create key " + options.key_cache + " on redis " + rett)
             });
           }
           return callback(null, res.getDataToCache)

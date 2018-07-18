@@ -418,7 +418,7 @@ module.exports = BaseService.extends({
     // async.auto(pairs, 10, callback);
     async.auto(pairs, 10, function(err, pairs){
       if (err) {
-        callback(e, pairs);
+        callback(err, pairs);
         return;
       }
       let price_now_eth = "-";
