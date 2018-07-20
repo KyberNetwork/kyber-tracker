@@ -115,6 +115,5 @@ module.exports = {
     }
 
     return false;
-  }
-
+  },
 };

@@ -8,8 +8,8 @@ const partners = network.partners
 const Const = require('../common/Const');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
-const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
 const logger = require('sota-core').getLogger('TradeService');
+const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 
 const UtilsHelper           = require('../common/Utils');
 
@@ -263,16 +263,22 @@ module.exports = BaseService.extends({
   // Use for topbar items
   getStats24h: function (callback) {
     const key = 'stats24h';
-    const cachedData = LocalCache.getSync(key);
-
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    this._getStats24h(key, callback);
+    const time_exprire = {ttl: Const.MINUTE_IN_MILLISECONDS}
+    let params={}
+    params.time_exprire = time_exprire
+    params.key = key
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      this._getStats24h(params, callback);
+    });
   },
 
-  _getStats24h: function (key, callback) {
+  _getStats24h: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const BurnedFeeModel = this.getModel('BurnedFeeModel');
     //const CMCService = this.getService('CMCService');
@@ -355,7 +361,7 @@ module.exports = BaseService.extends({
         // feeToBurn: feeToBurn.toFormat(2).toString()
       };
 
-      LocalCache.setSync(key, result, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      RedisCache.setAsync(options.key, JSON.stringify(result), options.time_exprire);
 
       return callback(null, result);
     });
@@ -518,7 +524,6 @@ module.exports = BaseService.extends({
 
   // Use for Volume charts
   getNetworkVolumes: function (options, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
 
@@ -526,14 +531,30 @@ module.exports = BaseService.extends({
     if (options.symbol) {
       key = options.symbol + '-' + key;
     }
-
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
+    if (options.fromDate) {
+      key = options.fromDate + '-' + key;
     }
+    if (options.toDate) {
+      key = options.toDate + '-' + key;
+    }
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      options.interval = interval;
+      options.period = period;
+      options.key = key;
+      this._getNetworkVolumes(options, callback);
+    });
+  },
 
-    const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
+  _getNetworkVolumes: function (options, callback){
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
     let params = [fromDate, toDate];
@@ -584,7 +605,7 @@ module.exports = BaseService.extends({
           })
         }
         const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[options.interval]);
         if (nowSeq > lastSeq) {
           const nullData = {
             [this._convertSeqColumnName(groupColumn)]: nowSeq,
@@ -596,8 +617,8 @@ module.exports = BaseService.extends({
         }
 
       } else {
-        const firstSeq = fromDate / Const.CHART_INTERVAL[interval];
-        const nowSeq = toDate / Const.CHART_INTERVAL[interval];
+        const firstSeq = fromDate / Const.CHART_INTERVAL[options.interval];
+        const nowSeq = toDate / Const.CHART_INTERVAL[options.interval];
         returnData.push({
           [this._convertSeqColumnName(groupColumn)]: firstSeq,
           sum: 0,
@@ -611,8 +632,7 @@ module.exports = BaseService.extends({
           count: 0
         });
       }
-
-      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      RedisCache.setAsync(options.key, JSON.stringify(returnData), options.time_exprire);
       return callback(null, returnData);
     });
   },
@@ -623,30 +643,31 @@ module.exports = BaseService.extends({
 
     let key = `burned-fee-total`;
 
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-
-
-    async.auto({
-      sum: (next) => {
-        BurnedFeeModel.sum('amount', {
-          where: '1 = 1'
-        }, next);
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
       }
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
+      if (ret) {
+        return callback(null, JSON.parse(ret));
       }
-
-      const burnedNoContract = network.preburntAmount || 0;
-      const sum = new BigNumber((ret.sum || 0).toString()).div(Math.pow(10, 18)).toNumber();
-
-      const returnData = {burned: sum + burnedNoContract};
-      LocalCache.setSync(key, returnData, {ttl: 10 * Const.MINUTE_IN_MILLISECONDS});
-      return callback(null, returnData);
+      async.auto({
+        sum: (next) => {
+          BurnedFeeModel.sum('amount', {
+            where: '1 = 1'
+          }, next);
+        }
+      }, (err, ret) => {
+        if (err) {
+          return callback(err);
+        }
+  
+        const burnedNoContract = network.preburntAmount || 0;
+        const sum = new BigNumber((ret.sum || 0).toString()).div(Math.pow(10, 18)).toNumber();
+  
+        const returnData = {burned: sum + burnedNoContract};
+        RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: 10 * Const.MINUTE_IN_MILLISECONDS});
+        return callback(null, returnData);
+      });
     });
   },
 
@@ -658,12 +679,14 @@ module.exports = BaseService.extends({
 
     let key = `burned-fee-${period}-${interval}`;
 
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      const groupColumn = this._getGroupColumnByIntervalParam(interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
@@ -732,8 +755,9 @@ module.exports = BaseService.extends({
         });
       }
 
-      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: Const.MINUTE_IN_MILLISECONDS});
       return callback(null, returnData);
+    });
     });
   },
 
@@ -748,12 +772,14 @@ module.exports = BaseService.extends({
       key = options.symbol + '-' + key;
     }
 
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      const groupColumn = this._getGroupColumnByIntervalParam(interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
@@ -811,8 +837,9 @@ module.exports = BaseService.extends({
         });
       }
 
-      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: Const.MINUTE_IN_MILLISECONDS});
       return callback(null, returnData);
+    });
     });
   },
 
@@ -827,12 +854,14 @@ module.exports = BaseService.extends({
       key = options.symbol + '-' + key;
     }
 
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    const groupColumn = this._getGroupColumnByIntervalParam(interval);
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      const groupColumn = this._getGroupColumnByIntervalParam(interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
@@ -901,8 +930,9 @@ module.exports = BaseService.extends({
         });
       }
 
-      LocalCache.setSync(key, returnData, {ttl: Const.MINUTE_IN_MILLISECONDS});
+      RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: Const.MINUTE_IN_MILLISECONDS});
       return callback(null, returnData);
+    });
     });
   },
 

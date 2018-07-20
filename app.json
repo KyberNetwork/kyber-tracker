@@ -19,6 +19,11 @@
       "name"              : "rate",
       "script"            : "rate.js",
       "watch"             : false
+    },
+    {
+      "name"              : "kyber-create-cache",
+      "script"            : "schedule.js",
+      "watch"             : false
     }
   ]
 }

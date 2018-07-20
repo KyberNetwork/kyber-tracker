@@ -7,8 +7,8 @@ const Const         = require('../common/Const');
 const network       = require('../../config/network');
 const Utils         = require('sota-core').load('util/Utils');
 const BaseService   = require('sota-core').load('service/BaseService');
-const LocalCache    = require('sota-core').load('cache/foundation/LocalCache');
 const logger        = require('sota-core').getLogger('CMCService');
+const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 
 const CMC_GRAPH_API_TICKER = 300 * 1000; // 5 minutes in milliseconds
 
@@ -17,49 +17,53 @@ module.exports = BaseService.extends({
 
   getCurrentPrice: function(symbol, callback) {
     const key = 'price-' + symbol;
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    if (!symbol || typeof symbol !== 'string') {
-      return callback(`Cannot get price of invalid symbol: ${symbol}`);
-    }
-
-    const tokenInfo = network.tokens[symbol];
-    if (!tokenInfo) {
-      return callback(`Cannot find token info of symbol: ${symbol}`);
-    }
-
-    request
-      .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
-      .end((err, response) => {
-        if (err) {
-          return callback(err);
-        }
-
-        let price;
-        try {
-          price = parseFloat(response.body[0].price_usd);
-        } catch (e) {
-          return callback(e);
-        }
-
-        logger.debug(`Current price of [${symbol}] is: $${price}`);
-        LocalCache.setSync(key, price, { ttl: Const.MINUTE_IN_MILLISECONDS });
-        return callback(null, price);
-      });
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, ret);
+      }
+      if (!symbol || typeof symbol !== 'string') {
+        return callback(`Cannot get price of invalid symbol: ${symbol}`);
+      }
+  
+      const tokenInfo = network.tokens[symbol];
+      if (!tokenInfo) {
+        return callback(`Cannot find token info of symbol: ${symbol}`);
+      }
+  
+      request
+        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .end((err, response) => {
+          if (err) {
+            return callback(err);
+          }
+  
+          let price;
+          try {
+            price = parseFloat(response.body[0].price_usd);
+          } catch (e) {
+            return callback(e);
+          }
+  
+          logger.debug(`Current price of [${symbol}] is: $${price}`);
+          RedisCache.setAsync(key, price, { ttl: Const.MINUTE_IN_MILLISECONDS });
+          return callback(null, price);
+        });
+    });
   },
 
   getAllRates: function(callback) {
     const key = 'kyber-all-rates';
-    const cachedData = LocalCache.getSync(key);
-
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    request
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      request
       .get(`https://production-cache.kyber.network/getRate`)
       .end((err, response) => {
         if (err) {
@@ -81,57 +85,60 @@ module.exports = BaseService.extends({
           return new BigNumber(rate[0].rate).div(Math.pow(10, network.tokens[dest].decimal)).toNumber();
         }
 
-        LocalCache.setSync(key, body, { ttl: Const.MINUTE_IN_MILLISECONDS });
+        RedisCache.setAsync(key, JSON.stringify(body), { ttl: Const.MINUTE_IN_MILLISECONDS });
 
         return callback(null, body);
       });
+    });
   },
 
   getCurrentRate: function (symbol, base, callback) {
     const key = 'kyber-rate-' + symbol;
-    const cachedData = LocalCache.getSync(key);
-
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    if (!symbol || typeof symbol !== 'string') {
-      return callback(`Cannot get price of invalid symbol: ${symbol}`);
-    }
-
-    if (!base || typeof base !== 'string') {
-      return callback(`Cannot get price of invalid base: ${base}`);
-    }
-
-    const tokenInfo = network.tokens[symbol];
-    if (!tokenInfo) {
-      return callback(`Cannot find token info of symbol: ${symbol}`);
-    }
-
-    request
-      .get(`https://production-cache.kyber.network/getRate`)
-      .end((err, response) => {
-        if (err) {
-          return callback(err);
-        }
-
-        if(!response || !response.body || !response.body.data || !response.body.data.length){
-          return callback("cannot get response data");
-        }
-
-        let rateData = response.body.data.filter(x => {
-          return x.source == symbol && x.dest == base
-        })
-
-        if(!rateData || !rateData.length){
-          return callback(null, {rate:0});
-        }
-
-        if (rateData[0].rate) {
-          LocalCache.setSync(key, rateData[0], { ttl: Const.MINUTE_IN_MILLISECONDS });
-        }
-        return callback(null, rateData[0]);
-      });
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      if (!symbol || typeof symbol !== 'string') {
+        return callback(`Cannot get price of invalid symbol: ${symbol}`);
+      }
+  
+      if (!base || typeof base !== 'string') {
+        return callback(`Cannot get price of invalid base: ${base}`);
+      }
+  
+      const tokenInfo = network.tokens[symbol];
+      if (!tokenInfo) {
+        return callback(`Cannot find token info of symbol: ${symbol}`);
+      }
+  
+      request
+        .get(`https://production-cache.kyber.network/getRate`)
+        .end((err, response) => {
+          if (err) {
+            return callback(err);
+          }
+  
+          if(!response || !response.body || !response.body.data || !response.body.data.length){
+            return callback("cannot get response data");
+          }
+  
+          let rateData = response.body.data.filter(x => {
+            return x.source == symbol && x.dest == base
+          })
+  
+          if(!rateData || !rateData.length){
+            return callback(null, {rate:0});
+          }
+  
+          if (rateData[0].rate) {
+            RedisCache.setAsync(key, JSON.stringify(rateData[0]), { ttl: Const.MINUTE_IN_MILLISECONDS });
+          }
+          return callback(null, rateData[0]);
+        });
+    });
   },
 
   getPriceOfAllTokens: function (callback) {
@@ -159,32 +166,35 @@ module.exports = BaseService.extends({
 
   getCMCTokenInfo: function (symbol, callback) {
     const key = 'cmc-info-' + symbol;
-    const cachedData = LocalCache.getSync(key);
-    if (cachedData) {
-      return callback(null, cachedData);
-    }
-
-    if (!symbol || typeof symbol !== 'string') {
-      return callback(`Cannot get config of invalid symbol: ${symbol}`);
-    }
-
-    const tokenInfo = network.tokens[symbol];
-    if (!tokenInfo) {
-      return callback(`Cannot find token config of symbol: ${symbol}`);
-    }
-
-    request
-      .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
-      .end((err, response) => {
-        if (err) {
-          return callback(err);
-        }
-
-        const result = response.body[0];
-
-        LocalCache.setSync(key, result, { ttl: Const.MINUTE_IN_MILLISECONDS });
-        return callback(null, result);
-      });
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      if (!symbol || typeof symbol !== 'string') {
+        return callback(`Cannot get config of invalid symbol: ${symbol}`);
+      }
+  
+      const tokenInfo = network.tokens[symbol];
+      if (!tokenInfo) {
+        return callback(`Cannot find token config of symbol: ${symbol}`);
+      }
+  
+      request
+        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .end((err, response) => {
+          if (err) {
+            return callback(err);
+          }
+  
+          const result = response.body[0];
+  
+          RedisCache.setAsync(key, JSON.stringify(result), { ttl: Const.MINUTE_IN_MILLISECONDS });
+          return callback(null, result);
+        });
+    });
   },
 
   getHistoricalPrice: function (symbol, timeInMillis, callback) {

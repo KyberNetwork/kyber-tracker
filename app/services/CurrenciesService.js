@@ -9,7 +9,6 @@ const helper = require('../common/Utils');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
 const ExSession = require('sota-core').load('common/ExSession');
-const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
 const logger = require('sota-core').getLogger('CurrenciesService');
 
 const tokens = network.tokens;
@@ -419,7 +418,7 @@ module.exports = BaseService.extends({
     // async.auto(pairs, 10, callback);
     async.auto(pairs, 10, function(err, pairs){
       if (err) {
-        callback(e, pairs);
+        callback(err, pairs);
         return;
       }
       let price_now_eth = "-";
