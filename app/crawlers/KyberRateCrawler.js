@@ -18,7 +18,7 @@ const rateTokenArrays       = Utils.getRateTokenArray();
 
 let LAST_PROCESSED_BLOCK = 0;
 const REQUIRED_CONFIRMATION = 2;
-const BLOCK_STEP_SIZE = 20; // ~5 mins
+const BLOCK_STEP_SIZE = 40; // ~10 mins
 const PARALLEL_QUERY_SIZE = 20;
 const PARALLEL_INSERT_LIMIT = 10;
 
@@ -57,7 +57,12 @@ class KyberRateCrawler {
   processBlocks (callback) {
     async.auto({
       latestOnchainBlock: (next) => {
-        web3.eth.getBlockNumber(next);
+        const end_block = process.env["RATE_BLOCK_END"];
+        if (end_block) {
+          next(null, end_block);
+        } else {
+          web3.eth.getBlockNumber(next);
+        }
       },
       process: ['latestOnchainBlock', (ret, next) => {
         const nextBlocks = this._breakPoints(LAST_PROCESSED_BLOCK + BLOCK_STEP_SIZE, ret.latestOnchainBlock);

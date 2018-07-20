@@ -1,23 +1,23 @@
 {
   "apps" : [
     {
-      "name"              : "kyber-tracker",
+      "name"              : "web",
       "script"            : "server.js",
       "watch"             : false
     },
     {
-      "name"              : "kyber-burned-crawler",
-      "script"            : "crawl.js",
+      "name"              : "burn",
+      "script"            : "burn.js",
       "watch"             : false
     },
     {
-      "name"              : "kyber-trade-crawler",
-      "script"            : "crawl2.js",
+      "name"              : "trade",
+      "script"            : "trade.js",
       "watch"             : false
     },
     {
-      "name"              : "kyber-rate-crawler",
-      "script"            : "crawl3.js",
+      "name"              : "rate",
+      "script"            : "rate.js",
       "watch"             : false
     }
   ]

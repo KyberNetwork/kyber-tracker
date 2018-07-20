@@ -522,6 +522,17 @@ table.table-round th {
 .table-more{
   color: #2ed573;
 }
+.fresher::after{
+  content: '';
+  background-color: #2ed573;
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  position: relative;
+  bottom: 5px;
+  left: 5px;
+}
 
 a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   color: #2ed573;
