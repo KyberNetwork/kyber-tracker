@@ -5,6 +5,7 @@ const Checkit                 = require('cc-checkit');
 const Const                   = require('../common/Const');
 const Utils                   = require('sota-core').load('util/Utils');
 const logger                  = log4js.getLogger('TradeController');
+const RedisCache              = require('sota-core').load('cache/foundation/RedisCache');
 
 module.exports = AppController.extends({
   classname: 'TradeController',
@@ -22,9 +23,38 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-
+    let key = `tradeslist-${params.page}-${params.limit}`;
+    if (params.symbol) {
+      key = params.symbol + '-' + key;
+    }
+    if (params.fromDate) {
+      key = params.fromDate + '-' + key;
+    }
+    if (params.toDate) {
+      key = params.toDate + '-' + key;
+    }
     const TradeService = req.getService('TradeService');
-    TradeService.getTradesList(params, this.ok.bind(this, req, res));
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        res.send(JSON.parse(ret));
+        return;
+      }
+      TradeService.getTradesList(params, (err,ret_1) => {
+        if(err){
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+        if(ret_1){
+          RedisCache.setAsync(key, JSON.stringify(ret_1), {ttl: Const.MINUTE_IN_MILLISECONDS});
+          res.send(ret_1)
+          return;
+        }
+      });
+    });
   },
 
   getTradeDetails: function (req, res) {
@@ -56,8 +86,32 @@ module.exports = AppController.extends({
     let fromDate = params.fromDate || 0;
     let toDate = params.toDate || now;
 
+    let key = `topToken-${Math.floor(fromDate/60)}-${Math.floor(toDate/60)}`;
+
     const TradeService = req.getService('TradeService');
-    TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
+    RedisCache.getAsync(key, (err,ret)=>{
+      if(err){
+        logger.error(err)
+      }
+      if (ret) {
+        res.send(JSON.parse(ret));
+        return;
+      }
+      TradeService.getTopTokensList(fromDate, toDate, (err,ret_1) => {
+        if(err){
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+        if(ret_1){
+          RedisCache.setAsync(key, JSON.stringify(ret_1), {ttl: Const.MINUTE_IN_MILLISECONDS});
+          res.send(ret_1)
+          return;
+        }
+      });
+    });
+    // const TradeService = req.getService('TradeService');
+    // TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
   },
 
   getStats24h: function (req, res) {
@@ -78,7 +132,10 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-
+    const time_exprire = {
+      ttl: Const.MINUTE_IN_MILLISECONDS
+    }
+    params.time_exprire = time_exprire
     const TradeService = req.getService('TradeService');
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },

@@ -8,7 +8,6 @@ const Const = require('../common/Const');
 const helper = require('../common/Utils');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
-const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
 const logger = require('sota-core').getLogger('CurrenciesService');
 const Resolution              = require('../common/Resolution');
 

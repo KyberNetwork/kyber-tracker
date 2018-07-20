@@ -5,7 +5,6 @@ const Checkit                 = require('cc-checkit');
 const Const                   = require('../common/Const');
 const Utils                   = require('../common/Utils');
 const network                 = require('../../config/network');
-const LocalCache              = require('sota-core').load('cache/foundation/LocalCache');
 const logger                  = log4js.getLogger('CurrenciesController');
 
 module.exports = AppController.extends({
@@ -89,61 +88,18 @@ module.exports = AppController.extends({
     });
   },
 
-  _waitForCache: function (key, timeout, callback){
-    if (timeout <= 0) {
-      return callback("timeout", null);
-    }
-
-    let value = LocalCache.getSync(key);
-    if(!value) {
-      setTimeout(() => {
-        this._waitForCache(key, timeout - 150, callback)
-      }, 150);
-    } else {
-      callback(null, value);
-    }
-  },
-
   getAllRateInfo: function (req, res) {
     Utils.cors(res);
     const service = req.getService('CurrenciesService');
     
     const CACHE_KEY = 'allrates';
-    const CACHE_FLAG = 'allrates-flag';
     const CACHE_TTL = 10 * Const.MINUTE_IN_MILLISECONDS;
-    const PRELOAD_TIMING = CACHE_TTL - 60000; // 60 seconds
-
-    const cachedData = LocalCache.getSync(CACHE_KEY);
-
-    if (cachedData) {
-      res.json(cachedData.value);
-      if (Date.now() - cachedData.timestamp < PRELOAD_TIMING ||
-       LocalCache.getSync(CACHE_FLAG) == '1') {
-        return;
-      }
-    }
-
-    if (LocalCache.getSync(CACHE_FLAG) == '1') {
-      this._waitForCache(CACHE_KEY, 10000, (err, cacheValue) => {
-        if (err) {
-          LocalCache.setSync(CACHE_FLAG, '0');
-          res.json({error: err});
-        } else {
-          res.json(cacheValue.value);
-        }
-      });
-      return;
-    } else {
-      LocalCache.setSync(CACHE_FLAG, '1');
-    }
-
+    const redisCacheService = req.getService('RedisCacheService');
     var loadData = () => {
-      try {
         service.getAllRateInfo((err, ret) => {
           if (err) {
-            LocalCache.setSync(CACHE_FLAG, '0');
             logger.error(err);
-            !cachedData && res.json(ret);
+            res.json(ret);
             return;
           }
           // pack the result
@@ -160,22 +116,23 @@ module.exports = AppController.extends({
               item.p.push(p.rate);
             });
           });
-          LocalCache.setSync(CACHE_KEY, {timestamp: Date.now(), value: pack},
-            {ttl: CACHE_TTL});
-          LocalCache.setSync(CACHE_FLAG, '0');
-          !cachedData && res.json(pack);
+          redisCacheService.setCacheByKey(CACHE_KEY, pack, {ttl: CACHE_TTL});
+          res.json(pack);
         });
-      } catch (exception) {
-        logger.error(exception);
-        !cachedData && res.json([]);
-      }
     };
-
-    //if (!cachedData) {
+    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
+      if (err) {
+        logger.error(err)
+        res.json(ret);
+        return;
+      }
+      if (ret) {
+        res.send(ret);
+        return;
+      }
       loadData();
-    //} else {
-    //  setTimeout(loadData, 100);
-    //}
+    });
+    
   },
 
   // rate 24h change
