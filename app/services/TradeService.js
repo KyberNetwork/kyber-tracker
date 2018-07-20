@@ -537,7 +537,6 @@ module.exports = BaseService.extends({
     if (options.toDate) {
       key = options.toDate + '-' + key;
     }
-    console.log(key)
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
