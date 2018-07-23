@@ -153,7 +153,7 @@ export default {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
     },
     getTokenImageLink (symbol) {
-      let icon = this.tokens[symbol].icon || (symbol.toLowerCase() + ".svg");
+      let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
       // if (!this.tokens[symbol].hidden) {
       //   return 'images/tokens/' + icon;
       // }
