@@ -78,7 +78,7 @@ module.exports = BaseService.extends({
 
           if (!rate || !rate.length) return 0;
           
-          return new BigNumber(rate[0].rate).div(Math.pow(10, network.tokens[dest].decimal)).toNumber();
+          return new BigNumber(rate[0].rate).div(Math.pow(10, 18)).toNumber();
         }
 
         LocalCache.setSync(key, body, { ttl: Const.MINUTE_IN_MILLISECONDS });
