@@ -449,35 +449,35 @@ module.exports = {
       "address": "0x66186008C1050627F979d464eABb258860563dbE",
       "symbol": "MDS",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "LEND": {
       "name": "EthLend",
       "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
       "symbol": "LEND",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "WINGS": {
       "name": "Wings",
       "address": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
       "symbol": "WINGS",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "MTL": {
       "name": "Metal",
       "address": "0xF433089366899D83a9f26A773D59ec7eCF30355e",
       "symbol": "MTL",
       "decimal": 8,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "WABI": {
       "name": "WaBi",
       "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
       "symbol": "WABI",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "NULS": {
       "name": "Nuls",
