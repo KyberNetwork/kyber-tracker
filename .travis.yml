@@ -28,12 +28,12 @@ script:
   # - npm test
   - npm run build-prod
 
-# after_success:
-#   - docker --version
-#   - docker build -f Dockerfile -t kybernetwork/kyber-tracker:$TRAVIS_COMMIT .
+after_success:
+  - docker --version
+  - docker build -f Dockerfile -t kybernetwork/kyber-tracker:$TRAVIS_COMMIT .
 
-# deploy:
-#   provider: script
-#   script: bash .travis/docker_push
-#   on:
-#     all_branches: true
+deploy:
+  provider: script
+  script: bash .travis/docker_push
+  on:
+    all_branches: true
