@@ -1,4 +1,10 @@
-FROM node:8
-COPY . /kyber-tracker
+FROM node:8 as build-env
+COPY . /kyber-tracker/
 WORKDIR /kyber-tracker
-RUN npm install
+RUN npm install && npm run build-prod
+
+FROM node:8-slim
+ENV NODE_ENV=production
+COPY --from=build-env /kyber-tracker /kyber-tracker
+ENTRYPOINT ["/kyber-tracker/entrypoint.sh"]
+CMD ["help"]
