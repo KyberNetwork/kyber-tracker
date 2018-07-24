@@ -19,12 +19,10 @@ before_install:
 
 install:
   - npm install
-  - npm install -g knex
 
 before_script:
   - cp .env.ci .env
-  - npm run init-db
-  - npm run seeds
+  - mysql -u kyber_tracker -p kyber_tracker kyber_tracker < ./db/dump/kyber_tracker_2018-07-24.sql
 
 script:
   - npm test
