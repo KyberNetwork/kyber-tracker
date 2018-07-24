@@ -8,4 +8,5 @@ ENV NODE_ENV=production
 COPY --from=build-env /kyber-tracker /kyber-tracker
 WORKDIR /kyber-tracker
 ENTRYPOINT ["/kyber-tracker/entrypoint.sh"]
+EXPOSE 8000
 CMD ["help"]
