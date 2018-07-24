@@ -22,7 +22,7 @@ install:
 
 before_script:
   - cp .env.ci .env
-  - mysql -u kyber_tracker -p kyber_tracker kyber_tracker < ./db/dump/kyber_tracker_2018-07-24.sql
+  - mysql -u kyber_tracker --password=kyber_tracker kyber_tracker < ./db/dump/kyber_tracker_2018-07-24.sql
 
 script:
   - npm test
