@@ -14,21 +14,24 @@ addons:
 
 before_install:
   - mysql -u root -e "CREATE DATABASE kyber_tracker;"
-  - mysql -u root -e "CREATE USER 'kyber_tracker'@'127.0.0.1' IDENTIFIED BY 'kyber_tracker';"
-  - mysql -u root -e "GRANT ALL ON kyber_tracker.* TO 'kyber_tracker'@'127.0.0.1';"
+  - mysql -u root -e "CREATE USER 'kyber_tracker'@'localhost' IDENTIFIED BY 'kyber_tracker';"
+  - mysql -u root -e "GRANT ALL ON kyber_tracker.* TO 'kyber_tracker'@'localhost';"
 
 install:
   - npm install
+  - npm install -g knex
 
 before_script:
   - cp .env.ci .env
+  - npm run init-db
+  - npm run seeds
 
 script:
   - npm test
 
 # after_success:
 #   - docker --version
-#   - docker build -f Dockerfile.next -t kybernetwork/reserve-dashboard:$TRAVIS_COMMIT .
+#   - docker build -f Dockerfile -t kybernetwork/kyber-tracker:$TRAVIS_COMMIT .
 
 # deploy:
 #   provider: script
