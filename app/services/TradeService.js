@@ -148,7 +148,9 @@ module.exports = BaseService.extends({
         });
 
         return callback(null, _.sortBy(supportedTokens, (e) => {
-          return -e.volumeUSD;
+            return -e.isNewToken;
+        },(e) => {
+            return -e.volumeUSD;
         }));
       });
     
