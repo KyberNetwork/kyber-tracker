@@ -21,7 +21,7 @@
       "watch"             : false
     },
     {
-      "name"              : "kyber-create-cache",
+      "name"              : "schedule",
       "script"            : "schedule.js",
       "watch"             : false
     }

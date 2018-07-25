@@ -8,13 +8,13 @@ declare -A scripts=([web]=server.js
 		    [burn]=burn.js
 		    [trade]=trade.js
 		    [rate]=rate.js
-		    [kyber-create-cache]=schedule.js)
+		    [schedule]=schedule.js)
 
 usage(){
     cat <<EOF
 ./entrypoint.sh <application-name>
 
-application names: web, burn, trade, rate, kyber-create-cache
+application names: web, burn, trade, rate, schedule
 EOF
 }
 
