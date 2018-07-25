@@ -147,7 +147,9 @@ module.exports = BaseService.extends({
           }
         });
 
-        return callback(null, _.orderBy(supportedTokens, ['isNewToken', 'volumeUSD'], ['desc', 'desc']));
+        return callback(null, _.sortBy(supportedTokens, (e) => {
+          return -e.volumeUSD;
+        }));
       });
     
   },
