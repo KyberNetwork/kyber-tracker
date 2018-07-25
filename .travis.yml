@@ -1,0 +1,39 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "8"
+
+services:
+  - docker
+  - redis-server
+
+addons:
+  mariadb: '10.2'
+
+before_install:
+  - mysql -u root -e "CREATE DATABASE kyber_tracker;"
+  - mysql -u root -e "CREATE USER 'kyber_tracker'@'localhost' IDENTIFIED BY 'kyber_tracker';"
+  - mysql -u root -e "GRANT ALL ON kyber_tracker.* TO 'kyber_tracker'@'localhost';"
+
+install:
+  - npm install
+
+before_script:
+  - cp .env.ci .env
+  - mysql -u kyber_tracker --password=kyber_tracker kyber_tracker < ./db/dump/kyber_tracker_2018-07-24.sql
+
+script:
+  # - npm test
+  - npm run build-prod
+
+after_success:
+  - docker --version
+  - docker build -f Dockerfile -t kybernetwork/kyber-tracker:$TRAVIS_COMMIT .
+
+deploy:
+  provider: script
+  script: bash .travis/docker_push
+  on:
+    all_branches: true
