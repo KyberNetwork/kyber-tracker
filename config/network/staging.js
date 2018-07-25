@@ -496,6 +496,8 @@ module.exports = {
     "averageBlockTime": 15000,
     "startBlockNumber": 5700000,
     "startBlockNumberV2": 5899403,
+		"rateBlockStepSize": 40,
+		"timeIsNewToken": 3 * 24 * 60 * 60 * 1000,
   
     "partners": {
       "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

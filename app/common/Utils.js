@@ -120,7 +120,7 @@ module.exports = {
   isNewToken (tokenSymbol) {
       var bornMs = tokens[tokenSymbol].hidden;
       if (typeof bornMs != 'number') return false;
-      return Date.now() <= bornMs + 24 * 60 * 60 * 1000;
+      return Date.now() <= bornMs + (network.timeIsNewToken || 3 * 24 * 60 * 60 * 1000);
   }
 
 };
