@@ -61,7 +61,7 @@
       <template slot="body" scope="slot">
         <tr>
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
-          <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> <span v-bind:class="{ fresher: isNewToken(slot.item) }">{{ slot.item.name }}</span></td>
+          <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> <span v-bind:class="{ fresher: slot.item.isNewToken }">{{ slot.item.name }}</span></td>
           <td  class="text-left pl-1">{{ slot.item.symbol }}</td>
           <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
@@ -88,7 +88,7 @@
 
       <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
         <tr @click="toTokenDetails(slot.item.symbol)">
-          <td  class="text-left pl-4" style="white-space:nowrap !important"><span v-bind:class="{ fresher: isNewToken(slot.item) }">{{ slot.item.symbol }}</span></td>
+          <td  class="text-left pl-4" style="white-space:nowrap !important"><span v-bind:class="{ fresher: slot.item.isNewToken }">{{ slot.item.symbol }}</span></td>
           <td class="text-right pr-4">{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-right pr-4">{{ slot.item.volumeETH }}</td>
         </tr>
@@ -146,9 +146,9 @@ export default {
       // return !this.tokens[item.symbol].hidden;
       return util.shouldShowToken(item.symbol)
     },
-    isNewToken(item) {
-      return util.isNewToken(item.symbol);
-    },
+    // isNewToken(item) {
+    //   return util.isNewToken(item.symbol);
+    // },
     formatVolumeUSD (item) {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
     },

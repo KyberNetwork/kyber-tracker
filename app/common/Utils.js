@@ -115,6 +115,12 @@ module.exports = {
     }
 
     return false;
+  },
+
+  isNewToken (tokenSymbol) {
+      var bornMs = tokens[tokenSymbol].hidden;
+      if (typeof bornMs != 'number') return false;
+      return Date.now() <= bornMs + 24 * 60 * 60 * 1000;
   }
 
 };

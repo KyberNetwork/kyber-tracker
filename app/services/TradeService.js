@@ -141,6 +141,7 @@ module.exports = BaseService.extends({
               volumeUSD: volumeUSD.toNumber(),
               volumeETH: ethVolume.toFormat(4).toString(),
               volumeEthNumber: ethVolume.toNumber(),
+              isNewToken: UtilsHelper.isNewToken(token.symbol)
             })
 
           }
