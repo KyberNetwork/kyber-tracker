@@ -387,7 +387,7 @@ module.exports = BaseService.extends({
   get24hChangeData: function (options, callback) {
     if(!tokens) return callback(null, {});
     
-    let pairs = {}
+    let pairs = {};
 
     Object.keys(tokens).map(token => {
       // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
@@ -401,7 +401,7 @@ module.exports = BaseService.extends({
           fromCurrencyCode: "ETH",
         }, asyncCallback)
       }
-    })
+    });
 
     if(options.usd){
       const nowInMs = Date.now();
@@ -409,60 +409,79 @@ module.exports = BaseService.extends({
       const dayAgo = nowInMs - DAY_IN_MSSECONDS;
       const cmcService = this.getService('CMCService');
       pairs.price_now_eth = (callback) => {
-        cmcService.getHistoricalPrice('ETH', nowInMs, callback);
-      }
+        cmcService.getCurrentPrice('ETH', callback);
+      };
       pairs.price_24h_eth = (callback) => {
         cmcService.getHistoricalPrice('ETH', dayAgo, callback);
       }
     }
-    
+    pairs.allRates = this.getService('CMCService').getAllRates;
     // async.auto(pairs, 10, callback);
-    async.auto(pairs, 10, function(err, pairs){
+    async.auto(pairs, 10, function (err, pairs) {
       if (err) {
         callback(err, pairs);
         return;
       }
       let price_now_eth = "-";
       let price_24h_eth = "-";
-      if (pairs.price_now_eth && pairs.price_24h_eth){
-        price_now_eth = pairs.price_now_eth.price_usd;
+      const rates = pairs.allRates;
+
+      delete pairs.allRates;
+
+      if (pairs.price_now_eth && pairs.price_24h_eth) {
+        price_now_eth = pairs.price_now_eth;
         price_24h_eth = pairs.price_24h_eth.price_usd;
         delete pairs.price_now_eth;
         delete pairs.price_24h_eth;
         Object.values(pairs).forEach((value) => {
           let change_usd_24h = "-", rate_usd_now = "-";
-          if (value.rate_eth_now && value.old_rate_eth){
-            change_usd_24h=0
-            if (value.old_rate_eth !== 0){
-              change_usd_24h = (((value.rate_eth_now*price_now_eth) - (value.old_rate_eth*price_24h_eth))*100)/(value.old_rate_eth*price_24h_eth);
+          const rate_production_cache = _.find(rates.data, (x) => {
+            return x.source === value.token_symbol
+          });
+          if (rate_production_cache && rate_production_cache.rate !== 0) {
+            value.rate_eth_now = new BigNumber(rate_production_cache.rate).div(Math.pow(10, 18)).toNumber();
+          }
+          if (value.rate_eth_now && value.old_rate_eth) {
+            change_usd_24h = 0;
+            if (value.old_rate_eth !== 0) {
+              change_usd_24h = (((value.rate_eth_now * price_now_eth) - (value.old_rate_eth * price_24h_eth)) * 100) / (value.old_rate_eth * price_24h_eth);
             }
           }
-          if (value.rate_eth_now ){
+          if (value.rate_eth_now) {
             rate_usd_now = value.rate_eth_now * price_now_eth
           }
-          value.change_usd_24h = change_usd_24h
-          value.rate_usd_now = rate_usd_now
+          value.change_usd_24h = change_usd_24h;
+          value.rate_usd_now = rate_usd_now;
           delete value.old_rate_eth;
         });
-      }else{
+      } else {
         Object.values(pairs).forEach((value) => {
+          const rate_production_cache = _.find(rates.data, (x) => {
+            return x.source === value.token_symbol
+          });
+          if (rate_production_cache && rate_production_cache.rate !== 0) {
+            value.rate_eth_now = new BigNumber(rate_production_cache.rate).div(Math.pow(10, 18)).toNumber();
+          }
+          delete value.change_usd_24h;
+          delete value.rate_usd_now;
           delete value.old_rate_eth;
         });
       }
+
       //add ETH_ETH
-      pairs["ETH_ETH"]={
-        timestamp:Date.now(),
-        token_name:tokens["ETH"].name,
+      pairs["ETH_ETH"] = {
+        timestamp: Date.now(),
+        token_name: tokens["ETH"].name,
         token_symbol: tokens["ETH"].symbol,
         token_decimal: tokens["ETH"].decimal,
         token_address: tokens["ETH"].address,
         rate_eth_now: 1,
         change_eth_24h: "-",
-      }
-      if(options.usd){
-        var change_usd_24h = "-"
-        if(price_now_eth !== "-" && price_24h_eth !== "-" && price_24h_eth!==0){
-          change_usd_24h = (price_now_eth - price_24h_eth)*100/price_24h_eth
+      };
+      if (options.usd) {
+        let change_usd_24h = "-"
+        if (price_now_eth !== "-" && price_24h_eth !== "-" && price_24h_eth !== 0) {
+          change_usd_24h = (price_now_eth - price_24h_eth) * 100 / price_24h_eth
         }
         pairs["ETH_ETH"].change_usd_24h = change_usd_24h;
         pairs["ETH_ETH"].rate_usd_now = price_now_eth;
@@ -479,8 +498,12 @@ module.exports = BaseService.extends({
     if(!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]){
       return callback("base not supported")
     }
-
-    let tokenSymbol = options.token
+    const CACHE_KEY = 'get24hChangeData' + options.token;
+    const cachedData = LocalCache.getSync(CACHE_KEY);
+    if (cachedData) {
+      return callback(null, cachedData);
+    }
+    let tokenSymbol = options.token;
     // let baseSymbol = options.fromCurrencyCode
     let tokenData = tokens[tokenSymbol]
 
@@ -513,14 +536,14 @@ module.exports = BaseService.extends({
       }
       const old_rate_eth = ret.rate.length ? ret.rate[0].rate_eth_24h || 0 : null;
       const rate_eth_now = ret.rateNow.length ? ret.rateNow[0].rate_eth_now || 0 : null;
-      var change_eth_24h = "-";
+      let change_eth_24h = "-";
       if(old_rate_eth && rate_eth_now){
         change_eth_24h=0
         if(old_rate_eth !== 0){
           change_eth_24h = (rate_eth_now - old_rate_eth)*100/old_rate_eth;
         }
       }
-      return callback( null , {
+      let data = {
         timestamp: nowInMs,
         token_name: tokenData.name,
         token_symbol: tokenSymbol,
@@ -530,7 +553,9 @@ module.exports = BaseService.extends({
         rate_eth_now: rate_eth_now,
         old_rate_eth: old_rate_eth,
         change_eth_24h: change_eth_24h,
-      })
+      };
+      LocalCache.setSync(CACHE_KEY, data, {ttl: 5 * Const.MINUTE_IN_MILLISECONDS});
+      return callback( null , data)
     })
   },
 });

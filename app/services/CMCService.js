@@ -60,7 +60,7 @@ module.exports = BaseService.extends({
     }
 
     request
-      .get(`https://production-cache.kyber.network/getRate`)
+      .get(network.endpoints.getRate || "https://production-cache.kyber.network/getRate")
       .end((err, response) => {
         if (err) {
           return callback(err);
@@ -78,8 +78,8 @@ module.exports = BaseService.extends({
 
           if (!rate || !rate.length) return 0;
           
-          return new BigNumber(rate[0].rate).div(Math.pow(10, network.tokens[dest].decimal)).toNumber();
-        }
+          return new BigNumber(rate[0].rate).div(Math.pow(10, 18)).toNumber();
+        };
 
         LocalCache.setSync(key, body, { ttl: Const.MINUTE_IN_MILLISECONDS });
 
@@ -109,7 +109,7 @@ module.exports = BaseService.extends({
     }
 
     request
-      .get(`https://production-cache.kyber.network/getRate`)
+      .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
       .end((err, response) => {
         if (err) {
           return callback(err);

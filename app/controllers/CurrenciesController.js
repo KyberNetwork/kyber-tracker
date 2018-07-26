@@ -176,32 +176,32 @@ module.exports = AppController.extends({
     }).validateSync(req.allParams);
 
     if (err) {
-        res.badRequest(err.toString());
-        return;
-    }
-    var CACHE_KEY = 'get24hChangeData';
-    if(params.usd){
-      if(params.usd!=="1"){
-        res.badRequest("please request follow rule.");
-        return;
-      }
-      CACHE_KEY += 'usd';
-    }
-    logger.info(CACHE_KEY);
-    const cachedData = LocalCache.getSync(CACHE_KEY);
-    if (cachedData) {
-      res.json(cachedData);
+      res.badRequest(err.toString());
       return;
     }
+    // let CACHE_KEY = 'get24hChangeData';
+    // if (params.usd) {
+    //   if (params.usd !== "1") {
+    //     res.badRequest("please request follow rule.");
+    //     return;
+    //   }
+    //   CACHE_KEY += 'usd';
+    // }
+    // // logger.info(CACHE_KEY);
+    // const cachedData = LocalCache.getSync(CACHE_KEY);
+    // if (cachedData) {
+    //   res.json(cachedData);
+    //   return;
+    // }
     const service = req.getService('CurrenciesService');
-    service.get24hChangeData(params,(err, ret) => {
+    service.get24hChangeData(params, (err, ret) => {
       if (err) {
         logger.error(err);
         res.json(ret);
         return;
       }
       // cache 5'
-      LocalCache.setSync(CACHE_KEY, ret, {ttl: 5*Const.MINUTE_IN_MILLISECONDS});
+      // LocalCache.setSync(CACHE_KEY, ret, {ttl: 5 * Const.MINUTE_IN_MILLISECONDS});
       res.json(ret);
     });
   },
