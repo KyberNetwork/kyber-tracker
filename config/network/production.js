@@ -21,7 +21,6 @@ module.exports = {
   "tokens": {
     "ETH": {
       "name": "Ethereum",
-      "name": "Ethereum",
       "symbol": "ETH",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
