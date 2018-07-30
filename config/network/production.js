@@ -16,9 +16,11 @@ module.exports = {
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
     "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+    "burned":"0x2f8d2d194cbe1816411754a2fc9478a11f0707da481b11cff7c69791eb877ee1"
   },
   "tokens": {
     "ETH": {
+      "name": "Ethereum",
       "name": "Ethereum",
       "symbol": "ETH",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
@@ -137,7 +139,7 @@ module.exports = {
       "name": "Ripio Credit Network",
       "decimal": 18,
       "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-      "symbol": "RCN" 
+      "symbol": "RCN"
     },
     "ZIL": {
       "name": "Zilliqa",
@@ -149,7 +151,7 @@ module.exports = {
       "name": "Chain Link",
       "decimal": 18,
       "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
-      "symbol": "LINK"  
+      "symbol": "LINK"
     },
     "DAI": {
       "name": "Dai Stablecoin",
@@ -506,9 +508,9 @@ module.exports = {
 
   "supportedLanguage": ["en", "vi", "ko", "zh"],
   "mappingLang_Moment": {
-    "en" : "en", 
-    "vi" : "vi", 
-    "ko" : "ko", 
+    "en" : "en",
+    "vi" : "vi",
+    "ko" : "ko",
     "zh" : "zh-cn"
   }
 };
