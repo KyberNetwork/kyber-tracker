@@ -18,7 +18,8 @@ const rateTokenArrays       = Utils.getRateTokenArray();
 
 let LAST_PROCESSED_BLOCK = 0;
 const REQUIRED_CONFIRMATION = 2;
-const BLOCK_STEP_SIZE = 40; // ~10 mins
+// const BLOCK_STEP_SIZE = 40; // ~10 mins
+const BLOCK_STEP_SIZE = process.env['RATE_BLOCK_STEP_SIZE'] || network.rateBlockStepSize
 const PARALLEL_QUERY_SIZE = 20;
 const PARALLEL_INSERT_LIMIT = 10;
 

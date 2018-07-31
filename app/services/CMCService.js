@@ -27,26 +27,26 @@ module.exports = BaseService.extends({
       if (!symbol || typeof symbol !== 'string') {
         return callback(`Cannot get price of invalid symbol: ${symbol}`);
       }
-  
+
       const tokenInfo = network.tokens[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token info of symbol: ${symbol}`);
       }
-  
+
       request
         .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
         .end((err, response) => {
           if (err) {
             return callback(err);
           }
-  
+
           let price;
           try {
             price = parseFloat(response.body[0].price_usd);
           } catch (e) {
             return callback(e);
           }
-  
+
           logger.debug(`Current price of [${symbol}] is: $${price}`);
           RedisCache.setAsync(key, price, { ttl: Const.MINUTE_IN_MILLISECONDS });
           return callback(null, price);
@@ -64,7 +64,7 @@ module.exports = BaseService.extends({
         return callback(null, JSON.parse(ret));
       }
       request
-      .get(`https://production-cache.kyber.network/getRate`)
+      .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
       .end((err, response) => {
         if (err) {
           return callback(err);
@@ -76,14 +76,14 @@ module.exports = BaseService.extends({
 
         const body = response.body;
         body.getRate = function(source, dest) {
-          var rate = this.data.filter(x => {
-            return x.source == source && x.dest == dest;
+          let rate = this.data.filter(x => {
+            return x.source === source && x.dest === dest;
           });
 
           if (!rate || !rate.length) return 0;
-          
-          return new BigNumber(rate[0].rate).div(Math.pow(10, network.tokens[dest].decimal)).toNumber();
-        }
+
+          return new BigNumber(rate[0].rate).div(Math.pow(10, 18)).toNumber();
+        };
 
         RedisCache.setAsync(key, JSON.stringify(body), { ttl: Const.MINUTE_IN_MILLISECONDS });
 
@@ -95,7 +95,7 @@ module.exports = BaseService.extends({
   getCurrentRate: function (symbol, base, callback) {
     const key = 'kyber-rate-' + symbol;
     RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+      if(err){develop
         logger.error(err)
       }
       if (ret) {
@@ -104,35 +104,34 @@ module.exports = BaseService.extends({
       if (!symbol || typeof symbol !== 'string') {
         return callback(`Cannot get price of invalid symbol: ${symbol}`);
       }
-  
+
       if (!base || typeof base !== 'string') {
         return callback(`Cannot get price of invalid base: ${base}`);
       }
-  
+
       const tokenInfo = network.tokens[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token info of symbol: ${symbol}`);
       }
-  
       request
-        .get(`https://production-cache.kyber.network/getRate`)
+        .get(network.endpoints.getRate ||`https://production-cache.kyber.network/getRate`)
         .end((err, response) => {
           if (err) {
             return callback(err);
           }
-  
+
           if(!response || !response.body || !response.body.data || !response.body.data.length){
             return callback("cannot get response data");
           }
-  
+
           let rateData = response.body.data.filter(x => {
-            return x.source == symbol && x.dest == base
-          })
-  
+            return x.source === symbol && x.dest === base
+          });
+
           if(!rateData || !rateData.length){
             return callback(null, {rate:0});
           }
-  
+
           if (rateData[0].rate) {
             RedisCache.setAsync(key, JSON.stringify(rateData[0]), { ttl: Const.MINUTE_IN_MILLISECONDS });
           }
@@ -176,21 +175,21 @@ module.exports = BaseService.extends({
       if (!symbol || typeof symbol !== 'string') {
         return callback(`Cannot get config of invalid symbol: ${symbol}`);
       }
-  
+
       const tokenInfo = network.tokens[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token config of symbol: ${symbol}`);
       }
-  
+
       request
         .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
         .end((err, response) => {
           if (err) {
             return callback(err);
           }
-  
+
           const result = response.body[0];
-  
+
           RedisCache.setAsync(key, JSON.stringify(result), { ttl: Const.MINUTE_IN_MILLISECONDS });
           return callback(null, result);
         });

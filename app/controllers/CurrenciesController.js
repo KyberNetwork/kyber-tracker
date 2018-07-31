@@ -91,7 +91,7 @@ module.exports = AppController.extends({
   getAllRateInfo: function (req, res) {
     Utils.cors(res);
     const service = req.getService('CurrenciesService');
-    
+
     const CACHE_KEY = 'allrates';
     const CACHE_TTL = 10 * Const.MINUTE_IN_MILLISECONDS;
     const redisCacheService = req.getService('RedisCacheService');
@@ -132,7 +132,7 @@ module.exports = AppController.extends({
       }
       loadData();
     });
-    
+
   },
 
   // rate 24h change
@@ -143,40 +143,17 @@ module.exports = AppController.extends({
     }).validateSync(req.allParams);
 
     if (err) {
-        res.badRequest(err.toString());
-        return;
-    }
-    var CACHE_KEY = 'get24hChangeData';
-    if(params.usd){
-      if(params.usd!=="1"){
-        res.badRequest("please request follow rule.");
-        return;
-      }
-      CACHE_KEY += 'usd';
+      res.badRequest(err.toString());
+      return;
     }
     const service = req.getService('CurrenciesService');
-    const redisCacheService = req.getService('RedisCacheService');
-    
-    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
+    service.get24hChangeData(params,(err, ret) => {
       if (err) {
-        logger.error(err)
+        logger.error(err);
         res.json(ret);
         return;
       }
-      if (ret) {
-        res.send(ret);
-        return;
-      }
-      service.get24hChangeData(params,(err, rett) => {
-        if (err) {
-          logger.error(err);
-          res.json(rett);
-          return;
-        }
-        // cache 5'
-        redisCacheService.setCacheByKey(CACHE_KEY, rett, {ttl: 5*Const.MINUTE_IN_MILLISECONDS});
-        res.json(rett);
-      });
+      res.json(ret);
     });
   },
 });

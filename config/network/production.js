@@ -2,6 +2,7 @@ module.exports = {
   "endpoints": {
     "web3Provider": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
+	  "getRate": "https://production-cache.kyber.network/getRate"
   },
   "contractAddresses": {
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
@@ -15,6 +16,7 @@ module.exports = {
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
     "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+    "burned":"0x2f8d2d194cbe1816411754a2fc9478a11f0707da481b11cff7c69791eb877ee1"
   },
   "tokens": {
     "ETH": {
@@ -136,7 +138,7 @@ module.exports = {
       "name": "Ripio Credit Network",
       "decimal": 18,
       "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-      "symbol": "RCN" 
+      "symbol": "RCN"
     },
     "ZIL": {
       "name": "Zilliqa",
@@ -148,7 +150,7 @@ module.exports = {
       "name": "Chain Link",
       "decimal": 18,
       "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
-      "symbol": "LINK"  
+      "symbol": "LINK"
     },
     "DAI": {
       "name": "Dai Stablecoin",
@@ -449,35 +451,35 @@ module.exports = {
       "address": "0x66186008C1050627F979d464eABb258860563dbE",
       "symbol": "MDS",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "LEND": {
       "name": "EthLend",
       "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
       "symbol": "LEND",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "WINGS": {
       "name": "Wings",
       "address": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
       "symbol": "WINGS",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "MTL": {
       "name": "Metal",
       "address": "0xF433089366899D83a9f26A773D59ec7eCF30355e",
       "symbol": "MTL",
       "decimal": 8,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "WABI": {
       "name": "WaBi",
       "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
       "symbol": "WABI",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1532336400000
     },
     "NULS": {
       "name": "Nuls",
@@ -492,6 +494,8 @@ module.exports = {
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
   "startBlockNumberV2": 5926056,
+	"rateBlockStepSize": 40,
+	"newTokenDuration": 3 * 24 * 60 * 60 * 1000,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
@@ -503,9 +507,9 @@ module.exports = {
 
   "supportedLanguage": ["en", "vi", "ko", "zh"],
   "mappingLang_Moment": {
-    "en" : "en", 
-    "vi" : "vi", 
-    "ko" : "ko", 
+    "en" : "en",
+    "vi" : "vi",
+    "ko" : "ko",
     "zh" : "zh-cn"
   }
 };

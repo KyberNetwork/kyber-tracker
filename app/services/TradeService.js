@@ -99,16 +99,16 @@ module.exports = BaseService.extends({
         where block_timestamp > ? AND block_timestamp < ?
         group by ${side}_token_symbol`;
         adapter.execRaw(sql, [fromDate, toDate], callback);
-      }
+      };
       return obj;
-    }
+    };
 
     async.auto(makeSql('maker', makeSql('taker')),
       (err, ret) => {
         if (err) {
           return callback(err);
         }
-  
+
         const takers = _.keyBy(ret.taker, 'symbol');
         const makers = _.keyBy(ret.maker, 'symbol');
 
@@ -129,8 +129,8 @@ module.exports = BaseService.extends({
           if (UtilsHelper.shouldShowToken(symbol)){
             const token = network.tokens[symbol];
 
-            const tokenVolume = sumProp(symbol, 'token', token.decimal);   
-            const volumeUSD = sumProp(symbol, 'usd'); 
+            const tokenVolume = sumProp(symbol, 'token', token.decimal);
+            const volumeUSD = sumProp(symbol, 'usd');
             const ethVolume = sumProp(symbol, 'eth');
 
             supportedTokens.push({
@@ -141,16 +141,15 @@ module.exports = BaseService.extends({
               volumeUSD: volumeUSD.toNumber(),
               volumeETH: ethVolume.toFormat(4).toString(),
               volumeEthNumber: ethVolume.toNumber(),
+              isNewToken: UtilsHelper.isNewToken(token.symbol)
             })
 
           }
         });
 
-        return callback(null, _.sortBy(supportedTokens, (e) => {
-          return -e.volumeUSD;
-        }));
+        return callback(null, _.orderBy(supportedTokens, ['isNewToken','volumeUSD'],['desc','desc']));
       });
-    
+
   },
 
   _aggregate: function (options, fromDate, toDate, callback) {
@@ -413,8 +412,8 @@ module.exports = BaseService.extends({
     if(!this._isAddress(partnerId)){
       if(partners[partnerId]) partnerId = partners[partnerId]
       else return callback(null, []);
-    } 
-    
+    }
+
     this._searchByAddress(partnerId, page, limit, fromDate, toDate, {
       exportData: exportData,
       partner: true
@@ -660,10 +659,10 @@ module.exports = BaseService.extends({
         if (err) {
           return callback(err);
         }
-  
+
         const burnedNoContract = network.preburntAmount || 0;
         const sum = new BigNumber((ret.sum || 0).toString()).div(Math.pow(10, 18)).toNumber();
-  
+
         const returnData = {burned: sum + burnedNoContract};
         RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: 10 * Const.MINUTE_IN_MILLISECONDS});
         return callback(null, returnData);

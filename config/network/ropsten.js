@@ -1,7 +1,8 @@
 module.exports = {
   "endpoints": {
     "web3Provider":"https://ropsten.infura.io",
-    "ethScan": "https://ropsten.etherscan.io/"
+    "ethScan": "https://ropsten.etherscan.io/",
+	  "getRate": "https://production-cache.kyber.network/getRate"
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
@@ -94,6 +95,8 @@ module.exports = {
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
   "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
+	"rateBlockStepSize": 40,
+	"newTokenDuration": 3 * 24 * 60 * 60 * 1000,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

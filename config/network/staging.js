@@ -2,6 +2,7 @@ module.exports = {
     "endpoints": {
       "web3Provider": "https://mainnet.infura.io",
       "ethScan": "https://etherscan.io/",
+	    "getRate": "https://staging-cache.kyber.network/getRate"
     },
     "contractAddresses": {
       "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
@@ -496,6 +497,8 @@ module.exports = {
     "averageBlockTime": 15000,
     "startBlockNumber": 5700000,
     "startBlockNumberV2": 5899403,
+		"rateBlockStepSize": 40,
+		"newTokenDuration": 3 * 24 * 60 * 60 * 1000,
   
     "partners": {
       "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
