@@ -8,7 +8,6 @@ const Resolution              = require('../common/Resolution');
 const logger                  = log4js.getLogger('ChartController');
 
 const supportedTokens = Utils.getRateTokenArray().supportedTokens;
-
 module.exports = AppController.extends({
   classname: 'ChartController',
 
@@ -112,65 +111,60 @@ module.exports = AppController.extends({
   },
 
   history: function (req, res) {
-    Utils.cors(res);
-    const [err, params] = new Checkit({
-        symbol: ['string', 'required'],
-        resolution: ['string', 'required'],
-        from: ['naturalNonZero', 'required'],
-        to: ['naturalNonZero', 'required'],
-        rateType: ['string', 'required']
-    }).validateSync(req.allParams);
+      Utils.cors(res);
+      const [err, params] = new Checkit({
+          symbol: ['string', 'required'],
+          resolution: ['string', 'required'],
+          from: ['naturalNonZero', 'required'],
+          to: ['naturalNonZero', 'required'],
+          rateType: ['string', 'required']
+      }).validateSync(req.allParams);
 
-    if (err) {
-        res.badRequest(err.toString());
-        return;
-    }
+      if (err) {
+          res.badRequest(err.toString());
+          return;
+      }
 
-    if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
-        res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
-        return;
-    }
+      if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
+          res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
+          return;
+      }
 
-    params.seqType = Resolution.toColumn(params.resolution);
-    if (!params.seqType) {
-        res.badRequest("Unsupported resolution.");
-        return;
-    }
+      params.seqType = Resolution.toColumn(params.resolution);
+      if (!params.seqType) {
+          res.badRequest("Unsupported resolution.");
+          return;
+      }
 
-    const service = req.getService('ChartService');
-    service.history(params, (err, ret) => {
-        if (err) {
-            logger.error(err);
-            return;
-        }
+      const time_exprire = {
+        ttl: 10 * 60 * 1000
+      }
+      let conditionCreateCache = false;
+      if (params.rateType === 'sell' && params.resolution === '60') {
+          conditionCreateCache = true;
+      }
+      const minutes = Math.floor(params.to / 600)
 
-        var data ={
-            t: [],
-            o: [],
-            h: [],
-            l: [],
-            c: [],
-            //v: []
-        };
-        if (ret.length === 0){
-            data.s = "no_data";
-        } else {
-            data.s = "ok";
-            ret.forEach((value) => {
-                if (value.seq == 0) return;
-                data.t.push(Resolution.toTimestamp(params.resolution, value.seq));
-                data.o.push(parseFloat(value.open));
-                data.h.push(value.high);
-                data.l.push(value.low);
-                data.c.push(parseFloat(value.close));
-                // data.v.push(0); //volume
-            });
-        }
-
-        res.json(data);
-    });
-
-  },
+      const key_cache = "chart_history_1h_" + params.symbol + minutes;
+      const chartService = req.getService('ChartService');
+      const redisCacheService = req.getService('RedisCacheService');
+      async.auto({
+          cacheData: (next) => redisCacheService._process_chart_history({
+              chartService: chartService,
+              token: params.symbol,
+              params: params,
+              time_exprire: time_exprire,
+              conditionCreateCache: conditionCreateCache,
+              key_cache: key_cache
+          },next)
+      }, function (err, ret) {
+          if (err) {
+              logger.error(err)
+              return callback(err);
+          }
+          res.json(ret.cacheData);
+      })
+},
 
   time: function (req, res) {
     Utils.cors(res).send("" + Math.floor(Date.now() / 1000));
