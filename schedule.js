@@ -7,7 +7,7 @@ const app = SotaCore.createApp({
 });
 app.start();
 
-const Jobs = require('./config/configCaches');
+const Jobs = require('./config/cache/lists');
 
 Object.keys(Jobs).map((index) => {
   var job = Jobs[index];

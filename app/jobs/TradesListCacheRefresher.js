@@ -4,11 +4,13 @@ const Const = require('../common/Const');
 const ExSession = require('sota-core').load('common/ExSession');
 const BaseJob = require('./BaseJob');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
+const CacheInfo = require('../../config/cache/info');
 
 class TradesListCacheRefresher extends BaseJob {
   constructor() {
     super();
   }
+
   executeJob(callback) {
     const params = {
       symbol: '',
@@ -18,7 +20,7 @@ class TradesListCacheRefresher extends BaseJob {
       toDate: '',
     };
 
-    let key = `tradeslist-${params.page}-${params.limit}`;
+    let key = `${CacheInfo.TradesList.key + params.page}-${params.limit}`;
     if (params.symbol) {
       key = params.symbol + '-' + key;
     }
@@ -36,9 +38,7 @@ class TradesListCacheRefresher extends BaseJob {
         callback(err)
       }
       if (ret_1) {
-        RedisCache.setAsync(key, JSON.stringify(ret_1), {
-          ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS
-        });
+        RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.timeMnsTool);
         callback(null, ret_1)
       }
     });

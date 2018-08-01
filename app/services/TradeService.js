@@ -11,7 +11,9 @@ const BaseService = require('sota-core').load('service/BaseService');
 const logger = require('sota-core').getLogger('TradeService');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 
-const UtilsHelper           = require('../common/Utils');
+const UtilsHelper = require('../common/Utils');
+
+const CacheInfo = require('../../config/cache/info');
 
 module.exports = BaseService.extends({
   classname: 'TradeService',
@@ -23,7 +25,7 @@ module.exports = BaseService.extends({
 
     const supportedTokenList = _.filter(network.tokens, (e) => {
       return UtilsHelper.shouldShowToken(e.symbol)
-    }).map( x => x.symbol).join('\',\'')
+    }).map(x => x.symbol).join('\',\'')
 
     let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}'))`;
 
@@ -126,7 +128,7 @@ module.exports = BaseService.extends({
         const supportedTokens = [];
 
         Object.keys(network.tokens).forEach((symbol) => {
-          if (UtilsHelper.shouldShowToken(symbol)){
+          if (UtilsHelper.shouldShowToken(symbol)) {
             const token = network.tokens[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
@@ -147,7 +149,7 @@ module.exports = BaseService.extends({
           }
         });
 
-        return callback(null, _.orderBy(supportedTokens, ['isNewToken','volumeUSD'],['desc','desc']));
+        return callback(null, _.orderBy(supportedTokens, ['isNewToken', 'volumeUSD'], ['desc', 'desc']));
       });
 
   },
@@ -261,13 +263,13 @@ module.exports = BaseService.extends({
 
   // Use for topbar items
   getStats24h: function (callback) {
-    const key = 'stats24h';
-    const time_exprire = {ttl: Const.MINUTE_IN_MILLISECONDS}
-    let params={}
+    const key = CacheInfo.Stats24h.key;
+    const time_exprire = CacheInfo.Stats24h.timeMns;
+    let params = {}
     params.time_exprire = time_exprire
     params.key = key
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
@@ -366,10 +368,10 @@ module.exports = BaseService.extends({
     });
   },
 
-  _isTxHash: function(hash) {
+  _isTxHash: function (hash) {
     return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
   },
-  _isAddress: function(address) {
+  _isAddress: function (address) {
     return /^(0x)?[0-9a-f]{40}$/i.test(address)
   },
 
@@ -377,10 +379,10 @@ module.exports = BaseService.extends({
     const q = options.q.toLowerCase();
     const page = options.page || 0;
     const limit = options.limit || 20;
-    const fromDate = options.fromDate
-    const toDate = options.toDate
+    const fromDate = options.fromDate;
+    const toDate = options.toDate;
 
-    const exportData = options.exportData
+    const exportData = options.exportData;
     // Transaction hash
 
     // console.log("+++++++++++****************")
@@ -392,7 +394,7 @@ module.exports = BaseService.extends({
     // Address
     else if (this._isAddress(q)) {
       // console.log("+++++++++ is address")
-      this._searchByAddress(q, page, limit, fromDate, toDate, {exportData: exportData},callback);
+      this._searchByAddress(q, page, limit, fromDate, toDate, {exportData: exportData}, callback);
     }
     else {
       return callback(null, []);
@@ -409,15 +411,15 @@ module.exports = BaseService.extends({
     const exportData = options.exportData
 
 
-    if(!this._isAddress(partnerId)){
-      if(partners[partnerId]) partnerId = partners[partnerId]
+    if (!this._isAddress(partnerId)) {
+      if (partners[partnerId]) partnerId = partners[partnerId]
       else return callback(null, []);
     }
 
     this._searchByAddress(partnerId, page, limit, fromDate, toDate, {
       exportData: exportData,
       partner: true
-    },callback);
+    }, callback);
   },
 
   _searchByTxid: function (txid, callback) {
@@ -430,10 +432,10 @@ module.exports = BaseService.extends({
 
   _searchByAddress: function (address, page, limit, fromDate, toDate, option, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    let whereClauses = ''
-    let params = []
+    let whereClauses = '';
+    let params = [];
 
-    if(option && option.partner){
+    if (option && option.partner) {
       whereClauses = 'LOWER(commission_receive_address) = ?';
       params = [address];
     } else {
@@ -459,7 +461,7 @@ module.exports = BaseService.extends({
       orderBy: 'block_timestamp DESC',
     }
 
-    if(!option || !option.exportData){
+    if (!option || !option.exportData) {
       findObj.limit = limit
       findObj.offset = page * limit
     }
@@ -493,7 +495,7 @@ module.exports = BaseService.extends({
         }, next);
       },
       commission: (next) => {
-        if(!option || !option.partner) return next(null, 0)
+        if (!option || !option.partner) return next(null, 0)
 
         KyberTradeModel.sum('commission', {
           where: whereClauses,
@@ -526,7 +528,7 @@ module.exports = BaseService.extends({
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
 
-    let key = `vol-${period}-${interval}`;
+    let key = `${CacheInfo.NetworkVolumes.key + period}-${interval}`;
     if (options.symbol) {
       key = options.symbol + '-' + key;
     }
@@ -550,7 +552,7 @@ module.exports = BaseService.extends({
     });
   },
 
-  _getNetworkVolumes: function (options, callback){
+  _getNetworkVolumes: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
@@ -640,10 +642,10 @@ module.exports = BaseService.extends({
   getTotalBurnedFees: function (callback) {
     const BurnedFeeModel = this.getModel('BurnedFeeModel');
 
-    let key = `burned-fee-total`;
+    let key = CacheInfo.TotalBurnedFees.key;
 
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
@@ -664,7 +666,7 @@ module.exports = BaseService.extends({
         const sum = new BigNumber((ret.sum || 0).toString()).div(Math.pow(10, 18)).toNumber();
 
         const returnData = {burned: sum + burnedNoContract};
-        RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: 10 * Const.MINUTE_IN_MILLISECONDS});
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.TotalBurnedFees.timeMns);
         return callback(null, returnData);
       });
     });
@@ -676,87 +678,87 @@ module.exports = BaseService.extends({
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
 
-    let key = `burned-fee-${period}-${interval}`;
+    let key = `${CacheInfo.BurnedFees.key + period}-${interval}`;
 
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
       const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
+      const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
-    let params = [fromDate, toDate];
+      let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
+      let params = [fromDate, toDate];
 
-    async.auto({
-      sum: (next) => {
-        BurnedFeeModel.sumGroupBy('amount/1000000000000000000', {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn],
-        }, next);
-      },
-      pastSum: (next) => {
-        BurnedFeeModel.sum('amount', {
-          where: 'block_timestamp < ?',
-          params: [fromDate]
-        }, next);
-      }
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
-      }
+      async.auto({
+        sum: (next) => {
+          BurnedFeeModel.sumGroupBy('amount/1000000000000000000', {
+            where: whereClauses,
+            params: params,
+            groupBy: [groupColumn],
+          }, next);
+        },
+        pastSum: (next) => {
+          BurnedFeeModel.sum('amount', {
+            where: 'block_timestamp < ?',
+            params: [fromDate]
+          }, next);
+        }
+      }, (err, ret) => {
+        if (err) {
+          return callback(err);
+        }
 
-      const burnedNoContract = network.preburntAmount || 0;
-      const pastSum = new BigNumber((ret.pastSum || 0).toString()).div(Math.pow(10, 18)).toNumber();
-      let accuBurned = burnedNoContract + pastSum;
-      const returnData = [];
-      if (ret.sum.length) {
-        const startSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
-        const firstSeq = ret.sum[0][this._convertSeqColumnName(groupColumn)];
-        if (startSeq < firstSeq) {
+        const burnedNoContract = network.preburntAmount || 0;
+        const pastSum = new BigNumber((ret.pastSum || 0).toString()).div(Math.pow(10, 18)).toNumber();
+        let accuBurned = burnedNoContract + pastSum;
+        const returnData = [];
+        if (ret.sum.length) {
+          const startSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+          const firstSeq = ret.sum[0][this._convertSeqColumnName(groupColumn)];
+          if (startSeq < firstSeq) {
+            returnData.push({
+              [this._convertSeqColumnName(groupColumn)]: startSeq,
+              sum: accuBurned
+            });
+          }
+          for (let i = 0; i < ret.sum.length; i++) {
+            accuBurned += (ret.sum[i].sum || 0);
+            returnData.push({
+              daySeq: ret.sum[i].daySeq,
+              hourSeq: ret.sum[i].hourSeq,
+              sum: accuBurned
+            })
+          }
+          const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+          const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+          if (nowSeq > lastSeq) {
+            const nullData = {
+              [this._convertSeqColumnName(groupColumn)]: nowSeq,
+              sum: accuBurned
+            };
+            returnData.push(nullData);
+          }
+
+        } else {
+          const startSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+          const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
           returnData.push({
             [this._convertSeqColumnName(groupColumn)]: startSeq,
             sum: accuBurned
           });
-        }
-        for (let i = 0; i < ret.sum.length; i++) {
-          accuBurned += (ret.sum[i].sum || 0);
           returnData.push({
-            daySeq: ret.sum[i].daySeq,
-            hourSeq: ret.sum[i].hourSeq,
-            sum: accuBurned
-          })
-        }
-        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
-        if (nowSeq > lastSeq) {
-          const nullData = {
             [this._convertSeqColumnName(groupColumn)]: nowSeq,
             sum: accuBurned
-          };
-          returnData.push(nullData);
+          });
         }
 
-      } else {
-        const startSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: startSeq,
-          sum: accuBurned
-        });
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: nowSeq,
-          sum: accuBurned
-        });
-      }
-
-      RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: Const.MINUTE_IN_MILLISECONDS});
-      return callback(null, returnData);
-    });
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.BurnedFees.timeMns);
+        return callback(null, returnData);
+      });
     });
   },
 
@@ -766,79 +768,79 @@ module.exports = BaseService.extends({
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
 
-    let key = `collected-fee-${period}-${interval}`;
+    let key = `${CacheInfo.CollectedFees.key + period}-${interval}`;
     if (options.symbol) {
       key = options.symbol + '-' + key;
     }
 
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
       const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
+      const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
-    let params = [fromDate, toDate];
+      let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
+      let params = [fromDate, toDate];
 
-    if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-      params.push(options.symbol);
-      params.push(options.symbol);
-    }
-
-    async.auto({
-      sum: (next) => {
-        KyberTradeModel.sumGroupBy('collected_fees/1000000000000000000', {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn],
-        }, next);
-      }
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
+      if (options.symbol) {
+        whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+        params.push(options.symbol);
+        params.push(options.symbol);
       }
 
-      const returnData = [];
-      if (ret.sum.length) {
-
-        for (let i = 0; i < ret.sum.length; i++) {
-          returnData.push({
-            daySeq: ret.sum[i].daySeq,
-            hourSeq: ret.sum[i].hourSeq,
-            sum: ret.sum[i].sum
-          })
+      async.auto({
+        sum: (next) => {
+          KyberTradeModel.sumGroupBy('collected_fees/1000000000000000000', {
+            where: whereClauses,
+            params: params,
+            groupBy: [groupColumn],
+          }, next);
         }
-        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
-        if (nowSeq > lastSeq) {
-          const nullData = {
+      }, (err, ret) => {
+        if (err) {
+          return callback(err);
+        }
+
+        const returnData = [];
+        if (ret.sum.length) {
+
+          for (let i = 0; i < ret.sum.length; i++) {
+            returnData.push({
+              daySeq: ret.sum[i].daySeq,
+              hourSeq: ret.sum[i].hourSeq,
+              sum: ret.sum[i].sum
+            })
+          }
+          const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+          const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+          if (nowSeq > lastSeq) {
+            const nullData = {
+              [this._convertSeqColumnName(groupColumn)]: nowSeq,
+              sum: 0
+            };
+            returnData.push(nullData);
+          }
+
+        } else {
+          const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+          const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+          returnData.push({
+            [this._convertSeqColumnName(groupColumn)]: firstSeq,
+            sum: 0
+          });
+          returnData.push({
             [this._convertSeqColumnName(groupColumn)]: nowSeq,
             sum: 0
-          };
-          returnData.push(nullData);
+          });
         }
 
-      } else {
-        const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: firstSeq,
-          sum: 0
-        });
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: nowSeq,
-          sum: 0
-        });
-      }
-
-      RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: Const.MINUTE_IN_MILLISECONDS});
-      return callback(null, returnData);
-    });
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.CollectedFees.timeMns);
+        return callback(null, returnData);
+      });
     });
   },
 
@@ -848,90 +850,90 @@ module.exports = BaseService.extends({
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
 
-    let key = `to-burn-fee-${period}-${interval}`;
+    let key = `${CacheInfo.ToBurnFees.key + period}-${interval}`;
     if (options.symbol) {
       key = options.symbol + '-' + key;
     }
 
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
       const groupColumn = this._getGroupColumnByIntervalParam(interval);
-    const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
+      const [fromDate, toDate] = this._getRequestDatePeriods(options, period, interval);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
-    let params = [fromDate, toDate];
+      let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
+      let params = [fromDate, toDate];
 
-    if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-      params.push(options.symbol);
-      params.push(options.symbol);
-    }
-
-    async.auto({
-      sum: (next) => {
-        KyberTradeModel.sumGroupBy('burn_fees/1000000000000000000', {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn],
-        }, next);
-      },
-      count: (next) => {
-        KyberTradeModel.countGroupBy(groupColumn, {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn]
-        }, next);
-      }
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
+      if (options.symbol) {
+        whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+        params.push(options.symbol);
+        params.push(options.symbol);
       }
 
-      const returnData = [];
-      if (ret.sum.length) {
-
-        for (let i = 0; i < ret.sum.length; i++) {
-          returnData.push({
-            daySeq: ret.sum[i].daySeq,
-            hourSeq: ret.sum[i].hourSeq,
-            sum: ret.sum[i].sum,
-            count: ret.count[i].count
-          })
+      async.auto({
+        sum: (next) => {
+          KyberTradeModel.sumGroupBy('burn_fees/1000000000000000000', {
+            where: whereClauses,
+            params: params,
+            groupBy: [groupColumn],
+          }, next);
+        },
+        count: (next) => {
+          KyberTradeModel.countGroupBy(groupColumn, {
+            where: whereClauses,
+            params: params,
+            groupBy: [groupColumn]
+          }, next);
         }
-        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
-        if (nowSeq > lastSeq) {
-          const nullData = {
+      }, (err, ret) => {
+        if (err) {
+          return callback(err);
+        }
+
+        const returnData = [];
+        if (ret.sum.length) {
+
+          for (let i = 0; i < ret.sum.length; i++) {
+            returnData.push({
+              daySeq: ret.sum[i].daySeq,
+              hourSeq: ret.sum[i].hourSeq,
+              sum: ret.sum[i].sum,
+              count: ret.count[i].count
+            })
+          }
+          const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+          const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+          if (nowSeq > lastSeq) {
+            const nullData = {
+              [this._convertSeqColumnName(groupColumn)]: nowSeq,
+              sum: 0,
+              count: 0
+            };
+            returnData.push(nullData);
+          }
+
+        } else {
+          const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
+          const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
+          returnData.push({
+            [this._convertSeqColumnName(groupColumn)]: firstSeq,
+            sum: 0,
+            count: 0
+          });
+          returnData.push({
             [this._convertSeqColumnName(groupColumn)]: nowSeq,
             sum: 0,
             count: 0
-          };
-          returnData.push(nullData);
+          });
         }
 
-      } else {
-        const firstSeq = parseInt(fromDate / Const.CHART_INTERVAL[interval]);
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[interval]);
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: firstSeq,
-          sum: 0,
-          count: 0
-        });
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: nowSeq,
-          sum: 0,
-          count: 0
-        });
-      }
-
-      RedisCache.setAsync(key, JSON.stringify(returnData), {ttl: Const.MINUTE_IN_MILLISECONDS});
-      return callback(null, returnData);
-    });
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.ToBurnFees.timeMns);
+        return callback(null, returnData);
+      });
     });
   },
 

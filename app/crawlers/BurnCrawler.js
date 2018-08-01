@@ -4,7 +4,7 @@ const network               = require('../../config/network');
 const getLatestBlockNumber  = require('./getLatestBlockNumber');
 const getBurnedFeeFromTransaction     = require('./getBurnedFeeFromTransaction');
 const Utils                 = require('../common/Utils');
-const logger                = require('sota-core').getLogger('KyberBurnCrawler');
+const logger                = require('sota-core').getLogger('BurnCrawler');
 const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const BigNumber                   = require('bignumber.js');
@@ -24,7 +24,7 @@ const PARALLEL_INSERT_LIMIT = 10;
  * NOTE: this class is currently only use for collecting burned fees
  * Trade data are crawled by KyberTradeCrawler
  */
-class KyberBurnCrawler {
+class BurnCrawler {
 
   start() {
     async.auto({
@@ -147,4 +147,4 @@ class KyberBurnCrawler {
   }
 }
 
-module.exports = KyberBurnCrawler;
+module.exports = BurnCrawler;
