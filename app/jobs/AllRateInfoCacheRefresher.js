@@ -3,7 +3,7 @@ const network = require('../../config/network');
 const logger = require('sota-core').getLogger('HistoryCacheRefresher');
 const Const = require('../common/Const');
 const ExSession = require('sota-core').load('common/ExSession');
-
+const CacheInfo = require('../../config/cache/info');
 const BaseJob = require('./BaseJob');
 
 const tokens = network.tokens;
@@ -16,8 +16,8 @@ class AllRateInfoCacheRefresher extends BaseJob {
     if (!tokens) return callback(null, {});
     const currenciesService = new ExSession().getService('CurrenciesService');
     const redisCacheService = new ExSession().getService('RedisCacheService');
-    const CACHE_KEY = 'allrates';
-    const CACHE_TTL = 15 * Const.MINUTE_IN_MILLISECONDS;
+    const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+    const CACHE_TTL = CacheInfo.CurrenciesAllRates.timeMnsTool;
     currenciesService.getAllRateInfo((err, ret) => {
       if (err) {
         logger.error(err);
@@ -37,9 +37,7 @@ class AllRateInfoCacheRefresher extends BaseJob {
           item.p.push(p.rate);
         });
       });
-      redisCacheService.setCacheByKey(CACHE_KEY, pack, {
-        ttl: CACHE_TTL
-      });
+      redisCacheService.setCacheByKey(CACHE_KEY, pack, CACHE_TTL);
       return callback(null, pack)
     });
   }

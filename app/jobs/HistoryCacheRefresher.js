@@ -1,11 +1,11 @@
-const _                       = require('lodash');
-const async                   = require('async');
-const network                 = require('../../config/network');
-const logger                  = require('sota-core').getLogger('HistoryCacheRefresher');
-const ExSession               = require('sota-core').load('common/ExSession');
-
-const helper                  = require('../common/Utils');
-const BaseJob                 = require('./BaseJob');
+const _ = require('lodash');
+const async = require('async');
+const network = require('../../config/network');
+const logger = require('sota-core').getLogger('HistoryCacheRefresher');
+const ExSession = require('sota-core').load('common/ExSession');
+const CacheInfo = require('../../config/cache/info');
+const helper = require('../common/Utils');
+const BaseJob = require('./BaseJob');
 
 const tokens = network.tokens;
 
@@ -13,9 +13,10 @@ class HistoryCacheRefresher extends BaseJob {
   constructor() {
     super();
   }
+
   executeJob(callback) {
     if (!tokens) return callback(null, {});
-    let pairs = {}
+    let pairs = {};
     const chartService = new ExSession().getService('ChartService');
     const redisCacheService = new ExSession().getService('RedisCacheService');
     const nowInMs = Date.now();
@@ -23,10 +24,8 @@ class HistoryCacheRefresher extends BaseJob {
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const day31Ago = nowInSeconds - 31 * DAY_IN_SECONDS;
 
-    const time_exprire = {
-      ttl: 15 * 60 * 1000
-    }
-    
+    const time_exprire = CacheInfo.chart_history_1h.timeMnsTool;
+
 
     Object.keys(tokens).map(token => {
       if ((token.toUpperCase() !== "ETH") &&
@@ -38,14 +37,14 @@ class HistoryCacheRefresher extends BaseJob {
           resolution: '60',
           from: day31Ago,
           to: nowInSeconds
-        }
+        };
         let conditionCreateCache = false;
         if (params.rateType === 'sell' && params.resolution === '60') {
           conditionCreateCache = true;
         }
         const minutes = Math.floor(params.to / 600)
 
-        const key_cache = "chart_history_1h_" + params.symbol + minutes;
+        const key_cache = CacheInfo.chart_history_1h.key + params.symbol + minutes;
 
         pairs[token] = (asyncCallback) => redisCacheService._process_chart_history({
           chartService: chartService,

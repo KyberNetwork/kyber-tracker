@@ -2,13 +2,14 @@ const _ = require('lodash');
 const logger = require('sota-core').getLogger('HistoryCacheRefresher');
 const Const = require('../common/Const');
 const ExSession = require('sota-core').load('common/ExSession');
-
+const CacheInfo = require('../../config/cache/info');
 const BaseJob = require('./BaseJob');
 
 class VolumesCacheRefresher extends BaseJob {
   constructor() {
     super();
   }
+
   executeJob(callback) {
     const params = {
       symbol: '',
@@ -19,10 +20,8 @@ class VolumesCacheRefresher extends BaseJob {
     };
     const interval = params.interval || 'H1';
     const period = params.period || 'D7';
-    const time_exprire = {
-      ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS
-    }
-    let key = `vol-${period}-${interval}`;
+    const time_exprire = CacheInfo.NetworkVolumes.timeMnsTool;
+    let key = `${CacheInfo.NetworkVolumes.key + period}-${interval}`;
     if (params.symbol) {
       key = params.symbol + '-' + key;
     }

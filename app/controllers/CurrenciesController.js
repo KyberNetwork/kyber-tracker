@@ -1,11 +1,12 @@
-const _                       = require('lodash');
-const async                   = require('async');
-const AppController           = require('./AppController');
-const Checkit                 = require('cc-checkit');
-const Const                   = require('../common/Const');
-const Utils                   = require('../common/Utils');
-const network                 = require('../../config/network');
-const logger                  = log4js.getLogger('CurrenciesController');
+const _ = require('lodash');
+const async = require('async');
+const AppController = require('./AppController');
+const Checkit = require('cc-checkit');
+const Const = require('../common/Const');
+const Utils = require('../common/Utils');
+const network = require('../../config/network');
+const logger = log4js.getLogger('CurrenciesController');
+const CacheInfo = require('../../config/cache/info');
 
 module.exports = AppController.extends({
   classname: 'CurrenciesController',
@@ -35,10 +36,10 @@ module.exports = AppController.extends({
   getConvertiblePairs: function (req, res) {
     Utils.cors(res);
 
-    const CACHE_KEY = 'getConvertiblePairs';
+    const CACHE_KEY = CacheInfo.ConvertiblePairs.key;
     const CurrenciesService = req.getService('CurrenciesService');
     const redisCacheService = req.getService('RedisCacheService');
-    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
+    redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)
         res.json(ret);
@@ -54,7 +55,7 @@ module.exports = AppController.extends({
           res.json(rett);
           return;
         }
-        redisCacheService.setCacheByKey(CACHE_KEY, rett, {ttl: 5*Const.MINUTE_IN_MILLISECONDS});
+        redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.ConvertiblePairs.timeMns);
         res.json(rett);
       });
     });
@@ -63,10 +64,10 @@ module.exports = AppController.extends({
   getPair24hData: function (req, res) {
     Utils.cors(res);
 
-    const CACHE_KEY = 'getPair24hData';
+    const CACHE_KEY = CacheInfo.Pair24hData.key;
     const CurrenciesService = req.getService('CurrenciesService');
     const redisCacheService = req.getService('RedisCacheService');
-    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
+    redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)
         res.json(ret);
@@ -82,7 +83,7 @@ module.exports = AppController.extends({
           res.json(rett);
           return;
         }
-        redisCacheService.setCacheByKey(CACHE_KEY, rett, {ttl: Const.MINUTE_IN_MILLISECONDS});
+        redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.Pair24hData.timeMns);
         res.json(rett);
       });
     });
@@ -92,35 +93,35 @@ module.exports = AppController.extends({
     Utils.cors(res);
     const service = req.getService('CurrenciesService');
 
-    const CACHE_KEY = 'allrates';
-    const CACHE_TTL = 10 * Const.MINUTE_IN_MILLISECONDS;
+    const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+    const CACHE_TTL = CacheInfo.CurrenciesAllRates.timeMns;
     const redisCacheService = req.getService('RedisCacheService');
     var loadData = () => {
-        service.getAllRateInfo((err, ret) => {
-          if (err) {
-            logger.error(err);
-            res.json(ret);
-            return;
-          }
-          // pack the result
-          const pack = {};
-          Object.keys(ret).forEach((symbol) => {
-            const token = ret[symbol];
-            const item = pack[symbol] = {
-              //e: token.volume[0].ETH,
-              //u: token.volume[0].USD,
-              r: token.rate.length?token.rate[0]["24h"]:0,
-              p: []
-            };
-            token.points.forEach((p) => {
-              item.p.push(p.rate);
-            });
+      service.getAllRateInfo((err, ret) => {
+        if (err) {
+          logger.error(err);
+          res.json(ret);
+          return;
+        }
+        // pack the result
+        const pack = {};
+        Object.keys(ret).forEach((symbol) => {
+          const token = ret[symbol];
+          const item = pack[symbol] = {
+            //e: token.volume[0].ETH,
+            //u: token.volume[0].USD,
+            r: token.rate.length ? token.rate[0]["24h"] : 0,
+            p: []
+          };
+          token.points.forEach((p) => {
+            item.p.push(p.rate);
           });
-          redisCacheService.setCacheByKey(CACHE_KEY, pack, {ttl: CACHE_TTL});
-          res.json(pack);
         });
+        redisCacheService.setCacheByKey(CACHE_KEY, pack, CACHE_TTL);
+        res.json(pack);
+      });
     };
-    redisCacheService.getCacheByKey(CACHE_KEY,(err,ret)=>{
+    redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)
         res.json(ret);
@@ -147,7 +148,7 @@ module.exports = AppController.extends({
       return;
     }
     const service = req.getService('CurrenciesService');
-    service.get24hChangeData(params,(err, ret) => {
+    service.get24hChangeData(params, (err, ret) => {
       if (err) {
         logger.error(err);
         res.json(ret);

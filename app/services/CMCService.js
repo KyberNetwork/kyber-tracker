@@ -1,24 +1,24 @@
 /* eslint no-multi-spaces: ["error", { exceptions: { "VariableDeclarator": true } }] */
-const _             = require('lodash');
-const async         = require('async');
-const BigNumber     = require('bignumber.js');
-const request       = require('superagent');
-const Const         = require('../common/Const');
-const network       = require('../../config/network');
-const Utils         = require('sota-core').load('util/Utils');
-const BaseService   = require('sota-core').load('service/BaseService');
-const logger        = require('sota-core').getLogger('CMCService');
+const _ = require('lodash');
+const async = require('async');
+const BigNumber = require('bignumber.js');
+const request = require('superagent');
+const Const = require('../common/Const');
+const network = require('../../config/network');
+const Utils = require('sota-core').load('util/Utils');
+const BaseService = require('sota-core').load('service/BaseService');
+const logger = require('sota-core').getLogger('CMCService');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
-
+const CacheInfo = require('../../config/cache/info');
 const CMC_GRAPH_API_TICKER = 300 * 1000; // 5 minutes in milliseconds
 
 module.exports = BaseService.extends({
   classname: 'CMCService',
 
-  getCurrentPrice: function(symbol, callback) {
-    const key = 'price-' + symbol;
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+  getCurrentPrice: function (symbol, callback) {
+    const key = CacheInfo.CmcCurrentPrice.key + symbol;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
@@ -48,54 +48,54 @@ module.exports = BaseService.extends({
           }
 
           logger.debug(`Current price of [${symbol}] is: $${price}`);
-          RedisCache.setAsync(key, price, { ttl: Const.MINUTE_IN_MILLISECONDS });
+          RedisCache.setAsync(key, price, CacheInfo.CmcCurrentPrice.timeMns);
           return callback(null, price);
         });
     });
   },
 
-  getAllRates: function(callback) {
-    const key = 'kyber-all-rates';
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+  getAllRates: function (callback) {
+    const key = CacheInfo.CmcAllRates.key;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
       request
-      .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
-      .end((err, response) => {
-        if (err) {
-          return callback(err);
-        }
+        .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
+        .end((err, response) => {
+          if (err) {
+            return callback(err);
+          }
 
-        if(!response || !response.body || !response.body.data || !response.body.data.length){
-          return callback("Cannot get rate from production cache.");
-        }
+          if (!response || !response.body || !response.body.data || !response.body.data.length) {
+            return callback("Cannot get rate from production cache.");
+          }
 
-        const body = response.body;
-        body.getRate = function(source, dest) {
-          let rate = this.data.filter(x => {
-            return x.source === source && x.dest === dest;
-          });
+          const body = response.body;
+          body.getRate = function (source, dest) {
+            let rate = this.data.filter(x => {
+              return x.source === source && x.dest === dest;
+            });
 
-          if (!rate || !rate.length) return 0;
+            if (!rate || !rate.length) return 0;
 
-          return new BigNumber(rate[0].rate).div(Math.pow(10, 18)).toNumber();
-        };
+            return new BigNumber(rate[0].rate).div(Math.pow(10, 18)).toNumber();
+          };
 
-        RedisCache.setAsync(key, JSON.stringify(body), { ttl: Const.MINUTE_IN_MILLISECONDS });
+          RedisCache.setAsync(key, JSON.stringify(body), CacheInfo.CmcAllRates.timeMns);
 
-        return callback(null, body);
-      });
+          return callback(null, body);
+        });
     });
   },
 
   getCurrentRate: function (symbol, base, callback) {
-    const key = 'kyber-rate-' + symbol;
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){develop
+    const key = CacheInfo.CmcCurrentRate.key + symbol;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
@@ -114,13 +114,13 @@ module.exports = BaseService.extends({
         return callback(`Cannot find token info of symbol: ${symbol}`);
       }
       request
-        .get(network.endpoints.getRate ||`https://production-cache.kyber.network/getRate`)
+        .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
         .end((err, response) => {
           if (err) {
             return callback(err);
           }
 
-          if(!response || !response.body || !response.body.data || !response.body.data.length){
+          if (!response || !response.body || !response.body.data || !response.body.data.length) {
             return callback("cannot get response data");
           }
 
@@ -128,12 +128,12 @@ module.exports = BaseService.extends({
             return x.source === symbol && x.dest === base
           });
 
-          if(!rateData || !rateData.length){
-            return callback(null, {rate:0});
+          if (!rateData || !rateData.length) {
+            return callback(null, {rate: 0});
           }
 
           if (rateData[0].rate) {
-            RedisCache.setAsync(key, JSON.stringify(rateData[0]), { ttl: Const.MINUTE_IN_MILLISECONDS });
+            RedisCache.setAsync(key, JSON.stringify(rateData[0]), CacheInfo.CmcCurrentRate.timeMns);
           }
           return callback(null, rateData[0]);
         });
@@ -164,9 +164,9 @@ module.exports = BaseService.extends({
   },
 
   getCMCTokenInfo: function (symbol, callback) {
-    const key = 'cmc-info-' + symbol;
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    const key = CacheInfo.CMCTokenInfo.key + symbol;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
@@ -190,7 +190,7 @@ module.exports = BaseService.extends({
 
           const result = response.body[0];
 
-          RedisCache.setAsync(key, JSON.stringify(result), { ttl: Const.MINUTE_IN_MILLISECONDS });
+          RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CMCTokenInfo.timeMns);
           return callback(null, result);
         });
     });

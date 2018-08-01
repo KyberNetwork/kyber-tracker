@@ -1,11 +1,12 @@
-const _                       = require('lodash');
-const async                   = require('async');
-const AppController           = require('./AppController');
-const Checkit                 = require('cc-checkit');
-const Const                   = require('../common/Const');
-const Utils                   = require('sota-core').load('util/Utils');
-const logger                  = log4js.getLogger('TradeController');
-const RedisCache              = require('sota-core').load('cache/foundation/RedisCache');
+const _ = require('lodash');
+const async = require('async');
+const AppController = require('./AppController');
+const Checkit = require('cc-checkit');
+const Const = require('../common/Const');
+const Utils = require('sota-core').load('util/Utils');
+const logger = log4js.getLogger('TradeController');
+const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
+const CacheInfo = require('../../config/cache/info');
 
 module.exports = AppController.extends({
   classname: 'TradeController',
@@ -23,7 +24,7 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-    let key = `tradeslist-${params.page}-${params.limit}`;
+    let key = `${CacheInfo.TradesList.key + params.page}-${params.limit}`;
     if (params.symbol) {
       key = params.symbol + '-' + key;
     }
@@ -34,22 +35,22 @@ module.exports = AppController.extends({
       key = params.toDate + '-' + key;
     }
     const TradeService = req.getService('TradeService');
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
         res.send(JSON.parse(ret));
         return;
       }
-      TradeService.getTradesList(params, (err,ret_1) => {
-        if(err){
+      TradeService.getTradesList(params, (err, ret_1) => {
+        if (err) {
           logger.error(err)
           res.badRequest(err.toString());
           return;
         }
-        if(ret_1){
-          RedisCache.setAsync(key, JSON.stringify(ret_1), {ttl: Const.MINUTE_IN_MILLISECONDS});
+        if (ret_1) {
+          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.timeMns);
           res.send(ret_1)
           return;
         }
@@ -86,25 +87,25 @@ module.exports = AppController.extends({
     let fromDate = params.fromDate || 0;
     let toDate = params.toDate || now;
 
-    let key = `topToken-${Math.floor(fromDate/60)}-${Math.floor(toDate/60)}`;
+    let key = `${CacheInfo.TopTokensList.key}${Math.floor(fromDate / 60)}-${Math.floor(toDate / 60)}`;
 
     const TradeService = req.getService('TradeService');
-    RedisCache.getAsync(key, (err,ret)=>{
-      if(err){
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
         logger.error(err)
       }
       if (ret) {
         res.send(JSON.parse(ret));
         return;
       }
-      TradeService.getTopTokensList(fromDate, toDate, (err,ret_1) => {
-        if(err){
+      TradeService.getTopTokensList(fromDate, toDate, (err, ret_1) => {
+        if (err) {
           logger.error(err)
           res.badRequest(err.toString());
           return;
         }
-        if(ret_1){
-          RedisCache.setAsync(key, JSON.stringify(ret_1), {ttl: Const.MINUTE_IN_MILLISECONDS});
+        if (ret_1) {
+          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TopTokensList.timeMns);
           res.send(ret_1)
           return;
         }
@@ -132,10 +133,8 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-    const time_exprire = {
-      ttl: Const.MINUTE_IN_MILLISECONDS
-    }
-    params.time_exprire = time_exprire
+    const time_exprire = CacheInfo.NetworkVolumes.timeMns;
+    params.time_exprire = time_exprire;
     const TradeService = req.getService('TradeService');
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },
@@ -211,7 +210,7 @@ module.exports = AppController.extends({
     TradeService.getToWalletFees(params, this.ok.bind(this, req, res));
   },
 
-  getPartnerDetail: function(req, res){
+  getPartnerDetail: function (req, res) {
     const [err, params] = new Checkit({
       exportData: ['string'],
       partnerId: ['required', 'string'],
@@ -228,7 +227,7 @@ module.exports = AppController.extends({
 
     const TradeService = req.getService('TradeService');
     TradeService.getPartnerDetail(params, this.ok.bind(this, req, res));
-  
+
   },
 
   search: function (req, res) {

@@ -6,8 +6,9 @@ const Checkit                 = require('cc-checkit');
 const Utils                   = require('../common/Utils');
 const Resolution              = require('../common/Resolution');
 const logger                  = log4js.getLogger('ChartController');
-
+const CacheInfo = require('../../config/cache/info');
 const supportedTokens = Utils.getRateTokenArray().supportedTokens;
+
 module.exports = AppController.extends({
   classname: 'ChartController',
 
@@ -136,16 +137,14 @@ module.exports = AppController.extends({
           return;
       }
 
-      const time_exprire = {
-        ttl: 10 * 60 * 1000
-      }
+      const time_exprire = CacheInfo.chart_history_1h.timeMns;
       let conditionCreateCache = false;
       if (params.rateType === 'sell' && params.resolution === '60') {
           conditionCreateCache = true;
       }
       const minutes = Math.floor(params.to / 600)
 
-      const key_cache = "chart_history_1h_" + params.symbol + minutes;
+      const key_cache = CacheInfo.chart_history_1h.key + params.symbol + minutes;
       const chartService = req.getService('ChartService');
       const redisCacheService = req.getService('RedisCacheService');
       async.auto({
