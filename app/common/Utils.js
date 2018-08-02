@@ -54,7 +54,7 @@ module.exports = {
     }
     return this.containNoCase(contractAddresses.feeBurners, addr);
   },
-  
+
   sumBig(arrayParams, initState) {
     return arrayParams.reduce((a, b) => {
       let bigA = a ? new BigNumber(a.toString()) : new BigNumber(0)
@@ -115,6 +115,10 @@ module.exports = {
     }
 
     return false;
+  },
+  isNewToken (tokenSymbol) {
+      var bornMs = tokens[tokenSymbol].hidden;
+      if (typeof bornMs != 'number') return false;
+      return Date.now() <= bornMs + (network.newTokenDuration || 3 * 24 * 60 * 60 * 1000);
   }
-
 };

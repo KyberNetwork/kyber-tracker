@@ -5,6 +5,7 @@ import TokenList      from './components/TokenList.vue';
 import TokenDetails   from './components/TokenDetails.vue';
 import SearchResult   from './components/SearchResultPage.vue';
 import PartnerDetail  from './components/PartnerDetail.vue';
+import PageNotFound   from './components/PageNotFound.vue';
 
 export default {
   routes: [
@@ -15,6 +16,7 @@ export default {
     { path: '/tokens/:tokenAddr', name: 'token-details',  component: TokenDetails },
     { path: '/search',            name: 'search',         component: SearchResult },
     { path: '/partner/:partnerId',name: 'partner-detail', component: PartnerDetail },
+    { path: '*',                  name: 'not-found',      component: PageNotFound },
   ],
   // mode: 'history'
 };

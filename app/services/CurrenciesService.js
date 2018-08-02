@@ -9,9 +9,9 @@ const helper = require('../common/Utils');
 const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
 const ExSession = require('sota-core').load('common/ExSession');
-const LocalCache = require('sota-core').load('cache/foundation/LocalCache');
 const logger = require('sota-core').getLogger('CurrenciesService');
-
+const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
+const CacheInfo = require('../../config/cache/info');
 const tokens = network.tokens;
 
 module.exports = BaseService.extends({
@@ -26,9 +26,9 @@ module.exports = BaseService.extends({
     let pairs = {}
 
     Object.keys(tokens).forEach(token => {
-      if((token.toUpperCase() !== "ETH") &&
-          !tokens[token].delisted &&
-          helper.shouldShowToken(token)){
+      if ((token.toUpperCase() !== "ETH") &&
+        !tokens[token].delisted &&
+        helper.shouldShowToken(token)) {
         pairs[token] = (asyncCallback) => this._getRateInfo(token, {
           //tradeAdapter: tradeAdapter,
           rateAdapter: rateAdapter
@@ -47,7 +47,7 @@ module.exports = BaseService.extends({
     return {
       model: (modelName) => {
         modelName = modelName || 'KyberTradeModel';
-        let model = this._exSession?this.getModel(modelName):undefined;
+        let model = this._exSession ? this.getModel(modelName) : undefined;
         if (!model) {
           exSession = new ExSession();
           model = exSession.getModel(modelName);
@@ -63,7 +63,7 @@ module.exports = BaseService.extends({
     };
   },
 
-  _getRateInfo: function(symbol, options, callback) {
+  _getRateInfo: function (symbol, options, callback) {
 
     //const tradeAdapter = options.tradeAdapter;
     const rateAdapter = options.rateAdapter;
@@ -124,32 +124,32 @@ module.exports = BaseService.extends({
   },
 
   getConvertiblePairs: function (callback) {
-    if(!tokens) return callback(null, {});
+    if (!tokens) return callback(null, {});
 
-    let pairs = {}
+    let pairs = {};
 
     Object.keys(tokens).map(token => {
       // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
-      if((token.toUpperCase() !== "ETH") && 
-          !tokens[token].delisted &&
-          helper.shouldShowToken(token)){
+      if ((token.toUpperCase() !== "ETH") &&
+        !tokens[token].delisted &&
+        helper.shouldShowToken(token)) {
         const cmcName = tokens[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
           fromCurrencyCode: "ETH"
         }, asyncCallback)
       }
-    })
+    });
 
     async.auto(pairs, 10, callback);
   },
 
   _getCurrencyInfo: function (options, callback) {
-    if(!options.token || !tokens[options.token]){
+    if (!options.token || !tokens[options.token]) {
       return callback("token not supported")
     }
 
-    if(!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]){
+    if (!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
@@ -198,18 +198,18 @@ module.exports = BaseService.extends({
       }
 
       let lastPrice = 0
-      if(ret.lastTrade){
+      if (ret.lastTrade) {
         let bigMakerAmount = ret.lastTrade.makerTokenAmount ? new BigNumber(ret.lastTrade.makerTokenAmount) : new BigNumber(0)
         let bigTakerAmount = ret.lastTrade.takerTokenAmount ? new BigNumber(ret.lastTrade.takerTokenAmount) : new BigNumber(0)
 
-        if(ret.lastTrade.takerTokenSymbol != tokenSymbol && !bigMakerAmount.isZero()){
+        if (ret.lastTrade.takerTokenSymbol != tokenSymbol && !bigMakerAmount.isZero()) {
           let amountTaker = ret.lastTrade.volumeEth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
           let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
           lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
         }
-        else if(ret.lastTrade.makerTokenSymbol != tokenSymbol && !bigTakerAmount.isZero()){
+        else if (ret.lastTrade.makerTokenSymbol != tokenSymbol && !bigTakerAmount.isZero()) {
           let amountMaker = ret.lastTrade.volumeEth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
-          let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))          
+          let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
           lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
         }
 
@@ -220,7 +220,7 @@ module.exports = BaseService.extends({
       let bigQuoteVolumeMaker = ret.quoteVolumeMaker ? new BigNumber(ret.quoteVolumeMaker.toString()) : new BigNumber(0)
       const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
       const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
-      return callback( null , {
+      return callback(null, {
         "symbol": tokenData.cmcSymbol || tokenData.symbol,
         "name": tokenData.name,
         // "code": tokenData.symbol,
@@ -236,14 +236,14 @@ module.exports = BaseService.extends({
   },
 
   getPair24hData: function (callback) {
-    if(!tokens) return callback(null, {});
+    if (!tokens) return callback(null, {});
 
     let pairs = {};
 
     Object.keys(tokens).map(token => {
-      if((token.toUpperCase() !== "ETH") && 
-          !tokens[token].delisted &&
-          helper.shouldShowToken(token)){
+      if ((token.toUpperCase() !== "ETH") &&
+        !tokens[token].delisted &&
+        helper.shouldShowToken(token)) {
         pairs["ETH_" + token] = (asyncCallback) => this._getPair24hData({
           tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
@@ -255,7 +255,7 @@ module.exports = BaseService.extends({
 
     pairs.allRates = this.getService('CMCService').getAllRates;
 
-    async.auto(pairs, 10, function(err, pairs){
+    async.auto(pairs, 10, function (err, pairs) {
       if (!err) {
         const rates = pairs.allRates;
         delete pairs.allRates;
@@ -285,11 +285,11 @@ module.exports = BaseService.extends({
   },
 
   _getPair24hData: function (options, callback) {
-    if(!options.token || !tokens[options.token]){
+    if (!options.token || !tokens[options.token]) {
       return callback("token not supported")
     }
 
-    if(!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]){
+    if (!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
@@ -351,30 +351,30 @@ module.exports = BaseService.extends({
         return callback(err);
       }
       let lastPrice = 0
-      if(ret.lastTrade){
+      if (ret.lastTrade) {
         let bigMakerAmount = ret.lastTrade.makerTokenAmount ? new BigNumber(ret.lastTrade.makerTokenAmount) : new BigNumber(0)
         let bigTakerAmount = ret.lastTrade.takerTokenAmount ? new BigNumber(ret.lastTrade.takerTokenAmount) : new BigNumber(0)
 
-        if(ret.lastTrade.takerTokenSymbol != tokenSymbol && !bigMakerAmount.isZero()){
+        if (ret.lastTrade.takerTokenSymbol !== tokenSymbol && !bigMakerAmount.isZero()) {
           let amountTaker = ret.lastTrade.volumeEth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
           let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
           lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
         }
-        else if(ret.lastTrade.makerTokenSymbol != tokenSymbol && !bigTakerAmount.isZero()){
+        else if (ret.lastTrade.makerTokenSymbol !== tokenSymbol && !bigTakerAmount.isZero()) {
           let amountMaker = ret.lastTrade.volumeEth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
-          let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))          
+          let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
           lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
         }
       }
       const quoteVolume = ret.volume[0].volume ? new BigNumber(ret.volume[0].volume.toString()).div(Math.pow(10, tokenData.decimal)).toNumber() : 0
-      return callback( null , {
+      return callback(null, {
         timestamp: nowInMs,
         quote_symbol: tokenSymbol,
         base_symbol: baseSymbol,
         past_24h_high: ret.rate.length ? (ret.rate[0].past_24h_high || 0) : 0,
         past_24h_low: ret.rate.length ? (ret.rate[0].past_24h_low || 0) : 0,
-        usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) :0,
-        eth_24h_volume: ret.trade.length ? (ret.trade[0].eth_24h_volume || 0) :0,
+        usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) : 0,
+        eth_24h_volume: ret.trade.length ? (ret.trade[0].eth_24h_volume || 0) : 0,
         token_24h_volume: quoteVolume,
         current_bid: ret.latest.length ? (ret.latest[0].current_bid || 0) : 0,
         current_ask: ret.latest.length ? (ret.latest[0].current_ask || 0) : 0,
@@ -385,15 +385,15 @@ module.exports = BaseService.extends({
 
   // get 24h change by eth
   get24hChangeData: function (options, callback) {
-    if(!tokens) return callback(null, {});
-    
-    let pairs = {}
+    if (!tokens) return callback(null, {});
+
+    let pairs = {};
 
     Object.keys(tokens).map(token => {
       // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
-      if((token.toUpperCase() !== "ETH") && 
-          !tokens[token].delisted &&
-          helper.shouldShowToken(token)){
+      if ((token.toUpperCase() !== "ETH") &&
+        !tokens[token].delisted &&
+        helper.shouldShowToken(token)) {
         const cmcName = tokens[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
@@ -401,68 +401,87 @@ module.exports = BaseService.extends({
           fromCurrencyCode: "ETH",
         }, asyncCallback)
       }
-    })
+    });
 
-    if(options.usd){
+    if (options.usd) {
       const nowInMs = Date.now();
       const DAY_IN_MSSECONDS = 24 * 60 * 60 * 1000;
       const dayAgo = nowInMs - DAY_IN_MSSECONDS;
       const cmcService = this.getService('CMCService');
       pairs.price_now_eth = (callback) => {
-        cmcService.getHistoricalPrice('ETH', nowInMs, callback);
-      }
+        cmcService.getCurrentPrice('ETH', callback);
+      };
       pairs.price_24h_eth = (callback) => {
         cmcService.getHistoricalPrice('ETH', dayAgo, callback);
       }
     }
-    
+    pairs.allRates = this.getService('CMCService').getAllRates;
     // async.auto(pairs, 10, callback);
-    async.auto(pairs, 10, function(err, pairs){
+    async.auto(pairs, 10, function (err, pairs) {
       if (err) {
         callback(err, pairs);
         return;
       }
       let price_now_eth = "-";
       let price_24h_eth = "-";
-      if (pairs.price_now_eth && pairs.price_24h_eth){
-        price_now_eth = pairs.price_now_eth.price_usd;
+      const rates = pairs.allRates;
+
+      delete pairs.allRates;
+
+      if (pairs.price_now_eth && pairs.price_24h_eth) {
+        price_now_eth = pairs.price_now_eth;
         price_24h_eth = pairs.price_24h_eth.price_usd;
         delete pairs.price_now_eth;
         delete pairs.price_24h_eth;
         Object.values(pairs).forEach((value) => {
           let change_usd_24h = "-", rate_usd_now = "-";
-          if (value.rate_eth_now && value.old_rate_eth){
-            change_usd_24h=0
-            if (value.old_rate_eth !== 0){
-              change_usd_24h = (((value.rate_eth_now*price_now_eth) - (value.old_rate_eth*price_24h_eth))*100)/(value.old_rate_eth*price_24h_eth);
+          const rate_production_cache = _.find(rates.data, (x) => {
+            return x.source === value.token_symbol
+          });
+          if (rate_production_cache && rate_production_cache.rate !== 0) {
+            value.rate_eth_now = new BigNumber(rate_production_cache.rate).div(Math.pow(10, 18)).toNumber();
+          }
+          if (value.rate_eth_now && value.old_rate_eth) {
+            change_usd_24h = 0;
+            if (value.old_rate_eth !== 0) {
+              change_usd_24h = (((value.rate_eth_now * price_now_eth) - (value.old_rate_eth * price_24h_eth)) * 100) / (value.old_rate_eth * price_24h_eth);
             }
           }
-          if (value.rate_eth_now ){
+          if (value.rate_eth_now) {
             rate_usd_now = value.rate_eth_now * price_now_eth
           }
-          value.change_usd_24h = change_usd_24h
-          value.rate_usd_now = rate_usd_now
+          value.change_usd_24h = change_usd_24h;
+          value.rate_usd_now = rate_usd_now;
           delete value.old_rate_eth;
         });
-      }else{
+      } else {
         Object.values(pairs).forEach((value) => {
+          const rate_production_cache = _.find(rates.data, (x) => {
+            return x.source === value.token_symbol
+          });
+          if (rate_production_cache && rate_production_cache.rate !== 0) {
+            value.rate_eth_now = new BigNumber(rate_production_cache.rate).div(Math.pow(10, 18)).toNumber();
+          }
+          delete value.change_usd_24h;
+          delete value.rate_usd_now;
           delete value.old_rate_eth;
         });
       }
+
       //add ETH_ETH
-      pairs["ETH_ETH"]={
-        timestamp:Date.now(),
-        token_name:tokens["ETH"].name,
+      pairs["ETH_ETH"] = {
+        timestamp: Date.now(),
+        token_name: tokens["ETH"].name,
         token_symbol: tokens["ETH"].symbol,
         token_decimal: tokens["ETH"].decimal,
         token_address: tokens["ETH"].address,
         rate_eth_now: 1,
         change_eth_24h: "-",
-      }
-      if(options.usd){
-        var change_usd_24h = "-"
-        if(price_now_eth !== "-" && price_24h_eth !== "-" && price_24h_eth!==0){
-          change_usd_24h = (price_now_eth - price_24h_eth)*100/price_24h_eth
+      };
+      if (options.usd) {
+        let change_usd_24h = "-";
+        if (price_now_eth !== "-" && price_24h_eth !== "-" && price_24h_eth !== 0) {
+          change_usd_24h = (price_now_eth - price_24h_eth) * 100 / price_24h_eth
         }
         pairs["ETH_ETH"].change_usd_24h = change_usd_24h;
         pairs["ETH_ETH"].rate_usd_now = price_now_eth;
@@ -470,67 +489,77 @@ module.exports = BaseService.extends({
       callback(err, pairs);
     });
   },
-  
+
   _get24hChangeData: function (options, callback) {
-    if(!options.token || !tokens[options.token]){
+    if (!options.token || !tokens[options.token]) {
       return callback("token not supported")
     }
 
-    if(!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]){
+    if (!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
-
-    let tokenSymbol = options.token
-    // let baseSymbol = options.fromCurrencyCode
-    let tokenData = tokens[tokenSymbol]
-
-    const nowInMs = Date.now();
-    const nowInSeconds = Math.floor(nowInMs / 1000);
-    const DAY_IN_SECONDS = 24 * 60 * 60;
-    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
-    const hour30Ago = nowInSeconds - 30 * 60 * 60;
-    const hour18Ago = nowInSeconds - 18 * 60 * 60;
-    const hour1Ago = nowInSeconds - 1 * 60 * 60;
-
-    // 24h price SQL
-    const lastSql = `SELECT mid_expected as 'rate_eth_24h' FROM rate
-     WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
-    const lastParams = [tokenSymbol, hour30Ago, hour18Ago];
-
-    const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
-    const rateNowParams = [tokenSymbol, hour1Ago];
-    
-    async.auto({
-      rate: (next) => {
-        options.rateAdapter.execRaw(lastSql, lastParams, next);
-      },
-      rateNow: (next) => {
-        options.rateAdapter.execRaw(rateNowSql, rateNowParams, next);
-      }
-    }, (err, ret) => {
+    const CACHE_KEY = CacheInfo.Change24h.key + options.token;
+    RedisCache.getAsync(CACHE_KEY, (err, ret) => {
       if (err) {
-        return callback(err);
+        logger.error(err)
       }
-      const old_rate_eth = ret.rate.length ? ret.rate[0].rate_eth_24h || 0 : null;
-      const rate_eth_now = ret.rateNow.length ? ret.rateNow[0].rate_eth_now || 0 : null;
-      var change_eth_24h = "-";
-      if(old_rate_eth && rate_eth_now){
-        change_eth_24h=0
-        if(old_rate_eth !== 0){
-          change_eth_24h = (rate_eth_now - old_rate_eth)*100/old_rate_eth;
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      let tokenSymbol = options.token;
+      // let baseSymbol = options.fromCurrencyCode
+      let tokenData = tokens[tokenSymbol]
+
+      const nowInMs = Date.now();
+      const nowInSeconds = Math.floor(nowInMs / 1000);
+      const DAY_IN_SECONDS = 24 * 60 * 60;
+      const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+      const hour30Ago = nowInSeconds - 30 * 60 * 60;
+      const hour18Ago = nowInSeconds - 18 * 60 * 60;
+      const hour1Ago = nowInSeconds - 1 * 60 * 60;
+
+      // 24h price SQL
+      const lastSql = `SELECT mid_expected as 'rate_eth_24h' FROM rate
+     WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+      const lastParams = [tokenSymbol, hour30Ago, hour18Ago];
+
+      const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
+      const rateNowParams = [tokenSymbol, hour1Ago];
+
+      async.auto({
+        rate: (next) => {
+          options.rateAdapter.execRaw(lastSql, lastParams, next);
+        },
+        rateNow: (next) => {
+          options.rateAdapter.execRaw(rateNowSql, rateNowParams, next);
         }
-      }
-      return callback( null , {
-        timestamp: nowInMs,
-        token_name: tokenData.name,
-        token_symbol: tokenSymbol,
-        token_decimal : tokenData.decimal,
-        // base_symbol: baseSymbol,
-        token_address: tokenData.address,
-        rate_eth_now: rate_eth_now,
-        old_rate_eth: old_rate_eth,
-        change_eth_24h: change_eth_24h,
+      }, (err, ret) => {
+        if (err) {
+          return callback(err);
+        }
+        const old_rate_eth = ret.rate.length ? ret.rate[0].rate_eth_24h || 0 : null;
+        const rate_eth_now = ret.rateNow.length ? ret.rateNow[0].rate_eth_now || 0 : null;
+        let change_eth_24h = "-";
+        if (old_rate_eth && rate_eth_now) {
+          change_eth_24h = 0;
+          if (old_rate_eth !== 0) {
+            change_eth_24h = (rate_eth_now - old_rate_eth) * 100 / old_rate_eth;
+          }
+        }
+        let data = {
+          timestamp: nowInMs,
+          token_name: tokenData.name,
+          token_symbol: tokenSymbol,
+          token_decimal: tokenData.decimal,
+          // base_symbol: baseSymbol,
+          token_address: tokenData.address,
+          rate_eth_now: rate_eth_now,
+          old_rate_eth: old_rate_eth,
+          change_eth_24h: change_eth_24h,
+        };
+        RedisCache.setAsync(CACHE_KEY, JSON.stringify(data), CacheInfo.Change24h.timeMns);
+        return callback(null, data)
       })
-    })
+    });
   },
 });
