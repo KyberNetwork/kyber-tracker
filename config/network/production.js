@@ -136,7 +136,7 @@ module.exports = {
       "name": "Ripio Credit Network",
       "decimal": 18,
       "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-      "symbol": "RCN" 
+      "symbol": "RCN"
     },
     "ZIL": {
       "name": "Zilliqa",
@@ -148,7 +148,7 @@ module.exports = {
       "name": "Chain Link",
       "decimal": 18,
       "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
-      "symbol": "LINK"  
+      "symbol": "LINK"
     },
     "DAI": {
       "name": "Dai Stablecoin",
@@ -367,7 +367,7 @@ module.exports = {
       "address": "0x3136ef851592acf49ca4c825131e364170fa32b3",
       "symbol": "COFI",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1533214800000
     },
     "BBO": {
       "name": "Bigbom",
@@ -503,9 +503,9 @@ module.exports = {
 
   "supportedLanguage": ["en", "vi", "ko", "zh"],
   "mappingLang_Moment": {
-    "en" : "en", 
-    "vi" : "vi", 
-    "ko" : "ko", 
+    "en" : "en",
+    "vi" : "vi",
+    "ko" : "ko",
     "zh" : "zh-cn"
   }
 };
