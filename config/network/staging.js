@@ -137,7 +137,7 @@ module.exports = {
         "name": "Ripio Credit Network",
         "decimal": 18,
         "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-        "symbol": "RCN" 
+        "symbol": "RCN"
       },
       "ZIL": {
         "name": "Zilliqa",
@@ -149,7 +149,7 @@ module.exports = {
         "name": "Chain Link",
         "decimal": 18,
         "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
-        "symbol": "LINK"  
+        "symbol": "LINK"
       },
       "DAI": {
         "name": "Dai Stablecoin",
@@ -270,7 +270,7 @@ module.exports = {
         "symbol": "STORM",
         "decimal": 18
       },
-  
+
       "WAX": {
         "name": "Wax",
         "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
@@ -291,7 +291,7 @@ module.exports = {
         "decimal": 18,
         "hidden": true
       },
-  
+
       "SRN": {
         "name": "SIRIN LABS Token",
         "address": "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25",
@@ -320,8 +320,8 @@ module.exports = {
         "decimal": 8,
         "hidden": true
       },
-  
-  
+
+
       "AE": {
         "name": "Aeternity",
         "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
@@ -372,7 +372,7 @@ module.exports = {
         "address": "0x3136ef851592acf49ca4c825131e364170fa32b3",
         "symbol": "COFI",
         "decimal": 18,
-        "hidden": true
+        "hidden": 1533214800000
       },
       "BBO": {
         "name": "Bigbom",
@@ -392,7 +392,7 @@ module.exports = {
         "symbol": "LBA",
         "decimal": 18
       },
-  
+
       "EDU": {
         "name": "EduCoin",
         "address": "0xf263292e14d9d8ecd55b58dad1f1df825a874b7c",
@@ -491,12 +491,13 @@ module.exports = {
         "address": "0xb91318f35bdb262e9423bc7c7c2a3a93dd93c92c",
         "symbol": "NULS",
         "decimal": 18,
-        "hidden": 1531797717126
+        "hidden": true
       }
     },
     "averageBlockTime": 15000,
     "startBlockNumber": 5700000,
     "startBlockNumberV2": 5899403,
+
 		"rateBlockStepSize": 40,
 		"newTokenDuration": 3 * 24 * 60 * 60 * 1000,
   
@@ -507,13 +508,12 @@ module.exports = {
       "cipher": "0xDD61803d4a56C597E0fc864F7a20eC7158c6cBA5",
       "mew": "0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D"
     },
-  
+
     "supportedLanguage": ["en", "vi", "ko", "zh"],
     "mappingLang_Moment": {
-      "en" : "en", 
-      "vi" : "vi", 
-      "ko" : "ko", 
+      "en" : "en",
+      "vi" : "vi",
+      "ko" : "ko",
       "zh" : "zh-cn"
     }
   };
-  

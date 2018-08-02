@@ -370,7 +370,7 @@ module.exports = {
       "address": "0x3136ef851592acf49ca4c825131e364170fa32b3",
       "symbol": "COFI",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1533214800000
     },
     "BBO": {
       "name": "Bigbom",
