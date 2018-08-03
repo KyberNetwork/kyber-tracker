@@ -264,7 +264,7 @@ module.exports = BaseService.extends({
   // Use for topbar items
   getStats24h: function (callback) {
     const key = CacheInfo.Stats24h.key;
-    const time_exprire = CacheInfo.Stats24h.timeMns;
+    const time_exprire = CacheInfo.Stats24h.TTL;
     let params = {}
     params.time_exprire = time_exprire
     params.key = key
@@ -666,7 +666,7 @@ module.exports = BaseService.extends({
         const sum = new BigNumber((ret.sum || 0).toString()).div(Math.pow(10, 18)).toNumber();
 
         const returnData = {burned: sum + burnedNoContract};
-        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.TotalBurnedFees.timeMns);
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.TotalBurnedFees.TTL);
         return callback(null, returnData);
       });
     });
@@ -756,7 +756,7 @@ module.exports = BaseService.extends({
           });
         }
 
-        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.BurnedFees.timeMns);
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.BurnedFees.TTL);
         return callback(null, returnData);
       });
     });
@@ -838,7 +838,7 @@ module.exports = BaseService.extends({
           });
         }
 
-        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.CollectedFees.timeMns);
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.CollectedFees.TTL);
         return callback(null, returnData);
       });
     });
@@ -931,7 +931,7 @@ module.exports = BaseService.extends({
           });
         }
 
-        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.ToBurnFees.timeMns);
+        RedisCache.setAsync(key, JSON.stringify(returnData), CacheInfo.ToBurnFees.TTL);
         return callback(null, returnData);
       });
     });

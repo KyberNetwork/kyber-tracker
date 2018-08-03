@@ -17,7 +17,7 @@ class AllRateInfoCacheRefresher extends BaseJob {
     const currenciesService = new ExSession().getService('CurrenciesService');
     const redisCacheService = new ExSession().getService('RedisCacheService');
     const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
-    const CACHE_TTL = CacheInfo.CurrenciesAllRates.timeMnsTool;
+    const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTLTool;
     currenciesService.getAllRateInfo((err, ret) => {
       if (err) {
         logger.error(err);

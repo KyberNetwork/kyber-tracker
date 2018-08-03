@@ -55,7 +55,7 @@ module.exports = AppController.extends({
           res.json(rett);
           return;
         }
-        redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.ConvertiblePairs.timeMns);
+        redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.ConvertiblePairs.TTL);
         res.json(rett);
       });
     });
@@ -83,7 +83,7 @@ module.exports = AppController.extends({
           res.json(rett);
           return;
         }
-        redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.Pair24hData.timeMns);
+        redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.Pair24hData.TTL);
         res.json(rett);
       });
     });
@@ -94,7 +94,7 @@ module.exports = AppController.extends({
     const service = req.getService('CurrenciesService');
 
     const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
-    const CACHE_TTL = CacheInfo.CurrenciesAllRates.timeMns;
+    const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
     const redisCacheService = req.getService('RedisCacheService');
     var loadData = () => {
       service.getAllRateInfo((err, ret) => {

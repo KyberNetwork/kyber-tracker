@@ -24,7 +24,7 @@ class HistoryCacheRefresher extends BaseJob {
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const day31Ago = nowInSeconds - 31 * DAY_IN_SECONDS;
 
-    const time_exprire = CacheInfo.chart_history_1h.timeMnsTool;
+    const time_exprire = CacheInfo.chart_history_1h.TTLTool;
 
 
     Object.keys(tokens).map(token => {
