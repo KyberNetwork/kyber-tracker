@@ -83,13 +83,13 @@ module.exports = BaseService.extends({
     */
 
     // 24h price SQL
-    const lastSql = `SELECT mid_expected as '24h' FROM rate
+    const lastSql = `SELECT mid_expected as '24h' FROM rate7d
       WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
     const lastParams = [symbol, hour30Ago, hour18Ago];
 
     // 7 days points
     //const pointSql = "select FLOOR(AVG(block_timestamp)) as timestamp, AVG(mid_expected) as rate from rate " +
-    const pointSql = "select AVG(mid_expected) as rate from rate " +
+    const pointSql = "select AVG(mid_expected) as rate7d from rate " +
       "where quote_symbol = ? AND mid_expected > 0 AND block_timestamp >= ? group by h6_seq";
     const pointParams = [symbol, weekAgo];
 
@@ -308,12 +308,12 @@ module.exports = BaseService.extends({
     const tradeParams = [dayAgo, tokenSymbol, tokenSymbol];
 
     // 24h price SQL
-    const rateSql = `SELECT max(buy_expected) as 'past_24h_high', min(sell_expected) as 'past_24h_low' FROM rate
+    const rateSql = `SELECT max(buy_expected) as 'past_24h_high', min(sell_expected) as 'past_24h_low' FROM rate7d
       WHERE quote_symbol = ? AND block_timestamp > ? AND buy_expected > 0 AND sell_expected > 0`;
     const rateParams = [tokenSymbol, dayAgo];
 
     // last price SQL
-    const lastSql = `SELECT buy_expected as 'current_ask', sell_expected as 'current_bid' FROM rate
+    const lastSql = `SELECT buy_expected as 'current_ask', sell_expected as 'current_bid' FROM rate7d
       WHERE quote_symbol = ? AND buy_expected > 0 AND sell_expected > 0
       ORDER BY block_number DESC LIMIT 1`;
     const lastParams = [tokenSymbol];
@@ -519,11 +519,11 @@ module.exports = BaseService.extends({
       const hour1Ago = nowInSeconds - 1 * 60 * 60;
 
       // 24h price SQL
-      const lastSql = `SELECT mid_expected as 'rate_eth_24h' FROM rate
+      const lastSql = `SELECT mid_expected as 'rate_eth_24h' FROM rate7d
      WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
       const lastParams = [tokenSymbol, hour30Ago, hour18Ago];
 
-      const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
+      const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate7d WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
       const rateNowParams = [tokenSymbol, hour1Ago];
 
       async.auto({
