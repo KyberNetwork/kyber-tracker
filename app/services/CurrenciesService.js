@@ -557,7 +557,7 @@ module.exports = BaseService.extends({
           old_rate_eth: old_rate_eth,
           change_eth_24h: change_eth_24h,
         };
-        RedisCache.setAsync(CACHE_KEY, JSON.stringify(data), CacheInfo.Change24h.timeMns);
+        RedisCache.setAsync(CACHE_KEY, JSON.stringify(data), CacheInfo.Change24h.TTL);
         return callback(null, data)
       })
     });

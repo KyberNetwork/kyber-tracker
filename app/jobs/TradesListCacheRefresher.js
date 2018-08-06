@@ -38,7 +38,7 @@ class TradesListCacheRefresher extends BaseJob {
         callback(err)
       }
       if (ret_1) {
-        RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.timeMnsTool);
+        RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.TTLTool);
         callback(null, ret_1)
       }
     });

@@ -48,7 +48,7 @@ module.exports = BaseService.extends({
           }
 
           logger.debug(`Current price of [${symbol}] is: $${price}`);
-          RedisCache.setAsync(key, price, CacheInfo.CmcCurrentPrice.timeMns);
+          RedisCache.setAsync(key, price, CacheInfo.CmcCurrentPrice.TTL);
           return callback(null, price);
         });
     });
@@ -85,7 +85,7 @@ module.exports = BaseService.extends({
             return new BigNumber(rate[0].rate).div(Math.pow(10, 18)).toNumber();
           };
 
-          RedisCache.setAsync(key, JSON.stringify(body), CacheInfo.CmcAllRates.timeMns);
+          RedisCache.setAsync(key, JSON.stringify(body), CacheInfo.CmcAllRates.TTL);
 
           return callback(null, body);
         });
@@ -133,7 +133,7 @@ module.exports = BaseService.extends({
           }
 
           if (rateData[0].rate) {
-            RedisCache.setAsync(key, JSON.stringify(rateData[0]), CacheInfo.CmcCurrentRate.timeMns);
+            RedisCache.setAsync(key, JSON.stringify(rateData[0]), CacheInfo.CmcCurrentRate.TTL);
           }
           return callback(null, rateData[0]);
         });
@@ -190,7 +190,7 @@ module.exports = BaseService.extends({
 
           const result = response.body[0];
 
-          RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CMCTokenInfo.timeMns);
+          RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CMCTokenInfo.TTL);
           return callback(null, result);
         });
     });

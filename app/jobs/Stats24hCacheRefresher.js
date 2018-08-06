@@ -12,7 +12,7 @@ class Stats24hCacheRefresher extends BaseJob {
 
   executeJob(callback) {
     const key = CacheInfo.Stats24h.key;
-    const time_exprire = CacheInfo.Stats24h.timeMnsTool;
+    const time_exprire = CacheInfo.Stats24h.TTLTool;
     let params = {};
     params.time_exprire = time_exprire;
     params.key = key;
