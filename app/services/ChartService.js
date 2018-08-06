@@ -10,11 +10,46 @@ const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
 const logger = require('sota-core').getLogger('CurrenciesService');
 const Resolution              = require('../common/Resolution');
-
 const tokens = network.tokens;
+const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
+const CacheInfo = require('../../config/cache/info');
 
 module.exports = BaseService.extends({
     classname: 'ChartService',
+
+    chart_history_all: function(options, callback) {
+      if (!tokens) return callback(null, {});
+      const nowInMs = Date.now();
+      const nowInSeconds = Math.floor(nowInMs / 1000);
+      const DAY_IN_SECONDS = 24 * 60 * 60;
+      const day31Ago = nowInSeconds - 31 * DAY_IN_SECONDS;
+      let pairs = {};
+      Object.keys(tokens).map(token => {
+        if ((token.toUpperCase() !== "ETH") &&
+          !tokens[token].delisted &&
+          helper.shouldShowToken(token)) {
+          const params = {
+            symbol: token,
+            rateType: options.rateType,
+            resolution: options.resolution,
+            from: day31Ago,
+            to: nowInSeconds,
+            seqType: Resolution.toColumn(options.resolution)
+          };
+          pairs[token] = (asyncCallback) => this.history(params, asyncCallback);
+        }
+      });
+      async.auto(pairs, 10, (err, pairs)=>{
+        if(err){
+          callback(err)
+        }
+        Object.entries(pairs).forEach(([key, value]) => {
+          const cache_key = options.cache.name + key;
+          RedisCache.setAsync(cache_key, JSON.stringify(value), options.cache.time_exprire);
+        });
+        callback(err, pairs);
+      });
+    },
 
     // options: symbol, rateType, seqType, from, to
     history: function (options, callback) {

@@ -98,7 +98,11 @@ module.exports = AppController.extends({
         res.send(JSON.parse(ret));
         return;
       }
-      TradeService.getTopTokensList(fromDate, toDate, (err, ret_1) => {
+      let options = {
+        fromDate: fromDate,
+        toDate: toDate
+      };
+      TradeService.getTopTokensList(options, (err, ret_1) => {
         if (err) {
           logger.error(err)
           res.badRequest(err.toString());
@@ -133,8 +137,7 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-    const time_exprire = CacheInfo.NetworkVolumes.TTL;
-    params.time_exprire = time_exprire;
+
     const TradeService = req.getService('TradeService');
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },

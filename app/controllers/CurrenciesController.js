@@ -97,29 +97,33 @@ module.exports = AppController.extends({
     const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
     const redisCacheService = req.getService('RedisCacheService');
     var loadData = () => {
-      service.getAllRateInfo((err, ret) => {
+      service.getAllRateInfo({},(err, ret) => {
         if (err) {
           logger.error(err);
           res.json(ret);
           return;
         }
         // pack the result
-        const pack = {};
-        Object.keys(ret).forEach((symbol) => {
-          const token = ret[symbol];
-          const item = pack[symbol] = {
-            //e: token.volume[0].ETH,
-            //u: token.volume[0].USD,
-            r: token.rate.length ? token.rate[0]["24h"] : 0,
-            p: []
-          };
-          token.points.forEach((p) => {
-            item.p.push(p.rate);
-          });
-        });
-        redisCacheService.setCacheByKey(CACHE_KEY, pack, CACHE_TTL);
+        const pack = data(ret);
         res.json(pack);
+        redisCacheService.setCacheByKey(CACHE_KEY, ret, CACHE_TTL);
       });
+    };
+    const data = (ret) =>{
+      const pack = {};
+      Object.keys(ret).forEach((symbol) => {
+        const token = ret[symbol];
+        const item = pack[symbol] = {
+          //e: token.volume[0].ETH,
+          //u: token.volume[0].USD,
+          r: token.rate.length ? token.rate[0]["24h"] : 0,
+          p: []
+        };
+        token.points.forEach((p) => {
+          item.p.push(p.rate);
+        });
+      });
+      return pack
     };
     redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
@@ -128,7 +132,8 @@ module.exports = AppController.extends({
         return;
       }
       if (ret) {
-        res.send(ret);
+        const pack = data(JSON.parse(ret))
+        res.json(pack);
         return;
       }
       loadData();
