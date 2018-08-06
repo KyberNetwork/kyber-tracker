@@ -20,7 +20,7 @@ class VolumesCacheRefresher extends BaseJob {
     };
     const interval = params.interval || 'H1';
     const period = params.period || 'D7';
-    const time_exprire = CacheInfo.NetworkVolumes.timeMnsTool;
+    const time_exprire = CacheInfo.NetworkVolumes.TTLTool;
     let key = `${CacheInfo.NetworkVolumes.key + period}-${interval}`;
     if (params.symbol) {
       key = params.symbol + '-' + key;

@@ -137,7 +137,7 @@ module.exports = AppController.extends({
           return;
       }
 
-      const time_exprire = CacheInfo.chart_history_1h.timeMns;
+      const time_exprire = CacheInfo.chart_history_1h.TTL;
       let conditionCreateCache = false;
       if (params.rateType === 'sell' && params.resolution === '60') {
           conditionCreateCache = true;

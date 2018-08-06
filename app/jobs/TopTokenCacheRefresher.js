@@ -23,11 +23,11 @@ class TopTokenCacheRefresher extends BaseJob {
     const tradeService = new ExSession().getService('TradeService');
     tradeService.getTopTokensList(fromDate, toDate, (err, ret_1) => {
       if (err) {
-        logger.error(err)
+        logger.error(err);
         callback(err)
       }
       if (ret_1) {
-        RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TopTokensList.timeMnsTool);
+        RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TopTokensList.TTLTool);
         callback(null, ret_1)
       }
     });

@@ -12,9 +12,9 @@ class BaseJob {
       if (err) {
         logger.error(err);
       } else {
-        logger.info(`Finish Create Cache ${options.create_job.constructor.name}...`);
+        logger.info(`Finish Job  ${options.create_job.constructor.name}...`);
       }
-      logger.info(`Create Cache ${options.create_job.constructor.name} will be restart in ${options.time}`);
+      logger.info(`Job ${options.create_job.constructor.name} will be restart in ${options.time}`);
     });
   };
   executeJob() {throw new Error('Implement me.');};

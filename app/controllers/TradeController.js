@@ -50,7 +50,7 @@ module.exports = AppController.extends({
           return;
         }
         if (ret_1) {
-          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.timeMns);
+          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.TTL);
           res.send(ret_1)
           return;
         }
@@ -105,7 +105,7 @@ module.exports = AppController.extends({
           return;
         }
         if (ret_1) {
-          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TopTokensList.timeMns);
+          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TopTokensList.TTL);
           res.send(ret_1)
           return;
         }
@@ -133,7 +133,7 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-    const time_exprire = CacheInfo.NetworkVolumes.timeMns;
+    const time_exprire = CacheInfo.NetworkVolumes.TTL;
     params.time_exprire = time_exprire;
     const TradeService = req.getService('TradeService');
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
