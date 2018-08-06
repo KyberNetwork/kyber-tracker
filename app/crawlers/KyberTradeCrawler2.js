@@ -179,13 +179,23 @@ class KyberTradeCrawler2 {
           record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
           break;
         case networkConfig.logTopics.feeToWallet:
-          record.commissionReserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));;
+          const rAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          if (!record.commissionReserveAddress || record.commissionReserveAddress == rAddr) {
+            record.commissionReserveAddress = rAddr;
+          } else {
+            record.commissionReserveAddress += ";" + rAddr;
+          }
           record.commissionReceiveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          record.commission = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.commission = new BigNumber((record.commission || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)))).toString();
           break;
         case networkConfig.logTopics.burnFee:
-          // For token-token, burns twice but should from same reserve
-          record.burnReserveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          // For token-token, burns twice, MIGHT from 2 reserves
+          const bAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          if (!record.burnReserveAddress || record.burnReserveAddress == bAddr) {
+            record.burnReserveAddress = bAddr;
+          } else {
+            record.burnReserveAddress += ";" + bAddr;
+          }
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
           // Note for token-token, burnFees twich
           record.burnFees = new BigNumber((record.burnFees || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))).toString();
