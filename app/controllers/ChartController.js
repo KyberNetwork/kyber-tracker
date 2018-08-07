@@ -6,8 +6,9 @@ const Checkit                 = require('cc-checkit');
 const Utils                   = require('../common/Utils');
 const Resolution              = require('../common/Resolution');
 const logger                  = log4js.getLogger('ChartController');
-const CacheInfo = require('../../config/cache/info');
-const supportedTokens = Utils.getRateTokenArray().supportedTokens;
+const CacheInfo               = require('../../config/cache/info');
+const supportedTokens         = Utils.getRateTokenArray().supportedTokens;
+const RedisCache              = require('sota-core').load('cache/foundation/RedisCache');
 
 module.exports = AppController.extends({
   classname: 'ChartController',
@@ -136,33 +137,31 @@ module.exports = AppController.extends({
           res.badRequest("Unsupported resolution.");
           return;
       }
-
       const time_exprire = CacheInfo.chart_history_1h.TTL;
-      let conditionCreateCache = false;
-      if (params.rateType === 'sell' && params.resolution === '60') {
-          conditionCreateCache = true;
-      }
-      const minutes = Math.floor(params.to / 600)
 
-      const key_cache = CacheInfo.chart_history_1h.key + params.symbol + minutes;
+      const minutes_to = Math.floor(params.to / 600);
+      const key = CacheInfo.chart_history_1h.key + minutes_to.toString() + params.symbol;
       const chartService = req.getService('ChartService');
-      const redisCacheService = req.getService('RedisCacheService');
-      async.auto({
-          cacheData: (next) => redisCacheService._process_chart_history({
-              chartService: chartService,
-              token: params.symbol,
-              params: params,
-              time_exprire: time_exprire,
-              conditionCreateCache: conditionCreateCache,
-              key_cache: key_cache
-          },next)
-      }, function (err, ret) {
-          if (err) {
-              logger.error(err)
-              return callback(err);
+      RedisCache.getAsync(key, (err, ret) => {
+        if (err) {
+          logger.error(err);
+          res.json(ret);
+          return;
+        }
+        if (ret) {
+          res.json(JSON.parse(ret));
+          return;
+        }
+        chartService.history(params,(err, ret_1)=>{
+          if(err){
+            logger.error(err);
           }
-          res.json(ret.cacheData);
-      })
+          if (params.rateType === 'sell' && params.resolution === '60') {
+            RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+          }
+          res.json(ret_1);
+        });
+      });
 },
 
   time: function (req, res) {

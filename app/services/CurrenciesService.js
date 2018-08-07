@@ -17,7 +17,7 @@ const tokens = network.tokens;
 module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
-  getAllRateInfo: function (callback) {
+  getAllRateInfo: function (options, callback) {
 
     const db = this._getDbConnection();
     //const tradeAdapter = db.model().getSlaveAdapter();

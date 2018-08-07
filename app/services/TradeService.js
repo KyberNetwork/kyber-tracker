@@ -86,7 +86,7 @@ module.exports = BaseService.extends({
   },
 
   // Use for token list page & top token chart
-  getTopTokensList: function (fromDate, toDate, callback) {
+  getTopTokensList: function (options, callback) {
 
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
@@ -100,7 +100,7 @@ module.exports = BaseService.extends({
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ?
         group by ${side}_token_symbol`;
-        adapter.execRaw(sql, [fromDate, toDate], callback);
+        adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
       return obj;
     };
@@ -265,9 +265,9 @@ module.exports = BaseService.extends({
   getStats24h: function (callback) {
     const key = CacheInfo.Stats24h.key;
     const time_exprire = CacheInfo.Stats24h.TTL;
-    let params = {}
-    params.time_exprire = time_exprire
-    params.key = key
+    let params = {};
+    params.time_exprire = time_exprire;
+    params.key = key;
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -275,7 +275,13 @@ module.exports = BaseService.extends({
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
-      this._getStats24h(params, callback);
+      this._getStats24h(params, (err,ret_1)=>{
+        if(err){
+          logger.error(err)
+          return callback(err)
+        }
+        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+      });
     });
   },
 
@@ -361,9 +367,6 @@ module.exports = BaseService.extends({
         totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
         // feeToBurn: feeToBurn.toFormat(2).toString()
       };
-
-      RedisCache.setAsync(options.key, JSON.stringify(result), options.time_exprire);
-
       return callback(null, result);
     });
   },
@@ -527,7 +530,7 @@ module.exports = BaseService.extends({
   getNetworkVolumes: function (options, callback) {
     const interval = options.interval || 'H1';
     const period = options.period || 'D7';
-
+    const time_exprire = CacheInfo.NetworkVolumes.TTL;
     let key = `${CacheInfo.NetworkVolumes.key + period}-${interval}`;
     if (options.symbol) {
       key = options.symbol + '-' + key;
@@ -548,7 +551,14 @@ module.exports = BaseService.extends({
       options.interval = interval;
       options.period = period;
       options.key = key;
-      this._getNetworkVolumes(options, callback);
+      this._getNetworkVolumes(options, (err, ret_1)=>{
+        if(err){
+          logger.info(err);
+          return callback(err);
+        }
+        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+      });
+
     });
   },
 
@@ -633,7 +643,6 @@ module.exports = BaseService.extends({
           count: 0
         });
       }
-      RedisCache.setAsync(options.key, JSON.stringify(returnData), options.time_exprire);
       return callback(null, returnData);
     });
   },

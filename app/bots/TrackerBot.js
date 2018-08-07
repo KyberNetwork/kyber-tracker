@@ -60,10 +60,10 @@ It supports 'd' and 'h'.
                 bot._context.finish();
                 return;
             }
-    
+
             const nowSeconds = Utils.nowInSeconds();
             const sinceSeconds = nowSeconds - seconds;
-    
+
             sendVolume(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
         }
     },
@@ -81,10 +81,10 @@ It supports 'd' and 'h'.
                 bot._context.finish();
                 return;
             }
-    
+
             const nowSeconds = Utils.nowInSeconds();
             const sinceSeconds = nowSeconds - seconds;
-    
+
             sendPartnerSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
         }
     },
@@ -102,10 +102,10 @@ It supports 'd' and 'h'.
                 bot._context.finish();
                 return;
             }
-    
+
             const nowSeconds = Utils.nowInSeconds();
             const sinceSeconds = nowSeconds - seconds;
-    
+
             sendTraderSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
         }
     },
@@ -258,10 +258,10 @@ Tiếng Việt @KyberVietnamese`
                 bot._context.finish();
                 return;
             }
-    
+
             const nowSeconds = Utils.nowInSeconds();
             const sinceSeconds = nowSeconds - seconds;
-    
+
             sendTokenSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
         }
     },
@@ -508,7 +508,7 @@ function sendTraderSummary(bot, msg, from, to, prefix) {
                 for (let i = 0; i < count; i++) {
                     let item = ret[i];
                     top5 += item.sum;
-    
+
                     text += "\n" + traderLink(item.takerAddress) + ": *$" + format(item.sum) + "* (" +
                         percent(item.sum, total) + "%)";
                 }
@@ -538,7 +538,11 @@ function tokenLink(symbol) {
 
 function sendTokenSummary(bot, msg, from, to, prefix) {
     const TradeService = bot._context.getService();
-    TradeService.getTopTokensList(from, to, (err, ret) => {
+    let options = {
+      from: from,
+      to: to
+    };
+    TradeService.getTopTokensList(options, (err, ret) => {
         if (!!err) {
             reply(bot, msg, "An unknown error occurs. Please try again later.");
             logger.error(err);
@@ -548,7 +552,7 @@ function sendTokenSummary(bot, msg, from, to, prefix) {
             if (!ret || !Array.isArray(ret) || ret.length === 0) {
                 text = "There is no transactions."
             } else {
-                
+
                 let total = 0;
                 let top5 = 0;
                 for (let i = 0; i <=5; i++) {

@@ -1,7 +1,4 @@
 const _ = require('lodash');
-const logger = require('sota-core').getLogger('HistoryCacheRefresher');
-const Const = require('../common/Const');
-const ExSession = require('sota-core').load('common/ExSession');
 const CacheInfo = require('../../config/cache/info');
 const BaseJob = require('./BaseJob');
 
@@ -9,18 +6,10 @@ class VolumesCacheRefresher extends BaseJob {
   constructor() {
     super();
   }
-
-  executeJob(callback) {
-    const params = {
-      symbol: '',
-      period: 'D30',
-      interval: 'D1',
-      fromDate: '',
-      toDate: ''
-    };
+  setCacheOptions(options, callback) {
+    const params = options.params;
     const interval = params.interval || 'H1';
     const period = params.period || 'D7';
-    const time_exprire = CacheInfo.NetworkVolumes.TTLTool;
     let key = `${CacheInfo.NetworkVolumes.key + period}-${interval}`;
     if (params.symbol) {
       key = params.symbol + '-' + key;
@@ -31,18 +20,8 @@ class VolumesCacheRefresher extends BaseJob {
     if (params.toDate) {
       key = params.toDate + '-' + key;
     }
-    params.time_exprire = time_exprire
-    params.interval = interval;
-    params.period = period;
-    params.key = key;
-    const tradeService = new ExSession().getService('TradeService');
-    tradeService._getNetworkVolumes(params, (err, ret) => {
-      if (err) {
-        logger.error(err);
-        return callback(err)
-      }
-      return callback(null, ret)
-    });
+    options.cache.name = key;
+    callback(null, options)
   }
 };
 module.exports = VolumesCacheRefresher;
