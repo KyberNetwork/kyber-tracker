@@ -14,8 +14,26 @@ module.exports = AppController.extends({
   getSupportedTokens: function (req, res) {
     Utils.cors(res);
 
+    const [err, params] = new Checkit({
+      chain: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const chain = params.chain;
+    if (chain === "mainnet") {
+      chain = "production";
+    }
+    if (chain && chain !== "ropsten" && chain !== "staging" && chain !== "production") {
+      res.badRequest("Unknown chain: " + chain);
+      return;
+    }
+
     const ret = [];
-    const tokens = network.tokens;
+    const tokens = require('../../config/network/chain')(chain).tokens;
     Object.keys(tokens).forEach(symbol => {
       if (Utils.shouldShowToken(symbol) && !tokens[symbol].delisted) {
         const token = tokens[symbol];
