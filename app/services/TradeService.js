@@ -281,6 +281,7 @@ module.exports = BaseService.extends({
           return callback(err)
         }
         RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        callback(null, ret_1);
       });
     });
   },
@@ -557,6 +558,7 @@ module.exports = BaseService.extends({
           return callback(err);
         }
         RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        callback(null,ret_1)
       });
 
     });
