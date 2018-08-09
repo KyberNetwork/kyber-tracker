@@ -2,7 +2,7 @@
 const defaults = require('defaults');
 const redis = require('sota-core').load('cache/foundation/RedisCache');
 
-const RedisStore = function(options) {
+const RedisStore = function (options) {
   options = defaults(options, {
     expiry: 60, // default expiry is one minute
     prefix: "rl:",
@@ -14,7 +14,7 @@ const RedisStore = function(options) {
   // create the client if one isn't provided
   options.client = options.client || redis.getClient();
 
-  let setExpire = function(replies, rdskey) {
+  let setExpire = function (replies, rdskey) {
     // if this is new or has no expiry
     if (options.resetExpiryOnChange || replies[0] === 1 || replies[1] === -1) {
       // then expire it after the timeout
@@ -22,11 +22,11 @@ const RedisStore = function(options) {
     }
   };
 
-  const processReplies = function(replies) {
+  const processReplies = function (replies) {
     // in ioredis, every reply consists of an array [err, value].
     // We don't need the error here, and if we aren't dealing with an array,
     // nothing is changed.
-    return replies.map(function(val) {
+    return replies.map(function (val) {
       if (Array.isArray(val) && val.length >= 2) {
         return val[1];
       }
@@ -35,13 +35,13 @@ const RedisStore = function(options) {
     });
   };
 
-  this.incr = function(key, cb) {
+  this.incr = function (key, cb) {
     let rdskey = options.prefix + key;
 
     options.client.multi()
       .incr(rdskey)
       .pttl(rdskey)
-      .exec(function(err, replies) {
+      .exec(function (err, replies) {
         if (err) {
           return cb(err);
         }
@@ -53,13 +53,13 @@ const RedisStore = function(options) {
       });
   };
 
-  this.decrement = function(key) {
+  this.decrement = function (key) {
     let rdskey = options.prefix + key;
 
     options.client.multi()
       .decr(rdskey)
       .pttl(rdskey)
-      .exec(function(err, replies) {
+      .exec(function (err, replies) {
         if (err) {
           return;
         }
@@ -69,7 +69,7 @@ const RedisStore = function(options) {
       });
   };
 
-  this.resetKey = function(key) {
+  this.resetKey = function (key) {
     let rdskey = options.prefix + key;
 
     options.client.del(rdskey);
