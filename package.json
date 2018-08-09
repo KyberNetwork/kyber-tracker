@@ -34,7 +34,6 @@
     "bowser": "^1.9.3",
     "chartjs-plugin-datalabels": "^0.3.0",
     "dotenv": "4.0.0",
-    "express-rate-limit": "^2.12.2",
     "level": "3.0.0",
     "localStorage": "^1.0.3",
     "localforage": "^1.6.0",
