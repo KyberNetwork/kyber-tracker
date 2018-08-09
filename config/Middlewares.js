@@ -13,7 +13,8 @@ module.exports = {
     'bodyMultipart',
     'www',
     'passportInit',
-    'passportSession'
+    'passportSession',
+    'RateLimit'
   ],
   after: [
     // Nothing
