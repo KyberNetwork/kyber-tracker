@@ -4,7 +4,7 @@
   "name": "Kyber Tracker",
   "scope": "/",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": "https://tracker.kyber.network/",
   "short_name": "Kyber Tracker",
   "theme_color": "transparent",
   "description": "Tracking Kyber Network's Trades, Activities, and Burnt Fees",

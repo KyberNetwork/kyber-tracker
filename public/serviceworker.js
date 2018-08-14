@@ -1,6 +1,6 @@
 var CACHE_NAME = 'Kyber-cache-v3';
 var urlsToCache = [
-  '/manifest.json',
+  'https://tracker.kyber.network/manifest.json',
 ];
 
 self.addEventListener('install', function(event) {
