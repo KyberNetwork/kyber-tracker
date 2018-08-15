@@ -9,8 +9,21 @@
     <meta property="og:description" content="Tracking Kyber Network's Trades, Activities, and Burnt Fees" />
     <meta property="og:image" content="/images/og-image.png" />
     <meta property="og:site_name" content="Kyber Tracker"/>
-    
-    
+      <link rel=icon type=image/png sizes=32x32 href=icons/favicon-32x32.png>
+      <link rel=icon type=image/png sizes=16x16 href=icons/favicon-16x16.png>
+      <!--[if IE]>
+      <link rel="shortcut icon" href="icons/favicon-48x48.png"><![endif]-->
+      <meta name=theme-color content=#4DBA87>
+      <meta name=apple-mobile-web-app-capable content=yes>
+      <meta name=apple-mobile-web-app-status-bar-style content=black>
+      <meta name=apple-mobile-web-app-title content=Kyber Tracker>
+      <link rel=apple-touch-icon href=icons/kyber-logo.png>
+      <link rel=mask-icon href=icons/logo.svg color=#4DBA87>
+      <meta name=msapplication-TileImage content=icons/favicon-512x512.png>
+      <meta name=msapplication-TileColor content=#000000>
+
+      <link rel="manifest" href="/manifest.json">
+
   </head>
   <body>
     <div id="app"></div>
@@ -36,9 +49,52 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window,document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '2061921330754520'); 
+    fbq('init', '2061921330754520');
     fbq('track', 'PageView');
     fbq('trackCustom', 'Tracker');
+    </script>
+    <!- Reister service-worker ->
+    <script>
+        ! function () {
+            "use strict";
+            const o = Boolean("localhost" === window.location.hostname || "[::1]" === window.location.hostname || window.location
+                    .hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));
+            window.addEventListener("load", function () {
+                "serviceWorker" in navigator && ("https:" === window.location.protocol || o) && navigator.serviceWorker.register(
+                        "js/service-worker.js").then(function (o) {
+                    o.onupdatefound = function () {
+                        if (navigator.serviceWorker.controller) {
+                            const n = o.installing;
+                            n.onstatechange = function () {
+                                switch (n.state) {
+                                    case "installed":
+                                        break;
+                                    case "redundant":
+                                        throw new Error("The installing service worker became redundant.")
+                                }
+                            }
+                        }
+                    }
+                }).catch(function (o) {
+                    console.error("Error during service worker registration:", o)
+                })
+            })
+        }();
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', init, false);
+        function init() {
+            if("serviceWorker" in navigator) {
+                navigator.serviceWorker.register('serviceworker.js')
+                        .then((registration) => {
+                            console.log('Service Worker installed!');
+                        }).catch((err) => {
+                    console.error('Service Worker failed', err);
+                });
+            }
+
+        }
     </script>
     <noscript>
     <img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=2061921330754520&ev=PageView&noscript=1"/>
