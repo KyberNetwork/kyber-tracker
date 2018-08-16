@@ -116,7 +116,8 @@ module.exports = {
     },
     "BQX": {
       "symbol": "BQX",
-      "name": "Ethos",
+      "name": "ETHOS",
+      "cmcSymbol": "ETHOS",
       "decimal": 8,
       "address": "0x9504A86A881F63Da06302FB3639d4582022097DB",
     },
@@ -190,8 +191,7 @@ module.exports = {
       "name": "BitScreenerToken",
       "decimal": 18,
       "symbol" : "BITX",
-      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f",
-      "icon": "bitx.png",
+      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f"
     }
   },
 
