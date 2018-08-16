@@ -1,7 +1,8 @@
 module.exports = {
   "endpoints": {
     "web3Provider":"https://ropsten.infura.io",
-    "ethScan": "https://ropsten.etherscan.io/"
+    "ethScan": "https://ropsten.etherscan.io/",
+    "getRate": "https://production-cache.kyber.network/getRate"
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
@@ -190,8 +191,7 @@ module.exports = {
       "name": "BitScreenerToken",
       "decimal": 18,
       "symbol" : "BITX",
-      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f",
-      "icon": "bitx.png",
+      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f"
     }
   },
 

@@ -2,10 +2,11 @@ const _ = require('lodash');
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE'];
 const routeGroups = [
-  { prefix: '',             routes: require('./routes/web') },
+  // { prefix: '',             routes: require('./routes/web') },
   { prefix: '/api',         routes: require('./routes/api') },
   { prefix: '/webhooks',         routes: require('./routes/hook') },
   { prefix: '/chart',         routes: require('./routes/chart') },
+  { prefix: '*',         routes: require('./routes/web') }
 ];
 
 const allRoutes = {};

@@ -6,8 +6,9 @@ const Checkit                 = require('cc-checkit');
 const Utils                   = require('../common/Utils');
 const Resolution              = require('../common/Resolution');
 const logger                  = log4js.getLogger('ChartController');
-
-const supportedTokens = Utils.getRateTokenArray().supportedTokens;
+const CacheInfo               = require('../../config/cache/info');
+const supportedTokens         = Utils.getRateTokenArray().supportedTokens;
+const RedisCache              = require('sota-core').load('cache/foundation/RedisCache');
 
 module.exports = AppController.extends({
   classname: 'ChartController',
@@ -112,65 +113,56 @@ module.exports = AppController.extends({
   },
 
   history: function (req, res) {
-    Utils.cors(res);
-    const [err, params] = new Checkit({
-        symbol: ['string', 'required'],
-        resolution: ['string', 'required'],
-        from: ['naturalNonZero', 'required'],
-        to: ['naturalNonZero', 'required'],
-        rateType: ['string', 'required']
-    }).validateSync(req.allParams);
+      Utils.cors(res);
+      const [err, params] = new Checkit({
+          symbol: ['string', 'required'],
+          resolution: ['string', 'required'],
+          from: ['naturalNonZero', 'required'],
+          to: ['naturalNonZero', 'required'],
+          rateType: ['string', 'required']
+      }).validateSync(req.allParams);
 
-    if (err) {
-        res.badRequest(err.toString());
-        return;
-    }
+      if (err) {
+          res.badRequest(err.toString());
+          return;
+      }
 
-    if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
-        res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
-        return;
-    }
+      if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
+          res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
+          return;
+      }
 
-    params.seqType = Resolution.toColumn(params.resolution);
-    if (!params.seqType) {
-        res.badRequest("Unsupported resolution.");
-        return;
-    }
+      params.seqType = Resolution.toColumn(params.resolution);
+      if (!params.seqType) {
+          res.badRequest("Unsupported resolution.");
+          return;
+      }
+      const time_exprire = CacheInfo.chart_history_1h.TTL;
 
-    const service = req.getService('ChartService');
-    service.history(params, (err, ret) => {
+      const minutes_to = Math.floor(params.to / 600);
+      const key = CacheInfo.chart_history_1h.key + minutes_to.toString() + params.symbol;
+      const chartService = req.getService('ChartService');
+      RedisCache.getAsync(key, (err, ret) => {
         if (err) {
+          logger.error(err);
+          res.json(ret);
+          return;
+        }
+        if (ret) {
+          res.json(JSON.parse(ret));
+          return;
+        }
+        chartService.history(params,(err, ret_1)=>{
+          if(err){
             logger.error(err);
-            return;
-        }
-
-        var data ={
-            t: [],
-            o: [],
-            h: [],
-            l: [],
-            c: [],
-            //v: []
-        };
-        if (ret.length === 0){
-            data.s = "no_data";
-        } else {
-            data.s = "ok";
-            ret.forEach((value) => {
-                if (value.seq == 0) return;
-                data.t.push(Resolution.toTimestamp(params.resolution, value.seq));
-                data.o.push(parseFloat(value.open));
-                data.h.push(value.high);
-                data.l.push(value.low);
-                data.c.push(parseFloat(value.close));
-                // data.v.push(0); //volume
-            });
-        }
-
-        res.json(data);
-    });
-
-  },
+          }
+          if (params.rateType === 'sell' && params.resolution === '60') {
+            RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+          }
+          res.json(ret_1);
+        });
+      });
+},
 
   time: function (req, res) {
     Utils.cors(res).send("" + Math.floor(Date.now() / 1000));

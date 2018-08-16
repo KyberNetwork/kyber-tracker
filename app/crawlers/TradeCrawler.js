@@ -7,7 +7,7 @@ const getCoinPrice                = require('./leveldbCache').getCoinPrice;
 const Utils                       = require('../common/Utils');
 const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
-const logger                      = require('sota-core').getLogger('KyberTradeCrawler2');
+const logger                      = require('sota-core').getLogger('TradeCrawler');
 
 let LATEST_PROCESSED_BLOCK = 0;
 const BATCH_BLOCK_SIZE = process.env.BATCH_BLOCK_SIZE || 10000;
@@ -17,7 +17,7 @@ const web3 = Utils.getWeb3Instance();
 const tokensByAddress = _.keyBy(networkConfig.tokens, 'address');
 const tokensBySymbol = _.keyBy(networkConfig.tokens, 'symbol');
 
-class KyberTradeCrawler2 {
+class TradeCrawler {
 
   start () {
     async.auto({
@@ -255,4 +255,4 @@ class KyberTradeCrawler2 {
 
 };
 
-module.exports = KyberTradeCrawler2;
+module.exports = TradeCrawler;

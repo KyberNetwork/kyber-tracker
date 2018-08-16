@@ -19,6 +19,11 @@
       "name"              : "rate",
       "script"            : "rate.js",
       "watch"             : false
+    },
+    {
+      "name"              : "schedule",
+      "script"            : "schedule.js",
+      "watch"             : false
     }
   ]
 }
