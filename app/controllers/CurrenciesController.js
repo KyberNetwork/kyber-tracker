@@ -138,7 +138,7 @@ module.exports = AppController.extends({
           p: []
         };
         token.points.forEach((p) => {
-          item.p.push(p.rate);
+          item.p.push(p.rate7d);
         });
       });
       return pack
