@@ -4,6 +4,7 @@ const Dotenv_webpack = require('dotenv-webpack');
 const dotenv = require('dotenv').config('./.env');
 const webpack = require('webpack');
 const MinifyPlugin = require("babel-minify-webpack-plugin");
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 module.exports = () => {
   const minimize = process.env.NODE_ENV === 'production';
@@ -15,6 +16,19 @@ module.exports = () => {
       }),
       new MinifyPlugin({}, {
         include: /\.js$/
+      }),
+      new SWPrecacheWebpackPlugin({
+        cacheId: 'kyber-tracker',
+        filename: 'service-worker.js',
+        staticFileGlobs: ['public/**/*.{svg}','public/**/**/*.{svg}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^http:\/\/raw\.githubusercontent\.com\//,
+            handler: 'cacheFirst'
+          }
+        ],
+        minify: true,
+        stripPrefix: 'public/'
       })
     ]
   }
