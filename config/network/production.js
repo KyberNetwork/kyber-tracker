@@ -487,7 +487,7 @@ module.exports = {
       "hidden": true
     },
     "MOC": {
-      "name": "Mossland",
+      "name": "Moss Land",
       "address": "0x865ec58b06bf6305b886793aa20a2da31d034e68",
       "symbol": "MOC",
       "decimal": 18,
