@@ -14,7 +14,7 @@ module.exports = {
     'www',
     'passportInit',
     'passportSession',
-    'RateLimit'
+    // 'RateLimit'
   ],
   after: [
     // Nothing
