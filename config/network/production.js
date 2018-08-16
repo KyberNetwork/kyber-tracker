@@ -485,6 +485,13 @@ module.exports = {
       "symbol": "NULS",
       "decimal": 18,
       "hidden": true
+    },
+    "MOC": {
+      "name": "Moss Land",
+      "address": "0x865ec58b06bf6305b886793aa20a2da31d034e68",
+      "symbol": "MOC",
+      "decimal": 18,
+      "hidden": 1534417200000
     }
   },
 
