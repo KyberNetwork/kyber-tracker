@@ -2,7 +2,7 @@ import _ from 'lodash';
 import jQuery from 'jquery';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
-import network from '../../../../../config/network';
+import network from '../../../../../config/network/production';
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
 const tokens = _.keyBy(_.values(network.tokens), 'symbol');
