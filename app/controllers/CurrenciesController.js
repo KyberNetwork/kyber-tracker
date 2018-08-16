@@ -23,7 +23,7 @@ module.exports = AppController.extends({
       return;
     }
 
-    const chain = params.chain;
+    let chain = params.chain;
     if (chain === "mainnet") {
       chain = "production";
     }
@@ -35,7 +35,7 @@ module.exports = AppController.extends({
     const ret = [];
     const tokens = require('../../config/network/chain')(chain).tokens;
     Object.keys(tokens).forEach(symbol => {
-      if (Utils.shouldShowToken(symbol) && !tokens[symbol].delisted) {
+      if (Utils.shouldShowToken(symbol, tokens) && !tokens[symbol].delisted) {
         const token = tokens[symbol];
         const id = token.symbol || symbol;
         ret.push({

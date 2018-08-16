@@ -115,7 +115,8 @@ module.exports = {
     },
     "BQX": {
       "symbol": "BQX",
-      "name": "Ethos",
+      "name": "ETHOS",
+      "cmcSymbol": "ETHOS",
       "decimal": 8,
       "address": "0x9504A86A881F63Da06302FB3639d4582022097DB",
     },
