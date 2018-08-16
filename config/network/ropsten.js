@@ -174,6 +174,25 @@ module.exports = {
       "decimals": 18,
       "address": "0xa94758d328af7ef1815e73053e95b5F86588C16D",
     },
+    "COFI": {
+      "name": "ConFi",
+      "decimal": 18,
+      "symbol" : "COFI",
+      "address": "0xb91786188f8d4e35d6d67799e9f162587bf4da03",
+    },
+    "MOC": {
+      "name": "Moss Coin",
+      "decimal": 18,
+      "symbol" : "MOC",
+      "address": "0x1742c81075031b8f173d2327e3479d1fc3feaa76",
+    },
+    "BITX": {
+      "name": "BitScreenerToken",
+      "decimal": 18,
+      "symbol" : "BITX",
+      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f",
+      "icon": "bitx.png",
+    }
   },
 
   "averageBlockTime": 15000,
