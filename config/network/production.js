@@ -2,7 +2,7 @@ module.exports = {
   "endpoints": {
     "web3Provider": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
-	  "getRate": "https://production-cache.kyber.network/getRate"
+    "getRate": "https://production-cache.kyber.network/getRate"
   },
   "contractAddresses": {
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
@@ -16,7 +16,6 @@ module.exports = {
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
     "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-    // "burned":["0x2f8d2d194cbe1816411754a2fc9478a11f0707da481b11cff7c69791eb877ee1","0x884b850b1c5e44b75d9d9c60783e2c3e6e87a8fd8e388761f645c2fd34bf7403"],
     "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"]
   },
   "tokens": {
@@ -488,6 +487,13 @@ module.exports = {
       "symbol": "NULS",
       "decimal": 18,
       "hidden": true
+    },
+    "MOC": {
+      "name": "Mossland",
+      "address": "0x865ec58b06bf6305b886793aa20a2da31d034e68",
+      "symbol": "MOC",
+      "decimal": 18,
+      "hidden": 1534417200000
     }
   },
 
@@ -495,8 +501,8 @@ module.exports = {
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
   "startBlockNumberV2": 5926056,
-	"rateBlockStepSize": 40,
-	"newTokenDuration": 3 * 24 * 60 * 60 * 1000,
+  "rateBlockStepSize": 40,
+  "newTokenDuration": 3 * 24 * 60 * 60 * 1000,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
