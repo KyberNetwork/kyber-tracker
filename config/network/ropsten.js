@@ -27,39 +27,39 @@ module.exports = {
     "KNC": {
       "name": "Kyber Network",
       "symbol": "KNC",
-      "address": "0xE5585362D0940519d87d29362115D4cc060C56B3",
+      "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
       "decimal": 18,
       "cmcId": "kyber-network",
     },
     "OMG": {
       "name": "OmiseGO",
       "symbol": "OMG",
-      "address": "0x5b9a857e0C3F2acc5b94f6693536d3Adf5D6e6Be",
+      "address": "0x4BFBa4a8F28755Cb2061c413459EE562c6B9c51b",
       "decimal": 18
     },
     "EOS": {
       "name": "EOS",
       "symbol": "EOS",
-      "address": "0xd3c64BbA75859Eb808ACE6F2A6048ecdb2d70817",
+      "address": "0xd5b4218B950A53fF07985E2d88346925c335EAe7",
       "decimal": 18,
       "delisted": true
     },
     "SNT": {
       "name": "Status Network",
-      "address": "0xF739577d63cdA4a534B0fB92ABf8BBf6EA48d36c",
+      "address": "0xbF5d8683b9BE6C43fcA607eb2a6f2626A18837a6",
       "symbol": "SNT",
       "decimal": 18
     },
     "ELF": {
       "name": "AELF",
-      "address": "0x7174FCb9C2A49c027C9746983D8262597b5EcCb1",
+      "address": "0x9Fcc27c7320703c43368cf1A4bf076402cd0D6B4",
       "symbol": "ELF",
       "icon": "aelf.svg",
       "decimal": 18
     },
     "POWR": {
       "name": "Power Ledger",
-      "address": "0x2C4EfAa21f09c3C6EEF0Edb001E9bffDE7127D3B",
+      "address": "0xa577731515303F0C0D00E236041855A5C4F114dC",
       "symbol": "POWR",
       "icon": "pwr.svg",
       "decimal": 6
@@ -72,25 +72,123 @@ module.exports = {
     },
     "BAT": {
       "name": "Basic Attention Token",
-      "address": "0x04A34c8f5101Dcc50bF4c64D1C7C124F59bb988c",
+      "address": "0xDb0040451F373949A4Be60dcd7b6B8D6E42658B6",
       "symbol": "BAT",
       "decimal": 18
     },
     "REQ": {
       "name": "Request",
-      "address": "0xa448cD1DB463ae738a171C483C56157d6B83B97f",
+      "address": "0xb43D10BbE7222519Da899B72bF2c7f094b6F79D7",
       "symbol": "REQ",
       "decimal": 18
     },
     "GTO": {
       "name": "GIFTO",
-      "address": "0x6B07b8360832c6bBf05A39D9d443A705032bDc4d",
+      "address": "0xe55c607d58c53b2B06A8E38f67F4c0FcAeEd2c31",
       "symbol": "GTO",
       "icon": "gifto.svg",
       "decimal": 5
-    }
+    },
+    "RDN": {
+      "name": "Raiden",
+      "address": "0x5422Ef695ED0B1213e2B953CFA877029637D9D26",
+      "symbol": "RDN",
+      "icon": "rdn.svg",
+      "decimal": 18
+    },
+    "APPC": {
+      "name": "AppCoins",
+      "address": "0x2799f05B55d56be756Ca01Af40Bf7350787F48d4",
+      "symbol": "APPC",
+      "icon": "appc.svg",
+      "decimal": 18
+    },
+    "ENG": {
+      "name": "Enigma",
+      "address": "0x95cc8d8f29D0f7fcC425E8708893E759d1599c97",
+      "symbol": "ENG",
+      "icon": "eng.svg",
+      "decimal": 8
+    },
+    "SALT": {
+      "name": "Salt",
+      "address": "0xB47f1A9B121BA114d5e98722a8948e274d0F4042",
+      "symbol": "SALT",
+      "icon": "salt.svg",
+      "decimal": 8
+    },
+    "BQX": {
+      "symbol": "BQX",
+      "name": "Ethos",
+      "decimal": 8,
+      "address": "0x9504A86A881F63Da06302FB3639d4582022097DB",
+      "icon": "bqx.svg"
+    },
+    "ADX": {
+      "symbol": "ADX",
+      "name": "AdEx",
+      "decimal": 4,
+      "address": "0x499990DB50b34687CDaFb2C8DaBaE4E99d6F38A7",
+      "icon": "adx.svg"
+    },
+    "AST": {
+      "symbol": "AST",
+      "name": "AirSwap",
+      "decimal": 4,
+      "address": "0xeF06F410C26a0fF87b3a43927459Cce99268a2eF",
+      "icon": "ast.svg"
+    },
+    "RCN": {
+      "symbol": "RCN",
+      "name": "Ripio Credit Network",
+      "decimals": 18,
+      "address": "0x99338aa9218C6C23AA9d8cc2f3EFaf29954ea26B",
+      "icon": "rcn.svg"
+    },
+    "ZIL": {
+      "symbol": "ZIL",
+      "name": "Zilliqa",
+      "decimals": 12,
+      "address": "0xaD78AFbbE48bA7B670fbC54c65708cbc17450167",
+      "icon": "zil.svg"
+    },
+    "DAI": {
+      "symbol": "DAI",
+      "name": "DAI",
+      "decimals": 18,
+      "address": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
+      "icon": "dai.svg"
+    },
+    "LINK": {
+      "symbol": "LINK",
+      "name": "Chain Link",
+      "decimals": 18,
+      "address": "0xb4f7332ed719Eb4839f091EDDB2A3bA309739521",
+      "icon": "link.svg"
+    },
+    "IOST": {
+      "symbol": "IOST",
+      "name": "IOStoken",
+      "decimals": 18,
+      "address": "0x27db28a6C4ac3D82a08D490cfb746E6F02bC467C",
+      "icon": "iost.svg"
+    },
+    "STORM": {
+      "symbol": "STORM",
+      "name": "Storm",
+      "decimals": 18,
+      "address": "0x8FFf7De21de8ad9c510704407337542073FDC44b",
+      "icon": "storm.svg"
+    },
+    "BBO": {
+      "symbol": "BBO",
+      "name": "BigBom",
+      "decimals": 18,
+      "address": "0xa94758d328af7ef1815e73053e95b5F86588C16D",
+      "icon": "bbo.svg"
+    },
   },
-  
+
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
   "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
@@ -105,9 +203,9 @@ module.exports = {
 
   "supportedLanguage": ["en", "vi", "ko", "zh"],
   "mappingLang_Moment": {
-    "en" : "en", 
-    "vi" : "vi", 
-    "ko" : "ko", 
+    "en" : "en",
+    "vi" : "vi",
+    "ko" : "ko",
     "zh" : "zh-cn"
   }
 };
