@@ -94,28 +94,24 @@ module.exports = {
       "name": "Raiden",
       "address": "0x5422Ef695ED0B1213e2B953CFA877029637D9D26",
       "symbol": "RDN",
-      "icon": "rdn.svg",
       "decimal": 18
     },
     "APPC": {
       "name": "AppCoins",
       "address": "0x2799f05B55d56be756Ca01Af40Bf7350787F48d4",
       "symbol": "APPC",
-      "icon": "appc.svg",
       "decimal": 18
     },
     "ENG": {
       "name": "Enigma",
       "address": "0x95cc8d8f29D0f7fcC425E8708893E759d1599c97",
       "symbol": "ENG",
-      "icon": "eng.svg",
       "decimal": 8
     },
     "SALT": {
       "name": "Salt",
       "address": "0xB47f1A9B121BA114d5e98722a8948e274d0F4042",
       "symbol": "SALT",
-      "icon": "salt.svg",
       "decimal": 8
     },
     "BQX": {
@@ -123,70 +119,60 @@ module.exports = {
       "name": "Ethos",
       "decimal": 8,
       "address": "0x9504A86A881F63Da06302FB3639d4582022097DB",
-      "icon": "bqx.svg"
     },
     "ADX": {
       "symbol": "ADX",
       "name": "AdEx",
       "decimal": 4,
       "address": "0x499990DB50b34687CDaFb2C8DaBaE4E99d6F38A7",
-      "icon": "adx.svg"
     },
     "AST": {
       "symbol": "AST",
       "name": "AirSwap",
       "decimal": 4,
       "address": "0xeF06F410C26a0fF87b3a43927459Cce99268a2eF",
-      "icon": "ast.svg"
     },
     "RCN": {
       "symbol": "RCN",
       "name": "Ripio Credit Network",
       "decimals": 18,
       "address": "0x99338aa9218C6C23AA9d8cc2f3EFaf29954ea26B",
-      "icon": "rcn.svg"
     },
     "ZIL": {
       "symbol": "ZIL",
       "name": "Zilliqa",
       "decimals": 12,
       "address": "0xaD78AFbbE48bA7B670fbC54c65708cbc17450167",
-      "icon": "zil.svg"
     },
     "DAI": {
       "symbol": "DAI",
       "name": "DAI",
       "decimals": 18,
       "address": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
-      "icon": "dai.svg"
     },
     "LINK": {
       "symbol": "LINK",
       "name": "Chain Link",
       "decimals": 18,
       "address": "0xb4f7332ed719Eb4839f091EDDB2A3bA309739521",
-      "icon": "link.svg"
     },
     "IOST": {
       "symbol": "IOST",
       "name": "IOStoken",
       "decimals": 18,
       "address": "0x27db28a6C4ac3D82a08D490cfb746E6F02bC467C",
-      "icon": "iost.svg"
     },
     "STORM": {
       "symbol": "STORM",
       "name": "Storm",
       "decimals": 18,
       "address": "0x8FFf7De21de8ad9c510704407337542073FDC44b",
-      "icon": "storm.svg"
     },
     "BBO": {
       "symbol": "BBO",
       "name": "BigBom",
       "decimals": 18,
       "address": "0xa94758d328af7ef1815e73053e95b5F86588C16D",
-      "icon": "bbo.svg"
     },
   },
 
