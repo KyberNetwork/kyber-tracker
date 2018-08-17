@@ -89,7 +89,7 @@ class BurnCrawler {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: networkConfig.tokens.KNC.address,
+          address: [networkConfig.tokens.KNC.address],
           topics: [
               networkConfig.logTopics.burned
           ]
@@ -97,7 +97,6 @@ class BurnCrawler {
           if (err) {
             return next(`Cannot query data from network: ${err.toString()}`);
           }
-
           return next(null, ret);
         });
       },
