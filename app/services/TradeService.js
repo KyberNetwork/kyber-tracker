@@ -143,13 +143,14 @@ module.exports = BaseService.extends({
               volumeUSD: volumeUSD.toNumber(),
               volumeETH: ethVolume.toFormat(4).toString(),
               volumeEthNumber: ethVolume.toNumber(),
-              isNewToken: UtilsHelper.isNewToken(token.symbol)
+              isNewToken: UtilsHelper.isNewToken(token.symbol),
+              isDelisted: UtilsHelper.isDelisted(token.symbol)
             })
 
           }
         });
 
-        return callback(null, _.orderBy(supportedTokens, ['isNewToken', 'volumeUSD'], ['desc', 'desc']));
+        return callback(null, _.orderBy(supportedTokens, ['isNewToken', 'isDelisted', 'volumeUSD' ], ['desc', 'desc', 'desc']));
       });
 
   },

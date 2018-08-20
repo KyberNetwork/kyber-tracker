@@ -120,5 +120,10 @@ module.exports = {
       var bornMs = tokens[tokenSymbol].hidden;
       if (typeof bornMs != 'number') return false;
       return Date.now() <= bornMs + (network.newTokenDuration || 3 * 24 * 60 * 60 * 1000);
+  },
+  isDelisted (tokenSymbol) {
+    let delisted = tokens[tokenSymbol].delisted;
+    if (typeof bornMs !== 'undefined') return false;
+    return delisted;
   }
 };
