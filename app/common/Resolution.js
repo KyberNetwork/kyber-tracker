@@ -60,7 +60,24 @@ const config = {
         value: 60 * 60 * 24 * 30,
     }
   }
-
+const interval = {
+    intervald: {
+      value: 24*60*60,
+      seq: 30
+    },
+    intervalw: {
+      value: 7*24*60*60,
+      seq: 240
+    },
+    intervalm: {
+      value: 30*24*60*60,
+      seq: 720
+    },
+    intervaly: {
+      value: 365*24*60*60,
+      seq: 'D'
+    }
+};
 module.exports = {
     toColumn: (seq) => {
         const item = config["seq" + seq];
@@ -82,6 +99,11 @@ module.exports = {
             row[config[key].prop] = Math.floor(stamp / config[key].value);
         }
         return row;
-    }
+    },
 
+    toSeq: (inteval) => {
+      const item = interval["interval" + inteval];
+      if (!item) return null;
+      return item;
+    }
 };
