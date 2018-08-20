@@ -13,7 +13,7 @@ const web3                  = Utils.getWeb3Instance();
 const abiDecoder            = Utils.getKyberABIDecoder();
 
 let LATEST_PROCESSED_BLOCK = 0;
-const REQUIRED_CONFIRMATION = process.env.REQUIRED_CONFIRMATION || 7;
+const PARALLEL_INSERT_LIMIT = 10;
 
 /**
  * Traversal through all blocks from the moment contract was deployed
@@ -108,7 +108,7 @@ class BurnCrawler {
   }
 
   _processLogData(logs, callback) {
-    async.each(logs, (log, next) => {
+    async.eachLimit(logs, PARALLEL_INSERT_LIMIT, (log, next) => {
       async.auto({
         block: (_next) => {
           web3.eth.getBlock(log.blockNumber, true, _next);
@@ -120,12 +120,12 @@ class BurnCrawler {
           const transactions = _.filter(ret.block.transactions, (tx) => {
             return Utils.isBurnerContractAddress(tx.to);
           });
-          async.each(transactions, (tx, _next_) => {
+          async.eachLimit(transactions, PARALLEL_INSERT_LIMIT, (tx, _next_) => {
             getBurnedFeeFromTransaction(ret.block, tx, _next_);
           }, _next);
         }]
       }, next);
-    },callback);
+    }, callback);
   }
 }
 
