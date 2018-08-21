@@ -14,6 +14,8 @@ const abiDecoder            = Utils.getKyberABIDecoder();
 
 let LATEST_PROCESSED_BLOCK = 0;
 const PARALLEL_INSERT_LIMIT = 10;
+const BATCH_BLOCK_SIZE = process.env.BATCH_BLOCK_SIZE || 10000;
+const REQUIRED_CONFIRMATION = process.env.REQUIRED_CONFIRMATION || 7;
 
 /**
  * Traversal through all blocks from the moment contract was deployed
@@ -58,7 +60,18 @@ class BurnCrawler {
       processBlocksOnce: ['latestOnchainBlock', (ret, next) => {
         const latestOnchainBlock = ret.latestOnchainBlock;
         fromBlockNumber = latestProcessedBlock;
-        toBlockNumber = latestOnchainBlock;
+
+        // Crawl the newest block already
+        if (fromBlockNumber > latestOnchainBlock - REQUIRED_CONFIRMATION) {
+          toBlockNumber = latestProcessedBlock;
+          return next(null, true);
+        }
+
+        toBlockNumber = latestProcessedBlock + BATCH_BLOCK_SIZE;
+        if (toBlockNumber > latestOnchainBlock - REQUIRED_CONFIRMATION) {
+          toBlockNumber = latestOnchainBlock - REQUIRED_CONFIRMATION;
+        }
+
         if (toBlockNumber <= fromBlockNumber) {
           return next(null, true);
         }
@@ -89,7 +102,7 @@ class BurnCrawler {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: networkConfig.tokens.KNC.address,
+          address: [networkConfig.tokens.KNC.address],
           topics: [
               networkConfig.logTopics.burned
           ]
