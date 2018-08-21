@@ -14,8 +14,8 @@ const abiDecoder            = Utils.getKyberABIDecoder();
 
 let LATEST_PROCESSED_BLOCK = 0;
 const PARALLEL_INSERT_LIMIT = 10;
-const BATCH_BLOCK_SIZE = process.env.BATCH_BLOCK_SIZE || 10000;
-const REQUIRED_CONFIRMATION = process.env.REQUIRED_CONFIRMATION || 7;
+const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
+const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 
 /**
  * Traversal through all blocks from the moment contract was deployed
