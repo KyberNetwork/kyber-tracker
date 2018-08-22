@@ -1,8 +1,7 @@
 module.exports = {
   "endpoints": {
     "web3Provider":"https://ropsten.infura.io",
-    "ethScan": "https://ropsten.etherscan.io/",
-    "getRate": "https://production-cache.kyber.network/getRate"
+    "ethScan": "https://ropsten.etherscan.io/"
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
@@ -116,8 +115,7 @@ module.exports = {
     },
     "BQX": {
       "symbol": "BQX",
-      "name": "ETHOS",
-      "cmcSymbol": "ETHOS",
+      "name": "Ethos",
       "decimal": 8,
       "address": "0x9504A86A881F63Da06302FB3639d4582022097DB",
     },
@@ -136,43 +134,43 @@ module.exports = {
     "RCN": {
       "symbol": "RCN",
       "name": "Ripio Credit Network",
-      "decimals": 18,
+      "decimal": 18,
       "address": "0x99338aa9218C6C23AA9d8cc2f3EFaf29954ea26B",
     },
     "ZIL": {
       "symbol": "ZIL",
       "name": "Zilliqa",
-      "decimals": 12,
+      "decimal": 12,
       "address": "0xaD78AFbbE48bA7B670fbC54c65708cbc17450167",
     },
     "DAI": {
       "symbol": "DAI",
       "name": "DAI",
-      "decimals": 18,
+      "decimal": 18,
       "address": "0xaD6D458402F60fD3Bd25163575031ACDce07538D",
     },
     "LINK": {
       "symbol": "LINK",
       "name": "Chain Link",
-      "decimals": 18,
+      "decimal": 18,
       "address": "0xb4f7332ed719Eb4839f091EDDB2A3bA309739521",
     },
     "IOST": {
       "symbol": "IOST",
       "name": "IOStoken",
-      "decimals": 18,
+      "decimal": 18,
       "address": "0x27db28a6C4ac3D82a08D490cfb746E6F02bC467C",
     },
     "STORM": {
       "symbol": "STORM",
       "name": "Storm",
-      "decimals": 18,
+      "decimal": 18,
       "address": "0x8FFf7De21de8ad9c510704407337542073FDC44b",
     },
     "BBO": {
       "symbol": "BBO",
       "name": "BigBom",
-      "decimals": 18,
+      "decimal": 18,
       "address": "0xa94758d328af7ef1815e73053e95b5F86588C16D",
     },
     "COFI": {
@@ -191,7 +189,8 @@ module.exports = {
       "name": "BitScreenerToken",
       "decimal": 18,
       "symbol" : "BITX",
-      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f"
+      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f",
+      "icon": "bitx.png",
     }
   },
 
