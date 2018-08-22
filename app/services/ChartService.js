@@ -116,7 +116,8 @@ module.exports = BaseService.extends({
       const col = options.rateType + "_expected";
       const seqCol = options.seqType || "hour_req";
 
-      const rawQuery = `select
+      const rawQuery = `select 
+              ${seqCol} as seq,
               SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number DESC SEPARATOR ';'), ';', 1 ) as close
               from rate
               where ${col} > 0 AND quote_symbol = ?
@@ -133,11 +134,20 @@ module.exports = BaseService.extends({
         if (err) {
           logger.error(err);
           return callback(err);
-        };
-        var data = [];
-        ret.history.forEach((value) => {
-          data.push(parseFloat(value.close));
-        });
+        }
+        let data = {
+          t: [],
+          c: [],
+        };if (ret.history.length === 0) {
+          data.s = "no_data";
+        } else {
+          data.s = "ok";
+          ret.history.forEach((value) => {
+            if (value.seq == 0) return;
+            data.t.push(Resolution.toTimestamp(options.resolution, value.seq));
+            data.c.push(parseFloat(value.close));
+          });
+        }
         return callback( null , data);
       })
     },
