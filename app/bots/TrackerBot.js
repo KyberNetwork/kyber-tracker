@@ -539,8 +539,8 @@ function tokenLink(symbol) {
 function sendTokenSummary(bot, msg, from, to, prefix) {
     const TradeService = bot._context.getService();
     let options = {
-      from: from,
-      to: to
+      fromDate: from,
+      toDate: to
     };
     TradeService.getTopTokensList(options, (err, ret) => {
         if (!!err) {
