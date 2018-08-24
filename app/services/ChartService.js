@@ -92,7 +92,7 @@ module.exports = BaseService.extends({
                 l: [],
                 c: [],
               };
-              if (ret.length === 0) {
+              if (ret.history.length === 0) {
                 data.s = "no_data";
               } else {
                 data.s = "ok";
@@ -109,4 +109,46 @@ module.exports = BaseService.extends({
           })
     },
 
+    klines: function (options, callback) {
+      if(!options.symbol || !tokens[options.symbol]){
+        return callback("token not supported")
+      }
+      const col = options.rateType + "_expected";
+      const seqCol = options.seqType || "hour_req";
+
+      const rawQuery = `select 
+              ${seqCol} as seq,
+              SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number DESC SEPARATOR ';'), ';', 1 ) as close
+              from rate
+              where ${col} > 0 AND quote_symbol = ?
+              AND block_timestamp >= ? AND block_timestamp <= ?
+              group by ${seqCol}`;
+
+      const params = [options.symbol, options.from, options.to];
+      const adapter = this.getModel('RateModel').getSlaveAdapter();
+      async.auto({
+        history: (next) => {
+          adapter.execRaw(rawQuery, params, next);
+        }
+      },(err, ret) => {
+        if (err) {
+          logger.error(err);
+          return callback(err);
+        }
+        let data = {
+          t: [],
+          c: [],
+        };if (ret.history.length === 0) {
+          data.s = "no_data";
+        } else {
+          data.s = "ok";
+          ret.history.forEach((value) => {
+            if (value.seq == 0) return;
+            data.t.push(Resolution.toTimestamp(options.resolution, value.seq));
+            data.c.push(parseFloat(value.close));
+          });
+        }
+        return callback( null , data);
+      })
+    },
 });

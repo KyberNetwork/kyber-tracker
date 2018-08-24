@@ -10,8 +10,8 @@ const ExSession                   = require('sota-core').load('common/ExSession'
 const logger                      = require('sota-core').getLogger('TradeCrawler');
 
 let LATEST_PROCESSED_BLOCK = 0;
-const BATCH_BLOCK_SIZE = process.env.BATCH_BLOCK_SIZE || 10000;
-const REQUIRED_CONFIRMATION = process.env.REQUIRED_CONFIRMATION || 7;
+const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
+const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 const PARALLEL_INSERT_LIMIT = 10;
 const web3 = Utils.getWeb3Instance();
 const tokensByAddress = _.keyBy(networkConfig.tokens, 'address');

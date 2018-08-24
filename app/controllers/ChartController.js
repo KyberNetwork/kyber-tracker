@@ -168,4 +168,61 @@ module.exports = AppController.extends({
     Utils.cors(res).send("" + Math.floor(Date.now() / 1000));
   },
 
+  klines: function (req, res) {
+    Utils.cors(res);
+    const [err, params] = new Checkit({
+      symbol: ['string', 'required'],
+      interval: ['string', 'required'],
+      rateType: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+    const resolution = Resolution.toSeq(params.interval);
+
+    if (!resolution) {
+      res.badRequest("Unsupported interval.");
+      return;
+    }
+
+    params.seqType = Resolution.toColumn(resolution.seq);
+    if (!params.seqType) {
+      res.badRequest("Unsupported resolution.");
+      return;
+    }
+    params.resolution = resolution.seq;
+
+    const rateType = params.rateType || 'sell';
+    params.rateType = rateType;
+
+    const nowInMs = Date.now();
+    const nowInSeconds = Math.floor(nowInMs / 1000);
+    params.from = nowInSeconds - resolution.value;
+    params.to = nowInSeconds;
+    const key = CacheInfo.klines.key + params.interval.toString() + params.rateType.toString() + params.symbol;
+    const time_exprire = CacheInfo.klines.TTL;
+    const chartService = req.getService('ChartService');
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err);
+        res.json(ret);
+        return;
+      }
+      if (ret) {
+        res.json(JSON.parse(ret));
+        return;
+      }
+      chartService.klines(params,(err, ret_1)=>{
+        if(err){
+          logger.error(err);
+        }
+        if (params.rateType === 'sell') {
+          RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        }
+        res.json(ret_1);
+      });
+    });
+  }
 });

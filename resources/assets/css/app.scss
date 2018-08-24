@@ -496,7 +496,7 @@ td {
     display: inline-block;
     min-width: 60px;
     text-align: left;
-    margin-left: 5px;  
+    margin-left: 5px;
   }
 
   .td-inline-number {
@@ -534,6 +534,17 @@ table.table-round th {
   left: 5px;
 }
 
+.delised::after {
+  content: '';
+  background-color: red;
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  position: relative;
+  bottom: 5px;
+  left: 5px;
+}
 a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   color: #2ed573;
 }
@@ -694,7 +705,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   > * {
     margin-right: 0 !important;
   }
-  
+
   .btn-secondary {
     margin-right: 0 !important;
   }
@@ -758,7 +769,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       -moz-transform: rotate(180deg);        /* FF */
       -o-transform: rotate(180deg);          /* Opera */
       -ms-transform: rotate(180deg);         /* IE9 */
-      transform: rotate(180deg); 
+      transform: rotate(180deg);
     }
   }
 
@@ -890,7 +901,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       // display: none;
       visibility: hidden;
       width: 0px;
-      
+
     }
     .search-button{
       border-radius: 4px;
@@ -938,7 +949,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 @media (max-width: 712px){
   // .heading-summary{
   //   margin: 0 15px;
-    
+
   //   li {
   //     width: 50%;
   //     margin: 0;
@@ -1170,7 +1181,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
         font-weight: normal;
       }
     }
-    
+
     .trade-note{
       font-size: 14px;
       padding-left: 15px;
@@ -1192,7 +1203,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       padding-bottom: 6px;
     }
     .trade-detail-link{
-      
+
       font-size: 16px;
       font-weight: normal;
       font-style: normal;
@@ -1333,8 +1344,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
 
     .vdp-datepicker__calendar {
-      
-      
+
+
       // width: calc(100% - 20px) !important;
 
       .cell {
@@ -1688,8 +1699,8 @@ html {
       font-weight: normal;
     }
   }
-  
-    
+
+
 
   .calendar-icon > div:first-child:after{
     background-image: url(/images/calendar.svg);

@@ -31,7 +31,7 @@
       </div>
       <b-tabs card>
         <b-tab :title="$t('chart.title.top_token')">
-          <chart-token 
+          <chart-token
             ref="chartToken"
             :elementId="'chart-token'">
           </chart-token>
@@ -61,7 +61,7 @@
       <template slot="body" scope="slot">
         <tr>
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
-          <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> <span v-bind:class="{ fresher: slot.item.isNewToken }">{{ slot.item.name }}</span></td>
+          <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }">{{ slot.item.name }}</span></td>
           <td  class="text-left pl-1">{{ slot.item.symbol }}</td>
           <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
@@ -88,7 +88,7 @@
 
       <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
         <tr @click="toTokenDetails(slot.item.symbol)">
-          <td  class="text-left pl-4" style="white-space:nowrap !important"><span v-bind:class="{ fresher: slot.item.isNewToken }">{{ slot.item.symbol }}</span></td>
+          <td  class="text-left pl-4" style="white-space:nowrap !important"><span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }">{{ slot.item.symbol }}</span></td>
           <td class="text-right pr-4">{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-right pr-4">{{ slot.item.volumeETH }}</td>
         </tr>
