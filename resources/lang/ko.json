@@ -58,7 +58,9 @@
     "fees_burned": "지금까지 태웠는 총비용",
     "knc_price": "KNC 현재 가격",
     "eth_price": "ETH 현재 가격",
-    "price_change_24": "24시간 가격 변화"
+    "price_change_24": "24시간 가격 변화",
+    "delisted": "token delisted",
+    "new_coin": "new token"
   },
   "chart": {
     "title": {
