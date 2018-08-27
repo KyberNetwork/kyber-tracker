@@ -59,8 +59,8 @@
     "knc_price": "KNC 현재 가격",
     "eth_price": "ETH 현재 가격",
     "price_change_24": "24시간 가격 변화",
-    "delisted": "token delisted",
-    "new_coin": "new token"
+    "delisted": "상장",
+    "new_coin": "새로운"
   },
   "chart": {
     "title": {

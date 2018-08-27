@@ -65,8 +65,8 @@
     "knc_price": "Giá hiện tại của KNC",
     "eth_price": "Giá hiện tại của ETH",
     "price_change_24": "Phần trăm thay đổi so với 24 giờ trước",
-    "delisted": "Token không được hỗ trợ",
-    "new_coin": "Token mới"
+    "delisted": "không được hỗ trợ",
+    "new_coin": "mới"
   },
 
   "chart": {
