@@ -64,7 +64,9 @@
     "fees_burned": "Tổng phí đã đốt cho đến nay",
     "knc_price": "Giá hiện tại của KNC",
     "eth_price": "Giá hiện tại của ETH",
-    "price_change_24": "Phần trăm thay đổi so với 24 giờ trước"
+    "price_change_24": "Phần trăm thay đổi so với 24 giờ trước",
+    "delisted": "không được hỗ trợ",
+    "new_coin": "mới"
   },
 
   "chart": {
