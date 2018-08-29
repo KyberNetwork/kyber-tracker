@@ -133,8 +133,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || !(params.interval && Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
       return;
     }
 
@@ -150,8 +150,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || !(params.interval && Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
       return;
     }
 
@@ -168,8 +168,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || !(params.interval && Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Unsupported interval");
       return;
     }
 
@@ -186,8 +186,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || !(params.interval && Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
       return;
     }
 
