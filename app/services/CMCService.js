@@ -61,7 +61,7 @@ module.exports = BaseService.extends({
         logger.error(err)
       }
       if (ret) {
-        body = JSON.parse(ret);
+        const body = JSON.parse(ret);
         body.getRate = function (source, dest) {
           let rate = this.data.filter(x => {
             return x.source === source && x.dest === dest;
