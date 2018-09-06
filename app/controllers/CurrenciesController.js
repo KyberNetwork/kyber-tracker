@@ -15,7 +15,8 @@ module.exports = AppController.extends({
     Utils.cors(res);
 
     const [err, params] = new Checkit({
-      chain: ['string']
+      chain: ['string'],
+      includeDelisted: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -31,20 +32,24 @@ module.exports = AppController.extends({
       res.badRequest("Unknown chain: " + chain);
       return;
     }
-
+    let includeDelisted = params.includeDelisted;
     const ret = [];
     const tokens = require('../../config/network/chain')(chain).tokens;
     Object.keys(tokens).forEach(symbol => {
-      if (Utils.shouldShowToken(symbol, tokens) && !tokens[symbol].delisted) {
+      if (Utils.shouldShowToken(symbol, tokens) && (includeDelisted ? true : !tokens[symbol].delisted)) {
         const token = tokens[symbol];
         const id = token.symbol || symbol;
-        ret.push({
+        const data = {
           symbol: id,
           cmcName: token.cmcSymbol || id,
           name: token.name,
           decimals: token.decimal,
           contractAddress: token.address
-        });
+        };
+        if(includeDelisted && tokens[symbol].delisted){
+          data.enable = false;
+        }
+        ret.push(data);
       }
     });
 
