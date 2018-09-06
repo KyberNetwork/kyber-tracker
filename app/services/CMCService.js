@@ -61,7 +61,17 @@ module.exports = BaseService.extends({
         logger.error(err)
       }
       if (ret) {
-        return callback(null, JSON.parse(ret));
+        body = JSON.parse(ret);
+        body.getRate = function (source, dest) {
+          let rate = this.data.filter(x => {
+            return x.source === source && x.dest === dest;
+          });
+
+          if (!rate || !rate.length) return 0;
+
+          return new BigNumber(rate[0].rate).div(Math.pow(10, 18)).toNumber();
+        };
+        return callback(null, body);
       }
       request
         .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
