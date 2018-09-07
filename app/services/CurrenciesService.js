@@ -484,7 +484,7 @@ module.exports = BaseService.extends({
           change_usd_24h = (price_now_eth - price_24h_eth) * 100 / price_24h_eth
         }
         pairs["ETH_ETH"].change_usd_24h = change_usd_24h;
-        pairs["ETH_ETH"].rate_usd_now = price_now_eth;
+        pairs["ETH_ETH"].rate_usd_now = price_now_eth !== "-" ? parseFloat(price_now_eth) : price_now_eth;
       }
       callback(err, pairs);
     });

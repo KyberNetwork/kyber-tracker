@@ -58,7 +58,9 @@
     "fees_burned": "至今已销毁的总费用",
     "knc_price": "KNC 最新价格 ",
     "eth_price": "ETH 最新价格",
-    "price_change_24": "与24小时前价格相比的变化百分比"
+    "price_change_24": "与24小时前价格相比的变化百分比",
+    "delisted": "已删除",
+    "new_coin": "新"
   },
   "chart": {
     "title": {

@@ -534,7 +534,7 @@ table.table-round th {
   left: 5px;
 }
 
-.delised::after {
+.delised::before {
   content: '';
   background-color: red;
   width: 8px;
@@ -544,6 +544,26 @@ table.table-round th {
   position: relative;
   bottom: 5px;
   left: 5px;
+}
+.token-name .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(5, 4, 29, 0.69);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 1.8%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.token-name:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   color: #2ed573;

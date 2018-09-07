@@ -64,7 +64,9 @@
     "fees_burned": "Total fees burnt so far",
     "knc_price": "Current KNC price",
     "eth_price": "Current ETH price",
-    "price_change_24": "% change compared with price at 24 hours ago"
+    "price_change_24": "% change compared with price at 24 hours ago",
+    "delisted": "delisted",
+    "new_coin": "token"
   },
 
   "chart": {

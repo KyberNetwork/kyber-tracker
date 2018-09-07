@@ -27,6 +27,7 @@ const appConst = {
     Y1  : 60 * 60 * 24 * 365,
     ALL : 60 * 60 * 24 * 365 * 100, // 100 years
   },
+  INTERVAL: ['H1','M1','D1']
 };
 
 module.exports = _.assign(coreConst, appConst);
