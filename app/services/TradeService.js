@@ -418,7 +418,7 @@ module.exports = BaseService.extends({
 
     if (!this._isAddress(partnerId)) {
       if (partners[partnerId]) partnerId = partners[partnerId]
-      else return callback(null, []);
+      else return callback(`partnerID ${partnerId} not found`);
     }
 
     this._searchByAddress(partnerId, page, limit, fromDate, toDate, {
