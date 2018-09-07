@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const async = require('async');
 const AppController = require('./AppController');
+const network = require('../../config/network');
 const Checkit = require('cc-checkit');
 const Const = require('../common/Const');
 const Utils = require('sota-core').load('util/Utils');
@@ -24,8 +25,17 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
+    
     let key = `${CacheInfo.TradesList.key + params.page}-${params.limit}`;
     if (params.symbol) {
+      const token = network.tokens[params.symbol];
+      if (!token || !Utils.shouldShowToken(params.symbol)) {
+          res.json({
+              s: "error",
+              errmsg: "unknown_symbol " + params.symbol
+          });
+          return;
+      }
       key = params.symbol + '-' + key;
     }
     if (params.fromDate) {
