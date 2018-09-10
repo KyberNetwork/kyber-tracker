@@ -35,11 +35,15 @@ module.exports = BaseService.extends({
 
       request
         .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .timeout({
+          response: 5000,  // Wait 5 seconds for the server to start sending,
+          deadline: 60000, // but allow 1 minute for the file to finish loading.
+        })
         .end((err, response) => {
           if (err) {
+            console.log(err)
             return callback(err);
           }
-
           let price;
           try {
             price = parseFloat(response.body[0].price_usd);
@@ -75,6 +79,10 @@ module.exports = BaseService.extends({
       }
       request
         .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
+        .timeout({
+          response: 5000,  // Wait 5 seconds for the server to start sending,
+          deadline: 60000, // but allow 1 minute for the file to finish loading.
+        })
         .end((err, response) => {
           if (err) {
             return callback(err);
@@ -125,6 +133,10 @@ module.exports = BaseService.extends({
       }
       request
         .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
+        .timeout({
+          response: 5000,  // Wait 5 seconds for the server to start sending,
+          deadline: 60000, // but allow 1 minute for the file to finish loading.
+        })
         .end((err, response) => {
           if (err) {
             return callback(err);
@@ -193,6 +205,10 @@ module.exports = BaseService.extends({
 
       request
         .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .timeout({
+          response: 5000,  // Wait 5 seconds for the server to start sending,
+          deadline: 60000, // but allow 1 minute for the file to finish loading.
+        })
         .end((err, response) => {
           if (err) {
             return callback(err);
@@ -234,6 +250,10 @@ module.exports = BaseService.extends({
 
     request
       .get(`https://graphs2.coinmarketcap.com/currencies/${cmcId}/${fromTime}/${toTime}`)
+      .timeout({
+        response: 5000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
       .end((err, response) => {
         if (err) {
           return callback(err);
