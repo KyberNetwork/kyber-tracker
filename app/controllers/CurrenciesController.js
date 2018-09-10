@@ -52,7 +52,6 @@ module.exports = AppController.extends({
         ret.push(data);
       }
     });
-
     res.json(ret);
   },
 
@@ -75,8 +74,6 @@ module.exports = AppController.extends({
       CurrenciesService.getConvertiblePairs((err, rett) => {
         if (err) {
           logger.error(err);
-          res.json(rett);
-          return;
         }
         redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.ConvertiblePairs.TTL);
         res.json(rett);
@@ -103,8 +100,6 @@ module.exports = AppController.extends({
       CurrenciesService.getPair24hData((err, rett) => {
         if (err) {
           logger.error(err);
-          res.json(rett);
-          return;
         }
         redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.Pair24hData.TTL);
         res.json(rett);
@@ -123,8 +118,6 @@ module.exports = AppController.extends({
       service.getAllRateInfo({},(err, ret) => {
         if (err) {
           logger.error(err);
-          res.json(ret);
-          return;
         }
         // pack the result
         const pack = data(ret);
@@ -179,8 +172,6 @@ module.exports = AppController.extends({
     service.get24hChangeData(params, (err, ret) => {
       if (err) {
         logger.error(err);
-        res.json(ret);
-        return;
       }
       res.json(ret);
     });

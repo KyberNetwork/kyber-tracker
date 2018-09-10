@@ -141,7 +141,16 @@ module.exports = BaseService.extends({
       }
     });
 
-    async.auto(pairs, 10, callback);
+    async.auto(pairs, 10, (err, pairs)=>{
+      if(err){
+        pairs = {
+          error:true,
+          additional_data: err,
+          reason:"server_error"
+        }
+      }
+      callback(null, pairs);
+    });
   },
 
   _getCurrencyInfo: function (options, callback) {
@@ -279,7 +288,6 @@ module.exports = BaseService.extends({
 
         });
       }
-
       callback(err, pairs);
     });
   },
