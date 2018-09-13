@@ -33,7 +33,7 @@ function rateLimit(options, delayMs = 0, expiry = 60, windowMs = 60 * 1000) {
       }
       return true
     },
-    handle: function (req, res, /*next*/) {
+    handler: function (req, res, /*next*/) {
       if (req.headers) {
         res.setHeader('Retry-After', Math.ceil(req.windowMs / 1000));
       }

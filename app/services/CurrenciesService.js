@@ -129,7 +129,6 @@ module.exports = BaseService.extends({
     let pairs = {};
 
     Object.keys(tokens).map(token => {
-      // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
       if ((token.toUpperCase() !== "ETH") &&
         !tokens[token].delisted &&
         helper.shouldShowToken(token)) {
@@ -140,14 +139,21 @@ module.exports = BaseService.extends({
         }, asyncCallback)
       }
     });
-
+    pairs.allRates = this.getService('CMCService').getAllRates;
     async.auto(pairs, 10, (err, pairs)=>{
+      const rates = pairs.allRates;
+      delete pairs.allRates;
       if(err){
         pairs = {
           error:true,
           additional_data: err,
           reason:"server_error"
         }
+      }else{
+        Object.values(pairs).forEach((value) => {
+          const currentPrice = rates.getRate(value.symbol, 'ETH');
+          value.currentPrice = currentPrice
+        });
       }
       callback(null, pairs);
     });
@@ -163,12 +169,9 @@ module.exports = BaseService.extends({
     }
 
     let tokenSymbol = options.token
-    let base = options.fromCurrencyCode
     let tokenData = tokens[tokenSymbol]
-    let baseTokenData = tokens[base]
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
-    const CMCService = this.getService('CMCService');
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -190,9 +193,6 @@ module.exports = BaseService.extends({
           where: 'block_timestamp > ? AND maker_token_symbol = ?',
           params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
         }, next);
-      },
-      price: (next) => {
-        CMCService.getCurrentRate(tokenSymbol, base, next);
       },
       lastTrade: (next) => {
         KyberTradeModel.findOne({
@@ -223,19 +223,14 @@ module.exports = BaseService.extends({
         }
 
       }
-
-      // const baseVolume = new BigNumber(ret.baseVolume.toString()).div(Math.pow(10, baseTokenData.decimal)).toNumber()
       let bigQuoteVolumeTaker = ret.quoteVolumeTaker ? new BigNumber(ret.quoteVolumeTaker.toString()) : new BigNumber(0)
       let bigQuoteVolumeMaker = ret.quoteVolumeMaker ? new BigNumber(ret.quoteVolumeMaker.toString()) : new BigNumber(0)
       const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
-      const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
       return callback(null, {
-        "symbol": tokenData.cmcSymbol || tokenData.symbol,
-        "name": tokenData.name,
-        // "code": tokenData.symbol,
-        "contractAddress": tokenData.address,
-        "decimals": tokenData.decimal,
-        currentPrice: currentPrice.toNumber(),
+        symbol: tokenData.cmcSymbol || tokenData.symbol,
+        name: tokenData.name,
+        contractAddress: tokenData.address,
+        decimals: tokenData.decimal,
         lastPrice: lastPrice,
         lastTimestamp: ret.lastTrade ? ret.lastTrade.blockTimestamp : null,
         baseVolume: ret.baseVolume,
