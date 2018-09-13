@@ -1,9 +1,11 @@
 const _ = require('lodash');
 const async = require('async');
 const AppController = require('./AppController');
+const network = require('../../config/network');
 const Checkit = require('cc-checkit');
 const Const = require('../common/Const');
 const Utils = require('sota-core').load('util/Utils');
+const Utils_Common = require('../common/Utils');
 const logger = log4js.getLogger('TradeController');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
@@ -24,8 +26,17 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
+    
     let key = `${CacheInfo.TradesList.key + params.page}-${params.limit}`;
     if (params.symbol) {
+      const token = network.tokens[params.symbol];
+      if (!token || !Utils_Common.shouldShowToken(params.symbol)) {
+          res.json({
+              s: "error",
+              errmsg: "unknown_symbol " + params.symbol
+          });
+          return;
+      }
       key = params.symbol + '-' + key;
     }
     if (params.fromDate) {
@@ -133,8 +144,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
       return;
     }
 
@@ -150,8 +161,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
       return;
     }
 
@@ -168,8 +179,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Unsupported interval");
       return;
     }
 
@@ -186,8 +197,8 @@ module.exports = AppController.extends({
       toDate: ['natural']
     }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
+    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
       return;
     }
 

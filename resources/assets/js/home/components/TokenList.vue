@@ -31,7 +31,7 @@
       </div>
       <b-tabs card>
         <b-tab :title="$t('chart.title.top_token')">
-          <chart-token 
+          <chart-token
             ref="chartToken"
             :elementId="'chart-token'">
           </chart-token>
@@ -61,7 +61,14 @@
       <template slot="body" scope="slot">
         <tr>
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
-          <td class="pl-4"><img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" /> <span v-bind:class="{ fresher: slot.item.isNewToken }">{{ slot.item.name }}</span></td>
+            <td class="pl-4">
+                <div class="token-name">
+                    <img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" />
+                    <span>{{ slot.item.name }}</span>
+                    <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
+                    <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
+                </div>
+            </td>
           <td  class="text-left pl-1">{{ slot.item.symbol }}</td>
           <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
@@ -88,7 +95,13 @@
 
       <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
         <tr @click="toTokenDetails(slot.item.symbol)">
-          <td  class="text-left pl-4" style="white-space:nowrap !important"><span v-bind:class="{ fresher: slot.item.isNewToken }">{{ slot.item.symbol }}</span></td>
+          <td  class="text-left pl-4" style="white-space:nowrap !important">
+              <div class="token-name">
+                  <span>{{ slot.item.name }}</span>
+                  <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
+                  <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
+              </div>
+          </td>
           <td class="text-right pr-4">{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-right pr-4">{{ slot.item.volumeETH }}</td>
         </tr>

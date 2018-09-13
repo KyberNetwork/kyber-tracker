@@ -13,7 +13,9 @@ const web3                  = Utils.getWeb3Instance();
 const abiDecoder            = Utils.getKyberABIDecoder();
 
 let LATEST_PROCESSED_BLOCK = 0;
-const REQUIRED_CONFIRMATION = process.env.REQUIRED_CONFIRMATION || 7;
+const PARALLEL_INSERT_LIMIT = 10;
+const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
+const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 
 /**
  * Traversal through all blocks from the moment contract was deployed
@@ -58,7 +60,18 @@ class BurnCrawler {
       processBlocksOnce: ['latestOnchainBlock', (ret, next) => {
         const latestOnchainBlock = ret.latestOnchainBlock;
         fromBlockNumber = latestProcessedBlock;
-        toBlockNumber = latestOnchainBlock;
+
+        // Crawl the newest block already
+        if (fromBlockNumber > latestOnchainBlock - REQUIRED_CONFIRMATION) {
+          toBlockNumber = latestProcessedBlock;
+          return next(null, true);
+        }
+
+        toBlockNumber = latestProcessedBlock + BATCH_BLOCK_SIZE;
+        if (toBlockNumber > latestOnchainBlock - REQUIRED_CONFIRMATION) {
+          toBlockNumber = latestOnchainBlock - REQUIRED_CONFIRMATION;
+        }
+
         if (toBlockNumber <= fromBlockNumber) {
           return next(null, true);
         }
@@ -107,7 +120,7 @@ class BurnCrawler {
   }
 
   _processLogData(logs, callback) {
-    async.each(logs, (log, next) => {
+    async.eachLimit(logs, PARALLEL_INSERT_LIMIT, (log, next) => {
       async.auto({
         block: (_next) => {
           web3.eth.getBlock(log.blockNumber, true, _next);
@@ -119,12 +132,12 @@ class BurnCrawler {
           const transactions = _.filter(ret.block.transactions, (tx) => {
             return Utils.isBurnerContractAddress(tx.to);
           });
-          async.each(transactions, (tx, _next_) => {
+          async.eachLimit(transactions, PARALLEL_INSERT_LIMIT, (tx, _next_) => {
             getBurnedFeeFromTransaction(ret.block, tx, _next_);
           }, _next);
         }]
       }, next);
-    },callback);
+    }, callback);
   }
 }
 

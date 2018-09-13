@@ -5,6 +5,7 @@ module.exports = {
       '/search' : ['ChartController.search'],
       '/history' : ['ChartController.history'],
       '/time' : ['ChartController.time'],
+      '/klines' : ['ChartController.klines'],
     },
     POST: {
     },
@@ -13,4 +14,3 @@ module.exports = {
     DELETE: {
     }
   };
-  

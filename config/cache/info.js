@@ -75,5 +75,9 @@ module.exports = {
   "TotalBurnedFees": {
     key: "burned-fee-total",
     TTL: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
+  },
+  "klines": {
+    key: "klines",
+    TTL: {ttl: 5 * Const.MINUTE_IN_MILLISECONDS}
   }
 };
