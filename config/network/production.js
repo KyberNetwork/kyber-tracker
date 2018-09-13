@@ -501,6 +501,14 @@ module.exports = {
       "decimal": 18,
       "address": "0xff2b3353c3015E9f1FBF95B9Bda23F58Aa7cE007",
       "hidden": true
+    },
+    "WETH": {
+      "name": "Wrapped Ether",
+      "decimal": 18,
+      "symbol" : "WETH",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "icon": "weth.png",
+      "hidden": true
     }
   },
 
