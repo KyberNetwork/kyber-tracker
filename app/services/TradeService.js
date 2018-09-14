@@ -30,9 +30,11 @@ module.exports = BaseService.extends({
     let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}'))`;
 
     if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?) AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
+      params.push('WETH');
+      params.push('ETH');
     }
 
     if (options.fromDate) {
@@ -165,9 +167,9 @@ module.exports = BaseService.extends({
           sum(volume_eth) as eth,
           sum(volume_usd) as usd
         from kyber_trade
-        where block_timestamp > ? AND block_timestamp < ?
+        where block_timestamp > ? AND block_timestamp < ? AND !(maker_token_symbol = ? AND taker_token_symbol = ?)
         group by ${side}_token_symbol`;
-        adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
+        adapter.execRaw(sql, [options.fromDate, options.toDate, 'WETH', 'ETH'], callback);
       };
       return obj;
     };
@@ -639,7 +641,7 @@ module.exports = BaseService.extends({
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ? AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
     let params = [fromDate, toDate, 'WETH', 'ETH'];
 
-    if (options.symbol) {
+    if (options.symbol && options.symbol !== 'WETH') {
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
