@@ -143,6 +143,11 @@ class AppRequest extends BaseRequest {
     return this.get(url, params);
   }
 
+  getTokens (params={}) {
+    const url = `/api/tokens`;
+    return this.get(url, params);
+  }
+
   _handleError(err) {
     window.EventBus.$emit('EVENT_COMMON_ERROR', err);
   }
