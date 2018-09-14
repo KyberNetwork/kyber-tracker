@@ -134,6 +134,73 @@ module.exports = BaseService.extends({
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
             const volumeUSD = sumProp(symbol, 'usd');
             const ethVolume = sumProp(symbol, 'eth');
+            supportedTokens.push({
+              symbol: token.symbol,
+              name: token.name,
+              volumeToken: tokenVolume.toFormat(4).toString(),
+              volumeTokenNumber: tokenVolume.toNumber(),
+              volumeUSD: volumeUSD.toNumber(),
+              volumeETH: ethVolume.toFormat(4).toString(),
+              volumeEthNumber: ethVolume.toNumber(),
+              isNewToken: UtilsHelper.isNewToken(token.symbol),
+              isDelisted: UtilsHelper.isDelisted(token.symbol)
+            })
+
+          }
+        });
+
+        return callback(null, _.orderBy(supportedTokens, ['volumeUSD' ], ['desc']).slice(0, 5));
+      });
+
+  },
+  getTokensList: function (options, callback) {
+
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    const makeSql = (side, obj) => {
+      obj = obj || {};
+      obj[side] = (callback) => {
+        const sql = `select ${side}_token_symbol as symbol,
+          sum(${side}_token_amount) as token,
+          sum(volume_eth) as eth,
+          sum(volume_usd) as usd
+        from kyber_trade
+        where block_timestamp > ? AND block_timestamp < ?
+        group by ${side}_token_symbol`;
+        adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
+      };
+      return obj;
+    };
+
+    async.auto(makeSql('maker', makeSql('taker')),
+      (err, ret) => {
+        if (err) {
+          return callback(err);
+        }
+
+        const takers = _.keyBy(ret.taker, 'symbol');
+        const makers = _.keyBy(ret.maker, 'symbol');
+
+        const sumProp = (symbol, prop, decimals) => {
+          let val = new BigNumber(0);
+          if (takers[symbol]) val = val.plus((takers[symbol][prop] || 0).toString());
+          if (makers[symbol]) val = val.plus((makers[symbol][prop] || 0).toString());
+
+          if (decimals) {
+            return val.div(Math.pow(10, decimals));
+          }
+          return val;
+        };
+
+        const supportedTokens = [];
+
+        Object.keys(network.tokens).forEach((symbol) => {
+          if (UtilsHelper.shouldShowToken(symbol)) {
+            const token = network.tokens[symbol];
+
+            const tokenVolume = sumProp(symbol, 'token', token.decimal);
+            const volumeUSD = sumProp(symbol, 'usd');
+            const ethVolume = sumProp(symbol, 'eth');
 
             supportedTokens.push({
               symbol: token.symbol,
@@ -154,7 +221,6 @@ module.exports = BaseService.extends({
       });
 
   },
-
   _aggregate: function (options, fromDate, toDate, callback) {
     const type = options.type || (!!options.groupBy ? "sumGroupBy" : "sum");
     const KyberTradeModel = this.getModel('KyberTradeModel');
@@ -570,8 +636,8 @@ module.exports = BaseService.extends({
     const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
-    let params = [fromDate, toDate];
+    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ? AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
+    let params = [fromDate, toDate, 'WETH', 'ETH'];
 
     if (options.symbol) {
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';

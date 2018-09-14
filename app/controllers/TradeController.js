@@ -130,6 +130,52 @@ module.exports = AppController.extends({
     // TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
   },
 
+  getTokens: function (req, res) {
+    const [err, params] = new Checkit({
+      fromDate: ['natural'],
+      toDate: ['natural'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const now = Utils.nowInSeconds();
+    let fromDate = params.fromDate || 0;
+    let toDate = params.toDate || now;
+
+    let key = `${CacheInfo.TokensList.key}${Math.floor(fromDate / 60)}-${Math.floor(toDate / 60)}`;
+
+    const TradeService = req.getService('TradeService');
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        res.send(JSON.parse(ret));
+        return;
+      }
+      let options = {
+        fromDate: fromDate,
+        toDate: toDate
+      };
+      TradeService.getTokensList(options, (err, ret_1) => {
+        if (err) {
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+        if (ret_1) {
+          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TokensList.TTL);
+          res.send(ret_1)
+          return;
+        }
+      });
+    });
+    // const TradeService = req.getService('TradeService');
+    // TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
+  },
   getStats24h: function (req, res) {
     const TradeService = req.getService('TradeService');
     TradeService.getStats24h(this.ok.bind(this, req, res));

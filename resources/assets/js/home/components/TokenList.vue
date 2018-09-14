@@ -150,7 +150,7 @@ export default {
 
     getList () {
       const now = Date.now() / 1000 | 0;
-      return AppRequest.getTopTokens({
+      return AppRequest.getTokens({
         fromDate: now - 24 * 60 * 60,
         toDate: now
       });
