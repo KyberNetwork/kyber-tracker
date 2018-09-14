@@ -38,7 +38,7 @@ module.exports = {
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
   },
   "TokensList": {
-    key: "top-token-",
+    key: "token-list-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
   },
