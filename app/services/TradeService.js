@@ -641,10 +641,12 @@ module.exports = BaseService.extends({
     let whereClauses = 'block_timestamp > ? AND block_timestamp <= ? AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
     let params = [fromDate, toDate, 'WETH', 'ETH'];
 
-    if (options.symbol && options.symbol !== 'WETH') {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
+    if (options.symbol) {
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?) AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
+      params.push('WETH');
+      params.push('ETH');
     }
 
     async.auto({
