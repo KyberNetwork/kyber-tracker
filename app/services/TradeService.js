@@ -642,11 +642,13 @@ module.exports = BaseService.extends({
     let params = [fromDate, toDate, 'WETH', 'ETH'];
 
     if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?) AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?) AND !(maker_token_symbol = ? AND taker_token_symbol = ?) AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
       params.push('WETH');
       params.push('ETH');
+      params.push('ETH');
+      params.push('WETH');
     }
 
     async.auto({
