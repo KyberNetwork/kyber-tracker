@@ -27,14 +27,12 @@ module.exports = BaseService.extends({
       return UtilsHelper.shouldShowToken(e.symbol)
     }).map(x => x.symbol).join('\',\'')
 
-    let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}'))`;
+    let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}') AND !(maker_token_symbol = "ETH" AND taker_token_symbol = "WETH") AND !(maker_token_symbol = "WETH" AND taker_token_symbol = "ETH") )`;
 
     if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?) AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
-      params.push('WETH');
-      params.push('ETH');
     }
 
     if (options.fromDate) {
@@ -167,9 +165,9 @@ module.exports = BaseService.extends({
           sum(volume_eth) as eth,
           sum(volume_usd) as usd
         from kyber_trade
-        where block_timestamp > ? AND block_timestamp < ? AND !(maker_token_symbol = ? AND taker_token_symbol = ?)
+        where block_timestamp > ? AND block_timestamp < ? AND !(maker_token_symbol = "ETH" AND taker_token_symbol = "WETH") AND !(maker_token_symbol = "WETH" AND taker_token_symbol = "ETH")
         group by ${side}_token_symbol`;
-        adapter.execRaw(sql, [options.fromDate, options.toDate, 'WETH', 'ETH'], callback);
+        adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
       return obj;
     };
@@ -638,15 +636,13 @@ module.exports = BaseService.extends({
     const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ? AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
-    let params = [fromDate, toDate, 'WETH', 'ETH'];
+    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ? AND !(maker_token_symbol = "ETH" AND taker_token_symbol = "WETH") AND !(maker_token_symbol = "WETH" AND taker_token_symbol = "ETH")';
+    let params = [fromDate, toDate];
 
     if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?) AND !(maker_token_symbol = ? AND taker_token_symbol = ?)';
+      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
-      params.push('WETH');
-      params.push('ETH');
     }
 
     async.auto({
