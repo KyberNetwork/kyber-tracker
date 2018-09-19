@@ -63,7 +63,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body);
+              return callback(null, res.body.data);
             })
             .catch(this._handleError)
   }
@@ -79,7 +79,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body);
+              return callback(null, res.body.data);
             })
             .catch(this._handleError)
   }
@@ -95,7 +95,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body);
+              return callback(null, res.body.data);
             })
             .catch(this._handleError)
   }
@@ -111,19 +111,18 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body);
+              return callback(null, res.body.data);
             })
             .catch(this._handleError)
   }
 
   getTopToken(fromDate, toDate, callback) {
-
     const url = `/api/tokens/top`;
     return request
             .get(url)
             .query({ fromDate, toDate })
             .then((res) => {
-              return callback(null, res.body);
+              return callback(null, res.body.data);
             })
             .catch(this._handleError)
   }
