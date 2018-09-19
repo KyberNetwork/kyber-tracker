@@ -30,11 +30,11 @@ export default {
   },
   methods: {
     _buildChartData (volumeData, interval) {
+      if(!volumeData) return 
       const labels = [];
       const counts = [];
       const dataset = [];
       const eths = [];
-
       if (interval === 'H1') {
         const keyedVolumeData = _.keyBy(volumeData, 'hourSeq');
         for (let seq = volumeData[0].hourSeq; seq <= volumeData[volumeData.length - 1].hourSeq; seq++) {

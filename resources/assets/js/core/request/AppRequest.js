@@ -63,7 +63,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body.data);
+              return callback(null, res.body);
             })
             .catch(this._handleError)
   }
@@ -79,7 +79,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body.data);
+              return callback(null, res.body);
             })
             .catch(this._handleError)
   }
@@ -95,7 +95,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body.data);
+              return callback(null, res.body);
             })
             .catch(this._handleError)
   }
@@ -111,7 +111,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ period, interval, symbol })
             .then((res) => {
-              return callback(null, res.body.data);
+              return callback(null, res.body);
             })
             .catch(this._handleError)
   }
@@ -123,7 +123,7 @@ class AppRequest extends BaseRequest {
             .get(url)
             .query({ fromDate, toDate })
             .then((res) => {
-              return callback(null, res.body.data);
+              return callback(null, res.body);
             })
             .catch(this._handleError)
   }

@@ -335,7 +335,7 @@ export default {
       request
         .get("https://api.coinmarketcap.com/v1/ticker/kyber-network/")
         .then(res => {
-          const data = res.body[0];
+          const data = res.body && res.body[0];
           if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
             return;
           }
@@ -347,7 +347,7 @@ export default {
       request
         .get("https://api.coinmarketcap.com/v1/ticker/ethereum/")
         .then(res => {
-          const data = res.body[0];
+          const data = res.body && res.body[0];
           if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
             return;
           }

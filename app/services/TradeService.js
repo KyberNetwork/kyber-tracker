@@ -27,7 +27,7 @@ module.exports = BaseService.extends({
       return UtilsHelper.shouldShowToken(e.symbol)
     }).map(x => x.symbol).join('\',\'')
 
-    let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}') AND !(maker_token_symbol = "ETH" AND taker_token_symbol = "WETH") AND !(maker_token_symbol = "WETH" AND taker_token_symbol = "ETH") )`;
+    let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}'))` + UtilsHelper.ignoreToken(['WETH']);
 
     if (options.symbol) {
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
@@ -98,7 +98,7 @@ module.exports = BaseService.extends({
           sum(volume_eth) as eth,
           sum(volume_usd) as usd
         from kyber_trade
-        where block_timestamp > ? AND block_timestamp < ?
+        where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         group by ${side}_token_symbol`;
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
@@ -165,7 +165,7 @@ module.exports = BaseService.extends({
           sum(volume_eth) as eth,
           sum(volume_usd) as usd
         from kyber_trade
-        where block_timestamp > ? AND block_timestamp < ? AND !(maker_token_symbol = "ETH" AND taker_token_symbol = "WETH") AND !(maker_token_symbol = "WETH" AND taker_token_symbol = "ETH")
+        where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         group by ${side}_token_symbol`;
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
@@ -262,13 +262,13 @@ module.exports = BaseService.extends({
     const funcs = {
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
-          where: 'block_timestamp > ? AND block_timestamp <= ?',
+          where: `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`,
           params: [fromDate, toDate],
         }, next);
       },
       volumeEth: (next) => {
         KyberTradeModel.sum('volume_eth', {
-          where: 'block_timestamp > ? AND block_timestamp <= ?',
+          where: `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`,
           params: [fromDate, toDate],
         }, next);
       },
@@ -636,9 +636,8 @@ module.exports = BaseService.extends({
     const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
-    let whereClauses = 'block_timestamp > ? AND block_timestamp <= ? AND !(maker_token_symbol = "ETH" AND taker_token_symbol = "WETH") AND !(maker_token_symbol = "WETH" AND taker_token_symbol = "ETH")';
+    let whereClauses = `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`;
     let params = [fromDate, toDate];
-
     if (options.symbol) {
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
       params.push(options.symbol);

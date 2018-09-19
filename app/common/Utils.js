@@ -125,5 +125,16 @@ module.exports = {
     let delisted = tokens[tokenSymbol].delisted;
     if (typeof bornMs !== 'undefined') return false;
     return delisted;
+  },
+
+  ignoreToken: (arraySymbol) => {
+    let queryString = ''
+    if(!arraySymbol) return queryString
+
+    queryString = arraySymbol
+    .map(s => `!(maker_token_symbol = "ETH" AND taker_token_symbol = "${s}") AND !(maker_token_symbol = "${s}" AND taker_token_symbol = "ETH")`)
+    .join(' AND ')
+
+    return ` AND (${queryString})`
   }
 };
