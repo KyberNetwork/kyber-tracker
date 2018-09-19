@@ -2,6 +2,10 @@ sudo: required
 
 language: node_js
 
+cache:
+    directories:
+      - node_modules
+
 node_js:
   - "8"
 
@@ -18,8 +22,7 @@ services:
 #   - mysql -u root -e "GRANT ALL ON kyber_tracker.* TO 'kyber_tracker'@'localhost';"
 
 install:
-  - echo 'Nothing to install'
-  # - npm install
+  - npm install
 
 # before_script:
 #   - cp .env.ci .env
