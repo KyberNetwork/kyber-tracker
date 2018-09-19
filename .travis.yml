@@ -7,26 +7,28 @@ node_js:
 
 services:
   - docker
-  - redis-server
+  # - redis-server
 
-addons:
-  mariadb: '10.2'
+# addons:
+#   mariadb: '10.2'
 
-before_install:
-  - mysql -u root -e "CREATE DATABASE kyber_tracker;"
-  - mysql -u root -e "CREATE USER 'kyber_tracker'@'localhost' IDENTIFIED BY 'kyber_tracker';"
-  - mysql -u root -e "GRANT ALL ON kyber_tracker.* TO 'kyber_tracker'@'localhost';"
+# before_install:
+#   - mysql -u root -e "CREATE DATABASE kyber_tracker;"
+#   - mysql -u root -e "CREATE USER 'kyber_tracker'@'localhost' IDENTIFIED BY 'kyber_tracker';"
+#   - mysql -u root -e "GRANT ALL ON kyber_tracker.* TO 'kyber_tracker'@'localhost';"
 
 install:
-  - npm install
+  - echo 'Nothing to install'
+  # - npm install
 
-before_script:
-  - cp .env.ci .env
-  - mysql -u kyber_tracker --password=kyber_tracker kyber_tracker < ./db/dump/kyber_tracker_2018-07-24.sql
+# before_script:
+#   - cp .env.ci .env
+#   - mysql -u kyber_tracker --password=kyber_tracker kyber_tracker < ./db/dump/kyber_tracker_2018-07-24.sql
 
 script:
+  - echo 'Nothing to build'
   # - npm test
-  - npm run build-prod
+  # - npm run build-prod
 
 after_success:
   - docker --version
