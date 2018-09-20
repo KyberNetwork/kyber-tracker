@@ -2,6 +2,7 @@ module.exports = {
   GET: {
     '/trades'                       : ['TradeController.getTradesList'],
     '/trades/:tradeId'              : ['TradeController.getTradeDetails'],
+    '/tokens'                       : ['TradeController.getTokens'],
     '/tokens/top'                   : ['TradeController.getTopTokensList'],
     '/stats24h'                     : ['TradeController.getStats24h'],
     '/volumes'                      : ['TradeController.getVolumes'],
