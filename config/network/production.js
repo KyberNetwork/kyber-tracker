@@ -514,7 +514,7 @@ module.exports = {
       "name": "Augur",
       "symbol" : "REP",
       "decimal": 18,
-      "address": "0xfF3DAa886D63547C4e2d78449915Fa9E01193f59",
+      "address": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
       "hidden": true
     },
     "ZRX": {
