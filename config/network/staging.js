@@ -506,6 +506,35 @@ module.exports = {
         "decimal": 18,
         "address": "0xff2b3353c3015E9f1FBF95B9Bda23F58Aa7cE007",
         "hidden": true,
+      },
+      "BNB": {
+        "name": "Binance",
+        "symbol" : "BNB",
+        "decimal": 18,
+        "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+        "hidden": true
+      },
+      "REP": {
+        "name": "Augur",
+        "symbol" : "REP",
+        "decimal": 18,
+        "address": "0xfF3DAa886D63547C4e2d78449915Fa9E01193f59",
+        "hidden": true
+      },
+      "ZRX": {
+        "name": "0x",
+        "symbol" : "ZRX",
+        "decimal": 18,
+        "address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+        "hidden": true
+      },
+
+      "WETH": {
+        "name": "Wrapped Ether",
+        "symbol" : "WETH",
+        "decimal": 18,
+        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "hidden": 1536846367000
       }
     },
     "averageBlockTime": 15000,
