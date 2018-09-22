@@ -508,21 +508,18 @@ module.exports = {
       "symbol" : "BNB",
       "decimal": 18,
       "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-      "hidden": true
     },
     "REP": {
       "name": "Augur",
       "symbol" : "REP",
       "decimal": 18,
       "address": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
-      "hidden": true
     },
     "ZRX": {
       "name": "0x",
       "symbol" : "ZRX",
       "decimal": 18,
       "address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-      "hidden": true
     },
 
     "WETH": {
