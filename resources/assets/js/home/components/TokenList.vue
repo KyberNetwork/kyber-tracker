@@ -159,6 +159,7 @@ export default {
       // return !this.tokens[item.symbol].hidden;
       return util.shouldShowToken(item.symbol)
     },
+
     // isNewToken(item) {
     //   return util.isNewToken(item.symbol);
     // },
@@ -173,6 +174,7 @@ export default {
       return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
          icon + "?sanitize=true";
     },
+    
     toTokenDetails (symbol) {
       const tokenInfo = this.tokens[symbol];
       if (!tokenInfo) {
