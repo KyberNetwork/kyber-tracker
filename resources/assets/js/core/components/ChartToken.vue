@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     _buildChartData(ret) {
-      const all = ret.filter(x => x.symbol !== "ETH");
+      const all = ret;//.filter(x => x.symbol !== "ETH");
 
       ret = all.slice(0, 5);
       const labels = [];
