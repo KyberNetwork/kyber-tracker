@@ -33,16 +33,16 @@ export default {
       const dataset = [];
       const volumeTokens = [];
       const volumeEths = [];
-      const percentETH = [];
+      const percentVolume = [];
 
-      const sum = all.map(i => i.volumeEthNumber).reduce((a, b) => a + b, 0);
+      const sum = all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0);
       for (let i = 0; i < ret.length; i++) {
         labels.push(ret[i].symbol);
         dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
         volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
         volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
-        percentETH.push(
-          sum ? Math.round(ret[i].volumeEthNumber / sum * 1000) / 10 : 0
+        percentVolume.push(
+          sum ? Math.round(ret[i].volumeUSD / sum * 1000) / 10 : 0
         );
       }
 
@@ -65,7 +65,7 @@ export default {
             spanGaps: true
           }
         ],
-        percentETH
+        percentVolume
       };
     },
     _getChartOptions() {
@@ -177,10 +177,10 @@ export default {
             // ],
             formatter: function(value, context) {
               let dataIndex = context.dataIndex;
-              let percentETH = context.chart.data.percentETH;
+              let percentVolume = context.chart.data.percentVolume;
 
               // let sum = volumeEths.reduce((a,b) => (a + b), 0)
-              return percentETH[dataIndex] ? percentETH[dataIndex] + "%" : "";
+              return percentVolume[dataIndex] ? percentVolume[dataIndex] + "%" : "";
             }
             // display: function(context) {
             //   console.log(context)
