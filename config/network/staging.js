@@ -365,7 +365,7 @@ module.exports = {
         "name": "PolicyPal Network",
         "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
         "symbol": "PAL",
-        "decimal": 18
+        "decimal": 18,
       },
       "COFI": {
         "name": "CoinFi",
@@ -534,8 +534,16 @@ module.exports = {
         "symbol" : "WETH",
         "decimal": 18,
         "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-        "hidden": 1536846367000
-      }
+        "hidden": 1536846367000,
+      },
+
+      "MAS":{
+        "name": "MidasProtocol",
+        "symbol" : "MAS",
+        "decimal": 18,
+        "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",   
+        "hidden": 1537695548000           
+      } 
     },
     "averageBlockTime": 15000,
     "startBlockNumber": 5700000,
