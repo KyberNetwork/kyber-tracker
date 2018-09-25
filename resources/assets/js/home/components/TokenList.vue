@@ -63,7 +63,7 @@
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
             <td class="pl-4">
                 <div class="token-name">
-                    <img class="image-inline-td mr-1" :src="getTokenImageLink(slot.item.symbol)" />
+                    <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item.symbol)" />
                     <span>{{ slot.item.name }}</span>
                     <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
                     <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
@@ -131,6 +131,7 @@ export default {
       tokens: _.keyBy(_.values(network.tokens), 'symbol'),
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
+      tokenIcons: {}
     };
   },
 
@@ -167,12 +168,20 @@ export default {
       return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
     },
     getTokenImageLink (symbol) {
-      let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
-      // if (!this.tokens[symbol].hidden) {
-      //   return 'images/tokens/' + icon;
-      // }
-      return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
-         icon + "?sanitize=true";
+      // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
+      // // if (!this.tokens[symbol].hidden) {
+      // //   return 'images/tokens/' + icon;
+      // // }
+      // return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
+      //    icon + "?sanitize=true";
+      if(!this.tokenIcons[symbol]){
+        this.tokenIcons[symbol] = util.getTokenIcon(symbol, (replaceUrl) => {
+          this.tokenIcons[symbol] = replaceUrl
+        })
+      }
+       
+      return this.tokenIcons[symbol]
+
     },
     
     toTokenDetails (symbol) {
