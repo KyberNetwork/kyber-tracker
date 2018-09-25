@@ -149,7 +149,7 @@ module.exports = BaseService.extends({
           }
         });
 
-        return callback(null, _.orderBy(supportedTokens, ['volumeETH' ], ['desc']));//.slice(0, 5));
+        return callback(null, _.orderBy(supportedTokens, ['volumeEthNumber' ], ['desc']));//.slice(0, 5));
       });
 
   },
