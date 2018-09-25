@@ -35,7 +35,7 @@ export default {
       const volumeEths = [];
       const percentVolume = [];
 
-      const sum = all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0);
+      const sum = (all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0)) / 2;
       for (let i = 0; i < ret.length; i++) {
         labels.push(ret[i].symbol);
         dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
