@@ -538,7 +538,7 @@ module.exports = {
       "symbol" : "MAS",
       "decimal": 18,
       "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",   
-      "hidden": 1537988400000           
+      "hidden": 1537963200000           
     } 
 
   },
