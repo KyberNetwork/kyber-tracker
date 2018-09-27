@@ -97,7 +97,7 @@
         <tr @click="toTokenDetails(slot.item.symbol)">
           <td  class="text-left pl-4" style="white-space:nowrap !important">
               <div class="token-name">
-                  <span>{{ slot.item.name }}</span>
+                  <span>{{ slot.item.symbol }}</span>
                   <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
               </div>
