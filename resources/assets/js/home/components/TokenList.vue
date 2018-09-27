@@ -88,7 +88,7 @@
         :title="getListTitle()"
         :getData="getList">
       <template slot="header">
-        <th class="text-left pl-4">{{ $t("common.symbol") }}</th>
+        <th class="text-left pl-4">{{ $t("common.name") }}</th>
         <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
         <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th>
       </template>
