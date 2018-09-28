@@ -537,8 +537,8 @@ function tokenLink(symbol) {
 }
 
 function sendTokenSummary(bot, msg, from, to, prefix) {
-    // bot._context.finish();
-    // return;
+    bot._context.finish();
+    return;
     
     const TradeService = bot._context.getService();
     let options = {
