@@ -570,8 +570,10 @@ function sendTokenSummary(bot, msg, from, to, prefix) {
                         }
                     }
                 } catch (error) {
-                    reply(bot, ret.toString(), text, {parse_mode: "Markdown", no_preview: true})
-                    reply(bot, error.toString(), text, {parse_mode: "Markdown", no_preview: true})
+                    // reply(bot, ret.toString(), text, {parse_mode: "Markdown", no_preview: true})
+                    // reply(bot, error.toString(), text, {parse_mode: "Markdown", no_preview: true})
+                    logger.error(ret && ret.toString());
+                    logger.error(error);
                     return bot._context.finish();
                 }
                 
