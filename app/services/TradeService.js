@@ -104,7 +104,6 @@ module.exports = BaseService.extends({
       };
       return obj;
     };
-
     async.auto(makeSql('maker', makeSql('taker')),
       (err, ret) => {
         if (err) {
@@ -363,7 +362,7 @@ module.exports = BaseService.extends({
     async.auto({
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
-          where: 'block_timestamp > ?',
+          where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])}`,
           params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
