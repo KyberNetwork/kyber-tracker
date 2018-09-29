@@ -363,6 +363,7 @@ module.exports = {
       "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
       "symbol": "PAL",
       "decimal": 18,
+      "icon": "pal.png",
     },
     "COFI": {
       "name": "CoinFi",
@@ -546,7 +547,8 @@ module.exports = {
       "symbol" : "KCC",
       "decimal": 18,
       "address": "0x09677d0175dec51e2215426cddd055a71bf4228d",
-      "hidden": 1538205156429           
+      "icon": "kcc.png",
+      "hidden": 1538205156429       
     } 
 
   },
