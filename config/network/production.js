@@ -56,14 +56,12 @@ module.exports = {
       "name": "AELF",
       "address": "0xbf2179859fc6d5bee9bf9158632dc51678a4100e",
       "symbol": "ELF",
-      "icon": "aelf.svg",
       "decimal": 18
     },
     "POWR": {
       "name": "Power Ledger",
       "address": "0x595832f8fc6bf59c85c527fec3740a1b7a361269",
       "symbol": "POWR",
-      "icon": "pwr.svg",
       "decimal": 6
     },
     "MANA": {
@@ -88,7 +86,6 @@ module.exports = {
       "name": "GIFTO",
       "address": "0xc5bbae50781be1669306b9e001eff57a2957b09d",
       "symbol": "GTO",
-      "icon": "gifto.svg",
       "decimal": 5
     },
     "RDN": {
@@ -223,8 +220,7 @@ module.exports = {
       "name": "Digix Gold",
       "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
       "symbol": "DGX",
-      "decimal": 9,
-      "icon": "dgx.png"
+      "decimal": 9
     },
     "DGD": {
       "name": "DigixDAO",
