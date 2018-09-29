@@ -175,7 +175,7 @@ export default {
       // return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
       //    icon + "?sanitize=true";
       if(!this.tokenIcons[symbol]){
-        this.tokenIcons[symbol] = util.getTokenIcon(symbol, (replaceUrl) => {
+        this.tokenIcons[symbol] = util.getTokenIcon(symbol, this.tokens[symbol].icon, (replaceUrl) => {
           this.tokenIcons[symbol] = replaceUrl
         })
       }

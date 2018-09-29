@@ -110,7 +110,6 @@ class BurnCrawler {
           if (err) {
             return next(`Cannot query data from network: ${err.toString()}`);
           }
-
           return next(null, ret);
         });
       },
