@@ -539,6 +539,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",   
       "hidden": 1537963200000           
+    },
+
+    "KCC":{
+      "name": "Kyber Community Coupon",
+      "symbol" : "KCC",
+      "decimal": 18,
+      "address": "0x09677d0175dec51e2215426cddd055a71bf4228d",
+      "hidden": 1538205156429           
     } 
 
   },
