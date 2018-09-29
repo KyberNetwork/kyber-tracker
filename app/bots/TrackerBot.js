@@ -537,6 +537,9 @@ function tokenLink(symbol) {
 }
 
 function sendTokenSummary(bot, msg, from, to, prefix) {
+    bot._context.finish();
+    return;
+    
     const TradeService = bot._context.getService();
     let options = {
       fromDate: from,
@@ -552,19 +555,28 @@ function sendTokenSummary(bot, msg, from, to, prefix) {
             if (!ret || !Array.isArray(ret) || ret.length === 0) {
                 text = "There is no transactions."
             } else {
-
                 let total = 0;
                 let top5 = 0;
-                for (let i = 0; i <=5; i++) {
-                    let item = ret[i];
-                    if (i == 0) {
-                        total = item.volumeUSD;
-                    } else {
-                        top5 += item.volumeUSD;
-                        text += "\n" + tokenLink(item.symbol) + ": *$" + format(item.volumeUSD) + "* (" +
-                            percent(item.volumeUSD, total) + "%)";
+                try {
+                    
+                    for (let i = 0; i <=5; i++) {
+                        let item = ret[i];
+                        if (i == 0) {
+                            total = item.volumeUSD;
+                        } else {
+                            top5 += item.volumeUSD;
+                            text += "\n" + tokenLink(item.symbol) + ": *$" + format(item.volumeUSD) + "* (" +
+                                percent(item.volumeUSD, total) + "%)";
+                        }
                     }
+                } catch (error) {
+                    // reply(bot, ret.toString(), text, {parse_mode: "Markdown", no_preview: true})
+                    // reply(bot, error.toString(), text, {parse_mode: "Markdown", no_preview: true})
+                    logger.error(ret && ret.toString());
+                    logger.error(error);
+                    return bot._context.finish();
                 }
+                
 
                 const others = total - top5;
                 text += "\nOthers: *$" + format(others) + "* (" +

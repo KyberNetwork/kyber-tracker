@@ -26,6 +26,7 @@
     },
     methods: {
       _buildChartData(feeData, interval, accumulated) {
+        if(!feeData) return 
         const labels = [];
         const dataset = [];
         let lastSum = feeData[0].sum;

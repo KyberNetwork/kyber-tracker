@@ -3,6 +3,7 @@ import jQuery from 'jquery';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import network from '../../../../../config/network/production';
+const iconEndpont = 'https://files.kyber.network/DesignAssets/tokens'
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
 const tokens = _.keyBy(_.values(network.tokens), 'symbol');
@@ -150,5 +151,24 @@ export default {
   isAddress: function(address) {
     return /^(0x)?[0-9a-f]{40}$/i.test(address)
   },
+
+  getTokenIcon: (symbol, callback) => {
+    let iconName = symbol.toLowerCase() + '.svg';
+    let urlIcon = iconEndpont + '/' + iconName
+
+    var img = new Image(); 
+    img.onerror = () => {
+      iconName = symbol.toLowerCase() + '.png';
+      urlIcon = iconEndpont + '/' + iconName
+      return callback(urlIcon)
+    };
+    img.src = urlIcon;
+
+    return urlIcon
+    
+    // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
+    // return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
+    //      icon + "?sanitize=true";
+  }
 
 };

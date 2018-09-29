@@ -362,7 +362,7 @@ module.exports = {
       "name": "PolicyPal Network",
       "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
       "symbol": "PAL",
-      "decimal": 18
+      "decimal": 18,
     },
     "COFI": {
       "name": "CoinFi",
@@ -502,13 +502,45 @@ module.exports = {
       "address": "0xff2b3353c3015E9f1FBF95B9Bda23F58Aa7cE007",
       "hidden": true
     },
+
+    "BNB": {
+      "name": "Binance",
+      "symbol" : "BNB",
+      "decimal": 18,
+      "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+      "hidden": 1537590437000
+    },
+    "REP": {
+      "name": "Augur",
+      "symbol" : "REP",
+      "decimal": 18,
+      "address": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
+      "hidden": 1537590437000
+    },
+    "ZRX": {
+      "name": "0x",
+      "symbol" : "ZRX",
+      "decimal": 18,
+      "address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "hidden": 1537590437000
+    },
+
     "WETH": {
       "name": "Wrapped Ether",
       "symbol" : "WETH",
       "decimal": 18,
       "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      "hidden": 1536846367000
-    }
+      "hidden": 1536846367000,
+    },
+
+    "MAS":{
+      "name": "MidasProtocol",
+      "symbol" : "MAS",
+      "decimal": 18,
+      "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",   
+      "hidden": 1537963200000           
+    } 
+
   },
 
   "preburntAmount": 48.61873337,
@@ -523,7 +555,9 @@ module.exports = {
     "imtoken": "0xb9E29984Fe50602E7A619662EBED4F90D93824C7",
     "trust": "0xf1aa99c69715f423086008eb9d06dc1e35cc504d",
     "cipher": "0xDD61803d4a56C597E0fc864F7a20eC7158c6cBA5",
-    "mew": "0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D"
+    "mew": "0xDECAF9CD2367cdbb726E904cD6397eDFcAe6068D",
+    "dex": "0x398d297BAB517770feC4d8Bb7a4127b486c244bB",
+    "easwap": "0xa7615cd307f323172331865181dc8b80a2834324"
   },
 
   "supportedLanguage": ["en", "vi", "ko", "zh"],

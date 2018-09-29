@@ -365,7 +365,7 @@ module.exports = {
         "name": "PolicyPal Network",
         "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
         "symbol": "PAL",
-        "decimal": 18
+        "decimal": 18,
       },
       "COFI": {
         "name": "CoinFi",
@@ -506,7 +506,44 @@ module.exports = {
         "decimal": 18,
         "address": "0xff2b3353c3015E9f1FBF95B9Bda23F58Aa7cE007",
         "hidden": true,
-      }
+      },
+      "BNB": {
+        "name": "Binance",
+        "symbol" : "BNB",
+        "decimal": 18,
+        "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+        "hidden": 1537590437000
+      },
+      "REP": {
+        "name": "Augur",
+        "symbol" : "REP",
+        "decimal": 18,
+        "address": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
+        "hidden": 1537590437000
+      },
+      "ZRX": {
+        "name": "0x",
+        "symbol" : "ZRX",
+        "decimal": 18,
+        "address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+        "hidden": 1537590437000
+      },
+
+      "WETH": {
+        "name": "Wrapped Ether",
+        "symbol" : "WETH",
+        "decimal": 18,
+        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "hidden": 1536846367000,
+      },
+
+      "MAS":{
+        "name": "MidasProtocol",
+        "symbol" : "MAS",
+        "decimal": 18,
+        "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",   
+        "hidden": 1537963200000           
+      } 
     },
     "averageBlockTime": 15000,
     "startBlockNumber": 5700000,

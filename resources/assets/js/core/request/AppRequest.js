@@ -117,7 +117,6 @@ class AppRequest extends BaseRequest {
   }
 
   getTopToken(fromDate, toDate, callback) {
-
     const url = `/api/tokens/top`;
     return request
             .get(url)
@@ -140,6 +139,11 @@ class AppRequest extends BaseRequest {
 
   getTopTokens (params={}) {
     const url = `/api/tokens/top`;
+    return this.get(url, params);
+  }
+
+  getTokens (params={}) {
+    const url = `/api/tokens`;
     return this.get(url, params);
   }
 
