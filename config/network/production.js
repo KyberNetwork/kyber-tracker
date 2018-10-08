@@ -551,21 +551,21 @@ module.exports = {
       "symbol" : "DAT",
       "decimal": 18,
       "address": "0x81c9151de0c8bafcd325a57e3db5a5df1cebf79c",
-      "hidden": 1507554000000       
+      "hidden": 1539090000000       
     },
     "REN":{
       "name": "Republic",
       "symbol" : "REN",
       "decimal": 18,
       "address": "0x408e41876cccdc0f92210600ef50372656052a38",
-      "hidden": 1507554000000       
+      "hidden": 1539090000000       
     },
     "QKC":{
       "name": "QuarkChain",
       "symbol" : "QKC",
       "decimal": 18,
       "address": "0xea26c4ac16d4a5a106820bc8aee85fd0b7b2b664",
-      "hidden": 1507554000000       
+      "hidden": 1539090000000       
     }
 
   },
