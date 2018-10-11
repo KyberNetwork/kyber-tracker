@@ -46,4 +46,5 @@ deploy:
   - provider: script
     script: bash .travis/awx_job_launch $TRAVIS_BRANCH
     on:
+      all_branches: true
       condition: $TRAVIS_BRANCH =~ ^develop|master$
