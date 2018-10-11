@@ -38,13 +38,12 @@ after_success:
   - docker build -f Dockerfile -t kybernetwork/kyber-tracker:$TRAVIS_COMMIT .
 
 deploy:
-  provider: script
-  script: bash .travis/docker_push
-  on:
-    all_branches: true
+  - provider: script
+    script: bash .travis/docker_push
+    on:
+      all_branches: true
 
-  provider: script
-  script: bash .travis/awx_job_launch $TRAVIS_BRANCH
-  on:
-    branch: develop
-    branch: master
+  - provider: script
+    script: bash .travis/awx_job_launch $TRAVIS_BRANCH
+    on:
+      condition: $TRAVIS_BRANCH =~ ^develop|master$

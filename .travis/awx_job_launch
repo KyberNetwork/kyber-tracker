@@ -4,11 +4,13 @@ set -euo pipefail
 
 readonly awx_username=${AWX_USERNAME:-}
 readonly awx_password=${AWX_PASSWORD:-}
+readonly awx_develop_job_id=${AWX_DEVELOP_JOB_ID:-}
+readonly awx_master_job_id=${AWX_MASTER_JOB_ID:-}
 
 if [[ "$TRAVIS_BRANCH" == "develop" ]]; then
-    awx_job_id=$AWX_DEVELOP_JOB_ID
+    awx_job_id=$awx_develop_job_id
 elif [[ "$TRAVIS_BRANCH" == "master" ]]; then
-    awx_job_id=$AWX_MASTER_JOB_ID
+    awx_job_id=$awx_master_job_id
 fi
 
 echo https://awx.knstats.com/api/v2/job_templates/$awx_job_id/launch --user "$awx_username:$awx_password"
