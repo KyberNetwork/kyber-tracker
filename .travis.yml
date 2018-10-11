@@ -42,3 +42,9 @@ deploy:
   script: bash .travis/docker_push
   on:
     all_branches: true
+
+  provider: script
+  script: bash .travis/awx_job_launch $TRAVIS_BRANCH
+  on:
+    branch: develop
+    branch: master
