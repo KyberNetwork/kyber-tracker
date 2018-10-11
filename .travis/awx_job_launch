@@ -13,4 +13,4 @@ elif [[ "$TRAVIS_BRANCH" == "master" ]]; then
     awx_job_id=$awx_master_job_id
 fi
 
-echo https://awx.knstats.com/api/v2/job_templates/$awx_job_id/launch --user "$awx_username:$awx_password"
+curl -XPOST https://awx.knstats.com/api/v2/job_templates/$awx_job_id/launch --user "$awx_username:$awx_password"
