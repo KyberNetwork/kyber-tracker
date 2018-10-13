@@ -412,7 +412,7 @@ module.exports = {
       "address": "0x442bc47357919446eabc18c7211e57a13d983469",
       "symbol": "CHAT",
       "decimal": 18,
-      "hidden": 1531486800000
+      "delisted": true
     },
     "DTA": {
       "name": "Data",
