@@ -161,7 +161,8 @@ module.exports = {
         "name": "AION",
         "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
         "symbol": "AION",
-        "decimal": 8
+        "decimal": 8,
+        "delisted": true
       },
       "SUB": {
         "name": "Substratum",
