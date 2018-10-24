@@ -487,7 +487,6 @@ export default {
   },
 
   mounted() {
-    
     this.refresh();
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
