@@ -4,9 +4,10 @@ import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import network from '../../../../../config/network/production';
 const iconEndpont = 'https://files.kyber.network/DesignAssets/tokens'
+const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
-const tokens = _.keyBy(_.values(network.tokens), 'symbol');
+const tokens = _.keyBy(_.values(GLOBAL_TOKENS), 'symbol');
 
 const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name

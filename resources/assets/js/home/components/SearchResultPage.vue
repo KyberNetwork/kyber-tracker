@@ -23,9 +23,10 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
-import network from '../../../../../config/network';
+// import network from '../../../../../config/network';
+const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 import Chart from 'chart.js';
-const tokens = network.tokens;
+// const tokens = network.tokens;
 
 export default {
 
@@ -37,7 +38,7 @@ export default {
       totalCollectedFees: 0,
       searchFromDate: null,
       searchToDate: null,
-      tokens: _.keyBy(_.values(network.tokens), 'address')
+      tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'address')
     };
   },
 

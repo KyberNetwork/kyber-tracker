@@ -257,9 +257,8 @@ import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
 import network from '../../../../../config/network';
+const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 const partners = network.partners
-
-const tokens = network.tokens;
 
 export default {
   props: {
@@ -329,7 +328,7 @@ export default {
       maxPage: 0,
       searchFromDate: null,
       searchToDate: null,
-      tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+      tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol'),
       highlightedToday: {
         dates: [new Date()]
       },

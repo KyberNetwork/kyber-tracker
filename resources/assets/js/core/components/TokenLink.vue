@@ -10,8 +10,8 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
-import network from '../../../../../config/network';
-
+// import network from '../../../../../config/network';
+const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 export default {
   props: {
     symbol: {
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      tokens: _.keyBy(_.values(network.tokens), 'symbol')
+      tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol')
     };
   },
   methods: {

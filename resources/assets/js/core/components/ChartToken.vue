@@ -10,7 +10,6 @@ import moment from "moment";
 import BigNumber from "bignumber.js";
 import AppRequest from "../request/AppRequest";
 import util from "../helper/util";
-import network from "../../../../../config/network";
 import datalabels from "chartjs-plugin-datalabels";
 
 export default {

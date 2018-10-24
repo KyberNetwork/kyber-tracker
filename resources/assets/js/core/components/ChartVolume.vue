@@ -11,7 +11,6 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
-import network from '../../../../../config/network';
 
 export default {
   props: {
