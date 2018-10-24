@@ -16,6 +16,21 @@ module.exports = {
     "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
   },
+  "ETH": {
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "decimal": 18,
+    "cmcId": "ethereum"
+  },
+  "KNC": {
+    "name": "Kyber Network",
+    "symbol": "KNC",
+    "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
+    "decimal": 18,
+    "cmcId": "kyber-network",
+  },
+  
   "tokens": {
     "ETH": {
       "name": "Ethereum",

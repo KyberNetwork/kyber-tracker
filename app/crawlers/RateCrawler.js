@@ -236,7 +236,7 @@ class RateCrawler {
     const expectedArray = rates.expectedRate;
 
     const dataArray = [];
-    const baseAddress = network.tokens.ETH.address;
+    const baseAddress = network.ETH.address;
     const baseSymbol = "ETH";
 
     const len = supportedTokens.length;

@@ -18,6 +18,21 @@ module.exports = {
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
     "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"]
   },
+  "ETH": {
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "decimal": 18,
+    "cmcId": "ethereum"
+  },
+  "KNC": {
+    "name": "Kyber Network",
+    "symbol": "KNC",
+    "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
+    "decimal": 18,
+    "cmcId": "kyber-network",
+  },
+  
   "tokens": {
     "ETH": {
       "name": "Ethereum",
