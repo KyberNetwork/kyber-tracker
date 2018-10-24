@@ -9,11 +9,11 @@ const wrapperABI = require('../../config/abi/wrapper');
 abiDecoder.addABI(kyberABI);
 abiDecoder.addABI(burnedFeeABI);
 abiDecoder.addABI(wrapperABI);
-
+const globalTokens = global.GLOBAL_TOKEN
 const network = require('../../config/network');
-const tokens = network.tokens;
+// const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
-const tokensByAddress = _.keyBy(_.values(tokens), o => o.address.toLowerCase());
+const tokensByAddress = _.keyBy(_.values(globalTokens), o => o.address.toLowerCase());
 
 module.exports = {
 
@@ -30,7 +30,7 @@ module.exports = {
   },
 
   shouldShowToken: function(tokenSymbol, tokenList) {
-    tokenList = tokenList || tokens;
+    tokenList = tokenList || globalTokens;
     if(!tokenList[tokenSymbol].hidden) return true;
     if (typeof tokenList[tokenSymbol].hidden != 'number') return false;
     return (Date.now() >= tokenList[tokenSymbol].hidden);
@@ -45,7 +45,7 @@ module.exports = {
   },
 
   getKNCTokenAddress: function() {
-    return network.tokens.KNC.address;
+    return network.KNC.address;
   },
 
   isBurnerContractAddress: function (addr) {
@@ -67,14 +67,14 @@ module.exports = {
   getRateTokenArray: function() {
     let supportedTokens = [];
     let supportedAddressArray = []
-    Object.keys(tokens).forEach(symbol => {
+    Object.keys(globalTokens).forEach(symbol => {
       if (this.shouldShowToken(symbol) && symbol !== "ETH") {
-        supportedAddressArray.push(tokens[symbol].address);
-        supportedTokens.push(tokens[symbol]);
+        supportedAddressArray.push(globalTokens[symbol].address);
+        supportedTokens.push(globalTokens[symbol]);
       }
     })
 
-    const ethArray = Array(supportedAddressArray.length).fill(tokens.ETH.address);
+    const ethArray = Array(supportedAddressArray.length).fill(network.ETH.address);
 
     const srcArray = supportedAddressArray.concat(ethArray);
     const destArray = ethArray.concat(supportedAddressArray);
@@ -117,12 +117,12 @@ module.exports = {
     return false;
   },
   isNewToken (tokenSymbol) {
-      var bornMs = tokens[tokenSymbol].hidden;
+      var bornMs = globalTokens[tokenSymbol].hidden;
       if (typeof bornMs != 'number') return false;
       return Date.now() <= bornMs + (network.newTokenDuration || 3 * 24 * 60 * 60 * 1000);
   },
   isDelisted (tokenSymbol) {
-    let delisted = tokens[tokenSymbol].delisted;
+    let delisted = globalTokens[tokenSymbol].delisted;
     if (typeof bornMs !== 'undefined') return false;
     return delisted;
   },

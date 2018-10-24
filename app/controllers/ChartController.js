@@ -1,6 +1,6 @@
 const _                       = require('lodash');
 const async                   = require('async');
-const network                 = require('../../config/network');
+// const network                 = require('../../config/network');
 const AppController           = require('./AppController');
 const Checkit                 = require('cc-checkit');
 const Utils                   = require('../common/Utils');
@@ -9,6 +9,8 @@ const logger                  = log4js.getLogger('ChartController');
 const CacheInfo               = require('../../config/cache/info');
 const supportedTokens         = Utils.getRateTokenArray().supportedTokens;
 const RedisCache              = require('sota-core').load('cache/foundation/RedisCache');
+
+const globalTokens = global.GLOBAL_TOKEN
 
 module.exports = AppController.extends({
   classname: 'ChartController',
@@ -92,7 +94,7 @@ module.exports = AppController.extends({
       return;
     }
     if(params.query){
-      const token = network.tokens[params.query];
+      const token = globalTokens[params.query];
       if (!token || !Utils.shouldShowToken(params.query)) {
           res.json({
               s: "error",

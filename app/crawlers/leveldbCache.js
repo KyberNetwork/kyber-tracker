@@ -4,11 +4,11 @@ const async     = require('async');
 const level     = require('level');
 const path      = require('path');
 const request   = require('superagent');
-const tokens    = require('../../config/network').tokens;
+// const tokens    = require('../../config/network').tokens;
 const Utils     = require('../common/Utils');
 const logger    = require('sota-core').getLogger('leveldbCache');
 const web3      = Utils.getWeb3Instance();
-
+const globalTokens = global.GLOBAL_TOKEN
 // TODO: refactor this mess
 const db = level(path.join(__dirname, '../../db/level'));
 const LOCAL_CMC_DATA = {};
@@ -38,7 +38,7 @@ function getBlockTimestamp (blockNumber, callback) {
 };
 
 function getCoinPrice (symbol, timestamp, callback) {
-  const tokenInfo = tokens[symbol];
+  const tokenInfo = globalTokens[symbol];
   if (!tokenInfo) {
     return callback(`getCoinPrice: could not find info of [${symbol}] token.`);
   }

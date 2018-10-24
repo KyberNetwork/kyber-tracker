@@ -2,11 +2,11 @@ const async                   = require('async');
 const AppController           = require('./AppController');
 const logger                  = log4js.getLogger('WebviewController');
 const version                 = Date.now();
-const network                 = require('../../config/network');
 
 const globalState = {
-  tokens: network.tokens
+  tokens: global.GLOBAL_TOKEN
 }
+
 const transferString = `window["GLOBAL_STATE"]=${JSON.stringify(globalState)}`
 module.exports = AppController.extends({
   classname: 'WebviewController',

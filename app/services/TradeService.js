@@ -14,7 +14,7 @@ const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const UtilsHelper = require('../common/Utils');
 
 const CacheInfo = require('../../config/cache/info');
-
+const globalTokens = global.GLOBAL_TOKEN
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
@@ -23,7 +23,7 @@ module.exports = BaseService.extends({
 
     let params = [];
 
-    const supportedTokenList = _.filter(network.tokens, (e) => {
+    const supportedTokenList = _.filter(globalTokens, (e) => {
       return UtilsHelper.shouldShowToken(e.symbol)
     }).map(x => x.symbol).join('\',\'')
 
@@ -126,9 +126,9 @@ module.exports = BaseService.extends({
 
         const supportedTokens = [];
 
-        Object.keys(network.tokens).forEach((symbol) => {
+        Object.keys(globalTokens).forEach((symbol) => {
           if (UtilsHelper.shouldShowToken(symbol)) {
-            const token = network.tokens[symbol];
+            const token = globalTokens[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
             const volumeUSD = sumProp(symbol, 'usd');
@@ -192,10 +192,9 @@ module.exports = BaseService.extends({
         };
 
         const supportedTokens = [];
-
-        Object.keys(network.tokens).forEach((symbol) => {
+        Object.keys(globalTokens).forEach((symbol) => {
           if (UtilsHelper.shouldShowToken(symbol)) {
-            const token = network.tokens[symbol];
+            const token = globalTokens[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
             const volumeUSD = sumProp(symbol, 'usd');

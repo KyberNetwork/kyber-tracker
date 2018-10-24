@@ -1,8 +1,9 @@
 const _               = require('lodash');
 const BaseEntity      = require('sota-core').load('entity/BaseEntity');
 const BigNumber       = require('bignumber.js');
-const network         = require('../../config/network');
-const tokensByAddress = _.keyBy(_.values(network.tokens), o => o.address.toLowerCase());
+// const network         = require('../../config/network');
+const globalTokens = global.GLOBAL_TOKEN
+const tokensByAddress = _.keyBy(_.values(globalTokens), o => o.address.toLowerCase());
 
 module.exports = BaseEntity.extends({
   classname: 'KyberTradeEntity',
