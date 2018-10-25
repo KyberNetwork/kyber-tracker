@@ -9,7 +9,7 @@ const Utils_Common = require('../common/Utils');
 const logger = log4js.getLogger('TradeController');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
-const globalTokens = global.GLOBAL_TOKEN
+
 module.exports = AppController.extends({
   classname: 'TradeController',
 
@@ -29,7 +29,7 @@ module.exports = AppController.extends({
     
     let key = `${CacheInfo.TradesList.key + params.page}-${params.limit}`;
     if (params.symbol) {
-      const token = globalTokens[params.symbol];
+      const token = global.GLOBAL_TOKEN[params.symbol];
       if (!token || !Utils_Common.shouldShowToken(params.symbol)) {
           res.json({
               s: "error",

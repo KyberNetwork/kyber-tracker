@@ -10,8 +10,6 @@ const CacheInfo               = require('../../config/cache/info');
 const supportedTokens         = Utils.getRateTokenArray().supportedTokens;
 const RedisCache              = require('sota-core').load('cache/foundation/RedisCache');
 
-const globalTokens = global.GLOBAL_TOKEN
-
 module.exports = AppController.extends({
   classname: 'ChartController',
 
@@ -94,7 +92,7 @@ module.exports = AppController.extends({
       return;
     }
     if(params.query){
-      const token = globalTokens[params.query];
+      const token = global.GLOBAL_TOKEN[params.query];
       if (!token || !Utils.shouldShowToken(params.query)) {
           res.json({
               s: "error",

@@ -11,24 +11,27 @@ const app = SotaCore.createServer({
   useSocket: false,
 });
 
+const intervalUpdateConfig = () => {
+  setInterval(() => {
+    configFetcher.fetchConfigTokens((err, tokens) => {
+      // console.log("_____________ token fetched", tokens)
+      if(err) {
+        return logger.error(err);
+      }
+      global.GLOBAL_TOKEN = {...network.tokens, ...tokens}
+    })  
+  }, timer);
+}
+
 configFetcher.fetchConfigTokens((err, tokens) => {
   if(err) {
     return logger.error(err);
   }
   global.GLOBAL_TOKEN = {...network.tokens, ...tokens}
   // console.log("_____________ token fetched_________", global.GLOBAL_TOKEN)
+  intervalUpdateConfig()
   app.start();
 })
-
-setInterval(() => {
-  configFetcher.fetchConfigTokens((err, tokens) => {
-    // console.log("_____________ token fetched", tokens)
-    if(err) {
-      return logger.error(err);
-    }
-    global.GLOBAL_TOKEN = {...network.tokens, ...tokens}
-  })  
-}, timer);
 
 module.exports = app;
 module.exports.SotaCore = SotaCore;

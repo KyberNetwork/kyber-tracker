@@ -9,11 +9,10 @@ const wrapperABI = require('../../config/abi/wrapper');
 abiDecoder.addABI(kyberABI);
 abiDecoder.addABI(burnedFeeABI);
 abiDecoder.addABI(wrapperABI);
-const globalTokens = global.GLOBAL_TOKEN
+
 const network = require('../../config/network');
 // const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
-const tokensByAddress = _.keyBy(_.values(globalTokens), o => o.address.toLowerCase());
 
 module.exports = {
 
@@ -26,11 +25,12 @@ module.exports = {
   },
 
   getTokenFromAddress: function(address) {
+    const tokensByAddress = _.keyBy(_.values(global.GLOBAL_TOKEN), o => o.address.toLowerCase());
     return tokensByAddress[address.toLowerCase()] || null;
   },
 
   shouldShowToken: function(tokenSymbol, tokenList) {
-    tokenList = tokenList || globalTokens;
+    tokenList = tokenList || global.GLOBAL_TOKEN;
     if(!tokenList[tokenSymbol].hidden) return true;
     if (typeof tokenList[tokenSymbol].hidden != 'number') return false;
     return (Date.now() >= tokenList[tokenSymbol].hidden);
@@ -67,10 +67,10 @@ module.exports = {
   getRateTokenArray: function() {
     let supportedTokens = [];
     let supportedAddressArray = []
-    Object.keys(globalTokens).forEach(symbol => {
+    Object.keys(global.GLOBAL_TOKEN).forEach(symbol => {
       if (this.shouldShowToken(symbol) && symbol !== "ETH") {
-        supportedAddressArray.push(globalTokens[symbol].address);
-        supportedTokens.push(globalTokens[symbol]);
+        supportedAddressArray.push(global.GLOBAL_TOKEN[symbol].address);
+        supportedTokens.push(global.GLOBAL_TOKEN[symbol]);
       }
     })
 
@@ -117,12 +117,12 @@ module.exports = {
     return false;
   },
   isNewToken (tokenSymbol) {
-      var bornMs = globalTokens[tokenSymbol].hidden;
+      var bornMs = global.GLOBAL_TOKEN[tokenSymbol].hidden;
       if (typeof bornMs != 'number') return false;
       return Date.now() <= bornMs + (network.newTokenDuration || 3 * 24 * 60 * 60 * 1000);
   },
   isDelisted (tokenSymbol) {
-    let delisted = globalTokens[tokenSymbol].delisted;
+    let delisted = global.GLOBAL_TOKEN[tokenSymbol].delisted;
     if (typeof bornMs !== 'undefined') return false;
     return delisted;
   },

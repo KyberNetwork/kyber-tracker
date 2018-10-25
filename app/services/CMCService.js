@@ -12,8 +12,6 @@ const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
 const CMC_GRAPH_API_TICKER = 300 * 1000; // 5 minutes in milliseconds
 
-const globalTokens = global.GLOBAL_TOKEN
-
 module.exports = BaseService.extends({
   classname: 'CMCService',
 
@@ -30,7 +28,7 @@ module.exports = BaseService.extends({
         return callback(`Cannot get price of invalid symbol: ${symbol}`);
       }
 
-      const tokenInfo = globalTokens[symbol];
+      const tokenInfo = global.GLOBAL_TOKEN[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token info of symbol: ${symbol}`);
       }
@@ -129,7 +127,7 @@ module.exports = BaseService.extends({
         return callback(`Cannot get price of invalid base: ${base}`);
       }
 
-      const tokenInfo = globalTokens[symbol];
+      const tokenInfo = global.GLOBAL_TOKEN[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token info of symbol: ${symbol}`);
       }
@@ -165,7 +163,7 @@ module.exports = BaseService.extends({
   },
 
   getPriceOfAllTokens: function (callback) {
-    const tokenSymbols = _.keys(globalTokens);
+    const tokenSymbols = _.keys(global.GLOBAL_TOKEN);
     const result = {};
 
     async.forEach(tokenSymbols, (symbol, next) => {
@@ -200,7 +198,7 @@ module.exports = BaseService.extends({
         return callback(`Cannot get config of invalid symbol: ${symbol}`);
       }
 
-      const tokenInfo = globalTokens[symbol];
+      const tokenInfo = global.GLOBAL_TOKEN[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token config of symbol: ${symbol}`);
       }
@@ -229,7 +227,7 @@ module.exports = BaseService.extends({
       return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
     }
 
-    const tokenInfo = globalTokens[symbol];
+    const tokenInfo = global.GLOBAL_TOKEN[symbol];
     if (!tokenInfo) {
       return callback(`Cannot find token info of symbol: ${symbol}`);
     }

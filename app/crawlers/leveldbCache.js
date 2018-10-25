@@ -8,7 +8,6 @@ const request   = require('superagent');
 const Utils     = require('../common/Utils');
 const logger    = require('sota-core').getLogger('leveldbCache');
 const web3      = Utils.getWeb3Instance();
-const globalTokens = global.GLOBAL_TOKEN
 // TODO: refactor this mess
 const db = level(path.join(__dirname, '../../db/level'));
 const LOCAL_CMC_DATA = {};
@@ -38,7 +37,7 @@ function getBlockTimestamp (blockNumber, callback) {
 };
 
 function getCoinPrice (symbol, timestamp, callback) {
-  const tokenInfo = globalTokens[symbol];
+  const tokenInfo = global.GLOBAL_TOKEN[symbol];
   if (!tokenInfo) {
     return callback(`getCoinPrice: could not find info of [${symbol}] token.`);
   }

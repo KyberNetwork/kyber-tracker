@@ -13,7 +13,7 @@ const logger = require('sota-core').getLogger('CurrenciesService');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
 // const tokens = network.tokens;
-const globalTokens = global.GLOBAL_TOKEN
+
 module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
@@ -25,9 +25,9 @@ module.exports = BaseService.extends({
 
     let pairs = {}
 
-    Object.keys(globalTokens).forEach(token => {
+    Object.keys(global.GLOBAL_TOKEN).forEach(token => {
       if ((token.toUpperCase() !== "ETH") &&
-        !globalTokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
         pairs[token] = (asyncCallback) => this._getRateInfo(token, {
           //tradeAdapter: tradeAdapter,
@@ -124,16 +124,16 @@ module.exports = BaseService.extends({
   },
 
   getConvertiblePairs: function (callback) {
-    if (!globalTokens) return callback(null, {});
+    if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(globalTokens).map(token => {
-      // if((token.toUpperCase() !== "ETH") && !globalTokens[token].hidden){
+    Object.keys(global.GLOBAL_TOKEN).map(token => {
+      // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
       if ((token.toUpperCase() !== "ETH") &&
-        !globalTokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
-        const cmcName = globalTokens[token].cmcSymbol || token;
+        const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
           fromCurrencyCode: "ETH"
@@ -154,18 +154,18 @@ module.exports = BaseService.extends({
   },
 
   _getCurrencyInfo: function (options, callback) {
-    if (!options.token || !globalTokens[options.token]) {
+    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !globalTokens[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
     let tokenSymbol = options.token
     let base = options.fromCurrencyCode
-    let tokenData = globalTokens[tokenSymbol]
-    let baseTokenData = globalTokens[base]
+    let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
+    let baseTokenData = global.GLOBAL_TOKEN[base]
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const CMCService = this.getService('CMCService');
@@ -245,13 +245,13 @@ module.exports = BaseService.extends({
   },
 
   getPair24hData: function (callback) {
-    if (!globalTokens) return callback(null, {});
+    if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(globalTokens).map(token => {
+    Object.keys(global.GLOBAL_TOKEN).map(token => {
       if ((token.toUpperCase() !== "ETH") &&
-        !globalTokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
         pairs["ETH_" + token] = (asyncCallback) => this._getPair24hData({
           tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
@@ -293,17 +293,17 @@ module.exports = BaseService.extends({
   },
 
   _getPair24hData: function (options, callback) {
-    if (!options.token || !globalTokens[options.token]) {
+    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !globalTokens[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
     let tokenSymbol = options.token
     let baseSymbol = options.fromCurrencyCode
-    let tokenData = globalTokens[tokenSymbol]
+    let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
 
     const nowInMs = Date.now();
     const nowInSeconds = Math.floor(nowInMs / 1000);
@@ -393,16 +393,16 @@ module.exports = BaseService.extends({
 
   // get 24h change by eth
   get24hChangeData: function (options, callback) {
-    if (!globalTokens) return callback(null, {});
+    if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(globalTokens).map(token => {
-      // if((token.toUpperCase() !== "ETH") && !globalTokens[token].hidden){
+    Object.keys(global.GLOBAL_TOKEN).map(token => {
+      // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
       if ((token.toUpperCase() !== "ETH") &&
-        !globalTokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
-        const cmcName = globalTokens[token].cmcSymbol || token;
+        const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
           token: token,
@@ -499,11 +499,11 @@ module.exports = BaseService.extends({
   },
 
   _get24hChangeData: function (options, callback) {
-    if (!options.token || !globalTokens[options.token]) {
+    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !globalTokens[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
     const CACHE_KEY = CacheInfo.Change24h.key + options.token;
@@ -516,7 +516,7 @@ module.exports = BaseService.extends({
       }
       let tokenSymbol = options.token;
       // let baseSymbol = options.fromCurrencyCode
-      let tokenData = globalTokens[tokenSymbol]
+      let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
 
       const nowInMs = Date.now();
       const nowInSeconds = Math.floor(nowInMs / 1000);
