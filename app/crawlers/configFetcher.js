@@ -1,6 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
-
+const network = require('../../config/network');
 const apisEndpint = process.env['APIS_ENDPOINT'] + "/internal/currencies"
 
 const fetchData = params => new Promise((resolve, reject) => {
@@ -21,10 +21,12 @@ const standardizeTokens = (arrayTokens) => {
   const returnConfig = {}
   arrayTokens.map(t => {
     returnConfig[t.symbol] = {
+      ...network.tokens[t.symbol],
       name: t.name,
       address: t.address,
       symbol: t.symbol,
       decimal: t.decimals,
+      cmcIdv2: t.cmc_id,
       // delisted: true
       hidden: t.listing_time
     }

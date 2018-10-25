@@ -23,7 +23,8 @@ module.exports = {
     "symbol": "ETH",
     "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     "decimal": 18,
-    "cmcId": "ethereum"
+    "cmcId": "ethereum",
+    "cmcIdv2": "1027"
   },
   "KNC": {
     "name": "Kyber Network",
@@ -31,6 +32,7 @@ module.exports = {
     "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
     "decimal": 18,
     "cmcId": "kyber-network",
+    "cmcIdv2": "1982"
   },
   
   "tokens": {

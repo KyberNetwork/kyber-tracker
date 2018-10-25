@@ -30,16 +30,16 @@ class TradeCrawler {
 
   start () {
     async.auto({
-      fetchConfig: (next) => {
+      config: (next) => {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
-
           tokenConfig = {...tokenConfig, ...tokens}
           processTokens(tokenConfig)
           return next(null, tokenConfig)
         })
       },
-      latestProcessedBlock: ['fetchConfig', (ret, next) => {
+      latestProcessedBlock: ['config', (ret, next) => {
+        global.GLOBAL_TOKEN=ret.config
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }

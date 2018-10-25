@@ -34,7 +34,7 @@ module.exports = BaseService.extends({
       }
 
       request
-        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .get(`https://api.coinmarketcap.com/v2/ticker/${tokenInfo.cmcIdv2}/`)
         .timeout({
           response: 5000,  // Wait 5 seconds for the server to start sending,
           deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -46,7 +46,7 @@ module.exports = BaseService.extends({
           }
           let price;
           try {
-            price = parseFloat(response.body[0].price_usd);
+            price = parseFloat(response.body.data.quotes.USD.price);
           } catch (e) {
             return callback(e);
           }
@@ -204,7 +204,7 @@ module.exports = BaseService.extends({
       }
 
       request
-        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .get(`https://api.coinmarketcap.com/v2/ticker/${tokenInfo.cmcIdv2}/`)
         .timeout({
           response: 5000,  // Wait 5 seconds for the server to start sending,
           deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -214,7 +214,7 @@ module.exports = BaseService.extends({
             return callback(err);
           }
 
-          const result = response.body[0];
+          const result = response.body.data;
 
           RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CMCTokenInfo.TTL);
           return callback(null, result);

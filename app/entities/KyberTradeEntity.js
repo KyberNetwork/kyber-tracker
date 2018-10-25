@@ -10,6 +10,7 @@ module.exports = BaseEntity.extends({
 
   _recalculate: function () {
     const tokensByAddress = _.keyBy(_.values(global.GLOBAL_TOKEN), o => o.address.toLowerCase());
+    
     this.makerTokenSymbol = tokensByAddress[this.makerTokenAddress.toLowerCase()].symbol;
     this.takerTokenSymbol = tokensByAddress[this.takerTokenAddress.toLowerCase()].symbol;
 

@@ -22,14 +22,14 @@ module.exports = {
       "symbol": "ETH",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
-      "cmcId": "ethereum"
+      "cmcId": "1027"
     },
     "KNC": {
       "name": "Kyber Network",
       "symbol": "KNC",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
       "decimal": 18,
-      "cmcId": "kyber-network",
+      "cmcId": "1982",
     },
     
     "tokens": {
@@ -38,7 +38,7 @@ module.exports = {
         "symbol": "ETH",
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
-        "cmcId": "ethereum",
+        "cmcId": "1027",
         "hidden": true
       },
       "KNC": {
@@ -46,7 +46,7 @@ module.exports = {
         "symbol": "KNC",
         "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
         "decimal": 18,
-        "cmcId": "kyber-network",
+        "cmcId": "1982",
         "hidden": true
       },
       "OMG": {
