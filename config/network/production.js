@@ -63,7 +63,6 @@ module.exports = {
       "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
       "decimal": 18,
       "delisted": true,
-      "hidden": true
     },
     "SNT": {
       "name": "Status Network",
@@ -198,7 +197,6 @@ module.exports = {
       "symbol": "AION",
       "decimal": 8,
       "delisted": true,
-      "hidden": true
     },
     "SUB": {
       "name": "Substratum",
@@ -468,7 +466,6 @@ module.exports = {
       "symbol": "CHAT",
       "decimal": 18,
       "delisted": true,
-      "hidden": true
     },
     "DTA": {
       "name": "Data",

@@ -61,7 +61,6 @@ module.exports = {
       "address": "0xd5b4218B950A53fF07985E2d88346925c335EAe7",
       "decimal": 18,
       "delisted": true,
-      "hidden": true
     },
     "SNT": {
       "name": "Status Network",
