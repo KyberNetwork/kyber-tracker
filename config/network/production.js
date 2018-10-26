@@ -209,7 +209,14 @@ module.exports = {
       "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
       "symbol": "MKR",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1540818000
+    },
+    "DDC": {
+      "name": "Distributed Credit Chain",
+      "address": "0xffa93aacf49297d51e211817452839052fdfb961",
+      "symbol": "DDC",
+      "decimal": 18,
+      "hidden": 1540818000
     },
     "ENJ": {
       "name": "EnjinCoin",
