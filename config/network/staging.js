@@ -213,10 +213,10 @@ module.exports = {
         "decimal": 18,
         "hidden": 1540731600000
       },
-      "DDC": {
+      "DCC": {
         "name": "Distributed Credit Chain",
         "address": "0xffa93aacf49297d51e211817452839052fdfb961",
-        "symbol": "DDC",
+        "symbol": "DCC",
         "decimal": 18,
         "hidden": 1540731600000
       },
