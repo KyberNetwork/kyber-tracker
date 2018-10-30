@@ -215,7 +215,18 @@ module.exports = AppController.extends({
     params.pairsArray = pairsArray
 
     const TradeService = req.getService('TradeService');
-    TradeService.getPairsVolumes(params, this.ok.bind(this, req, res));
+    TradeService.getPairsVolumes(params, (errs, results) => {
+      if (errs) {
+        logger.error(errs)  
+        return res.json({
+          success: false
+        }); 
+      }
+      return res.json({
+        success: true,
+        data: results
+      });
+    });
   },
 
   getBurnedFees: function (req, res) {
