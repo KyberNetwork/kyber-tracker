@@ -602,6 +602,9 @@ module.exports = BaseService.extends({
     if (options.symbol) {
       key = options.symbol + '-' + key;
     }
+    if (options.pair) {
+      key = options.pair + '-' + key;
+    }
     if (options.fromDate) {
       key = options.fromDate + '-' + key;
     }
@@ -641,6 +644,9 @@ module.exports = BaseService.extends({
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
+    } else if(options.pair){
+      const pairTokens = options.pair.split('_')
+      whereClauses += ` AND ((taker_token_symbol = "${pairTokens[0]}" AND maker_token_symbol = "${pairTokens[1]}") OR (taker_token_symbol = "${pairTokens[1]}" AND maker_token_symbol = "${pairTokens[0]}"))`;
     }
 
     async.auto({

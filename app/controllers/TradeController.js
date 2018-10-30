@@ -187,7 +187,8 @@ module.exports = AppController.extends({
       period: ['string'],
       interval: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      pair: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
