@@ -6,6 +6,7 @@ module.exports = {
     '/tokens/top'                   : ['TradeController.getTopTokensList'],
     '/stats24h'                     : ['TradeController.getStats24h'],
     '/volumes'                      : ['TradeController.getVolumes'],
+    '/volume_pairs'                 : ['TradeController.getVolumesPairToken'],
     '/fees/to_burn'                 : ['TradeController.getToBurnFees'],
     '/fees/collected'               : ['TradeController.getCollectedFees'],
     '/fees/burned'                  : ['TradeController.getBurnedFees'],

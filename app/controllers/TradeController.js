@@ -200,6 +200,24 @@ module.exports = AppController.extends({
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },
 
+  getVolumesPairToken: function (req, res) {
+    const [err, params] = new Checkit({
+      fromTime: ['natural'],
+      toTime: ['natural'],
+      pairs: ['required', 'string']
+    }).validateSync(req.allParams);
+    if (err) {
+      res.badRequest(err && err.toString());
+      return;
+    }
+
+    const pairsArray = params.pairs.split(" ")
+    params.pairsArray = pairsArray
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getPairsVolumes(params, this.ok.bind(this, req, res));
+  },
+
   getBurnedFees: function (req, res) {
     const [err, params] = new Checkit({
       interval: ['string'],

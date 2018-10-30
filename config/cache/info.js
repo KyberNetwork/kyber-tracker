@@ -47,6 +47,11 @@ module.exports = {
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
   },
+  "PairsVolumes": {
+    key: "pairs-vol-",
+    TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
+    TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
+  },
   "BurnedFees": {
     key: "burned-fee-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS}

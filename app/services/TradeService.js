@@ -720,6 +720,77 @@ module.exports = BaseService.extends({
     });
   },
 
+  getPairsVolumes: function (options, callback) {
+    let key = `${CacheInfo.NetworkVolumes.key}${options.pairs}`;
+
+    if (options.fromTime) {
+      key = options.fromTime + '-' + key;
+    }
+    if (options.toTime) {
+      key = options.toTime + '-' + key;
+    }
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+
+      let asyncPairs = {}
+      options.pairsArray.map(p => {
+        const tokens = p.split('_');
+        asyncPairs[p] = (asyncCallback) => this._getPairVolume({
+          tokens,
+          fromTime: options.fromTime,
+          toTime: options.toTime
+        }, asyncCallback)
+      })
+      async.auto(asyncPairs, 10, (err, result)=>{
+        if(err){
+          pairs = {
+            error:true,
+            additional_data: err,
+            reason:"server_error"
+          }
+        }
+        callback(null, result);
+      });
+    })
+  },
+
+  _getPairVolume: function (options, callback){
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    let sqlQuery = ""
+    let params = []
+    if(options.fromTime){
+      sqlQuery += `block_timestamp > ?`
+      params.push(options.fromTime)
+    }
+    if(options.toTime){
+      sqlQuery += `${sqlQuery && " AND "}block_timestamp < ?`
+      params.push(options.toTime)
+    }
+
+    sqlQuery += `${sqlQuery && " AND "} ((maker_token_symbol = "${options.tokens[0]}" AND taker_token_symbol = "${options.tokens[1]}") OR (maker_token_symbol = "${options.tokens[1]}" AND taker_token_symbol = "${options.tokens[0]}"))`
+
+    async.auto({
+      volumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: sqlQuery,
+          params: params,
+        }, next);
+      },
+      volumeUsd: (next) => {
+        KyberTradeModel.sum('volume_usd', {
+          where: sqlQuery,
+          params: params,
+        }, next);
+      }
+    }, callback)
+  },
+
   // Use for bot
   getTotalBurnedFees: function (callback) {
     const BurnedFeeModel = this.getModel('BurnedFeeModel');

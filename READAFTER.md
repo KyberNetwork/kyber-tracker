@@ -89,6 +89,10 @@ API Support
     fromDate: ['natural'],
     toDate: ['natural']        
   -> get volume of an token between timerange, or in period (ignore WETH)      
+  *option params pair=OMG_KNC, get volume by pair token
+
+'/volume_pairs
+
 
 '/fees/to_burn'   
     symbol: ['string'],
