@@ -602,6 +602,9 @@ module.exports = BaseService.extends({
     if (options.symbol) {
       key = options.symbol + '-' + key;
     }
+    if (options.pair) {
+      key = options.pair + '-' + key;
+    }
     if (options.fromDate) {
       key = options.fromDate + '-' + key;
     }
@@ -641,6 +644,9 @@ module.exports = BaseService.extends({
       whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
       params.push(options.symbol);
       params.push(options.symbol);
+    } else if(options.pair){
+      const pairTokens = options.pair.split('_')
+      whereClauses += ` AND ((taker_token_symbol = "${pairTokens[0]}" AND maker_token_symbol = "${pairTokens[1]}") OR (taker_token_symbol = "${pairTokens[1]}" AND maker_token_symbol = "${pairTokens[0]}"))`;
     }
 
     async.auto({
@@ -712,6 +718,77 @@ module.exports = BaseService.extends({
       }
       return callback(null, returnData);
     });
+  },
+
+  getPairsVolumes: function (options, callback) {
+    let key = `${CacheInfo.NetworkVolumes.key}${options.pairs}`;
+
+    if (options.fromTime) {
+      key = options.fromTime + '-' + key;
+    }
+    if (options.toTime) {
+      key = options.toTime + '-' + key;
+    }
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+
+      let asyncPairs = {}
+      options.pairsArray.map(p => {
+        const tokens = p.split('_');
+        asyncPairs[p] = (asyncCallback) => this._getPairVolume({
+          tokens,
+          fromTime: options.fromTime,
+          toTime: options.toTime
+        }, asyncCallback)
+      })
+      async.auto(asyncPairs, 10, (err, result)=>{
+        if(err){
+          pairs = {
+            error:true,
+            additional_data: err,
+            reason:"server_error"
+          }
+        }
+        callback(null, result);
+      });
+    })
+  },
+
+  _getPairVolume: function (options, callback){
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    let sqlQuery = ""
+    let params = []
+    if(options.fromTime){
+      sqlQuery += `block_timestamp > ?`
+      params.push(options.fromTime)
+    }
+    if(options.toTime){
+      sqlQuery += `${sqlQuery && " AND "}block_timestamp < ?`
+      params.push(options.toTime)
+    }
+
+    sqlQuery += `${sqlQuery && " AND "} ((maker_token_symbol = "${options.tokens[0]}" AND taker_token_symbol = "${options.tokens[1]}") OR (maker_token_symbol = "${options.tokens[1]}" AND taker_token_symbol = "${options.tokens[0]}"))`
+
+    async.auto({
+      volumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: sqlQuery,
+          params: params,
+        }, next);
+      },
+      volumeUsd: (next) => {
+        KyberTradeModel.sum('volume_usd', {
+          where: sqlQuery,
+          params: params,
+        }, next);
+      }
+    }, callback)
   },
 
   // Use for bot

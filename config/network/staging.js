@@ -395,7 +395,7 @@ module.exports = {
         "decimal": 18
       },
       "LBA": {
-        "name": "Libra Credit",
+        "name": "Cred",
         "address": "0xfe5f141bf94fe84bc28ded0ab966c16b17490657",
         "symbol": "LBA",
         "decimal": 18

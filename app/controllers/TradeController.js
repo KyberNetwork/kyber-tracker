@@ -187,7 +187,8 @@ module.exports = AppController.extends({
       period: ['string'],
       interval: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      pair: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
@@ -197,6 +198,35 @@ module.exports = AppController.extends({
 
     const TradeService = req.getService('TradeService');
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
+  },
+
+  getVolumesPairToken: function (req, res) {
+    const [err, params] = new Checkit({
+      fromTime: ['natural'],
+      toTime: ['natural'],
+      pairs: ['required', 'string']
+    }).validateSync(req.allParams);
+    if (err) {
+      res.badRequest(err && err.toString());
+      return;
+    }
+
+    const pairsArray = params.pairs.split(" ")
+    params.pairsArray = pairsArray
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getPairsVolumes(params, (errs, results) => {
+      if (errs) {
+        logger.error(errs)  
+        return res.json({
+          success: false
+        }); 
+      }
+      return res.json({
+        success: true,
+        data: results
+      });
+    });
   },
 
   getBurnedFees: function (req, res) {
