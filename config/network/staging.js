@@ -579,6 +579,34 @@ module.exports = {
         "decimal": 18,
         "address": "0xea26c4ac16d4a5a106820bc8aee85fd0b7b2b664",
         "hidden": true       
+      },
+      "CNN":{
+        "name": "CNN Token",
+        "symbol" : "CNN",
+        "decimal": 18,
+        "address": "0x8713d26637CF49e1b6B4a7Ce57106AaBc9325343",
+        "hidden": true       
+      },
+      "SSP":{
+        "name": "Smartshare Token",
+        "symbol" : "SSP",
+        "decimal": 4,
+        "address": "0x624d520BAB2E4aD83935Fa503fB130614374E850",
+        "hidden": true       
+      },
+      "PRO":{
+        "name": "Propy",
+        "symbol" : "PRO",
+        "decimal": 8,
+        "address": "0x226bb599a12C826476e3A771454697EA52E9E220",
+        "hidden": true       
+      },
+      "OCN":{
+        "name": "OCoin",
+        "symbol" : "OCN",
+        "decimal": 18,
+        "address": "0x4092678e4E78230F46A1534C0fbc8fA39780892B",
+        "hidden": true       
       }
     },
     "averageBlockTime": 15000,
