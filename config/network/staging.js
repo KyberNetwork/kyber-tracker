@@ -607,6 +607,27 @@ module.exports = {
         "decimal": 18,
         "address": "0x4092678e4E78230F46A1534C0fbc8fA39780892B",
         "hidden": true       
+      },
+      "EKO":{
+        "name": "EchoLink",
+        "symbol" : "EKO",
+        "decimal": 18,
+        "address": "0xa6a840e50bcaa50da017b91a0d86b8b2d41156ee",
+        "hidden": true       
+      },
+      "HOT":{
+        "name": "Hydro Protocol",
+        "symbol" : "HOT",
+        "decimal": 18,
+        "address": "0x9af839687f6c94542ac5ece2e317daae355493a1",
+        "hidden": true       
+      },
+      "OST":{
+        "name": "Open Simple Token",
+        "symbol" : "OST",
+        "decimal": 18,
+        "address": "0x2c4e8f2d746113d0696ce89b35f0d8bf88e0aeca",
+        "hidden": true       
       }
     },
     "averageBlockTime": 15000,
