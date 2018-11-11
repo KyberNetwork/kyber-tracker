@@ -581,28 +581,28 @@ module.exports = {
       "symbol" : "CNN",
       "decimal": 18,
       "address": "0x8713d26637CF49e1b6B4a7Ce57106AaBc9325343",
-      "hidden": true       
+      "hidden": 1542052800000       
     },
     "SSP":{
       "name": "Smartshare Token",
       "symbol" : "SSP",
       "decimal": 4,
       "address": "0x624d520BAB2E4aD83935Fa503fB130614374E850",
-      "hidden": true       
+      "hidden": 1542052800000       
     },
     "PRO":{
       "name": "Propy",
       "symbol" : "PRO",
       "decimal": 8,
       "address": "0x226bb599a12C826476e3A771454697EA52E9E220",
-      "hidden": true       
+      "hidden": 1542052800000       
     },
     "OCN":{
       "name": "OCoin",
       "symbol" : "OCN",
       "decimal": 18,
       "address": "0x4092678e4E78230F46A1534C0fbc8fA39780892B",
-      "hidden": true       
+      "hidden": 1542052800000       
     },
     
     "EKO":{
@@ -610,21 +610,21 @@ module.exports = {
       "symbol" : "EKO",
       "decimal": 18,
       "address": "0xa6a840e50bcaa50da017b91a0d86b8b2d41156ee",
-      "hidden": true       
+      "hidden": 1542052800000       
     },
     "HOT":{
       "name": "Hydro Protocol",
       "symbol" : "HOT",
       "decimal": 18,
       "address": "0x9af839687f6c94542ac5ece2e317daae355493a1",
-      "hidden": true       
+      "hidden": 1542052800000       
     },
     "OST":{
       "name": "Open Simple Token",
       "symbol" : "OST",
       "decimal": 18,
       "address": "0x2c4e8f2d746113d0696ce89b35f0d8bf88e0aeca",
-      "hidden": true       
+      "hidden": 1542052800000       
     }
 
 
