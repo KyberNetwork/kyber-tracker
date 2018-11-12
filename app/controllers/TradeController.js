@@ -16,8 +16,8 @@ module.exports = AppController.extends({
   getTradesList: function (req, res) {
     const [err, params] = new Checkit({
       symbol: ['string'],
-      page: ['required', 'natural'],
-      limit: ['required', 'naturalNonZero'],
+      page: ['natural'],
+      limit: ['naturalNonZero'],
       fromDate: ['naturalNonZero'],
       toDate: ['naturalNonZero'],
     }).validateSync(req.allParams);
