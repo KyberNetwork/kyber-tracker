@@ -620,7 +620,7 @@ module.exports = {
         "symbol" : "HOT",
         "decimal": 18,
         "address": "0x9af839687f6c94542ac5ece2e317daae355493a1",
-        "hidden": 1542052800000       
+        "hidden": true       
       },
       "OST":{
         "name": "Open Simple Token",
