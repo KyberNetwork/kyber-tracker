@@ -585,35 +585,35 @@ module.exports = {
         "symbol" : "CNN",
         "decimal": 18,
         "address": "0x8713d26637CF49e1b6B4a7Ce57106AaBc9325343",
-        "hidden": 1542052800000       
+        "hidden": 1542027600000       
       },
       "SSP":{
         "name": "Smartshare Token",
         "symbol" : "SSP",
         "decimal": 4,
         "address": "0x624d520BAB2E4aD83935Fa503fB130614374E850",
-        "hidden": 1542052800000       
+        "hidden": 1542027600000       
       },
       "PRO":{
         "name": "Propy",
         "symbol" : "PRO",
         "decimal": 8,
         "address": "0x226bb599a12C826476e3A771454697EA52E9E220",
-        "hidden": 1542052800000       
+        "hidden": 1542027600000       
       },
       "OCN":{
         "name": "OCoin",
         "symbol" : "OCN",
         "decimal": 18,
         "address": "0x4092678e4E78230F46A1534C0fbc8fA39780892B",
-        "hidden": 1542052800000       
+        "hidden": 1542027600000       
       },
       "EKO":{
         "name": "EchoLink",
         "symbol" : "EKO",
         "decimal": 18,
         "address": "0xa6a840e50bcaa50da017b91a0d86b8b2d41156ee",
-        "hidden": 1542052800000       
+        "hidden": 1542027600000       
       },
       "HOT":{
         "name": "Hydro Protocol",
@@ -627,7 +627,7 @@ module.exports = {
         "symbol" : "OST",
         "decimal": 18,
         "address": "0x2c4e8f2d746113d0696ce89b35f0d8bf88e0aeca",
-        "hidden": 1542052800000       
+        "hidden": 1542027600000       
       }
     },
     "averageBlockTime": 15000,

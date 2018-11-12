@@ -48,8 +48,8 @@ module.exports = BaseService.extends({
     const queryOptions = {
       where: whereClauses,
       params: params,
-      limit: options.limit,
-      offset: options.page * options.limit,
+      ...(options.limit && {limit: options.limit}),
+      ...(options.limit && options.page && {offset: options.page * options.limit}),
       orderBy: 'block_timestamp DESC'
     };
 
