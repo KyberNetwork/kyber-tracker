@@ -149,7 +149,7 @@ module.exports = AppController.extends({
       const time_exprire = CacheInfo.chart_history_1h.TTL;
 
       const minutes_to = Math.floor(params.to / 600);
-      const key = CacheInfo.chart_history_1h.key + minutes_to.toString() + params.symbol;
+      const key = CacheInfo.chart_history_1h.key + minutes_to.toString() + params.symbol + params.seqType;
       const chartService = req.getService('ChartService');
       RedisCache.getAsync(key, (err, ret) => {
         if (err) {
