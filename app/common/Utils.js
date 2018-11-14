@@ -29,11 +29,11 @@ module.exports = {
     return tokensByAddress[address.toLowerCase()] || null;
   },
 
-  shouldShowToken: function(tokenSymbol, tokenList) {
+  shouldShowToken: function(tokenSymbol, tokenList, timeStamp) {
     tokenList = tokenList || tokens;
     if(!tokenList[tokenSymbol].hidden) return true;
     if (typeof tokenList[tokenSymbol].hidden != 'number') return false;
-    return (Date.now() >= tokenList[tokenSymbol].hidden);
+    return (timeStamp || Date.now()) >= tokenList[tokenSymbol].hidden;
   },
 
   getStringExp10: function(decimal) {
