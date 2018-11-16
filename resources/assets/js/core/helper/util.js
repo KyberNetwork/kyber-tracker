@@ -123,11 +123,11 @@ export default {
     return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
-  shouldShowToken (tokenSymbol) {
+  shouldShowToken (tokenSymbol, timeStamp) {
     // return !this.tokens[item.symbol].hidden;
     if(!tokens[tokenSymbol].hidden) return true;
     if (typeof tokens[tokenSymbol].hidden != 'number') return false;
-    return Date.now() >= tokens[tokenSymbol].hidden;
+    return (timeStamp || Date.now()) >= tokens[tokenSymbol].hidden;
   },
 
   isNewToken (tokenSymbol) {

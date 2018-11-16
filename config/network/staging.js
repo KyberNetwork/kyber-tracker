@@ -628,6 +628,21 @@ module.exports = {
         "decimal": 18,
         "address": "0x2c4e8f2d746113d0696ce89b35f0d8bf88e0aeca",
         "hidden": 1542027600000       
+      },
+      
+      "DTH":{
+        "name": "Dether",
+        "symbol" : "DTH",
+        "decimal": 18,
+        "address": "0x5adc961D6AC3f7062D2eA45FEFB8D8167d44b190",
+        "hidden": true       
+      },
+      "TVND":{
+        "name": "TrueVND",
+        "symbol" : "TVND",
+        "decimal": 18,
+        "address": "0x3Dc0501c32beE0cc1e629d590302A4b909797474",
+        "hidden": true       
       }
     },
     "averageBlockTime": 15000,

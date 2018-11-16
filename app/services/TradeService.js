@@ -194,7 +194,7 @@ module.exports = BaseService.extends({
         const supportedTokens = [];
 
         Object.keys(network.tokens).forEach((symbol) => {
-          if (UtilsHelper.shouldShowToken(symbol)) {
+          if (UtilsHelper.shouldShowToken(symbol, network.tokens, options.timeStamp)) {
             const token = network.tokens[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);

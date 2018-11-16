@@ -134,6 +134,7 @@ module.exports = AppController.extends({
     const [err, params] = new Checkit({
       fromDate: ['natural'],
       toDate: ['natural'],
+      timeStamp: ['natural']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -146,7 +147,8 @@ module.exports = AppController.extends({
     let toDate = params.toDate || now;
 
     let key = `${CacheInfo.TokensList.key}${Math.floor(fromDate / 60)}-${Math.floor(toDate / 60)}`;
-
+    if(params.timeStamp) key = key + '-' + params.timeStamp
+    
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -158,7 +160,8 @@ module.exports = AppController.extends({
       }
       let options = {
         fromDate: fromDate,
-        toDate: toDate
+        toDate: toDate,
+        timeStamp: params.timeStamp
       };
       TradeService.getTokensList(options, (err, ret_1) => {
         if (err) {
