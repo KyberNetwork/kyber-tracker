@@ -12,6 +12,7 @@
     "start": "pm2 start app.json",
     "test": "LOG_LEVEL=ERROR NODE_ENV=test node_modules/.bin/mocha -R spec --timeout 30000 test/index.js",
     "server": "node server.js",
+    "rate": "node rate.js",
     "crawler": "node crawl.js",
     "createCache": "node schedule.js"
   },
