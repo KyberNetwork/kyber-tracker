@@ -633,7 +633,7 @@ module.exports = {
       "symbol" : "DTH",
       "decimal": 18,
       "address": "0x5adc961D6AC3f7062D2eA45FEFB8D8167d44b190",
-      "hidden": true       
+      "hidden": 1542891600000       
     },
     "TVND":{
       "name": "TrueVND",
