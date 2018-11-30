@@ -643,6 +643,21 @@ module.exports = {
         "decimal": 18,
         "address": "0x3Dc0501c32beE0cc1e629d590302A4b909797474",
         "hidden": true       
+      },
+      "WBTC":{
+        "name": "	Wrapped BTC",
+        "symbol" : "WBTC",
+        "decimal": 8,
+        "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        "hidden": true       
+      },
+  
+      "ABYSS":{
+        "name": "ABYSS",
+        "symbol" : "ABYSS",
+        "decimal": 18,
+        "address": "0x0E8d6b471e332F140e7d9dbB99E5E3822F728DA6",
+        "hidden": true       
       }
     },
     "averageBlockTime": 15000,
