@@ -658,6 +658,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x0E8d6b471e332F140e7d9dbB99E5E3822F728DA6",
       "hidden": true       
+    },
+
+    "PT":{
+      "name": "Promotion Token",
+      "symbol" : "PT",
+      "decimal": 18,
+      "address": "0x094c875704c14783049ddf8136e298b3a099c446",
+      "hidden": 1543938161000       
     }
 
 
