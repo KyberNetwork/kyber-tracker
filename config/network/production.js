@@ -551,7 +551,8 @@ module.exports = {
       "symbol" : "KCC",
       "decimal": 18,
       "address": "0x09677d0175dec51e2215426cddd055a71bf4228d",
-      "hidden": 1538205156429       
+      // "hidden": 1538205156429 
+      "delisted": true      
     },
 
     "DAT":{
