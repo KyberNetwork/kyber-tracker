@@ -464,7 +464,8 @@ module.exports = {
         "address": "0x66186008C1050627F979d464eABb258860563dbE",
         "symbol": "MDS",
         "decimal": 18,
-        "hidden": 1531797717126
+        // "hidden": 1531797717126
+        "delisted": true   
       },
       "LEND": {
         "name": "EthLend",
