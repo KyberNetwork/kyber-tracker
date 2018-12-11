@@ -244,6 +244,8 @@
         >
       </paginate>
 
+
+      <div class="pt-1">Total: {{totalTrade && totalTrade >= 2 ? `${totalTrade} trades` : `${totalTrade} trade`}}</div>
     </div>
   </div>
 </template>
@@ -305,8 +307,10 @@ export default {
           .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
             const data = res.data;
             const pagination = res.pagination;
+
             this.rows = data;
             this.maxPage = pagination.maxPage;
+            this.totalTrade = pagination.totalCount;
           });
       }
     },
