@@ -6,7 +6,8 @@
     <trade-list ref="datatable"
       :title="getListTitle()"
       :getFilterTokenSymbol="getFilterTokenSymbol"
-      :isHidePartnerCommission="true"
+      :x="true"
+      :isShowTotal="true"
       >
     </trade-list>
 

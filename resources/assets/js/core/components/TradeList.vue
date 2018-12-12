@@ -245,7 +245,7 @@
       </paginate>
 
 
-      <div class="pt-1">Total: {{totalTrade && totalTrade >= 2 ? `${totalTrade} trades` : `${totalTrade} trade`}}</div>
+      <div v-if="isShowTotal" class="pt-1">Total: {{totalTrade && totalTrade >= 2 ? `${totalTrade} trades` : `${totalTrade} trade`}}</div>
     </div>
   </div>
 </template>
@@ -275,6 +275,9 @@ export default {
       type: Number,
     },
     isHidePartnerCommission: {
+      type: Boolean
+    },
+    isShowTotal: {
       type: Boolean
     },
     isShowExport: {
