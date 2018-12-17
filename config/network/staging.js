@@ -374,6 +374,7 @@ module.exports = {
         "address": "0xfedae5642668f8636a11987ff386bfd215f942ee",
         "symbol": "PAL",
         "decimal": 18,
+        "delisted": true
       },
       "COFI": {
         "name": "CoinFi",
@@ -456,7 +457,8 @@ module.exports = {
         "address": "0x8b353021189375591723E7384262F45709A3C3dC",
         "symbol": "TOMO",
         "decimal": 18,
-        "hidden": 1531486800000
+        // "hidden": 1531486800000
+        "delisted": true
       },
 
       "MDS": {
@@ -667,6 +669,20 @@ module.exports = {
         "decimal": 18,
         "address": "0x094c875704c14783049ddf8136e298b3a099c446",
         "hidden": 1543938161000       
+      },
+      "TTC":{
+        "name": "TTC Protocol",
+        "symbol" : "TTC",
+        "decimal": 18,
+        "address": "0x9389434852b94bbad4c8afed5b7bdbc5ff0c2275",
+        "hidden": true       
+      },
+      "INF":{
+        "name": "InfinitusTokens",
+        "symbol" : "INF",
+        "decimal": 18,
+        "address": "0x00e150d741eda1d49d341189cae4c08a73a49c95",
+        "hidden": 1545048000000       
       }
     },
     "averageBlockTime": 15000,
