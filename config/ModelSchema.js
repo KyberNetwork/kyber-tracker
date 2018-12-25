@@ -25,6 +25,7 @@
      block_hash: { type: 'string', length: 300 },
      block_timestamp: { type: 'number', length: 20 },
      tx: { type: 'string', length: 300 },
+     unique_tag: { type: 'string', length: 300 },
      maker_address: { type: 'string', length: 765 },
      maker_token_address: { type: 'string', length: 765 },
      maker_token_symbol: { type: 'string', length: 30 },

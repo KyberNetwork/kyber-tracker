@@ -26,7 +26,7 @@ class TradeCrawler {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
 
-        getLatestBlockNumber(next);
+        getLatestBlockNumber(next, "KyberTradeModel", "TRADE_BLOCK_START");
       },
       processBlocks: ['latestProcessedBlock', (ret, next) => {
         this.processBlocks(ret.latestProcessedBlock, next);
@@ -144,40 +144,35 @@ class TradeCrawler {
   }
 
   _processLogData (logs, blockTimestamps, callback) {
-    const records = {};
+    const records = [];
     const exSession = new ExSession();
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
-
-    _.each(logs, (log) => {
+    // logger.info(logs)
+    _.each(logs, (log, logIndex) => {
       const txid = log.transactionHash;
-      if (!records[txid]) {
-        records[txid] = {};
-      }
-
+      // if (!records[txid]) {
+      //   records[txid] = {};
+      // }
       const timestamp = blockTimestamps[log.blockNumber];
       if (!timestamp) {
         return next(`Cannot get block info for log id=${log.id}, tx=${log.transactionHash}`);
       }
 
-      const record = records[txid];
-      record.blockNumber = log.blockNumber;
-      record.blockHash = log.blockHash;
-      record.blockTimestamp = timestamp;
-      record.tx = log.transactionHash;
+      const initRecord = {
+        blockNumber: log.blockNumber,
+        blockHash: log.blockHash,
+        blockTimestamp: timestamp,
+        tx: log.transactionHash
+      }
 
+      // const record = records[txid];
+      var record = {...initRecord}
+      
       const topic = log.topics[0];
       const data = web3.utils.hexToBytes(log.data);
 
       switch (topic) {
-        case networkConfig.logTopics.exchange:
-          record.makerAddress = log.address;
-          record.takerAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
-          record.takerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          record.makerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          record.takerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
-          record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
-          break;
         case networkConfig.logTopics.feeToWallet:
           const rAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           if (!record.commissionReserveAddress || record.commissionReserveAddress == rAddr) {
@@ -203,12 +198,24 @@ class TradeCrawler {
         case networkConfig.logTopics.etherReceival:
           record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
           break;
+        case networkConfig.logTopics.exchange:
+          record.makerAddress = log.address;
+          record.takerAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
+          record.takerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          record.makerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          record.takerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
+          record.uniqueTag = log.transactionHash + "_" + logIndex
+
+          records.push(record)
+          record = {...initRecord}
+          break;
       }
     });
 
     async.waterfall([
       (next) => {
-        async.eachLimit(_.values(records), PARALLEL_INSERT_LIMIT, (record, _next) => {
+        async.eachLimit(records, PARALLEL_INSERT_LIMIT, (record, _next) => {
           this._addNewTrade(exSession, record, _next);
         }, next);
       },
