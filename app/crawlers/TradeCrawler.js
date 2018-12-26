@@ -148,7 +148,9 @@ class TradeCrawler {
     const exSession = new ExSession();
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
-    // logger.info(logs)
+    
+    var record = {}
+
     _.each(logs, (log, logIndex) => {
       const txid = log.transactionHash;
       // if (!records[txid]) {
@@ -159,15 +161,6 @@ class TradeCrawler {
         return next(`Cannot get block info for log id=${log.id}, tx=${log.transactionHash}`);
       }
 
-      const initRecord = {
-        blockNumber: log.blockNumber,
-        blockHash: log.blockHash,
-        blockTimestamp: timestamp,
-        tx: log.transactionHash
-      }
-
-      // const record = records[txid];
-      var record = {...initRecord}
       
       const topic = log.topics[0];
       const data = web3.utils.hexToBytes(log.data);
@@ -207,8 +200,14 @@ class TradeCrawler {
           record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
           record.uniqueTag = log.transactionHash + "_" + logIndex
 
+
+          record.blockNumber= log.blockNumber,
+          record.blockHash= log.blockHash,
+          record.blockTimestamp= timestamp,
+          record.tx= log.transactionHash
+
           records.push(record)
-          record = {...initRecord}
+          record = {}
           break;
       }
     });
