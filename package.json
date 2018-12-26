@@ -14,6 +14,7 @@
     "server": "node server.js",
     "rate": "node rate.js",
     "crawler": "node crawl.js",
+    "trade": "node trade.js",
     "createCache": "node schedule.js"
   },
   "repository": {

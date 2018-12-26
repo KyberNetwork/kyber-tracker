@@ -4,7 +4,6 @@ const async         = require('async');
 const moment        = require('moment');
 const networkConfig = require('../../config/network');
 const logger        = require('sota-core').getLogger('Trades.specs.js');
-
 describe('Test get tokens list', () => {
 
   it('Get top-volume tokens', (done) => {

@@ -214,7 +214,6 @@ import moment,{ locale } from "moment";
 import request from "superagent";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
-import network from "../../../../../config/network";
 import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
@@ -487,7 +486,6 @@ export default {
   },
 
   mounted() {
-    
     this.refresh();
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute

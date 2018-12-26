@@ -8,26 +8,44 @@ const Utils                       = require('../common/Utils');
 const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const logger                      = require('sota-core').getLogger('TradeCrawler');
+const configFetcher               = require('./configFetcher')
+
 
 let LATEST_PROCESSED_BLOCK = 0;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
 const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 const PARALLEL_INSERT_LIMIT = 10;
 const web3 = Utils.getWeb3Instance();
-const tokensByAddress = _.keyBy(networkConfig.tokens, 'address');
-const tokensBySymbol = _.keyBy(networkConfig.tokens, 'symbol');
+
+let tokenConfig = networkConfig.tokens
+let tokensByAddress, tokensBySymbol
+
+// networkConfig.tokens
+const processTokens = (tokens) => {
+  tokensByAddress = _.keyBy(tokens, 'address');
+  tokensBySymbol = _.keyBy(tokens, 'symbol');
+}
 
 class TradeCrawler {
 
   start () {
     async.auto({
-      latestProcessedBlock: (next) => {
+      config: (next) => {
+        configFetcher.fetchConfigTokens((err, tokens) => {
+          if(err) return next(err)
+          tokenConfig = {...tokenConfig, ...tokens}
+          processTokens(tokenConfig)
+          return next(null, tokenConfig)
+        })
+      },
+      latestProcessedBlock: ['config', (ret, next) => {
+        global.GLOBAL_TOKEN=ret.config
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
 
         getLatestBlockNumber(next, "KyberTradeModel", "TRADE_BLOCK_START");
-      },
+      }],
       processBlocks: ['latestProcessedBlock', (ret, next) => {
         this.processBlocks(ret.latestProcessedBlock, next);
       }]
@@ -42,7 +60,7 @@ class TradeCrawler {
       }
 
       setTimeout(() => {
-        this.start();
+        this.start();     
       }, timer);
     });
   }
@@ -241,7 +259,7 @@ class TradeCrawler {
         CMCService.getHistoricalPrice('ETH', record.blockTimestamp * 1000, next);
       },
       model: ['price', (ret, next) => {
-        const ethAddress = networkConfig.tokens.ETH.address.toLowerCase();
+        const ethAddress = networkConfig.ETH.address.toLowerCase();
         if (record.takerTokenAddress.toLowerCase() === ethAddress) {
           record.volumeEth = Utils.fromWei(record.takerTokenAmount);
         }

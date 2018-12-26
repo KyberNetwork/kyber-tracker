@@ -80,9 +80,9 @@
   import BigNumber from 'bignumber.js';
   import AppRequest from '../../core/request/AppRequest';
   import util from '../../core/helper/util';
-  import network from '../../../../../config/network';
+  // import network from '../../../../../config/network';
   import Chart from 'chart.js';
-
+  const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
   const defaultChartOptions = {
     legend: {
       display: false
@@ -94,7 +94,7 @@
     data() {
       return {
         pageSize: 10,
-        tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+        tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol'),
         selectedPeriod: 'D30',
         selectedInterval: 'D1',
         selectedTab: 'chartVolume',
@@ -175,6 +175,7 @@
     },
 
     mounted() {
+      // console.log("********************", window["GLOBAL_STATE"])
       this._refreshInterval = window.setInterval(() => {
         this.refresh();
         this._refeshChart();

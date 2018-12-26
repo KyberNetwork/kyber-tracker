@@ -29,7 +29,8 @@
   import BigNumber from 'bignumber.js';
   import AppRequest from '../../core/request/AppRequest';
   import util from '../../core/helper/util';
-  import network from '../../../../../config/network';
+  // import network from '../../../../../config/network';
+  const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
   import Chart from 'chart.js';
 
   const defaultChartOptions = {
@@ -47,7 +48,7 @@
 
     data() {
       return {
-        tokens: _.keyBy(_.values(network.tokens), 'address'),
+        tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'address'),
         selectedPeriod: 'D30',
         selectedInterval: 'D1',
         myChart: undefined,
@@ -64,7 +65,7 @@
           return;
         }
         this.symbol = this.getFilterTokenSymbol();
-        const tokenInfo = network.tokens[this.symbol];
+        const tokenInfo = GLOBAL_TOKENS[this.symbol];
         this.tokenName = tokenInfo.name;
         //const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
         // this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
