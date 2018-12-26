@@ -95,7 +95,7 @@ CREATE TABLE `kyber_trade` (
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `kyber_trade_tx_unique` (`tx`),
+  -- UNIQUE KEY `kyber_trade_tx_unique` (`tx`),
   KEY `kyber_trade_block_number_index` (`block_number`),
   KEY `kyber_trade_block_hash_index` (`block_hash`),
   KEY `kyber_trade_block_timestamp_index` (`block_timestamp`),
