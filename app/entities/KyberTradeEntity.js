@@ -11,8 +11,8 @@ module.exports = BaseEntity.extends({
   _recalculate: function () {
     const tokensByAddress = _.keyBy(_.values(global.GLOBAL_TOKEN), o => o.address.toLowerCase());
     
-    this.makerTokenSymbol = tokensByAddress[this.makerTokenAddress.toLowerCase()].symbol;
-    this.takerTokenSymbol = tokensByAddress[this.takerTokenAddress.toLowerCase()].symbol;
+    this.makerTokenSymbol = tokensByAddress && tokensByAddress[this.makerTokenAddress.toLowerCase()] ? tokensByAddress[this.makerTokenAddress.toLowerCase()].symbol : null;
+    this.takerTokenSymbol = tokensByAddress && tokensByAddress[this.takerTokenAddress.toLowerCase()] ? tokensByAddress[this.takerTokenAddress.toLowerCase()].symbol : null;
 
     if (!this.burnFees) this.burnFees = 0;
     if (!this.commission) this.commission = 0;

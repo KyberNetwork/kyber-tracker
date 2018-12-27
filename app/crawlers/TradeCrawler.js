@@ -253,28 +253,47 @@ class TradeCrawler {
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
     logger.info(`Add new trade: ${JSON.stringify(record)}`);
-    async.auto({
-      price: (next) => {
-        //getCoinPrice('ETH', record.blockTimestamp, next);
-        CMCService.getHistoricalPrice('ETH', record.blockTimestamp * 1000, next);
-      },
-      model: ['price', (ret, next) => {
-        const ethAddress = networkConfig.ETH.address.toLowerCase();
-        if (record.takerTokenAddress.toLowerCase() === ethAddress) {
-          record.volumeEth = Utils.fromWei(record.takerTokenAmount);
-        }
+    
 
-        if (record.makerTokenAddress.toLowerCase() === ethAddress) {
-          record.volumeEth = Utils.fromWei(record.makerTokenAmount);
-        }
+    const ethAddress = networkConfig.ETH.address.toLowerCase();
+    if (record.takerTokenAddress.toLowerCase() === ethAddress) {
+      record.volumeEth = Utils.fromWei(record.takerTokenAmount);
+    }
 
-        record.volumeUsd = record.volumeEth * ret.price.price_usd;
+    if (record.makerTokenAddress.toLowerCase() === ethAddress) {
+      record.volumeEth = Utils.fromWei(record.makerTokenAmount);
+    }
 
-        KyberTradeModel.add(record, {
-          isInsertIgnore: true
-        }, next);
-      }],
+    KyberTradeModel.add(record, {
+      isInsertIgnore: true
     }, callback);
+
+
+
+    // async.auto({
+    //   price: (next) => {
+    //     //getCoinPrice('ETH', record.blockTimestamp, next);
+    //     CMCService.getHistoricalPrice('ETH', record.blockTimestamp * 1000, next);
+    //   },
+    //   model: ['price', (ret, next) => {
+    //     const ethAddress = networkConfig.ETH.address.toLowerCase();
+    //     if (record.takerTokenAddress.toLowerCase() === ethAddress) {
+    //       record.volumeEth = Utils.fromWei(record.takerTokenAmount);
+    //     }
+
+    //     if (record.makerTokenAddress.toLowerCase() === ethAddress) {
+    //       record.volumeEth = Utils.fromWei(record.makerTokenAmount);
+    //     }
+
+    //     record.volumeUsd = record.volumeEth * ret.price.price_usd;
+
+    //     KyberTradeModel.add(record, {
+    //       isInsertIgnore: true
+    //     }, next);
+    //   }],
+    // }, callback);
+
+
   }
 
 };

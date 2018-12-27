@@ -27,6 +27,7 @@ const standardizeTokens = (arrayTokens) => {
       symbol: t.symbol,
       decimal: t.decimals,
       cmcIdv2: t.cmc_id,
+      cgId: t.cg_id,
       // delisted: true
       hidden: t.listing_time
     }
