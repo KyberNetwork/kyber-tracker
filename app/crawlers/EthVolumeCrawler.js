@@ -55,10 +55,10 @@ class EthVolumeCrawler {
       let timer = networkConfig.averageBlockTime;
       if (err) {
         logger.error(err);
-        logger.info(`Crawler will be restarted in 10 seconds...`);
-        timer = 10000;
+        logger.info(`Crawler will be restarted in 5 seconds...`);
+        timer = 5000;
       } else {
-        logger.info(`Already processed the newest trades. Crawler will be restarted in 1 block...`);
+        logger.info(`Already processed pack ${process.env.LIMIT_TRADES_SIZE} trades. Crawler will be restarted ...`);
       }
 
       setTimeout(() => {
@@ -88,6 +88,10 @@ class EthVolumeCrawler {
       process.nextTick(() => {
         this.processTrades(unprocessedTrades, callback);
       });
+
+      // setTimeout(() => {
+      //   this.processTrades(unprocessedTrades, callback);     
+      // }, 1000);
     });
   }
 
