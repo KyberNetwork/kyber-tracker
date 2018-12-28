@@ -7,7 +7,7 @@ const Utils                 = require('../common/Utils');
 const logger                = require('sota-core').getLogger('BurnCrawler');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const BigNumber                   = require('bignumber.js');
-
+const configFetcher               = require('./configFetcher')
 const web3                  = Utils.getWeb3Instance();
 const abiDecoder            = Utils.getKyberABIDecoder();
 
@@ -16,6 +16,12 @@ const PARALLEL_INSERT_LIMIT = 10;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
 const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 
+let tokenConfig = network.tokens
+// networkConfig.tokens
+const processTokens = (tokens) => {
+  tokensByAddress = _.keyBy(tokens, 'address');
+  tokensBySymbol = _.keyBy(tokens, 'symbol');
+}
 /**
  * Traversal through all blocks from the moment contract was deployed
  * Find and record all burned fees in local database
@@ -26,12 +32,22 @@ class BurnCrawler {
 
   start() {
     async.auto({
-      startBlockNumber: (next) => {
+      config: (next) => {
+        configFetcher.fetchConfigTokens((err, tokens) => {
+          if(err) return next(err)
+          tokenConfig = {...tokenConfig, ...tokens}
+          processTokens(tokenConfig)
+          return next(null, tokenConfig)
+        })
+      },
+      startBlockNumber: ['config', (ret, next) => {
+        global.GLOBAL_TOKEN=ret.config
+
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
         getLatestBlockNumber(next, "BurnedFeeModel", "BURNED_BLOCK_START");
-      },
+      }],
       processBlock: ['startBlockNumber', (ret, next) => {
         this.processBlocks(ret.startBlockNumber, next);
       }],

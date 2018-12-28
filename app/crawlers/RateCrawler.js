@@ -8,13 +8,14 @@ const Utils                 = require('../common/Utils');
 const Resolution            = require('../common/Resolution');
 const ExSession             = require('sota-core').load('common/ExSession');
 const logger                = require('sota-core').getLogger('RateCrawler');
+const configFetcher         = require('./configFetcher')
 
 const BigNumber             = require('bignumber.js');
 
 const web3                  = Utils.getWeb3Instance();
 const wrapperContract       = new web3.eth.Contract(wrapperABI, network.contractAddresses.wrapper);
 const abiDecoder            = Utils.getKyberABIDecoder();
-const rateTokenArrays       = Utils.getRateTokenArray();
+let tokenConfig = network.tokens
 
 let LAST_PROCESSED_BLOCK = 0;
 const REQUIRED_CONFIRMATION = 2;
@@ -22,18 +23,36 @@ const REQUIRED_CONFIRMATION = 2;
 const BLOCK_STEP_SIZE = parseInt(process.env['RATE_BLOCK_STEP_SIZE'] || network.rateBlockStepSize)
 const PARALLEL_QUERY_SIZE = 20;
 const PARALLEL_INSERT_LIMIT = 10;
+var rateTokenArrays
+
+// networkConfig.tokens
+const processTokens = (tokens) => {
+  tokensByAddress = _.keyBy(tokens, 'address');
+  tokensBySymbol = _.keyBy(tokens, 'symbol');
+}
 
 class RateCrawler {
 
   start() {
     async.auto({
-      startBlockNumber: (next) => {
+      config: (next) => {
+        configFetcher.fetchConfigTokens((err, tokens) => {
+          if(err) return next(err)
+          tokenConfig = {...tokenConfig, ...tokens}
+          processTokens(tokenConfig)
+          return next(null, tokenConfig)
+        })
+      },
+      startBlockNumber: ['config', (ret, next) => {
+        global.GLOBAL_TOKEN = ret.config;
+        rateTokenArrays = Utils.getRateTokenArray();
+
         if (LAST_PROCESSED_BLOCK) {
           return next(null, LAST_PROCESSED_BLOCK);
         }
 
         getLatestBlockNumber(next, "RateModel", "RATE_BLOCK_START");
-      },
+      }],
       processBlocks: ['startBlockNumber', (ret, next) => {
         LAST_PROCESSED_BLOCK = ret.startBlockNumber;
         this.processBlocks(next);
