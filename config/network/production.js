@@ -675,7 +675,7 @@ module.exports = {
       "symbol" : "TTC",
       "decimal": 18,
       "address": "0x9389434852b94bbad4c8afed5b7bdbc5ff0c2275",
-      "hidden": true       
+      "hidden": 1546088400000       
     },
     "INF":{
       "name": "InfinitusTokens",
