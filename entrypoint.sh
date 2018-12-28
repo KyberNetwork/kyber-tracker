@@ -7,6 +7,7 @@ readonly app=${1:-}
 declare -A scripts=([web]=server.js
 		    [burn]=burn.js
 		    [trade]=trade.js
+		    [eth-volume]=ethVolume.js
 		    [rate]=rate.js
 		    [schedule]=schedule.js)
 
@@ -14,7 +15,7 @@ usage(){
     cat <<EOF
 ./entrypoint.sh <application-name>
 
-application names: web, burn, trade, rate, schedule
+application names: web, burn, trade, eth-volume, rate, schedule
 EOF
 }
 
