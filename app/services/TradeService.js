@@ -23,7 +23,7 @@ module.exports = BaseService.extends({
 
     let params = [];
 
-    const supportedTokenList = _.filter(network.tokens, (e) => {
+    const supportedTokenList = _.filter(global.GLOBAL_TOKEN, (e) => {
       return UtilsHelper.shouldShowToken(e.symbol)
     }).map(x => x.symbol).join('\',\'')
 
@@ -126,9 +126,9 @@ module.exports = BaseService.extends({
 
         const supportedTokens = [];
 
-        Object.keys(network.tokens).forEach((symbol) => {
+        Object.keys(global.GLOBAL_TOKEN).forEach((symbol) => {
           if (UtilsHelper.shouldShowToken(symbol)) {
-            const token = network.tokens[symbol];
+            const token = global.GLOBAL_TOKEN[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
             const volumeUSD = sumProp(symbol, 'usd');
@@ -192,10 +192,9 @@ module.exports = BaseService.extends({
         };
 
         const supportedTokens = [];
-
-        Object.keys(network.tokens).forEach((symbol) => {
-          if (UtilsHelper.shouldShowToken(symbol, network.tokens, options.timeStamp)) {
-            const token = network.tokens[symbol];
+        Object.keys(global.GLOBAL_TOKEN).forEach((symbol) => {
+          if (UtilsHelper.shouldShowToken(symbol, global.GLOBAL_TOKEN, options.timeStamp)) {
+            const token = global.GLOBAL_TOKEN[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
             const volumeUSD = sumProp(symbol, 'usd');

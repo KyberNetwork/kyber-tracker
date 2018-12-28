@@ -98,6 +98,7 @@ import BigNumber from "bignumber.js";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
 import network from "../../../../../config/network";
+const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 
 export default {
   data() {
@@ -118,7 +119,7 @@ export default {
         volumeUsd: "",
         burnFees: ""
       },
-      tokens: _.keyBy(_.values(network.tokens), "symbol")
+      tokens: _.keyBy(_.values(GLOBAL_TOKENS), "symbol")
     };
   },
 

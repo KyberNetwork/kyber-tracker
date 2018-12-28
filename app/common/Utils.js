@@ -11,9 +11,8 @@ abiDecoder.addABI(burnedFeeABI);
 abiDecoder.addABI(wrapperABI);
 
 const network = require('../../config/network');
-const tokens = network.tokens;
+// const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
-const tokensByAddress = _.keyBy(_.values(tokens), o => o.address.toLowerCase());
 
 module.exports = {
 
@@ -26,11 +25,12 @@ module.exports = {
   },
 
   getTokenFromAddress: function(address) {
+    const tokensByAddress = _.keyBy(_.values(global.GLOBAL_TOKEN), o => o.address.toLowerCase());
     return tokensByAddress[address.toLowerCase()] || null;
   },
 
   shouldShowToken: function(tokenSymbol, tokenList, timeStamp) {
-    tokenList = tokenList || tokens;
+    tokenList = tokenList || global.GLOBAL_TOKEN;
     if(!tokenList[tokenSymbol].hidden) return true;
     if (typeof tokenList[tokenSymbol].hidden != 'number') return false;
     return (timeStamp || Date.now()) >= tokenList[tokenSymbol].hidden;
@@ -45,7 +45,7 @@ module.exports = {
   },
 
   getKNCTokenAddress: function() {
-    return network.tokens.KNC.address;
+    return network.KNC.address;
   },
 
   isBurnerContractAddress: function (addr) {
@@ -67,14 +67,14 @@ module.exports = {
   getRateTokenArray: function() {
     let supportedTokens = [];
     let supportedAddressArray = []
-    Object.keys(tokens).forEach(symbol => {
+    Object.keys(global.GLOBAL_TOKEN).forEach(symbol => {
       if (this.shouldShowToken(symbol) && symbol !== "ETH") {
-        supportedAddressArray.push(tokens[symbol].address);
-        supportedTokens.push(tokens[symbol]);
+        supportedAddressArray.push(global.GLOBAL_TOKEN[symbol].address);
+        supportedTokens.push(global.GLOBAL_TOKEN[symbol]);
       }
     })
 
-    const ethArray = Array(supportedAddressArray.length).fill(tokens.ETH.address);
+    const ethArray = Array(supportedAddressArray.length).fill(network.ETH.address);
 
     const srcArray = supportedAddressArray.concat(ethArray);
     const destArray = ethArray.concat(supportedAddressArray);
@@ -117,12 +117,12 @@ module.exports = {
     return false;
   },
   isNewToken (tokenSymbol) {
-      var bornMs = tokens[tokenSymbol].hidden;
+      var bornMs = global.GLOBAL_TOKEN[tokenSymbol].hidden;
       if (typeof bornMs != 'number') return false;
       return Date.now() <= bornMs + (network.newTokenDuration || 3 * 24 * 60 * 60 * 1000);
   },
   isDelisted (tokenSymbol) {
-    let delisted = tokens[tokenSymbol].delisted;
+    let delisted = global.GLOBAL_TOKEN[tokenSymbol].delisted;
     if (typeof bornMs !== 'undefined') return false;
     return delisted;
   },

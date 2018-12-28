@@ -5,7 +5,6 @@ const getLatestBlockNumber  = require('./getLatestBlockNumber');
 const getBurnedFeeFromTransaction     = require('./getBurnedFeeFromTransaction');
 const Utils                 = require('../common/Utils');
 const logger                = require('sota-core').getLogger('BurnCrawler');
-const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const BigNumber                   = require('bignumber.js');
 
@@ -102,9 +101,9 @@ class BurnCrawler {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: [networkConfig.tokens.KNC.address],
+          address: [network.KNC.address],
           topics: [
-              networkConfig.logTopics.burned
+              network.logTopics.burned
           ]
         }, (err, ret) => {
           if (err) {

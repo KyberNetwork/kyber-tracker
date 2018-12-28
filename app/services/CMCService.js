@@ -28,13 +28,13 @@ module.exports = BaseService.extends({
         return callback(`Cannot get price of invalid symbol: ${symbol}`);
       }
 
-      const tokenInfo = network.tokens[symbol];
+      const tokenInfo = global.GLOBAL_TOKEN[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token info of symbol: ${symbol}`);
       }
 
       request
-        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .get(`https://api.coinmarketcap.com/v2/ticker/${tokenInfo.cmcIdv2}/`)
         .timeout({
           response: 5000,  // Wait 5 seconds for the server to start sending,
           deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -46,7 +46,7 @@ module.exports = BaseService.extends({
           }
           let price;
           try {
-            price = parseFloat(response.body[0].price_usd);
+            price = parseFloat(response.body.data.quotes.USD.price);
           } catch (e) {
             return callback(e);
           }
@@ -127,7 +127,7 @@ module.exports = BaseService.extends({
         return callback(`Cannot get price of invalid base: ${base}`);
       }
 
-      const tokenInfo = network.tokens[symbol];
+      const tokenInfo = global.GLOBAL_TOKEN[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token info of symbol: ${symbol}`);
       }
@@ -163,7 +163,7 @@ module.exports = BaseService.extends({
   },
 
   getPriceOfAllTokens: function (callback) {
-    const tokenSymbols = _.keys(network.tokens);
+    const tokenSymbols = _.keys(global.GLOBAL_TOKEN);
     const result = {};
 
     async.forEach(tokenSymbols, (symbol, next) => {
@@ -198,13 +198,13 @@ module.exports = BaseService.extends({
         return callback(`Cannot get config of invalid symbol: ${symbol}`);
       }
 
-      const tokenInfo = network.tokens[symbol];
+      const tokenInfo = global.GLOBAL_TOKEN[symbol];
       if (!tokenInfo) {
         return callback(`Cannot find token config of symbol: ${symbol}`);
       }
 
       request
-        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .get(`https://api.coinmarketcap.com/v2/ticker/${tokenInfo.cmcIdv2}/`)
         .timeout({
           response: 5000,  // Wait 5 seconds for the server to start sending,
           deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -214,7 +214,7 @@ module.exports = BaseService.extends({
             return callback(err);
           }
 
-          const result = response.body[0];
+          const result = response.body.data;
 
           RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CMCTokenInfo.TTL);
           return callback(null, result);
@@ -222,12 +222,66 @@ module.exports = BaseService.extends({
     });
   },
 
+  getCoingeckoHistoryPrice: function(symbol, date, callback){
+    if (!symbol || typeof symbol !== 'string') {
+      return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
+    }
+
+    const tokenInfo = global.GLOBAL_TOKEN[symbol];
+    if (!tokenInfo) {
+      return callback(`Cannot find token info of symbol: ${symbol}`);
+    }
+
+    if(!tokenInfo.cgId){
+      return callback(`Token ${symbol} dont have coigecko id`);
+    }
+
+    this._getCoingeckoHistoryPrice(tokenInfo.cgId, date, callback)
+  },
+  
+  _getCoingeckoHistoryPrice: function(cgId, date, callback){
+    logger.debug(`_getHistoricalPrice ` + cgId);
+
+    request
+      .get(`https://api.coingecko.com/api/v3/coins/${cgId}/history?date=${date}`)
+      .timeout({
+        response: 5000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+
+        const result = {};
+
+        try {
+          const data = response.body;
+
+          result.current_price= data.market_data.current_price.usd
+          result.market_cap= data.market_data.market_cap.usd
+          result.total_volume= data.market_data.total_volume.usd
+          
+
+          result.price_usd = result.current_price;
+        } catch (e) {
+          // Tried more than 3 times. It's failed.
+          return callback(`Cannot get price of [${cgId}] at [${date}]`);
+        }
+
+        logger.debug(`Price of [${cgId}] at [${date}] is: $${result.price_usd}`);
+        return callback(null, result);
+      });
+
+  },
+
+
   getHistoricalPrice: function (symbol, timeInMillis, callback) {
     if (!symbol || typeof symbol !== 'string') {
       return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
     }
 
-    const tokenInfo = network.tokens[symbol];
+    const tokenInfo = global.GLOBAL_TOKEN[symbol];
     if (!tokenInfo) {
       return callback(`Cannot find token info of symbol: ${symbol}`);
     }
@@ -288,6 +342,8 @@ module.exports = BaseService.extends({
         logger.debug(`Price of [${cmcId}] at [${timeInMillis}] is: $${result.price_usd}`);
         return callback(null, result);
       });
+
+
   },
 
 });

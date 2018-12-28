@@ -1,6 +1,6 @@
 const _                       = require('lodash');
 const async                   = require('async');
-const network                 = require('../../config/network');
+// const network                 = require('../../config/network');
 const AppController           = require('./AppController');
 const Checkit                 = require('cc-checkit');
 const Utils                   = require('../common/Utils');
@@ -92,7 +92,7 @@ module.exports = AppController.extends({
       return;
     }
     if(params.query){
-      const token = network.tokens[params.query];
+      const token = global.GLOBAL_TOKEN[params.query];
       if (!token || !Utils.shouldShowToken(params.query)) {
           res.json({
               s: "error",

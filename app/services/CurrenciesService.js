@@ -12,7 +12,7 @@ const ExSession = require('sota-core').load('common/ExSession');
 const logger = require('sota-core').getLogger('CurrenciesService');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
-const tokens = network.tokens;
+// const tokens = network.tokens;
 
 module.exports = BaseService.extends({
   classname: 'CurrenciesService',
@@ -25,9 +25,9 @@ module.exports = BaseService.extends({
 
     let pairs = {}
 
-    Object.keys(tokens).forEach(token => {
+    Object.keys(global.GLOBAL_TOKEN).forEach(token => {
       if ((token.toUpperCase() !== "ETH") &&
-        !tokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
         pairs[token] = (asyncCallback) => this._getRateInfo(token, {
           //tradeAdapter: tradeAdapter,
@@ -124,16 +124,16 @@ module.exports = BaseService.extends({
   },
 
   getConvertiblePairs: function (callback) {
-    if (!tokens) return callback(null, {});
+    if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(tokens).map(token => {
-      // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
+    Object.keys(global.GLOBAL_TOKEN).map(token => {
+      // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
       if ((token.toUpperCase() !== "ETH") &&
-        !tokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
-        const cmcName = tokens[token].cmcSymbol || token;
+        const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
           fromCurrencyCode: "ETH"
@@ -154,18 +154,18 @@ module.exports = BaseService.extends({
   },
 
   _getCurrencyInfo: function (options, callback) {
-    if (!options.token || !tokens[options.token]) {
+    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
     let tokenSymbol = options.token
     let base = options.fromCurrencyCode
-    let tokenData = tokens[tokenSymbol]
-    let baseTokenData = tokens[base]
+    let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
+    let baseTokenData = global.GLOBAL_TOKEN[base]
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const CMCService = this.getService('CMCService');
@@ -245,13 +245,13 @@ module.exports = BaseService.extends({
   },
 
   getPair24hData: function (callback) {
-    if (!tokens) return callback(null, {});
+    if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(tokens).map(token => {
+    Object.keys(global.GLOBAL_TOKEN).map(token => {
       if ((token.toUpperCase() !== "ETH") &&
-        !tokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
         pairs["ETH_" + token] = (asyncCallback) => this._getPair24hData({
           tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
@@ -293,17 +293,17 @@ module.exports = BaseService.extends({
   },
 
   _getPair24hData: function (options, callback) {
-    if (!options.token || !tokens[options.token]) {
+    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
     let tokenSymbol = options.token
     let baseSymbol = options.fromCurrencyCode
-    let tokenData = tokens[tokenSymbol]
+    let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
 
     const nowInMs = Date.now();
     const nowInSeconds = Math.floor(nowInMs / 1000);
@@ -393,16 +393,16 @@ module.exports = BaseService.extends({
 
   // get 24h change by eth
   get24hChangeData: function (options, callback) {
-    if (!tokens) return callback(null, {});
+    if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(tokens).map(token => {
-      // if((token.toUpperCase() !== "ETH") && !tokens[token].hidden){
+    Object.keys(global.GLOBAL_TOKEN).map(token => {
+      // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
       if ((token.toUpperCase() !== "ETH") &&
-        !tokens[token].delisted &&
+        !global.GLOBAL_TOKEN[token].delisted &&
         helper.shouldShowToken(token)) {
-        const cmcName = tokens[token].cmcSymbol || token;
+        const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
           token: token,
@@ -479,10 +479,10 @@ module.exports = BaseService.extends({
       //add ETH_ETH
       pairs["ETH_ETH"] = {
         timestamp: Date.now(),
-        token_name: tokens["ETH"].name,
-        token_symbol: tokens["ETH"].symbol,
-        token_decimal: tokens["ETH"].decimal,
-        token_address: tokens["ETH"].address,
+        token_name: network.ETH.name,
+        token_symbol: network.ETH.symbol,
+        token_decimal: network.ETH.decimal,
+        token_address: network.ETH.address,
         rate_eth_now: 1,
         change_eth_24h: "-",
       };
@@ -499,11 +499,11 @@ module.exports = BaseService.extends({
   },
 
   _get24hChangeData: function (options, callback) {
-    if (!options.token || !tokens[options.token]) {
+    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !tokens[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
     const CACHE_KEY = CacheInfo.Change24h.key + options.token;
@@ -516,7 +516,7 @@ module.exports = BaseService.extends({
       }
       let tokenSymbol = options.token;
       // let baseSymbol = options.fromCurrencyCode
-      let tokenData = tokens[tokenSymbol]
+      let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
 
       const nowInMs = Date.now();
       const nowInSeconds = Math.floor(nowInMs / 1000);

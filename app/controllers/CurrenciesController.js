@@ -4,7 +4,7 @@ const AppController = require('./AppController');
 const Checkit = require('cc-checkit');
 const Const = require('../common/Const');
 const Utils = require('../common/Utils');
-const network = require('../../config/network');
+// const network = require('../../config/network');
 const logger = log4js.getLogger('CurrenciesController');
 const CacheInfo = require('../../config/cache/info');
 

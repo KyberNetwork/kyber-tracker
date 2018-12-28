@@ -16,6 +16,11 @@
       "watch"             : false
     },
     {
+      "name"              : "ethVolume",
+      "script"            : "ethVolume.js",
+      "watch"             : false
+    },
+    {
       "name"              : "rate",
       "script"            : "rate.js",
       "watch"             : false

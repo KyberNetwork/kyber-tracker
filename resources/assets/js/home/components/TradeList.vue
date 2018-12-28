@@ -22,15 +22,15 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
-import network from '../../../../../config/network';
+// import network from '../../../../../config/network';
 import Chart from 'chart.js';
-
+const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 export default {
 
   data() {
     return {
       pageSize: 10,
-      tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+      tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol'),
       query: this.$route.query,
     };
   },

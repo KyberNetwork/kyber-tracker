@@ -17,159 +17,195 @@ module.exports = {
       "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
       "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
     },
+    "ETH": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "decimal": 18,
+      "cmcId": "1027"
+    },
+    "KNC": {
+      "name": "Kyber Network",
+      "symbol": "KNC",
+      "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
+      "decimal": 18,
+      "cmcId": "1982",
+    },
+    
     "tokens": {
       "ETH": {
         "name": "Ethereum",
         "symbol": "ETH",
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
-        "cmcId": "ethereum"
+        "cmcId": "1027",
+        "hidden": true
       },
       "KNC": {
         "name": "Kyber Network",
         "symbol": "KNC",
         "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
         "decimal": 18,
-        "cmcId": "kyber-network",
+        "cmcId": "1982",
+        "hidden": true
       },
       "OMG": {
         "name": "OmiseGO",
         "symbol": "OMG",
         "address": "0xd26114cd6ee289accf82350c8d8487fedb8a0c07",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "EOS": {
         "name": "EOS",
         "symbol": "EOS",
         "address": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
         "decimal": 18,
-        "delisted": true
+        "delisted": true,
       },
       "SNT": {
         "name": "Status Network",
         "address": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
         "symbol": "SNT",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "ELF": {
         "name": "AELF",
         "address": "0xbf2179859fc6d5bee9bf9158632dc51678a4100e",
         "symbol": "ELF",
         "icon": "aelf.svg",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "POWR": {
         "name": "Power Ledger",
         "address": "0x595832f8fc6bf59c85c527fec3740a1b7a361269",
         "symbol": "POWR",
         "icon": "pwr.svg",
-        "decimal": 6
+        "decimal": 6,
+        "hidden": true
       },
       "MANA": {
         "name": "Decentraland",
         "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
         "symbol": "MANA",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "BAT": {
         "name": "Basic Attention Token",
         "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
         "symbol": "BAT",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "REQ": {
         "name": "Request",
         "address": "0x8f8221afbb33998d8584a2b05749ba73c37a938a",
         "symbol": "REQ",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "GTO": {
         "name": "GIFTO",
         "address": "0xc5bbae50781be1669306b9e001eff57a2957b09d",
         "symbol": "GTO",
         "icon": "gifto.svg",
-        "decimal": 5
+        "decimal": 5,
+        "hidden": true
       },
       "RDN": {
         "name": "Raiden Network",
         "address": "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6",
         "symbol": "RDN",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "APPC": {
         "name": "AppCoins",
         "address": "0x1a7a8bd9106f2b8d977e08582dc7d24c723ab0db",
         "symbol": "APPC",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "ENG": {
         "name": "Enigma",
         "address": "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4",
         "symbol": "ENG",
-        "decimal": 8
+        "decimal": 8,
+        "hidden": true
       },
       "SALT": {
         "name": "Salt",
         "address": "0x4156d3342d5c385a87d264f90653733592000581",
         "symbol": "SALT",
-        "decimal": 8
+        "decimal": 8,
+        "hidden": true
       },
       "BQX": {
         "name" : "ETHOS",
         "address": "0x5af2be193a6abca9c8817001f45744777db30756",
         "symbol": "BQX",
         "cmcSymbol": "ETHOS",
-        "decimal": 8
+        "decimal": 8,
+        "hidden": true
       },
       "ADX": {
         "name": "AdEx",
         "address": "0x4470BB87d77b963A013DB939BE332f927f2b992e",
         "decimal": 4,
-        "symbol": "ADX"
+        "symbol": "ADX",
+        "hidden": true
       },
       "AST": {
         "name": "AirSwap",
         "decimal": 4,
         "address": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
-        "symbol": "AST"
+        "symbol": "AST",
+        "hidden": true
       },
       "RCN": {
         "name": "Ripio Credit Network",
         "decimal": 18,
         "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-        "symbol": "RCN"
+        "symbol": "RCN",
+        "hidden": true
       },
       "ZIL": {
         "name": "Zilliqa",
         "decimal": 12,
         "address": "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
-        "symbol": "ZIL"
+        "symbol": "ZIL",
+        "hidden": true
       },
       "LINK": {
         "name": "Chain Link",
         "decimal": 18,
         "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
-        "symbol": "LINK"
+        "symbol": "LINK",
+        "hidden": true
       },
       "DAI": {
         "name": "Dai Stablecoin",
         "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
         "symbol": "DAI",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "AION": {
         "name": "AION",
         "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
         "symbol": "AION",
         "decimal": 8,
-        "delisted": true
+        "delisted": true,
       },
       "SUB": {
         "name": "Substratum",
         "address": "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a",
         "symbol": "SUB",
         "decimal": 2,
-        "hidden": 1531486800000
+        "hidden": true
       },
       "STORJ": {
         "name": "Storj",
@@ -224,14 +260,16 @@ module.exports = {
         "name": "EnjinCoin",
         "address": "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c",
         "symbol": "ENJ",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "DGX": {
         "name": "Digix Gold",
         "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
         "symbol": "DGX",
         "decimal": 9,
-        "icon": "dgx.png"
+        "icon": "dgx.png",
+        "hidden": true
       },
       "DGD": {
         "name": "DigixDAO",
@@ -251,7 +289,8 @@ module.exports = {
         "name": "Olympus Labs",
         "address": "0x263c618480dbe35c300d8d5ecda19bbb986acaed",
         "symbol": "MOT",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "ICX": {
         "name": "ICON",
@@ -264,19 +303,22 @@ module.exports = {
         "name": "ElectrifyAsia",
         "address": "0xd49ff13661451313ca1553fd6954bd1d9b6e02b9",
         "symbol": "ELEC",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "IOST": {
         "name": "IOStoken",
         "address": "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab",
         "symbol": "IOST",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "STORM": {
         "name": "Storm",
         "address": "0xd0a4b8946cb52f0661273bfbc6fd0e0c75fc6433",
         "symbol": "STORM",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
 
       "WAX": {
@@ -284,13 +326,14 @@ module.exports = {
         "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
         "symbol": "WAX",
         "decimal": 8,
-        "hidden": 1531486800000
+        "hidden": true
       },
       "ABT": {
         "name": "ArcBlock",
         "address": "0xb98d4c97425d9908e66e53a6fdf673acca0be986",
         "symbol": "ABT",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "GVT": {
         "name": "Genesis Vision",
@@ -334,7 +377,8 @@ module.exports = {
         "name": "Aeternity",
         "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
         "symbol": "AE",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "PPT": {
         "name": "Populous",
@@ -347,13 +391,15 @@ module.exports = {
         "name": "Civic",
         "address": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
         "symbol": "CVC",
-        "decimal": 8
+        "decimal": 8,
+        "hidden": true
       },
       "BLZ": {
         "name": "Bluzelle",
         "address": "0x5732046a883704404f284ce41ffadd5b007fd668",
         "symbol": "BLZ",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "REP": {
         "name": "Augur",
@@ -381,32 +427,36 @@ module.exports = {
         "address": "0x3136ef851592acf49ca4c825131e364170fa32b3",
         "symbol": "COFI",
         "decimal": 18,
-        "hidden": 1533214800000
+        "hidden": true
       },
       "BBO": {
         "name": "Bigbom",
         "address": "0x84f7c44b6fed1080f647e354d552595be2cc602f",
         "symbol": "BBO",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "POLY": {
         "name": "Polymath",
         "address": "0x9992ec3cf6a55b00978cddf2b27bc6882d88d1ec",
         "symbol": "POLY",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
       "LBA": {
         "name": "Cred",
         "address": "0xfe5f141bf94fe84bc28ded0ab966c16b17490657",
         "symbol": "LBA",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
 
       "EDU": {
         "name": "EduCoin",
         "address": "0xf263292e14d9d8ecd55b58dad1f1df825a874b7c",
         "symbol": "EDU",
-        "decimal": 18
+        "decimal": 18,
+        "hidden": true
       },
 
 
@@ -415,42 +465,42 @@ module.exports = {
         "address": "0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195",
         "symbol": "POE",
         "decimal": 8,
-        "hidden": 1531486800000
+        "hidden": true
       },
       "PAY": {
         "name": "TenX",
         "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280",
         "symbol": "PAY",
         "decimal": 18,
-        "hidden": 1531486800000
+        "hidden": true
       },
       "CHAT": {
         "name": "Chatcoin",
         "address": "0x442bc47357919446eabc18c7211e57a13d983469",
         "symbol": "CHAT",
         "decimal": 18,
-        "delisted": true
+        "delisted": true,
       },
       "DTA": {
         "name": "Data",
         "address": "0x69b148395ce0015c13e36bffbad63f49ef874e03",
         "symbol": "DTA",
         "decimal": 18,
-        "hidden": 1531486800000
+        "hidden": true
       },
       "BNT": {
         "name": "Bancor",
         "address": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
         "symbol": "BNT",
         "decimal": 18,
-        "hidden": 1531486800000
+        "hidden": true
       },
       "TUSD": {
         "name": "TrueUSD",
         "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
         "symbol": "TUSD",
         "decimal": 18,
-        "hidden": 1531486800000
+        "hidden": true
       },
       "TOMO": {
         "name": "Tomocoin",
@@ -474,28 +524,28 @@ module.exports = {
         "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
         "symbol": "LEND",
         "decimal": 18,
-        "hidden": 1531797717126
+        "hidden": true
       },
       "WINGS": {
         "name": "Wings",
         "address": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
         "symbol": "WINGS",
         "decimal": 18,
-        "hidden": 1531797717126
+        "hidden": true
       },
       "MTL": {
         "name": "Metal",
         "address": "0xF433089366899D83a9f26A773D59ec7eCF30355e",
         "symbol": "MTL",
         "decimal": 8,
-        "hidden": 1531797717126
+        "hidden": true
       },
       "WABI": {
         "name": "WaBi",
         "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
         "symbol": "WABI",
         "decimal": 18,
-        "hidden": 1531797717126
+        "hidden": true
       },
       "NULS": {
         "name": "Nuls",
@@ -509,7 +559,7 @@ module.exports = {
         "address": "0x865ec58b06bf6305b886793aa20a2da31d034e68",
         "symbol": "MOC",
         "decimal": 18,
-        "hidden": 1534417200000
+        "hidden": true
       },
       "BITX": {
         "name": "BitScreenerToken",
@@ -523,21 +573,21 @@ module.exports = {
         "symbol" : "BNB",
         "decimal": 18,
         "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-        "hidden": 1537590437000
+        "hidden": true
       },
       "REP": {
         "name": "Augur",
         "symbol" : "REP",
         "decimal": 18,
         "address": "0x1985365e9f78359a9b6ad760e32412f4a445e862",
-        "hidden": 1537590437000
+        "hidden": true
       },
       "ZRX": {
         "name": "0x",
         "symbol" : "ZRX",
         "decimal": 18,
         "address": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-        "hidden": 1537590437000
+        "hidden": true
       },
 
       "WETH": {
@@ -545,7 +595,7 @@ module.exports = {
         "symbol" : "WETH",
         "decimal": 18,
         "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-        "hidden": 1536846367000,
+        "hidden": true
       },
 
       "KCC":{
@@ -561,7 +611,7 @@ module.exports = {
         "symbol" : "MAS",
         "decimal": 18,
         "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",   
-        "hidden": 1537963200000           
+        "hidden": true          
       },
       "DAT":{
         "name": "Datum",
