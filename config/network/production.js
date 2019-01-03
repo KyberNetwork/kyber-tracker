@@ -399,7 +399,8 @@ module.exports = {
       "name": "EduCoin",
       "address": "0xf263292e14d9d8ecd55b58dad1f1df825a874b7c",
       "symbol": "EDU",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
 
     "POE": {
