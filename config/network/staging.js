@@ -736,6 +736,7 @@ module.exports = {
       }
     },
     "averageBlockTime": 15000,
+    "averageCGQuery": 13000,
     "startBlockNumber": 5700000,
     "startBlockNumberV2": 5899403,
 

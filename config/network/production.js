@@ -742,6 +742,7 @@ module.exports = {
 
   "preburntAmount": 48.61873337,
   "averageBlockTime": 15000,
+  "averageCGQuery": 13000,
   "startBlockNumber": 5060595,
   "startBlockNumberV2": 5926056,
   "rateBlockStepSize": 40,

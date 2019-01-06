@@ -52,11 +52,11 @@ class EthVolumeCrawler {
       }]
     }, (err, ret) => {
       
-      let timer = networkConfig.averageBlockTime;
+      let timer = networkConfig.averageCGQuery;
       if (err) {
         logger.error(err);
-        logger.info(`Crawler will be restarted in 5 seconds...`);
-        timer = 5000;
+        logger.info(`Crawler will be restarted in 13 seconds...`);
+        timer = 13000;
       } else {
         logger.info(`Already processed pack ${process.env.LIMIT_TRADES_SIZE} trades. Crawler will be restarted ...`);
       }
