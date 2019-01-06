@@ -238,13 +238,15 @@ class TradeCrawler {
         const ethAddress = networkConfig.tokens.ETH.address.toLowerCase();
         if (record.takerTokenAddress.toLowerCase() === ethAddress) {
           record.volumeEth = Utils.fromWei(record.takerTokenAmount);
-          record.volumeUsd = record.volumeEth * ret.price.price_usd;
         }
 
-        if (record.makerTokenAddress.toLowerCase() === ethAddress) {
+        else if (record.makerTokenAddress.toLowerCase() === ethAddress) {
           record.volumeEth = Utils.fromWei(record.makerTokenAmount);
-          record.volumeUsd = record.volumeEth * ret.price.price_usd;
+        } else {
+          record.volumeEth = 0;
         }
+
+        record.volumeUsd = record.volumeEth * ret.price.price_usd;
 
         
 
