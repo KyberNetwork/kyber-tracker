@@ -99,6 +99,7 @@ class TradeCrawler {
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
           address: networkConfig.contractAddresses.networks
+            .concat(networkConfig.contractAddresses.internal)
             .concat(networkConfig.contractAddresses.feeBurners)
             .concat(networkConfig.contractAddresses.workers),
           topics: [
@@ -148,7 +149,6 @@ class TradeCrawler {
     const exSession = new ExSession();
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
-
     _.each(logs, (log) => {
       const txid = log.transactionHash;
       if (!records[txid]) {
@@ -240,8 +240,14 @@ class TradeCrawler {
           record.volumeEth = Utils.fromWei(record.takerTokenAmount);
         } else if (record.makerTokenAddress.toLowerCase() === ethAddress) {
           record.volumeEth = Utils.fromWei(record.makerTokenAmount);
-        } else {
-          record.volumeEth = 0;
+        } 
+        // else {
+        //   logger.info("************* dont have eth volume", record)
+        //   record.volumeEth = 0;
+        // }
+
+        if(!record.volumeEth){
+          logger.info("************* dont have eth volume", record)
         }
 
         record.volumeUsd = record.volumeEth * ret.price.price_usd;
