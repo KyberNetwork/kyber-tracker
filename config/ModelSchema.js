@@ -40,6 +40,7 @@
      commission_receive_address: { type: 'string', length: 765 },
      burn_fees: { type: 'string', length: 765 },
      burn_reserve_address: { type: 'string', length: 765 },
+     reserves: { type: 'string', length: 765 },
      minute_seq: { type: 'number', length: 11 },
      hour_seq: { type: 'number', length: 11 },
      day_seq: { type: 'number', length: 11 },

@@ -125,7 +125,8 @@ class TradeCrawler {
               networkConfig.logTopics.exchange,
               networkConfig.logTopics.feeToWallet,
               networkConfig.logTopics.burnFee,
-              networkConfig.logTopics.etherReceival
+              networkConfig.logTopics.etherReceival,
+              networkConfig.logTopics.kyberTrade
             ]
           ]
         }, (err, ret) => {
@@ -211,6 +212,8 @@ class TradeCrawler {
           record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
           break;
         case networkConfig.logTopics.exchange:
+          if(log.blockNumber >= networkConfig.startPermissionlessReserveBlock) break;
+
           record.makerAddress = log.address;
           record.takerAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
           record.takerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
@@ -223,6 +226,33 @@ class TradeCrawler {
           record.blockNumber= log.blockNumber,
           record.blockHash= log.blockHash,
           record.blockTimestamp= timestamp,
+          record.tx= log.transactionHash
+
+          records.push(record)
+          record = {}
+          break;
+        case networkConfig.logTopics.kyberTrade:
+          if(log.blockNumber < networkConfig.startPermissionlessReserveBlock) break;
+
+          record.takerAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
+
+          record.takerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          record.makerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          
+          record.takerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
+          
+          record.makerAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+          record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(160, 192))));
+          
+          const reserve1 = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
+          const reserve2 = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
+          record.reserves = [reserve1, reserve2].join(';')
+          
+          record.uniqueTag = log.transactionHash + "_" + logIndex
+          record.blockNumber= log.blockNumber
+          record.blockHash= log.blockHash
+          record.blockTimestamp= timestamp
           record.tx= log.transactionHash
 
           records.push(record)
