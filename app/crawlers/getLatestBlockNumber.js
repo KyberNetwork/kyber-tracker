@@ -4,7 +4,7 @@ const network         = require('../../config/network');
 const ExSession       = require('sota-core').load('common/ExSession');
 const logger          = require('sota-core').getLogger('getLatestBlockNumber');
 
-module.exports = (callback, modelName = 'KyberTradeModel', startName = "BLOCK_START") => {
+module.exports = (callback, modelName = 'KyberTradeModel', startName = "TRADE_BLOCK_START") => {
   const startBlock = process.env[startName];
   if(startBlock){
     logger.info(`Crawler start with custom block number ${startName}: ${startBlock}`);

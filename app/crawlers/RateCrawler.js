@@ -3,6 +3,7 @@ const async                 = require('async');
 const network               = require('../../config/network');
 const kyberABI              = require('../../config/abi/kyber');
 const wrapperABI            = require('../../config/abi/wrapper');
+const networkABI            = require('../../config/abi/network')
 const getLatestBlockNumber  = require('./getLatestBlockNumber');
 const Utils                 = require('../common/Utils');
 const Resolution            = require('../common/Resolution');
@@ -30,6 +31,9 @@ const processTokens = (tokens) => {
   tokensByAddress = _.keyBy(tokens, 'address');
   tokensBySymbol = _.keyBy(tokens, 'symbol');
 }
+
+const networkAddr = network.contractAddresses.networks[network.contractAddresses.networks.length - 1 ];
+const networkContract = new web3.eth.Contract(networkABI, networkAddr);
 
 class RateCrawler {
 
@@ -85,8 +89,7 @@ class RateCrawler {
         }
       },
       process: ['latestOnchainBlock', (ret, next) => {
-        const nextBlocks = this._breakPoints(LAST_PROCESSED_BLOCK + BLOCK_STEP_SIZE, ret.latestOnchainBlock);
-        this._processBlocksOnce(nextBlocks, next);
+        this._processBlocksOnce(ret.latestOnchainBlock, next);
       }]
     }, (err, ret) => {
       if (err) {
@@ -102,7 +105,10 @@ class RateCrawler {
     });
   }
 
-  _processBlocksOnce (blocks, callback) {
+  _processBlocksOnce (latestOnchainBlock, callback) {
+    const blocks = this._breakPoints(LAST_PROCESSED_BLOCK + BLOCK_STEP_SIZE, latestOnchainBlock);
+
+
     if (!blocks.last()) {
       logger.info("Reached last block already.");
       return callback(null, null);
@@ -113,6 +119,7 @@ class RateCrawler {
     async.auto ({
       rates: (next) => {
         Promise.all(blocks.promises).then((rates) => {
+            // logger.info("rates=================", rates)
             next(null, rates);
           }, (err) => {
             logger.error(err)
@@ -187,15 +194,49 @@ class RateCrawler {
   }
 
   _getRatesFromBlockPromise(blockNo) {
-    let networkAddr = network.contractAddresses.networks[0];
-    if (network.contractAddresses.networks.length > 1 && blockNo >= network.startBlockNumberV2) {
-      networkAddr = network.contractAddresses.networks[1];
-    }
-    return wrapperContract.methods.getExpectedRates(
-      networkAddr,
-      rateTokenArrays.srcArray,
-      rateTokenArrays.destArray,
-      rateTokenArrays.qtyArray).call(undefined, blockNo);
+    // if (network.contractAddresses.networks.length > 1 && blockNo >= network.startBlockNumberV2) {
+    //   networkAddr = network.contractAddresses.networks[1];
+    // }
+
+    return new Promise((resolve, reject) => {
+      return wrapperContract.methods.getExpectedRates(
+        networkAddr,
+        rateTokenArrays.srcArray,
+        rateTokenArrays.destArray,
+        rateTokenArrays.qtyArray
+      )
+      .call(undefined, blockNo)
+      .then(result => {
+        if(!result || !result[0] || !result[0].length || !result[1] || !result[1].length){
+          return Promise.all(rateTokenArrays.qtyArray.map((qty, i) => {
+            return new Promise((_resolve, _reject) => {
+              networkContract.methods.getExpectedRate(
+                rateTokenArrays.srcArray[i],
+                rateTokenArrays.destArray[i],
+                qty
+              )
+              .call(undefined, blockNo)
+              .then(_result => _resolve(_result))
+              .catch(_err => _resolve({
+                '0': '0',
+                '1': '0',
+                'expectedRate': '0',
+                'slippageRate': '0'
+              }))
+            })
+          }))
+          .then(results => {
+            return resolve(this._arrayRate(results))
+          })
+          .catch(errors => {
+            return reject(errors)
+          })
+        } else {
+          return resolve(result)
+        }
+      })
+    });
+    
 
   }
 
@@ -224,6 +265,23 @@ class RateCrawler {
 
   }
 
+  _arrayRate(rates){
+    const returnObj = {
+      '0': [],
+      '1': [],
+      'expectedRate': [],
+      'slippageRate': []
+    }
+    rates.map(r => {
+      returnObj['0'].push(r['0'])
+      returnObj['1'].push(r['1'])
+      returnObj['expectedRate'].push(r['expectedRate'])
+      returnObj['slippageRate'].push(r['slippageRate'])
+    })
+
+    return returnObj
+  }
+
   _sellRate(rate) {
     if (!rate || rate == '0') return 0;
     return BigNumber(rate).div(BigNumber(10).pow(18)).toNumber();
@@ -246,7 +304,6 @@ class RateCrawler {
   }
 
   _processRateData(rates, blockNo, blockTimestamp) {
-
     if (!rates || !rates.expectedRate || !rates.expectedRate.length) {
       return [];
     }

@@ -117,6 +117,7 @@ class TradeCrawler {
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
           address: networkConfig.contractAddresses.networks
+            .concat(networkConfig.contractAddresses.internal)
             .concat(networkConfig.contractAddresses.feeBurners)
             .concat(networkConfig.contractAddresses.workers),
           topics: [
