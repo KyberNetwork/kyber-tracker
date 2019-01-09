@@ -8,9 +8,17 @@ const request   = require('superagent');
 const Utils     = require('../common/Utils');
 const logger    = require('sota-core').getLogger('leveldbCache');
 const web3      = Utils.getWeb3Instance();
+
+const internalAbi = require('../../config/abi/internal');
+const reserveAbi = require('../../config/abi/reserve');
+const permisionlessReserveAbi = require('../../config/abi/permissionless_reserve');
+const erc20Abi = require('../../config/abi/erc20');
+
 // TODO: refactor this mess
 const db = level(path.join(__dirname, '../../db/level'));
 const LOCAL_CMC_DATA = {};
+
+const internalContract = new web3.eth.Contract(internalAbi, network.contractAddresses.internal)
 
 function getBlockTimestamp (blockNumber, callback) {
   const key = getBlockTimestampKey(blockNumber);
@@ -195,5 +203,106 @@ function searchPriceInLocalData (tokenInfo, timeInMillis, prices, callback) {
   }
 }
 
+
+function getAllReserve(callback){
+  return internalContract.methods.getReserves().call(callback)
+}
+
+function getReserveType (reserveAddr, callback){
+  return internalContract.methods.reserveType(reserveAddr).call(callback)
+}
+
+function getReserveTokensList (reserveAddr, callback){
+  const reserveContract = new web3.eth.Contract(reserveAbi, reserveAddr)
+
+
+  const dataConversationRate = reserveContract.methods.conversionRatesContract().encodeABI()
+  web3.eth.call({
+    to: reserveAddr,
+    data: dataConversationRate
+  }, (err, result) => {
+    if(err || !result) return callback(err || "no conversion rate contract addr")
+    if(result == '0x') return callback(null, [])
+
+    const conversionRate = web3.eth.abi.decodeParameters(['address'], result)
+
+    // console.log("----------conversionrate: ", reserveAddr, conversionRate[0])
+
+    const conversionRatesContract = new web3.eth.Contract(CONSTANTS.ABIS.CONVERSION_RATE, conversionRate[0])
+    const tokensListData = conversionRatesContract.methods.getListedTokens().encodeABI()
+
+    web3.eth.call({
+      to: conversionRate[0],
+      data: tokensListData
+    }, (errTokens, resultTokens) => {
+      if(errTokens || !resultTokens) return callback(err || "no tokens for conversion rate contract addr " + conversionRate[0])
+      const tokens = web3.eth.abi.decodeParameters(['address[]'], resultTokens)
+
+      return callback(null, tokens[0])
+
+    })
+
+  })
+  // reserveContract.methods.conversionRatesContract().call((err, conversionRateAddr) => {
+  //   if(err || !conversionRateAddr) return callback(err || "no conversion rate contract addr")
+
+  //   const conversionRatesContract = new web3.eth.Contract(CONSTANTS.ABIS.CONVERSION_RATE, conversionRateAddr)
+  //   return conversionRatesContract.methods.getListedTokens().call((err, tokens) => {
+  //     if(err || !tokens ) {
+  //       console.log("$$$$$$$$$$$$$$$$ error with reserve " + reserveAddr)
+  //       return callback(err || `cannot get tokens of reserve ${reserveAddr}`) 
+  //     }
+  //     return callback(null, tokens)
+  //   })
+  // })
+}
+
+function getPermissionlessTokensList (reserveAddr, callback){
+  const permisionLessContract = new web3.eth.Contract(permisionlessReserveAbi, reserveAddr)
+
+  var data = permisionLessContract.methods.contracts().encodeABI()
+
+
+  web3.eth.call({
+    to: reserveAddr,
+    data: data
+  }, (err, result) => {
+    if(err || !result) return callback(err || `cannot get token of permissionless reserve ${reserveAddr}`) 
+
+
+    var decoded = web3.eth.abi.decodeParameters(['address', 'address', 'address', 'address', 'address', 'address'], result)
+    return callback(err, [decoded[1]])
+  })
+
+
+  // return permisionLessContract.methods.contracts().call((err, result)=> {
+  //   console.log("$$$$$$$$$$$-----$$$$$ error with reserve " + reserveAddr)
+  //   if(err || !result || !result.token) return callback(err || `cannot get token of permissionless reserve ${reserveAddr}`) 
+  //   return callback(err, [result.token])
+  // })
+}
+
+function getTokenInfo (tokenAddr, type, callback){
+  const tokenContract = new web3.eth.Contract(erc20Abi, tokenAddr)
+  async.parallelLimit({
+    name: tokenContract.methods.name().call,
+    decimal: tokenContract.methods.name().call,
+    address: asyncCb => asyncCb(null, tokenAddr),
+    symbol: tokenContract.methods.symbol().call,
+    type: asyncCb => asyncCb(null, type)
+  }, 10, callback)
+}
+
+
+
 module.exports.getBlockTimestamp = getBlockTimestamp;
 module.exports.getCoinPrice = getCoinPrice;
+
+module.exports.getAllReserve = getAllReserve;
+module.exports.getReserveType = getReserveType;
+
+module.exports.getReserveTokensList = getReserveTokensList
+module.exports.getPermissionlessTokensList = getPermissionlessTokensList
+
+module.exports.getTokenInfo = getTokenInfo
+
