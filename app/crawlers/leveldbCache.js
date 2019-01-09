@@ -293,7 +293,10 @@ function getTokenInfo (tokenAddr, type, callback){
     type: asyncCb => asyncCb(null, type)
   }, (err, info) => {
     // console.log("-----------", err, info)
-    if(err) return callback(null, {})
+    if(err) return callback(null, {
+      address: tokenAddr,
+      type: type
+    })
     return callback(null, info)
   })
 }
