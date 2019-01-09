@@ -39,7 +39,6 @@ class TradeCrawler {
         })
       },
       latestProcessedBlock: ['config', (ret, next) => {
-        logger.info("***************** config: ", ret.config)
         global.GLOBAL_TOKEN=ret.config
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);

@@ -285,13 +285,17 @@ function getPermissionlessTokensList (reserveAddr, callback){
 
 function getTokenInfo (tokenAddr, type, callback){
   const tokenContract = new web3.eth.Contract(erc20Abi, tokenAddr)
-  async.parallelLimit({
+  async.parallel({
     name: tokenContract.methods.name().call,
     decimal: tokenContract.methods.name().call,
     address: asyncCb => asyncCb(null, tokenAddr),
     symbol: tokenContract.methods.symbol().call,
     type: asyncCb => asyncCb(null, type)
-  }, 10, callback)
+  }, (err, info) => {
+    // console.log("-----------", err, info)
+    if(err) return callback(null, {})
+    return callback(null, info)
+  })
 }
 
 

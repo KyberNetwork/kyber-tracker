@@ -103,14 +103,19 @@ const getTokensFromNetwork = callback => {
             return 
           }
           const allTokens = _.flatten(tokensAddr)
-  
-          async.parallelLimit(
-            allTokens.map(t => next => getTokenInfo(t.tokenAddr, t.type, (err, info) => next(err, {...t, info}))),
-            10,
+          async.parallel(
+            allTokens.map(t => {
+              return (next) => {
+                // console.log("_________________", t.tokenAddr, t.type)
+                getTokenInfo(t.tokenAddr, t.type, (err, info) => {
+                  return next(err, {...t, info})
+                });
+              }
+            }),
             (err, allTokenWithInfo) => {
               ////////////// 
               const allTokenObj = {}
-  
+              // console.log("*************allTokenWithInfo: ", allTokenWithInfo)
               allTokenWithInfo.map(t => {
                 const tokenInfo = t.info
                 if(! allTokenObj[tokenInfo.symbol]){
