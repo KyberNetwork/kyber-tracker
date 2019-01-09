@@ -1,6 +1,8 @@
 require('dotenv').config();
 const axios = require('axios');
 const network = require('../../config/network');
+const async     = require('async');
+const _         = require('lodash');
 const apisEndpint = process.env['APIS_ENDPOINT'] + "/internal/currencies"
 
 const getAllReserve                     = require('./leveldbCache').getAllReserve;
@@ -128,17 +130,5 @@ const getTokensFromNetwork = callback => {
 }
 
 module.exports.fetchConfigTokens = (callback) => {
-  try {
-    fetchData({
-      url: apisEndpint,
-      method: "get"
-    }).then(currencies => {
-      const tokens = standardizeTokens(currencies)
-      return callback(null, tokens)
-    })
-    .catch(err => callback(err));
-  } catch (error) {
-    return callback(error)
-  }
-  
+  return getTokensFromNetwork(callback)
 }

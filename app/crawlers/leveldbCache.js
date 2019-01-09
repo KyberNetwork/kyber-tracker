@@ -4,7 +4,7 @@ const async     = require('async');
 const level     = require('level');
 const path      = require('path');
 const request   = require('superagent');
-// const tokens    = require('../../config/network').tokens;
+const network    = require('../../config/network')
 const Utils     = require('../common/Utils');
 const logger    = require('sota-core').getLogger('leveldbCache');
 const web3      = Utils.getWeb3Instance();
@@ -13,6 +13,7 @@ const internalAbi = require('../../config/abi/internal');
 const reserveAbi = require('../../config/abi/reserve');
 const permisionlessReserveAbi = require('../../config/abi/permissionless_reserve');
 const erc20Abi = require('../../config/abi/erc20');
+const conversionRateAbi = require('../../config/abi/conversion_rate');
 
 // TODO: refactor this mess
 const db = level(path.join(__dirname, '../../db/level'));
@@ -228,7 +229,7 @@ function getReserveTokensList (reserveAddr, callback){
 
     // console.log("----------conversionrate: ", reserveAddr, conversionRate[0])
 
-    const conversionRatesContract = new web3.eth.Contract(CONSTANTS.ABIS.CONVERSION_RATE, conversionRate[0])
+    const conversionRatesContract = new web3.eth.Contract(conversionRateAbi, conversionRate[0])
     const tokensListData = conversionRatesContract.methods.getListedTokens().encodeABI()
 
     web3.eth.call({
