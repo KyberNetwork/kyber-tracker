@@ -21,10 +21,10 @@ let tokenConfig = networkConfig.tokens
 let tokensByAddress, tokensBySymbol
 
 // networkConfig.tokens
-const processTokens = (tokens) => {
-  tokensByAddress = _.keyBy(tokens, 'address');
-  tokensBySymbol = _.keyBy(tokens, 'symbol');
-}
+const processTokens = (tokens) => ({
+  tokensByAddress: _.keyBy(tokens, 'address'),
+  tokensBySymbol: _.keyBy(tokens, 'symbol')
+})
 
 class TradeCrawler {
 
@@ -33,14 +33,17 @@ class TradeCrawler {
       config: (next) => {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
+          
           tokenConfig = {...tokenConfig, ...tokens}
-          processTokens(tokenConfig)
-          return next(null, tokenConfig)
+          // processTokens(tokenConfig)
+          return next(null, processTokens(tokenConfig))
         })
       },
       latestProcessedBlock: ['config', (ret, next) => {
-        logger.info("***************** config: ", ret.config)
-        global.GLOBAL_TOKEN=ret.config
+        global.GLOBAL_TOKEN=ret.config.tokensBySymbol
+        global.TOKENS_BY_ADDR=ret.config.tokensByAddress
+
+        logger.info("********^^^^^^^^^^^", global.TOKENS_BY_ADDR)
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
@@ -290,7 +293,8 @@ class TradeCrawler {
       record.volumeEth = Utils.fromWei(record.takerTokenAmount);
       record.sourceOfficial = 1
     } else {
-      sourceReserve
+      // global.GLOBAL_TOKEN[]
+      // sourceReserve
     }
 
     if (record.makerTokenAddress.toLowerCase() === ethAddress) {

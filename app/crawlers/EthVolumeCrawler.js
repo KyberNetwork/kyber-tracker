@@ -22,10 +22,10 @@ let tokenConfig = networkConfig.tokens
 let tokensByAddress, tokensBySymbol
 
 // networkConfig.tokens
-const processTokens = (tokens) => {
-  tokensByAddress = _.keyBy(tokens, 'address');
-  tokensBySymbol = _.keyBy(tokens, 'symbol');
-}
+const processTokens = (tokens) => ({
+  tokensByAddress: _.keyBy(tokens, 'address'),
+  tokensBySymbol: _.keyBy(tokens, 'symbol')
+})
 
 class EthVolumeCrawler {
 
@@ -35,12 +35,12 @@ class EthVolumeCrawler {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
           tokenConfig = {...tokenConfig, ...tokens}
-          processTokens(tokenConfig)
-          return next(null, tokenConfig)
+          // processTokens(tokenConfig)
+          return next(null, processTokens(tokenConfig))
         })
       },
       unprocessedTrades: ['config', (ret, next) => {
-        global.GLOBAL_TOKEN=ret.config
+        global.GLOBAL_TOKEN=ret.config.tokensBySymbol
         if (UNPROCESSED_TRADES.length > 0) {
           return next(null, UNPROCESSED_TRADES);
         }

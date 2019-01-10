@@ -3,7 +3,8 @@ module.exports = {
     "web3Provider":"https://ropsten.infura.io",
     "ethScan": "https://ropsten.etherscan.io/",
     "getRate": "https://ropsten-cache.knstats.com/getRate",
-    "apis": "https://ropsten-api.kyber.network"
+    // "apis": "https://ropsten-api.kyber.network"
+    "apis": "https://api.kyber.network"
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",

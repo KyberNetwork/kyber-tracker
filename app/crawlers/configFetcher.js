@@ -118,13 +118,14 @@ const getTokensFromNetwork = callback => {
               // console.log("*************allTokenWithInfo: ", allTokenWithInfo)
               allTokenWithInfo.map(t => {
                 const tokenInfo = t.info
+                tokenInfo.address = tokenInfo.address.toLowerCase()
                 if(! allTokenObj[tokenInfo.symbol]){
-                  allTokenObj[tokenInfo.symbol] = { ...tokenInfo, reserves: {[t.reserveAddr]: t.type}}
+                  allTokenObj[tokenInfo.symbol] = { ...tokenInfo, reserves: {[t.reserveAddr.toLowerCase()]: t.type}}
                 } else {
-                  allTokenObj[tokenInfo.symbol].reserves[t.reserveAddr] = t.type
+                  allTokenObj[tokenInfo.symbol].reserves[t.reserveAddr.toLowerCase()] = t.type
                 }
               })
-              return callback(null, allTokenObj)
+              return callback(null, Object.values(allTokenObj))
             }
           )
         }
@@ -136,4 +137,5 @@ const getTokensFromNetwork = callback => {
 
 module.exports.fetchConfigTokens = (callback) => {
   return getTokensFromNetwork(callback)
+  // return getTokensFromApis(callback)
 }

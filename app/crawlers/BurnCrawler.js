@@ -18,10 +18,10 @@ const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 
 let tokenConfig = network.tokens
 // networkConfig.tokens
-const processTokens = (tokens) => {
-  tokensByAddress = _.keyBy(tokens, 'address');
-  tokensBySymbol = _.keyBy(tokens, 'symbol');
-}
+const processTokens = (tokens) => ({
+  tokensByAddress: _.keyBy(tokens, 'address'),
+  tokensBySymbol: _.keyBy(tokens, 'symbol')
+})
 /**
  * Traversal through all blocks from the moment contract was deployed
  * Find and record all burned fees in local database
@@ -36,12 +36,12 @@ class BurnCrawler {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
           tokenConfig = {...tokenConfig, ...tokens}
-          processTokens(tokenConfig)
-          return next(null, tokenConfig)
+          // processTokens(tokenConfig)
+          return next(null, processTokens(tokenConfig))
         })
       },
       startBlockNumber: ['config', (ret, next) => {
-        global.GLOBAL_TOKEN=ret.config
+        global.GLOBAL_TOKEN=ret.config.tokensBySymbol
 
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);

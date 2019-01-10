@@ -1,4 +1,5 @@
 require('dotenv').config();
+const _           = require('lodash');
 const path        = require('path');
 const SotaCore    = require('sota-core');
 const logger      = require('sota-core').getLogger('TradeCrawler');
@@ -11,6 +12,11 @@ const app = SotaCore.createServer({
   useSocket: false,
 });
 
+const processTokens = (tokens) => ({
+  tokensByAddress: _.keyBy(tokens, 'address'),
+  tokensBySymbol: _.keyBy(tokens, 'symbol')
+})
+
 const intervalUpdateConfig = () => {
   setInterval(() => {
     configFetcher.fetchConfigTokens((err, tokens) => {
@@ -18,7 +24,8 @@ const intervalUpdateConfig = () => {
       if(err) {
         return logger.error(err);
       }
-      global.GLOBAL_TOKEN = {...network.tokens, ...tokens}
+      const processedTokens = processTokens(tokens)
+      global.GLOBAL_TOKEN = {...network.tokens, ...processedTokens.tokensBySymbol}
     })  
   }, timer);
 }
@@ -27,7 +34,8 @@ configFetcher.fetchConfigTokens((err, tokens) => {
   if(err) {
     return logger.error(err);
   }
-  global.GLOBAL_TOKEN = {...network.tokens, ...tokens}
+  const processedTokens = processTokens(tokens)
+  global.GLOBAL_TOKEN = {...network.tokens, ...processedTokens.tokensBySymbol}
   // console.log("_____________ token fetched_________", global.GLOBAL_TOKEN)
   intervalUpdateConfig()
   app.start();

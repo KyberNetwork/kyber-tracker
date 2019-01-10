@@ -27,10 +27,10 @@ const PARALLEL_INSERT_LIMIT = 10;
 var rateTokenArrays
 
 // networkConfig.tokens
-const processTokens = (tokens) => {
-  tokensByAddress = _.keyBy(tokens, 'address');
-  tokensBySymbol = _.keyBy(tokens, 'symbol');
-}
+const processTokens = (tokens) => ({
+  tokensByAddress: _.keyBy(tokens, 'address'),
+  tokensBySymbol: _.keyBy(tokens, 'symbol')
+})
 
 const networkAddr = network.contractAddresses.networks[network.contractAddresses.networks.length - 1 ];
 const networkContract = new web3.eth.Contract(networkABI, networkAddr);
@@ -43,12 +43,12 @@ class RateCrawler {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
           tokenConfig = {...tokenConfig, ...tokens}
-          processTokens(tokenConfig)
-          return next(null, tokenConfig)
+          // processTokens(tokenConfig)
+          return next(null, processTokens(tokenConfig))
         })
       },
       startBlockNumber: ['config', (ret, next) => {
-        global.GLOBAL_TOKEN = ret.config;
+        global.GLOBAL_TOKEN=ret.config.tokensBySymbol
         rateTokenArrays = Utils.getRateTokenArray();
 
         if (LAST_PROCESSED_BLOCK) {
