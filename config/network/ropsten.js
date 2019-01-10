@@ -5,9 +5,10 @@ module.exports = {
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
-    "networks": ["0x0a56d8a49E71da8d7F9C65F95063dB48A3C9560B"],
-    "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A"],
-    "workers": []
+    "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
+    "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x81ae4de9a3aec67a35c05c889052260e39bc42a4"],
+    "workers": [],
+    "internal": "0x3f9a8e219Ab1aD42f96b22C294E564B2b48fE636"
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
