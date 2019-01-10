@@ -285,7 +285,7 @@ class TradeCrawler {
   _addNewTrade (exSession, record, callback) {
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
-    logger.info(`Add new trade: ${JSON.stringify(record)}`);
+    
     
 
     const ethAddress = networkConfig.ETH.address.toLowerCase();
@@ -294,15 +294,32 @@ class TradeCrawler {
       record.sourceOfficial = 1
     } else {
       // global.GLOBAL_TOKEN[]
-      // sourceReserve
+      // 
+      record.sourceOfficial = 0
+      if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()] && record.sourceReserve){
+        const tokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress]
+        if(tokenInfo.reserves && tokenInfo.reserves[record.sourceReserve.toLowerCase()] == '1'){
+          record.sourceOfficial = 1
+        }
+      } 
+
     }
 
     if (record.makerTokenAddress.toLowerCase() === ethAddress) {
       record.volumeEth = Utils.fromWei(record.makerTokenAmount);
       record.destOfficial = 1
     } else {
+      record.destOfficial = 0
+      if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()] && record.sourceReserve){
+        const tokenInfo = global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()]
+        if(tokenInfo.reserves && tokenInfo.reserves[record.destReserve.toLowerCase()] == '1'){
+          record.destOfficial = 1
+        }
+      }
 
     }
+
+    logger.info(`Add new trade: ${JSON.stringify(record)}`);
 
 
 
