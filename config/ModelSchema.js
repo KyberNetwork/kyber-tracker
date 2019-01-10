@@ -40,7 +40,6 @@
      commission_receive_address: { type: 'string', length: 765 },
      burn_fees: { type: 'string', length: 765 },
      burn_reserve_address: { type: 'string', length: 765 },
-     reserves: { type: 'string', length: 765 },
      minute_seq: { type: 'number', length: 11 },
      hour_seq: { type: 'number', length: 11 },
      day_seq: { type: 'number', length: 11 },
@@ -48,6 +47,10 @@
      year: { type: 'number', length: 4 },
      volume_eth: { type: 'number', length: 22 },
      volume_usd: { type: 'number', length: 22 } },
+     source_official: { type: 'number', length: 4 },
+     dest_official: { type: 'number', length: 4 },
+     source_reserve: { type: 'string', length: 765 },
+     dest_reserve: { type: 'string', length: 765 },
   Rate7dModel: 
    { block_number: { type: 'number', length: 11 },
      block_timestamp: { type: 'number', length: 20 },

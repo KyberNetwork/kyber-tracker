@@ -241,6 +241,8 @@ module.exports = {
   "startBlockNumber": 5060595,
   "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
 
+  "startPermissionlessReserveBlock": 4759402,
+
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
     "imtoken": "0xb9E29984Fe50602E7A619662EBED4F90D93824C7",

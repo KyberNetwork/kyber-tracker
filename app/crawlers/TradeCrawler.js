@@ -39,7 +39,7 @@ class TradeCrawler {
         })
       },
       latestProcessedBlock: ['config', (ret, next) => {
-        // logger.info("***************** config: ", ret.config)
+        logger.info("***************** config: ", ret.config)
         global.GLOBAL_TOKEN=ret.config
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
@@ -246,9 +246,8 @@ class TradeCrawler {
           record.makerAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
           record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(160, 192))));
           
-          const reserve1 = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
-          const reserve2 = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
-          record.reserves = [reserve1, reserve2].join(';')
+          record.sourceReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
+          record.destReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
           
           record.uniqueTag = log.transactionHash + "_" + logIndex
           record.blockNumber= log.blockNumber
@@ -290,11 +289,19 @@ class TradeCrawler {
     const ethAddress = networkConfig.ETH.address.toLowerCase();
     if (record.takerTokenAddress.toLowerCase() === ethAddress) {
       record.volumeEth = Utils.fromWei(record.takerTokenAmount);
+      record.sourceOfficial = 1
+    } else {
+      sourceReserve
     }
 
     if (record.makerTokenAddress.toLowerCase() === ethAddress) {
       record.volumeEth = Utils.fromWei(record.makerTokenAmount);
+      record.destOfficial = 1
+    } else {
+
     }
+
+
 
     KyberTradeModel.add(record, {
       isInsertIgnore: true
