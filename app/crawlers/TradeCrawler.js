@@ -171,8 +171,8 @@ class TradeCrawler {
     const CMCService = exSession.getService('CMCService');
     
     var record = {}
-
     _.each(logs, (log, logIndex) => {
+      
       const txid = log.transactionHash;
       // if (!records[txid]) {
       //   records[txid] = {};
@@ -214,7 +214,6 @@ class TradeCrawler {
           break;
         case networkConfig.logTopics.exchange:
           if(log.blockNumber >= networkConfig.startPermissionlessReserveBlock) break;
-
           record.makerAddress = log.address;
           record.takerAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
           record.takerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
