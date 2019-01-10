@@ -2,7 +2,8 @@ module.exports = {
   "endpoints": {
     "web3Provider": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
-    "getRate": "https://production-cache.kyber.network/getRate"
+    "getRate": "https://production-cache.kyber.network/getRate",
+    "apis": "https://api.kyber.network"
   },
   "contractAddresses": {
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",

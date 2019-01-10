@@ -2,13 +2,15 @@ module.exports = {
     "endpoints": {
       "web3Provider": "https://mainnet.infura.io",
       "ethScan": "https://etherscan.io/",
-	    "getRate": "https://staging-cache.kyber.network/getRate"
+      "getRate": "https://staging-cache.kyber.network/getRate",
+      "apis": "https://staging-api.knstats.com"
     },
     "contractAddresses": {
       "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
-      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D", "0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
-      "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6", "0xed4f53268bfdFF39B36E8786247bA3A02Cf34B04"],
-      "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C", "0x91a502C678605fbCe581eae053319747482276b9"]
+      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D"],
+      "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6"],
+      "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C", "0x91a502C678605fbCe581eae053319747482276b9"],
+      "internal": "0x65897aDCBa42dcCA5DD162c647b1cC3E31238490"
     },
     "logTopics": {
       "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -16,6 +18,8 @@ module.exports = {
       "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
       "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
       "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
+      "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
     },
     "ETH": {
       "name": "Ethereum",
@@ -741,7 +745,9 @@ module.exports = {
     "startBlockNumberV2": 5899403,
 
 		"rateBlockStepSize": 40,
-		"newTokenDuration": 3 * 24 * 60 * 60 * 1000,
+    "newTokenDuration": 3 * 24 * 60 * 60 * 1000,
+    
+    "startPermissionlessReserveBlock": 6997111,
   
     "partners": {
       "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

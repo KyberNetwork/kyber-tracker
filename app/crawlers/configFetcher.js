@@ -1,7 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const network = require('../../config/network');
-const apisEndpint = process.env['APIS_ENDPOINT'] + "/internal/currencies"
+const apisEndpint = network.endpoints.apis + "/internal/currencies"
 
 const fetchData = params => new Promise((resolve, reject) => {
   axios(params)
