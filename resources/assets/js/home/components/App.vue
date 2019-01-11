@@ -339,7 +339,6 @@ export default {
           if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
             return;
           }
-
           this.kncPrice = "$" + parseFloat(data.price_usd).toFixed(4);
           this.kncPriceChange24h = parseFloat(data.percent_change_24h);
         });
