@@ -20,6 +20,7 @@ module.exports = AppController.extends({
       limit: ['required', 'naturalNonZero'],
       fromDate: ['naturalNonZero'],
       toDate: ['naturalNonZero'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -45,6 +46,11 @@ module.exports = AppController.extends({
     if (params.toDate) {
       key = params.toDate + '-' + key;
     }
+    if(params.official){
+      key = 'official-' + key
+    }
+
+    console.log("__________________cache key", key)
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -87,6 +93,7 @@ module.exports = AppController.extends({
     const [err, params] = new Checkit({
       fromDate: ['natural'],
       toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -99,6 +106,9 @@ module.exports = AppController.extends({
     let toDate = params.toDate || now;
 
     let key = `${CacheInfo.TopTokensList.key}${Math.floor(fromDate / 60)}-${Math.floor(toDate / 60)}`;
+    if(params.official){
+      key = 'official-' + key
+    }
 
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
@@ -134,7 +144,8 @@ module.exports = AppController.extends({
     const [err, params] = new Checkit({
       fromDate: ['natural'],
       toDate: ['natural'],
-      timeStamp: ['natural']
+      timeStamp: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -191,7 +202,8 @@ module.exports = AppController.extends({
       interval: ['string'],
       fromDate: ['natural'],
       toDate: ['natural'],
-      pair: ['string']
+      pair: ['string'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
@@ -237,7 +249,8 @@ module.exports = AppController.extends({
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
@@ -255,10 +268,11 @@ module.exports = AppController.extends({
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
-    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
+    if (err || (params.interval && !Const.INTERVAL.includes(params.inerval))) {
       res.badRequest(err && err.toString() || "Unsupported interval");
       return;
     }
@@ -273,7 +287,8 @@ module.exports = AppController.extends({
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
@@ -291,7 +306,8 @@ module.exports = AppController.extends({
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {

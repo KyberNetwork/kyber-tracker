@@ -12,7 +12,7 @@ const getReserveTokensList              = require('./leveldbCache').getReserveTo
 const getPermissionlessTokensList       = require('./leveldbCache').getPermissionlessTokensList;
 
 const getTokenInfo         = require('./leveldbCache').getTokenInfo;
-
+const ethConfig = network.ETH
 
 const fetchData = params => new Promise((resolve, reject) => {
   axios(params)
@@ -114,7 +114,7 @@ const getTokensFromNetwork = callback => {
             }),
             (err, allTokenWithInfo) => {
               ////////////// 
-              const allTokenObj = {}
+              const allTokenObj = {ETH: ethConfig}
               // console.log("*************allTokenWithInfo: ", allTokenWithInfo)
               allTokenWithInfo.map(t => {
                 const tokenInfo = t.info

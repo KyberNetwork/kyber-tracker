@@ -45,6 +45,13 @@ module.exports = BaseService.extends({
       params.push(options.toDate);
     }
 
+    if(options.official){
+      whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+      params.push(network.startPermissionlessReserveBlock);
+    }
+
+    console.log("+++++ where clause: ", whereClauses)
+
     const queryOptions = {
       where: whereClauses,
       params: params,
@@ -90,6 +97,11 @@ module.exports = BaseService.extends({
 
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
+    const officialSql = options.official ? 
+    ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`
+    :
+    ''
+
     const makeSql = (side, obj) => {
       obj = obj || {};
       obj[side] = (callback) => {
@@ -99,6 +111,7 @@ module.exports = BaseService.extends({
           sum(volume_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
+        ${officialSql}
         group by ${side}_token_symbol`;
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
@@ -156,6 +169,11 @@ module.exports = BaseService.extends({
 
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
+    const officialSql = options.official ? 
+    ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`
+    :
+    ''
+
     const makeSql = (side, obj) => {
       obj = obj || {};
       obj[side] = (callback) => {
@@ -165,6 +183,7 @@ module.exports = BaseService.extends({
           sum(volume_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
+        ${officialSql}
         group by ${side}_token_symbol`;
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
@@ -610,6 +629,10 @@ module.exports = BaseService.extends({
     if (options.toDate) {
       key = options.toDate + '-' + key;
     }
+    if(options.official){
+      key = 'official-' + key
+    }
+
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -646,6 +669,11 @@ module.exports = BaseService.extends({
     } else if(options.pair){
       const pairTokens = options.pair.split('_')
       whereClauses += ` AND ((taker_token_symbol = "${pairTokens[0]}" AND maker_token_symbol = "${pairTokens[1]}") OR (taker_token_symbol = "${pairTokens[1]}" AND maker_token_symbol = "${pairTokens[0]}"))`;
+    }
+
+    if(options.official){
+      whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+      params.push(network.startPermissionlessReserveBlock);
     }
 
     async.auto({
@@ -795,7 +823,7 @@ module.exports = BaseService.extends({
     const BurnedFeeModel = this.getModel('BurnedFeeModel');
 
     let key = CacheInfo.TotalBurnedFees.key;
-
+    
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -832,6 +860,10 @@ module.exports = BaseService.extends({
 
     let key = `${CacheInfo.BurnedFees.key + period}-${interval}`;
 
+    if(options.official){
+      key = 'official-' + key
+    }
+
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -844,6 +876,11 @@ module.exports = BaseService.extends({
 
       let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
       let params = [fromDate, toDate];
+
+      if(options.official){
+        whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+        params.push(network.startPermissionlessReserveBlock);
+      }
 
       async.auto({
         sum: (next) => {
@@ -925,6 +962,10 @@ module.exports = BaseService.extends({
       key = options.symbol + '-' + key;
     }
 
+    if(options.official){
+      key = 'official-' + key
+    }
+
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -942,6 +983,11 @@ module.exports = BaseService.extends({
         whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
         params.push(options.symbol);
         params.push(options.symbol);
+      }
+
+      if(options.official){
+        whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+        params.push(network.startPermissionlessReserveBlock);
       }
 
       async.auto({
@@ -1007,6 +1053,10 @@ module.exports = BaseService.extends({
       key = options.symbol + '-' + key;
     }
 
+    if(options.official){
+      key = 'official-' + key
+    }
+
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -1024,6 +1074,11 @@ module.exports = BaseService.extends({
         whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
         params.push(options.symbol);
         params.push(options.symbol);
+      }
+
+      if(options.official){
+        whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+        params.push(network.startPermissionlessReserveBlock);
       }
 
       async.auto({
