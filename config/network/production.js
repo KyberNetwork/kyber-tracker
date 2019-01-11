@@ -168,7 +168,8 @@ module.exports = {
       "address": "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a",
       "symbol": "SUB",
       "decimal": 2,
-      "hidden": 1531486800000
+      // "hidden": 1531486800000
+      "delisted": true
     },
     "STORJ": {
       "name": "Storj",
