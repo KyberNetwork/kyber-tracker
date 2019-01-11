@@ -140,7 +140,7 @@ module.exports = BaseService.extends({
         const supportedTokens = [];
 
         Object.keys(global.GLOBAL_TOKEN).forEach((symbol) => {
-          if (UtilsHelper.shouldShowToken(symbol)) {
+          if (UtilsHelper.shouldShowToken(symbol) && UtilsHelper.filterOfficial(options.official, global.GLOBAL_TOKEN[symbol])) {
             const token = global.GLOBAL_TOKEN[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
@@ -212,7 +212,7 @@ module.exports = BaseService.extends({
 
         const supportedTokens = [];
         Object.keys(global.GLOBAL_TOKEN).forEach((symbol) => {
-          if (UtilsHelper.shouldShowToken(symbol, global.GLOBAL_TOKEN, options.timeStamp)) {
+          if (UtilsHelper.shouldShowToken(symbol, global.GLOBAL_TOKEN, options.timeStamp) && UtilsHelper.filterOfficial(options.official, global.GLOBAL_TOKEN[symbol])) {
             const token = global.GLOBAL_TOKEN[symbol];
 
             const tokenVolume = sumProp(symbol, 'token', token.decimal);

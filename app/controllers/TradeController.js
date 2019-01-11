@@ -121,7 +121,8 @@ module.exports = AppController.extends({
       }
       let options = {
         fromDate: fromDate,
-        toDate: toDate
+        toDate: toDate,
+        official: params.official
       };
       TradeService.getTopTokensList(options, (err, ret_1) => {
         if (err) {
@@ -159,7 +160,9 @@ module.exports = AppController.extends({
 
     let key = `${CacheInfo.TokensList.key}${Math.floor(fromDate / 60)}-${Math.floor(toDate / 60)}`;
     if(params.timeStamp) key = key + '-' + params.timeStamp
-    
+    if(params.official){
+      key = 'official-' + key
+    }
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -172,7 +175,8 @@ module.exports = AppController.extends({
       let options = {
         fromDate: fromDate,
         toDate: toDate,
-        timeStamp: params.timeStamp
+        timeStamp: params.timeStamp,
+        official: params.official
       };
       TradeService.getTokensList(options, (err, ret_1) => {
         if (err) {

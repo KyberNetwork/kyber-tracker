@@ -36,6 +36,13 @@ module.exports = {
     return (timeStamp || Date.now()) >= tokenList[tokenSymbol].hidden;
   },
 
+  filterOfficial(official, tokenData){
+    if(!official) return true
+
+    if(tokenData && tokenData.reserves && Object.values(tokenData.reserves).indexOf('1') >= 0) return true
+    return false
+  },
+
   getStringExp10: function(decimal) {
     return '1' + '0'.repeat(decimal);
   },
