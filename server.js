@@ -5,7 +5,7 @@ const SotaCore    = require('sota-core');
 const logger      = require('sota-core').getLogger('TradeCrawler');
 const network = require('./config/network')
 const configFetcher = require('./app/crawlers/configFetcher')
-const timer = 10000
+const timer = 5 * 60 * 1000
 
 const app = SotaCore.createServer({
   rootDir: path.resolve('.'),
@@ -36,7 +36,7 @@ configFetcher.fetchConfigTokens((err, tokens) => {
   }
   const processedTokens = processTokens(tokens)
   global.GLOBAL_TOKEN = {...network.tokens, ...processedTokens.tokensBySymbol}
-  // console.log("_____________ token fetched_________", global.GLOBAL_TOKEN)
+  
   intervalUpdateConfig()
   app.start();
 })

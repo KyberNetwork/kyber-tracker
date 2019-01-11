@@ -287,7 +287,7 @@ function getTokenInfo (tokenAddr, type, callback){
   const tokenContract = new web3.eth.Contract(erc20Abi, tokenAddr)
   async.parallel({
     name: tokenContract.methods.name().call,
-    decimal: tokenContract.methods.name().call,
+    decimal: tokenContract.methods.decimals().call,
     address: asyncCb => asyncCb(null, tokenAddr),
     symbol: tokenContract.methods.symbol().call,
     type: asyncCb => asyncCb(null, type)
