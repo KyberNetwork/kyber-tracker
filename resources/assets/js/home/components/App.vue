@@ -37,6 +37,13 @@
               <span class="topbar-value">{{ totalBurnedFee }}</span>
             </li> 
 
+            <li>
+              <select @change="onChangeOfficial">
+                <option value="all" :selected="!isOfficial()">All</option>
+                <option value="official" :selected="isOfficial()">Official Tokens</option>
+              </select>
+            </li>
+
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
             <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
             
@@ -413,6 +420,17 @@ export default {
       }
       // 
       
+    },
+    isOfficial(){
+      return store.get('official') ? true : false
+    },
+    onChangeOfficial(e){
+      if(e.target.value == 'official') {
+        // window.OFFICIAL_TOKENS = true
+        store.set('official', true)
+      } else {
+        store.set('official', false)
+      }
     },
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
