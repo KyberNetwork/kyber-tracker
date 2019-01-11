@@ -421,9 +421,12 @@ export default {
       // 
       
     },
+
     isOfficial(){
       return store.get('official') ? true : false
     },
+
+
     onChangeOfficial(e){
       if(e.target.value == 'official') {
         // window.OFFICIAL_TOKENS = true
@@ -431,7 +434,9 @@ export default {
       } else {
         store.set('official', false)
       }
+      location.reload();
     },
+    
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
       this.$refs.headingSum.className = "heading-summary p-relative"
