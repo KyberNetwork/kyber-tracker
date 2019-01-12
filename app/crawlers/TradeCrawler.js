@@ -297,8 +297,8 @@ class TradeCrawler {
       // 
       record.sourceOfficial = 0
       if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()] && record.sourceReserve){
-        const tokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress]
-        if(tokenInfo.reserves && tokenInfo.reserves[record.sourceReserve.toLowerCase()] == '1'){
+        const tokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()]
+        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.sourceReserve.toLowerCase()] == '1'){
           record.sourceOfficial = 1
         }
       } 
@@ -312,7 +312,7 @@ class TradeCrawler {
       record.destOfficial = 0
       if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()] && record.sourceReserve){
         const tokenInfo = global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()]
-        if(tokenInfo.reserves && tokenInfo.reserves[record.destReserve.toLowerCase()] == '1'){
+        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.destReserve.toLowerCase()] == '1'){
           record.destOfficial = 1
         }
       }
