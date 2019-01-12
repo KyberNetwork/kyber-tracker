@@ -227,16 +227,16 @@ module.exports = BaseService.extends({
       return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
     }
 
-    const tokenInfo = global.GLOBAL_TOKEN[symbol];
-    if (!tokenInfo) {
-      return callback(`Cannot find token info of symbol: ${symbol}`);
-    }
+    // const tokenInfo = global.GLOBAL_TOKEN[symbol];
+    // if (!tokenInfo) {
+    //   return callback(`Cannot find token info of symbol: ${symbol}`);
+    // }
 
-    if(!tokenInfo.cgId){
-      return callback(`Token ${symbol} dont have coigecko id`);
-    }
+    // if(!tokenInfo.cgId){
+    //   return callback(`Token ${symbol} dont have coigecko id`);
+    // }
 
-    this._getCoingeckoHistoryPrice(tokenInfo.cgId, date, callback)
+    this._getCoingeckoHistoryPrice(network.ETH.cgId, date, callback)
   },
   
   _getCoingeckoHistoryPrice: function(cgId, date, callback){
