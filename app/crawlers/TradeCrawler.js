@@ -17,7 +17,7 @@ const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 const PARALLEL_INSERT_LIMIT = 10;
 const web3 = Utils.getWeb3Instance();
 
-let tokenConfig = networkConfig.tokens
+let tokenConfig = _.transform(networkConfig.tokens, (result, v, k) => {result[v.address.toLowerCase()] = v})
 let tokensByAddress, tokensBySymbol
 
 // networkConfig.tokens
@@ -35,6 +35,8 @@ class TradeCrawler {
           if(err) return next(err)
           
           tokenConfig = {...tokenConfig, ...tokens}
+
+          // logger.info("********^^^^^tokenConfig^^^^^^", tokenConfig)
           // processTokens(tokenConfig)
           return next(null, processTokens(tokenConfig))
         })
@@ -43,7 +45,7 @@ class TradeCrawler {
         global.GLOBAL_TOKEN=ret.config.tokensBySymbol
         global.TOKENS_BY_ADDR=ret.config.tokensByAddress
 
-        logger.info("********^^^^^^^^^^^", global.TOKENS_BY_ADDR)
+        
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
@@ -317,6 +319,14 @@ class TradeCrawler {
         }
       }
 
+    }
+
+
+    if(record.sourceReserve) {
+      record.sourceReserve = record.sourceReserve.toLowerCase()
+    }
+    if(record.destReserve) {
+      record.destReserve = record.destReserve.toLowerCase()
     }
 
     logger.info(`Add new trade: ${JSON.stringify(record)}`);

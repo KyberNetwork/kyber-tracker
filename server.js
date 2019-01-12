@@ -7,6 +7,8 @@ const network = require('./config/network')
 const configFetcher = require('./app/crawlers/configFetcher')
 const timer = 5 * 60 * 1000
 
+let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = v})
+
 const app = SotaCore.createServer({
   rootDir: path.resolve('.'),
   useSocket: false,
@@ -24,8 +26,10 @@ const intervalUpdateConfig = () => {
       if(err) {
         return logger.error(err);
       }
-      const processedTokens = processTokens(tokens)
-      global.GLOBAL_TOKEN = {...network.tokens, ...processedTokens.tokensBySymbol}
+      tokenConfig = {...tokenConfig, ...tokens}
+
+      const processedTokens = processTokens(tokenConfig)
+      global.GLOBAL_TOKEN = processedTokens.tokensBySymbol
     })  
   }, timer);
 }
@@ -34,8 +38,10 @@ configFetcher.fetchConfigTokens((err, tokens) => {
   if(err) {
     return logger.error(err);
   }
-  const processedTokens = processTokens(tokens)
-  global.GLOBAL_TOKEN = {...network.tokens, ...processedTokens.tokensBySymbol}
+  tokenConfig = {...tokenConfig, ...tokens}
+
+  const processedTokens = processTokens(tokenConfig)
+  global.GLOBAL_TOKEN = processedTokens.tokensBySymbol
   
   intervalUpdateConfig()
   app.start();

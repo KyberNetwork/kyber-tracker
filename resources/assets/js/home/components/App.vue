@@ -38,10 +38,21 @@
             </li> 
 
             <li>
-              <select @change="onChangeOfficial">
+              <!-- <select @change="onChangeOfficial">
                 <option value="all" :selected="!isOfficial()">All</option>
                 <option value="official" :selected="isOfficial()">Official Tokens</option>
-              </select>
+              </select> -->
+              <b-dropdown class="change-official" right>
+                <template slot="button-content">
+                  {{isOfficial() ? 'Official Tokens' : 'All'}}
+                </template>
+                <b-dropdown-item @click="onChangeOfficial('all')">
+                  <span>All</span>
+                </b-dropdown-item>
+                <b-dropdown-item @click="onChangeOfficial('official')">
+                  <span>Official Tokens</span>
+                </b-dropdown-item>
+              </b-dropdown> 
             </li>
 
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
@@ -427,8 +438,8 @@ export default {
     },
 
 
-    onChangeOfficial(e){
-      if(e.target.value == 'official') {
+    onChangeOfficial(value){
+      if(value == 'official') {
         // window.OFFICIAL_TOKENS = true
         store.set('official', true)
       } else {

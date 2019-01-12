@@ -18,7 +18,7 @@ const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 const PARALLEL_INSERT_LIMIT = 10;
 const web3 = Utils.getWeb3Instance();
 
-let tokenConfig = networkConfig.tokens
+let tokenConfig = _.transform(networkConfig.tokens, (result, v, k) => {result[v.address.toLowerCase()] = v})
 let tokensByAddress, tokensBySymbol
 
 // networkConfig.tokens

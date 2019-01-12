@@ -114,18 +114,19 @@ const getTokensFromNetwork = callback => {
             }),
             (err, allTokenWithInfo) => {
               ////////////// 
-              const allTokenObj = {ETH: ethConfig}
-              // console.log("*************allTokenWithInfo: ", allTokenWithInfo)
+              const allTokenObj = {[ethConfig.address.toLowerCase()]: ethConfig}
+              
               allTokenWithInfo.map(t => {
                 const tokenInfo = t.info
                 tokenInfo.address = tokenInfo.address.toLowerCase()
-                if(! allTokenObj[tokenInfo.symbol]){
-                  allTokenObj[tokenInfo.symbol] = { ...tokenInfo, reserves: {[t.reserveAddr.toLowerCase()]: t.type}}
+                if(! allTokenObj[tokenInfo.address]){
+                  allTokenObj[tokenInfo.address] = { ...tokenInfo, reserves: {[t.reserveAddr.toLowerCase()]: t.type}}
                 } else {
-                  allTokenObj[tokenInfo.symbol].reserves[t.reserveAddr.toLowerCase()] = t.type
+                  allTokenObj[tokenInfo.address].reserves[t.reserveAddr.toLowerCase()] = t.type
                 }
               })
-              return callback(null, Object.values(allTokenObj))
+
+              return callback(null, allTokenObj)
             }
           )
         }
