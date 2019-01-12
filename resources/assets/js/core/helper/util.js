@@ -154,18 +154,18 @@ export default {
   },
 
   getTokenIcon: (symbol, fileName, callback) => {
+    if(!symbol) return '/images/tokens/token-unknown.svg'
     let iconName = fileName || (symbol.toLowerCase() + '.svg');
     let urlIcon = iconEndpont + '/' + iconName
 
-    if (!fileName) {
-      let img = new Image(); 
-      img.onerror = () => {
-        iconName = symbol.toLowerCase() + '.png';
-        urlIcon = iconEndpont + '/' + iconName
-        return callback(urlIcon)
-      };
-      img.src = urlIcon;
-    }
+    let img = new Image(); 
+    img.onerror = () => {
+      // iconName = symbol.toLowerCase() + '.png';
+      // urlIcon = iconEndpont + '/' + iconName
+      // return callback(urlIcon)
+      return callback('/images/tokens/token-unknown.svg')
+    };
+    img.src = urlIcon;
 
     return urlIcon
     
