@@ -2,7 +2,9 @@
   <div class="col-sm-12">
     <div class="panel-heading pb-16">
         <img class="token-logo-detail"  v-bind:src="this.logoUrl">
-        <span class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}</span>
+        <span class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}
+          - <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">({{getShortedAddr(this.tokenAddress)}})</a>
+        </span>
       </div>
 
     <b-card :header="$t('chart.title.token_volume', [getFilterTokenSymbol()])">
@@ -29,7 +31,7 @@
   import BigNumber from 'bignumber.js';
   import AppRequest from '../../core/request/AppRequest';
   import util from '../../core/helper/util';
-  // import network from '../../../../../config/network';
+  import network from '../../../../../config/network';
   const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
   import Chart from 'chart.js';
 
@@ -54,6 +56,7 @@
         myChart: undefined,
         symbol: undefined,
         tokenName: undefined,
+        tokenAddress: undefined,
         logoUrl: undefined
       };
     },
@@ -67,11 +70,18 @@
         this.symbol = this.getFilterTokenSymbol();
         const tokenInfo = GLOBAL_TOKENS[this.symbol];
         this.tokenName = tokenInfo.name;
+        this.tokenAddress = tokenInfo.address;
         //const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
         // this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
         this.logoUrl = util.getTokenIcon(tokenInfo.symbol, tokenInfo.icon, (replaceUrl) => {this.logoUrl = replaceUrl})
         this.refreshChartsData();
         this.$refs.datatable.fetch();
+      },
+      getAddressLink(addr){
+        return network.endpoints.ethScan + "address/" + addr;
+      },
+      getShortedAddr(addr){
+        return util.shortenAddress(addr, 8, 7)
       },
       getListTitle() {
         return this.$t("common.token_trade_history");

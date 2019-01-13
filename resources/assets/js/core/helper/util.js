@@ -174,6 +174,7 @@ export default {
     //      icon + "?sanitize=true";
   },
   shortenAddress(address, startNum, endNum){
+    if(!address) return ''
     return address.slice(0, startNum) + '...' + address.slice(-endNum)
   },
 
