@@ -64,12 +64,13 @@
             <td class="pl-4">
                 <div class="token-name">
                     <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item.symbol)" />
-                    <span>{{ slot.item.name }}</span>
+                    <span v-if="slot.item.offcial && slot.item.name">{{ slot.item.name }}</span>
+                    <span v-if="!slot.item.offcial || !slot.item.name"><a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a></span>
                     <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
                     <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
                 </div>
             </td>
-          <td  class="text-left pl-1">{{ slot.item.symbol }}</td>
+          <td  class="text-left pl-1">{{ slot.item.offcial ? slot.item.symbol : ''}}</td>
           <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
           <!-- <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
@@ -120,7 +121,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
-// import network from '../../../../../config/network';
+import network from '../../../../../config/network';
 import Chart from 'chart.js';
 const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 
@@ -142,6 +143,12 @@ export default {
     },
     getListTitle () {
       return '';
+    },
+    getAddressLink(addr){
+      return network.endpoints.ethScan + "address/" + addr;
+    },
+    getShortedAddr(addr){
+      return util.shortenAddress(addr, 9, 8)
     },
     selectPeriod(period, interval) {
       this.selectedPeriod = period;

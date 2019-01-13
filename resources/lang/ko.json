@@ -3,6 +3,7 @@
   "common": {
     "exchange": "거래",
     "name": "이름",
+    "address": "주소",
     "symbol": "심볼",
     "volume_24h_usd": "24H (USD) 거래량",
     "volume_24h_eth": "24H (ETH) 거래량",

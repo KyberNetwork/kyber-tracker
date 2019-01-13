@@ -29,7 +29,8 @@ module.exports = {
     "decimal": 18,
     "cmcId": "ethereum",
     "cmcIdv2": "1027",
-    "cgId": "ethereum"
+    "cgId": "ethereum",
+    "offcial": true
   },
   "KNC": {
     "name": "Kyber Network",

@@ -211,6 +211,7 @@ module.exports = BaseService.extends({
         };
 
         const supportedTokens = [];
+        
         Object.keys(global.GLOBAL_TOKEN).forEach((symbol) => {
           if (UtilsHelper.shouldShowToken(symbol, global.GLOBAL_TOKEN, options.timeStamp) && UtilsHelper.filterOfficial(options.official, global.GLOBAL_TOKEN[symbol])) {
             const token = global.GLOBAL_TOKEN[symbol];
@@ -218,10 +219,12 @@ module.exports = BaseService.extends({
             const tokenVolume = sumProp(symbol, 'token', token.decimal);
             const volumeUSD = sumProp(symbol, 'usd');
             const ethVolume = sumProp(symbol, 'eth');
-
+            if(token.symbol == "ETH") console.log(token)
             supportedTokens.push({
               symbol: token.symbol,
               name: token.name,
+              address: token.address,
+              offcial: token.offcial || UtilsHelper.filterOfficial(true, token),
               volumeToken: tokenVolume.toFormat(4).toString(),
               volumeTokenNumber: tokenVolume.toNumber(),
               volumeUSD: volumeUSD.toNumber(),

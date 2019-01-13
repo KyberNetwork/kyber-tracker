@@ -4,6 +4,7 @@
   "common": {
     "exchange": "Exchange",
     "name": "NAME",
+    "address": "ADDRESS",
     "symbol": "SYMBOL",
     "volume_24h_usd": "24H Volume (USD)",
     "volume_24h_eth": "24H Volume (ETH)",
