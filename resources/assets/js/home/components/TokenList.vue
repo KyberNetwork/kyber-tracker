@@ -98,7 +98,13 @@
         <tr @click="toTokenDetails(slot.item.symbol)">
           <td  class="text-left pl-4" style="white-space:nowrap !important">
               <div class="token-name">
-                  <span>{{ slot.item.symbol }}</span>
+                  <span>
+                    <span v-if="slot.item.offcial && slot.item.symbol">{{ slot.item.symbol }}</span>
+                    <span v-else>
+                      <a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a>
+                    </span>
+                  </span>
+                  
                   <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
               </div>
