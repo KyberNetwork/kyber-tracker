@@ -7,7 +7,7 @@ import store from "../../core/helper/store";
 class AppRequest extends BaseRequest {
 
   isOfficial(){
-    return store.get('official') ? true : false
+    return store.get('allTokens') ? false : true
   }
 
   getTrades (page=0, limit=20, query={}, callback) {

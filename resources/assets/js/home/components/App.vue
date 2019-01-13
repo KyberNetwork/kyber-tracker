@@ -44,7 +44,7 @@
               </select> -->
               <b-dropdown class="change-official" right>
                 <template slot="button-content">
-                  {{isOfficial() ? 'Official Tokens' : 'All'}}
+                  {{isAllTokens() ? 'All' : 'Official Tokens'}}
                 </template>
                 <b-dropdown-item @click="onChangeOfficial('all')">
                   <span>All</span>
@@ -433,17 +433,17 @@ export default {
       
     },
 
-    isOfficial(){
-      return store.get('official') ? true : false
+    isAllTokens(){
+      return store.get('allTokens') ? true : false
     },
 
 
     onChangeOfficial(value){
       if(value == 'official') {
         // window.OFFICIAL_TOKENS = true
-        store.set('official', true)
+        store.set('allTokens', false)
       } else {
-        store.set('official', false)
+        store.set('allTokens', true)
       }
       location.reload();
     },
