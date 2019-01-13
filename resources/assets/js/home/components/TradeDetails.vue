@@ -58,7 +58,10 @@
         <div class="rate-detail-title">
           <!-- <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> 
           RATE -->
-          {{$t("trade_detail.rate", [record.takerTokenSymbol, record.makerTokenSymbol])}}
+          {{$t("trade_detail.rate", [
+          isOffcial(record.takerTokenSymbol) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
+          isOffcial(record.makerTokenSymbol) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
+          ])}}
         </div>
         <div class="rate-detail-value">
           <!-- {{ Math.round(1/getRate(record)*100000000) / 100000000 }} -->
@@ -132,6 +135,12 @@ export default {
       AppRequest.getTradeDetails(id).then(data => {
         this.record = data;
       });
+    },
+    getShortedAddr(addr){
+      return util.shortenAddress(addr, 4, 4)
+    },
+    isOffcial(symbol){
+      return util.isOffcial(GLOBAL_TOKENS[symbol])
     },
     getDateInfo(timestamp) {
       const locale = localStorage.getItem("locale") || "en";
