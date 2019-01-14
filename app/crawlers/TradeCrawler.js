@@ -34,9 +34,9 @@ class TradeCrawler {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
           
-          tokenConfig = {...tokenConfig, ...tokens}
+          tokenConfig = _.merge(tokens, tokenConfig)
 
-          // logger.info("********^^^^^tokenConfig^^^^^^", tokenConfig)
+          
           // processTokens(tokenConfig)
           return next(null, processTokens(tokenConfig))
         })
@@ -44,7 +44,7 @@ class TradeCrawler {
       latestProcessedBlock: ['config', (ret, next) => {
         global.GLOBAL_TOKEN=ret.config.tokensBySymbol
         global.TOKENS_BY_ADDR=ret.config.tokensByAddress
-
+        // logger.info("********^^^^^tokenConfig^^^^^^", ret.config.tokensBySymbol)
         
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);

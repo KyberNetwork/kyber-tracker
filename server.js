@@ -14,10 +14,13 @@ const app = SotaCore.createServer({
   useSocket: false,
 });
 
-const processTokens = (tokens) => ({
-  tokensByAddress: _.keyBy(tokens, 'address'),
-  tokensBySymbol: _.keyBy(tokens, 'symbol')
-})
+const processTokens = (tokens) => {
+  const allTokens = _.merge(tokens, tokenConfig)
+  return {
+    tokensByAddress: _.keyBy(allTokens, 'address'),
+    tokensBySymbol: _.keyBy(allTokens, 'symbol')
+  }
+}
 
 const intervalUpdateConfig = () => {
   setInterval(() => {
@@ -26,9 +29,8 @@ const intervalUpdateConfig = () => {
       if(err) {
         return logger.error(err);
       }
-      tokenConfig = {...tokenConfig, ...tokens}
 
-      const processedTokens = processTokens(tokenConfig)
+      const processedTokens = processTokens(tokens)
       global.GLOBAL_TOKEN = processedTokens.tokensBySymbol
     })  
   }, timer);
@@ -38,11 +40,9 @@ configFetcher.fetchConfigTokens((err, tokens) => {
   if(err) {
     return logger.error(err);
   }
-  tokenConfig = {...tokenConfig, ...tokens}
 
-  const processedTokens = processTokens(tokenConfig)
+  const processedTokens = processTokens(tokens)
   global.GLOBAL_TOKEN = processedTokens.tokensBySymbol
-  
   intervalUpdateConfig()
   app.start();
 })

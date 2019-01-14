@@ -42,7 +42,7 @@ class RateCrawler {
       config: (next) => {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
-          tokenConfig = {...tokenConfig, ...tokens}
+          tokenConfig = _.merge(tokens, tokenConfig)
           // processTokens(tokenConfig)
           return next(null, processTokens(tokenConfig))
         })
