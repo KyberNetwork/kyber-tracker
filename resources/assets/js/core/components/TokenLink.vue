@@ -1,5 +1,6 @@
 <template>
-  <span @click.stop="onClickToken()">{{ symbol }}</span>
+  <span v-if="isOfficial(symbol)" @click.stop="onClickToken()">{{ symbol }}</span>
+  <span v-else @click.stop="onClickToken()">({{ getShortedAddr(getAddress())}})</span>
 </template>
 
 <script>
@@ -10,7 +11,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
-// import network from '../../../../../config/network';
+import network from '../../../../../config/network';
 const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
 export default {
   props: {
@@ -31,6 +32,17 @@ export default {
       }
 
       return `/tokens/${tokenDef.address}`;
+    },
+    getAddress(){
+      const token = this.tokens[this.symbol]
+      if(!token) return ''
+      return token.address
+    },
+    getShortedAddr(addr){
+      return util.shortenAddress(addr, 4, 4)
+    },
+    isOfficial(symbol){
+      return util.isOfficial(GLOBAL_TOKENS[symbol])
     },
     onClickToken () {
       const tokenDef = this.tokens[this.symbol];
