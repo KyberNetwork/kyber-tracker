@@ -149,7 +149,9 @@ module.exports = BaseService.extends({
             supportedTokens.push({
               symbol: token.symbol,
               name: token.name,
+              address: token.address,
               volumeToken: tokenVolume.toFormat(4).toString(),
+              official: token.official || UtilsHelper.filterOfficial(true, token),
               volumeTokenNumber: tokenVolume.toNumber(),
               volumeUSD: volumeUSD.toNumber(),
               volumeETH: ethVolume.toFormat(4).toString(),

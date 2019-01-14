@@ -36,7 +36,10 @@ export default {
 
       const sum = (all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0)) / 2;
       for (let i = 0; i < ret.length; i++) {
-        labels.push(ret[i].symbol);
+        if(ret[i].official && ret[i].symbol) labels.push(ret[i].symbol);
+        else {
+          labels.push(util.shortenAddress(ret[i].address, 4, 4))
+        }
         dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
         volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
         volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
