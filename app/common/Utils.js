@@ -39,6 +39,8 @@ module.exports = {
   filterOfficial(official, tokenData){
     if(!official) return true
 
+    if(tokenData.official) return true
+
     if(tokenData && tokenData.reserves && Object.values(tokenData.reserves).indexOf('1') >= 0) return true
     return false
   },
