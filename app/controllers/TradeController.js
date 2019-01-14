@@ -309,7 +309,7 @@ module.exports = AppController.extends({
       official: ['string']
     }).validateSync(req.allParams);
 
-    if (err || (params.interval && !Const.INTERVAL.includes(params.inerval))) {
+    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
       res.badRequest(err && err.toString() || "Unsupported interval");
       return;
     }
