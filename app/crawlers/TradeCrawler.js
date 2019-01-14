@@ -186,7 +186,6 @@ class TradeCrawler {
       if (!timestamp) {
         return next(`Cannot get block info for log id=${log.id}, tx=${log.transactionHash}`);
       }
-
       
       const topic = log.topics[0];
       const data = web3.utils.hexToBytes(log.data);
@@ -253,7 +252,7 @@ class TradeCrawler {
           record.sourceReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
           record.destReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
           
-          record.uniqueTag = log.transactionHash + "_" + logIndex
+          record.uniqueTag = log.transactionHash + "_" + log.id
           record.blockNumber= log.blockNumber
           record.blockHash= log.blockHash
           record.blockTimestamp= timestamp
