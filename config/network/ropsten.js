@@ -30,7 +30,7 @@ module.exports = {
     "cmcId": "ethereum",
     "cmcIdv2": "1027",
     "cgId": "ethereum",
-    "offcial": true
+    "official": true
   },
   "KNC": {
     "name": "Kyber Network",

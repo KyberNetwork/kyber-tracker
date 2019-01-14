@@ -59,8 +59,8 @@
           <!-- <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> 
           RATE -->
           {{$t("trade_detail.rate", [
-          isOffcial(record.takerTokenSymbol) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
-          isOffcial(record.makerTokenSymbol) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
+          isOfficial(record.takerTokenSymbol) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
+          isOfficial(record.makerTokenSymbol) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
           ])}}
         </div>
         <div class="rate-detail-value">
@@ -139,8 +139,8 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOffcial(symbol){
-      return util.isOffcial(GLOBAL_TOKENS[symbol])
+    isOfficial(symbol){
+      return util.isOfficial(GLOBAL_TOKENS[symbol])
     },
     getDateInfo(timestamp) {
       const locale = localStorage.getItem("locale") || "en";

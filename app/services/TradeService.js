@@ -224,7 +224,7 @@ module.exports = BaseService.extends({
               symbol: token.symbol,
               name: token.name,
               address: token.address,
-              offcial: token.offcial || UtilsHelper.filterOfficial(true, token),
+              official: token.official || UtilsHelper.filterOfficial(true, token),
               volumeToken: tokenVolume.toFormat(4).toString(),
               volumeTokenNumber: tokenVolume.toNumber(),
               volumeUSD: volumeUSD.toNumber(),

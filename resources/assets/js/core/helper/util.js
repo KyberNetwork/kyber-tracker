@@ -178,10 +178,10 @@ export default {
     return address.slice(0, startNum) + '...' + address.slice(-endNum)
   },
 
-  isOffcial(tokenData){
+  isOfficial(tokenData){
     if(!tokenData) return false
 
-    if(tokenData.offcial) return true
+    if(tokenData.official) return true
 
     if(tokenData.reserves && Object.values(tokenData.reserves).indexOf('1') >= 0) return true
     return false

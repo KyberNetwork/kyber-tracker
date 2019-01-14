@@ -7,7 +7,7 @@ const network = require('./config/network')
 const configFetcher = require('./app/crawlers/configFetcher')
 const timer = 5 * 60 * 1000
 
-let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, offcial: true}})
+let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, official: true}})
 
 const app = SotaCore.createServer({
   rootDir: path.resolve('.'),

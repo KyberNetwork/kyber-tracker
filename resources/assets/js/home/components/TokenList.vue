@@ -64,13 +64,13 @@
             <td class="pl-4">
                 <div class="token-name">
                     <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item.symbol)" />
-                    <span v-if="slot.item.offcial && slot.item.name">{{ slot.item.name }}</span>
-                    <span v-if="!slot.item.offcial || !slot.item.name"><a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a></span>
+                    <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
+                    <span v-if="!slot.item.official || !slot.item.name"><a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a></span>
                     <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
                     <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
                 </div>
             </td>
-          <td  class="text-left pl-1">{{ slot.item.offcial ? slot.item.symbol : ''}}</td>
+          <td  class="text-left pl-1">{{ slot.item.official ? slot.item.symbol : ''}}</td>
           <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
           <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
           <!-- <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
@@ -99,7 +99,7 @@
           <td  class="text-left pl-4" style="white-space:nowrap !important">
               <div class="token-name">
                   <span>
-                    <span v-if="slot.item.offcial && slot.item.symbol">{{ slot.item.symbol }}</span>
+                    <span v-if="slot.item.official && slot.item.symbol">{{ slot.item.symbol }}</span>
                     <span v-else>
                       <a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a>
                     </span>

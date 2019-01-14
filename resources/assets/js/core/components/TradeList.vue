@@ -167,23 +167,23 @@
             <tr v-for="(row, index) in rows" :item="row" :index="index">
               <td class="pl-4">{{ getDateInfo(row) }}</td>
               <td class="text-left pl-4 font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}
-                <span v-if="isOffcial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+                <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left no-padding-right"></td> -->
               <td><i class="k k-angle right"></i></td>
               <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}
-                <span v-if="isOffcial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+                <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left"></td> -->
               <td class="text-left pl-4">1 
                 <span class="font-semi-bold">
-                  <span v-if="isOffcial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+                  <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                 </span> = {{ getRate(row) }} 
                 <span class="font-semi-bold">
-                  <span v-if="isOffcial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+                  <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                 </span></td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
@@ -216,24 +216,24 @@
               <td class="pl-4">{{ getDateInfo(row, false) }}</td>
               <td class="text-left pl-4 trade-direction">
                 <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} 
-                  <span v-if="isOffcial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+                  <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                 </span>
                 <br/>
                 <span class="entypo-down-dir trade-direction-down-symbol"></span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} 
-                  <span v-if="isOffcial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+                  <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left pl-4"></td> -->
               <td class="text-left pl-4">
                 <span class="font-semi-bold">
                   <span>
-                    <span v-if="isOffcial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+                    <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
                     <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                   </span>
                   /
                   <span>
-                    <span v-if="isOffcial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+                    <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
                     <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                   </span>
                 </span>
@@ -385,8 +385,8 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOffcial(symbol){
-      return util.isOffcial(GLOBAL_TOKENS[symbol])
+    isOfficial(symbol){
+      return util.isOfficial(GLOBAL_TOKENS[symbol])
     },
     getAddressEtherscanLink(tx) {
       if(!util.isAddress(tx)) tx=partners[tx.toLowerCase()]
