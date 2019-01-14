@@ -279,19 +279,12 @@ module.exports = AppController.extends({
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural'],
-      official: ['string']
+      toDate: ['natural']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
       res.badRequest(err && err.toString() || "Interval is not support");
       return;
-    }
-
-    if(!params.official || params.official == 'true'){
-      params.official = true
-    } else {
-      params.official = false
     }
 
 

@@ -865,10 +865,6 @@ module.exports = BaseService.extends({
 
     let key = `${CacheInfo.BurnedFees.key + period}-${interval}`;
 
-    if(options.official){
-      key = 'official-' + key
-    }
-
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -881,11 +877,6 @@ module.exports = BaseService.extends({
 
       let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
       let params = [fromDate, toDate];
-
-      if(options.official){
-        whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
-        params.push(network.startPermissionlessReserveBlock);
-      }
 
       async.auto({
         sum: (next) => {
