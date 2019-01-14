@@ -28,7 +28,9 @@ module.exports = BaseService.extends({
     Object.keys(global.GLOBAL_TOKEN).forEach(token => {
       if ((token.toUpperCase() !== "ETH") &&
         !global.GLOBAL_TOKEN[token].delisted &&
-        helper.shouldShowToken(token)) {
+        helper.shouldShowToken(token) &&
+        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+      ) {
         pairs[token] = (asyncCallback) => this._getRateInfo(token, {
           //tradeAdapter: tradeAdapter,
           rateAdapter: rateAdapter
@@ -123,7 +125,7 @@ module.exports = BaseService.extends({
     }, callback);
   },
 
-  getConvertiblePairs: function (callback) {
+  getConvertiblePairs: function (options, callback) {
     if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
@@ -132,7 +134,9 @@ module.exports = BaseService.extends({
       // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
       if ((token.toUpperCase() !== "ETH") &&
         !global.GLOBAL_TOKEN[token].delisted &&
-        helper.shouldShowToken(token)) {
+        helper.shouldShowToken(token) && 
+        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+      ) {
         const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           token: token,
@@ -403,7 +407,9 @@ module.exports = BaseService.extends({
       // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
       if ((token.toUpperCase() !== "ETH") &&
         !global.GLOBAL_TOKEN[token].delisted &&
-        helper.shouldShowToken(token)) {
+        helper.shouldShowToken(token) &&
+        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+      ) {
         const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),

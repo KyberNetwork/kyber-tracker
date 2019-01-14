@@ -16,12 +16,19 @@ module.exports = AppController.extends({
 
     const [err, params] = new Checkit({
       chain: ['string'],
-      includeDelisted: ['string']
+      includeDelisted: ['string'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
       res.badRequest(err.toString());
       return;
+    }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
     }
 
     let chain = params.chain;
@@ -34,10 +41,13 @@ module.exports = AppController.extends({
     }
     let includeDelisted = params.includeDelisted;
     const ret = [];
-    const tokens = require('../../config/network/chain')(chain).tokens;
-    Object.keys(tokens).forEach(symbol => {
-      if (Utils.shouldShowToken(symbol, tokens) && (includeDelisted ? true : !tokens[symbol].delisted)) {
-        const token = tokens[symbol];
+    // const tokens = require('../../config/network/chain')(chain).tokens;
+    Object.keys(global.GLOBAL_TOKEN).forEach(symbol => {
+      if (Utils.shouldShowToken(symbol, global.GLOBAL_TOKEN) && 
+      (includeDelisted ? true : !global.GLOBAL_TOKEN[symbol].delisted) &&
+      Utils.filterOfficial(params.official, global.GLOBAL_TOKEN[symbol])
+      ) {
+        const token = global.GLOBAL_TOKEN[symbol];
         const id = token.symbol || symbol;
         const data = {
           symbol: id,
@@ -58,7 +68,25 @@ module.exports = AppController.extends({
   getConvertiblePairs: function (req, res) {
     Utils.cors(res);
 
-    const CACHE_KEY = CacheInfo.ConvertiblePairs.key;
+    const [err, params] = new Checkit({
+      official: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+    let CACHE_KEY = CacheInfo.ConvertiblePairs.key;
+    if(params.official){
+      CACHE_KEY = 'official-' + CACHE_KEY
+    }
+
     const CurrenciesService = req.getService('CurrenciesService');
     const redisCacheService = req.getService('RedisCacheService');
     redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
@@ -71,7 +99,7 @@ module.exports = AppController.extends({
         res.send(ret);
         return;
       }
-      CurrenciesService.getConvertiblePairs((err, rett) => {
+      CurrenciesService.getConvertiblePairs(params, (err, rett) => {
         if (err) {
           logger.error(err);
         }
@@ -99,6 +127,9 @@ module.exports = AppController.extends({
     }
 
     let CACHE_KEY = CacheInfo.Pair24hData.key;
+    if(params.official){
+      CACHE_KEY = 'official-' + CACHE_KEY
+    }
     const CurrenciesService = req.getService('CurrenciesService');
     const redisCacheService = req.getService('RedisCacheService');
 
@@ -128,13 +159,31 @@ module.exports = AppController.extends({
 
   getAllRateInfo: function (req, res) {
     Utils.cors(res);
+
+    const [err, params] = new Checkit({
+      official: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
     const service = req.getService('CurrenciesService');
 
-    const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+    let CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+    if(params.official){
+      CACHE_KEY = 'official-' + CACHE_KEY
+    }
     const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
     const redisCacheService = req.getService('RedisCacheService');
     var loadData = () => {
-      service.getAllRateInfo({},(err, ret) => {
+      service.getAllRateInfo(params, (err, ret) => {
         if (err) {
           logger.error(err);
         }
@@ -181,12 +230,19 @@ module.exports = AppController.extends({
     Utils.cors(res);
     const [err, params] = new Checkit({
       usd: ['string'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
       res.badRequest(err.toString());
       return;
     }
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
     const service = req.getService('CurrenciesService');
     service.get24hChangeData(params, (err, ret) => {
       if (err) {
