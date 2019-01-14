@@ -12,7 +12,6 @@ class AppRequest extends BaseRequest {
 
   getTrades (page=0, limit=20, query={}, callback) {
     const url = `/api/trades`;
-    console.log('*****************', this.isOfficial())
     if(this.isOfficial()) query.official = true
     else query.official = false
 
