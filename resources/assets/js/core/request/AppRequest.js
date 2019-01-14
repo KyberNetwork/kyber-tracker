@@ -14,6 +14,8 @@ class AppRequest extends BaseRequest {
     const url = `/api/trades`;
     console.log('*****************', this.isOfficial())
     if(this.isOfficial()) query.official = true
+    else query.official = false
+
     return request
             .get(url)
             .query(_.assign({ limit, page }, query))
@@ -28,6 +30,8 @@ class AppRequest extends BaseRequest {
     let queryParams = { q, limit, page, fromDate, toDate }
     if(exportData) queryParams.exportData = true
     if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
     return request
             .get(url)
             .query(queryParams)
@@ -42,6 +46,8 @@ class AppRequest extends BaseRequest {
     let queryParams = {limit, page, fromDate, toDate }
     if(exportData) queryParams.exportData = true
     if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
     return request
             .get(url)
             .query(queryParams)
@@ -69,6 +75,7 @@ class AppRequest extends BaseRequest {
     }
     let queryParams = { period, interval, symbol }
     if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
 
     const url = `/api/volumes`;
     return request
@@ -88,6 +95,8 @@ class AppRequest extends BaseRequest {
 
     let queryParams = { period, interval, symbol }
     if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
     const url = `/api/fees/burned`;
     return request
             .get(url)
@@ -105,6 +114,8 @@ class AppRequest extends BaseRequest {
     }
     let queryParams = { period, interval, symbol }
     if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
     const url = `/api/fees/collected`;
     return request
             .get(url)
@@ -122,6 +133,8 @@ class AppRequest extends BaseRequest {
     }
     let queryParams = { period, interval, symbol }
     if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
     const url = `/api/fees/to_burn`;
     return request
             .get(url)
@@ -136,6 +149,8 @@ class AppRequest extends BaseRequest {
     const url = `/api/tokens/top`;
     let queryParams = { fromDate, toDate }
     if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
     return request
             .get(url)
             .query(queryParams)
@@ -148,6 +163,8 @@ class AppRequest extends BaseRequest {
   getTradeDetails (id, params={}) {
     const url = `/api/trades/${id}`;
     if(this.isOfficial()) params.official = true
+    else params.official = false
+
     return this.get(url, params);
   }
 
@@ -155,18 +172,24 @@ class AppRequest extends BaseRequest {
     const url = `/api/stats24h`;
     let params = {}
     if(this.isOfficial()) params.official = true
+    else params.official = false
+
     return this.get(url, params);
   }
 
   getTopTokens (params={}) {
     const url = `/api/tokens/top`;
     if(this.isOfficial()) params.official = true
+    else params.official = false
+
     return this.get(url, params);
   }
 
   getTokens (params={}) {
     const url = `/api/tokens`;
     if(this.isOfficial()) params.official = true
+    else params.official = false
+
     return this.get(url, params);
   }
 
