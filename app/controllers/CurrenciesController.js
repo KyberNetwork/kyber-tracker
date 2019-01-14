@@ -84,9 +84,28 @@ module.exports = AppController.extends({
   getPair24hData: function (req, res) {
     Utils.cors(res);
 
-    const CACHE_KEY = CacheInfo.Pair24hData.key;
+    const [err, params] = new Checkit({
+      official: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+    let CACHE_KEY = CacheInfo.Pair24hData.key;
     const CurrenciesService = req.getService('CurrenciesService');
     const redisCacheService = req.getService('RedisCacheService');
+
+    if(params.official){
+      CACHE_KEY = 'official-' + CACHE_KEY
+    }
+
     redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -97,7 +116,7 @@ module.exports = AppController.extends({
         res.send(ret);
         return;
       }
-      CurrenciesService.getPair24hData((err, rett) => {
+      CurrenciesService.getPair24hData(params, (err, rett) => {
         if (err) {
           logger.error(err);
         }

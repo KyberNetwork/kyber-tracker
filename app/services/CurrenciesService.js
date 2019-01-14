@@ -244,7 +244,7 @@ module.exports = BaseService.extends({
     })
   },
 
-  getPair24hData: function (callback) {
+  getPair24hData: function (options, callback) {
     if (!global.GLOBAL_TOKEN) return callback(null, {});
 
     let pairs = {};
@@ -252,7 +252,9 @@ module.exports = BaseService.extends({
     Object.keys(global.GLOBAL_TOKEN).map(token => {
       if ((token.toUpperCase() !== "ETH") &&
         !global.GLOBAL_TOKEN[token].delisted &&
-        helper.shouldShowToken(token)) {
+        helper.shouldShowToken(token) &&
+        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+      ) {
         pairs["ETH_" + token] = (asyncCallback) => this._getPair24hData({
           tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),

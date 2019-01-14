@@ -27,6 +27,13 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
     
     let key = `${CacheInfo.TradesList.key + params.page}-${params.limit}`;
     if (params.symbol) {
@@ -50,7 +57,6 @@ module.exports = AppController.extends({
       key = 'official-' + key
     }
 
-    console.log("__________________cache key", key)
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -99,6 +105,12 @@ module.exports = AppController.extends({
     if (err) {
       res.badRequest(err.toString());
       return;
+    }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
     }
 
     const now = Utils.nowInSeconds();
@@ -153,6 +165,13 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
 
     const now = Utils.nowInSeconds();
     let fromDate = params.fromDate || 0;
@@ -215,6 +234,13 @@ module.exports = AppController.extends({
       return;
     }
 
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+
     const TradeService = req.getService('TradeService');
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },
@@ -262,6 +288,13 @@ module.exports = AppController.extends({
       return;
     }
 
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+
     const TradeService = req.getService('TradeService');
     TradeService.getBurnedFees(params, this.ok.bind(this, req, res));
   },
@@ -280,6 +313,13 @@ module.exports = AppController.extends({
       res.badRequest(err && err.toString() || "Unsupported interval");
       return;
     }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
 
     const TradeService = req.getService('TradeService');
     TradeService.getCollectedFees(params, this.ok.bind(this, req, res));
@@ -300,6 +340,13 @@ module.exports = AppController.extends({
       return;
     }
 
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+
     const TradeService = req.getService('TradeService');
     TradeService.getToBurnFees(params, this.ok.bind(this, req, res));
   },
@@ -318,6 +365,13 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
 
     const TradeService = req.getService('TradeService');
     TradeService.getToWalletFees(params, this.ok.bind(this, req, res));
