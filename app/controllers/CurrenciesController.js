@@ -25,11 +25,12 @@ module.exports = AppController.extends({
       return;
     }
 
-    if(!params.official || params.official == 'true'){
-      params.official = true
-    } else {
-      params.official = false
-    }
+    // if(!params.official || params.official == 'true'){
+    //   params.official = true
+    // } else {
+    //   params.official = false
+    // }
+    params.official = true
 
     let chain = params.chain;
     if (chain === "mainnet") {
@@ -68,19 +69,20 @@ module.exports = AppController.extends({
   getConvertiblePairs: function (req, res) {
     Utils.cors(res);
 
-    const [err, params] = new Checkit({
-      official: ['string']
-    }).validateSync(req.allParams);
+    // const [err, params] = new Checkit({
+    //   official: ['string']
+    // }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
-      return;
-    }
-    if(!params.official || params.official == 'true'){
-      params.official = true
-    } else {
-      params.official = false
-    }
+    // if (err) {
+    //   res.badRequest(err.toString());
+    //   return;
+    // }
+    // if(!params.official || params.official == 'true'){
+    //   params.official = true
+    // } else {
+    //   params.official = false
+    // }
+    const params = {official: true}
 
     let CACHE_KEY = CacheInfo.ConvertiblePairs.key;
     if(params.official){
@@ -112,19 +114,20 @@ module.exports = AppController.extends({
   getPair24hData: function (req, res) {
     Utils.cors(res);
 
-    const [err, params] = new Checkit({
-      official: ['string']
-    }).validateSync(req.allParams);
+    // const [err, params] = new Checkit({
+    //   official: ['string']
+    // }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
-      return;
-    }
-    if(!params.official || params.official == 'true'){
-      params.official = true
-    } else {
-      params.official = false
-    }
+    // if (err) {
+    //   res.badRequest(err.toString());
+    //   return;
+    // }
+    // if(!params.official || params.official == 'true'){
+    //   params.official = true
+    // } else {
+    //   params.official = false
+    // }
+    const params = {official: true}
 
     let CACHE_KEY = CacheInfo.Pair24hData.key;
     if(params.official){
@@ -160,19 +163,20 @@ module.exports = AppController.extends({
   getAllRateInfo: function (req, res) {
     Utils.cors(res);
 
-    const [err, params] = new Checkit({
-      official: ['string']
-    }).validateSync(req.allParams);
+    // const [err, params] = new Checkit({
+    //   official: ['string']
+    // }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
-      return;
-    }
-    if(!params.official || params.official == 'true'){
-      params.official = true
-    } else {
-      params.official = false
-    }
+    // if (err) {
+    //   res.badRequest(err.toString());
+    //   return;
+    // }
+    // if(!params.official || params.official == 'true'){
+    //   params.official = true
+    // } else {
+    //   params.official = false
+    // }
+    const params = {official: true}
 
     const service = req.getService('CurrenciesService');
 
