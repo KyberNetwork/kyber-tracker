@@ -2,12 +2,15 @@
   <div class="col-sm-12">
     <div class="panel-heading pb-16">
         <img class="token-logo-detail"  v-bind:src="this.logoUrl">
-        <span class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}
+        <span v-if="this.isOfficial" class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}
           - <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">({{getShortedAddr(this.tokenAddress)}})</a>
+        </span>
+        <span v-else class="no-margin panel-title">
+          <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">{{this.tokenAddress}}</a>
         </span>
       </div>
 
-    <b-card :header="$t('chart.title.token_volume', [getFilterTokenSymbol()])">
+    <b-card :header="$t('chart.title.token_volume', [''])">
       <b-tab no-body active>
         <chart-volume ref="chartVolume"
           :elementId="'chart-volume'"
@@ -57,7 +60,8 @@
         symbol: undefined,
         tokenName: undefined,
         tokenAddress: undefined,
-        logoUrl: undefined
+        logoUrl: undefined,
+        isOffcial: undefined
       };
     },
 
@@ -71,6 +75,7 @@
         const tokenInfo = GLOBAL_TOKENS[this.symbol];
         this.tokenName = tokenInfo.name;
         this.tokenAddress = tokenInfo.address;
+        this.isOfficial = tokenInfo.official;
         //const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
         // this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
         this.logoUrl = util.getTokenIcon(tokenInfo.symbol, tokenInfo.icon, (replaceUrl) => {this.logoUrl = replaceUrl})

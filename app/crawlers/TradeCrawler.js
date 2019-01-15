@@ -33,7 +33,7 @@ class TradeCrawler {
       config: (next) => {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
-          
+          // console.log("============tokens", tokens)
           tokenConfig = _.merge(tokens, tokenConfig)
 
           
@@ -184,7 +184,7 @@ class TradeCrawler {
       // }
       const timestamp = blockTimestamps[log.blockNumber];
       if (!timestamp) {
-        return next(`Cannot get block info for log id=${log.id}, tx=${log.transactionHash}`);
+        return callback(`Cannot get block info for log id=${log.id}, tx=${log.transactionHash}`);
       }
       
       const topic = log.topics[0];

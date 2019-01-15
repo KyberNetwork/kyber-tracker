@@ -11,6 +11,7 @@ const web3      = Utils.getWeb3Instance();
 
 const internalAbi = require('../../config/abi/internal');
 const reserveAbi = require('../../config/abi/reserve');
+const bancorOrderbookAbi = require('../../config/abi/bancor_orderbook')
 const permisionlessReserveAbi = require('../../config/abi/permissionless_reserve');
 const erc20Abi = require('../../config/abi/erc20');
 const conversionRateAbi = require('../../config/abi/conversion_rate');
@@ -223,25 +224,32 @@ function getReserveTokensList (reserveAddr, callback){
     data: dataConversationRate
   }, (err, result) => {
     if(err || !result) return callback(err || "no conversion rate contract addr")
-    if(result == '0x') return callback(null, [])
+    if(result == '0x') {
+      const bancorContract =  new web3.eth.Contract(JSON.parse(bancorOrderbookAbi), '0xb020636f8e30cb8c35a863412503cFD5E3d6D6cE')
+      
+      bancorContract.methods.token().call()
+      .then(token => callback(null, [token]))
+      .catch(err => callback(err))
 
-    const conversionRate = web3.eth.abi.decodeParameters(['address'], result)
+    } else {
+      const conversionRate = web3.eth.abi.decodeParameters(['address'], result)
 
-    // console.log("----------conversionrate: ", reserveAddr, conversionRate[0])
+      const conversionRatesContract = new web3.eth.Contract(conversionRateAbi, conversionRate[0])
+      const tokensListData = conversionRatesContract.methods.getListedTokens().encodeABI()
 
-    const conversionRatesContract = new web3.eth.Contract(conversionRateAbi, conversionRate[0])
-    const tokensListData = conversionRatesContract.methods.getListedTokens().encodeABI()
+      web3.eth.call({
+        to: conversionRate[0],
+        data: tokensListData
+      }, (errTokens, resultTokens) => {
+        if(errTokens || !resultTokens) return callback(err || "no tokens for conversion rate contract addr " + conversionRate[0])
+        const tokens = web3.eth.abi.decodeParameters(['address[]'], resultTokens)
 
-    web3.eth.call({
-      to: conversionRate[0],
-      data: tokensListData
-    }, (errTokens, resultTokens) => {
-      if(errTokens || !resultTokens) return callback(err || "no tokens for conversion rate contract addr " + conversionRate[0])
-      const tokens = web3.eth.abi.decodeParameters(['address[]'], resultTokens)
+        return callback(null, tokens[0])
 
-      return callback(null, tokens[0])
+      })
+    }
 
-    })
+    
 
   })
   // reserveContract.methods.conversionRatesContract().call((err, conversionRateAddr) => {
