@@ -214,8 +214,23 @@ module.exports = AppController.extends({
     // TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
   },
   getStats24h: function (req, res) {
+    const [err, params] = new Checkit({
+      official: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
     const TradeService = req.getService('TradeService');
-    TradeService.getStats24h(this.ok.bind(this, req, res));
+    TradeService.getStats24h(params, this.ok.bind(this, req, res));
   },
 
   getVolumes: function (req, res) {

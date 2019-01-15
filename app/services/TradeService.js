@@ -351,10 +351,14 @@ module.exports = BaseService.extends({
   },
 
   // Use for topbar items
-  getStats24h: function (callback) {
-    const key = CacheInfo.Stats24h.key;
+  getStats24h: function (params, callback) {
+    let key = CacheInfo.Stats24h.key;
+    if(params.official){
+      key = 'official-' + key
+    }
+
     const time_exprire = CacheInfo.Stats24h.TTL;
-    let params = {};
+    // let params = {};
     params.time_exprire = time_exprire;
     params.key = key;
     RedisCache.getAsync(key, (err, ret) => {
@@ -382,10 +386,14 @@ module.exports = BaseService.extends({
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
+    let whereOffcial = ''
+    if(options.official){
+      whereOffcial += ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`;
+    }
     async.auto({
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
-          where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])}`,
+          where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])} ${whereOffcial}`,
           params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
