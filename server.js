@@ -43,7 +43,7 @@ configFetcher.fetchConfigTokens((err, tokens) => {
 
   const processedTokens = processTokens(tokens)
   global.GLOBAL_TOKEN = processedTokens.tokensBySymbol
-  console.log("##################", global.GLOBAL_TOKEN)
+  // console.log("##################", global.GLOBAL_TOKEN)
   intervalUpdateConfig()
   app.start();
 })
