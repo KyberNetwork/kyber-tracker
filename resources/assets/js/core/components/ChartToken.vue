@@ -75,7 +75,10 @@ export default {
         title: (tooltipItem, data) => {
           const index = tooltipItem[0].index;
           const symbol = data.labels[index];
-          const tokenName = util.getTokenInfo(symbol).name;
+          const tokenInfo = util.getTokenInfo(symbol)
+          if(!tokenInfo) return symbol
+
+          const tokenName = tokenInfo.name;
           return tokenName + " - " + symbol;
         },
         label: () => {},
