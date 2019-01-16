@@ -50,8 +50,6 @@ module.exports = BaseService.extends({
       params.push(network.startPermissionlessReserveBlock);
     }
 
-    console.log("+++++ where clause: ", whereClauses)
-
     const queryOptions = {
       where: whereClauses,
       params: params,
