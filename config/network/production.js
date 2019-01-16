@@ -684,7 +684,7 @@ module.exports = {
       "symbol" : "ABYSS",
       "decimal": 18,
       "address": "0x0E8d6b471e332F140e7d9dbB99E5E3822F728DA6",
-      // "hidden": true       
+      "hidden": 1547557200000       
     },
     "PT":{
       "name": "Promotion Token",
