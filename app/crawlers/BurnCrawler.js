@@ -16,7 +16,7 @@ const PARALLEL_INSERT_LIMIT = 10;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
 const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 
-let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = v})
+let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, address: v.address.toLowerCase()}})
 // networkConfig.tokens
 const processTokens = (tokens) => ({
   tokensByAddress: _.keyBy(tokens, 'address'),

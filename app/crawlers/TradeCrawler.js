@@ -17,7 +17,7 @@ const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 const PARALLEL_INSERT_LIMIT = 10;
 const web3 = Utils.getWeb3Instance();
 
-let tokenConfig = _.transform(networkConfig.tokens, (result, v, k) => {result[v.address.toLowerCase()] = v})
+let tokenConfig = _.transform(networkConfig.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, address: v.address.toLowerCase()}})
 let tokensByAddress, tokensBySymbol
 
 // networkConfig.tokens
@@ -33,9 +33,8 @@ class TradeCrawler {
       config: (next) => {
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
-          // console.log("============tokens", tokens)
+          
           tokenConfig = _.merge(tokens, tokenConfig)
-
           
           // processTokens(tokenConfig)
           return next(null, processTokens(tokenConfig))
@@ -44,7 +43,7 @@ class TradeCrawler {
       latestProcessedBlock: ['config', (ret, next) => {
         global.GLOBAL_TOKEN=ret.config.tokensBySymbol
         global.TOKENS_BY_ADDR=ret.config.tokensByAddress
-        // logger.info("********^^^^^tokenConfig^^^^^^", ret.config.tokensBySymbol)
+        logger.info("********^^^^^tokenConfig^^^^^^", global.TOKENS_BY_ADDR)
         
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
@@ -287,6 +286,12 @@ class TradeCrawler {
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
     
+    if(record.sourceReserve) {
+      record.sourceReserve = record.sourceReserve.toLowerCase()
+    }
+    if(record.destReserve) {
+      record.destReserve = record.destReserve.toLowerCase()
+    }
     
 
     const ethAddress = networkConfig.ETH.address.toLowerCase();
@@ -299,7 +304,7 @@ class TradeCrawler {
       record.sourceOfficial = 0
       if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()] && record.sourceReserve){
         const tokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()]
-        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.sourceReserve.toLowerCase()] == '1'){
+        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.sourceReserve] == '1'){
           record.sourceOfficial = 1
         }
       } 
@@ -313,7 +318,7 @@ class TradeCrawler {
       record.destOfficial = 0
       if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()] && record.sourceReserve){
         const tokenInfo = global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()]
-        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.destReserve.toLowerCase()] == '1'){
+        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.destReserve] == '1'){
           record.destOfficial = 1
         }
       }
@@ -321,12 +326,7 @@ class TradeCrawler {
     }
 
 
-    if(record.sourceReserve) {
-      record.sourceReserve = record.sourceReserve.toLowerCase()
-    }
-    if(record.destReserve) {
-      record.destReserve = record.destReserve.toLowerCase()
-    }
+    
 
     logger.info(`Add new trade: ${JSON.stringify(record)}`);
 

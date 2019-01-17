@@ -18,7 +18,7 @@ const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 const PARALLEL_INSERT_LIMIT = 10;
 const web3 = Utils.getWeb3Instance();
 
-let tokenConfig = _.transform(networkConfig.tokens, (result, v, k) => {result[v.address.toLowerCase()] = v})
+let tokenConfig = _.transform(networkConfig.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, address: v.address.toLowerCase()}})
 let tokensByAddress, tokensBySymbol
 
 // networkConfig.tokens
@@ -49,7 +49,11 @@ class EthVolumeCrawler {
         getUnprocessedTrades(next, "KyberTradeModel");
       }],
       processTrades: ['unprocessedTrades', (ret, next) => {
-        this.processTrades(ret.unprocessedTrades, next);
+        const exSession = new ExSession();
+        this.processTrades(exSession, ret.unprocessedTrades, (err, result) => {
+          exSession.destroy()
+          return next(err, result)
+        });
       }]
     }, (err, ret) => {
       
@@ -68,29 +72,30 @@ class EthVolumeCrawler {
     });
   }
 
-  processTrades (unprocessedTrades, callback) {
+  processTrades (exSession, unprocessedTrades, callback) {
     // Crawl the newest block already
+
     if (!unprocessedTrades.length) {
       return callback(null, true);
     }
 
     const selectedTrades = unprocessedTrades.slice(0, BATCH_TRADES_SIZE)
 
-    this._processTradesOnce(selectedTrades, (err, ret) => {
+    this._processTradesOnce(exSession, selectedTrades, (err, ret) => {
       if (err) {
         return callback(err);
       }
       unprocessedTrades.splice(0, BATCH_TRADES_SIZE);
       process.nextTick(() => {
-        this.processTrades(unprocessedTrades, callback);
+        this.processTrades(exSession, unprocessedTrades, callback);
       });
 
     });
   }
 
-  _processTradesOnce (packTrades, callback) {
+  _processTradesOnce (exSession, packTrades, callback) {
     logger.info(`_process ${packTrades.length} trades: ids: [${packTrades.map(t => t.id).join(' , ')}]`);
-    const exSession = new ExSession();
+    // const exSession = new ExSession();
     const CMCService = exSession.getService('CMCService');
 
     const dateTrade = {}
@@ -117,36 +122,6 @@ class EthVolumeCrawler {
       this._updateTradePrice(exSession, packTrades, dateTrade, callback)
     })
 
-
-
-
-    // async.waterfall([
-    //   (next) => {
-    //     // async.eachLimit(Object.keys(dateTrade), PARALLEL_INSERT_LIMIT, (record, _next) => {
-    //     //   this._addNewTrade(exSession, record, _next);
-    //     // }, next);
-    //     CMCService.getCoingeckoHistoryPrice('ETH', date, (err, result) => {
-    //       if(err) return next(err)
-  
-    //       dateTrade[date].usdPrice = result.price_usd
-    //       return next(null)
-    //     });
-    //   },
-    //   (next) => {
-    //     exSession.commit(next);
-    //   }
-    // ], (err, ret) => {
-    //   exSession.destroy();
-    //   if (err) {
-    //     return callback(err);
-    //   }
-
-    //   // return callback(null, true);
-    //   this._updateTradePrice(exSession, packTrades, dateTrade, callback)
-    // });
-
-
-
   }
 
   _updateTradePrice(exSession, packTrades, datePrice, callback){
@@ -171,7 +146,7 @@ class EthVolumeCrawler {
         exSession.commit(next);
       }
     ], (err, ret) => {
-      exSession.destroy();
+      // exSession.destroy();
       if (err) {
         return callback(err);
       }

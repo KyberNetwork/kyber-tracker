@@ -16,7 +16,7 @@ const BigNumber             = require('bignumber.js');
 const web3                  = Utils.getWeb3Instance();
 const wrapperContract       = new web3.eth.Contract(wrapperABI, network.contractAddresses.wrapper);
 const abiDecoder            = Utils.getKyberABIDecoder();
-let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = v})
+let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, address: v.address.toLowerCase()}})
 
 let LAST_PROCESSED_BLOCK = 0;
 const REQUIRED_CONFIRMATION = 2;

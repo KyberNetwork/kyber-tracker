@@ -34,7 +34,7 @@ const standardizeTokens = (arrayTokens) => {
     returnConfig[t.address] = {
       // ...network.tokens[t.symbol],
       name: t.name,
-      address: t.address,
+      address: t.address.toLowerCase(),
       symbol: t.symbol,
       decimal: t.decimals,
       cmcIdv2: t.cmc_id,
@@ -61,11 +61,11 @@ const standardizeReserveTokenType = (tokens, reserveTypes) => {
       })
     }
     
-    returnConfig[t.address] = {
+    returnConfig[t.address.toLowerCase()] = {
       ...t,
       reserves: reserveObj
     }
-    delete returnConfig[t.address].reservesAddr
+    delete returnConfig[t.address.toLowerCase()].reservesAddr
   })
   return returnConfig
 }
