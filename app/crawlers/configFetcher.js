@@ -3,7 +3,7 @@ const axios = require('axios');
 const network = require('../../config/network');
 const async     = require('async');
 const _         = require('lodash');
-const apisEndpint = network.endpoints.apis + "/internal/currencies"
+const apisEndpint = network.endpoints.apis + "/currencies?is_official=false"
 
 const getAllReserve                     = require('./leveldbCache').getAllReserve;
 const getReserveType                    = require('./leveldbCache').getReserveType;
@@ -31,17 +31,41 @@ const fetchData = params => new Promise((resolve, reject) => {
 const standardizeTokens = (arrayTokens) => {
   const returnConfig = {}
   arrayTokens.map(t => {
-    returnConfig[t.symbol] = {
-      ...network.tokens[t.symbol],
+    returnConfig[t.address] = {
+      // ...network.tokens[t.symbol],
       name: t.name,
       address: t.address,
       symbol: t.symbol,
       decimal: t.decimals,
       cmcIdv2: t.cmc_id,
       cgId: t.cg_id,
+      reservesSrc: t.reserves_src || [],
+      reservesDest: t.reserves_dest || [],
       // delisted: true
-      hidden: t.listing_time
+      hidden: t.listing_time,
+      ...((t.reserves_src || t.reserves_dest) && {reservesAddr: [...(t.reserves_src || []), ...(t.reserves_dest || [])]})
     }
+  })
+  return returnConfig
+}
+
+const standardizeReserveTokenType = (tokens, reserveTypes) => {
+  
+  const returnConfig = {}
+  Object.values(tokens).map(t => {
+    const reserveObj = {}
+    if(t.reservesAddr){
+      t.reservesAddr.map(r => {
+        if(reserveTypes[r.toLowerCase()] == '1') reserveObj[r.toLowerCase()] = '1'
+        else reserveObj[r.toLowerCase()] = '2'
+      })
+    }
+    
+    returnConfig[t.address] = {
+      ...t,
+      reserves: reserveObj
+    }
+    delete returnConfig[t.address].reservesAddr
   })
   return returnConfig
 }
@@ -53,7 +77,28 @@ const getTokensFromApis = callback => {
       method: "get"
     }).then(currencies => {
       const tokens = standardizeTokens(currencies)
-      return callback(null, tokens)
+
+      getAllReserve((err, arrayReserve) => {
+        console.log("list all reserve ", err, arrayReserve)
+        if(err){
+          console.log(err)
+          return callback(err)
+        }
+        async.parallelLimit(arrayReserve.map(r => (asyncCallback) =>  getReserveType(r, asyncCallback)) , 10,
+        (err, arrayTypeOfReserve) => {  
+          if(err) return callback(err)
+
+          const reserveType = {}
+          arrayReserve.map((r, i) => {
+            reserveType[r.toLowerCase()] = arrayTypeOfReserve[i]
+          })
+
+          return callback(null, standardizeReserveTokenType(tokens, reserveType))
+        })
+      })
+
+
+      // return callback(null, tokens)
     })
     .catch(err => callback(err));
   } catch (error) {
@@ -63,9 +108,6 @@ const getTokensFromApis = callback => {
 
 const getTokensFromNetwork = callback => {
   getAllReserve((err, arrayReserve) => {
-    //[ '0x975b54A3F8036DA7E96b570f39E5B09cd625a4D5',
-    // '0x82a428804514ECef24879c2fF24718F08a55cDcC',
-    // '0xEB52Ce516a8d054A574905BDc3D4a176D3a2d51a' ]
     console.log("list all reserve ", err, arrayReserve)
     if(err){
       console.log(err)
@@ -137,6 +179,6 @@ const getTokensFromNetwork = callback => {
 }
 
 module.exports.fetchConfigTokens = (callback) => {
-  return getTokensFromNetwork(callback)
-  // return getTokensFromApis(callback)
+  // return getTokensFromNetwork(callback)
+  return getTokensFromApis(callback)
 }
