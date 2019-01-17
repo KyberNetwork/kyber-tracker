@@ -175,7 +175,10 @@ module.exports = {
       "name": "Dai Stablecoin",
       "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
       "symbol": "DAI",
-      "decimal": 18
+      "decimal": 18,
+      "reserves": {
+        "0x44aef3101432a64d1aa16388f4b9b352b09f42a9": '1'
+      }
     },
     "AION": {
       "name": "AION",
@@ -459,7 +462,10 @@ module.exports = {
       "address": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
       "symbol": "BNT",
       "decimal": 18,
-      "hidden": 1531486800000
+      "hidden": 1531486800000,
+      "reserves": {
+        "0xba92981e049a79de1b79c2396d48063e02f47239": '1'
+      }
     },
     "TUSD": {
       "name": "TrueUSD",
