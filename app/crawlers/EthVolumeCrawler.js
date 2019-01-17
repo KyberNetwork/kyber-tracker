@@ -41,6 +41,7 @@ class EthVolumeCrawler {
       },
       unprocessedTrades: ['config', (ret, next) => {
         global.GLOBAL_TOKEN=ret.config.tokensBySymbol
+        console.log("====================config: ", global.GLOBAL_TOKEN)
         if (UNPROCESSED_TRADES.length > 0) {
           return next(null, UNPROCESSED_TRADES);
         }
@@ -79,19 +80,11 @@ class EthVolumeCrawler {
       if (err) {
         return callback(err);
       }
-
-      // if (ret === true) {
-      //   return callback(null, true);
-      // }
-
       unprocessedTrades.splice(0, BATCH_TRADES_SIZE);
       process.nextTick(() => {
         this.processTrades(unprocessedTrades, callback);
       });
 
-      // setTimeout(() => {
-      //   this.processTrades(unprocessedTrades, callback);     
-      // }, 1000);
     });
   }
 
@@ -110,7 +103,7 @@ class EthVolumeCrawler {
     })
 
 
-    async.each(Object.keys(dateTrade), (date, asyncCallback) => {
+    async.eachLimit(Object.keys(dateTrade), PARALLEL_INSERT_LIMIT, (date, asyncCallback) => {
       CMCService.getCoingeckoHistoryPrice('ETH', date, (err, result) => {
         if(err) return asyncCallback(err)
 
@@ -118,14 +111,46 @@ class EthVolumeCrawler {
         return asyncCallback(null)
       });
     }, err => {
+      // exSession.destroy();
       if(err) return callback(err)
 
-      this._updateTradePrice(packTrades, dateTrade, callback)
+      this._updateTradePrice(exSession, packTrades, dateTrade, callback)
     })
+
+
+
+
+    // async.waterfall([
+    //   (next) => {
+    //     // async.eachLimit(Object.keys(dateTrade), PARALLEL_INSERT_LIMIT, (record, _next) => {
+    //     //   this._addNewTrade(exSession, record, _next);
+    //     // }, next);
+    //     CMCService.getCoingeckoHistoryPrice('ETH', date, (err, result) => {
+    //       if(err) return next(err)
+  
+    //       dateTrade[date].usdPrice = result.price_usd
+    //       return next(null)
+    //     });
+    //   },
+    //   (next) => {
+    //     exSession.commit(next);
+    //   }
+    // ], (err, ret) => {
+    //   exSession.destroy();
+    //   if (err) {
+    //     return callback(err);
+    //   }
+
+    //   // return callback(null, true);
+    //   this._updateTradePrice(exSession, packTrades, dateTrade, callback)
+    // });
+
+
+
   }
 
-  _updateTradePrice(packTrades, datePrice, callback){
-    const exSession = new ExSession();
+  _updateTradePrice(exSession, packTrades, datePrice, callback){
+    // const exSession = new ExSession();
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const updateRows = []
     packTrades.map(t => {
