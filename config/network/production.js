@@ -1,6 +1,6 @@
 module.exports = {
   "endpoints": {
-    "web3Provider": "https://semi-node.kyber.network",
+    "web3Provider": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
     "getRate": "https://production-cache.kyber.network/getRate",
     "apis": "https://api.kyber.network"
