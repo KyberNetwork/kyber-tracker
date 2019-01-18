@@ -111,6 +111,7 @@ const getTokensFromNetwork = callback => {
     console.log("list all reserve ", err, arrayReserve)
     if(err){
       console.log(err)
+      return callback(err)
     }
 
     async.parallelLimit(arrayReserve.map(r => (asyncCallback) =>  getReserveType(r, asyncCallback)) , 10,
@@ -142,7 +143,7 @@ const getTokensFromNetwork = callback => {
           
           if(err){
             console.log(err)
-            return 
+            return callback(err)
           }
           const allTokens = _.flatten(tokensAddr)
           async.parallel(
@@ -155,6 +156,7 @@ const getTokensFromNetwork = callback => {
               }
             }),
             (err, allTokenWithInfo) => {
+              if(err) return callback(err)
               ////////////// 
               const allTokenObj = {[ethConfig.address.toLowerCase()]: ethConfig}
               
