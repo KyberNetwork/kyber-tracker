@@ -19,5 +19,8 @@ module.exports = (callback, modelName = 'KyberTradeModel', startId) => {
     limit ${LIMIT_TRADES_SIZE}
   `
 
-  adapter.execRaw(sql, [], callback);
+  adapter.execRaw(sql, [], (err, results) => {
+    exSession.destroy();
+    return callback(err, results)
+  });
 }

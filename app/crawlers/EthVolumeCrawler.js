@@ -49,11 +49,11 @@ class EthVolumeCrawler {
         getUnprocessedTrades(next, "KyberTradeModel");
       }],
       processTrades: ['unprocessedTrades', (ret, next) => {
-        const exSession = new ExSession();
-        this.processTrades(exSession, ret.unprocessedTrades, (err, result) => {
-          exSession.destroy()
-          return next(err, result)
-        });
+        if(!ret.unprocessedTrades || !ret.unprocessedTrades.length) {
+          logger.info(`Already processed newest trades. Crawler will be restarted ...`);
+          return next(null)
+        }
+        this.processTrades(ret.unprocessedTrades, next);
       }]
     }, (err, ret) => {
       
@@ -62,7 +62,9 @@ class EthVolumeCrawler {
         logger.error(err);
         logger.info(`Crawler will be restarted in 13 seconds...`);
         timer = 13000;
-      } else {
+      } 
+      
+      if(ret.processTrades){
         logger.info(`Already processed pack ${process.env.LIMIT_TRADES_SIZE} trades. Crawler will be restarted ...`);
       }
 
@@ -72,25 +74,44 @@ class EthVolumeCrawler {
     });
   }
 
-  processTrades (exSession, unprocessedTrades, callback) {
+  processTrades (unprocessedTrades, callback) {
+    console.log("--------------process: ", unprocessedTrades.length, 'trades')
+
     // Crawl the newest block already
 
-    if (!unprocessedTrades.length) {
-      return callback(null, true);
+    // if (!unprocessedTrades.length) {
+    //   return callback(null, true);
+    // }
+
+    // const selectedTrades = unprocessedTrades.slice(0, BATCH_TRADES_SIZE)
+
+    // this._processTradesOnce(exSession, selectedTrades, (err, ret) => {
+    //   if (err) {
+    //     return callback(err);
+    //   }
+    //   unprocessedTrades.splice(0, BATCH_TRADES_SIZE);
+    //   process.nextTick(() => {
+    //     this.processTrades(unprocessedTrades, callback);
+    //   });
+
+    // });
+    
+
+    let arrayGroupTrade = []
+    while (unprocessedTrades.length > 0){
+      arrayGroupTrade.push(unprocessedTrades.splice(0, BATCH_TRADES_SIZE))
     }
+    const exSession = new ExSession();
 
-    const selectedTrades = unprocessedTrades.slice(0, BATCH_TRADES_SIZE)
-
-    this._processTradesOnce(exSession, selectedTrades, (err, ret) => {
+    async.eachSeries(arrayGroupTrade, (group, next) => {
+      this._processTradesOnce(exSession, group, next)
+    }, (err, results) => {
+      exSession.destroy();
       if (err) {
         return callback(err);
       }
-      unprocessedTrades.splice(0, BATCH_TRADES_SIZE);
-      process.nextTick(() => {
-        this.processTrades(exSession, unprocessedTrades, callback);
-      });
-
-    });
+      return callback(null, true);
+    })
   }
 
   _processTradesOnce (exSession, packTrades, callback) {
@@ -116,7 +137,6 @@ class EthVolumeCrawler {
         return asyncCallback(null)
       });
     }, err => {
-      // exSession.destroy();
       if(err) return callback(err)
 
       this._updateTradePrice(exSession, packTrades, dateTrade, callback)

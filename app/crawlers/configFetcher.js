@@ -92,7 +92,6 @@ const getTokensFromApis = callback => {
           arrayReserve.map((r, i) => {
             reserveType[r.toLowerCase()] = arrayTypeOfReserve[i]
           })
-
           return callback(null, standardizeReserveTokenType(tokens, reserveType))
         })
       })
