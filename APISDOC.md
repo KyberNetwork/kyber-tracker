@@ -4,6 +4,7 @@
 
 #### '/api/trades'  
 ex: /api/trades?limit=20&page=0&symbol=ETH&official=false
+
 (GET) returns a list of trades between a time range
 
 Input Request Parameters
@@ -104,6 +105,7 @@ Response:
    
 #### '/api/trades/:tradeId'  
 ex: /api/trades/142014?official=false
+
 (GET) returns detail of trade with id (not txHash)
 
 Input Request Parameters
@@ -156,8 +158,9 @@ Response:
 }
 ```
 
-####'/api/tokens'
+#### '/api/tokens'
 ex: /api/tokens?fromDate=1547977465&toDate=1548063865&official=false
+
 (GET) returns list of supported tokens (use for table tokens bellow charts)
 
 Input Request Parameters
@@ -207,12 +210,14 @@ Response:
 
 ```
 
-####'/tokens/top' 
+#### '/tokens/top' 
 ex: /api/tokens/top?fromDate=1545471865&toDate=1548063865&official=false
+
 (GET) Parameters and returns same as /tokens, order by volumeETH, use for chart top tokens
 
-####'/api/stats24h'
+#### '/api/stats24h'
 ex: /api/stats24h?official=false
+
 (GET) Returns 24h status of kyber: networkVolume, collectedFees, totalBurnedFee
 
 Input Request Parameters
@@ -237,8 +242,9 @@ Response:
 }
 ```
 
-####'/api/volumes'      
+#### '/api/volumes'      
 ex: /api/volumes?period=D30&interval=D1&symbol=DAI&official=false
+
 (GET) Returns volume of netowrk/token between timerange, or in period (ignore WETH)
 
 Input Request Parameters
@@ -280,6 +286,7 @@ Response:
 
 #### '/api/fees/to_burn'   
 ex: /api/fees/to_burn?period=D30&interval=D1&symbol&official=false
+
 (GET) Returns burn fee will burn in futrure between timerange
 
 Input Request Parameters
@@ -322,6 +329,7 @@ Response:
 
 #### '/api/fees/collected'
 ex: /api/fees/collected?period=D30&interval=D1&symbol&official=false
+
 (GET) Returns collected fee in timerange (fee which reserve will pay for protocol, use to burn and pay for commission collectedFee = feeToBurn + commission )
 
 Parameters and return format are the same as '/fees/to_burn'
@@ -391,8 +399,10 @@ Response:
 }
 
 ```
+
 #### '/api/partner/:partnerId' 
 ex: /api/partner/0x2d841E088087D3A447d198725291D485dFBa024D?limit=20&page=0&official=false
+
 (GET) returns partner detail by id or name
 
 Input Request Parameters
@@ -499,6 +509,7 @@ Response:
 
 #### '/api/currencies/convertiblePairs'
 ex: /api/currencies/convertiblePairs
+
 (GET) Returns pair of supported tokens with eth, contain current price
 
 [no params]
@@ -555,9 +566,11 @@ Response:
 ```
 
 #### '/api/tokens/pairs'
+
 (GET) Parameters and returns same as above, but easier to remember & type
 
 #### '/api/tokens/supported' 
+
 (GET) Return list token supported in network
 
 Input Request Parameters
@@ -595,7 +608,9 @@ Response:
 ```
 
 #### '/api/tokens/rates'  
+
 (GET) returns rate info of all tokens for rate chart of kyber swap             
+
 [no params] 
 
 Response:
@@ -632,7 +647,9 @@ Response:
 ```
 
 #### '/api/tickers'    
+
 (GET) returns data of all token pairs with eth, include current rate, last trade and volume                
+
 [no params] 
 
 Response:
@@ -682,6 +699,7 @@ Response:
 ```
 
 #### '/api/change24h'  
+
 (GET) return 24h change data of all token  
 
 Input Request Parameters
@@ -729,6 +747,7 @@ Response:
 
 ####'/chart/history'
 ex: /chart/history?symbol=KNC&resolution=30&rateType=buy&from=1544924753&to=1545122790
+
 (GET) return chart data for swap
 
 Input Request Parameters
