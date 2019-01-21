@@ -167,10 +167,10 @@ export default {
           csvContent += data.map(function(d){
             let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
             let fromToken = d.takerTokenSymbol
-            let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0
+            let fromAmount = GLOBAL_TOKENS[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, GLOBAL_TOKENS[fromToken].decimal)).toString() : 0
 
             let toToken = d.makerTokenSymbol
-            let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0
+            let toAmount = GLOBAL_TOKENS[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, GLOBAL_TOKENS[toToken].decimal)).toString() : 0
 
             // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
             let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0
