@@ -745,7 +745,7 @@ Response:
 
 ## chart
 
-####'/chart/history'
+#### '/chart/history'
 ex: /chart/history?symbol=KNC&resolution=30&rateType=buy&from=1544924753&to=1545122790
 
 (GET) return chart data for swap
@@ -813,6 +813,157 @@ Response:
 }
 ```
 
+##### '/chart/config'
 
-              
+(GET) returns supported config for chart
+
+Response:
+```javascript
+{
+"supported_resolutions": [
+  "60",
+  "120",
+  "240",
+  "360",
+  "720",
+  "D",
+  "W",
+  "M"
+],
+"supports_group_request": false,
+"supports_marks": false,
+"supports_search": true,
+"supports_timescale_marks": false,
+"supports_time": true,
+"exchanges": [],
+"symbolsTypes": []
+}
+```    
+
+#### '/chart/symbols'   
+ex: /chart/symbols?symbol=KNC
+
+(GET) returns supported config for token
+
+Input Request Parameters
+
+|Name | Type | Required | Description |
+| ----------| ---------|------|-----------------------------|
+|symbol|STRING|YES| Symbol of currency|
+
+Response:
+```javascript
+{
+"name": "KNC",
+"ticker": "KNC",
+"description": "Kyber Network",
+"type": "Ethereum Token",
+"session": "24x7",
+"listed_exchange": "Kyber Network",
+"timezone": "Asia/Singapore",
+"minmov": 1,
+"pricescale": 1000000,
+"minmove2": 0,
+"fractional": false,
+"has_intraday": true,
+"supported_resolutions": [
+"60",
+"120",
+"240",
+"360",
+"720",
+"D",
+"W",
+"M"
+],
+"intraday_multipliers": [
+"60",
+"120",
+"240",
+"360",
+"720"
+],
+"has_seconds": false,
+"seconds_multipliers": [],
+"has_daily": true,
+"has_weekly_and_monthly": true,
+"has_empty_bars": true,
+"force_session_rebuild": false,
+"has_no_volume": true,
+"volume_precision": 3,
+"data_status": "pulsed",
+"expired": false,
+"currency_code": "ETH"
+}
+```
+
+#### '/chart/search'
+
+ex: /chart/search?limit=2&query=ETH
+
+(GET) return token chart name
+
+|Name | Type | Required | Description |
+| ----------| ---------|------|-----------------------------|
+|query|STRING|NO| token symbol, if `null` return list all token name|
+|limit|INT|NO| Limt number token in list|
+
+
+Response:
+```javascript
+[
+  {
+    "symbol": "WETH",
+    "full_name": "WETH",
+    "description": "Wrapped Ether"
+  },
+  {
+    "symbol": "KNC",
+    "full_name": "KNC",
+    "description": "Kyber Network"
+  },
+  {
+    "symbol": "DAI",
+    "full_name": "DAI",
+    "description": "Dai Stablecoin"
+  }
+]
+```
+
+
+#### '/chart/time'
+
+(GET) return time in ms
+
+#### '/chart/klines 
+
+(GET) return time in ms
+
+|Name | Type | Required | Description |
+| ----------| ---------|------|-----------------------------|
+|symbol|STRING|YES| token symbol|
+|interval|STRING|YES| Interval of data, must be `d` or `w` or `m` or `y`|  
+|rateType|STRING|NO| Type of rate data, must be `sell` or `buy` or `mid`|  
+
+
+Response:
+```javascript
+{
+"t": [
+1547989200,
+1548005400,
+1548019800,
+1548036000,
+1548054000
+],
+"c": [
+0.001130624165,
+0.001146714457389733,
+0.001129542228,
+0.001156590653,
+0.001139577230476519
+],
+"s": "ok"
+}
+```
 
