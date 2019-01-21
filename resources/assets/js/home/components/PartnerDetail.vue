@@ -165,8 +165,11 @@ export default {
             let dataCSV = encodeURI(csvData);
 
             let link = document.createElement('a');
-            link.setAttribute('href', dataCSV);
-            link.setAttribute('download', new Date().toUTCString() + " " + partnerId);
+            link.href = dataCSV
+            link.target = '_blank'
+            link.download = new Date().toUTCString() + " " + partnerId + '.csv'
+            
+            document.body.appendChild(link);
             link.click();
           });
     }
