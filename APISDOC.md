@@ -1,9 +1,12 @@
-------------/api
+# Document for Kyber Tracker apis
+
+## api
 '/api/trades'  
 ex: /api/trades?limit=20&page=0&symbol=ETH&official=false
 (GET) returns a list of trades between a time range
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |symbol|STRING|NO| Symbol of currency. If `null` will return all trades of all tokens with Kyber Network contract|
@@ -103,6 +106,7 @@ ex: /api/trades/142014?official=false
 (GET) returns detail of trade with id (not txHash)
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
@@ -156,6 +160,7 @@ ex: /api/tokens?fromDate=1547977465&toDate=1548063865&official=false
 (GET) returns list of supported tokens (use for table tokens bellow charts)
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
@@ -209,6 +214,7 @@ ex: /api/tokens/top?fromDate=1545471865&toDate=1548063865&official=false
 (GET) Returns 24h status of kyber: networkVolume, collectedFees, totalBurnedFee
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
@@ -234,6 +240,7 @@ ex: /api/volumes?period=D30&interval=D1&symbol=DAI&official=false
 (GET) Returns volume of netowrk/token between timerange, or in period (ignore WETH)
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |symbol|STRING|NO| Symbol of currency. If `null` will return volume of all tokens with Kyber Network contract|
@@ -273,6 +280,7 @@ ex: /api/fees/to_burn?period=D30&interval=D1&symbol&official=false
 (GET) Returns burn fee will burn in futrure between timerange
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |symbol|STRING|NO| Symbol of currency. If `null` will return fee will burn of all tokens with Kyber Network contract|
@@ -322,7 +330,9 @@ Parameters and return format are the same as '/fees/to_burn'
 
 '/search' 
 (GET) Return tx details or address detail depent on search string
+
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |exportData|BOOL|NO| `true` or `false` (default is `false`). If `true` will returns all data, dont care about page and limit, use for export to csv|
@@ -382,6 +392,7 @@ ex: /api/partner/0x2d841E088087D3A447d198725291D485dFBa024D?limit=20&page=0&offi
 (GET) returns partner detail by id or name
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |exportData|BOOL|NO| `true` or `false` (default is `false`). If `true` will returns all data, dont care about page and limit, use for export to csv|
@@ -546,6 +557,7 @@ Response:
 (GET) Return list token supported in network
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |includeDelisted|BOLL|NO| default is `false`. if `true` will return include delisted tokens|
@@ -669,6 +681,7 @@ Response:
 (GET) return 24h change data of all token  
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |usd|BOLL|NO| default is `false`. if `true` will return data with currency unit is `usd`, default is `ETH`|
@@ -708,11 +721,14 @@ Response:
 }
 ```
 
+## chart
+
 '/chart/history'
 ex: /chart/history?symbol=KNC&resolution=30&rateType=buy&from=1544924753&to=1545122790
 (GET) return chart data for swap
 
 Input Request Parameters
+
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
 |symbol|STRING|YES| Symbol of currency. If `null` will return all history of all tokens with Kyber Network contract|
