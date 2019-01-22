@@ -64,13 +64,27 @@ module.exports = {
     .toString()
   },
 
+  numberToHex: function(number) {
+    return "0x" + (new BigNumber(number)).toString(16)
+  },
+  
+  caculateTokenRateAmount(decimal){
+    // console.log("____________decimal", decimal)
+    const tDecimal = decimal || 18
+    const bigAmount = new BigNumber(10).pow(Math.round(tDecimal / 2))
+    return "0x" + bigAmount.toString(16)
+  },
+
   getRateTokenArray: function() {
     let supportedTokens = [];
     let supportedAddressArray = []
+    let tokenRateAmountArray = []
     Object.keys(tokens).forEach(symbol => {
       if (this.shouldShowToken(symbol) && symbol !== "ETH") {
         supportedAddressArray.push(tokens[symbol].address);
         supportedTokens.push(tokens[symbol]);
+
+        tokenRateAmountArray.push(this.caculateTokenRateAmount(tokens[symbol].decimal))
       }
     })
 
@@ -78,7 +92,8 @@ module.exports = {
 
     const srcArray = supportedAddressArray.concat(ethArray);
     const destArray = ethArray.concat(supportedAddressArray);
-    const qtyArray = Array(srcArray.length).fill("0x0");
+    const ethRateAmountArray = Array(ethArray.length).fill("0x2386F26FC10000");
+    const qtyArray = tokenRateAmountArray.concat(ethRateAmountArray)
 
     return {
       supportedTokens: supportedTokens,
