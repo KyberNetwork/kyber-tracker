@@ -8,7 +8,7 @@ module.exports = AppController.extends({
   classname: 'WebviewController',
   mainPage: function (req, res) {
     const globalState = {
-      tokens: global.GLOBAL_TOKEN
+      tokens: global.TOKENS_BY_ADDR
     }
     const transferString = `window["GLOBAL_STATE"]=${JSON.stringify(globalState)}`
 

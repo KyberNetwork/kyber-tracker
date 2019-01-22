@@ -4,11 +4,11 @@ import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import network from '../../../../../config/network/production';
 const iconEndpont = 'https://files.kyber.network/DesignAssets/tokens'
-const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
-const tokens = _.keyBy(_.values(GLOBAL_TOKENS), 'symbol');
-
+// const tokens = _.keyBy(_.values(GLOBAL_TOKENS), 'symbol');
+const tokens = TOKENS_BY_ADDR
 const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
   '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
@@ -103,8 +103,8 @@ export default {
     return defaultLanguage
   },
 
-  getTokenInfo: function (symbol) {
-    return tokens[symbol];
+  getTokenInfo: function (address) {
+    return tokens[address];
   },
 
   getDateInfo: function(timestamp, isShort) {
@@ -124,15 +124,16 @@ export default {
     return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
-  shouldShowToken (tokenSymbol, timeStamp) {
+  shouldShowToken (tokenAddress, timeStamp) {
     // return !this.tokens[item.symbol].hidden;
-    if(!tokens[tokenSymbol].hidden) return true;
-    if (typeof tokens[tokenSymbol].hidden != 'number') return false;
-    return (timeStamp || Date.now()) >= tokens[tokenSymbol].hidden;
+    console.log('**************', tokens, tokens[tokenAddress.toLowerCase()])
+    if(!tokens[tokenAddress.toLowerCase()].hidden) return true;
+    if (typeof tokens[tokenAddress.toLowerCase()].hidden != 'number') return false;
+    return (timeStamp || Date.now()) >= tokens[tokenAddress.toLowerCase()].hidden;
   },
 
-  isNewToken (tokenSymbol) {
-    var bornMs = tokens[tokenSymbol].hidden;
+  isNewToken (tokenAddress) {
+    var bornMs = tokens[tokenAddress].hidden;
     if (typeof bornMs != 'number') return false;
     return Date.now() <= bornMs + 24 * 60 * 60 * 1000;
   },
@@ -153,16 +154,14 @@ export default {
     return /^(0x)?[0-9a-f]{40}$/i.test(address)
   },
 
-  getTokenIcon: (symbol, fileName, callback) => {
+  getTokenIcon: (symbol, callback) => {
     if(!symbol) return '/images/tokens/token-unknown.svg'
-    let iconName = fileName || (symbol.toLowerCase() + '.svg');
+    
+    let iconName = symbol.toLowerCase() + '.svg'
     let urlIcon = iconEndpont + '/' + iconName
 
     let img = new Image(); 
     img.onerror = () => {
-      // iconName = symbol.toLowerCase() + '.png';
-      // urlIcon = iconEndpont + '/' + iconName
-      // return callback(urlIcon)
       return callback('/images/tokens/token-unknown.svg')
     };
     img.src = urlIcon;

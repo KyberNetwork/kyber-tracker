@@ -10,7 +10,8 @@ const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const logger                      = require('sota-core').getLogger('TradeCrawler');
 const configFetcher               = require('./configFetcher')
-
+const network = require('../../config/network');
+const ethConfig = network.ETH
 
 let UNPROCESSED_TRADES = [];
 const BATCH_TRADES_SIZE = parseInt(process.env.BATCH_TRADES_SIZE || 10);
@@ -42,10 +43,11 @@ class EthVolumeCrawler {
       unprocessedTrades: ['config', (ret, next) => {
         global.GLOBAL_TOKEN=ret.config.tokensBySymbol
         // console.log("====================config: ", global.GLOBAL_TOKEN)
+        // global.GLOBAL_TOKEN=ret.config.tokensBySymbol
+        global.TOKENS_BY_ADDR=ret.config.tokensByAddress
         if (UNPROCESSED_TRADES.length > 0) {
           return next(null, UNPROCESSED_TRADES);
         }
-
         getUnprocessedTrades(next, "KyberTradeModel");
       }],
       processTrades: ['unprocessedTrades', (ret, next) => {
@@ -130,7 +132,7 @@ class EthVolumeCrawler {
 
 
     async.eachLimit(Object.keys(dateTrade), PARALLEL_INSERT_LIMIT, (date, asyncCallback) => {
-      CMCService.getCoingeckoHistoryPrice('ETH', date, (err, result) => {
+      CMCService.getETHCoingeckoHistoryPrice(date, (err, result) => {
         if(err) return asyncCallback(err)
 
         dateTrade[date].usdPrice = result.price_usd

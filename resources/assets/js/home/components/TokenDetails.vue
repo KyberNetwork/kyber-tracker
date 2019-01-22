@@ -14,14 +14,14 @@
       <b-tab no-body active>
         <chart-volume ref="chartVolume"
           :elementId="'chart-volume'"
-          :tokenSymbol="getFilterTokenSymbol()">
+          :tokenSymbol="getFilterTokenAddress()">
         </chart-volume>
       </b-tab>
     </b-card>
 
     <trade-list ref="datatable"
       :title="getListTitle()"
-      :getFilterTokenSymbol="getFilterTokenSymbol">
+      :getFilterTokenAddress="getFilterTokenAddress">
     </trade-list>
   </div>
 </template>
@@ -35,7 +35,7 @@
   import AppRequest from '../../core/request/AppRequest';
   import util from '../../core/helper/util';
   import network from '../../../../../config/network';
-  const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
+  const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
   import Chart from 'chart.js';
 
   const defaultChartOptions = {
@@ -53,7 +53,8 @@
 
     data() {
       return {
-        tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'address'),
+        // tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'address'),
+        tokens: TOKENS_BY_ADDR,
         selectedPeriod: 'D30',
         selectedInterval: 'D1',
         myChart: undefined,
@@ -71,14 +72,14 @@
           window.clearInterval(this._refreshInterval);
           return;
         }
-        this.symbol = this.getFilterTokenSymbol();
-        const tokenInfo = GLOBAL_TOKENS[this.symbol];
+        this.address = this.getFilterTokenAddress();
+        const tokenInfo = this.tokens[this.address];
         this.tokenName = tokenInfo.name;
         this.tokenAddress = tokenInfo.address;
         this.isOfficial = tokenInfo.official;
         //const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
         // this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
-        this.logoUrl = util.getTokenIcon(tokenInfo.symbol, tokenInfo.icon, (replaceUrl) => {this.logoUrl = replaceUrl})
+        this.logoUrl = util.getTokenIcon(tokenInfo.symbol, (replaceUrl) => {this.logoUrl = replaceUrl})
         this.refreshChartsData();
         this.$refs.datatable.fetch();
       },
@@ -96,16 +97,19 @@
         this.selectedInterval = interval;
         this.refreshChartsData(period, interval, this.symbol);
       },
-      getFilterTokenSymbol() {
-        const tokenAddr = this.$route.params.tokenAddr;
-        const tokenDef = this.tokens[tokenAddr];
-        return tokenDef ? tokenDef.symbol : null;
+      getFilterTokenAddress() {
+        // const tokenAddr = this.$route.params.tokenAddr;
+        // const tokenDef = this.tokens[tokenAddr];
+        return this.$route.params.tokenAddr;
       },
       refreshChartsData () {
         if (this.$refs.chartVolume) {
           this.$refs.chartVolume.refresh(this.selectedPeriod, this.selectedInterval, this.symbol);
         }
       },
+      getAddressEtherscanLink(addr) {
+      return network.endpoints.ethScan + "address/" + addr;
+    },
     },
 
     watch: {
@@ -115,8 +119,8 @@
     },
 
     mounted() {
-      this.symbol = this.getFilterTokenSymbol();
-      if (!this.symbol) {
+      this.address = this.getFilterTokenAddress();
+      if (!this.address) {
         return;
       }
 

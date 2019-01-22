@@ -9,10 +9,15 @@ module.exports = BaseEntity.extends({
   classname: 'KyberTradeEntity',
 
   _recalculate: function () {
-    const tokensByAddress = _.keyBy(_.values(global.GLOBAL_TOKEN), o => o.address.toLowerCase());
-    
-    this.makerTokenSymbol = tokensByAddress && tokensByAddress[this.makerTokenAddress.toLowerCase()] ? tokensByAddress[this.makerTokenAddress.toLowerCase()].symbol : null;
-    this.takerTokenSymbol = tokensByAddress && tokensByAddress[this.takerTokenAddress.toLowerCase()] ? tokensByAddress[this.takerTokenAddress.toLowerCase()].symbol : null;
+
+    if(this.makerTokenAddress) {
+      this.makerTokenAddress = this.makerTokenAddress.toLowerCase()
+      this.makerTokenSymbol = global.TOKENS_BY_ADDR[this.makerTokenAddress] && global.TOKENS_BY_ADDR[this.makerTokenAddress].symbol
+    }
+    if(this.takerTokenAddress) {
+      this.takerTokenAddress = this.takerTokenAddress.toLowerCase()
+      this.takerTokenSymbol = global.TOKENS_BY_ADDR[this.takerTokenAddress] && global.TOKENS_BY_ADDR[this.takerTokenAddress].symbol
+    } 
 
     if (!this.burnFees) this.burnFees = 0;
     if (!this.commission) this.commission = 0;

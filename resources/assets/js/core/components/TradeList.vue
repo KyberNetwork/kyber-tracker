@@ -166,28 +166,32 @@
           <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index">
               <td class="pl-4">{{ getDateInfo(row) }}</td>
-              <td class="text-left pl-4 font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }}
-                <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+              <td class="text-left pl-4 font-semi-bold">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount) }} 
+                <!-- {{ row.takerTokenSymbol }} 
+                <i>(<a :href="getAddressLink(row.takerTokenAddress)" target="_blank">{{getShortedAddr(row.takerTokenAddress)}}</a>)</i> -->
+                <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left no-padding-right"></td> -->
               <td><i class="k k-angle right"></i></td>
-              <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }}
-                <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+              <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount) }} 
+                <!-- {{ row.makerTokenSymbol }}
+                <i>(<a :href="getAddressLink(row.makerTokenAddress)" target="_blank">{{getShortedAddr(row.makerTokenAddress)}}</a>)</i> -->
+                <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left"></td> -->
               <td class="text-left pl-4">1 
                 <span class="font-semi-bold">
-                  <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+                  <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                 </span> = {{ getRate(row) }} 
                 <span class="font-semi-bold">
-                  <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+                  <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                 </span></td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
-              <td v-if="partner" class="text-left pl-4">{{ formatTokenNumber('KNC', row.commission) }} KNC</td>
+              <td v-if="partner" class="text-left pl-4">{{ formatTokenNumber(network.KNC.address, row.commission) }} KNC</td>
               <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
@@ -215,25 +219,28 @@
             <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
               <td class="pl-4">{{ getDateInfo(row, false) }}</td>
               <td class="text-left pl-4 trade-direction">
-                <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenSymbol, row.takerTokenAmount) }} 
-                  <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+                <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount) }} 
+                  <!-- {{ row.takerTokenSymbol }} -->
+                  <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                 </span>
                 <br/>
-                <span class="entypo-down-dir trade-direction-down-symbol"></span>{{ formatTokenNumber(row.makerTokenSymbol, row.makerTokenAmount) }} 
-                  <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+                <span class="entypo-down-dir trade-direction-down-symbol">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount) }} 
+                <!-- {{ row.makerTokenSymbol }} -->
+                  <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
+                </span>
               </td>
               <!-- <td class="text-left pl-4"></td> -->
               <td class="text-left pl-4">
                 <span class="font-semi-bold">
                   <span>
-                    <span v-if="isOfficial(row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
+                    <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                     <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                   </span>
                   /
                   <span>
-                    <span v-if="isOfficial(row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
+                    <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                     <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                   </span>
                 </span>
@@ -287,12 +294,12 @@ import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
 import network from '../../../../../config/network';
-const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 const partners = network.partners
 
 export default {
   props: {
-    getFilterTokenSymbol: {
+    getFilterTokenAddress: {
       type: Function,
     },
     title: {
@@ -363,7 +370,8 @@ export default {
       maxPage: 0,
       searchFromDate: null,
       searchToDate: null,
-      tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol'),
+      // tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol'),
+      tokens: TOKENS_BY_ADDR,
       highlightedToday: {
         dates: [new Date()]
       },
@@ -385,8 +393,8 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOfficial(symbol){
-      return util.isOfficial(GLOBAL_TOKENS[symbol])
+    isOfficial(address){
+      return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     getAddressEtherscanLink(tx) {
       if(!util.isAddress(tx)) tx=partners[tx.toLowerCase()]
@@ -394,8 +402,7 @@ export default {
     },
     getRequestParams () {
       let params = {
-        symbol: this.getFilterTokenSymbol(),
-        
+        address: this.getFilterTokenAddress(),
       };
 
       if(!this.isHideDatepicker){
@@ -409,15 +416,15 @@ export default {
       return util.getDateInfo(trade.blockTimestamp * 1000, isShort);
     },
     getRate (trade) {
-      const makerToken = this.tokens[trade.makerTokenSymbol];
-      const takerToken = this.tokens[trade.takerTokenSymbol];
+      const makerToken = this.tokens[trade.makerTokenAddress];
+      const takerToken = this.tokens[trade.takerTokenAddress];
 
       const makerAmount = (new BigNumber(trade.makerTokenAmount.toString())).div(Math.pow(10, makerToken.decimal));
       const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, takerToken.decimal));
       return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
     },
-    formatTokenNumber (symbol, amount) {
-      const tokenInfo = this.tokens[symbol];
+    formatTokenNumber (address, amount) {
+      const tokenInfo = this.tokens[address];
       return util.formatTokenAmount(amount, tokenInfo.decimal);
     },
     formatDatepicker (date) {
@@ -454,10 +461,10 @@ export default {
     },
 
     shouldShowRow (row) {
-      let taker = tokens[row.takerTokenSymbol].hidden
-      let maker = tokens[row.makerTokenSymbol].hidden
+      let taker = tokens[row.takerTokenAddress].hidden
+      let maker = tokens[row.makerTokenAddress].hidden
 
-      return util.shouldShowToken(row.takerTokenSymbol) && util.shouldShowToken(row.makerTokenSymbol)
+      return util.shouldShowToken(row.takerTokenAddress) && util.shouldShowToken(row.makerTokenAddress)
      
     }
   },

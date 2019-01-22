@@ -14,7 +14,7 @@
           <div class="left-trade-rate d-flex justify-content-around">
             <div class="token col-5">
               <span class="token-symbol">
-                 <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
+                 <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenAddress) }}</span>
                 <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>
               </span>
             </div>
@@ -22,7 +22,7 @@
             <span class="entypo-right to col-2"></span>
             <div class="token col-5">
               <span class="token-symbol">
-                <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
+                <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenAddress) }}</span>
                 <token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link>
               </span>
             </div>
@@ -74,7 +74,7 @@
           {{$t("trade_detail.collected_fees")}}
         </div>
         <div class="rate-detail-value">
-          {{ getTokenAmount(record.collectedFees, 'KNC') }} KNC
+          {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
         </div>
         
       </div>
@@ -83,7 +83,7 @@
           {{$t("trade_detail.commission")}}
         </div>
         <div class="rate-detail-value">
-          {{ getTokenAmount(record.commission, 'KNC') }} KNC
+          {{ getTokenAmount(record.commission, KNCAddr() ) }} KNC
         </div>
         
       </div>
@@ -101,7 +101,7 @@ import BigNumber from "bignumber.js";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
 import network from "../../../../../config/network";
-const GLOBAL_TOKENS = window["GLOBAL_STATE"].tokens
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 export default {
   data() {
@@ -122,7 +122,8 @@ export default {
         volumeUsd: "",
         burnFees: ""
       },
-      tokens: _.keyBy(_.values(GLOBAL_TOKENS), "symbol")
+      // tokens: _.keyBy(_.values(GLOBAL_TOKENS), "symbol")
+      tokens: TOKENS_BY_ADDR
     };
   },
 
@@ -154,12 +155,12 @@ export default {
         );
       }
     },
-    getTokenAmount(amount, symbol) {
-      if (!amount || !symbol) {
+    getTokenAmount(amount, address) {
+      if (!amount || !address) {
         return null;
       }
 
-      const tokenInfo = util.getTokenInfo(symbol);
+      const tokenInfo = util.getTokenInfo(address.toLowerCase());
       return util.formatTokenAmount(amount, tokenInfo.decimal, 6);
     },
     getTxEtherscanLink(tx) {
@@ -175,12 +176,12 @@ export default {
       });
     },
     getRate(trade) {
-      if (!this.record.makerTokenSymbol || !this.record.takerTokenSymbol) {
+      if (!this.record.makerTokenAddress || !this.record.takerTokenAddress) {
         return "";
       }
 
-      const makerToken = this.tokens[this.record.makerTokenSymbol];
-      const takerToken = this.tokens[this.record.takerTokenSymbol];
+      const makerToken = this.tokens[this.record.makerTokenAddress];
+      const takerToken = this.tokens[this.record.takerTokenAddress];
 
       const makerAmount = new BigNumber(
         this.record.makerTokenAmount.toString()
@@ -193,6 +194,9 @@ export default {
     },
     formatFiatCurrency(amount) {
       return util.formatFiatCurrency(amount);
+    },
+    KNCAddr(){
+      return network.KNC.address
     }
   },
 

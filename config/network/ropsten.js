@@ -39,6 +39,13 @@ module.exports = {
     "decimal": 18,
     "cmcId": "1982",
   },
+  "WETH": {
+    "name": "Wrapped Ether",
+    "symbol" : "WETH",
+    "decimal": 18,
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "hidden": true
+  },
   
   "tokens": {
     "ETH": {
@@ -235,6 +242,15 @@ module.exports = {
       "address": "0x1742c81075031b8f173d2327e3479d1fc3feaa76",
       "hidden": true
     },
+
+    "WETH": {
+      "name": "Wrapped Ether",
+      "symbol" : "WETH",
+      "decimal": 18,
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "hidden": true
+    },
+    
     "BITX": {
       "name": "BitScreenerToken",
       "decimal": 18,

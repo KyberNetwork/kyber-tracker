@@ -222,10 +222,11 @@ module.exports = BaseService.extends({
     });
   },
 
-  getCoingeckoHistoryPrice: function(symbol, date, callback){
-    if (!symbol || typeof symbol !== 'string') {
-      return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
-    }
+  getETHCoingeckoHistoryPrice: function(date, callback){
+    // logger.info(`_getHistoricalPrice ` + cgId);
+    // if (!cgId || typeof cgId !== 'string') {
+    //   return callback(`Cannot get historical price of invalid symbol: ${cgId}`);
+    // }
 
     // const tokenInfo = global.GLOBAL_TOKEN[symbol];
     // if (!tokenInfo) {
@@ -240,7 +241,7 @@ module.exports = BaseService.extends({
   },
   
   _getCoingeckoHistoryPrice: function(cgId, date, callback){
-    logger.debug(`_getHistoricalPrice ` + cgId);
+    
 
     request
       .get(`https://api.coingecko.com/api/v3/coins/${cgId}/history?date=${date}`)

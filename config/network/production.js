@@ -31,6 +31,7 @@ module.exports = {
     "cgId": "ethereum",
     "official": true
   },
+  
   "KNC": {
     "name": "Kyber Network",
     "symbol": "KNC",
@@ -40,6 +41,14 @@ module.exports = {
     "cmcIdv2": "1982"
   },
 
+  "WETH": {
+    "name": "Wrapped Ether",
+    "symbol" : "WETH",
+    "decimal": 18,
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "hidden": true
+  },
+  
   "tokens": {
     "ETH": {
       "name": "Ethereum",
