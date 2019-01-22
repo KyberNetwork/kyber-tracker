@@ -7,31 +7,24 @@ const contract = new web3.eth.Contract(JSON.parse(wrapperABI), "0x6172AFC8c00c46
 
 const networkContract = new web3.eth.Contract(JSON.parse(networkABI), "0x818E6FECD516Ecc3849DAf6845e3EC868087B755");
 
-// contract.methods.getExpectedRates(
-//     '0x818E6FECD516Ecc3849DAf6845e3EC868087B755',
-//     ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
-//     ['0xf263292e14d9D8ECd55B58dAD1F1dF825a874b7c', '0xdd974d5c2e2928dea5f71b9825b8b646686bd200'],
-//     ['0x0']
-// )
-//     .call(undefined, 6997050)
-//     .then(console.log);
+contract.methods.getExpectedRates(
+    '0x818E6FECD516Ecc3849DAf6845e3EC868087B755',
+    ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2', '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
+    ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'],
+    ['0x3B9ACA00', '0x0']
+)
+    .call(undefined, 7076544)
+    .then(console.log);
 
 
 
 
     networkContract.methods.getExpectedRate(
+        '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
         '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-        '0xf263292e14d9D8ECd55B58dAD1F1dF825a874b7c',
         '0x0'
     )
-        .call(undefined, 6997050)
+        .call(undefined, 7076544)
         .then(console.log);
 
 
-        networkContract.methods.getExpectedRate(
-            '0xf263292e14d9D8ECd55B58dAD1F1dF825a874b7c',
-            '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-            '0x0'
-        )
-            .call(undefined, 6997050)
-            .then(console.log);
