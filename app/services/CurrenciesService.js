@@ -25,11 +25,11 @@ module.exports = BaseService.extends({
 
     let pairs = {}
 
-    Object.keys(global.GLOBAL_TOKEN).forEach(token => {
+    Object.keys(global.TOKENS_BY_ADDR).forEach(address => {
       if ((token.toUpperCase() !== "ETH") &&
-        !global.GLOBAL_TOKEN[token].delisted &&
-        helper.shouldShowToken(token) &&
-        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+        !global.TOKENS_BY_ADDR[address].delisted &&
+        helper.shouldShowToken(address) &&
+        helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
         pairs[token] = (asyncCallback) => this._getRateInfo(token, {
           //tradeAdapter: tradeAdapter,
@@ -65,7 +65,7 @@ module.exports = BaseService.extends({
     };
   },
 
-  _getRateInfo: function (symbol, options, callback) {
+  _getRateInfo: function (address, options, callback) {
 
     //const tradeAdapter = options.tradeAdapter;
     const rateAdapter = options.rateAdapter;
@@ -79,21 +79,21 @@ module.exports = BaseService.extends({
 
     // volume SQL
     /*
-    const tradeWhere = "block_timestamp >= ? AND (maker_token_symbol = ? OR taker_token_symbol = ?)";
+    const tradeWhere = "block_timestamp >= ? AND (maker_token_address = ? OR taker_token_address = ?)";
     const tradeSql = `select IFNULL(sum(volume_eth),0) as ETH, IFNULL(sum(volume_usd),0) as USD from kyber_trade where ${tradeWhere}`;
-    const tradeParams = [dayAgo, symbol, symbol];
+    const tradeParams = [dayAgo, address, address];
     */
 
     // 24h price SQL
     const lastSql = `SELECT mid_expected as '24h' FROM rate7d
-      WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
-    const lastParams = [symbol, hour30Ago, hour18Ago];
+      WHERE quote_address = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+    const lastParams = [address, hour30Ago, hour18Ago];
 
     // 7 days points
     //const pointSql = "select FLOOR(AVG(block_timestamp)) as timestamp, AVG(mid_expected) as rate from rate " +
     const pointSql = "select AVG(mid_expected) as rate7d from rate " +
-      "where quote_symbol = ? AND mid_expected > 0 AND block_timestamp >= ? group by h6_seq";
-    const pointParams = [symbol, weekAgo];
+      "where quote_address = ? AND mid_expected > 0 AND block_timestamp >= ? group by h6_seq";
+    const pointParams = [address, weekAgo];
 
     async.auto({
       /*
@@ -126,21 +126,21 @@ module.exports = BaseService.extends({
   },
 
   getConvertiblePairs: function (options, callback) {
-    if (!global.GLOBAL_TOKEN) return callback(null, {});
+    if (!global.TOKENS_BY_ADDR) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(global.GLOBAL_TOKEN).map(token => {
-      // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
-      if ((token.toUpperCase() !== "ETH") &&
-        !global.GLOBAL_TOKEN[token].delisted &&
-        helper.shouldShowToken(token) && 
-        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+    Object.keys(global.TOKENS_BY_ADDR).map(address => {
+      // if((token.toUpperCase() !== "ETH") && !global.TOKENS_BY_ADDR[address].hidden){
+      if ((address !== network.ETH.address) &&
+        !global.TOKENS_BY_ADDR[address].delisted &&
+        helper.shouldShowToken(address) && 
+        helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
-        const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
+        const cmcName = global.TOKENS_BY_ADDR[address].cmcSymbol || address;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
-          token: token,
-          fromCurrencyCode: "ETH"
+          address: address,
+          fromCurrencyCode: network.ETH.address
         }, asyncCallback)
       }
     });
@@ -158,18 +158,18 @@ module.exports = BaseService.extends({
   },
 
   _getCurrencyInfo: function (options, callback) {
-    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
+    if (!options.token || !global.TOKENS_BY_ADDR[options.address]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.TOKENS_BY_ADDR[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
-    let tokenSymbol = options.token
+    let tokenAddress = options.address
     let base = options.fromCurrencyCode
-    let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
-    let baseTokenData = global.GLOBAL_TOKEN[base]
+    let tokenData = global.TOKENS_BY_ADDR[tokenSymbol]
+    let baseTokenData = global.TOKENS_BY_ADDR[base]
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const CMCService = this.getService('CMCService');
@@ -180,28 +180,28 @@ module.exports = BaseService.extends({
       baseVolume: (next) => {
         KyberTradeModel.sum('volume_eth', {
           where: 'block_timestamp > ? AND (maker_token_symbol = ? OR taker_token_symbol = ?)',
-          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol, tokenSymbol],
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenAddress, tokenAddress],
         }, next);
       },
       quoteVolumeTaker: (next) => {
         KyberTradeModel.sum('taker_token_amount', {
           where: 'block_timestamp > ? AND taker_token_symbol = ?',
-          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenAddress],
         }, next);
       },
       quoteVolumeMaker: (next) => {
         KyberTradeModel.sum('maker_token_amount', {
           where: 'block_timestamp > ? AND maker_token_symbol = ?',
-          params: [nowInSeconds - DAY_IN_SECONDS, tokenSymbol],
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenAddress],
         }, next);
       },
       price: (next) => {
-        CMCService.getCurrentRate(tokenSymbol, base, next);
+        CMCService.getCurrentRate(tokenAddress, base, next);
       },
       lastTrade: (next) => {
         KyberTradeModel.findOne({
           where: 'taker_token_symbol = ? OR maker_token_symbol = ?',
-          params: [tokenSymbol, tokenSymbol],
+          params: [tokenAddress, tokenAddress],
           orderBy: 'block_timestamp DESC',
         }, next)
       }
@@ -215,12 +215,12 @@ module.exports = BaseService.extends({
         let bigMakerAmount = ret.lastTrade.makerTokenAmount ? new BigNumber(ret.lastTrade.makerTokenAmount) : new BigNumber(0)
         let bigTakerAmount = ret.lastTrade.takerTokenAmount ? new BigNumber(ret.lastTrade.takerTokenAmount) : new BigNumber(0)
 
-        if (ret.lastTrade.takerTokenSymbol != tokenSymbol && !bigMakerAmount.isZero()) {
+        if (ret.lastTrade.takerTokenAddress != tokenAddress && !bigMakerAmount.isZero()) {
           let amountTaker = ret.lastTrade.volumeEth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
           let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
           lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
         }
-        else if (ret.lastTrade.makerTokenSymbol != tokenSymbol && !bigTakerAmount.isZero()) {
+        else if (ret.lastTrade.makerTokenAddress != tokenAddress && !bigTakerAmount.isZero()) {
           let amountMaker = ret.lastTrade.volumeEth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
           let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
           lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
@@ -236,6 +236,7 @@ module.exports = BaseService.extends({
       return callback(null, {
         "symbol": tokenData.cmcSymbol || tokenData.symbol,
         "name": tokenData.name,
+        "address": tokenAddress,
         // "code": tokenData.symbol,
         "contractAddress": tokenData.address,
         "decimals": tokenData.decimal,
@@ -249,21 +250,21 @@ module.exports = BaseService.extends({
   },
 
   getPair24hData: function (options, callback) {
-    if (!global.GLOBAL_TOKEN) return callback(null, {});
+    if (!global.TOKENS_BY_ADDR) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(global.GLOBAL_TOKEN).map(token => {
-      if ((token.toUpperCase() !== "ETH") &&
-        !global.GLOBAL_TOKEN[token].delisted &&
-        helper.shouldShowToken(token) &&
-        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+    Object.keys(global.TOKENS_BY_ADDR).map(address => {
+      if ((address !== network.ETH.network) &&
+        !global.TOKENS_BY_ADDR[address].delisted &&
+        helper.shouldShowToken(address) &&
+        helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
-        pairs["ETH_" + token] = (asyncCallback) => this._getPair24hData({
+        pairs[network.ETH.address + "_" + address] = (asyncCallback) => this._getPair24hData({
           tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
-          token: token,
-          fromCurrencyCode: "ETH"
+          token: address,
+          fromCurrencyCode: network.ETH.address
         }, asyncCallback)
       }
     });
@@ -275,9 +276,9 @@ module.exports = BaseService.extends({
         const rates = pairs.allRates;
         delete pairs.allRates;
         Object.values(pairs).forEach((value) => {
-          const askrate = rates.getRate(value.base_symbol, value.quote_symbol);
+          const askrate = rates.getRate(value.base_address, value.quote_address);
           const normalAsk = askrate ? (1 / askrate) : 0;
-          const normalBid = rates.getRate(value.quote_symbol, value.base_symbol);
+          const normalBid = rates.getRate(value.quote_address, value.base_address);
           if (normalAsk) {
             value.current_ask = normalAsk;
           }
@@ -299,17 +300,17 @@ module.exports = BaseService.extends({
   },
 
   _getPair24hData: function (options, callback) {
-    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
+    if (!options.address || !global.TOKENS_BY_ADDR[options.address]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.TOKENS_BY_ADDR[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
 
-    let tokenSymbol = options.token
-    let baseSymbol = options.fromCurrencyCode
-    let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
+    let tokenAddress = options.address
+    let baseAddress = options.fromCurrencyCode
+    let tokenData = global.TOKENS_BY_ADDR[tokenAddress]
 
     const nowInMs = Date.now();
     const nowInSeconds = Math.floor(nowInMs / 1000);
@@ -317,28 +318,28 @@ module.exports = BaseService.extends({
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
     const KyberTradeModel = this.getModel('KyberTradeModel');
     // volume SQL
-    const tradeWhere = 'block_timestamp > ? AND (maker_token_symbol = ?  OR  taker_token_symbol = ?)';
+    const tradeWhere = 'block_timestamp > ? AND (maker_token_address = ?  OR  taker_token_address = ?)';
     const tradeSql = `select IFNULL(sum(volume_usd),0) as usd_24h_volume, IFNULL(sum(volume_eth),0) as eth_24h_volume from kyber_trade where ${tradeWhere}`;
-    const tradeParams = [dayAgo, tokenSymbol, tokenSymbol];
+    const tradeParams = [dayAgo, tokenAddress, tokenAddress];
 
     // 24h price SQL
     const rateSql = `SELECT max(buy_expected) as 'past_24h_high', min(sell_expected) as 'past_24h_low' FROM rate7d
-      WHERE quote_symbol = ? AND block_timestamp > ? AND buy_expected > 0 AND sell_expected > 0`;
-    const rateParams = [tokenSymbol, dayAgo];
+      WHERE quote_address = ? AND block_timestamp > ? AND buy_expected > 0 AND sell_expected > 0`;
+    const rateParams = [tokenAddress, dayAgo];
 
     // last price SQL
     const lastSql = `SELECT buy_expected as 'current_ask', sell_expected as 'current_bid' FROM rate7d
-      WHERE quote_symbol = ? AND buy_expected > 0 AND sell_expected > 0
+      WHERE quote_address = ? AND buy_expected > 0 AND sell_expected > 0
       ORDER BY block_number DESC LIMIT 1`;
-    const lastParams = [tokenSymbol];
+    const lastParams = [tokenAddress];
 
     //volume token base
     const volumeSql = `SELECT sum(volume_) as volume FROM 
-    (SELECT IFNULL(sum(maker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND maker_token_symbol = ?
+    (SELECT IFNULL(sum(maker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND maker_token_address = ?
       UNION ALL
-      SELECT IFNULL(sum(taker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
+      SELECT IFNULL(sum(taker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND taker_token_address = ?
     )a`;
-    const volumeParams = [dayAgo, tokenSymbol, dayAgo, tokenSymbol];
+    const volumeParams = [dayAgo, tokenAddress, dayAgo, tokenAddress];
 
     async.auto({
       trade: (next) => {
@@ -355,8 +356,8 @@ module.exports = BaseService.extends({
       },
       lastTrade: (next) => {
         KyberTradeModel.findOne({
-          where: 'taker_token_symbol = ? OR maker_token_symbol = ?',
-          params: [tokenSymbol, tokenSymbol],
+          where: 'taker_token_address = ? OR maker_token_address = ?',
+          params: [tokenAddress, tokenAddress],
           orderBy: 'block_timestamp DESC',
         }, next)
       }
@@ -369,12 +370,12 @@ module.exports = BaseService.extends({
         let bigMakerAmount = ret.lastTrade.makerTokenAmount ? new BigNumber(ret.lastTrade.makerTokenAmount) : new BigNumber(0)
         let bigTakerAmount = ret.lastTrade.takerTokenAmount ? new BigNumber(ret.lastTrade.takerTokenAmount) : new BigNumber(0)
 
-        if (ret.lastTrade.takerTokenSymbol !== tokenSymbol && !bigMakerAmount.isZero()) {
+        if (ret.lastTrade.takerTokenAddress !== tokenAddress && !bigMakerAmount.isZero()) {
           let amountTaker = ret.lastTrade.volumeEth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
           let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
           lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
         }
-        else if (ret.lastTrade.makerTokenSymbol !== tokenSymbol && !bigTakerAmount.isZero()) {
+        else if (ret.lastTrade.makerTokenAddress !== tokenAddress && !bigTakerAmount.isZero()) {
           let amountMaker = ret.lastTrade.volumeEth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
           let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
           lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
@@ -383,8 +384,8 @@ module.exports = BaseService.extends({
       const quoteVolume = ret.volume[0].volume ? new BigNumber(ret.volume[0].volume.toString()).div(Math.pow(10, tokenData.decimal)).toNumber() : 0
       return callback(null, {
         timestamp: nowInMs,
-        quote_symbol: tokenSymbol,
-        base_symbol: baseSymbol,
+        quote_address: tokenAddress,
+        base_address: tokenAddress,
         past_24h_high: ret.rate.length ? (ret.rate[0].past_24h_high || 0) : 0,
         past_24h_low: ret.rate.length ? (ret.rate[0].past_24h_low || 0) : 0,
         usd_24h_volume: ret.trade.length ? (ret.trade[0].usd_24h_volume || 0) : 0,
@@ -399,22 +400,21 @@ module.exports = BaseService.extends({
 
   // get 24h change by eth
   get24hChangeData: function (options, callback) {
-    if (!global.GLOBAL_TOKEN) return callback(null, {});
+    if (!global.TOKENS_BY_ADDR) return callback(null, {});
 
     let pairs = {};
 
-    Object.keys(global.GLOBAL_TOKEN).map(token => {
-      // if((token.toUpperCase() !== "ETH") && !global.GLOBAL_TOKEN[token].hidden){
-      if ((token.toUpperCase() !== "ETH") &&
-        !global.GLOBAL_TOKEN[token].delisted &&
+    Object.keys(global.TOKENS_BY_ADDR).map(address => {
+      if ((address !== network.ETH.address) &&
+        !global.TOKENS_BY_ADDR[address].delisted &&
         helper.shouldShowToken(token) &&
-        helper.filterOfficial(options.official, global.GLOBAL_TOKEN[token])
+        helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
-        const cmcName = global.GLOBAL_TOKEN[token].cmcSymbol || token;
-        pairs["ETH_" + cmcName] = (asyncCallback) => this._get24hChangeData({
+
+        pairs[network.ETH.address + "_" + address] = (asyncCallback) => this._get24hChangeData({
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
-          token: token,
-          fromCurrencyCode: "ETH",
+          token: address,
+          fromCurrencyCode: network.ETH.address,
         }, asyncCallback)
       }
     });
@@ -452,7 +452,7 @@ module.exports = BaseService.extends({
         Object.values(pairs).forEach((value) => {
           let change_usd_24h = "-", rate_usd_now = "-";
           const rate_production_cache = _.find(rates.data, (x) => {
-            return x.source === value.token_symbol
+            return x.source === value.token_address
           });
           if (rate_production_cache && rate_production_cache.rate !== 0) {
             value.rate_eth_now = new BigNumber(rate_production_cache.rate).div(Math.pow(10, 18)).toNumber();
@@ -473,7 +473,7 @@ module.exports = BaseService.extends({
       } else {
         Object.values(pairs).forEach((value) => {
           const rate_production_cache = _.find(rates.data, (x) => {
-            return x.source === value.token_symbol
+            return x.source === value.token_address
           });
           if (rate_production_cache && rate_production_cache.rate !== 0) {
             value.rate_eth_now = new BigNumber(rate_production_cache.rate).div(Math.pow(10, 18)).toNumber();
@@ -485,7 +485,7 @@ module.exports = BaseService.extends({
       }
 
       //add ETH_ETH
-      pairs["ETH_ETH"] = {
+      pairs[network.ETH.address + '_' + network.ETH.address] = {
         timestamp: Date.now(),
         token_name: network.ETH.name,
         token_symbol: network.ETH.symbol,
@@ -499,19 +499,19 @@ module.exports = BaseService.extends({
         if (price_now_eth !== "-" && price_24h_eth !== "-" && price_24h_eth !== 0) {
           change_usd_24h = (price_now_eth - price_24h_eth) * 100 / price_24h_eth
         }
-        pairs["ETH_ETH"].change_usd_24h = change_usd_24h;
-        pairs["ETH_ETH"].rate_usd_now = price_now_eth !== "-" ? parseFloat(price_now_eth) : price_now_eth;
+        pairs[network.ETH.address + '_' + network.ETH.address].change_usd_24h = change_usd_24h;
+        pairs[network.ETH.address + '_' + network.ETH.address].rate_usd_now = price_now_eth !== "-" ? parseFloat(price_now_eth) : price_now_eth;
       }
       callback(err, pairs);
     });
   },
 
   _get24hChangeData: function (options, callback) {
-    if (!options.token || !global.GLOBAL_TOKEN[options.token]) {
+    if (!options.token || !global.TOKENS_BY_ADDR[options.token]) {
       return callback("token not supported")
     }
 
-    if (!options.fromCurrencyCode || !global.GLOBAL_TOKEN[options.fromCurrencyCode]) {
+    if (!options.fromCurrencyCode || !global.TOKENS_BY_ADDR[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
     const CACHE_KEY = CacheInfo.Change24h.key + options.token;
@@ -522,9 +522,9 @@ module.exports = BaseService.extends({
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
-      let tokenSymbol = options.token;
-      // let baseSymbol = options.fromCurrencyCode
-      let tokenData = global.GLOBAL_TOKEN[tokenSymbol]
+      let tokenAddress = options.address;
+      
+      let tokenData = global.TOKENS_BY_ADDR[tokenAddress]
 
       const nowInMs = Date.now();
       const nowInSeconds = Math.floor(nowInMs / 1000);
@@ -536,11 +536,11 @@ module.exports = BaseService.extends({
 
       // 24h price SQL
       const lastSql = `SELECT mid_expected as 'rate_eth_24h' FROM rate7d
-     WHERE quote_symbol = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
-      const lastParams = [tokenSymbol, hour30Ago, hour18Ago];
+      WHERE quote_address = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+      const lastParams = [tokenAddress, hour30Ago, hour18Ago];
 
-      const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate7d WHERE quote_symbol = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
-      const rateNowParams = [tokenSymbol, hour1Ago];
+      const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate7d WHERE quote_address = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
+      const rateNowParams = [tokenAddress, hour1Ago];
 
       async.auto({
         rate: (next) => {
@@ -565,7 +565,7 @@ module.exports = BaseService.extends({
         let data = {
           timestamp: nowInMs,
           token_name: tokenData.name,
-          token_symbol: tokenSymbol,
+          token_address: tokenAddress,
           token_decimal: tokenData.decimal,
           // base_symbol: baseSymbol,
           token_address: tokenData.address,

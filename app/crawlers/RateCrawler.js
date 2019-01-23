@@ -48,7 +48,7 @@ class RateCrawler {
         })
       },
       startBlockNumber: ['config', (ret, next) => {
-        global.GLOBAL_TOKEN=ret.config.tokensBySymbol
+        global.TOKENS_BY_ADDR=ret.config.tokensByAddress
         rateTokenArrays = Utils.getRateTokenArray();
 
         if (LAST_PROCESSED_BLOCK) {

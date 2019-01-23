@@ -53,7 +53,6 @@
 
     data() {
       return {
-        // tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'address'),
         tokens: TOKENS_BY_ADDR,
         selectedPeriod: 'D30',
         selectedInterval: 'D1',

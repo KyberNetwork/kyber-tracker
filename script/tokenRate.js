@@ -9,8 +9,8 @@ const networkContract = new web3.eth.Contract(JSON.parse(networkABI), "0x818E6FE
 
 contract.methods.getExpectedRates(
     '0x818E6FECD516Ecc3849DAf6845e3EC868087B755',
-    ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2', '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
-    ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'],
+    ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2', '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'],
+    ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
     ['0x3B9ACA00', '0x0']
 )
     .call(undefined, 7076544)

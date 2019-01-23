@@ -41,7 +41,7 @@ class TradeCrawler {
         })
       },
       latestProcessedBlock: ['config', (ret, next) => {
-        // global.GLOBAL_TOKEN=ret.config.tokensBySymbol
+        
         global.TOKENS_BY_ADDR=ret.config.tokensByAddress
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
@@ -297,8 +297,7 @@ class TradeCrawler {
       record.volumeEth = Utils.fromWei(record.takerTokenAmount);
       record.sourceOfficial = 1
     } else {
-      // global.GLOBAL_TOKEN[]
-      // 
+
       record.sourceOfficial = 0
       if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()] && record.sourceReserve){
         const tokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()]

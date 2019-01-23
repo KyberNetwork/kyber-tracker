@@ -15,7 +15,7 @@ import util from '../helper/util';
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 export default {
   props: {
-    symbol: {
+    address: {
       type: String,
     },
   },
@@ -27,26 +27,26 @@ export default {
   },
   methods: {
     getLink () {
-      const tokenDef = this.tokens[this.symbol];
+      const tokenDef = this.tokens[this.address && this.address.toLowerCase()];
       if (!tokenDef) {
         return '';
       }
 
-      return `/tokens/${tokenDef.address}`;
+      return `/tokens/${this.address}`;
     },
     getAddress(){
-      const token = this.tokens[this.symbol]
+      const token = this.tokens[this.address]
       if(!token) return ''
       return token.address
     },
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOfficial(symbol){
-      return util.isOfficial(GLOBAL_TOKENS[symbol])
+    isOfficial(address){
+      return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     onClickToken () {
-      const tokenDef = this.tokens[this.symbol];
+      const tokenDef = this.tokens[this.address && this.address.toLowerCase()];
       if (!tokenDef) {
         return;
       }

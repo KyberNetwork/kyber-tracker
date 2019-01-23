@@ -94,7 +94,6 @@
     data() {
       return {
         pageSize: 10,
-        // tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol'),
         tokens: TOKENS_BY_ADDR,
         selectedPeriod: 'D30',
         selectedInterval: 'D1',

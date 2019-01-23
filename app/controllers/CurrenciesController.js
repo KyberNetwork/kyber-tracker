@@ -43,21 +43,21 @@ module.exports = AppController.extends({
     let includeDelisted = params.includeDelisted;
     const ret = [];
     // const tokens = require('../../config/network/chain')(chain).tokens;
-    Object.keys(global.GLOBAL_TOKEN).forEach(symbol => {
-      if (Utils.shouldShowToken(symbol, global.GLOBAL_TOKEN) && 
-      (includeDelisted ? true : !global.GLOBAL_TOKEN[symbol].delisted) &&
-      Utils.filterOfficial(params.official, global.GLOBAL_TOKEN[symbol])
+    Object.keys(global.TOKENS_BY_ADDR).forEach(address => {
+      if (Utils.shouldShowToken(address, global.TOKENS_BY_ADDR) && 
+      (includeDelisted ? true : !global.TOKENS_BY_ADDR[address].delisted) &&
+      Utils.filterOfficial(params.official, global.TOKENS_BY_ADDR[address])
       ) {
-        const token = global.GLOBAL_TOKEN[symbol];
-        const id = token.symbol || symbol;
+        const token = global.TOKENS_BY_ADDR[address];
+        const id = token.address || address;
         const data = {
-          symbol: id,
+          address: id,
           cmcName: token.cmcSymbol || id,
           name: token.name,
           decimals: token.decimal,
           contractAddress: token.address
         };
-        if(includeDelisted && tokens[symbol].delisted){
+        if(includeDelisted && tokens[address].delisted){
           data.enable = false;
         }
         ret.push(data);
@@ -199,9 +199,9 @@ module.exports = AppController.extends({
     };
     const data = (ret) =>{
       const pack = {};
-      Object.keys(ret).forEach((symbol) => {
-        const token = ret[symbol];
-        const item = pack[symbol] = {
+      Object.keys(ret).forEach((address) => {
+        const token = ret[address];
+        const item = pack[address] = {
           //e: token.volume[0].ETH,
           //u: token.volume[0].USD,
           r: token.rate.length ? token.rate[0]["24h"] : 0,

@@ -7,7 +7,6 @@ const iconEndpont = 'https://files.kyber.network/DesignAssets/tokens'
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
-// const tokens = _.keyBy(_.values(GLOBAL_TOKENS), 'symbol');
 const tokens = TOKENS_BY_ADDR
 const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name

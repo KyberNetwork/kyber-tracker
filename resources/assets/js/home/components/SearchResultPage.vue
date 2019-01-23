@@ -38,7 +38,6 @@ export default {
       totalCollectedFees: 0,
       searchFromDate: null,
       searchToDate: null,
-      // tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'address')
       tokens: TOKENS_BY_ADDR
     };
   },
@@ -167,11 +166,11 @@ export default {
           var csvContent = ""
           csvContent += data.map(function(d){
             let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
-            let fromToken = d.takerTokenSymbol
-            let fromAmount = GLOBAL_TOKENS[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, GLOBAL_TOKENS[fromToken].decimal)).toString() : 0
+            let fromToken = d.takerTokenAddress
+            let fromAmount = TOKENS_BY_ADDR[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[fromToken].decimal)).toString() : 0
 
-            let toToken = d.makerTokenSymbol
-            let toAmount = GLOBAL_TOKENS[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, GLOBAL_TOKENS[toToken].decimal)).toString() : 0
+            let toToken = d.makerTokenAddress
+            let toAmount = TOKENS_BY_ADDR[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[toToken].decimal)).toString() : 0
 
             // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
             let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0

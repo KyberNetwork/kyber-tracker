@@ -370,7 +370,6 @@ export default {
       maxPage: 0,
       searchFromDate: null,
       searchToDate: null,
-      // tokens: _.keyBy(_.values(GLOBAL_TOKENS), 'symbol'),
       tokens: TOKENS_BY_ADDR,
       highlightedToday: {
         dates: [new Date()]

@@ -41,9 +41,6 @@ class EthVolumeCrawler {
         })
       },
       unprocessedTrades: ['config', (ret, next) => {
-        global.GLOBAL_TOKEN=ret.config.tokensBySymbol
-        // console.log("====================config: ", global.GLOBAL_TOKEN)
-        // global.GLOBAL_TOKEN=ret.config.tokensBySymbol
         global.TOKENS_BY_ADDR=ret.config.tokensByAddress
         if (UNPROCESSED_TRADES.length > 0) {
           return next(null, UNPROCESSED_TRADES);

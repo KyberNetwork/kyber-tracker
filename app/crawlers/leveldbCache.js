@@ -46,13 +46,13 @@ function getBlockTimestamp (blockNumber, callback) {
   });
 };
 
-function getCoinPrice (symbol, timestamp, callback) {
-  const tokenInfo = global.GLOBAL_TOKEN[symbol];
+function getCoinPrice (address, timestamp, callback) {
+  const tokenInfo = global.TOKENS_BY_ADDR[address];
   if (!tokenInfo) {
-    return callback(`getCoinPrice: could not find info of [${symbol}] token.`);
+    return callback(`getCoinPrice: could not find info of [${address}] token.`);
   }
 
-  const key = getCoinPriceKey(symbol, timestamp);
+  const key = getCoinPriceKey(address, timestamp);
   db.get(key, (err, ret) => {
     if (err) {
       queryCoinPriceFromNetwork(tokenInfo, timestamp, callback);
@@ -60,17 +60,17 @@ function getCoinPrice (symbol, timestamp, callback) {
     }
 
     if (isNaN(ret)) {
-      logger.warn(`Invalid saved data for coin ${symbol} at ${timestamp}. Will remove from db...`);
+      logger.warn(`Invalid saved data for coin ${address} at ${timestamp}. Will remove from db...`);
       db.del(key, (err) => {
         if (err) {
-          logger.warn(`Error when remove data of coin ${symbol} at ${timestamp}`);
+          logger.warn(`Error when remove data of coin ${address} at ${timestamp}`);
         }
       });
       queryCoinPriceFromNetwork(tokenInfo, timestamp, callback);
       return;
     }
 
-    logger.trace(`Cache hit! Price of ${symbol} at ${timestamp} is: ${ret}`);
+    logger.trace(`Cache hit! Price of ${address} at ${timestamp} is: ${ret}`);
     return callback(null, parseFloat(ret));
   });
 }
@@ -79,8 +79,8 @@ function getBlockTimestampKey (blockNumber) {
   return `block_timestamp_${blockNumber}`;
 }
 
-function getCoinPriceKey (symbol, timestamp) {
-  return `price_${symbol}_${timestamp}`;
+function getCoinPriceKey (address, timestamp) {
+  return `price_${address}_${timestamp}`;
 }
 
 function queryBlockTimestampFromNetwork (blockNumber, callback) {
@@ -103,13 +103,13 @@ function queryBlockTimestampFromNetwork (blockNumber, callback) {
 
 function queryCoinPriceFromNetwork (tokenInfo, timestamp, callback) {
   const timeInMillis = timestamp * 1000;
-  const symbol = tokenInfo.symbol;
+  const address = tokenInfo.address.toLowerCase();
 
   let needFetch = false;
-  if (!LOCAL_CMC_DATA[symbol]) {
+  if (!LOCAL_CMC_DATA[address]) {
     needFetch = true;
   } else {
-    prices = LOCAL_CMC_DATA[symbol].price_usd;
+    prices = LOCAL_CMC_DATA[address].price_usd;
     if (!prices || !prices.length) {
       needFetch = true;
     } else {
@@ -126,7 +126,7 @@ function queryCoinPriceFromNetwork (tokenInfo, timestamp, callback) {
   }
 
   if (!needFetch) {
-    searchPriceInLocalData(tokenInfo, timeInMillis, LOCAL_CMC_DATA[symbol].price_usd, callback);
+    searchPriceInLocalData(tokenInfo, timeInMillis, LOCAL_CMC_DATA[address].price_usd, callback);
     return;
   }
 
@@ -135,7 +135,7 @@ function queryCoinPriceFromNetwork (tokenInfo, timestamp, callback) {
       return callback(err);
     }
 
-    searchPriceInLocalData(tokenInfo, timeInMillis, LOCAL_CMC_DATA[symbol].price_usd, callback);
+    searchPriceInLocalData(tokenInfo, timeInMillis, LOCAL_CMC_DATA[address].price_usd, callback);
   });
 }
 
@@ -147,22 +147,22 @@ function fetchCMCData (tokenInfo, callback) {
         return callback(`Could not get price history of ${tokenInfo.symbol} token from CMC: ${err.toString()}`);
       }
 
-      LOCAL_CMC_DATA[tokenInfo.symbol] = response.body;
+      LOCAL_CMC_DATA[tokenInfo.address] = response.body;
       return callback(null, true);
     });
 }
 
 function searchPriceInLocalData (tokenInfo, timeInMillis, prices, callback) {
   const timestamp = Math.floor(timeInMillis / 1000);
-  const symbol = tokenInfo.symbol;
-  const key = getCoinPriceKey(symbol, timestamp);
+  const address = tokenInfo.address.toLowerCase();
+  const key = getCoinPriceKey(address, timestamp);
   if (!prices || !prices.length) {
     return callback(`searchPriceInLocalData: no data to search for ${tokenInfo.symbol} at ${timeInMillis}`);
   }
 
   const len = prices.length;
   if (timeInMillis < prices[0][0]) {
-    return callback(`Could not get price of [${symbol}] at ${timeInMillis}`);
+    return callback(`Could not get price of [${address}] at ${timeInMillis}`);
   }
 
   if (timeInMillis > prices[len-1][0]) {

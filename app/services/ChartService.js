@@ -3,7 +3,7 @@ const _ = require('lodash');
 const async = require('async');
 const util = require('util');
 const BigNumber = require('bignumber.js');
-// const network = require('../../config/network');
+const network = require('../../config/network');
 const Const = require('../common/Const');
 const helper = require('../common/Utils');
 const Utils = require('sota-core').load('util/Utils');
@@ -19,18 +19,18 @@ module.exports = BaseService.extends({
     classname: 'ChartService',
 
     chart_history_all: function(options, callback) {
-      if (!global.GLOBAL_TOKEN) return callback(null, {});
+      if (!global.TOKENS_BY_ADDR) return callback(null, {});
       const nowInMs = Date.now();
       const nowInSeconds = Math.floor(nowInMs / 1000);
       const DAY_IN_SECONDS = 24 * 60 * 60;
       const day31Ago = nowInSeconds - 31 * DAY_IN_SECONDS;
       let pairs = {};
-      Object.keys(global.GLOBAL_TOKEN).map(token => {
-        if ((token.toUpperCase() !== "ETH") &&
-          !global.GLOBAL_TOKEN[token].delisted &&
-          helper.shouldShowToken(token)) {
+      Object.keys(global.TOKENS_BY_ADDR).map(address => {
+        if ((address !== network.ETH.address) &&
+          !global.TOKENS_BY_ADDR[address].delisted &&
+          helper.shouldShowToken(address)) {
           const params = {
-            symbol: token,
+            address: address,
             rateType: options.rateType,
             resolution: options.resolution,
             from: day31Ago,
@@ -52,9 +52,9 @@ module.exports = BaseService.extends({
       });
     },
 
-    // options: symbol, rateType, seqType, from, to
+    // options: address, rateType, seqType, from, to
     history: function (options, callback) {
-        if(!options.symbol || !global.GLOBAL_TOKEN[options.symbol]){
+        if(!options.address || !global.TOKENS_BY_ADDR[options.address]){
             return callback("token not supported")
         }
         const col = options.rateType + "_expected";
@@ -67,11 +67,11 @@ module.exports = BaseService.extends({
             SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number ASC SEPARATOR ';'), ';', 1 ) as open,
             SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number DESC SEPARATOR ';'), ';', 1 ) as close
             from rate
-            where ${col} > 0 AND quote_symbol = ?
+            where ${col} > 0 AND quote_address = ?
             AND block_timestamp >= ? AND block_timestamp <= ?
             group by ${seqCol}`;
 
-        const params = [options.symbol, options.from, options.to];
+        const params = [options.address, options.from, options.to];
 
         // From any model, get adapter to connect database
         // Use master adapter for writing data, and slave for reading
@@ -111,7 +111,7 @@ module.exports = BaseService.extends({
     },
 
     klines: function (options, callback) {
-      if(!options.symbol || !global.GLOBAL_TOKEN[options.symbol]){
+      if(!options.address || !global.TOKENS_BY_ADDR[options.address]){
         return callback("token not supported")
       }
       const col = options.rateType + "_expected";
@@ -121,11 +121,11 @@ module.exports = BaseService.extends({
               ${seqCol} as seq,
               SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number DESC SEPARATOR ';'), ';', 1 ) as close
               from rate
-              where ${col} > 0 AND quote_symbol = ?
+              where ${col} > 0 AND quote_address = ?
               AND block_timestamp >= ? AND block_timestamp <= ?
               group by ${seqCol}`;
 
-      const params = [options.symbol, options.from, options.to];
+      const params = [options.address, options.from, options.to];
       const adapter = this.getModel('RateModel').getSlaveAdapter();
       async.auto({
         history: (next) => {

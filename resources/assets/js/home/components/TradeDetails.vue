@@ -122,7 +122,6 @@ export default {
         volumeUsd: "",
         burnFees: ""
       },
-      // tokens: _.keyBy(_.values(GLOBAL_TOKENS), "symbol")
       tokens: TOKENS_BY_ADDR
     };
   },
@@ -140,8 +139,8 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOfficial(symbol){
-      return util.isOfficial(GLOBAL_TOKENS[symbol])
+    isOfficial(address){
+      return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     getDateInfo(timestamp) {
       const locale = localStorage.getItem("locale") || "en";

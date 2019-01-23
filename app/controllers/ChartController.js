@@ -92,7 +92,7 @@ module.exports = AppController.extends({
       return;
     }
     if(params.query){
-      const token = global.GLOBAL_TOKEN[params.query];
+      const token = global.TOKENS_BY_ADDR[params.query];
       if (!token || !Utils.shouldShowToken(params.query)) {
           res.json({
               s: "error",
