@@ -71,11 +71,10 @@
           window.clearInterval(this._refreshInterval);
           return;
         }
-        this.address = this.getFilterTokenAddress();
-        const tokenInfo = this.tokens[this.address];
-        this.tokenName = tokenInfo.name;
-        this.tokenAddress = tokenInfo.address;
-        this.isOfficial = tokenInfo.official;
+        this.tokenAddress = this.getFilterTokenAddress();
+        const tokenInfo = this.tokens[this.tokenAddress.toLowerCase()];
+        this.tokenName = tokenInfo && tokenInfo.name;
+        this.isOfficial = tokenInfo && tokenInfo.official;
         //const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
         // this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
         this.logoUrl = util.getTokenIcon(tokenInfo.symbol, (replaceUrl) => {this.logoUrl = replaceUrl})
@@ -94,7 +93,7 @@
       selectPeriod (period, interval) {
         this.selectedPeriod = period;
         this.selectedInterval = interval;
-        this.refreshChartsData(period, interval, this.symbol);
+        this.refreshChartsData(period, interval, this.tokenAddress);
       },
       getFilterTokenAddress() {
         // const tokenAddr = this.$route.params.tokenAddr;
@@ -103,7 +102,7 @@
       },
       refreshChartsData () {
         if (this.$refs.chartVolume) {
-          this.$refs.chartVolume.refresh(this.selectedPeriod, this.selectedInterval, this.symbol);
+          this.$refs.chartVolume.refresh(this.selectedPeriod, this.selectedInterval, this.tokenAddress);
         }
       },
       getAddressEtherscanLink(addr) {
@@ -118,8 +117,8 @@
     },
 
     mounted() {
-      this.address = this.getFilterTokenAddress();
-      if (!this.address) {
+      this.tokenAddress = this.getFilterTokenAddress();
+      if (!this.tokenAddress) {
         return;
       }
 

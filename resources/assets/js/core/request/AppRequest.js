@@ -67,12 +67,12 @@ class AppRequest extends BaseRequest {
   //           .catch(this._handleError);
   // }
 
-  getNetworkVolume(period, interval, symbol, callback) {
-    if (typeof symbol === 'function') {
-      callback = symbol;
-      symbol = null;
+  getNetworkVolume(period, interval, address, callback) {
+    if (typeof address === 'function') {
+      callback = address;
+      address = null;
     }
-    let queryParams = { period, interval, symbol }
+    let queryParams = { period, interval, address }
     if(this.isOfficial()) queryParams.official = true
     else queryParams.official = false
 
