@@ -46,8 +46,6 @@ class TradeCrawler {
       latestProcessedBlock: ['config', (ret, next) => {
         
         global.TOKENS_BY_ADDR=ret.config.tokensByAddress
-        delete global.TOKENS_BY_ADDR['0xdd974d5c2e2928dea5f71b9825b8b646686bd200']
-        console.log("**************", global.TOKENS_BY_ADDR)
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }

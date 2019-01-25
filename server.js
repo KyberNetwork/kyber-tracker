@@ -31,7 +31,6 @@ const intervalUpdateConfig = () => {
       }
 
       const processedTokens = processTokens(tokens)
-
       global.TOKENS_BY_ADDR = processedTokens.tokensByAddress
     })  
   }, timer);
@@ -44,7 +43,6 @@ configFetcher.fetchConfigTokens((err, tokens) => {
 
   const processedTokens = processTokens(tokens)
   global.TOKENS_BY_ADDR=processedTokens.tokensByAddress
-  
   intervalUpdateConfig()
   app.start();
 })

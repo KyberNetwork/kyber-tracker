@@ -63,7 +63,7 @@
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
             <td class="pl-4">
                 <div class="token-name">
-                    <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item.symbol)" />
+                    <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item)" />
                     <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
                     <span v-if="!slot.item.official || !slot.item.name"><a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a></span>
                     <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>

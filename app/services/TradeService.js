@@ -186,6 +186,7 @@ module.exports = BaseService.extends({
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         ${officialSql}
         group by ${side}_token_address`;
+        console.log("_______", sql, options.fromDate, options.toDate)
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
       return obj;
@@ -197,6 +198,7 @@ module.exports = BaseService.extends({
           return callback(err);
         }
 
+        console.log('****************', ret)
         const takers = _.keyBy(ret.taker, 'address');
         const makers = _.keyBy(ret.maker, 'address');
 
