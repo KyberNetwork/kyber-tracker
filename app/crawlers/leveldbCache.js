@@ -19,7 +19,7 @@ const conversionRateAbi = require('../../config/abi/conversion_rate');
 // TODO: refactor this mess
 const db = level(path.join(__dirname, '../../db/level'));
 const LOCAL_CMC_DATA = {};
-
+const MAXIMUN_RESERVES = 1000;
 const internalContract = new web3.eth.Contract(internalAbi, network.contractAddresses.internal)
 
 function getBlockTimestamp (blockNumber, callback) {
@@ -309,7 +309,34 @@ function getTokenInfo (tokenAddr, type, callback){
   })
 }
 
+function getTokenReserve (tokenAddr, type, blockNo, callback) {
+  let getReserveFunc = ''
+  let count = 0
+  let allReserves = []
+  if(type == 'source'){
+    getReserveFunc = 'reservesPerTokenSrc'
+  } else {
+    getReserveFunc = 'reservesPerTokenDest'
+  }
 
+  async.until(()=> {
+    return count > MAXIMUN_RESERVES
+  },
+  (_next) => {
+    internalContract.methods[getReserveFunc](tokenAddr, web3.utils.toHex(count)).call(undefined, blockNo)
+    .then(reserves => {
+      count = count + 1
+      allReserves.push(reserves.toLowerCase())
+      return _next(null)
+    })
+    .catch(e => {
+      return _next(e)
+    })
+  },
+  (err, n) => {
+    return callback(null, allReserves)
+  })
+}
 
 module.exports.getBlockTimestamp = getBlockTimestamp;
 module.exports.getCoinPrice = getCoinPrice;
@@ -321,4 +348,5 @@ module.exports.getReserveTokensList = getReserveTokensList
 module.exports.getPermissionlessTokensList = getPermissionlessTokensList
 
 module.exports.getTokenInfo = getTokenInfo
+module.exports.getTokenReserve = getTokenReserve
 

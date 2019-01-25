@@ -4,6 +4,9 @@ const BigNumber                   = require('bignumber.js');
 const getLatestBlockNumber        = require('./getLatestBlockNumber');
 const getBlockTimestamp           = require('./leveldbCache').getBlockTimestamp;
 const getCoinPrice                = require('./leveldbCache').getCoinPrice;
+const getTokenReserve             = require('./leveldbCache').getTokenReserve;
+const getTokenInfo                = require('./leveldbCache').getTokenInfo;
+
 const Utils                       = require('../common/Utils');
 const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
@@ -43,6 +46,8 @@ class TradeCrawler {
       latestProcessedBlock: ['config', (ret, next) => {
         
         global.TOKENS_BY_ADDR=ret.config.tokensByAddress
+        delete global.TOKENS_BY_ADDR['0xdd974d5c2e2928dea5f71b9825b8b646686bd200']
+        console.log("**************", global.TOKENS_BY_ADDR)
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
@@ -281,84 +286,59 @@ class TradeCrawler {
   }
 
   _addNewTrade (exSession, record, callback) {
-    const KyberTradeModel = exSession.getModel('KyberTradeModel');
-    const CMCService = exSession.getService('CMCService');
-    
-    if(record.sourceReserve) {
-      record.sourceReserve = record.sourceReserve.toLowerCase()
-    }
-    if(record.destReserve) {
-      record.destReserve = record.destReserve.toLowerCase()
-    }
-    
+    // check token exist
 
-    const ethAddress = networkConfig.ETH.address.toLowerCase();
-    if (record.takerTokenAddress.toLowerCase() === ethAddress) {
-      record.volumeEth = Utils.fromWei(record.takerTokenAmount);
-      record.sourceOfficial = 1
-    } else {
-
-      record.sourceOfficial = 0
-      if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()] && record.sourceReserve){
-        const tokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()]
-        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.sourceReserve] == '1'){
-          record.sourceOfficial = 1
+    async.auto({
+      checkSourceToken: (asyncCallback) => {
+        if(!global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()]){
+          // fetch token and its reserve
+          async.parallel({
+            info: (_next) => (getTokenInfo(record.takerTokenAddress, '2', _next)),
+            reserves: (_next) => getTokenReserve(record.takerTokenAddress, 'source', record.blockNumber, _next)
+          }, (err, results) => asyncCallback(err, results))
+        } else {
+          return asyncCallback(null)
         }
-      } 
-
-    }
-
-    if (record.makerTokenAddress.toLowerCase() === ethAddress) {
-      record.volumeEth = Utils.fromWei(record.makerTokenAmount);
-      record.destOfficial = 1
-    } else {
-      record.destOfficial = 0
-      if(global.TOKENS_BY_ADDR && global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()] && record.sourceReserve){
-        const tokenInfo = global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()]
-        if(tokenInfo && tokenInfo.reserves && tokenInfo.reserves[record.destReserve] == '1'){
-          record.destOfficial = 1
+      },
+      checkDestToken: (asyncCallback) => {
+        if(!global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()]){
+          // fetch token and its reserve
+          async.parallel({
+            info: (_next) => (getTokenInfo(record.makerTokenAddress, '2', _next)),
+            reserves: (_next) => getTokenReserve(record.makerTokenAddress, 'source', record.blockNumber, _next)
+          }, (err, results) => asyncCallback(err, results))
+        } else {
+          return asyncCallback(null)
         }
-      }
+      },
+      checkReserves: ['checkSourceToken', 'checkDestToken', (ret, next) => {
+        if(ret.checkSourceToken || ret.checkDestToken){
+          // re fetch reserves list and type
+          configFetcher.fetchReserveListFromNetwork(err => {
+            if(err) return next(err)
 
-    }
+            const extraTokens = configFetcher.standardizeReserveTokenType([
+              ...(ret.checkSourceToken ? [{...ret.checkSourceToken.info, reservesAddr: ret.checkSourceToken.reserves}] : []),
+              ...(ret.checkDestToken ? [{...ret.checkDestToken.info, reservesAddr: ret.checkDestToken.reserves}] : [])
+            ])
 
+            global.TOKENS_BY_ADDR = _.merge(global.TOKENS_BY_ADDR, extraTokens)
+            return next(null)
+          })
 
-    
+        } else {
+          return next(null, null)
+        }
+      }]
+    }, (err, results) => {
+      logger.info(`Add new trade: ${JSON.stringify(record)}`);
 
-    logger.info(`Add new trade: ${JSON.stringify(record)}`);
+      const KyberTradeModel = exSession.getModel('KyberTradeModel');
+      KyberTradeModel.add(record, {
+        isInsertIgnore: true
+      }, callback);
 
-
-
-    KyberTradeModel.add(record, {
-      isInsertIgnore: true
-    }, callback);
-
-
-
-    // async.auto({
-    //   price: (next) => {
-    //     //getCoinPrice('ETH', record.blockTimestamp, next);
-    //     CMCService.getHistoricalPrice('ETH', record.blockTimestamp * 1000, next);
-    //   },
-    //   model: ['price', (ret, next) => {
-    //     const ethAddress = networkConfig.ETH.address.toLowerCase();
-    //     if (record.takerTokenAddress.toLowerCase() === ethAddress) {
-    //       record.volumeEth = Utils.fromWei(record.takerTokenAmount);
-    //     }
-
-    //     if (record.makerTokenAddress.toLowerCase() === ethAddress) {
-    //       record.volumeEth = Utils.fromWei(record.makerTokenAmount);
-    //     }
-
-    //     record.volumeUsd = record.volumeEth * ret.price.price_usd;
-
-    //     KyberTradeModel.add(record, {
-    //       isInsertIgnore: true
-    //     }, next);
-    //   }],
-    // }, callback);
-
-
+    }) 
   }
 
 };
