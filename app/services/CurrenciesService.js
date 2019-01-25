@@ -129,6 +129,7 @@ module.exports = BaseService.extends({
     if (!global.TOKENS_BY_ADDR) return callback(null, {});
 
     let pairs = {};
+    console.log(global.TOKENS_BY_ADDR)
 
     Object.keys(global.TOKENS_BY_ADDR).map(address => {
       // if((token.toUpperCase() !== "ETH") && !global.TOKENS_BY_ADDR[address].hidden){
@@ -137,7 +138,7 @@ module.exports = BaseService.extends({
         helper.shouldShowToken(address) && 
         helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
-        const cmcName = global.TOKENS_BY_ADDR[address].cmcSymbol || address;
+        const cmcName = global.TOKENS_BY_ADDR[address].cmcSymbol || (global.TOKENS_BY_ADDR[address].official && global.TOKENS_BY_ADDR[address].symbol) || address;
         pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
           address: address,
           fromCurrencyCode: network.ETH.address
@@ -158,8 +159,9 @@ module.exports = BaseService.extends({
   },
 
   _getCurrencyInfo: function (options, callback) {
-    if (!options.token || !global.TOKENS_BY_ADDR[options.address]) {
-      return callback("token not supported")
+    console.log("_________", options)
+    if (!options.address || !global.TOKENS_BY_ADDR[options.address]) {
+      return callback("address not supported: " + options.address)
     }
 
     if (!options.fromCurrencyCode || !global.TOKENS_BY_ADDR[options.fromCurrencyCode]) {
@@ -168,7 +170,7 @@ module.exports = BaseService.extends({
 
     let tokenAddress = options.address
     let base = options.fromCurrencyCode
-    let tokenData = global.TOKENS_BY_ADDR[tokenSymbol]
+    let tokenData = global.TOKENS_BY_ADDR[tokenAddress]
     let baseTokenData = global.TOKENS_BY_ADDR[base]
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
@@ -179,19 +181,19 @@ module.exports = BaseService.extends({
     async.auto({
       baseVolume: (next) => {
         KyberTradeModel.sum('volume_eth', {
-          where: 'block_timestamp > ? AND (maker_token_symbol = ? OR taker_token_symbol = ?)',
+          where: 'block_timestamp > ? AND (maker_token_address = ? OR taker_token_address = ?)',
           params: [nowInSeconds - DAY_IN_SECONDS, tokenAddress, tokenAddress],
         }, next);
       },
       quoteVolumeTaker: (next) => {
         KyberTradeModel.sum('taker_token_amount', {
-          where: 'block_timestamp > ? AND taker_token_symbol = ?',
+          where: 'block_timestamp > ? AND taker_token_address = ?',
           params: [nowInSeconds - DAY_IN_SECONDS, tokenAddress],
         }, next);
       },
       quoteVolumeMaker: (next) => {
         KyberTradeModel.sum('maker_token_amount', {
-          where: 'block_timestamp > ? AND maker_token_symbol = ?',
+          where: 'block_timestamp > ? AND maker_token_address = ?',
           params: [nowInSeconds - DAY_IN_SECONDS, tokenAddress],
         }, next);
       },
@@ -200,7 +202,7 @@ module.exports = BaseService.extends({
       },
       lastTrade: (next) => {
         KyberTradeModel.findOne({
-          where: 'taker_token_symbol = ? OR maker_token_symbol = ?',
+          where: 'taker_token_symbol = ? OR maker_token_address = ?',
           params: [tokenAddress, tokenAddress],
           orderBy: 'block_timestamp DESC',
         }, next)
