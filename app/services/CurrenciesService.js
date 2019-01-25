@@ -129,8 +129,6 @@ module.exports = BaseService.extends({
     if (!global.TOKENS_BY_ADDR) return callback(null, {});
 
     let pairs = {};
-    console.log(global.TOKENS_BY_ADDR)
-
     Object.keys(global.TOKENS_BY_ADDR).map(address => {
       // if((token.toUpperCase() !== "ETH") && !global.TOKENS_BY_ADDR[address].hidden){
       if ((address !== network.ETH.address) &&
@@ -159,7 +157,6 @@ module.exports = BaseService.extends({
   },
 
   _getCurrencyInfo: function (options, callback) {
-    console.log("_________", options)
     if (!options.address || !global.TOKENS_BY_ADDR[options.address]) {
       return callback("address not supported: " + options.address)
     }
