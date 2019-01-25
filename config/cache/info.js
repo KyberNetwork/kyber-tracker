@@ -80,7 +80,7 @@ module.exports = {
   },
   "Pair24hData": {
     key: "pair-24h",
-    TTL: {ttl: Const.MINUTE_IN_MILLISECONDS}
+    TTL: {ttl: 5 *  Const.MINUTE_IN_MILLISECONDS}
   },
   "TotalBurnedFees": {
     key: "burned-fee-total",
