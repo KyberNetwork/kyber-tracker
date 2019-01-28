@@ -26,12 +26,13 @@ module.exports = BaseService.extends({
     let pairs = {}
 
     Object.keys(global.TOKENS_BY_ADDR).forEach(address => {
-      if ((token.toUpperCase() !== "ETH") &&
+      if ((address !== network.ETH.address) &&
         !global.TOKENS_BY_ADDR[address].delisted &&
         helper.shouldShowToken(address) &&
         helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
-        pairs[token] = (asyncCallback) => this._getRateInfo(token, {
+        const key = options.useAddress ? address : (global.TOKENS_BY_ADDR[address].symbol || address)
+        pairs[key] = (asyncCallback) => this._getRateInfo(address, {
           //tradeAdapter: tradeAdapter,
           rateAdapter: rateAdapter
         }, asyncCallback)
@@ -137,7 +138,8 @@ module.exports = BaseService.extends({
         helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
         const cmcName = global.TOKENS_BY_ADDR[address].cmcSymbol || (global.TOKENS_BY_ADDR[address].official && global.TOKENS_BY_ADDR[address].symbol) || address;
-        pairs["ETH_" + cmcName] = (asyncCallback) => this._getCurrencyInfo({
+        const key = options.useAddress ? network.ETH.address + '_' + address : "ETH_" + cmcName
+        pairs[key] = (asyncCallback) => this._getCurrencyInfo({
           address: address,
           fromCurrencyCode: network.ETH.address
         }, asyncCallback)
@@ -406,14 +408,15 @@ module.exports = BaseService.extends({
     Object.keys(global.TOKENS_BY_ADDR).map(address => {
       if ((address !== network.ETH.address) &&
         !global.TOKENS_BY_ADDR[address].delisted &&
-        helper.shouldShowToken(token) &&
+        helper.shouldShowToken(address) &&
         helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
       ) {
-
-        pairs[network.ETH.address + "_" + address] = (asyncCallback) => this._get24hChangeData({
+        const key = options.useAddress ? network.ETH.address + "_" + address : ('ETH_' + (global.TOKENS_BY_ADDR[address].symbol || address))
+        pairs[key] = (asyncCallback) => this._get24hChangeData({
           rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
-          token: address,
+          address: address,
           fromCurrencyCode: network.ETH.address,
+          useAddress: options.useAddress
         }, asyncCallback)
       }
     });
@@ -506,14 +509,14 @@ module.exports = BaseService.extends({
   },
 
   _get24hChangeData: function (options, callback) {
-    if (!options.token || !global.TOKENS_BY_ADDR[options.token]) {
+    if (!options.address || !global.TOKENS_BY_ADDR[options.address]) {
       return callback("token not supported")
     }
 
     if (!options.fromCurrencyCode || !global.TOKENS_BY_ADDR[options.fromCurrencyCode]) {
       return callback("base not supported")
     }
-    const CACHE_KEY = CacheInfo.Change24h.key + options.token;
+    const CACHE_KEY = CacheInfo.Change24h.key + options.address;
     RedisCache.getAsync(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -535,10 +538,10 @@ module.exports = BaseService.extends({
 
       // 24h price SQL
       const lastSql = `SELECT mid_expected as 'rate_eth_24h' FROM rate7d
-      WHERE quote_address = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
+      WHERE LOWER(quote_address) = ? AND block_timestamp >= ? AND block_timestamp <= ? AND mid_expected > 0 ORDER BY ABS(block_timestamp - ${dayAgo}) LIMIT 1`;
       const lastParams = [tokenAddress, hour30Ago, hour18Ago];
 
-      const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate7d WHERE quote_address = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
+      const rateNowSql = `SELECT mid_expected as 'rate_eth_now' FROM rate7d WHERE LOWER(quote_address) = ? AND block_timestamp >= ? AND mid_expected > 0 ORDER BY block_timestamp DESC LIMIT 1`;
       const rateNowParams = [tokenAddress, hour1Ago];
 
       async.auto({
@@ -552,6 +555,7 @@ module.exports = BaseService.extends({
         if (err) {
           return callback(err);
         }
+
         const old_rate_eth = ret.rate.length ? ret.rate[0].rate_eth_24h || 0 : null;
         const rate_eth_now = ret.rateNow.length ? ret.rateNow[0].rate_eth_now || 0 : null;
         let change_eth_24h = "-";

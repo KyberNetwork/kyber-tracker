@@ -69,24 +69,30 @@ module.exports = AppController.extends({
   getConvertiblePairs: function (req, res) {
     Utils.cors(res);
 
-    // const [err, params] = new Checkit({
-    //   official: ['string']
-    // }).validateSync(req.allParams);
+    const [err, params] = new Checkit({
+      useAddress: ['string']
+    }).validateSync(req.allParams);
 
     // if (err) {
     //   res.badRequest(err.toString());
     //   return;
     // }
-    // if(!params.official || params.official == 'true'){
-    //   params.official = true
-    // } else {
-    //   params.official = false
-    // }
-    const params = {official: true}
+    if(params.useAddress == 'true'){
+      params.useAddress = true
+    } else {
+      params.useAddress = false
+    }
+
+    params.official = true
+    // const params = {official: true}
 
     let CACHE_KEY = CacheInfo.ConvertiblePairs.key;
     if(params.official){
       CACHE_KEY = 'official-' + CACHE_KEY
+    }
+
+    if(params.useAddress){
+      CACHE_KEY = 'useAddress-' + CACHE_KEY
     }
 
     const CurrenciesService = req.getService('CurrenciesService');
@@ -163,20 +169,22 @@ module.exports = AppController.extends({
   getAllRateInfo: function (req, res) {
     Utils.cors(res);
 
-    // const [err, params] = new Checkit({
-    //   official: ['string']
-    // }).validateSync(req.allParams);
+    const [err, params] = new Checkit({
+      useAddress: ['string']
+    }).validateSync(req.allParams);
 
     // if (err) {
     //   res.badRequest(err.toString());
     //   return;
     // }
-    // if(!params.official || params.official == 'true'){
-    //   params.official = true
-    // } else {
-    //   params.official = false
-    // }
-    const params = {official: true}
+    if(params.useAddress == 'true'){
+      params.useAddress = true
+    } else {
+      params.useAddress = false
+    }
+
+    params.official = true
+    // const params = {official: true}
 
     const service = req.getService('CurrenciesService');
 
@@ -184,6 +192,11 @@ module.exports = AppController.extends({
     if(params.official){
       CACHE_KEY = 'official-' + CACHE_KEY
     }
+
+    if(params.useAddress){
+      CACHE_KEY = 'useAddress-' + CACHE_KEY
+    }
+
     const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
     const redisCacheService = req.getService('RedisCacheService');
     var loadData = () => {
@@ -234,7 +247,8 @@ module.exports = AppController.extends({
     Utils.cors(res);
     const [err, params] = new Checkit({
       usd: ['string'],
-      official: ['string']
+      official: ['string'],
+      useAddress: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -245,6 +259,12 @@ module.exports = AppController.extends({
       params.official = true
     } else {
       params.official = false
+    }
+
+    if(params.useAddress == 'true'){
+      params.useAddress = true
+    } else {
+      params.useAddress = false
     }
 
     const service = req.getService('CurrenciesService');

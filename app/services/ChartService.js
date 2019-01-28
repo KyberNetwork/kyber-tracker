@@ -54,11 +54,18 @@ module.exports = BaseService.extends({
 
     // options: address, rateType, seqType, from, to
     history: function (options, callback) {
-        if(!options.address || !global.TOKENS_BY_ADDR[options.address]){
+        if(options.token && !global.TOKENS_BY_ADDR[options.token]){
             return callback("token not supported")
         }
+
+        if(options.symbol && Object.values(global.TOKENS_BY_ADDR).map(v => v.symbol).indexOf(options.symbol) < 0){
+          return callback("token not supported")
+        }
+
         const col = options.rateType + "_expected";
         const seqCol = options.seqType || "hour_req";
+
+        const queryToken = options.token ? `LOWER(quote_address) = '${options.token.toLowerCase()}'` : `quote_symbol = '${options.symbol}'`
 
         const rawQuery = `select
             ${seqCol} as seq,
@@ -67,11 +74,14 @@ module.exports = BaseService.extends({
             SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number ASC SEPARATOR ';'), ';', 1 ) as open,
             SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number DESC SEPARATOR ';'), ';', 1 ) as close
             from rate
-            where ${col} > 0 AND quote_address = ?
+            where ${col} > 0 AND ${queryToken}
             AND block_timestamp >= ? AND block_timestamp <= ?
             group by ${seqCol}`;
 
-        const params = [options.address, options.from, options.to];
+
+        console.log('############ raw query', rawQuery)
+
+        const params = [options.from, options.to];
 
         // From any model, get adapter to connect database
         // Use master adapter for writing data, and slave for reading
@@ -111,21 +121,28 @@ module.exports = BaseService.extends({
     },
 
     klines: function (options, callback) {
-      if(!options.address || !global.TOKENS_BY_ADDR[options.address]){
+      if(options.token && !global.TOKENS_BY_ADDR[options.token.toLowerCase()]){
         return callback("token not supported")
       }
+
+      if(options.symbol && Object.values(global.TOKENS_BY_ADDR).map(v => v.symbol).indexOf(options.symbol) < 0){
+        return callback("token not supported")
+      }
+
       const col = options.rateType + "_expected";
       const seqCol = options.seqType || "hour_req";
+      
+      const queryToken = options.token ? `LOWER(quote_address) = '${options.token.toLowerCase()}'` : `quote_symbol = '${options.symbol}'`
 
       const rawQuery = `select 
               ${seqCol} as seq,
               SUBSTRING_INDEX(GROUP_CONCAT(CAST(${col} AS CHAR) ORDER BY block_number DESC SEPARATOR ';'), ';', 1 ) as close
               from rate
-              where ${col} > 0 AND quote_address = ?
+              where ${col} > 0 AND ${queryToken}
               AND block_timestamp >= ? AND block_timestamp <= ?
               group by ${seqCol}`;
 
-      const params = [options.address, options.from, options.to];
+      const params = [options.from, options.to];
       const adapter = this.getModel('RateModel').getSlaveAdapter();
       async.auto({
         history: (next) => {

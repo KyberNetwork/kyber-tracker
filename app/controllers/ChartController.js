@@ -107,9 +107,10 @@ module.exports = AppController.extends({
     let counter = 0;
     supportedTokens.forEach((token) => {
         if (counter > limit) return;
-        if (!token.delisted && (!query || token.symbol.indexOf(query) >= 0)) {
+        if (!token.delisted && (!query || token.address.indexOf(query && query.toLowerCase()) >= 0)) {
             ret.push({
                 symbol: token.symbol,
+                address: token.address,
                 full_name: token.symbol,
                 description: token.name
             });
@@ -124,7 +125,8 @@ module.exports = AppController.extends({
   history: function (req, res) {
       Utils.cors(res);
       const [err, params] = new Checkit({
-          symbol: ['string', 'required'],
+          symbol: ['string'],
+          token: ['string'],
           resolution: ['string', 'required'],
           from: ['naturalNonZero', 'required'],
           to: ['naturalNonZero', 'required'],
@@ -134,6 +136,11 @@ module.exports = AppController.extends({
       if (err) {
           res.badRequest(err.toString());
           return;
+      }
+
+      if(!params.symbol && !params.token){
+        res.badRequest("The symbol or token address is required");
+        return;
       }
 
       if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
@@ -180,7 +187,8 @@ module.exports = AppController.extends({
   klines: function (req, res) {
     Utils.cors(res);
     const [err, params] = new Checkit({
-      symbol: ['string', 'required'],
+      symbol: ['string'],
+      token: ['string'],
       interval: ['string', 'required'],
       rateType: ['string']
     }).validateSync(req.allParams);
@@ -189,6 +197,12 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
+
+    if(!params.symbol && !params.token){
+      res.badRequest("token symbol or address is required");
+      return;
+    }
+
     const resolution = Resolution.toSeq(params.interval);
 
     if (!resolution) {
@@ -210,7 +224,7 @@ module.exports = AppController.extends({
     const nowInSeconds = Math.floor(nowInMs / 1000);
     params.from = nowInSeconds - resolution.value;
     params.to = nowInSeconds;
-    const key = CacheInfo.klines.key + params.interval.toString() + params.rateType.toString() + params.symbol;
+    const key = CacheInfo.klines.key + params.interval.toString() + params.rateType.toString() + (params.symbol || params.token);
     const time_exprire = CacheInfo.klines.TTL;
     const chartService = req.getService('ChartService');
     RedisCache.getAsync(key, (err, ret) => {
@@ -226,6 +240,11 @@ module.exports = AppController.extends({
       chartService.klines(params,(err, ret_1)=>{
         if(err){
           logger.error(err);
+          res.json({
+            s: "error",
+            errmsg: err
+          });
+          return;
         }
         if (params.rateType === 'sell') {
           RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
