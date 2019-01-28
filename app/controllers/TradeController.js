@@ -213,6 +213,44 @@ module.exports = AppController.extends({
     // const TradeService = req.getService('TradeService');
     // TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
   },
+
+  getReservesList: function (req, res) {
+    const [err, params] = new Checkit({
+      fromDate: ['natural'],
+      toDate: ['natural'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    if(!params.fromDate) params.fromDate = 0;
+    if(!params.toDate){
+      params.toDate = Utils.nowInSeconds()
+    }
+
+    let key = `${CacheInfo.ReservesList.key}-${params.fromDate}-${params.toDate}`;
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getReservesList(params, (err, results) => {
+      if (err) {
+        logger.error(err)
+        res.badRequest(err.toString());
+        return;
+      }
+
+      if (results) {
+        // RedisCache.setAsync(key, JSON.stringify(results), CacheInfo.ReservesList.TTL);
+        res.send(results)
+        return;
+      }
+    });
+  },
+  getReserveDetails: function (req, res) {
+
+  },
+
   getStats24h: function (req, res) {
     const [err, params] = new Checkit({
       official: ['string']
@@ -423,6 +461,8 @@ module.exports = AppController.extends({
     const TradeService = req.getService('TradeService');
     TradeService.search(params, this.ok.bind(this, req, res));
   },
+
+  
 
   /*
   NOT USED

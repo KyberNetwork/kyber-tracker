@@ -114,7 +114,7 @@
                   <!-- <span class="inline-logo"></span> -->
                   <!-- <img src="/images/network.svg" /> -->
                   <!-- <i class="fas fa-signal icon-second-header"></i> -->
-                  <span class="entypo-chart-bar icon-second-heade"></span>
+                  <span class="entypo-chart-bar icon-second-header"></span>
                   <span class="pl-1">{{ $t('navigator.volume') }}</span>
                   
                 </router-link>
@@ -123,7 +123,7 @@
                 <router-link to="/trades">
                 <!-- <img src="/images/trade.svg" /> -->
                 <!-- <i class="fas fa-exchange-alt icon-second-header"></i> -->
-                <span class="entypo-switch icon-second-heade"></span>
+                <span class="entypo-switch icon-second-header"></span>
                 <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
                 </router-link>
               </b-nav-item>
@@ -131,8 +131,16 @@
                 <router-link to="/tokens">
                 <!-- <img src="/images/token.svg" /> -->
                 <!-- <i class="fas fa-database icon-second-header"></i> -->
-                <span class="entypo-database icon-second-heade"></span>
+                <span class="entypo-database icon-second-header"></span>
                 <span class="pl-1">{{ $t('navigator.tokens') }}</span>
+                </router-link>
+              </b-nav-item>
+              <b-nav-item class="navbar">
+                <router-link to="/reserves">
+                <!-- <img src="/images/token.svg" /> -->
+                <!-- <i class="fas fa-database icon-second-header"></i> -->
+                <span class="entypo-database icon-second-header"></span>
+                <span class="pl-1">{{ $t('navigator.reserves') }}</span>
                 </router-link>
               </b-nav-item>
             </b-navbar-nav>

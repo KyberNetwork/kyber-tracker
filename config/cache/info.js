@@ -37,6 +37,18 @@ module.exports = {
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
   },
+
+  "ReservesList": {
+    key: "trades-list-",
+    TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
+    TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
+  },
+  "ReserveDetail": {
+    key: "top-token-",
+    TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
+    TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
+  },
+
   "TokensList": {
     key: "token-list-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},

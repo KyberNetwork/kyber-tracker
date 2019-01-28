@@ -90,6 +90,57 @@ module.exports = BaseService.extends({
     KyberTradeModel.findOne(tradeId, callback);
   },
 
+  getReservesList: function (options, callback){
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    const makeSql = (side, callback) => {
+      const sql = `select ${side}_reserve as address,
+        sum(volume_eth) as eth,
+        sum(volume_usd) as usd
+      from kyber_trade
+      where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
+      group by ${side}_reserve`;
+      console.log("**************", sql, options.fromDate, options.toDate)
+      return adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
+    };
+
+    async.parallel({
+      source: _next => makeSql('source', _next),
+      dest: _next => makeSql('dest', _next),
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const takers = _.keyBy(ret.source, 'address');
+      const makers = _.keyBy(ret.dest, 'address');
+      console.log('+++++++++++++++', ret)
+
+      const sumProp = (address, prop) => {
+        let val = new BigNumber(0);
+        const lowerAddr = address.toLowerCase()
+        if (takers[lowerAddr]) val = val.plus((takers[lowerAddr][prop] || 0).toString());
+        if (makers[lowerAddr]) val = val.plus((makers[lowerAddr][prop] || 0).toString());
+        return val;
+      };
+      const reserves = [];
+
+      Object.keys(global.NETWORK_RESERVES).forEach((r) => {
+        const volumeUSD = sumProp(r, 'usd');
+        const ethVolume = sumProp(r, 'eth');
+
+        reserves.push({
+          address: r,
+          volumeUSD: volumeUSD.toNumber(),
+          volumeETH: ethVolume.toFormat(4).toString(),
+          type: global.NETWORK_RESERVES[r]
+        })
+      })
+
+      return callback(null, _.orderBy(reserves, ['volumeUSD' ], ['desc']));
+    })
+  },
+
   // Use for token list page & top token chart
   getTopTokensList: function (options, callback) {
 
@@ -115,6 +166,7 @@ module.exports = BaseService.extends({
       };
       return obj;
     };
+
     async.auto(makeSql('maker', makeSql('taker')),
       (err, ret) => {
         if (err) {
@@ -1185,5 +1237,7 @@ module.exports = BaseService.extends({
     }
     return 'hourSeq';
   },
+
+  
 
 });
