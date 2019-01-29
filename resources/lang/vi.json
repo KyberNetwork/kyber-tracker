@@ -135,6 +135,7 @@
     "value_in_usd": "Giá trị theo USD",
     "notice": "Tỷ giá USD được tính tại thời điểm giao dịch",
     "wallet_detail": "Thông tin ví",
+    "reserve_detail": "Thông tin quỹ",
     "partner_details": "Thông tin đối tác",
     "history": "Lịch sử giao dịch",
     "commission": "PHÍ TÍCH HỢP",

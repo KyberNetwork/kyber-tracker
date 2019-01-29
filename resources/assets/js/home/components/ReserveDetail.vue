@@ -1,14 +1,14 @@
 <template>
   <div class="col-sm-12">
     <div class="wallet-detail-title panel-heading pb-16">
-    <span class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
+    <span class="no-margin panel-title">{{$t('wallet_detail.reserve_detail')}} </span>
   </div>
 
   <!-- address detail ################## -->
   <div class="address-detail-container">
     <div class="wallet-title">
       {{$t('wallet_detail.address')}}:
-      <!-- <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(searchResult.data.query)">{{ searchResult.data.query }}</a> -->
+      <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
     </div>
 
     <div class="row wallet-value vdivide">
@@ -114,7 +114,7 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
-// import network from '../../../../../config/network';
+import network from '../../../../../config/network';
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 import Chart from 'chart.js';
 // const tokens = network.tokens;
@@ -151,7 +151,9 @@ export default {
     getFilterTokenAddress(){
       return undefined
     },
-
+    getAddressEtherscanLink(address) {
+      return network.endpoints.ethScan + "address/" + address;
+    },
     reloadView(){
       console.log("++++++++++++++ load done", this.$refs.datatable)
       this.totalTrade = this.$refs.datatable ? this.$refs.datatable.totalTrade : 0
