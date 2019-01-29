@@ -5,84 +5,113 @@
   </div>
 
   <!-- address detail ################## -->
-  <div class="address-detail-container">
-    <div class="wallet-title">
+  <div class="reserve-detail-container">
+    <div class="reserve-address-title">
       {{$t('wallet_detail.address')}}:
       <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
     </div>
 
-    <div class="row wallet-value vdivide">
-      <div class="col border-right">
-        <div class="value-number">
-          {{totalTrade}}
+    <div class="reserve-body">
+      <div class="reserve-value vdivide">
+        <div class="row">
+          <div class="col">
+            <div>
+              {{$t('wallet_detail.trades')}}
+            </div>
+            <div>
+              {{totalTrade}}
+            </div>
+            
+          </div>
+          <div class="col">
+            <div>
+              {{$t('wallet_detail.collected_fees')}}
+            </div>
+            <div>
+              {{collectedFees}} KNC
+            </div>
+          </div>
         </div>
-        <div class="value-label">
-          {{$t('wallet_detail.trades')}}
-        </div>
-        
       </div>
-      <div class="col">
-        <div class="value-number">
-          {{collectedFees}} KNC
-        </div>
-        <div class="value-label">
-          {{$t('wallet_detail.collected_fees')}}
-        </div>
-        
+      
+
+      <div class="reserve-value vdivide">
+         <div class="reserve-title">
+            {{$t('wallet_detail.total_trading_volune')}}
+          </div>
+          
+          <div class="row">
+            <div class="col">
+              <div>
+                {{$t('wallet_detail.value_in_eth')}}
+              </div>
+              <div>
+                {{volumeEth}}
+              </div>
+              
+              
+            </div>
+            <div class="col ">
+              <div>
+                {{$t('wallet_detail.value_in_usd')}}*
+              </div>
+              <div>
+                {{volumeUsd}}
+              </div>
+            </div>
+          </div>
+          <div class="note">
+            *{{$t('wallet_detail.notice')}}
+          </div>
       </div>
-    </div>
+     
+
+      <div class="reserve-value vdivide no-border">
+        <div class="reserve-title">
+          {{$t('wallet_detail.tokens')}}
+        </div>
+
+        <div class="row">
+          <div class="col">
+            
+            <div class="row">
+              <div class="col-4">
+                ABT
+              </div>
+              <div class="col-8">
+                498,98 USD
+              </div>
+              <div class="col-4">
+                ABT
+              </div>
+              <div class="col-8">
+                498,98 USD
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            
+            <div class="row">
+              <div class="col-4">
+                AKN
+              </div>
+              <div class="col-8">
+                213,45,3 USD
+              </div>
+              <div class="col-4">
+                AKN
+              </div>
+              <div class="col-8">
+                213,45,3 USD
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
 
 
-    <div class="wallet-title">
-      {{$t('wallet_detail.total_trading_volune')}}
-    </div>
-
-    <div class="row wallet-value vdivide">
-      <div class="col border-right">
-        <div class="value-number">
-          {{volumeEth}}
-        </div>
-        <div class="value-label">
-          {{$t('wallet_detail.value_in_eth')}}
-        </div>
-        
-      </div>
-      <div class="col">
-        <div class="value-number">
-          {{volumeUsd}}
-        </div>
-        <div class="value-label">
-          {{$t('wallet_detail.value_in_usd')}}*
-        </div>
-        
-      </div>
-    </div>
-    <div class="walet-note">
-      *{{$t('wallet_detail.notice')}}
-    </div>
-
-    <div class="wallet-title">
-      {{$t('wallet_detail.current_listing')}}
-    </div>
-    <div class="row wallet-value vdivide">
-      <div class="col border-right">
-        <div class="value-number">
-          0
-        </div>
-        <div class="value-label">
-          {{$t('wallet_detail.trades')}}
-        </div>
-        
-      </div>
-      <div class="col">
-        <div class="value-number">
-          0 KNC
-        </div>
-        <div class="value-label">
-          0
-        </div>
-        
-      </div>
     </div>
 
   </div>

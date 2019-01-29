@@ -141,7 +141,8 @@
     "partner_details": "Partner Details",
     "history": "History",
     "commission": "Commission",
-    "current_listing": "Current listing tokens"
+    "current_listing": "Current listing tokens",
+    "tokens": "Tokens"
   },
 
   "token_list": {

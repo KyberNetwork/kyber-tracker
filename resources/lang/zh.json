@@ -131,7 +131,8 @@
     "partner_details": "合作伙伴详情",
     "history": "交易历史",
     "commission": "佣金",
-    "current_listing": "Current listing tokens"
+    "current_listing": "Current listing tokens",
+    "tokens": "Tokens"
   },
   "token_list": {
     "title": "交易代币名单",

@@ -1349,6 +1349,38 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.reserve-detail-container{
+  color: #3d464d;
+  letter-spacing: normal;
+  font-style: normal;
+  font-stretch: normal;
+  word-wrap: break-word;
+  background-color: #f5f6f7;
+  padding: 30px;
+  border-radius: 5px;
+
+  .reserve-body{
+    margin: 20px 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+  }
+  .reserve-address-title{
+    padding: 10px;
+  }
+  .reserve-value{
+    margin: 0 40px;
+    padding: 20px 0px;
+    border-bottom: 1px solid #eaebef;
+  }
+}
+
+.no-border{
+  border: none !important;
+}
+.borderless td, .borderless th {
+  border: none;
+}
+
 @media (min-width: 576px) and (max-width: 730px) {
   .vdp-datepicker__calendar {
     left: -80px;
