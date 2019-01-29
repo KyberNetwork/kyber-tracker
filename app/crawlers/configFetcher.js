@@ -77,7 +77,6 @@ const standardizeReserveTokenType = (tokens) => {
 
 const fetchReserveListFromNetwork = (callback) => {
   getAllReserve((err, arrayReserve) => {
-    console.log("list all reserve ", err, arrayReserve)
     if(err){
       console.log(err)
       return callback(err)
@@ -90,6 +89,7 @@ const fetchReserveListFromNetwork = (callback) => {
       arrayReserve.map((r, i) => {
         reserveType[r.toLowerCase()] = arrayTypeOfReserve[i]
       })
+      console.log("====================", reserveType)
       global.NETWORK_RESERVES = reserveType
       return callback(null)
     })
@@ -117,7 +117,6 @@ const getTokensFromApis = callback => {
 
 const getTokensFromNetwork = callback => {
   getAllReserve((err, arrayReserve) => {
-    console.log("list all reserve ", err, arrayReserve)
     if(err){
       console.log(err)
       return callback(err)

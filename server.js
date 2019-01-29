@@ -42,7 +42,8 @@ configFetcher.fetchConfigTokens((err, tokens) => {
   }
 
   const processedTokens = processTokens(tokens)
-  global.TOKENS_BY_ADDR=processedTokens.tokensByAddress
+  global.TOKENS_BY_ADDR = processedTokens.tokensByAddress
+  // console.log('________________', global.TOKENS_BY_ADDR)
   intervalUpdateConfig()
   app.start();
 })

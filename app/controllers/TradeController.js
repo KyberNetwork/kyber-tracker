@@ -247,8 +247,26 @@ module.exports = AppController.extends({
       }
     });
   },
+  
   getReserveDetails: function (req, res) {
+    const [err, params] = new Checkit({
+      reserveAddr: ['required', 'string'],
+      fromDate: ['natural'],
+      toDate: ['natural'],
+    }).validateSync(req.allParams);
 
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    if(!params.fromDate) params.fromDate = 0;
+    if(!params.toDate){
+      params.toDate = Utils.nowInSeconds()
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getReserveDetails(params, this.ok.bind(this, req, res));
   },
 
   getStats24h: function (req, res) {

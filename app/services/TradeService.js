@@ -100,7 +100,6 @@ module.exports = BaseService.extends({
       from kyber_trade
       where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
       group by ${side}_reserve`;
-      console.log("**************", sql, options.fromDate, options.toDate)
       return adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
     };
 
@@ -141,6 +140,76 @@ module.exports = BaseService.extends({
     })
   },
 
+  getReserveDetails: function (options, callback){
+    console.log('***********^^^^^^^^^^ run to reserve detail')
+    async.parallel({
+      currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
+      tradedListTokens: _next => this._tradedList(options, _next)
+    }, (err, results) => {
+      if (err) {
+        return callback(err);
+      }
+
+      return callback(null, results)
+    })
+  },
+
+  _currentList: function(reserveAddr){
+    const returnObj = {}
+
+    Object.keys(global.TOKENS_BY_ADDR).map(tokenAddr => {
+      if(global.TOKENS_BY_ADDR[tokenAddr].reserves){
+        if(UtilsHelper.shouldShowToken(tokenAddr) &&
+          global.TOKENS_BY_ADDR[tokenAddr].reserves[reserveAddr.toLowerCase()]){
+            returnObj[tokenAddr] = global.TOKENS_BY_ADDR[tokenAddr]
+        }
+      }
+    })
+
+    return returnObj
+  },
+
+  _tradedList: function(options, callback){
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    const makeSql = (side, callback) => {
+      const sql = `select ${side}_token_address as address,
+        sum(${side}_token_amount) as token,
+        sum(volume_eth) as eth,
+        sum(volume_usd) as usd
+      from kyber_trade
+      where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
+      AND (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}')
+      group by ${side}_token_address`;
+      return adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
+    };
+
+    async.parallel({
+      maker: _next => makeSql('maker', _next),
+      taker: _next => makeSql('taker', _next)
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+      // const takers = _.keyBy(ret.taker, 'address');
+      // const makers = _.keyBy(ret.maker, 'address');
+
+      const toCollection = function(array) {
+        return _.chain(array).groupBy('address')
+              .map((v,i) => ({
+                address: i.toLowerCase(),
+                eth: _.sumBy(v, 'eth'),
+                usd: _.sumBy(v, 'usd')
+              })).value()
+      }
+      
+      return callback(null, toCollection([...ret.taker, ...ret.maker])) 
+    })
+
+  },
+  _reserveTrade: function(reserveAddr, callback){
+
+  },
   // Use for token list page & top token chart
   getTopTokensList: function (options, callback) {
 
@@ -238,7 +307,7 @@ module.exports = BaseService.extends({
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         ${officialSql}
         group by ${side}_token_address`;
-        console.log("_______", sql, options.fromDate, options.toDate)
+        
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
       return obj;
@@ -249,8 +318,6 @@ module.exports = BaseService.extends({
         if (err) {
           return callback(err);
         }
-
-        console.log('****************', ret)
         const takers = _.keyBy(ret.taker, 'address');
         const makers = _.keyBy(ret.maker, 'address');
 
