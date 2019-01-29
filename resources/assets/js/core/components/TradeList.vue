@@ -298,8 +298,14 @@ const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 const partners = network.partners
 
 export default {
+  model: {
+    event: 'fetchDone'
+  },
   props: {
     getFilterTokenAddress: {
+      type: Function,
+    },
+    getFilterReserveAddress: {
       type: Function,
     },
     title: {
@@ -348,6 +354,11 @@ export default {
             this.rows = data;
             this.maxPage = pagination.maxPage;
             this.totalTrade = pagination.totalCount;
+
+            this.volumeUsd = pagination.volumeUsd;
+            this.volumeEth = pagination.volumeEth;
+            this.collectedFees = pagination.collectedFees;
+            this.$emit('fetchDone')
           });
       }
     },
@@ -368,6 +379,10 @@ export default {
       rows: [],
       currentPage: 0,
       maxPage: 0,
+      totalTrade: 0,
+      volumeUsd: 0,
+      volumeEth: 0,
+      collectedFees: 0,
       searchFromDate: null,
       searchToDate: null,
       tokens: TOKENS_BY_ADDR,
@@ -401,7 +416,8 @@ export default {
     },
     getRequestParams () {
       let params = {
-        address: this.getFilterTokenAddress(),
+        address: this.getFilterTokenAddress ? this.getFilterTokenAddress() : undefined,
+        reserve: this.getFilterReserveAddress ? this.getFilterReserveAddress() : undefined
       };
 
       if(!this.isHideDatepicker){

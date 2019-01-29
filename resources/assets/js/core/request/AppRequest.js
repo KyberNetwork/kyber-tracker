@@ -192,6 +192,14 @@ class AppRequest extends BaseRequest {
     return this.get(url, params);
   }
 
+  getReserveList(params={}){
+    const url = `/api/reserves`;
+    if(this.isOfficial()) params.official = true
+    else params.official = false
+
+    return this.get(url, params);
+  }
+
   _handleError(err) {
     window.EventBus.$emit('EVENT_COMMON_ERROR', err);
   }

@@ -50,6 +50,12 @@ module.exports = BaseService.extends({
       params.push(network.startPermissionlessReserveBlock);
     }
 
+    if(options.reserve){
+      whereClauses += ` AND ( (LOWER(source_reserve) = ?) OR (LOWER(dest_reserve) = ?))`;
+      params.push(options.reserve.toLowerCase());
+      params.push(options.reserve.toLowerCase());
+    }
+
     const queryOptions = {
       where: whereClauses,
       params: params,
@@ -67,7 +73,25 @@ module.exports = BaseService.extends({
           where: whereClauses,
           params: params
         }, next);
-      }
+      },
+      volumeUsd: (next) => {
+        KyberTradeModel.sum('volume_usd', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
+      volumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
+      collectedFees: (next) => {
+        KyberTradeModel.sum('collected_fees', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -79,6 +103,9 @@ module.exports = BaseService.extends({
           page: options.page,
           limit: options.limit,
           totalCount: ret.count,
+          volumeUsd: ret.volumeUsd,
+          volumeEth: ret.volumeEth,
+          collectedFees: ret.collectedFees,
           maxPage: Math.ceil(ret.count / options.limit)
         }
       });

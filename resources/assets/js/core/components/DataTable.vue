@@ -46,11 +46,14 @@
       },
       pageSize: {
         type: Number,
+      },
+      rows: {
+        type: Array
       }
     },
     data() {
       return {
-        rows: [],
+        rows: this.rows || [],
         hasPreviousList: true,
         hasNextList: true,
       };

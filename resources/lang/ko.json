@@ -128,7 +128,8 @@
     "wallet_detail": "지갑 정보",
     "partner_details": "파트너 세부 정보",
     "history": "최근 거래",
-    "commission": "파트너 비용"
+    "commission": "파트너 비용",
+    "current_listing": "Current listing tokens"
   },
 
 

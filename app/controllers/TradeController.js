@@ -20,7 +20,8 @@ module.exports = AppController.extends({
       limit: ['required', 'naturalNonZero'],
       fromDate: ['naturalNonZero'],
       toDate: ['naturalNonZero'],
-      official: ['string']
+      official: ['string'],
+      reserve: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -52,6 +53,9 @@ module.exports = AppController.extends({
     }
     if (params.toDate) {
       key = params.toDate + '-' + key;
+    }
+    if (params.reserve){
+      key = params.reserve + '-' + key;
     }
     if(params.official){
       key = 'official-' + key
