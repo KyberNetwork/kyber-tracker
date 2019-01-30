@@ -168,7 +168,6 @@ module.exports = BaseService.extends({
   },
 
   getReserveDetails: function (options, callback){
-    console.log('***********^^^^^^^^^^ run to reserve detail')
     async.parallel({
       currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
       tradedListTokens: _next => this._tradedList(options, _next)
@@ -176,8 +175,13 @@ module.exports = BaseService.extends({
       if (err) {
         return callback(err);
       }
+      const allReserveTokens = results.currentListingTokens
+      results.tradedListTokens.map(t => {
+        allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
+      })
 
-      return callback(null, results)
+
+      return callback(null, _.orderBy(Object.values(allReserveTokens), ['listed', 'eth' ], ['asc', 'desc']))
     })
   },
 
@@ -187,8 +191,9 @@ module.exports = BaseService.extends({
     Object.keys(global.TOKENS_BY_ADDR).map(tokenAddr => {
       if(global.TOKENS_BY_ADDR[tokenAddr].reserves){
         if(UtilsHelper.shouldShowToken(tokenAddr) &&
+          tokenAddr != network.ETH.address &&
           global.TOKENS_BY_ADDR[tokenAddr].reserves[reserveAddr.toLowerCase()]){
-            returnObj[tokenAddr] = global.TOKENS_BY_ADDR[tokenAddr]
+            returnObj[tokenAddr] = {...global.TOKENS_BY_ADDR[tokenAddr], listed: true}
         }
       }
     })
@@ -205,7 +210,7 @@ module.exports = BaseService.extends({
         sum(volume_eth) as eth,
         sum(volume_usd) as usd
       from kyber_trade
-      where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
+      where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])} ${UtilsHelper.ignoreETH(side)}
       AND (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}')
       group by ${side}_token_address`;
       return adapter.execRaw(sql, [options.fromDate, options.toDate], callback);

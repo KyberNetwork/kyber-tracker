@@ -1,6 +1,6 @@
 <template>
-  <span v-if="isOfficial(symbol)" @click.stop="onClickToken()">{{ symbol }}</span>
-  <span v-else @click.stop="onClickToken()">({{ getShortedAddr(getAddress())}})</span>
+  <span v-if="isOfficial(address)" @click.stop="onClickToken()">{{ getSymbol() }}</span>
+  <span v-else @click.stop="onClickToken()">({{ getShortedAddr(address)}})</span>
 </template>
 
 <script>
@@ -34,15 +34,15 @@ export default {
 
       return `/tokens/${this.address}`;
     },
-    getAddress(){
+    getSymbol(){
       const token = this.tokens[this.address]
       if(!token) return ''
-      return token.address
+      return token.symbol || this.getShortedAddr(this.address)
     },
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOfficial(address){
+    isOfficial(address = ''){
       return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     onClickToken () {

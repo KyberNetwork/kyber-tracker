@@ -68,44 +68,22 @@
 
       <div class="reserve-value vdivide no-border">
         <div class="reserve-title">
-          {{$t('wallet_detail.tokens')}}
+          {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
         </div>
 
         <div class="row">
-          <div class="col">
-            
+          <div class="col-6" v-for="item in reserveTokens">
             <div class="row">
               <div class="col-4">
-                ABT
+                <span v-if="isOfficial(item.address)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
+                <span v-else><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">({{getShortedAddr(item.address)}})</a></span>
               </div>
               <div class="col-8">
-                498,98 USD
+                {{(item.usd && round(item.usd)) || 0}} USD
               </div>
-              <div class="col-4">
-                ABT
-              </div>
-              <div class="col-8">
-                498,98 USD
-              </div>
-            </div>
+            </div> 
           </div>
-          <div class="col">
-            
-            <div class="row">
-              <div class="col-4">
-                AKN
-              </div>
-              <div class="col-8">
-                213,45,3 USD
-              </div>
-              <div class="col-4">
-                AKN
-              </div>
-              <div class="col-8">
-                213,45,3 USD
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
 
@@ -119,8 +97,6 @@
   <div class="wallet-detail-title panel-heading pt-56 pb-16">
     <span class="no-margin">{{$t('wallet_detail.history')}} </span>
   </div>
-
-
     <trade-list ref="datatable"
       :getFilterTokenAddress="getFilterTokenAddress"
       :getFilterReserveAddress="getFilterReserveAddress"
@@ -163,7 +139,10 @@ export default {
       totalTrade: 0,
       volumeEth: 0,
       volumeUsd: 0,
-      collectedFees: 0
+      collectedFees: 0,
+
+      reserveTokens: []
+
     };
   },
 
@@ -173,6 +152,7 @@ export default {
         return;
       }
       this.$refs.datatable.fetch();
+      this.fetchReserveDetail()
     },
     getFilterReserveAddress() {
       return this.$route.params.reserveAddr;
@@ -180,11 +160,19 @@ export default {
     getFilterTokenAddress(){
       return undefined
     },
+    isOfficial(address){
+      return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
+    },
+    getShortedAddr(addr){
+      return util.shortenAddress(addr, 4, 4)
+    },
     getAddressEtherscanLink(address) {
       return network.endpoints.ethScan + "address/" + address;
     },
+    round(num){
+      return util.roundingNumber(num)
+    },
     reloadView(){
-      console.log("++++++++++++++ load done", this.$refs.datatable)
       this.totalTrade = this.$refs.datatable ? this.$refs.datatable.totalTrade : 0
       this.volumeEth = this.$refs.datatable ? this.$refs.datatable.volumeEth : 0,
       this.volumeUsd = this.$refs.datatable ? this.$refs.datatable.volumeUsd : 0,
@@ -232,6 +220,12 @@ export default {
           document.body.appendChild(link);
           link.click();
         });
+    },
+
+    fetchReserveDetail(){
+       AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress()}).then(data => {
+          this.reserveTokens = data
+       })
     }
   },
 

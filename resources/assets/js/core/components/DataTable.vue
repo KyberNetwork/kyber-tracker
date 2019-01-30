@@ -48,12 +48,13 @@
         type: Number,
       },
       rows: {
-        type: Array
+        type: Array,
+        default: []
       }
     },
     data() {
       return {
-        rows: this.rows || [],
+        // rows: this.rows || [],
         hasPreviousList: true,
         hasNextList: true,
       };

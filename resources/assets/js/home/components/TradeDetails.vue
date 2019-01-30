@@ -15,7 +15,7 @@
             <div class="token col-5">
               <span class="token-symbol">
                  <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenAddress) }}</span>
-                <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>
+                <token-link class="token-link" :address="record.takerTokenAddress"></token-link>
               </span>
             </div>
             <!-- <span class="to">to</span> -->
@@ -23,7 +23,7 @@
             <div class="token col-5">
               <span class="token-symbol">
                 <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenAddress) }}</span>
-                <token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link>
+                <token-link class="token-link" :address="record.makerTokenAddress"></token-link>
               </span>
             </div>
             
@@ -59,8 +59,8 @@
           <!-- <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> 
           RATE -->
           {{$t("trade_detail.rate", [
-          isOfficial(record.takerTokenSymbol) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
-          isOfficial(record.makerTokenSymbol) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
+          isOfficial(record.takerTokenAddress) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
+          isOfficial(record.makerTokenAddress) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
           ])}}
         </div>
         <div class="rate-detail-value">
@@ -139,7 +139,7 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOfficial(address){
+    isOfficial(address = ''){
       return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     getDateInfo(timestamp) {

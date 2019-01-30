@@ -151,5 +151,8 @@ module.exports = {
     .join(' AND ')
 
     return ` AND (${queryString})`
+  },
+  ignoreETH: (side) => {
+    return ` AND ${side}_token_address <> "${network.ETH.address}"`
   }
 };
