@@ -683,6 +683,35 @@ module.exports = {
         "decimal": 18,
         "address": "0x00e150d741eda1d49d341189cae4c08a73a49c95",
         "hidden": 1545048000000       
+      },
+
+      "USDC":{
+        "name": "USD Coin",
+        "symbol" : "USDC",
+        "decimal": 6,
+        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "hidden": 1548439731000       
+      },
+      "GUSD":{
+        "name": "Gemini dollar",
+        "symbol" : "GUSD",
+        "decimal": 2,
+        "address": "0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd",
+        "hidden": 1548439731000       
+      },
+      "EURS":{
+        "name": "STASIS EURS Token",
+        "symbol" : "EURS",
+        "decimal": 2,
+        "address": "0xdb25f211ab05b1c97d595516f45794528a807ad8",
+        "hidden": 1548439731000       
+      },
+      "PAX":{
+        "name": "Paxos Standard",
+        "symbol" : "PAX",
+        "decimal": 18,
+        "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
+        "hidden": 1548439731000       
       }
     },
     "averageBlockTime": 15000,
