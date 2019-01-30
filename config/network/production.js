@@ -655,7 +655,7 @@ module.exports = {
       "symbol" : "WBTC",
       "decimal": 8,
       "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-      "hidden": 1548916200000       
+      "hidden": 1548853200000       
     },
 
     "ABYSS":{
