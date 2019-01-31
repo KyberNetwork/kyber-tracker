@@ -7,27 +7,30 @@
   <!-- address detail ################## -->
   <div class="reserve-detail-container">
     <div class="reserve-address-title">
-      {{$t('wallet_detail.address')}}:
-      <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
+      <div>{{$t('wallet_detail.address')}}</div>
+      <div>
+        <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
+      </div>
+      
     </div>
 
     <div class="reserve-body">
       <div class="reserve-value vdivide">
         <div class="row">
           <div class="col">
-            <div>
+            <div class="pb-2">
               {{$t('wallet_detail.trades')}}
             </div>
-            <div>
+            <div class="font-semi-bold">
               {{totalTrade}}
             </div>
             
           </div>
           <div class="col">
-            <div>
+            <div class="pb-2">
               {{$t('wallet_detail.collected_fees')}}
             </div>
-            <div>
+            <div class="font-semi-bold">
               {{collectedFees}} KNC
             </div>
           </div>
@@ -36,27 +39,27 @@
       
 
       <div class="reserve-value vdivide">
-         <div class="reserve-title">
+         <div class="reserve-title pb-2">
             {{$t('wallet_detail.total_trading_volune')}}
           </div>
           
-          <div class="row">
+          <div class="row pb-3">
             <div class="col">
-              <div>
+              <!-- <div>
                 {{$t('wallet_detail.value_in_eth')}}
-              </div>
-              <div>
-                {{volumeEth}}
+              </div> -->
+              <div class="font-semi-bold">
+                {{volumeEth}} ETH
               </div>
               
               
             </div>
             <div class="col ">
-              <div>
+              <!-- <div>
                 {{$t('wallet_detail.value_in_usd')}}*
-              </div>
-              <div>
-                {{volumeUsd}}
+              </div> -->
+              <div class="font-semi-bold">
+                {{volumeUsd}} USD*
               </div>
             </div>
           </div>
@@ -67,24 +70,29 @@
      
 
       <div class="reserve-value vdivide no-border">
-        <div class="reserve-title">
+        <div class="reserve-title pb-4">
           {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
         </div>
 
-        <div class="row">
+        <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
           <div class="col-6" v-for="item in reserveTokens">
-            <div class="row">
+            <div class="row pb-2">
               <div class="col-4">
                 <span v-if="isOfficial(item.address)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
                 <span v-else><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">({{getShortedAddr(item.address)}})</a></span>
               </div>
-              <div class="col-8">
+              <div class="col-8 font-semi-bold">
                 {{(item.usd && round(item.usd)) || 0}} USD
               </div>
             </div> 
           </div>
 
+          <div v-if="!isOpenlLoadmore" class="gradient-trans row"></div>
         </div>
+        
+        <label v-if="isShowLoadmore" class="row d-flex justify-content-center mt-5">
+          <button type="button" class="btn btn-light" @click="toggleLoadMore()">{{getLoadmoreTitle()}}</button>
+        </label>  
       </div>
 
       
@@ -141,8 +149,10 @@ export default {
       volumeUsd: 0,
       collectedFees: 0,
 
-      reserveTokens: []
+      reserveTokens: [],
 
+      isShowLoadmore: false,
+      isOpenlLoadmore: false
     };
   },
 
@@ -177,6 +187,13 @@ export default {
       this.volumeEth = this.$refs.datatable ? this.$refs.datatable.volumeEth : 0,
       this.volumeUsd = this.$refs.datatable ? this.$refs.datatable.volumeUsd : 0,
       this.collectedFees = this.$refs.datatable ? this.$refs.datatable.collectedFees : 0
+    },
+
+    toggleLoadMore(){
+      this.isOpenlLoadmore = !this.isOpenlLoadmore
+    },
+    getLoadmoreTitle(){
+      return this.isOpenlLoadmore ? 'View less' : 'See more'
     },
 
     exportData (){
@@ -225,6 +242,9 @@ export default {
     fetchReserveDetail(){
        AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress()}).then(data => {
           this.reserveTokens = data
+          if(data && data.length > 10) {
+            this.isShowLoadmore = true
+          }
        })
     }
   },

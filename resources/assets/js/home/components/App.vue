@@ -139,7 +139,7 @@
                 <router-link to="/reserves">
                 <!-- <img src="/images/token.svg" /> -->
                 <!-- <i class="fas fa-database icon-second-header"></i> -->
-                <span class="entypo-database icon-second-header"></span>
+                <span class="entypo-users icon-second-header"></span>
                 <span class="pl-1">{{ $t('navigator.reserves') }}</span>
                 </router-link>
               </b-nav-item>
