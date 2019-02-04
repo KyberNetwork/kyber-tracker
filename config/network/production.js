@@ -714,6 +714,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
       "hidden": true       
+    },
+
+    "MLN":{
+      "name": "Melon",
+      "symbol" : "MLN",
+      "decimal": 18,
+      "address": "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892",
+      "hidden": true       
     }
 
   },
