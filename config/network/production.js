@@ -721,7 +721,7 @@ module.exports = {
       "symbol" : "MLN",
       "decimal": 18,
       "address": "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892",
-      "hidden": true       
+      "hidden": 1549371981000       
     }
 
   },
