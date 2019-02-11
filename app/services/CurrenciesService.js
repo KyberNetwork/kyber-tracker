@@ -244,7 +244,7 @@ module.exports = BaseService.extends({
     })
   },
 
-  getPair24hData: function (callback) {
+  getPair24hData: function (options, callback) {
     if (!tokens) return callback(null, {});
 
     let pairs = {};

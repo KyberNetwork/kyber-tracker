@@ -97,7 +97,7 @@ module.exports = AppController.extends({
         res.send(ret);
         return;
       }
-      CurrenciesService.getPair24hData((err, rett) => {
+      CurrenciesService.getPair24hData({}, (err, rett) => {
         if (err) {
           logger.error(err);
         }

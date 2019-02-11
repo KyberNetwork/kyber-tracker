@@ -722,7 +722,22 @@ module.exports = {
       "decimal": 18,
       "address": "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892",
       "hidden": 1549371981000       
-    }
+    },
+
+    "BIX":{
+      "name": "BIX Token",
+      "symbol" : "BIX",
+      "decimal": 18,
+      "address": "0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069",
+      "hidden": true       
+    },
+    "CDT":{
+      "name": "CoinDash",
+      "symbol" : "CDT",
+      "decimal": 18,
+      "address": "0x177d39ac676ed1c67a2b268ad7f1e58826e5b0af",
+      "hidden": true       
+    },
 
   },
 
