@@ -6,9 +6,10 @@ module.exports = {
     },
     "contractAddresses": {
       "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
-      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D", "0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
-      "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6", "0xed4f53268bfdFF39B36E8786247bA3A02Cf34B04"],
-      "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C", "0x91a502C678605fbCe581eae053319747482276b9"]
+      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xc14f34233071543e979f6a79aa272b0ab1b4947d"],
+      "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6"],
+      "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C", "0x91a502C678605fbCe581eae053319747482276b9"],
+      "internal": "0x65897aDCBa42dcCA5DD162c647b1cC3E31238490"
     },
     "logTopics": {
       "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -712,7 +713,22 @@ module.exports = {
         "decimal": 18,
         "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
         "hidden": 1548439731000       
-      }
+      },
+
+      "BIX":{
+        "name": "BIX Token",
+        "symbol" : "BIX",
+        "decimal": 18,
+        "address": "0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069",
+        "hidden": 1549870798000       
+      },
+      "CDT":{
+        "name": "CoinDash",
+        "symbol" : "CDT",
+        "decimal": 18,
+        "address": "0x177d39ac676ed1c67a2b268ad7f1e58826e5b0af",
+        "hidden": 1549870798000       
+      },
     },
     "averageBlockTime": 15000,
     "startBlockNumber": 5700000,
