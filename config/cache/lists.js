@@ -87,6 +87,20 @@ module.exports = [
       resolution: '60',
     },
     setCache: false
+  },
+
+  {
+    when: "*/10 * * * *",
+    run: 'TickersCacheRefresher',
+    service: 'CurrenciesService',
+    functionName: 'getPair24hData',
+    cache: {
+      name: CacheInfo.ConvertiblePairs.key,
+      time_exprire: CacheInfo.ConvertiblePairs.TTLTool
+    },
+    params: {
+    },
+    setCache: true
   }
   ];
 
