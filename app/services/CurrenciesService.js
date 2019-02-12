@@ -25,20 +25,69 @@ module.exports = BaseService.extends({
 
     let pairs = {}
 
-    Object.keys(tokens).forEach(token => {
-      if ((token.toUpperCase() !== "ETH") &&
-        !tokens[token].delisted &&
-        helper.shouldShowToken(token)) {
-        pairs[token] = (asyncCallback) => this._getRateInfo(token, {
-          //tradeAdapter: tradeAdapter,
-          rateAdapter: rateAdapter
-        }, asyncCallback)
+    const nowInSeconds = Utils.nowInSeconds();
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const hour30Ago = nowInSeconds - 30 * 60 * 60;
+    const hour18Ago = nowInSeconds - 18 * 60 * 60;
+    const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
+
+
+    const lastSql = `
+      SELECT mid_expected as 'rate_24h', quote_symbol
+      FROM rate7d
+      WHERE block_timestamp IN (
+          SELECT MAX(block_timestamp)
+          FROM rate7d
+          where block_timestamp < ?
+      );
+    `;
+    const lastParams = [hour18Ago];
+
+
+    const pointSql = `
+      SELECT AVG(mid_expected) as rate7d, quote_symbol FROM rate 
+      WHERE mid_expected > 0 AND block_timestamp >= ? GROUP BY quote_symbol, h6_seq
+    `
+    const pointParams = [weekAgo];
+
+    async.auto({
+      lastRate: (next) => {
+        rateAdapter.execRaw(lastSql, lastParams, next);
+      },
+      pointGraph: (next) => {
+        rateAdapter.execRaw(pointSql, pointParams, next);
       }
+    }, (err, ret) => {
+      if(err) return callback(err)
+
+      let pairs = {}
+      Object.keys(tokens).forEach(token => {
+        let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_symbol).indexOf(token) : -1
+        pairs[token] = {
+          r: indexLastRate > -1 ? ret.lastRate[indexLastRate].rate_24h : 0,
+          p: ret.pointGraph.filter(g => (g.quote_symbol == token)).map(i => i.rate7d)
+        }
+      })
+      callback(null, pairs)
     })
-    async.auto(pairs, (err, ret) => {
-      db.destroy();
-      callback(err, ret);
-    });
+
+
+
+    // Object.keys(tokens).forEach(token => {
+    //   if ((token.toUpperCase() !== "ETH") &&
+    //     !tokens[token].delisted &&
+    //     helper.shouldShowToken(token)) {
+    //     pairs[token] = (asyncCallback) => this._getRateInfo(token, {
+    //       //tradeAdapter: tradeAdapter,
+    //       rateAdapter: rateAdapter
+    //     }, asyncCallback)
+    //   }
+    // })
+    // async.auto(pairs, (err, ret) => {
+    //   db.destroy();
+    //   callback(err, ret);
+    // });
   },
 
   _getDbConnection: function () {
@@ -74,7 +123,6 @@ module.exports = BaseService.extends({
     const hour30Ago = nowInSeconds - 30 * 60 * 60;
     const hour18Ago = nowInSeconds - 18 * 60 * 60;
     const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
-
     // volume SQL
     /*
     const tradeWhere = "block_timestamp >= ? AND (maker_token_symbol = ? OR taker_token_symbol = ?)";
@@ -248,48 +296,201 @@ module.exports = BaseService.extends({
     if (!tokens) return callback(null, {});
 
     let pairs = {};
+    const tradeAdapter = this.getModel('KyberTradeModel').getSlaveAdapter()
+    const rateAdapter = this.getModel('Rate7dModel').getSlaveAdapter()
+    const nowInMs = Date.now();
+    const nowInSeconds = Math.floor(nowInMs / 1000);
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
+    //volume token base
+    const volumeSql = `
+      SELECT sum(volume_token) as volume_24h_token, sum(volume_usd) as volume_24h_usd, sum(volume_eth) as volume_24h_eth, token_symbol
+      FROM 
+        (SELECT IFNULL(sum(maker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, maker_token_symbol as token_symbol
+        FROM kyber_trade
+        WHERE block_timestamp > ?
+        GROUP BY maker_token_symbol
+          UNION ALL
+        SELECT IFNULL(sum(taker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, taker_token_symbol as token_symbol 
+        FROM kyber_trade 
+        WHERE block_timestamp > ?
+        GROUP BY taker_token_symbol
+        )a
+      GROUP BY token_symbol
+    `;
+    const volumeParams = [dayAgo, dayAgo];
 
-    Object.keys(tokens).map(token => {
-      if ((token.toUpperCase() !== "ETH") &&
-        !tokens[token].delisted &&
-        helper.shouldShowToken(token)) {
-        pairs["ETH_" + token] = (asyncCallback) => this._getPair24hData({
-          tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
-          rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
-          token: token,
-          fromCurrencyCode: "ETH"
-        }, asyncCallback)
+
+    // 24h price SQL
+    const maxRateSql = `SELECT max(buy_expected) as 'past_24h_high', min(sell_expected) as 'past_24h_low', quote_symbol
+      FROM rate7d
+      WHERE block_timestamp > ? AND buy_expected > 0 AND sell_expected > 0
+      GROUP BY quote_symbol`;
+    const maxRateParams = [dayAgo];
+
+    // last price SQL
+    const lastRateSql = `SELECT buy_expected as 'current_ask', sell_expected as 'current_bid', quote_symbol
+    FROM rate7d
+    WHERE block_number IN (
+        SELECT MAX(block_number)
+        FROM rate7d
+        GROUP BY quote_symbol
+    );`;
+    const lastRateParams = [];
+
+    // last price SQL
+    const lastTradeMakerSql = `SELECT *
+    FROM kyber_trade
+    WHERE id IN
+    (
+        SELECT MAX(id)
+        FROM kyber_trade
+        where block_timestamp > ?
+        GROUP BY maker_token_symbol
+    )
+    `;
+    const lastTradeTakerSql = `SELECT *
+    FROM kyber_trade
+    WHERE id IN
+    (
+        SELECT MAX(id)
+        FROM kyber_trade
+        where block_timestamp > ?
+        GROUP BY taker_token_symbol
+    )
+    `;
+    const lastTradeParams = [weekAgo];
+
+    async.auto({
+      volume: (next) => {
+        tradeAdapter.execRaw(volumeSql, volumeParams, next);
+      },
+      maxRate: (next) => {
+        rateAdapter.execRaw(maxRateSql, maxRateParams, next);
+      },
+      lastRate: (next) => {
+        rateAdapter.execRaw(lastRateSql, lastRateParams, next);
+      },
+      lastTradeMaker: (next) => {
+        tradeAdapter.execRaw(lastTradeMakerSql, lastTradeParams, next);
+      },
+      lastTradeTaker: (next) => {
+        tradeAdapter.execRaw(lastTradeTakerSql, lastTradeParams, next);
       }
-    });
+    }, (err, ret) => {
+      if(err) return callback(err)
 
-    pairs.allRates = this.getService('CMCService').getAllRates;
-
-    async.auto(pairs, 10, function (err, pairs) {
-      if (!err) {
-        const rates = pairs.allRates;
-        delete pairs.allRates;
-        Object.values(pairs).forEach((value) => {
-          const askrate = rates.getRate(value.base_symbol, value.quote_symbol);
-          const normalAsk = askrate ? (1 / askrate) : 0;
-          const normalBid = rates.getRate(value.quote_symbol, value.base_symbol);
-          if (normalAsk) {
-            value.current_ask = normalAsk;
-          }
-          if (value.current_ask > value.past_24h_high) {
-            value.past_24h_high = value.current_ask;
-          }
-
-          if (normalBid) {
-            value.current_bid = normalBid;
-          }
-          if (value.current_bid < value.past_24h_low) {
-            value.past_24h_low = value.current_bid;
+      let pairs = {}
+      Object.keys(tokens).map(token => {
+        if ((token.toUpperCase() !== "ETH") &&
+          !tokens[token].delisted &&
+          helper.shouldShowToken(token)) {
+  
+          pairs["ETH_" + token] = {
+            timestamp: nowInMs,
+            quote_symbol: token,
+            base_symbol: 'ETH',
+            past_24h_high: 0,
+            past_24h_low: 0,
+            usd_24h_volume:  0,
+            eth_24h_volume: 0,
+            token_24h_volume: 0,
+            current_bid: 0,
+            current_ask:  0,
+            last_traded: 0
           }
 
-        });
-      }
-      callback(err, pairs);
-    });
+          let indexVolume = ret.volume ? ret.volume.map(v => v.token_symbol).indexOf(token) : -1
+          if(indexVolume > -1){
+            pairs["ETH_" + token].usd_24h_volume = ret.volume[indexVolume].volume_24h_usd
+            pairs["ETH_" + token].token_24h_volume = new BigNumber(ret.volume[indexVolume].volume_24h_token || 0).div(Math.pow(10, tokens[token].decimal)).toNumber()
+            pairs["ETH_" + token].eth_24h_volume = ret.volume[indexVolume].volume_24h_eth
+          }
+
+          let indexMaxRate = ret.maxRate ? ret.maxRate.map(m => m.quote_symbol).indexOf(token) : -1
+          if(indexMaxRate > -1){
+            pairs["ETH_" + token].past_24h_high = ret.maxRate[indexMaxRate].past_24h_high
+            pairs["ETH_" + token].past_24h_low = ret.maxRate[indexMaxRate].past_24h_low
+          }
+
+          let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_symbol).indexOf(token) : -1
+          if(indexLastRate > -1 ){
+            pairs["ETH_" + token].current_bid = ret.lastRate[indexLastRate].current_bid
+            pairs["ETH_" + token].current_ask = ret.lastRate[indexLastRate].current_ask
+          }
+
+          let indexlastMakerTrade = ret.lastTradeMaker ? ret.lastTradeMaker.map(l => l.maker_token_symbol).indexOf(token) : -1
+          let indexlastTakerTrade = ret.lastTradeTaker ? ret.lastTradeTaker.map(l => l.taker_token_symbol).indexOf(token) : -1
+          
+          if(indexlastMakerTrade > -1 || indexlastTakerTrade > -1){
+            let lastPrice = 0
+            let lastMakerTrade = indexlastMakerTrade > -1 ? ret.lastTradeMaker[indexlastMakerTrade] : null
+            let lastTakerTrade = indexlastTakerTrade > -1 ? ret.lastTradeTaker[indexlastTakerTrade] : null
+
+            let lastTokenTrade = lastMakerTrade
+            if(!lastMakerTrade || (lastTakerTrade && lastTakerTrade.blockTimestamp > lastMakerTrade.blockTimestamp)){
+              lastTokenTrade = lastTakerTrade
+            }
+
+
+            // let lastTokenTrade = ret.lastTrade[indexlastTrade]
+            let bigMakerAmount = lastTokenTrade.maker_token_amount ? new BigNumber(lastTokenTrade.maker_token_amount) : new BigNumber(0)
+            let bigTakerAmount = lastTokenTrade.taker_token_amount ? new BigNumber(lastTokenTrade.taker_token_amount) : new BigNumber(0)
+
+            if (lastTokenTrade.taker_token_symbol !== token && !bigMakerAmount.isZero()) {
+              let amountTaker = lastTokenTrade.volume_eth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
+              let amountMaker = bigMakerAmount.div(Math.pow(10, tokens[token].decimal));
+              lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
+            }
+            else if (lastTokenTrade.maker_token_symbol !== token && !bigTakerAmount.isZero()) {
+              let amountMaker = lastTokenTrade.volume_eth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
+              let amountTaker = bigTakerAmount.div(Math.pow(10, tokens[token].decimal))
+              lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
+            }
+            pairs["ETH_" + token].last_traded = lastPrice
+          }
+        }
+      });
+
+
+      return callback(null, pairs)
+  
+    })
+    
+
+
+
+
+    
+    // pairs.allRates = this.getService('CMCService').getAllRates;
+
+    // async.auto(pairs, 10, function (err, pairs) {
+    //   if (!err) {
+    //     const rates = pairs.allRates;
+    //     delete pairs.allRates;
+    //     Object.values(pairs).forEach((value) => {
+    //       const askrate = rates.getRate(value.base_symbol, value.quote_symbol);
+    //       const normalAsk = askrate ? (1 / askrate) : 0;
+    //       const normalBid = rates.getRate(value.quote_symbol, value.base_symbol);
+    //       if (normalAsk) {
+    //         value.current_ask = normalAsk;
+    //       }
+    //       if (value.current_ask > value.past_24h_high) {
+    //         value.past_24h_high = value.current_ask;
+    //       }
+
+    //       if (normalBid) {
+    //         value.current_bid = normalBid;
+    //       }
+    //       if (value.current_bid < value.past_24h_low) {
+    //         value.past_24h_low = value.current_bid;
+    //       }
+
+    //     });
+    //   }
+    //   callback(err, pairs);
+    // });
   },
 
   _getPair24hData: function (options, callback) {
@@ -309,11 +510,28 @@ module.exports = BaseService.extends({
     const nowInSeconds = Math.floor(nowInMs / 1000);
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+
+
     const KyberTradeModel = this.getModel('KyberTradeModel');
     // volume SQL
+
+    // kyber_trade
     const tradeWhere = 'block_timestamp > ? AND (maker_token_symbol = ?  OR  taker_token_symbol = ?)';
     const tradeSql = `select IFNULL(sum(volume_usd),0) as usd_24h_volume, IFNULL(sum(volume_eth),0) as eth_24h_volume from kyber_trade where ${tradeWhere}`;
     const tradeParams = [dayAgo, tokenSymbol, tokenSymbol];
+
+    //volume token base
+    const volumeSql = `SELECT sum(volume_) as volume FROM 
+    (SELECT IFNULL(sum(maker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND maker_token_symbol = ?
+      UNION ALL
+      SELECT IFNULL(sum(taker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
+    )a`;
+    const volumeParams = [dayAgo, tokenSymbol, dayAgo, tokenSymbol];
+
+
+    //----------------------
+
+
 
     // 24h price SQL
     const rateSql = `SELECT max(buy_expected) as 'past_24h_high', min(sell_expected) as 'past_24h_low' FROM rate7d
@@ -326,13 +544,7 @@ module.exports = BaseService.extends({
       ORDER BY block_number DESC LIMIT 1`;
     const lastParams = [tokenSymbol];
 
-    //volume token base
-    const volumeSql = `SELECT sum(volume_) as volume FROM 
-    (SELECT IFNULL(sum(maker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND maker_token_symbol = ?
-      UNION ALL
-      SELECT IFNULL(sum(taker_token_amount),0) as volume_ FROM kyber_trade where block_timestamp > ? AND taker_token_symbol = ?
-    )a`;
-    const volumeParams = [dayAgo, tokenSymbol, dayAgo, tokenSymbol];
+    
 
     async.auto({
       trade: (next) => {
