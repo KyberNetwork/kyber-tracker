@@ -102,5 +102,5 @@ module.exports = [
   //   },
   //   setCache: true
   // }
-  // ];
+  ];
 
