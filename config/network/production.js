@@ -692,7 +692,7 @@ module.exports = {
       "symbol" : "USDC",
       "decimal": 6,
       "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-      "hidden": true       
+      "hidden": 1549976400000      
     },
     "GUSD":{
       "name": "Gemini dollar",
@@ -706,7 +706,7 @@ module.exports = {
       "symbol" : "EURS",
       "decimal": 2,
       "address": "0xdb25f211ab05b1c97d595516f45794528a807ad8",
-      "hidden": true       
+      "hidden": 1549976400000       
     },
     "PAX":{
       "name": "Paxos Standard",
@@ -729,14 +729,14 @@ module.exports = {
       "symbol" : "BIX",
       "decimal": 18,
       "address": "0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069",
-      "hidden": true       
+      "hidden": 1549976400000       
     },
     "CDT":{
       "name": "CoinDash",
       "symbol" : "CDT",
       "decimal": 18,
       "address": "0x177d39ac676ed1c67a2b268ad7f1e58826e5b0af",
-      "hidden": true       
+      "hidden": 1549976400000       
     },
 
   },
