@@ -3,7 +3,7 @@ const Const = require('../../app/common/Const');
 module.exports = {
   "CurrenciesAllRates": {
     key: "all-rates",
-    TTL: {ttl: 53 * Const.MINUTE_IN_MILLISECONDS},
+    TTL: {ttl: 5 * Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 15 * Const.MINUTE_IN_MILLISECONDS}
   },
   "CmcCurrentPrice": {
@@ -81,7 +81,7 @@ module.exports = {
   },
   "Pair24hData": {
     key: "pair-24h",
-    TTL: {ttl: 1 *  Const.MINUTE_IN_MILLISECONDS}
+    TTL: {ttl: 10 *  Const.MINUTE_IN_MILLISECONDS}
   },
   "TotalBurnedFees": {
     key: "burned-fee-total",
