@@ -60,10 +60,10 @@ module.exports = BaseService.extends({
       }
     }, (err, ret) => {
       if(err) return callback(err)
-      
+
       let pairs = {}
       Object.keys(tokens).forEach(token => {
-        let indexLastRate = ret.lastRate.map(l => l.quote_symbol).indexOf(token)
+        let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_symbol).indexOf(token) : -1
         pairs[token] = {
           r: indexLastRate > -1 ? ret.lastRate[indexLastRate].rate_24h : 0,
           p: ret.pointGraph.filter(g => (g.quote_symbol == token)).map(i => i.rate7d)
@@ -401,27 +401,27 @@ module.exports = BaseService.extends({
             last_traded: 0
           }
 
-          let indexVolume = ret.volume.map(v => v.token_symbol).indexOf(token)
+          let indexVolume = ret.volume ? ret.volume.map(v => v.token_symbol).indexOf(token) : -1
           if(indexVolume > -1){
             pairs["ETH_" + token].usd_24h_volume = ret.volume[indexVolume].volume_24h_usd
             pairs["ETH_" + token].token_24h_volume = new BigNumber(ret.volume[indexVolume].volume_24h_token || 0).div(Math.pow(10, tokens[token].decimal)).toNumber()
             pairs["ETH_" + token].eth_24h_volume = ret.volume[indexVolume].volume_24h_eth
           }
 
-          let indexMaxRate = ret.maxRate.map(m => m.quote_symbol).indexOf(token)
+          let indexMaxRate = ret.maxRate ? ret.maxRate.map(m => m.quote_symbol).indexOf(token) : -1
           if(indexMaxRate > -1){
             pairs["ETH_" + token].past_24h_high = ret.maxRate[indexMaxRate].past_24h_high
             pairs["ETH_" + token].past_24h_low = ret.maxRate[indexMaxRate].past_24h_low
           }
 
-          let indexLastRate = ret.lastRate.map(l => l.quote_symbol).indexOf(token)
+          let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_symbol).indexOf(token) : -1
           if(indexLastRate > -1 ){
             pairs["ETH_" + token].current_bid = ret.lastRate[indexLastRate].current_bid
             pairs["ETH_" + token].current_ask = ret.lastRate[indexLastRate].current_ask
           }
 
-          let indexlastMakerTrade = ret.lastTradeMaker.map(l => l.maker_token_symbol).indexOf(token)
-          let indexlastTakerTrade = ret.lastTradeTaker.map(l => l.taker_token_symbol).indexOf(token)
+          let indexlastMakerTrade = ret.lastTradeMaker ? ret.lastTradeMaker.map(l => l.maker_token_symbol).indexOf(token) : -1
+          let indexlastTakerTrade = ret.lastTradeTaker ? ret.lastTradeTaker.map(l => l.taker_token_symbol).indexOf(token) : -1
           
           if(indexlastMakerTrade > -1 || indexlastTakerTrade > -1){
             let lastPrice = 0
