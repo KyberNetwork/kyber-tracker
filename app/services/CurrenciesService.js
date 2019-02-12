@@ -31,7 +31,6 @@ module.exports = BaseService.extends({
     const hour30Ago = nowInSeconds - 30 * 60 * 60;
     const hour18Ago = nowInSeconds - 18 * 60 * 60;
     const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
-    console.log("==================", dayAgo, hour30Ago, hour18Ago)
 
 
     const lastSql = `
@@ -60,6 +59,8 @@ module.exports = BaseService.extends({
         rateAdapter.execRaw(pointSql, pointParams, next);
       }
     }, (err, ret) => {
+      if(err) return callback(err)
+      
       let pairs = {}
       Object.keys(tokens).forEach(token => {
         let indexLastRate = ret.lastRate.map(l => l.quote_symbol).indexOf(token)
@@ -68,8 +69,6 @@ module.exports = BaseService.extends({
           p: ret.pointGraph.filter(g => (g.quote_symbol == token)).map(i => i.rate7d)
         }
       })
-
-      console.log('**********', pairs)
       callback(null, pairs)
     })
 
@@ -124,7 +123,6 @@ module.exports = BaseService.extends({
     const hour30Ago = nowInSeconds - 30 * 60 * 60;
     const hour18Ago = nowInSeconds - 18 * 60 * 60;
     const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
-    console.log("==================", dayAgo, hour30Ago, hour18Ago)
     // volume SQL
     /*
     const tradeWhere = "block_timestamp >= ? AND (maker_token_symbol = ? OR taker_token_symbol = ?)";
@@ -304,8 +302,7 @@ module.exports = BaseService.extends({
     const nowInSeconds = Math.floor(nowInMs / 1000);
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
-
-    console.log("------------ day ago", dayAgo )
+    const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
     //volume token base
     const volumeSql = `
       SELECT sum(volume_token) as volume_24h_token, sum(volume_usd) as volume_24h_usd, sum(volume_eth) as volume_24h_eth, token_symbol
@@ -343,7 +340,7 @@ module.exports = BaseService.extends({
     const lastRateParams = [];
 
     // last price SQL
-    const lastTradeSql = `SELECT *
+    const lastTradeMakerSql = `SELECT *
     FROM kyber_trade
     WHERE id IN
     (
@@ -353,7 +350,17 @@ module.exports = BaseService.extends({
         GROUP BY maker_token_symbol
     )
     `;
-    const lastTradeParams = [0];
+    const lastTradeTakerSql = `SELECT *
+    FROM kyber_trade
+    WHERE id IN
+    (
+        SELECT MAX(id)
+        FROM kyber_trade
+        where block_timestamp > ?
+        GROUP BY taker_token_symbol
+    )
+    `;
+    const lastTradeParams = [weekAgo];
 
     async.auto({
       volume: (next) => {
@@ -365,11 +372,15 @@ module.exports = BaseService.extends({
       lastRate: (next) => {
         rateAdapter.execRaw(lastRateSql, lastRateParams, next);
       },
-      lastTrade: (next) => {
-        tradeAdapter.execRaw(lastTradeSql, lastTradeParams, next);
+      lastTradeMaker: (next) => {
+        tradeAdapter.execRaw(lastTradeMakerSql, lastTradeParams, next);
+      },
+      lastTradeTaker: (next) => {
+        tradeAdapter.execRaw(lastTradeTakerSql, lastTradeParams, next);
       }
     }, (err, ret) => {
-      // console.log("+++++++++++++err", ret.maxRate)
+      if(err) return callback(err)
+
       let pairs = {}
       Object.keys(tokens).map(token => {
         if ((token.toUpperCase() !== "ETH") &&
@@ -409,21 +420,32 @@ module.exports = BaseService.extends({
             pairs["ETH_" + token].current_ask = ret.lastRate[indexLastRate].current_ask
           }
 
-          let indexlastTrade = ret.lastTrade.map(l => l.maker_token_symbol).indexOf(token)
-          if(indexlastTrade > -1 ){
+          let indexlastMakerTrade = ret.lastTradeMaker.map(l => l.maker_token_symbol).indexOf(token)
+          let indexlastTakerTrade = ret.lastTradeTaker.map(l => l.taker_token_symbol).indexOf(token)
+          
+          if(indexlastMakerTrade > -1 || indexlastTakerTrade > -1){
             let lastPrice = 0
-            let lastTokenTrade = ret.lastTrade[indexlastTrade]
-            let bigMakerAmount = lastTokenTrade.makerTokenAmount ? new BigNumber(lastTokenTrade.makerTokenAmount) : new BigNumber(0)
-            let bigTakerAmount = lastTokenTrade.takerTokenAmount ? new BigNumber(lastTokenTrade.takerTokenAmount) : new BigNumber(0)
+            let lastMakerTrade = indexlastMakerTrade > -1 ? ret.lastTradeMaker[indexlastMakerTrade] : null
+            let lastTakerTrade = indexlastTakerTrade > -1 ? ret.lastTradeTaker[indexlastTakerTrade] : null
 
-            if (lastTokenTrade.takerTokenSymbol !== token && !bigMakerAmount.isZero()) {
-              let amountTaker = lastTokenTrade.volumeEth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
-              let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
+            let lastTokenTrade = lastMakerTrade
+            if(!lastMakerTrade || (lastTakerTrade && lastTakerTrade.blockTimestamp > lastMakerTrade.blockTimestamp)){
+              lastTokenTrade = lastTakerTrade
+            }
+
+
+            // let lastTokenTrade = ret.lastTrade[indexlastTrade]
+            let bigMakerAmount = lastTokenTrade.maker_token_amount ? new BigNumber(lastTokenTrade.maker_token_amount) : new BigNumber(0)
+            let bigTakerAmount = lastTokenTrade.taker_token_amount ? new BigNumber(lastTokenTrade.taker_token_amount) : new BigNumber(0)
+
+            if (lastTokenTrade.taker_token_symbol !== token && !bigMakerAmount.isZero()) {
+              let amountTaker = lastTokenTrade.volume_eth; //bigTakerAmount.div(Math.pow(10, baseTokenData.decimal))
+              let amountMaker = bigMakerAmount.div(Math.pow(10, tokens[token].decimal));
               lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
             }
-            else if (lastTokenTrade.makerTokenSymbol !== token && !bigTakerAmount.isZero()) {
-              let amountMaker = lastTokenTrade.volumeEth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
-              let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
+            else if (lastTokenTrade.maker_token_symbol !== token && !bigTakerAmount.isZero()) {
+              let amountMaker = lastTokenTrade.volume_eth; //bigMakerAmount.div(Math.pow(10, baseTokenData.decimal))
+              let amountTaker = bigTakerAmount.div(Math.pow(10, tokens[token].decimal))
               lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
             }
             pairs["ETH_" + token].last_traded = lastPrice

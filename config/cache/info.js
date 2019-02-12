@@ -76,7 +76,7 @@ module.exports = {
   },
   "ConvertiblePairs": {
     key: "convertible-pairs",
-    TTL: {ttl: 53 * Const.MINUTE_IN_MILLISECONDS},
+    TTL: {ttl: 33 * Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
   },
   "Pair24hData": {
