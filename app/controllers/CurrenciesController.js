@@ -120,27 +120,27 @@ module.exports = AppController.extends({
           logger.error(err);
         }
         // pack the result
-        // const pack = data(ret);
-        res.json(ret);
+        const pack = data(ret);
+        res.json(pack);
         redisCacheService.setCacheByKey(CACHE_KEY, ret, CACHE_TTL);
       });
     };
-    // const data = (ret) =>{
-    //   const pack = {};
-    //   Object.keys(ret).forEach((symbol) => {
-    //     const token = ret[symbol];
-    //     const item = pack[symbol] = {
-    //       //e: token.volume[0].ETH,
-    //       //u: token.volume[0].USD,
-    //       r: token.rate.length ? token.rate[0]["24h"] : 0,
-    //       p: []
-    //     };
-    //     token.points.forEach((p) => {
-    //       item.p.push(p.rate7d);
-    //     });
-    //   });
-    //   return pack
-    // };
+    const data = (ret) =>{
+      const pack = {};
+      Object.keys(ret).forEach((symbol) => {
+        const token = ret[symbol];
+        const item = pack[symbol] = {
+          //e: token.volume[0].ETH,
+          //u: token.volume[0].USD,
+          r: token.rate.length ? token.rate[0]["24h"] : 0,
+          p: []
+        };
+        token.points.forEach((p) => {
+          item.p.push(p.rate7d);
+        });
+      });
+      return pack
+    };
     redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -148,8 +148,8 @@ module.exports = AppController.extends({
         return;
       }
       if (ret) {
-        // const pack = data(JSON.parse(ret))
-        res.json(JSON.parse(ret));
+        const pack = data(JSON.parse(ret))
+        res.json(pack);
         return;
       }
       loadData();

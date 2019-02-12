@@ -2,7 +2,7 @@ const CacheInfo = require('../../config/cache/info');
 
 module.exports = [
   {
-    when: "*/11 * * * *",
+    when: "*/10 * * * *",
     run: 'AllRateInfoCacheRefresher',
     service: 'CurrenciesService',
     functionName: 'getAllRateInfo',
@@ -74,7 +74,7 @@ module.exports = [
     setCache: true
   },
   {
-    when: "*/12 * * * *",
+    when: "*/10 * * * *",
     run: 'HistoryCacheRefresher',
     service: 'ChartService',
     functionName: 'chart_history_all',
@@ -90,7 +90,7 @@ module.exports = [
   },
 
   {
-    when: "*/13 * * * *",
+    when: "*/10 * * * *",
     run: 'TickersCacheRefresher',
     service: 'CurrenciesService',
     functionName: 'getPair24hData',
