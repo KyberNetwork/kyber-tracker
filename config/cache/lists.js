@@ -2,7 +2,7 @@ const CacheInfo = require('../../config/cache/info');
 
 module.exports = [
   {
-    when: "*/1 * * * *",
+    when: "*/10 * * * *",
     run: 'AllRateInfoCacheRefresher',
     service: 'CurrenciesService',
     functionName: 'getAllRateInfo',
