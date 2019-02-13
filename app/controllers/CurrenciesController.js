@@ -146,13 +146,10 @@ module.exports = AppController.extends({
 
 
     const data = (ret) =>{
-      console.log('*********** data in redis', ret)
       const pack = {};
       Object.keys(ret).forEach((symbol) => {
         const token = ret[symbol];
         const item = pack[symbol] = {
-          //e: token.volume[0].ETH,
-          //u: token.volume[0].USD,
           r: token.rate && token.rate.length ? token.rate[0]["24h"] : 0,
           p: []
         };

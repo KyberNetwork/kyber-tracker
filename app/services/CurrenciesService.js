@@ -40,15 +40,14 @@ module.exports = BaseService.extends({
       db.destroy();
       if(err){
         logger.error(err)
-        console.log("&&&&&&&&&&&&&&&& errors", err)
         return callback(err)
       }
       const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
       const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
       const redisCacheService = this.getService('RedisCacheService');
-      redisCacheService.setCacheByKey(CACHE_KEY, JSON.stringify(ret), CACHE_TTL)
+      redisCacheService.setCacheByKey(CACHE_KEY, ret, CACHE_TTL)
       const endTime = new Date().getTime()
-      console.log(`______ saved to redis in ${endTime - startTime} s, cache ${CACHE_TTL.ttl} s`)
+      console.log(`______ saved to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
       callback(err, ret);
     });
   },
