@@ -20,36 +20,109 @@ module.exports = BaseService.extends({
   getAllRateInfo: function (options, callback) {
     console.log("************* run to get rate in service")
     const startTime = new Date().getTime()
+
+
     const db = this._getDbConnection();
     //const tradeAdapter = db.model().getSlaveAdapter();
     const rateAdapter = db.model('Rate7dModel').getSlaveAdapter();
 
     let pairs = {}
 
-    Object.keys(tokens).forEach(token => {
-      if ((token.toUpperCase() !== "ETH") &&
-        !tokens[token].delisted &&
-        helper.shouldShowToken(token)) {
-        pairs[token] = (asyncCallback) => this._getRateInfo(token, {
-          //tradeAdapter: tradeAdapter,
-          rateAdapter: rateAdapter
-        }, asyncCallback)
+    const nowInSeconds = Utils.nowInSeconds();
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const hour30Ago = nowInSeconds - 30 * 60 * 60;
+    const hour18Ago = nowInSeconds - 18 * 60 * 60;
+    const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
+
+
+    const lastSql = `
+      SELECT mid_expected as 'rate_24h', quote_symbol
+      FROM rate7d
+      WHERE block_timestamp IN (
+          SELECT MAX(block_timestamp)
+          FROM rate7d
+          where block_timestamp < ?
+      );
+    `;
+    const lastParams = [hour18Ago];
+
+
+    const pointSql = `
+      SELECT AVG(mid_expected) as rate7d, quote_symbol FROM rate 
+      WHERE mid_expected > 0 AND block_timestamp >= ? GROUP BY quote_symbol, h6_seq
+    `
+    const pointParams = [weekAgo];
+
+    async.auto({
+      lastRate: (next) => {
+        rateAdapter.execRaw(lastSql, lastParams, next);
+      },
+      pointGraph: (next) => {
+        rateAdapter.execRaw(pointSql, pointParams, next);
       }
-    })
-    async.auto(pairs, (err, ret) => {
-      db.destroy();
-      if(err){
-        logger.error(err)
-        return callback(err)
-      }
+    }, (err, ret) => {
+      if(err) return callback(err)
+
+      let pairs = {}
+      Object.keys(tokens).forEach(token => {
+        let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_symbol).indexOf(token) : -1
+        pairs[token] = {
+          r: indexLastRate > -1 ? ret.lastRate[indexLastRate].rate_24h : 0,
+          p: ret.pointGraph.filter(g => (g.quote_symbol == token)).map(i => i.rate7d)
+        }
+      })
+
       const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
       const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
       const redisCacheService = this.getService('RedisCacheService');
-      redisCacheService.setCacheByKey(CACHE_KEY, ret, CACHE_TTL)
+      redisCacheService.setCacheByKey(CACHE_KEY, pairs, CACHE_TTL)
       const endTime = new Date().getTime()
       console.log(`______ saved to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
-      callback(err, ret);
-    });
+      return callback(null, pairs)
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Object.keys(tokens).forEach(token => {
+    //   if ((token.toUpperCase() !== "ETH") &&
+    //     !tokens[token].delisted &&
+    //     helper.shouldShowToken(token)) {
+    //     pairs[token] = (asyncCallback) => this._getRateInfo(token, {
+    //       //tradeAdapter: tradeAdapter,
+    //       rateAdapter: rateAdapter
+    //     }, asyncCallback)
+    //   }
+    // })
+    // async.auto(pairs, (err, ret) => {
+    //   db.destroy();
+    //   if(err){
+    //     logger.error(err)
+    //     return callback(err)
+    //   }
+    //   const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+    //   const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
+    //   const redisCacheService = this.getService('RedisCacheService');
+    //   redisCacheService.setCacheByKey(CACHE_KEY, ret, CACHE_TTL)
+    //   const endTime = new Date().getTime()
+    //   console.log(`______ saved to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
+    //   callback(err, ret);
+    // });
+
+
+
   },
 
   _getDbConnection: function () {
