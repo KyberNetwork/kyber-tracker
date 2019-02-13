@@ -1,10 +1,10 @@
 const Const = require('../../app/common/Const');
-
+const WEEK_IN_MILISECONDS = Const.MINUTE_IN_MILLISECONDS * 60 * 24 * 7
 module.exports = {
   "CurrenciesAllRates": {
     key: "all-rates",
-    TTL: {ttl: 63 * Const.MINUTE_IN_MILLISECONDS},
-    TTLTool: {ttl: 15 * Const.MINUTE_IN_MILLISECONDS}
+    TTL: {ttl: WEEK_IN_MILISECONDS},
+    TTLTool: {ttl: 1 * Const.MINUTE_IN_MILLISECONDS}
   },
   "CmcCurrentPrice": {
     key: "cmc-current-price-",
@@ -76,7 +76,7 @@ module.exports = {
   },
   "ConvertiblePairs": {
     key: "convertible-pairs",
-    TTL: {ttl: 63 * Const.MINUTE_IN_MILLISECONDS},
+    TTL: {ttl: 15 * Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
   },
   "Pair24hData": {

@@ -18,7 +18,8 @@ module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
   getAllRateInfo: function (options, callback) {
-
+    console.log("************* run to get rate in service")
+    const startTime = new Date().getTime()
     const db = this._getDbConnection();
     //const tradeAdapter = db.model().getSlaveAdapter();
     const rateAdapter = db.model('Rate7dModel').getSlaveAdapter();
@@ -37,6 +38,17 @@ module.exports = BaseService.extends({
     })
     async.auto(pairs, (err, ret) => {
       db.destroy();
+      if(err){
+        logger.error(err)
+        console.log("&&&&&&&&&&&&&&&& errors", err)
+        return callback(err)
+      }
+      const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+      const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
+      const redisCacheService = this.getService('RedisCacheService');
+      redisCacheService.setCacheByKey(CACHE_KEY, JSON.stringify(ret), CACHE_TTL)
+      const endTime = new Date().getTime()
+      console.log(`______ saved to redis in ${endTime - startTime} s, cache ${CACHE_TTL.ttl} s`)
       callback(err, ret);
     });
   },
