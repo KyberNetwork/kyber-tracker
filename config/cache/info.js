@@ -4,7 +4,7 @@ module.exports = {
   "CurrenciesAllRates": {
     key: "all-rates",
     TTL: {ttl: WEEK_IN_MILISECONDS},
-    TTLTool: {ttl: 1 * Const.MINUTE_IN_MILLISECONDS}
+    TTLTool: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
   },
   "CmcCurrentPrice": {
     key: "cmc-current-price-",
@@ -80,8 +80,8 @@ module.exports = {
     TTLTool: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
   },
   "Pair24hData": {
-    key: "pair-24h",
-    TTL: {ttl: 10 *  Const.MINUTE_IN_MILLISECONDS}
+    TTL: {ttl: WEEK_IN_MILISECONDS},
+    TTLTool: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
   },
   "TotalBurnedFees": {
     key: "burned-fee-total",

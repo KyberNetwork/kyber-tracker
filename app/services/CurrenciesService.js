@@ -329,8 +329,10 @@ module.exports = BaseService.extends({
   },
 
   getPair24hData: function (options, callback) {
-    if (!tokens) return callback(null, {});
+    console.log("************* run to get PAIR24H in service")
+    const startTime = new Date().getTime()
 
+    if (!tokens) return callback(null, {});
     let pairs = {};
 
     Object.keys(tokens).map(token => {
@@ -347,8 +349,15 @@ module.exports = BaseService.extends({
     });
 
     pairs.allRates = this.getService('CMCService').getAllRates;
+    const CACHE_KEY = CacheInfo.Pair24hData.key;
+    const CACHE_TTL = CacheInfo.Pair24hData.TTL;
+    const redisCacheService = this.getService('RedisCacheService');
+
+
 
     async.auto(pairs, 10, function (err, pairs) {
+      if(err) return callback(err)
+
       if (!err) {
         const rates = pairs.allRates;
         delete pairs.allRates;
@@ -372,7 +381,14 @@ module.exports = BaseService.extends({
 
         });
       }
-      callback(err, pairs);
+
+      
+      redisCacheService.setCacheByKey(CACHE_KEY, pairs, CACHE_TTL)
+      const endTime = new Date().getTime()
+      console.log(`______ saved 24H PAIRS to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
+
+
+      callback(null, pairs);
     });
   },
 
