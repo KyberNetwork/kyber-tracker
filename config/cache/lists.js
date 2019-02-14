@@ -90,7 +90,7 @@ module.exports = [
   },
 
   {
-    when: "*/1 * * * *",
+    when: "*/10 * * * *",
     run: 'TickersCacheRefresher',
     service: 'CurrenciesService',
     functionName: 'getPair24hData',

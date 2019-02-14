@@ -35,22 +35,30 @@ module.exports = BaseService.extends({
     const hour18Ago = nowInSeconds - 18 * 60 * 60;
     const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
 
+    const supportedTokenList = Object.keys(tokens).filter(token => {
+      return (token.toUpperCase() !== "ETH") &&
+            !tokens[token].delisted &&
+            helper.shouldShowToken(token)
+    }).join('\',\'')
 
     const lastSql = `
       SELECT mid_expected as 'rate_24h', quote_symbol
       FROM rate7d
-      WHERE block_timestamp IN (
+      WHERE block_timestamp = (
           SELECT MAX(block_timestamp)
           FROM rate7d
           where block_timestamp < ?
-      );
+      )
+      AND quote_symbol IN ('${supportedTokenList}')
     `;
     const lastParams = [hour18Ago];
 
 
     const pointSql = `
       SELECT AVG(mid_expected) as rate7d, quote_symbol FROM rate 
-      WHERE mid_expected > 0 AND block_timestamp >= ? GROUP BY quote_symbol, h6_seq
+      WHERE mid_expected > 0 AND block_timestamp >= ? 
+            AND quote_symbol IN ('${supportedTokenList}')
+      GROUP BY quote_symbol, h6_seq
     `
     const pointParams = [weekAgo];
 
@@ -66,10 +74,14 @@ module.exports = BaseService.extends({
 
       let pairs = {}
       Object.keys(tokens).forEach(token => {
-        let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_symbol).indexOf(token) : -1
-        pairs[token] = {
-          r: indexLastRate > -1 ? ret.lastRate[indexLastRate].rate_24h : 0,
-          p: ret.pointGraph.filter(g => (g.quote_symbol == token)).map(i => i.rate7d)
+        if ((token.toUpperCase() !== "ETH") &&
+          !tokens[token].delisted &&
+          helper.shouldShowToken(token)) {
+            let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_symbol).indexOf(token) : -1
+            pairs[token] = {
+              r: indexLastRate > -1 ? ret.lastRate[indexLastRate].rate_24h : 0,
+              p: ret.pointGraph.filter(g => (g.quote_symbol == token)).map(i => i.rate7d)
+            }
         }
       })
 
