@@ -94,10 +94,10 @@ module.exports = [
     run: 'TickersCacheRefresher',
     service: 'CurrenciesService',
     functionName: 'getPair24hData',
-    cache: {
+    // cache: {
       // name: CacheInfo.ConvertiblePairs.key,
       // time_exprire: CacheInfo.ConvertiblePairs.TTLTool
-    },
+    // },
     params: {
     },
     setCache: false

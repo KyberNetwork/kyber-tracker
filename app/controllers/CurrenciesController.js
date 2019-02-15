@@ -95,14 +95,6 @@ module.exports = AppController.extends({
       if(!ret) return res.badRequest("No cached data")
 
       return res.json(JSON.parse(ret));
-
-      // CurrenciesService.getPair24hData({}, (err, rett) => {
-      //   if (err) {
-      //     logger.error(err);
-      //   }
-      //   redisCacheService.setCacheByKey(CACHE_KEY, rett, CacheInfo.Pair24hData.TTL);
-      //   res.json(rett);
-      // });
     });
   },
 
