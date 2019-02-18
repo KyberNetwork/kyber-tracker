@@ -222,6 +222,55 @@ module.exports = BaseService.extends({
     });
   },
 
+
+  getCoingeckoTokenMaketData: function(symbol, callback){
+    const key = CacheInfo.CGTokenMaketData.key + symbol;
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      if (!symbol || typeof symbol !== 'string') {
+        return callback(`Cannot get config of invalid symbol: ${symbol}`);
+      }
+
+      const tokenInfo = network.tokens[symbol];
+      if (!tokenInfo) {
+        return callback(`Cannot find token config of symbol: ${symbol}`);
+      }
+
+      request
+        .get(`https://api.coingecko.com/api/v3/coins/${tokenInfo.cgId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
+        .timeout({
+          response: 10000,  // Wait 5 seconds for the server to start sending,
+          deadline: 60000, // but allow 1 minute for the file to finish loading.
+        })
+        .end((err, response) => {
+          if (err) {
+            return callback(err);
+          }
+
+          const result = response.body;
+          const marketData = result.market_data;
+          
+          if(!marketData) return callback('Response no market data')
+          
+          const tokenMarketData = {
+            currentPrice: marketData.current_price,
+            priceChange24h: marketData.price_change_24h,
+            priceChangePercentage24h: marketData.price_change_percentage_24h
+          }
+
+          RedisCache.setAsync(key, JSON.stringify(tokenMarketData), CacheInfo.CGTokenMaketData.TTL);
+          return callback(null, tokenMarketData);
+        });
+    });
+
+  },
+
   getHistoricalPrice: function (symbol, timeInMillis, callback) {
     if (!symbol || typeof symbol !== 'string') {
       return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
