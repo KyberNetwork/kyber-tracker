@@ -23,6 +23,10 @@ module.exports = {
     key: "cmc-token-info-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS}
   },
+  "CoingeckoETHPrice": {
+    key: "coingecko-ETH-price-",
+    TTL: {ttl: WEEK_IN_MILISECONDS}
+  },
   "chart_history_1h": {
     key: "chart_history_1h_",
     TTL: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS},

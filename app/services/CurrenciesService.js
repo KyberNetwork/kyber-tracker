@@ -18,7 +18,6 @@ module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
   getAllRateInfo: function (options, callback) {
-    console.log("************* run to get rate in service")
     const startTime = new Date().getTime()
 
 

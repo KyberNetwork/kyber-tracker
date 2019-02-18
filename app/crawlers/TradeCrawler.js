@@ -205,7 +205,6 @@ class TradeCrawler {
           break;
       }
     });
-
     async.waterfall([
       (next) => {
         async.eachLimit(_.values(records), PARALLEL_INSERT_LIMIT, (record, _next) => {
@@ -228,11 +227,12 @@ class TradeCrawler {
   _addNewTrade (exSession, record, callback) {
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
-    logger.info(`Add new trade: ${JSON.stringify(record)}`);
+    
     async.auto({
       price: (next) => {
         //getCoinPrice('ETH', record.blockTimestamp, next);
-        CMCService.getHistoricalPrice('ETH', record.blockTimestamp * 1000, next);
+        // CMCService.getHistoricalPrice('ETH', record.blockTimestamp * 1000, next);
+        CMCService.getEthPrice(record.blockTimestamp * 1000, next);
       },
       model: ['price', (ret, next) => {
         const ethAddress = networkConfig.tokens.ETH.address.toLowerCase();
@@ -253,7 +253,7 @@ class TradeCrawler {
         record.volumeUsd = record.volumeEth * ret.price.price_usd;
 
         
-
+        // logger.info(`Add new trade: ${JSON.stringify(record)}`);
         KyberTradeModel.add(record, {
           isInsertIgnore: true
         }, next);
