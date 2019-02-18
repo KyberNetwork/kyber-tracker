@@ -157,7 +157,7 @@ class TradeCrawler {
 
       const timestamp = blockTimestamps[log.blockNumber];
       if (!timestamp) {
-        return next(`Cannot get block info for log id=${log.id}, tx=${log.transactionHash}`);
+        return callback(`Cannot get block info for log id=${log.id}, tx=${log.transactionHash}`);
       }
 
       const record = records[txid];
