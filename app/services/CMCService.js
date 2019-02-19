@@ -359,12 +359,29 @@ module.exports = BaseService.extends({
         return callback(null, JSON.parse(ret));
       }
 
-      this._getEthPriceFromCoinGecko(dateString, (err, result) => {
-        if(err) return callback(err)
+      const nowInMs = new Date().getTime()
+      const dayInMs = 1000 * 60 * 60 * 24
+      if(nowInMs - timeInMillis > dayInMs){
+        this._getEthPriceFromCoinGecko(dateString, (err, result) => {
+          if(err) return callback(err)
+  
+          RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CoingeckoETHPrice.TTL);
+          return callback(null, result);
+        })
+      } else {
+        this.getCoingeckoTokenMaketData('ETH', (err, ret) => {
+          if(err) return callback(err)
+          
+          const result = {
+            current_price: ret.currentPrice.usd,
+            price_usd: ret.currentPrice.usd
+          }
 
-        RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CoingeckoETHPrice.TTL);
-        return callback(null, result);
-      })
+          RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CoingeckoETHPrice.TTL);
+          return callback(null, result);
+        })
+      }
+
     })
   },
 

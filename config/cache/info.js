@@ -28,7 +28,7 @@ module.exports = {
     TTL: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
   },
   "CoingeckoETHPrice": {
-    key: "coingecko-ETH-price-",
+    key: "coingecko-ETH-price",
     TTL: {ttl: WEEK_IN_MILISECONDS}
   },
   "chart_history_1h": {
