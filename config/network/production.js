@@ -55,6 +55,7 @@ module.exports = {
       "symbol": "ETH",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
+      "cgId": "ethereum",
       "cmcId": "ethereum"
     },
     "KNC": {
@@ -62,6 +63,7 @@ module.exports = {
       "symbol": "KNC",
       "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
       "decimal": 18,
+      "cgId": "kyber-network",
       "cmcId": "kyber-network",
     },
     "OMG": {
@@ -691,7 +693,7 @@ module.exports = {
       "symbol" : "WBTC",
       "decimal": 8,
       "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-      "hidden": true       
+      "hidden": 1548853200000       
     },
 
     "ABYSS":{
@@ -722,7 +724,59 @@ module.exports = {
       "decimal": 18,
       "address": "0x00e150d741eda1d49d341189cae4c08a73a49c95",
       "hidden": 1545048000000       
-    }
+    },
+    "USDC":{
+      "name": "USD Coin",
+      "symbol" : "USDC",
+      "decimal": 6,
+      "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "hidden": 1549976400000      
+    },
+    "GUSD":{
+      "name": "Gemini dollar",
+      "symbol" : "GUSD",
+      "decimal": 2,
+      "address": "0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd",
+      "hidden": true       
+    },
+    "EURS":{
+      "name": "STASIS EURS Token",
+      "symbol" : "EURS",
+      "decimal": 2,
+      "address": "0xdb25f211ab05b1c97d595516f45794528a807ad8",
+      "hidden": 1549976400000       
+    },
+    "PAX":{
+      "name": "Paxos Standard",
+      "symbol" : "PAX",
+      "decimal": 18,
+      "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
+      "hidden": true       
+    },
+
+    "MLN":{
+      "name": "Melon",
+      "symbol" : "MLN",
+      "decimal": 18,
+      "address": "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892",
+      "hidden": 1549371981000       
+    },
+
+    "BIX":{
+      "name": "BIX Token",
+      "symbol" : "BIX",
+      "decimal": 18,
+      "address": "0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069",
+      "hidden": 1549976400000       
+    },
+    "CDT":{
+      "name": "CoinDash",
+      "symbol" : "CDT",
+      "decimal": 18,
+      "address": "0x177d39ac676ed1c67a2b268ad7f1e58826e5b0af",
+      "hidden": 1549976400000       
+    },
+
   },
 
   "preburntAmount": 48.61873337,

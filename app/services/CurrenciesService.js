@@ -18,6 +18,8 @@ module.exports = BaseService.extends({
   classname: 'CurrenciesService',
 
   getAllRateInfo: function (options, callback) {
+    const startTime = new Date().getTime()
+
 
     const db = this._getDbConnection();
     //const tradeAdapter = db.model().getSlaveAdapter();
@@ -25,23 +27,115 @@ module.exports = BaseService.extends({
 
     let pairs = {}
 
-    Object.keys(global.TOKENS_BY_ADDR).forEach(address => {
-      if ((address !== network.ETH.address) &&
-        !global.TOKENS_BY_ADDR[address].delisted &&
-        helper.shouldShowToken(address) &&
-        helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
-      ) {
-        const key = options.useAddress ? address : (global.TOKENS_BY_ADDR[address].symbol || address)
-        pairs[key] = (asyncCallback) => this._getRateInfo(address, {
-          //tradeAdapter: tradeAdapter,
-          rateAdapter: rateAdapter
-        }, asyncCallback)
+    const nowInSeconds = Utils.nowInSeconds();
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const hour30Ago = nowInSeconds - 30 * 60 * 60;
+    const hour18Ago = nowInSeconds - 18 * 60 * 60;
+    const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
+
+    const supportedTokenList = Object.keys(global.TOKENS_BY_ADDR).filter(tokenAddr => {
+      return (tokenAddr.toLowerCase() !== network.ETH.address) &&
+            !global.TOKENS_BY_ADDR[address].delisted &&
+            helper.shouldShowToken(address) &&
+            helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
+    }).join('\',\'')
+
+    const lastSql = `
+      SELECT mid_expected as 'rate_24h', quote_address
+      FROM rate7d
+      WHERE block_timestamp = (
+          SELECT MAX(block_timestamp)
+          FROM rate7d
+          where block_timestamp < ?
+      )
+      AND quote_address IN ('${supportedTokenList}')
+    `;
+    const lastParams = [hour18Ago];
+
+
+    const pointSql = `
+      SELECT AVG(mid_expected) as rate7d, quote_address FROM rate 
+      WHERE mid_expected > 0 AND block_timestamp >= ? 
+            AND quote_address IN ('${supportedTokenList}')
+      GROUP BY quote_address, h6_seq
+    `
+    const pointParams = [weekAgo];
+
+    async.auto({
+      lastRate: (next) => {
+        rateAdapter.execRaw(lastSql, lastParams, next);
+      },
+      pointGraph: (next) => {
+        rateAdapter.execRaw(pointSql, pointParams, next);
       }
+    }, (err, ret) => {
+      if(err) return callback(err)
+
+      let pairs = {}
+      Object.keys(global.TOKENS_BY_ADDR).forEach(address => {
+        if ((token.toUpperCase() !== "ETH") &&
+          !tokens[token].address &&
+          helper.shouldShowToken(address)) {
+            const key = options.useAddress ? address : (global.TOKENS_BY_ADDR[address].symbol || address)
+            let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_address).indexOf(address) : -1
+            pairs[key] = {
+              r: indexLastRate > -1 ? ret.lastRate[indexLastRate].rate_24h : 0,
+              p: ret.pointGraph.filter(g => (g.quote_address == address)).map(i => i.rate7d)
+            }
+        }
+      })
+
+      const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+      const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
+      const redisCacheService = this.getService('RedisCacheService');
+      redisCacheService.setCacheByKey(CACHE_KEY, pairs, CACHE_TTL)
+      const endTime = new Date().getTime()
+      console.log(`______ saved to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
+      return callback(null, pairs)
+
     })
-    async.auto(pairs, (err, ret) => {
-      db.destroy();
-      callback(err, ret);
-    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Object.keys(tokens).forEach(token => {
+    //   if ((token.toUpperCase() !== "ETH") &&
+    //     !tokens[token].delisted &&
+    //     helper.shouldShowToken(token)) {
+    //     pairs[token] = (asyncCallback) => this._getRateInfo(token, {
+    //       //tradeAdapter: tradeAdapter,
+    //       rateAdapter: rateAdapter
+    //     }, asyncCallback)
+    //   }
+    // })
+    // async.auto(pairs, (err, ret) => {
+    //   db.destroy();
+    //   if(err){
+    //     logger.error(err)
+    //     return callback(err)
+    //   }
+    //   const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+    //   const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
+    //   const redisCacheService = this.getService('RedisCacheService');
+    //   redisCacheService.setCacheByKey(CACHE_KEY, ret, CACHE_TTL)
+    //   const endTime = new Date().getTime()
+    //   console.log(`______ saved to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
+    //   callback(err, ret);
+    // });
+
+
+
   },
 
   _getDbConnection: function () {
@@ -252,51 +346,186 @@ module.exports = BaseService.extends({
 
   getPair24hData: function (options, callback) {
     if (!global.TOKENS_BY_ADDR) return callback(null, {});
+    const startTime = new Date().getTime()
 
+    if (!tokens) return callback(null, {});
     let pairs = {};
 
-    Object.keys(global.TOKENS_BY_ADDR).map(address => {
-      if ((address !== network.ETH.network) &&
-        !global.TOKENS_BY_ADDR[address].delisted &&
-        helper.shouldShowToken(address) &&
-        helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
-      ) {
-        pairs[network.ETH.address + "_" + address] = (asyncCallback) => this._getPair24hData({
-          tradeAdapter: this.getModel('KyberTradeModel').getSlaveAdapter(),
-          rateAdapter: this.getModel('Rate7dModel').getSlaveAdapter(),
-          token: address,
-          fromCurrencyCode: network.ETH.address
-        }, asyncCallback)
-      }
-    });
 
-    pairs.allRates = this.getService('CMCService').getAllRates;
 
-    async.auto(pairs, 10, function (err, pairs) {
-      if (!err) {
-        const rates = pairs.allRates;
-        delete pairs.allRates;
-        Object.values(pairs).forEach((value) => {
-          const askrate = rates.getRate(value.base_address, value.quote_address);
-          const normalAsk = askrate ? (1 / askrate) : 0;
-          const normalBid = rates.getRate(value.quote_address, value.base_address);
-          if (normalAsk) {
-            value.current_ask = normalAsk;
-          }
-          if (value.current_ask > value.past_24h_high) {
-            value.past_24h_high = value.current_ask;
-          }
+    const supportedTokenList = Object.keys(global.TOKENS_BY_ADDR).filter(tokenAddr => {
+      return (tokenAddr.toLowerCase() !== network.ETH.address) &&
+            !global.TOKENS_BY_ADDR[address].delisted &&
+            helper.shouldShowToken(address) &&
+            helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
+    }).join('\',\'')
 
-          if (normalBid) {
-            value.current_bid = normalBid;
-          }
-          if (value.current_bid < value.past_24h_low) {
-            value.past_24h_low = value.current_bid;
-          }
 
+    const tradeAdapter = this.getModel('KyberTradeModel').getSlaveAdapter()
+    const rateAdapter = this.getModel('Rate7dModel').getSlaveAdapter()
+    const nowInMs = Date.now();
+    const nowInSeconds = Math.floor(nowInMs / 1000);
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+    const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
+    //volume token base
+    const volumeSql = `
+      SELECT sum(volume_token) as volume_24h_token, sum(volume_usd) as volume_24h_usd, sum(volume_eth) as volume_24h_eth, token_symbol
+      FROM 
+        (SELECT IFNULL(sum(maker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, maker_token_symbol as token_symbol
+        FROM kyber_trade
+        WHERE block_timestamp > ?
+        AND maker_token_address IN ('${supportedTokenList}')
+        GROUP BY maker_token_address
+          UNION ALL
+        SELECT IFNULL(sum(taker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, taker_token_symbol as token_symbol 
+        FROM kyber_trade 
+        WHERE block_timestamp > ?
+        AND taker_token_address IN ('${supportedTokenList}')
+        GROUP BY taker_token_address
+        )a
+      GROUP BY token_address
+    `;
+    const volumeParams = [dayAgo, dayAgo];
+
+
+    // 24h price SQL
+    const maxRateSql = `SELECT max(buy_expected) as 'past_24h_high', min(sell_expected) as 'past_24h_low', quote_address
+      FROM rate7d
+      WHERE block_timestamp > ? AND buy_expected > 0 AND sell_expected > 0
+      AND quote_address IN ('${supportedTokenList}')
+      GROUP BY quote_address`;
+    const maxRateParams = [dayAgo];
+
+    // last price SQL
+    const lastRateSql = `SELECT buy_expected as 'current_ask', sell_expected as 'current_bid', quote_address
+      FROM rate7d
+      WHERE block_number IN (
+          SELECT MAX(block_number)
+          FROM rate7d
+          WHERE quote_address IN ('${supportedTokenList}')
+          GROUP BY quote_address
+      );`;
+    const lastRateParams = [];
+
+    // last price SQL
+    const lastTradeMakerSql = `SELECT *
+      FROM kyber_trade
+      WHERE id IN
+      (
+          SELECT MAX(id)
+          FROM kyber_trade
+          where block_timestamp > ?
+          AND maker_token_address IN ('${supportedTokenList}')
+          GROUP BY maker_token_address
+      )`;
+    const lastTradeTakerSql = `SELECT *
+      FROM kyber_trade
+      WHERE id IN
+      (
+          SELECT MAX(id)
+          FROM kyber_trade
+          where block_timestamp > ?
+          AND taker_token_address IN ('${supportedTokenList}')
+          GROUP BY taker_token_address
+      )
+      `;
+    const lastTradeParams = [weekAgo];
+
+    async.auto({
+      volume: (next) => tradeAdapter.execRaw(volumeSql, volumeParams, next),
+      maxRate: (next) => rateAdapter.execRaw(maxRateSql, maxRateParams, next),
+      lastRate: (next) =>rateAdapter.execRaw(lastRateSql, lastRateParams, next),
+      lastTradeMaker: (next) => tradeAdapter.execRaw(lastTradeMakerSql, lastTradeParams, next),
+      lastTradeTaker: (next) => tradeAdapter.execRaw(lastTradeTakerSql, lastTradeParams, next)
+    }, (err, ret) => {
+      console.log('===================', err)
+      if(err) return callback(err)
+
+      let pairs = {}
+      Object.keys(global.TOKENS_BY_ADDR).map(address => {
+        if ((address !== network.ETH.network) &&
+          !global.TOKENS_BY_ADDR[address].delisted &&
+          helper.shouldShowToken(address) &&
+          helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
+        ) {
+
+            pairs[network.ETH.address + "_" + address] = {
+              timestamp: nowInMs,
+              quote_address: address,
+              base_address: network.ETH.address,
+              past_24h_high: 0,
+              past_24h_low: 0,
+              usd_24h_volume:  0,
+              eth_24h_volume: 0,
+              token_24h_volume: 0,
+              current_bid: 0,
+              current_ask:  0,
+              last_traded: 0
+            }
+            let tokenData = global.TOKENS_BY_ADDR[tokenAddress]
+
+            let indexVolume = ret.volume ? ret.volume.map(v => v.token_address).indexOf(address) : -1
+            if(indexVolume > -1){
+              pairs[network.ETH.address + "_" + address].usd_24h_volume = ret.volume[indexVolume].volume_24h_usd
+              pairs[network.ETH.address + "_" + address].token_24h_volume = new BigNumber(ret.volume[indexVolume].volume_24h_token ? ret.volume[indexVolume].volume_24h_token.toString() : 0).div(Math.pow(10, tokenData.decimal)).toNumber()
+              pairs[network.ETH.address + "_" + address].eth_24h_volume = ret.volume[indexVolume].volume_24h_eth
+            }
+
+            let indexMaxRate = ret.maxRate ? ret.maxRate.map(m => m.quote_address).indexOf(address) : -1
+            if(indexMaxRate > -1){
+              pairs[network.ETH.address + "_" + address].past_24h_high = ret.maxRate[indexMaxRate].past_24h_high
+              pairs[network.ETH.address + "_" + address].past_24h_low = ret.maxRate[indexMaxRate].past_24h_low
+            }
+
+            let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_address).indexOf(address) : -1
+            if(indexLastRate > -1 ){
+              pairs[network.ETH.address + "_" + address].current_bid = ret.lastRate[indexLastRate].current_bid
+              pairs[network.ETH.address + "_" + address].current_ask = ret.lastRate[indexLastRate].current_ask
+            }
+
+            let indexlastMakerTrade = ret.lastTradeMaker ? ret.lastTradeMaker.map(l => l.maker_token_address).indexOf(address) : -1
+            let indexlastTakerTrade = ret.lastTradeTaker ? ret.lastTradeTaker.map(l => l.taker_token_address).indexOf(address) : -1
+            
+            if(indexlastMakerTrade > -1 || indexlastTakerTrade > -1){
+              let lastPrice = 0
+              let lastMakerTrade = indexlastMakerTrade > -1 ? ret.lastTradeMaker[indexlastMakerTrade] : null
+              let lastTakerTrade = indexlastTakerTrade > -1 ? ret.lastTradeTaker[indexlastTakerTrade] : null
+
+              let lastTokenTrade = lastMakerTrade
+              if(!lastMakerTrade || (lastTakerTrade && lastTakerTrade.blockTimestamp > lastMakerTrade.blockTimestamp)){
+                lastTokenTrade = lastTakerTrade
+              }
+
+
+              // let lastTokenTrade = ret.lastTrade[indexlastTrade]
+              let bigMakerAmount = new BigNumber(lastTokenTrade.maker_token_amount ? lastTokenTrade.maker_token_amount.toString() : 0)
+              let bigTakerAmount = new BigNumber(lastTokenTrade.taker_token_amount ? lastTokenTrade.taker_token_amount.toString() : 0)
+
+              if (lastTokenTrade.taker_token_address !== address && !bigMakerAmount.isZero()) {
+                let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
+                let amountTaker = lastTokenTrade.volume_eth ? lastTokenTrade.volume_eth.toString() : 0;
+                lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
+              }
+              else if (lastTokenTrade.maker_token_address !== address && !bigTakerAmount.isZero()) {
+                let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
+                let amountMaker = lastTokenTrade.volume_eth ? lastTokenTrade.volume_eth.toString() : 0;
+                lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
+              }
+              pairs[network.ETH.address + "_" + address].last_traded = lastPrice
+            }
+          }
         });
-      }
-      callback(err, pairs);
+
+
+      const CACHE_KEY = CacheInfo.Pair24hData.key;
+      const CACHE_TTL = CacheInfo.Pair24hData.TTL;
+      const redisCacheService = this.getService('RedisCacheService');
+      redisCacheService.setCacheByKey(CACHE_KEY, pairs, CACHE_TTL)
+      const endTime = new Date().getTime()
+      console.log(`______ saved 24H PAIRS to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
+      return callback(null, pairs)
+  
     });
   },
 

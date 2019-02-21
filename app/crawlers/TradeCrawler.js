@@ -263,7 +263,6 @@ class TradeCrawler {
           break;
       }
     });
-
     async.waterfall([
       (next) => {
         async.eachLimit(records, PARALLEL_INSERT_LIMIT, (record, _next) => {

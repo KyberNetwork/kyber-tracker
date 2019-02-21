@@ -355,30 +355,35 @@ export default {
         this.tradeCount = stats.tradeCount;
         this.totalBurnedFee = stats.totalBurnedFee + " KNC";
         this.collectedFees = stats.collectedFees + " KNC";
+
+        this.kncPrice = "$" + stats.kncPrice
+        this.kncPriceChange24h = stats.kncChange24h
+        this.ethPrice = "$" + stats.ethPrice
+        this.ethPriceChange24h = stats.ethChange24h
       });
 
-      request
-        .get("https://api.coinmarketcap.com/v1/ticker/kyber-network/")
-        .then(res => {
-          const data = res.body && res.body[0];
-          if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
-            return;
-          }
-          this.kncPrice = "$" + parseFloat(data.price_usd).toFixed(4);
-          this.kncPriceChange24h = parseFloat(data.percent_change_24h);
-        });
+      // request
+      //   .get("https://api.coinmarketcap.com/v1/ticker/kyber-network/")
+      //   .then(res => {
+      //     const data = res.body && res.body[0];
+      //     if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
+      //       return;
+      //     }
+      //     this.kncPrice = "$" + parseFloat(data.price_usd).toFixed(4);
+      //     this.kncPriceChange24h = parseFloat(data.percent_change_24h);
+      //   });
 
-      request
-        .get("https://api.coinmarketcap.com/v1/ticker/ethereum/")
-        .then(res => {
-          const data = res.body && res.body[0];
-          if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
-            return;
-          }
+      // request
+      //   .get("https://api.coinmarketcap.com/v1/ticker/ethereum/")
+      //   .then(res => {
+      //     const data = res.body && res.body[0];
+      //     if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
+      //       return;
+      //     }
 
-          this.ethPrice = "$" + parseFloat(data.price_usd).toFixed(2);
-          this.ethPriceChange24h = parseFloat(data.percent_change_24h);
-        });
+      //     this.ethPrice = "$" + parseFloat(data.price_usd).toFixed(2);
+      //     this.ethPriceChange24h = parseFloat(data.percent_change_24h);
+      //   });
     },
     doSearch() {
       if(this.$mq == 'sm' || this.$mq == 'ml'){

@@ -53,7 +53,9 @@ module.exports = {
         "symbol": "ETH",
         "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         "decimal": 18,
-        "cmcId": "1027",
+        "cmcId": "ethereum",
+        "cmcIdv2": "1027",
+        "cgId": "ethereum",
         // "hidden": true,
       },
       "KNC": {
@@ -61,7 +63,9 @@ module.exports = {
         "symbol": "KNC",
         "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
         "decimal": 18,
-        "cmcId": "1982",
+        "cmcIdv2": "1982",
+        "cgId": "kyber-network",
+        "cmcId": "kyber-network",
         // "hidden": true
       },
       "OMG": {
@@ -749,7 +753,51 @@ module.exports = {
         "decimal": 18,
         "address": "0x00e150d741eda1d49d341189cae4c08a73a49c95",
         // "hidden": 1545048000000       
-      }
+      },
+
+      "USDC":{
+        "name": "USD Coin",
+        "symbol" : "USDC",
+        "decimal": 6,
+        "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "hidden": 1548439731000       
+      },
+      "GUSD":{
+        "name": "Gemini dollar",
+        "symbol" : "GUSD",
+        "decimal": 2,
+        "address": "0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd",
+        "hidden": 1548439731000       
+      },
+      "EURS":{
+        "name": "STASIS EURS Token",
+        "symbol" : "EURS",
+        "decimal": 2,
+        "address": "0xdb25f211ab05b1c97d595516f45794528a807ad8",
+        "hidden": 1548439731000       
+      },
+      "PAX":{
+        "name": "Paxos Standard",
+        "symbol" : "PAX",
+        "decimal": 18,
+        "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
+        "hidden": 1548439731000       
+      },
+
+      "BIX":{
+        "name": "BIX Token",
+        "symbol" : "BIX",
+        "decimal": 18,
+        "address": "0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069",
+        "hidden": 1549870798000       
+      },
+      "CDT":{
+        "name": "CoinDash",
+        "symbol" : "CDT",
+        "decimal": 18,
+        "address": "0x177d39ac676ed1c67a2b268ad7f1e58826e5b0af",
+        "hidden": 1549870798000       
+      },
     },
     "averageBlockTime": 15000,
     "averageCGQuery": 13000,

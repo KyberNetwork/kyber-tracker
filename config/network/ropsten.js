@@ -37,7 +37,9 @@ module.exports = {
     "symbol": "KNC",
     "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
     "decimal": 18,
-    "cmcId": "1982",
+    "cmcIdv2": "1982",
+    "cgId": "kyber-network",
+    "cmcId": "kyber-network",
   },
   "WETH": {
     "name": "Wrapped Ether",
@@ -53,7 +55,9 @@ module.exports = {
       "symbol": "ETH",
       "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "decimal": 18,
-      "cmcId": "1027",
+      "cmcId": "ethereum",
+      "cmcIdv2": "1027",
+      "cgId": "ethereum",
       "hidden": true
     },
     "KNC": {
@@ -61,7 +65,9 @@ module.exports = {
       "symbol": "KNC",
       "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
       "decimal": 18,
-      "cmcId": "1982",
+      "cmcIdv2": "1982",
+      "cgId": "kyber-network",
+      "cmcId": "kyber-network",
       "hidden": true
     },
     "OMG": {

@@ -533,7 +533,7 @@ module.exports = BaseService.extends({
   _getStats24h: function (options, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     const BurnedFeeModel = this.getModel('BurnedFeeModel');
-    //const CMCService = this.getService('CMCService');
+    const CMCService = this.getService('CMCService');
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
@@ -547,6 +547,12 @@ module.exports = BaseService.extends({
           where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])} ${whereOffcial}`,
           params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
+      },
+      ethMarketData: (next) => {
+        CMCService.getCoingeckoTokenMaketData(network.ETH.address, next);
+      },
+      kncMarketData: (next) => {
+        CMCService.getCoingeckoTokenMaketData(network.KNC.address, next);
       },
       /*
       volumeEth: (next) => {
@@ -598,6 +604,11 @@ module.exports = BaseService.extends({
       }
 
       const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
+      const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice && ret.kncMarketData.currentPrice.usd? ret.kncMarketData.currentPrice.usd.toString() : 0)
+      const KNCchange24h = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24h.toString() : 0)
+
+      const ETHprice = new BigNumber(ret.ethMarketData && ret.ethMarketData.currentPrice && ret.ethMarketData.currentPrice.usd ? ret.ethMarketData.currentPrice.usd.toString() : 0)
+      const ETHchange24h = new BigNumber(ret.ethMarketData && ret.ethMarketData.priceChangePercentage24h ? ret.ethMarketData.priceChangePercentage24h.toString() : 0)
       //const volumeInETH = new BigNumber(ret.volumeEth.toString());
       //const feeInKNC = new BigNumber(ret.partnerFee.toString()).div(Math.pow(10, 18));
       //const feeInUSD = feeInKNC.times(ret.kncPrice);
@@ -615,6 +626,11 @@ module.exports = BaseService.extends({
         //kncInfo: ret.kncInfo,
         totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
         // feeToBurn: feeToBurn.toFormat(2).toString()
+        kncPrice: KNCprice.toFormat(4).toString(),
+        kncChange24h: KNCchange24h.toFormat(2).toString(),
+
+        ethPrice: ETHprice.toFormat(2).toString(),
+        ethChange24h: ETHchange24h.toFormat(2).toString(),
       };
       return callback(null, result);
     });

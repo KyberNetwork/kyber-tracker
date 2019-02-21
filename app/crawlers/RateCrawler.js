@@ -293,7 +293,7 @@ class RateCrawler {
   }
 
   _isValidRate(rate) {
-    return rate > 0 && rate < 20;
+    return rate > 0 && rate < 100;
   }
 
   _midRate(sell, buy) {
