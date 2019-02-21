@@ -106,7 +106,7 @@ module.exports = AppController.extends({
     const limit = parseInt(params.limit || supportedTokens.length);
     let counter = 0;
     supportedTokens.forEach((token) => {
-        if (counter > limit) return;
+        if (counter => limit) return;
         if (!token.delisted && (!query || token.address.indexOf(query && query.toLowerCase()) >= 0)) {
             ret.push({
                 symbol: token.symbol,

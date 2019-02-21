@@ -76,26 +76,6 @@ class EthVolumeCrawler {
   processTrades (unprocessedTrades, callback) {
     console.log("--------------process: ", unprocessedTrades.length, 'trades')
 
-    // Crawl the newest block already
-
-    // if (!unprocessedTrades.length) {
-    //   return callback(null, true);
-    // }
-
-    // const selectedTrades = unprocessedTrades.slice(0, BATCH_TRADES_SIZE)
-
-    // this._processTradesOnce(exSession, selectedTrades, (err, ret) => {
-    //   if (err) {
-    //     return callback(err);
-    //   }
-    //   unprocessedTrades.splice(0, BATCH_TRADES_SIZE);
-    //   process.nextTick(() => {
-    //     this.processTrades(unprocessedTrades, callback);
-    //   });
-
-    // });
-    
-
     let arrayGroupTrade = []
     while (unprocessedTrades.length > 0){
       arrayGroupTrade.push(unprocessedTrades.splice(0, BATCH_TRADES_SIZE))
@@ -123,14 +103,15 @@ class EthVolumeCrawler {
       if(!dateTrade[trade.date]) dateTrade[trade.date] = []
       dateTrade[trade.date].push({
         ids: trade.id,
-        usdPrice: null
+        usdPrice: null,
+        timeStamp: trade.block_timestamp
       })
     })
-
 
     async.eachLimit(Object.keys(dateTrade), PARALLEL_INSERT_LIMIT, (date, asyncCallback) => {
       const nowInMs = new Date().getTime()
       const dayInMs = 1000 * 60 * 60 * 24
+      const timeInMillis = dateTrade[date].timeStamp * 1000
 
       if(nowInMs - timeInMillis > dayInMs){
         CMCService.getCoingeckoETHHistoryPrice(date, (err, result) => {
@@ -139,12 +120,12 @@ class EthVolumeCrawler {
           return asyncCallback(null)
         });
       } else {
-        CMCService.getCoingeckoCurrentMarketInfo(ethConfig.ETH.cgId, (err, ret) => {
+        CMCService.getCoingeckoCurrentMarketInfo(networkConfig.ETH.cgId, (err, ret) => {
           if(err) return callback(err)
 
-          dateTrade[date].usdPrice = ret.current_price
+          dateTrade[date].usdPrice = ret.current_price.usd
 
-          return callback(null, result);
+          return asyncCallback(null)
         })
       }
       

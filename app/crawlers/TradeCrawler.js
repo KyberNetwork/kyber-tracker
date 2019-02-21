@@ -328,9 +328,60 @@ class TradeCrawler {
         }
       }]
     }, (err, results) => {
+      const KyberTradeModel = exSession.getModel('KyberTradeModel');
+
+
+      if(record.sourceReserve) {
+        record.sourceReserve = record.sourceReserve.toLowerCase()
+      }
+      if(record.destReserve) {
+        record.destReserve = record.destReserve.toLowerCase()
+      }
+
+      if(record.makerTokenAddress) {
+        record.makerTokenAddress = record.makerTokenAddress.toLowerCase()
+        const makerTokenInfo = global.TOKENS_BY_ADDR[record.makerTokenAddress]
+        record.makerTokenSymbol = global.TOKENS_BY_ADDR[record.makerTokenAddress].symbol
+        record.makerTokenDecimal = global.TOKENS_BY_ADDR[record.makerTokenAddress].decimal
+      }
+
+      if(record.takerTokenAddress) {
+        record.takerTokenAddress = record.takerTokenAddress.toLowerCase()
+        const takerTokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress]
+        record.takerTokenSymbol = global.TOKENS_BY_ADDR[record.takerTokenAddress].symbol
+        record.takerTokenDecimal = global.TOKENS_BY_ADDR[record.takerTokenAddress].decimal 
+      } 
+
+
+      const ethAddress = networkConfig.ETH.address.toLowerCase();
+      if (record.takerTokenAddress === ethAddress) {
+        record.volumeEth = Utils.fromWei(record.takerTokenAmount);
+        record.sourceOfficial = 1
+      } else {
+        if(global.NETWORK_RESERVES && record.sourceReserve && global.NETWORK_RESERVES[record.sourceReserve] == '1'){
+          record.sourceOfficial = 1
+        } else {
+          record.sourceOfficial = 0
+        }
+
+      }
+      
+      if (record.makerTokenAddress === ethAddress) {
+        record.volumeEth = Utils.fromWei(record.makerTokenAmount);
+        record.destOfficial = 1
+      } else {
+        if(global.NETWORK_RESERVES && record.destReserve && global.NETWORK_RESERVES[record.destReserve] == '1'){
+          record.destOfficial = 1
+        } else {
+          record.destOfficial = 0
+        }
+      }
+
+
+      console.log("_________________", record.sourceReserve, record.sourceOfficial, record.destReserve,  record.destOfficial)
+      
       logger.info(`Add new trade: ${JSON.stringify(record)}`);
 
-      const KyberTradeModel = exSession.getModel('KyberTradeModel');
       KyberTradeModel.add(record, {
         isInsertIgnore: true
       }, callback);
