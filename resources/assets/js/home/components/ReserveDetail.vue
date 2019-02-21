@@ -87,7 +87,7 @@
             </div> 
           </div>
 
-          <div v-if="!isOpenlLoadmore" class="gradient-trans row"></div>
+          <div v-if="!isOpenlLoadmore && isShowLoadmore" class="gradient-trans row"></div>
         </div>
         
         <label v-if="isShowLoadmore" class="row d-flex justify-content-center mt-5">
