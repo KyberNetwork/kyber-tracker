@@ -53,8 +53,7 @@ module.exports = {
       "name": "Status Network",
       "address": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
       "symbol": "SNT",
-      "decimal": 18,
-      "delisted": true
+      "decimal": 18
     },
     "ELF": {
       "name": "AELF",
@@ -114,7 +113,8 @@ module.exports = {
       "name": "Salt",
       "address": "0x4156d3342d5c385a87d264f90653733592000581",
       "symbol": "SALT",
-      "decimal": 8
+      "decimal": 8,
+      "delisted": true
     },
     "BQX": {
       "name" : "ETHOS",
