@@ -53,7 +53,8 @@ module.exports = {
       "name": "Status Network",
       "address": "0x744d70fdbe2ba4cf95131626614a1763df805b9e",
       "symbol": "SNT",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "ELF": {
       "name": "AELF",
@@ -590,7 +591,8 @@ module.exports = {
       "symbol" : "CNN",
       "decimal": 18,
       "address": "0x8713d26637CF49e1b6B4a7Ce57106AaBc9325343",
-      "hidden": 1542027600000       
+      // "hidden": 1542027600000
+      "delisted": true       
     },
     "SSP":{
       "name": "Smartshare Token",
