@@ -64,12 +64,10 @@ module.exports = AppController.extends({
     redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)
-        res.json(ret);
-        return;
+        return res.send(err);
       }
       if (ret) {
-        res.send(ret);
-        return;
+        return res.json(JSON.parse(ret));
       }
       CurrenciesService.getConvertiblePairs((err, rett) => {
         if (err) {
