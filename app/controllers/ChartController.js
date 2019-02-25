@@ -91,23 +91,23 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-    if(params.query){
-      const token = network.tokens[params.query];
-      if (!token || !Utils.shouldShowToken(params.query)) {
-          res.json({
-              s: "error",
-              errmsg: "unknown_symbol " + params.query
-          });
-          return;
-      }
-    }
+    // if(params.query){
+    //   const token = network.tokens[params.query];
+    //   if (!token || !Utils.shouldShowToken(params.query)) {
+    //       res.json({
+    //           s: "error",
+    //           errmsg: "unknown_symbol " + params.query
+    //       });
+    //       return;
+    //   }
+    // }
     const ret = [];
     const query = (params.query || "").toUpperCase();
     const limit = parseInt(params.limit || supportedTokens.length);
     let counter = 0;
     supportedTokens.forEach((token) => {
-        if (counter > limit) return;
-        if (!token.delisted && (!query || token.symbol.indexOf(query) >= 0)) {
+        if (counter >= limit) return;
+        if (!token.delisted && (!query || token.symbol.includes(query)) && Utils.shouldShowToken(token.symbol)) {
             ret.push({
                 symbol: token.symbol,
                 full_name: token.symbol,

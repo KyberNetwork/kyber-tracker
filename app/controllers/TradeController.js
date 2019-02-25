@@ -51,7 +51,7 @@ module.exports = AppController.extends({
         logger.error(err)
       }
       if (ret) {
-        res.send(JSON.parse(ret));
+        res.json(JSON.parse(ret));
         return;
       }
       TradeService.getTradesList(params, (err, ret_1) => {
@@ -106,7 +106,7 @@ module.exports = AppController.extends({
         logger.error(err)
       }
       if (ret) {
-        res.send(JSON.parse(ret));
+        res.json(JSON.parse(ret));
         return;
       }
       let options = {
@@ -155,7 +155,7 @@ module.exports = AppController.extends({
         logger.error(err)
       }
       if (ret) {
-        res.send(JSON.parse(ret));
+        res.json(JSON.parse(ret));
         return;
       }
       let options = {
