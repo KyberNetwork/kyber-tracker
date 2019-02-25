@@ -103,92 +103,60 @@
 
       </b-navbar>
 
-      <b-navbar toggleable="sm" type="dark" class="second-heading-bar d-flex justify-content-between">
-        <div>
-          <!-- <b-navbar-toggle target="nav_collapse"></b-navbar-toggle> -->
-          <!-- <b-collapse is-nav id="nav_collapse"> -->
+      <b-navbar toggleable="md" type="dark" class="second-heading-bar ">
+        <b-navbar-brand to="/">
+          <img class="kyber-logo d-inline-block align-top" src="/images/logo.svg" />
+        </b-navbar-brand>
+        
+        <b-navbar-toggle target="nav_collapse" />
+        <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav>
               <b-nav-item class="navbar tracker-logo">
                 <router-link to="/">
-                  <img class="kyber-logo" src="/images/logo.svg" />
-                  <!-- <span class="inline-logo"></span> -->
-                  <!-- <img src="/images/network.svg" /> -->
-                  <!-- <i class="fas fa-signal icon-second-header"></i> -->
+                  <!-- <img class="kyber-logo" src="/images/logo.svg" /> -->
                   <span class="entypo-chart-bar icon-second-header"></span>
                   <span class="pl-1">{{ $t('navigator.volume') }}</span>
                   
-                </router-link>
+                </router-link> 
               </b-nav-item>
               <b-nav-item class="navbar">
                 <router-link to="/trades">
-                <!-- <img src="/images/trade.svg" /> -->
-                <!-- <i class="fas fa-exchange-alt icon-second-header"></i> -->
                 <span class="entypo-switch icon-second-header"></span>
                 <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="navbar">
                 <router-link to="/tokens">
-                <!-- <img src="/images/token.svg" /> -->
-                <!-- <i class="fas fa-database icon-second-header"></i> -->
                 <span class="entypo-database icon-second-header"></span>
                 <span class="pl-1">{{ $t('navigator.tokens') }}</span>
                 </router-link>
               </b-nav-item>
               <b-nav-item class="navbar">
                 <router-link to="/reserves">
-                <!-- <img src="/images/token.svg" /> -->
-                <!-- <i class="fas fa-database icon-second-header"></i> -->
                 <span class="entypo-users icon-second-header"></span>
                 <span class="pl-1">{{ $t('navigator.reserves') }}</span>
                 </router-link>
               </b-nav-item>
+
             </b-navbar-nav>
-          <!-- </b-collapse> -->
-
-          <!-- <b-navbar-nav class="ml-auto search-box-container">
-            <form action="javasript:void(0)" class="no-margin no-padding search-form">
-              <b-nav-item class="no-padding-right">
-                <b-input-group size="sm"> -->
-                  <!-- <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input> -->
-
-                  
-                  <!-- <vue-autosuggest
-                      ref="seatchInputRef"
-                      :suggestions="[{
-                        data: [...this.addressesMetamask, ...this.searchData]
-                      }]"
-                      @keyup.enter="doSearch"
-                      @focus="onfocus"
-                      :getSuggestionValue="getSuggestionValue"
-                      :renderSuggestion="renderSuggestion"
-                      :onSelected="onSelected"
-                      :inputProps="{
-                        id:'autosuggest__input', 
-                        onInputChange: this.onInputChange, 
-                        placeholder:$t('common.searchbox_placeholder'),
-                        autocomplete: 'off'
-                      }"
-                  /> -->
-                  
-                  <!-- <b-input-group-append>
-                    <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
-                      <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
-                    </b-btn>
-                  </b-input-group-append> -->
-                  
-                <!-- </b-input-group>
-              </b-nav-item>
-            </form>
-          </b-navbar-nav> -->
-        </div>
-        <a href="https://kyber.network/swap" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
+        </b-collapse>
+        <!-- <a href="https://kyber.network/swap" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
           <button type="button" class="btn btn-default pointer">
             <span class="entypo-right-circled icon-go"></span>
             <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
           </button>
-        </a>
+        </a> -->
       </b-navbar>
+<!-- 
+      <b-navbar toggleable type="dark" class="second-heading-bar">
+        <b-navbar-toggle target="nav_text_collapse" />
+
+        <b-collapse is-nav id="nav_text_collapse">
+          <b-navbar-nav>
+            <b-nav-text>Navbar text</b-nav-text>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar> -->
 
       <div class="container">
         <div class="row pt-40">
@@ -386,7 +354,7 @@ export default {
       //   });
     },
     doSearch() {
-      if(this.$mq == 'sm' || this.$mq == 'ml'){
+      if(this.$mq == 'sm' || this.$mq == 'ml' || this.$mq == 'md'){
         if(this.$refs.seatchInputRef.$el && this.$refs.seatchInputRef.$el.className.indexOf("search-expand") == -1){
           this.$refs.seatchInputRef.$el.className = "search-expand ml-0"
           this.$refs.headingSum.className = "d-none"

@@ -139,7 +139,7 @@ a {
 
 .second-heading-bar {
   background-color: #1f3468;
-  height: 60px;
+  // height: 60px;
   padding-left: 22px;
   .navbar-nav{
     font-size: 16px !important;
@@ -932,7 +932,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-@media (max-width: 850px){
+@media (max-width: 1250px){
   .navbar{
     // .heading-summary{
     //   padding-left: 10px;
@@ -1009,8 +1009,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     display: none;
   }
   .navbar-nav{
-    display: flex;
-    flex-direction: row;
+    // display: flex;
+    // flex-direction: row;
     .navbar{
       padding: 0;
     }
