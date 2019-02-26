@@ -146,6 +146,11 @@ a {
     font-weight: 400;
   }
 
+  #nav7_ddown{
+    position: absolute;
+    left: 75px;
+  }
+
   .go-exchange{
     // position: absolute;
     // right: 16px;
@@ -153,6 +158,8 @@ a {
     font-stretch: normal;
     line-height: normal;
     letter-spacing: normal;
+    position: absolute;
+    right: 35px;
     .icon-go{
       font-size: 20px;
       vertical-align: middle;
@@ -168,8 +175,10 @@ a {
       font-family: $code-font-openSans;
       color: #ffffff;
       right: 16px;
-      border-radius: 4px;
-      background-color: #395497;
+      // border-radius: 4px;
+      // background-color: #395497;
+      border-radius: 5px;
+      background-image: linear-gradient(170deg, #ffb046, #f52880);
     }
   }
 
@@ -191,7 +200,7 @@ a {
   .nav-item {
     padding-top: 0;
     padding-bottom: 0;
-    padding-right: 20px;
+    // padding-right: 20px;
   }
 }
 
@@ -892,16 +901,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 @media (max-width: 993px){
   .navbar{
-    // #fee-to-burn{
-    //   display: none;
-    // }
-
-    // .heading-summary:hover{
-    //   #fee-to-burn{
-    //     // padding-top: 5px;
-    //     display: block;
-    //   }
-    // }
+    .expand-navbar{
+      .nav-link{
+        padding: 0 !important;
+      }
+    }
   }
 }
 
@@ -978,18 +982,18 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .icon-second-heade{
     display: none
   }
-  .go-exchange{
-    .text-go{
-      display: none;
-    }
-    .icon-go{
-      font-size: 24px !important;
-    }
-    button{
-      padding: 0px !important;
-      background-color: transparent !important;
-    }
-  }
+  // .go-exchange{
+  //   .text-go{
+  //     display: none;
+  //   }
+  //   .icon-go{
+  //     font-size: 24px !important;
+  //   }
+  //   button{
+  //     padding: 0px !important;
+  //     background-color: transparent !important;
+  //   }
+  // }
 }
 
 
@@ -1512,6 +1516,17 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   margin-right: 45px;
   vertical-align: middle;
   display: inline-block;
+}
+.nav-link-custom{
+  margin-bottom: 15px;
+  span {
+    color: #2ed573 !important;
+  }
+}
+
+.dropdown-menu{
+  background-color: #1f3468;
+  min-width: 13rem;
 }
 
 .icon-second-header{

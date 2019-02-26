@@ -176,7 +176,6 @@
     },
 
     mounted() {
-      // console.log("********************", window["GLOBAL_STATE"])
       this._refreshInterval = window.setInterval(() => {
         this.refresh();
         this._refeshChart();

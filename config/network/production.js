@@ -1,6 +1,6 @@
 module.exports = {
   "endpoints": {
-    "web3Provider": "https://eth-mainnet.alchemyapi.io/jsonrpc/3QSu5K3-xUgD_1WThGHmxfhe8QmmdmCC",
+    "web3Provider": "https://eth-mainnet.alchemyapi.io/jsonrpc/hqcYQ0PDgAtqFtVAzg64Mc40YjRhX9sd",
     "ethScan": "https://etherscan.io/",
     "getRate": "https://production-cache.kyber.network/getRate",
     "apis": "https://api.kyber.network"

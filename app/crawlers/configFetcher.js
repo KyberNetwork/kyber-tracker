@@ -91,7 +91,6 @@ const fetchReserveListFromNetwork = (callback) => {
       arrayReserve.map((r, i) => {
         reserveType[r.toLowerCase()] = arrayTypeOfReserve[i]
       })
-      console.log("====================", reserveType)
       global.NETWORK_RESERVES = reserveType
       return callback(null)
     })
@@ -246,7 +245,6 @@ const getTokensFromNetwork = callback => {
             }
           })
 
-          console.log("========= allt tokens: ", allTokenObj)
           return callback(null, allTokenObj)
         }
       )
@@ -259,8 +257,8 @@ const getTokensFromNetwork = callback => {
 }
 
 module.exports.fetchConfigTokens = (callback) => {
-  return getTokensFromNetwork(callback)
-  // return getTokensFromApis(callback)
+  // return getTokensFromNetwork(callback)
+  return getTokensFromApis(callback)
 }
 
 module.exports.fetchReserveListFromNetwork = fetchReserveListFromNetwork

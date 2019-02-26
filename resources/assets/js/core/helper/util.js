@@ -125,7 +125,6 @@ export default {
 
   shouldShowToken (tokenAddress, timeStamp) {
     // return !this.tokens[item.symbol].hidden;
-    console.log('**************', tokens, tokens[tokenAddress.toLowerCase()])
     if(!tokens[tokenAddress.toLowerCase()].hidden) return true;
     if (typeof tokens[tokenAddress.toLowerCase()].hidden != 'number') return false;
     return (timeStamp || Date.now()) >= tokens[tokenAddress.toLowerCase()].hidden;

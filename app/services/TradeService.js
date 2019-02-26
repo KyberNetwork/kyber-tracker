@@ -652,8 +652,6 @@ module.exports = BaseService.extends({
 
     const exportData = options.exportData;
     // Transaction hash
-
-    // console.log("+++++++++++****************")
     // console.log(q)
     if (this._isTxHash(q)) {
       // console.log("is tx hash")

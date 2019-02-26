@@ -108,44 +108,78 @@
           <img class="kyber-logo d-inline-block align-top" src="/images/logo.svg" />
         </b-navbar-brand>
         
-        <b-navbar-toggle target="nav_collapse" />
-        <b-collapse is-nav id="nav_collapse">
-            <b-navbar-nav>
-              <b-nav-item class="navbar tracker-logo">
-                <router-link to="/">
-                  <!-- <img class="kyber-logo" src="/images/logo.svg" /> -->
-                  <span class="entypo-chart-bar icon-second-header"></span>
-                  <span class="pl-1">{{ $t('navigator.volume') }}</span>
-                  
-                </router-link> 
-              </b-nav-item>
-              <b-nav-item class="navbar">
-                <router-link to="/trades">
-                <span class="entypo-switch icon-second-header"></span>
-                <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
-                </router-link>
-              </b-nav-item>
-              <b-nav-item class="navbar">
-                <router-link to="/tokens">
-                <span class="entypo-database icon-second-header"></span>
-                <span class="pl-1">{{ $t('navigator.tokens') }}</span>
-                </router-link>
-              </b-nav-item>
-              <b-nav-item class="navbar">
-                <router-link to="/reserves">
-                <span class="entypo-users icon-second-header"></span>
-                <span class="pl-1">{{ $t('navigator.reserves') }}</span>
-                </router-link>
-              </b-nav-item>
+        <!-- <b-navbar-toggle target="nav_collapse" /> -->
+        <b-nav-item-dropdown v-if="($mq == 'sm' || $mq == 'ml')"
+          id="nav7_ddown"
+          :text="this.dropdownText"
+          extra-toggle-classes="nav-link-custom"
+          left
+        >
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.volume'))">
+            <router-link to="/">
+              <span class="entypo-chart-bar icon-second-header"></span>
+              <span class="pl-1">{{ $t('navigator.volume') }}</span>
+            </router-link> 
+          </b-nav-item>
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.trade_history'))">
+            <router-link to="/trades">
+            <span class="entypo-switch icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.tokens'))">
+            <router-link to="/tokens">
+            <span class="entypo-database icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.tokens') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.reserves'))">
+            <router-link to="/reserves" >
+            <span class="entypo-users icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.reserves') }}</span>
+            </router-link>
+          </b-nav-item>
+        </b-nav-item-dropdown>
 
-            </b-navbar-nav>
-        </b-collapse>
-        <!-- <a href="https://kyber.network/swap" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
+
+        <b-nav v-if="($mq !== 'sm' && $mq !== 'ml')" class="expand-navbar">
+          <b-nav-item class="navbar">
+            <router-link to="/">
+              <span class="entypo-chart-bar icon-second-header"></span>
+              <span class="pl-1">{{ $t('navigator.volume') }}</span>
+              
+            </router-link> 
+          </b-nav-item>
+          <b-nav-item class="navbar">
+            <router-link to="/trades">
+            <span class="entypo-switch icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar">
+            <router-link to="/tokens">
+            <span class="entypo-database icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.tokens') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar">
+            <router-link to="/reserves">
+            <span class="entypo-users icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.reserves') }}</span>
+            </router-link>
+          </b-nav-item>
+        </b-nav>
+
+
+
+
+
+        <a href="https://kyber.network/swap" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
           <button type="button" class="btn btn-default pointer">
             <span class="entypo-right-circled icon-go"></span>
             <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
           </button>
-        </a> -->
+        </a>
       </b-navbar>
 <!-- 
       <b-navbar toggleable type="dark" class="second-heading-bar">
@@ -231,7 +265,8 @@ export default {
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
-      indexShowmore: -1
+      indexShowmore: -1,
+      dropdownText: this.$t('navigator.volume')
     };
   },
 
@@ -400,6 +435,11 @@ export default {
         this.searchString = "";
         this.$refs.seatchInputRef.searchInput = "";
       });
+    },
+
+    changeTextDropdown(text){
+      console.log("============= change dropdown", text)
+      this.dropdownText = text
     },
 
     clickHeading(){
