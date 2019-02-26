@@ -1522,11 +1522,15 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   span {
     color: #2ed573 !important;
   }
+  &::after{
+    margin-left: 15px;
+  }
 }
 
 .dropdown-menu{
   background-color: #1f3468;
   min-width: 13rem;
+  left: -45px;
 }
 
 .icon-second-header{
