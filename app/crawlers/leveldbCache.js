@@ -223,7 +223,16 @@ function getReserveTokensList (reserveAddr, callback){
     to: reserveAddr,
     data: dataConversationRate
   }, (err, result) => {
-    if(err || !result) return callback(err || "no conversion rate contract addr")
+    if(err) {
+      logger.error(err)
+      return callback(null, [])
+    } 
+
+    if(!result){
+      logger.error(`no conversion rate contract for reserve ${reserveAddr}`)
+      return callback(null, [])
+    } 
+
     if(result == '0x') {
       const bancorContract =  new web3.eth.Contract(JSON.parse(bancorOrderbookAbi), '0xb020636f8e30cb8c35a863412503cFD5E3d6D6cE')
       
@@ -236,15 +245,39 @@ function getReserveTokensList (reserveAddr, callback){
 
       const conversionRatesContract = new web3.eth.Contract(conversionRateAbi, conversionRate[0])
       const tokensListData = conversionRatesContract.methods.getListedTokens().encodeABI()
+      const tokenData = conversionRatesContract.methods.token().encodeABI()
+      async.auto({
+        getListedToken: (_next) => web3.eth.call({
+          to: conversionRate[0],
+          data: tokensListData
+        }, (err, result) => _next(null, result)),
 
-      web3.eth.call({
-        to: conversionRate[0],
-        data: tokensListData
-      }, (errTokens, resultTokens) => {
-        if(errTokens || !resultTokens) return callback(err || "no tokens for conversion rate contract addr " + conversionRate[0])
-        const tokens = web3.eth.abi.decodeParameters(['address[]'], resultTokens)
+        token: (_next) => web3.eth.call({
+          to: conversionRate[0],
+          data: tokenData
+        }, (err, result) => _next(null, result))
+      }, (err, tokenresults) => {
 
-        return callback(null, tokens[0])
+        if(!tokenresults.getListedToken && !tokenresults.token){
+          logger.error(`no tokens for conversion rate contract addr ${conversionRate[0]}`)
+          return callback(null, [])
+        }
+
+
+        if(tokenresults.getListedToken){
+          const tokens = web3.eth.abi.decodeParameters(['address[]'], tokenresults.getListedToken)
+          return callback(null, tokens[0])
+        }
+
+        if(tokenresults.token){
+          // const token = web3.eth.abi.decodeParameters(['address'], tokenresults.token)
+          const token = web3.eth.abi.decodeParameters(['address'], tokenresults.token)
+          return callback(null, [token[0]])
+        }
+
+        
+
+        return callback(null, [])
 
       })
     }
@@ -268,27 +301,25 @@ function getReserveTokensList (reserveAddr, callback){
 
 function getPermissionlessTokensList (reserveAddr, callback){
   const permisionLessContract = new web3.eth.Contract(permisionlessReserveAbi, reserveAddr)
-
   var data = permisionLessContract.methods.contracts().encodeABI()
-
 
   web3.eth.call({
     to: reserveAddr,
     data: data
   }, (err, result) => {
-    if(err || !result) return callback(err || `cannot get token of permissionless reserve ${reserveAddr}`) 
-
-
+    if(err){
+      logger.error(err)
+      return callback(null, [])
+    }
+    if(!result){
+      logger.error(`cannot get token of permissionless reserve ${reserveAddr}`)
+      return callback(null, [])
+    }
+    
     var decoded = web3.eth.abi.decodeParameters(['address', 'address', 'address', 'address', 'address', 'address'], result)
-    return callback(err, [decoded[1]])
+    return callback(null, [decoded[1]])
   })
 
-
-  // return permisionLessContract.methods.contracts().call((err, result)=> {
-  //   console.log("$$$$$$$$$$$-----$$$$$ error with reserve " + reserveAddr)
-  //   if(err || !result || !result.token) return callback(err || `cannot get token of permissionless reserve ${reserveAddr}`) 
-  //   return callback(err, [result.token])
-  // })
 }
 
 function getTokenInfo (tokenAddr, type, callback){

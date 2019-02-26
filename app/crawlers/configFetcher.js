@@ -72,6 +72,8 @@ const standardizeReserveTokenType = (tokens) => {
     }
     delete returnConfig[t.address.toLowerCase()].reservesAddr
   })
+
+  // console.log("+++++++++++++++++++++ config", returnConfig)
   return returnConfig
 }
 
@@ -116,81 +118,149 @@ const getTokensFromApis = callback => {
 }
 
 const getTokensFromNetwork = callback => {
-  getAllReserve((err, arrayReserve) => {
-    if(err){
-      console.log(err)
-      return callback(err)
-    }
+  // getAllReserve((err, arrayReserve) => {
+  //   if(err){
+  //     console.log(err)
+  //     return callback(err)
+  //   }
 
-    async.parallelLimit(arrayReserve.map(r => (asyncCallback) =>  getReserveType(r, asyncCallback)) , 10,
-    (err, arrayTypeOfReserve) => {  
-      // [ '2', '2', '1' ]
-      async.parallelLimit(
-        arrayTypeOfReserve.map((t, i) => (next) => {
-          if(t == '1'){
-            // none
-            getReserveTokensList(arrayReserve[i], (err, arrayTokens) => next(err, arrayTokens &&
-              arrayTokens.map(t => ({
-                reserveAddr: arrayReserve[i],
-                type: '1',
-                tokenAddr: t
-              }))
-            ))
-          }
-          if(t == '2'){
-            // permissionless
-            getPermissionlessTokensList(arrayReserve[i], (err, arrayTokens) => next(err, arrayTokens &&
-              arrayTokens.map(t => ({
-                reserveAddr: arrayReserve[i],
-                type: '2',
-                tokenAddr: t
-              }))
-            ))
-          }
-        }), 10, (err, tokensAddr) => {
+  //   async.parallelLimit(arrayReserve.map(r => (asyncCallback) =>  getReserveType(r, asyncCallback)) , 10,
+  //   (err, arrayTypeOfReserve) => {  
+  //     // [ '2', '2', '1' ]
+  //     async.parallelLimit(
+  //       arrayTypeOfReserve.map((t, i) => (next) => {
+  //         if(t == '1'){
+  //           // none
+  //           getReserveTokensList(arrayReserve[i], (err, arrayTokens) => next(err, arrayTokens &&
+  //             arrayTokens.map(t => ({
+  //               reserveAddr: arrayReserve[i],
+  //               type: '1',
+  //               tokenAddr: t
+  //             }))
+  //           ))
+  //         }
+  //         if(t == '2'){
+  //           // permissionless
+  //           getPermissionlessTokensList(arrayReserve[i], (err, arrayTokens) => next(err, arrayTokens &&
+  //             arrayTokens.map(t => ({
+  //               reserveAddr: arrayReserve[i],
+  //               type: '2',
+  //               tokenAddr: t
+  //             }))
+  //           ))
+  //         }
+  //       }), 10, (err, tokensAddr) => {
           
-          if(err){
-            console.log(err)
-            return callback(err)
-          }
-          const allTokens = _.flatten(tokensAddr)
-          async.parallel(
-            allTokens.map(t => {
-              return (next) => {
-                // console.log("_________________", t.tokenAddr, t.type)
-                getTokenInfo(t.tokenAddr, t.type, (err, info) => {
-                  return next(err, {...t, info})
-                });
-              }
-            }),
-            (err, allTokenWithInfo) => {
-              if(err) return callback(err)
-              ////////////// 
-              const allTokenObj = {[ethConfig.address.toLowerCase()]: ethConfig}
+  //         if(err){
+  //           console.log(err)
+  //           return callback(err)
+  //         }
+  //         const allTokens = _.flatten(tokensAddr)
+  //         async.parallel(
+  //           allTokens.map(t => {
+  //             return (next) => {
+  //               // console.log("_________________", t.tokenAddr, t.type)
+  //               getTokenInfo(t.tokenAddr, t.type, (err, info) => {
+  //                 return next(err, {...t, info})
+  //               });
+  //             }
+  //           }),
+  //           (err, allTokenWithInfo) => {
+  //             if(err) return callback(err)
+  //             ////////////// 
+  //             const allTokenObj = {[ethConfig.address.toLowerCase()]: ethConfig}
               
-              allTokenWithInfo.map(t => {
-                const tokenInfo = t.info
-                tokenInfo.address = tokenInfo.address.toLowerCase()
-                if(! allTokenObj[tokenInfo.address]){
-                  allTokenObj[tokenInfo.address] = { ...tokenInfo, reserves: {[t.reserveAddr.toLowerCase()]: t.type}}
-                } else {
-                  allTokenObj[tokenInfo.address].reserves[t.reserveAddr.toLowerCase()] = t.type
-                }
-              })
+  //             allTokenWithInfo.map(t => {
+  //               const tokenInfo = t.info
+  //               tokenInfo.address = tokenInfo.address.toLowerCase()
+  //               if(! allTokenObj[tokenInfo.address]){
+  //                 allTokenObj[tokenInfo.address] = { ...tokenInfo, reserves: {[t.reserveAddr.toLowerCase()]: t.type}}
+  //               } else {
+  //                 allTokenObj[tokenInfo.address].reserves[t.reserveAddr.toLowerCase()] = t.type
+  //               }
+  //             })
 
-              return callback(null, allTokenObj)
+  //             return callback(null, allTokenObj)
+  //           }
+  //         )
+  //       }
+  //     )
+  
+  //   })
+  // })
+
+
+  fetchReserveListFromNetwork((err) => {
+    if(err) return callback(err)
+    // return callback(null, standardizeReserveTokenType(tokens))
+
+    async.parallelLimit(Object.keys(global.NETWORK_RESERVES).map(r => {
+      return (next) => {
+        if(global.NETWORK_RESERVES[r] == '1'){
+          // console.log("-------------- get token for reserve 1", r)
+          getReserveTokensList(r, (err, arrayTokens) => next(err, arrayTokens &&
+            arrayTokens.map(t => ({
+              reserveAddr: r,
+              type: '1',
+              tokenAddr: t
+            }))
+          ))
+        } else {
+          // console.log("-------------- get token for reserve 2", r)
+          getPermissionlessTokensList(r, (err, arrayTokens) => next(err, arrayTokens &&
+            arrayTokens.map(t => ({
+              reserveAddr: r,
+              type: '2',
+              tokenAddr: t
+            }))
+          ))
+        }
+      }
+    }), 5, (err, tokensAddr) => {
+      if(err){
+        console.log(err)
+        return callback(err)
+      }
+      const allTokens = _.flatten(tokensAddr)
+      async.parallel(
+        allTokens.map(t => {
+          return (next) => {
+            // console.log("_________________", t.tokenAddr, t.type)
+            getTokenInfo(t.tokenAddr, t.type, (err, info) => {
+              return next(err, {...t, info})
+            });
+          }
+        }),
+        (err, allTokenWithInfo) => {
+          if(err) return callback(err)
+          ////////////// 
+          const allTokenObj = {[ethConfig.address.toLowerCase()]: ethConfig}
+          
+          allTokenWithInfo.map(t => {
+            const tokenInfo = t.info
+            tokenInfo.address = tokenInfo.address.toLowerCase()
+            if(! allTokenObj[tokenInfo.address]){
+              allTokenObj[tokenInfo.address] = { ...tokenInfo, reserves: {[t.reserveAddr.toLowerCase()]: t.type}}
+            } else {
+              allTokenObj[tokenInfo.address].reserves[t.reserveAddr.toLowerCase()] = t.type
             }
-          )
+          })
+
+          console.log("========= allt tokens: ", allTokenObj)
+          return callback(null, allTokenObj)
         }
       )
-  
     })
   })
+
+
+  
+
 }
 
 module.exports.fetchConfigTokens = (callback) => {
-  // return getTokensFromNetwork(callback)
-  return getTokensFromApis(callback)
+  return getTokensFromNetwork(callback)
+  // return getTokensFromApis(callback)
 }
 
 module.exports.fetchReserveListFromNetwork = fetchReserveListFromNetwork
