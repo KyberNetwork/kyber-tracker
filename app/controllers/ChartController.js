@@ -136,6 +136,16 @@ module.exports = AppController.extends({
           return;
       }
 
+      if(params.to <= params.from) {
+        res.badRequest("from time must be lest than to time");
+        return;
+      }
+
+      if(!params.symbol || !network.tokens[params.symbol.toUpperCase()]){
+        res.badRequest(`Token ${params.symbol} not supported`);
+        return;
+      }
+
       if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
           res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
           return;
