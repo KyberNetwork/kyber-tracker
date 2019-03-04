@@ -443,9 +443,16 @@ module.exports = {
       "decimal": 18,
       "hidden": 1531486800000
     },
-    "TUSD": {
+    "OLD_TUSD": {
       "name": "TrueUSD",
       "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
+      "symbol": "TUSD",
+      "decimal": 18,
+      "hidden": true
+    },
+    "TUSD": {
+      "name": "TrueUSD",
+      "address": "0x0000000000085d4780b73119b644ae5ecd22b376",
       "symbol": "TUSD",
       "decimal": 18,
       "hidden": 1531486800000
