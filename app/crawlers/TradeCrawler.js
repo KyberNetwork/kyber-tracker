@@ -15,7 +15,7 @@ const configFetcher               = require('./configFetcher')
 
 
 let LATEST_PROCESSED_BLOCK = 0;
-const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
+const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 1000);
 const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 const PARALLEL_INSERT_LIMIT = 10;
 const web3 = Utils.getWeb3Instance();
