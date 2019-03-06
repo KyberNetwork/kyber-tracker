@@ -142,10 +142,6 @@ module.exports = AppController.extends({
     const CurrenciesService = req.getService('CurrenciesService');
     const redisCacheService = req.getService('RedisCacheService');
 
-    if(params.official){
-      CACHE_KEY = 'official-' + CACHE_KEY
-    }
-
     redisCacheService.getCacheByKey(CACHE_KEY, (err, ret) => {
       if (err) {
         logger.error(err)

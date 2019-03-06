@@ -348,16 +348,15 @@ module.exports = BaseService.extends({
     if (!global.TOKENS_BY_ADDR) return callback(null, {});
     const startTime = new Date().getTime()
 
-    if (!tokens) return callback(null, {});
     let pairs = {};
 
 
 
     const supportedTokenList = Object.keys(global.TOKENS_BY_ADDR).filter(tokenAddr => {
-      return (tokenAddr.toLowerCase() !== network.ETH.address) &&
-            !global.TOKENS_BY_ADDR[address].delisted &&
-            helper.shouldShowToken(address) &&
-            helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
+      return (tokenAddr !== network.ETH.address) &&
+            !global.TOKENS_BY_ADDR[tokenAddr].delisted &&
+            helper.shouldShowToken(tokenAddr) &&
+            helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[tokenAddr])
     }).join('\',\'')
 
 
@@ -370,15 +369,15 @@ module.exports = BaseService.extends({
     const weekAgo = nowInSeconds - DAY_IN_SECONDS * 7;
     //volume token base
     const volumeSql = `
-      SELECT sum(volume_token) as volume_24h_token, sum(volume_usd) as volume_24h_usd, sum(volume_eth) as volume_24h_eth, token_symbol
+      SELECT sum(volume_token) as volume_24h_token, sum(volume_usd) as volume_24h_usd, sum(volume_eth) as volume_24h_eth, token_address
       FROM 
-        (SELECT IFNULL(sum(maker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, maker_token_symbol as token_symbol
+        (SELECT IFNULL(sum(maker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, maker_token_address as token_address
         FROM kyber_trade
         WHERE block_timestamp > ?
         AND maker_token_address IN ('${supportedTokenList}')
         GROUP BY maker_token_address
           UNION ALL
-        SELECT IFNULL(sum(taker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, taker_token_symbol as token_symbol 
+        SELECT IFNULL(sum(taker_token_amount),0) as volume_token, IFNULL(sum(volume_usd),0) as volume_usd, IFNULL(sum(volume_eth),0) as volume_eth, taker_token_address as token_address 
         FROM kyber_trade 
         WHERE block_timestamp > ?
         AND taker_token_address IN ('${supportedTokenList}')
@@ -444,16 +443,20 @@ module.exports = BaseService.extends({
 
       let pairs = {}
       Object.keys(global.TOKENS_BY_ADDR).map(address => {
+        const isOfficial = helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
         if ((address !== network.ETH.network) &&
           !global.TOKENS_BY_ADDR[address].delisted &&
           helper.shouldShowToken(address) &&
-          helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
+          isOfficial
         ) {
-
-            pairs[network.ETH.address + "_" + address] = {
+            const tokenData = global.TOKENS_BY_ADDR[address]
+            const key = network.ETH.symbol + '_' + ( isOfficial && tokenData ? tokenData.symbol : address )
+            pairs[key] = {
               timestamp: nowInMs,
               quote_address: address,
+              quote_symbol: tokenData ? tokenData.symbol : null,
               base_address: network.ETH.address,
+              base_symbol: network.ETH.symbol,
               past_24h_high: 0,
               past_24h_low: 0,
               usd_24h_volume:  0,
@@ -463,25 +466,25 @@ module.exports = BaseService.extends({
               current_ask:  0,
               last_traded: 0
             }
-            let tokenData = global.TOKENS_BY_ADDR[tokenAddress]
+            
 
             let indexVolume = ret.volume ? ret.volume.map(v => v.token_address).indexOf(address) : -1
             if(indexVolume > -1){
-              pairs[network.ETH.address + "_" + address].usd_24h_volume = ret.volume[indexVolume].volume_24h_usd
-              pairs[network.ETH.address + "_" + address].token_24h_volume = new BigNumber(ret.volume[indexVolume].volume_24h_token ? ret.volume[indexVolume].volume_24h_token.toString() : 0).div(Math.pow(10, tokenData.decimal)).toNumber()
-              pairs[network.ETH.address + "_" + address].eth_24h_volume = ret.volume[indexVolume].volume_24h_eth
+              pairs[key].usd_24h_volume = ret.volume[indexVolume].volume_24h_usd
+              pairs[key].token_24h_volume = new BigNumber(ret.volume[indexVolume].volume_24h_token ? ret.volume[indexVolume].volume_24h_token.toString() : 0).div(Math.pow(10, tokenData.decimal)).toNumber()
+              pairs[key].eth_24h_volume = ret.volume[indexVolume].volume_24h_eth
             }
 
             let indexMaxRate = ret.maxRate ? ret.maxRate.map(m => m.quote_address).indexOf(address) : -1
             if(indexMaxRate > -1){
-              pairs[network.ETH.address + "_" + address].past_24h_high = ret.maxRate[indexMaxRate].past_24h_high
-              pairs[network.ETH.address + "_" + address].past_24h_low = ret.maxRate[indexMaxRate].past_24h_low
+              pairs[key].past_24h_high = ret.maxRate[indexMaxRate].past_24h_high
+              pairs[key].past_24h_low = ret.maxRate[indexMaxRate].past_24h_low
             }
 
             let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_address).indexOf(address) : -1
             if(indexLastRate > -1 ){
-              pairs[network.ETH.address + "_" + address].current_bid = ret.lastRate[indexLastRate].current_bid
-              pairs[network.ETH.address + "_" + address].current_ask = ret.lastRate[indexLastRate].current_ask
+              pairs[key].current_bid = ret.lastRate[indexLastRate].current_bid
+              pairs[key].current_ask = ret.lastRate[indexLastRate].current_ask
             }
 
             let indexlastMakerTrade = ret.lastTradeMaker ? ret.lastTradeMaker.map(l => l.maker_token_address).indexOf(address) : -1
@@ -502,28 +505,32 @@ module.exports = BaseService.extends({
               let bigMakerAmount = new BigNumber(lastTokenTrade.maker_token_amount ? lastTokenTrade.maker_token_amount.toString() : 0)
               let bigTakerAmount = new BigNumber(lastTokenTrade.taker_token_amount ? lastTokenTrade.taker_token_amount.toString() : 0)
 
-              if (lastTokenTrade.taker_token_address !== address && !bigMakerAmount.isZero()) {
+              if (lastTokenTrade.taker_token_address !== address && !bigMakerAmount.isZero() && tokenData && tokenData.decimal) {
                 let amountMaker = bigMakerAmount.div(Math.pow(10, tokenData.decimal));
                 let amountTaker = lastTokenTrade.volume_eth ? lastTokenTrade.volume_eth.toString() : 0;
                 lastPrice = new BigNumber(amountTaker).div(amountMaker).toNumber()
               }
-              else if (lastTokenTrade.maker_token_address !== address && !bigTakerAmount.isZero()) {
+              else if (lastTokenTrade.maker_token_address !== address && !bigTakerAmount.isZero() && tokenData && tokenData.decimal) {
                 let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
                 let amountMaker = lastTokenTrade.volume_eth ? lastTokenTrade.volume_eth.toString() : 0;
                 lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
               }
-              pairs[network.ETH.address + "_" + address].last_traded = lastPrice
+              pairs[key].last_traded = lastPrice
             }
           }
         });
 
 
-      const CACHE_KEY = CacheInfo.Pair24hData.key;
+      let CACHE_KEY = CacheInfo.Pair24hData.key;
+      if(options.official){
+        CACHE_KEY = 'official-' + CACHE_KEY
+      }
       const CACHE_TTL = CacheInfo.Pair24hData.TTL;
       const redisCacheService = this.getService('RedisCacheService');
       redisCacheService.setCacheByKey(CACHE_KEY, pairs, CACHE_TTL)
       const endTime = new Date().getTime()
       console.log(`______ saved 24H PAIRS to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
+      console.log("=========== pairs", pairs)
       return callback(null, pairs)
   
     });

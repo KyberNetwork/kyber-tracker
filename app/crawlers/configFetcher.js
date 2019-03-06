@@ -33,7 +33,7 @@ const fetchData = params => new Promise((resolve, reject) => {
 const standardizeTokens = (arrayTokens) => {
   const returnConfig = {}
   arrayTokens.map(t => {
-    returnConfig[t.address] = {
+    returnConfig[t.address.toLowerCase()] = {
       // ...network.tokens[t.symbol],
       name: t.name,
       address: t.address.toLowerCase(),

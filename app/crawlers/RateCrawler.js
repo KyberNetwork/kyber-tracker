@@ -313,12 +313,14 @@ class RateCrawler {
 
     const dataArray = [];
     const baseAddress = network.ETH.address;
-    const baseSymbol = "ETH";
+    const baseSymbol = network.ETH.symbol;
+    const baseDecimal = network.ETH.decimal
 
     const len = supportedTokens.length;
 
     for (let i = 0; i < len; i++) {
       const quoteSymbol = supportedTokens[i].symbol;
+      const quoteDecimal = supportedTokens[i].decimal;
       let sellExpected = this._sellRate(expectedArray[i]);
       let buyExpected = this._buyRate(expectedArray[len + i]);
       if (this._isValidRate(sellExpected) || this._isValidRate(buyExpected)) {
@@ -330,8 +332,11 @@ class RateCrawler {
         data.blockTimestamp = blockTimestamp;
         data.baseAddress = baseAddress;
         data.baseSymbol = baseSymbol;
+        data.baseDecimal = baseDecimal;
+
         data.quoteAddress = supportedTokens[i].address;
         data.quoteSymbol = quoteSymbol;
+        data.quoteDecimal = quoteDecimal
 
         data.sellExpected = sellExpected;
         data.buyExpected = buyExpected;

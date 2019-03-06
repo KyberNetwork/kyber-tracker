@@ -37,7 +37,7 @@ module.exports = BaseService.extends({
             to: nowInSeconds,
             seqType: Resolution.toColumn(options.resolution)
           };
-          pairs[token] = (asyncCallback) => this.history(params, asyncCallback);
+          pairs[address] = (asyncCallback) => this.history(params, asyncCallback);
         }
       });
       async.auto(pairs, 10, (err, pairs)=>{
