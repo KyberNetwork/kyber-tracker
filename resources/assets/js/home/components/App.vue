@@ -546,7 +546,21 @@ export default {
 
     this.intervalResize = window.setInterval(this.handleResize, 2000);
 
-
+    switch (this.$route.path) {
+      case '/trades':
+        this.dropdownText = this.$t('navigator.trade_history')
+        break;
+      case '/tokens':
+        this.dropdownText = this.$t('navigator.tokens')
+        break;
+      case '/reserves':
+        this.dropdownText = this.$t('navigator.reserves')
+        break;
+    
+      default:
+        this.dropdownText = this.$t('navigator.volume')
+        break;
+    }
     // this.debouncedOnResize = _.debounce(this.handleResize, 500)
     window.addEventListener('resize', () => {
       this.indexShowmore = -1

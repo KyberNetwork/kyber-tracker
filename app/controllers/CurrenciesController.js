@@ -179,7 +179,7 @@ module.exports = AppController.extends({
 
     const service = req.getService('CurrenciesService');
 
-    const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+    let CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
     if(params.official){
       CACHE_KEY = 'official-' + CACHE_KEY
     }
