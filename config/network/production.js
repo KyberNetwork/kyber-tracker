@@ -17,7 +17,8 @@ module.exports = {
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
     "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-    "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"]
+    "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
+    "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
   },
   "tokens": {
     "ETH": {
@@ -758,6 +759,9 @@ module.exports = {
   "startBlockNumberV2": 5926056,
   "rateBlockStepSize": 40,
   "newTokenDuration": 3 * 24 * 60 * 60 * 1000,
+
+  "startPermissionlessReserveBlock": 7024980,
+  "averageCGQuery": 13000,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
