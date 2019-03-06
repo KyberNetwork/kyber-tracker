@@ -143,7 +143,8 @@ module.exports = {
       "name": "Salt",
       "address": "0x4156d3342d5c385a87d264f90653733592000581",
       "symbol": "SALT",
-      "decimal": 8
+      "decimal": 8,
+      "delisted": true
     },
     "BQX": {
       "name" : "ETHOS",
@@ -626,7 +627,8 @@ module.exports = {
       "symbol" : "CNN",
       "decimal": 18,
       "address": "0x8713d26637CF49e1b6B4a7Ce57106AaBc9325343",
-      "hidden": 1542027600000       
+      // "hidden": 1542027600000
+      "delisted": true       
     },
     "SSP":{
       "name": "Smartshare Token",
