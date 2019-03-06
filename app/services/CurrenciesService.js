@@ -36,9 +36,9 @@ module.exports = BaseService.extends({
 
     const supportedTokenList = Object.keys(global.TOKENS_BY_ADDR).filter(tokenAddr => {
       return (tokenAddr.toLowerCase() !== network.ETH.address) &&
-            !global.TOKENS_BY_ADDR[address].delisted &&
-            helper.shouldShowToken(address) &&
-            helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])
+            !global.TOKENS_BY_ADDR[tokenAddr].delisted &&
+            helper.shouldShowToken(tokenAddr) &&
+            helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[tokenAddr])
     }).join('\',\'')
 
     const lastSql = `
@@ -73,20 +73,29 @@ module.exports = BaseService.extends({
       if(err) return callback(err)
 
       let pairs = {}
-      Object.keys(global.TOKENS_BY_ADDR).forEach(address => {
-        if ((token.toUpperCase() !== "ETH") &&
-          !tokens[token].address &&
-          helper.shouldShowToken(address)) {
-            const key = options.useAddress ? address : (global.TOKENS_BY_ADDR[address].symbol || address)
-            let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_address).indexOf(address) : -1
+      Object.keys(global.TOKENS_BY_ADDR).forEach(tokenAddr => {
+        if ((tokenAddr.toLowerCase() !== network.ETH.address) &&
+            !global.TOKENS_BY_ADDR[tokenAddr].delisted &&
+            helper.shouldShowToken(tokenAddr) &&
+            helper.filterOfficial(options.official, global.TOKENS_BY_ADDR[tokenAddr])
+        ) {
+            const key = options.useAddress ? tokenAddr : (global.TOKENS_BY_ADDR[tokenAddr].symbol || tokenAddr)
+            let indexLastRate = ret.lastRate ? ret.lastRate.map(l => l.quote_address).indexOf(tokenAddr) : -1
             pairs[key] = {
               r: indexLastRate > -1 ? ret.lastRate[indexLastRate].rate_24h : 0,
-              p: ret.pointGraph.filter(g => (g.quote_address == address)).map(i => i.rate7d)
+              p: ret.pointGraph.filter(g => (g.quote_address == tokenAddr)).map(i => i.rate7d)
             }
         }
       })
 
-      const CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+      let CACHE_KEY = CacheInfo.CurrenciesAllRates.key;
+      if(options.official){
+        CACHE_KEY = 'official-' + CACHE_KEY
+      }
+  
+      // if(params.useAddress){
+      //   CACHE_KEY = 'useAddress-' + CACHE_KEY
+      // }
       const CACHE_TTL = CacheInfo.CurrenciesAllRates.TTL;
       const redisCacheService = this.getService('RedisCacheService');
       redisCacheService.setCacheByKey(CACHE_KEY, pairs, CACHE_TTL)

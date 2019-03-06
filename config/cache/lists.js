@@ -10,7 +10,9 @@ module.exports = [
     //   name: CacheInfo.CurrenciesAllRates.key,
     //   time_exprire: CacheInfo.CurrenciesAllRates.TTLTool
     // },
-    params: {},
+    params: {
+      official: true
+    },
     setCache: false
   },
   {
@@ -90,7 +92,7 @@ module.exports = [
   },
 
   {
-    when: "*/1 * * * *",
+    when: "*/10 * * * *",
     run: 'TickersCacheRefresher',
     service: 'CurrenciesService',
     functionName: 'getPair24hData',
