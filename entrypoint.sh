@@ -7,7 +7,7 @@ readonly app=${1:-}
 declare -A scripts=([web]=server.js
 		    [burn]=burn.js
 		    [trade]=trade.js
-		    [ethVolume]=ethVolume.js
+		    [eth-volume]=ethVolume.js
 		    [rate]=rate.js
 		    [schedule]=schedule.js)
 
