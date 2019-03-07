@@ -219,14 +219,16 @@
             <tr v-for="(row, index) in rows" :item="row" :index="index" @click="onClickRow(row)">
               <td class="pl-4">{{ getDateInfo(row, false) }}</td>
               <td class="text-left pl-4 trade-direction">
-                <span class="font-semi-bold">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
+                <span class="font-semi-bold">
+                  {{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
                   <!-- {{ row.takerTokenSymbol }} -->
                   <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                 </span>
                 <br/>
-                <span class="entypo-down-dir trade-direction-down-symbol">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount, row.makerTokenDecimal) }} 
-                <!-- {{ row.makerTokenSymbol }} -->
+                <span class="entypo-down-dir trade-direction-down-symbol"></span>
+                <span>
+                  {{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount, row.makerTokenDecimal) }} 
                   <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                 </span>
