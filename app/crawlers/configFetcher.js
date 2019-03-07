@@ -3,7 +3,7 @@ const axios = require('axios');
 const network = require('../../config/network');
 const async     = require('async');
 const _         = require('lodash');
-const apisEndpint = network.endpoints.apis + "/currencies?is_official=false"
+const apisEndpint = network.endpoints.apis + "/currencies?only_official_reserve=false"
 
 const getAllReserve                     = require('./leveldbCache').getAllReserve;
 const getReserveType                    = require('./leveldbCache').getReserveType;
