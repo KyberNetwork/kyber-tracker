@@ -31,7 +31,8 @@
               {{$t('wallet_detail.collected_fees')}}
             </div>
             <div class="font-semi-bold">
-              {{collectedFees}} KNC
+              {{formatTokenAmount(collectedFees, 18)}} KNC
+              <!-- {{round(collectedFees)}} KNC -->
             </div>
           </div>
         </div>
@@ -49,7 +50,7 @@
                 {{$t('wallet_detail.value_in_eth')}}
               </div> -->
               <div class="font-semi-bold">
-                {{volumeEth}} ETH
+                {{round(volumeEth)}} ETH
               </div>
               
               
@@ -59,7 +60,7 @@
                 {{$t('wallet_detail.value_in_usd')}}*
               </div> -->
               <div class="font-semi-bold">
-                {{volumeUsd}} USD*
+                {{round(volumeUsd)}} USD*
               </div>
             </div>
           </div>
@@ -75,7 +76,7 @@
         </div>
 
         <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
-          <div class="col-6" v-for="item in reserveTokens">
+          <div class="col-12 col-sm-6" v-for="item in reserveTokens">
             <div class="row pb-2">
               <div class="col-4">
                 <span v-if="isOfficial(item.address)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
@@ -181,6 +182,9 @@ export default {
     },
     round(num){
       return util.roundingNumber(num)
+    },
+    formatTokenAmount(amount, decimal){
+      return util.formatTokenAmount(amount, decimal);
     },
     reloadView(){
       this.totalTrade = this.$refs.datatable ? this.$refs.datatable.totalTrade : 0

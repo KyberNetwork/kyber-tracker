@@ -14,17 +14,17 @@
           <template slot="header">
             <th class="text-left pl-4">{{ $t("common.address") }}</th>
             <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
-            <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+            <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
             <th ></th>
           </template>
 
           <template slot="body" scope="slot">
             <tr>
                 <td class="pl-4">
-                  <a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a>
+                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-              <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+              <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ slot.item.volumeETH }}</td>
              
               <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
                 <span class="entypo-dot-3 table-more"></span>
@@ -41,17 +41,17 @@
           <template slot="header">
             <th class="text-left pl-4">{{ $t("common.address") }}</th>
             <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
-            <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+            <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
             <th ></th>
           </template>
 
           <template slot="body" scope="slot">
             <tr>
                 <td class="pl-4">
-                  <a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a>
+                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-              <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+              <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ slot.item.volumeETH }}</td>
              
               <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
                 <span class="entypo-dot-3 table-more"></span>
@@ -68,17 +68,17 @@
             
             <th class="text-left pl-4">{{ $t("common.address") }}</th>
             <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
-            <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+            <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
             <th ></th>
           </template>
 
           <template slot="body" scope="slot">
             <tr>
                 <td class="pl-4">
-                  <a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a>
+                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-              <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+              <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ slot.item.volumeETH }}</td>
              
               <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
                 <span class="entypo-dot-3 table-more"></span>
