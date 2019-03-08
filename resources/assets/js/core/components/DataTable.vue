@@ -49,7 +49,7 @@
       },
       rows: {
         type: Array,
-        default: []
+        default: () => []
       }
     },
     data() {

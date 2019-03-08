@@ -198,6 +198,10 @@ class TradeCrawler {
           } else {
             record.commissionReserveAddress += ";" + rAddr;
           }
+
+          if(!record.commissionReserveArray) record.commissionReserveArray = []
+          record.commissionReserveArray.push(rAddr)
+          
           record.commissionReceiveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
           record.commission = new BigNumber((record.commission || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)))).toString();
           break;
@@ -206,9 +210,14 @@ class TradeCrawler {
           const bAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           if (!record.burnReserveAddress || record.burnReserveAddress == bAddr) {
             record.burnReserveAddress = bAddr;
+            record.sourceReserve = bAddr
           } else {
             record.burnReserveAddress += ";" + bAddr;
+            record.destReserve = bAddr
           }
+
+          if(!record.burnReserveArray) record.burnReserveArray = []
+          record.burnReserveArray.push(bAddr)
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
           // Note for token-token, burnFees twich
           record.burnFees = new BigNumber((record.burnFees || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))).toString();
@@ -232,6 +241,14 @@ class TradeCrawler {
           record.blockTimestamp= timestamp,
           record.tx= log.transactionHash
 
+          const reserveObj = this.processReserveAddrOldTx(record.takerTokenAddress, record.makerTokenAddress, record.burnReserveArray, record.commissionReserveArray)
+          record.sourceReserve = reserveObj.sourceReserve
+          record.destReserve = reserveObj.destReserve
+
+          if(reserveObj.getFromEmiterExecute){
+            record.sourceReserve = log.address
+          }
+          
           records.push(record)
           record = {}
           break;
@@ -280,6 +297,55 @@ class TradeCrawler {
 
       return callback(null, true);
     });
+  }
+
+  processReserveAddrOldTx(srcAddress, destAddress, burnReserveArray = [], commissionReserveArray = []){
+    const returnObj = {
+      sourceReserve: null,
+      destReserve: null
+    }
+
+    if(Utils.isBurnableToken(srcAddress)){
+      if(Utils.isBurnableToken(destAddress)){
+        if(burnReserveArray.length == 2){
+          returnObj.sourceReserve = burnReserveArray[0]
+          returnObj.destReserve = burnReserveArray[1]
+        } else {
+          logger.warn(`unexpected burn fees, need 2 burn fees (src-dst)`)
+        }
+      } else {
+        if(burnReserveArray.length == 1){
+          returnObj.sourceReserve = burnReserveArray[0]
+        } else {
+          logger.warn(`unexpected burn fees, need 1 burn fees (src)`)
+        }
+      }
+    } else if (Utils.isBurnableToken(destAddress)){
+      if(burnReserveArray.length == 1){
+        returnObj.destReserve = burnReserveArray[0]
+      } else {
+        logger.warn(`unexpected burn fees, need 1 burn fees (dst)`)
+      }
+    } else if (commissionReserveArray.length != 0){
+      if(commissionReserveArray.length == 1){
+        returnObj.sourceReserve = commissionReserveArray[0]
+      } else {
+        returnObj.sourceReserve = commissionReserveArray[0]
+        returnObj.destReserve = commissionReserveArray[1]
+      }
+    } else {
+      // need to get from tx receipt
+      logger.info(`fall back to get reserve from tx receipt with tokens, ${srcAddress} > ${destAddress}`)
+      returnObj.getFromEmiterExecute = true
+    }
+
+    if(!returnObj.sourceReserve && !returnObj.destReserve){
+      returnObj.getFromEmiterExecute = true
+    }
+    
+    return returnObj
+
+
   }
 
   _addNewTrade (exSession, record, callback) {
@@ -358,7 +424,7 @@ class TradeCrawler {
         record.volumeEth = Utils.fromWei(record.takerTokenAmount);
         record.sourceOfficial = 1
       } else {
-        if(global.NETWORK_RESERVES && record.sourceReserve && global.NETWORK_RESERVES[record.sourceReserve] == '1'){
+        if(!record.sourceReserve || (record.sourceReserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.sourceReserve] == '1')){
           record.sourceOfficial = 1
         } else {
           record.sourceOfficial = 0
@@ -370,7 +436,7 @@ class TradeCrawler {
         record.volumeEth = Utils.fromWei(record.makerTokenAmount);
         record.destOfficial = 1
       } else {
-        if(global.NETWORK_RESERVES && record.destReserve && global.NETWORK_RESERVES[record.destReserve] == '1'){
+        if(!record.destReserve ||  (record.destReserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.destReserve] == '1')){
           record.destOfficial = 1
         } else {
           record.destOfficial = 0
@@ -378,7 +444,7 @@ class TradeCrawler {
       }
 
 
-      console.log("_________________", record.sourceReserve, record.sourceOfficial, record.destReserve,  record.destOfficial)
+      // console.log("_________________", record.sourceReserve, record.sourceOfficial, record.destReserve,  record.destOfficial)
       
       logger.info(`Add new trade: ${JSON.stringify(record)}`);
 

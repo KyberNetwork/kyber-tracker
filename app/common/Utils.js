@@ -16,6 +16,17 @@ const ethConfig = network.ETH
 const contractAddresses = network.contractAddresses;
 
 module.exports = {
+  isBurnableToken: function(tokenAddr){
+    const tokenData = global.TOKENS_BY_ADDR[tokenAddr.toLowerCase()]
+
+    if(!tokenData) return true
+
+    if(['ETH', 'WETH', 'KNC', 'PT'].indexOf(tokenData.symbol) >= 0){
+      return false
+    }
+
+    return true
+  },
 
   getKyberABIDecoder: function() {
     return abiDecoder;
