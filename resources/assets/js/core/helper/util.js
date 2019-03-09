@@ -49,7 +49,7 @@ function kyberRoundingNumber (number) {
   return result;
 }
 
-function newRoundingNumber (input, maxDigis) {
+function newRoundingNumber (input = 0, maxDigis) {
   const DEFAULT_DIGITS = 4
   const MAX_DIGIS = !maxDigis && maxDigis !== 0 ? DEFAULT_DIGITS : maxDigis
 
@@ -70,7 +70,7 @@ function newRoundingNumber (input, maxDigis) {
     }
   })
 
-  let bigInput = new CustomBigNumber(input)
+  let bigInput = new CustomBigNumber(input.toString())
   if (bigInput == 'NaN' || bigInput == 'Infinity') {
     return "NaN"
   }
