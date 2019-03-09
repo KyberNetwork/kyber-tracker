@@ -71,8 +71,8 @@
                 </div>
             </td>
           <td  class="text-left pl-1">{{ slot.item.official ? slot.item.symbol : ''}}</td>
-          <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-          <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+          <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+          <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
           <!-- <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
           <td><span class="pull-right">
               <i class="k k-angle right"></i>
@@ -109,8 +109,8 @@
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
               </div>
           </td>
-          <td class="text-right pr-4">{{ formatVolumeUSD(slot.item) }}</td>
-          <td class="text-right pr-4">{{ slot.item.volumeETH }}</td>
+          <td class="text-right pr-4">{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+          <td class="text-right pr-4">{{ formatVolumn(slot.item.volumeETH) }}</td>
         </tr>
       </template>
     </data-table>
@@ -182,8 +182,8 @@ export default {
     // isNewToken(item) {
     //   return util.isNewToken(item.symbol);
     // },
-    formatVolumeUSD (item) {
-      return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
+    formatVolumn(number){
+      return (new BigNumber(number.toString())).toFormat(2)
     },
     getTokenImageLink (token) {
       // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");

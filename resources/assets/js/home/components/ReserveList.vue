@@ -23,8 +23,8 @@
                 <td class="pl-4">
                   <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                 </td>
-              <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-              <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+              <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+              <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
              
               <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
                 <span class="entypo-dot-3 table-more"></span>
@@ -50,8 +50,8 @@
                 <td class="pl-4">
                   <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                 </td>
-              <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-              <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+              <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+              <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
              
               <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
                 <span class="entypo-dot-3 table-more"></span>
@@ -77,8 +77,8 @@
                 <td class="pl-4">
                   <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                 </td>
-              <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-              <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+              <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+              <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
              
               <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
                 <span class="entypo-dot-3 table-more"></span>
@@ -178,8 +178,8 @@ export default {
     // isNewToken(item) {
     //   return util.isNewToken(item.symbol);
     // },
-    formatVolumeUSD (item) {
-      return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
+    formatVolumn(number){
+      return (new BigNumber(number.toString())).toFormat(2)
     },
     getTokenImageLink (token) {
       // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
