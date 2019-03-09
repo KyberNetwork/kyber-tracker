@@ -818,7 +818,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
   .dropdown-menu{
     width: 100%;
-    min-width: auto;
+    // min-width: auto;
+    min-width: 235px;
     background-color: #3a5492;
     border-color: #5276c3;
     .dropdown-item{

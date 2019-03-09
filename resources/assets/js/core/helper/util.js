@@ -49,6 +49,41 @@ function kyberRoundingNumber (number) {
   return result;
 }
 
+function newRoundingNumber (input, maxDigis) {
+  const DEFAULT_DIGITS = 4
+  const MAX_DIGIS = !maxDigis && maxDigis !== 0 ? DEFAULT_DIGITS : maxDigis
+
+  const CustomBigNumber = BigNumber.clone({
+    FORMAT: {
+      // the decimal separator
+      decimalSeparator: '.',
+      // the grouping separator of the integer part
+      groupSeparator: ',',
+      // the primary grouping size of the integer part
+      groupSize: 3,
+      // the secondary grouping size of the integer part
+      secondaryGroupSize: 0,
+      // the grouping separator of the fraction part
+      fractionGroupSeparator: ' ',
+      // the grouping size of the fraction part
+      fractionGroupSize: 0
+    }
+  })
+
+  let bigInput = new CustomBigNumber(input)
+  if (bigInput == 'NaN' || bigInput == 'Infinity') {
+    return "NaN"
+  }
+
+  // console.log("_________max digits", maxDigis, MAX_DIGIS, bigInput.e + 1)
+  let precision = bigInput.e < 0 ? 
+    bigInput.toPrecision(MAX_DIGIS || DEFAULT_DIGITS) 
+    : 
+    bigInput.toPrecision(Math.max(MAX_DIGIS, bigInput.e + 1) || DEFAULT_DIGITS)
+
+  return new CustomBigNumber(precision).toFormat()
+}
+
 export default {
 
   qs: function (key) {
@@ -136,14 +171,18 @@ export default {
     return Date.now() <= bornMs + 24 * 60 * 60 * 1000;
   },
 
-  formatTokenAmount: function (amount, decimal=18, decimalFormat = 3) {
+  formatTokenAmount: function (amount, decimal=18, decimalFormat = 2) {
     const bigNumber = new BigNumber(amount.toString());
     let result = bigNumber.div(Math.pow(10, decimal));
     return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
   },
 
   roundingNumber: function (number) {
-    return kyberRoundingNumber(number);
+    // return kyberRoundingNumber(number);
+    return newRoundingNumber(number, 6)
+  },
+  roundingAmount: function (number) {
+    return newRoundingNumber(number, 2)
   },
   isTxHash: function(hash) {
     return /^0x([A-Fa-f0-9]{64})$/i.test(hash);

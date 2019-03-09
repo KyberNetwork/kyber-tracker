@@ -35,7 +35,7 @@
 
         <!-- ########################  -->
       </b-tab>
-      <b-tab title="Offical" >
+      <b-tab title="Verified" >
         <!-- <br>Offical -->
         <data-table :rows="getReserveByType('offical')">
           <template slot="header">

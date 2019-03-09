@@ -4,6 +4,22 @@
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12">
         <div class="no-padding d-flex justify-content-between col-12 col-sm-12" v-click-outside="onClickOutside">
           <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
+
+             <li>
+              <b-dropdown class="change-official" right>
+                <template slot="button-content">
+                  {{isAllTokens() ? 'All network' : 'Verified reserves network'}}
+                </template>
+                <b-dropdown-item @click="onChangeOfficial('all')">
+                  <span>All network</span>
+                </b-dropdown-item>
+                <b-dropdown-item @click="onChangeOfficial('official')">
+                  <span>Verified reserves network</span>
+                </b-dropdown-item>
+              </b-dropdown> 
+            </li>
+
+
             <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
@@ -37,24 +53,7 @@
               <span class="topbar-value">{{ totalBurnedFee }}</span>
             </li> 
 
-            <li>
-              <!-- <select @change="onChangeOfficial">
-                <option value="all" :selected="!isOfficial()">All</option>
-                <option value="official" :selected="isOfficial()">Official Tokens</option>
-              </select> -->
-              <b-dropdown class="change-official" right>
-                <template slot="button-content">
-                  {{isAllTokens() ? 'All' : 'Official Tokens'}}
-                </template>
-                <b-dropdown-item @click="onChangeOfficial('all')">
-                  <span>All</span>
-                </b-dropdown-item>
-                <b-dropdown-item @click="onChangeOfficial('official')">
-                  <span>Official Tokens</span>
-                </b-dropdown-item>
-              </b-dropdown> 
-            </li>
-
+           
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
             <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
             
