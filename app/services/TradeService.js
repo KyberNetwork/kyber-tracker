@@ -158,7 +158,7 @@ module.exports = BaseService.extends({
         reserves.push({
           address: r,
           volumeUSD: volumeUSD.toNumber(),
-          volumeETH: ethVolume.toFormat(4).toString(),
+          volumeETH: ethVolume.toNumber(),
           type: global.NETWORK_RESERVES[r]
         })
       })
@@ -378,10 +378,10 @@ module.exports = BaseService.extends({
               name: token.name,
               address: token.address,
               official: token.official || UtilsHelper.filterOfficial(true, token),
-              volumeToken: tokenVolume.toFormat(4).toString(),
+              volumeToken: tokenVolume.toNumber(),
               volumeTokenNumber: tokenVolume.toNumber(),
               volumeUSD: volumeUSD.toNumber(),
-              volumeETH: ethVolume.toFormat(4).toString(),
+              volumeETH: ethVolume.toNumber(),
               volumeEthNumber: ethVolume.toNumber(),
               isNewToken: UtilsHelper.isNewToken(token.address),
               isDelisted: UtilsHelper.isDelisted(token.address)
