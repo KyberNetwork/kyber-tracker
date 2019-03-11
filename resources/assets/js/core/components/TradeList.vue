@@ -433,9 +433,24 @@ export default {
       return util.getDateInfo(trade.blockTimestamp * 1000, isShort);
     },
     getRate (trade) {
-      const makerAmount = (new BigNumber(trade.makerTokenAmount.toString())).div(Math.pow(10, trade.makerTokenDecimal));
-      const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, trade.takerTokenDecimal));
-      return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
+      if (!trade.makerTokenAmount || !trade.takerTokenAmount || !trade.makerTokenDecimal || !trade.takerTokenDecimal) {
+        return "";
+      }
+
+      const bigMakerTokenAmount = new BigNumber(
+        trade.makerTokenAmount.toString()
+      )
+
+      const bigTakerTokenAmount = new BigNumber(
+        trade.takerTokenAmount.toString()
+      )
+
+      const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+
+      // const makerAmount = (new BigNumber(trade.makerTokenAmount.toString())).div(Math.pow(10, trade.makerTokenDecimal));
+      // const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, trade.takerTokenDecimal));
+      // return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
+      return util.roundingNumber(bigRate.toString());
     },
     formatTokenNumber (address, amount, decimal) {
       const tokenInfo = this.tokens[address.toLowerCase()];
