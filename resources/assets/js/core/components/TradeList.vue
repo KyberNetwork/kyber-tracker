@@ -454,7 +454,7 @@ export default {
     },
     formatTokenNumber (address, amount, decimal) {
       const tokenInfo = this.tokens[address.toLowerCase()];
-      return util.formatTokenAmount(amount, decimal);
+      return util.formatTokenAmount(amount, decimal, 4);
     },
     formatDatepicker (date) {
       switch (util.getLocale()) {
