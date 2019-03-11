@@ -169,12 +169,15 @@ a {
       vertical-align: middle;
     }
     button{
-      padding: 3px 23px 1px;
+      // padding: 3px 23px 1px;
+      padding: 5px 18px;
       font-size: 15px;
-      font-weight: 200;
-      font-family: $code-font-openSans;
+      font-weight: 400;
+      font-family: $code-font-family;
+      border: none;
       color: #ffffff;
       right: 16px;
+
       // border-radius: 4px;
       // background-color: #395497;
       border-radius: 5px;
@@ -304,7 +307,7 @@ a {
   height: 56px;
   padding: 20px 0px;
   opacity: 0.9;
-  font-family: $code-font-openSans;
+  // font-family: $code-font-openSans;
   font-size: 12px;
   font-weight: 600;
   font-style: normal;
@@ -1154,7 +1157,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
   }
   .wallet-detail-title{
-    font-family: $code-font-openSans;
+    // font-family: $code-font-openSans;
     font-size: 24px;
     font-weight: 600;
     color: #3d464d;
@@ -1171,7 +1174,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     margin-left: 37px;
     padding: 8px 16px;
     background-color: white;
-    font-family: $code-font-openSans;
+    // font-family: $code-font-openSans;
   }
 }
 
@@ -1181,7 +1184,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .background-detail{
     background-color: #f9fafc;
   }
-  font-family: $code-font-openSans;
+  // font-family: $code-font-openSans;
   color: #0c0033;
   letter-spacing: normal;
   font-style: normal;
@@ -1193,7 +1196,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     .trade-time{
       padding-left: 15px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
       line-height: 1.43;
       text-align: left;
       // text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
@@ -1207,7 +1210,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 500;
       font-style: normal;
       font-stretch: normal;
       line-height: normal;
@@ -1246,7 +1249,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     padding: 32px 24px 0px 36px;
     .trade-detail-title{
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
       font-style: normal;
       font-stretch: normal;
       line-height: normal;

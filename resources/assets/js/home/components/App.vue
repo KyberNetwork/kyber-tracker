@@ -175,7 +175,7 @@
 
         <a href="https://kyber.network/swap" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
           <button type="button" class="btn btn-default pointer">
-            <span class="entypo-right-circled icon-go"></span>
+            <!-- <span class="entypo-right-circled icon-go"></span> -->
             <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
           </button>
         </a>
