@@ -215,10 +215,10 @@ module.exports = BaseService.extends({
         sum(volume_eth) as eth,
         sum(volume_usd) as usd
       from kyber_trade
-      where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])} ${UtilsHelper.ignoreETH(side)}
-      AND (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}')
+      where (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}') 
+      ${UtilsHelper.ignoreToken(['WETH'])} ${UtilsHelper.ignoreETH(side)}
       group by ${side}_token_address`;
-      return adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
+      return adapter.execRaw(sql, [], callback);
     };
 
     async.parallel({
