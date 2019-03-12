@@ -120,6 +120,11 @@ module.exports = BaseService.extends({
   getReservesList: function (options, callback){
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
+    const nowInSeconds = Utils.nowInSeconds();
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+
+
     const makeSql = (side, callback) => {
       const sql = `select ${side}_reserve as address,
         sum(volume_eth) as eth,
@@ -127,7 +132,7 @@ module.exports = BaseService.extends({
       from kyber_trade
       where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
       group by ${side}_reserve`;
-      return adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
+      return adapter.execRaw(sql, [dayAgo, nowInSeconds], callback);
     };
 
     async.parallel({

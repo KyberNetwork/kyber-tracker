@@ -219,44 +219,55 @@ module.exports = AppController.extends({
   },
 
   getReservesList: function (req, res) {
-    const [err, params] = new Checkit({
-      fromDate: ['natural'],
-      toDate: ['natural'],
-    }).validateSync(req.allParams);
+    // const [err, params] = new Checkit({
+    //   fromDate: ['natural'],
+    //   toDate: ['natural'],
+    // }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
-      return;
-    }
+    // if (err) {
+    //   res.badRequest(err.toString());
+    //   return;
+    // }
 
-    if(!params.fromDate) params.fromDate = 0;
-    if(!params.toDate){
-      params.toDate = Utils.nowInSeconds()
-    }
+    // if(!params.fromDate) params.fromDate = 0;
+    // if(!params.toDate){
+    //   params.toDate = Utils.nowInSeconds()
+    // }
 
-    let key = `${CacheInfo.ReservesList.key}-${params.fromDate}-${params.toDate}`;
+    let key = `${CacheInfo.ReservesList.key}`;
 
-    const TradeService = req.getService('TradeService');
-    TradeService.getReservesList(params, (err, results) => {
+    
+
+    RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
-        res.badRequest(err.toString());
-        return;
+        return res.send(err)
+      }
+      if (ret) {
+        return res.send(JSON.parse(ret));
       }
 
-      if (results) {
-        // RedisCache.setAsync(key, JSON.stringify(results), CacheInfo.ReservesList.TTL);
-        res.send(results)
-        return;
-      }
-    });
+      const TradeService = req.getService('TradeService');
+      TradeService.getReservesList({}, (err, results) => {
+        if (err) {
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+  
+        if (results) {
+          RedisCache.setAsync(key, JSON.stringify(results), CacheInfo.ReservesList.TTL);
+        }
+        return res.json(results)
+      });
+    })
   },
   
   getReserveDetails: function (req, res) {
     const [err, params] = new Checkit({
       reserveAddr: ['required', 'string'],
-      fromDate: ['natural'],
-      toDate: ['natural'],
+      // fromDate: ['natural'],
+      // toDate: ['natural'],
     }).validateSync(req.allParams);
 
     if (err) {
@@ -264,13 +275,34 @@ module.exports = AppController.extends({
       return;
     }
 
-    if(!params.fromDate) params.fromDate = 0;
-    if(!params.toDate){
-      params.toDate = Utils.nowInSeconds()
-    }
+    // if(!params.fromDate) params.fromDate = 0;
+    // if(!params.toDate){
+    //   params.toDate = Utils.nowInSeconds()
+    // }
 
-    const TradeService = req.getService('TradeService');
-    TradeService.getReserveDetails(params, this.ok.bind(this, req, res));
+    let key = `${CacheInfo.ReserveDetail.key}`;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+        return res.send(err)
+      }
+      if (ret) {
+        return res.send(JSON.parse(ret));
+      }
+      const TradeService = req.getService('TradeService');
+      TradeService.getReserveDetails(params, (err, results) => {
+        if (err) {
+          logger.error(err)
+          return res.send(err)
+        }
+
+        if (results) {
+          RedisCache.setAsync(key, JSON.stringify(results), CacheInfo.ReservesList.TTL);
+        }
+        return res.json(results)
+      });
+    })
+    
   },
 
   getStats24h: function (req, res) {
