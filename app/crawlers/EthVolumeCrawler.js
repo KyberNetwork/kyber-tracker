@@ -111,8 +111,8 @@ class EthVolumeCrawler {
     async.eachLimit(Object.keys(dateTrade), PARALLEL_INSERT_LIMIT, (date, asyncCallback) => {
       const nowInMs = new Date().getTime()
       const dayInMs = 1000 * 60 * 60 * 24
-      const timeInMillis = dateTrade[date].timeStamp * 1000
-
+      const dateSplit = date.split('-')
+      const timeInMillis = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0]).getTime()
       if(nowInMs - timeInMillis > dayInMs){
         CMCService.getCoingeckoETHHistoryPrice(date, (err, result) => {
           if(err) return asyncCallback(err)
@@ -121,6 +121,7 @@ class EthVolumeCrawler {
         });
       } else {
         CMCService.getCoingeckoCurrentMarketInfo(networkConfig.ETH.cgId, (err, ret) => {
+
           if(err) return callback(err)
 
           dateTrade[date].usdPrice = ret.current_price.usd
