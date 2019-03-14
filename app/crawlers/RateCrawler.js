@@ -4,6 +4,7 @@ const network               = require('../../config/network');
 const kyberABI              = require('../../config/abi/kyber');
 const wrapperABI            = require('../../config/abi/wrapper');
 const networkABI            = require('../../config/abi/network')
+const oldNetwordABI         = require('../../config/abi/oldNetwork')
 const getLatestBlockNumber  = require('./getLatestBlockNumber');
 const Utils                 = require('../common/Utils');
 const Resolution            = require('../common/Resolution');
@@ -33,8 +34,12 @@ const processTokens = (tokens) => ({
   tokensBySymbol: _.keyBy(tokens, 'symbol')
 })
 
+const oldNetworkAddr = network.contractAddresses.networks[0];
+const oldNetworkContract = new web3.eth.Contract(oldNetwordABI, oldNetworkAddr);
+
 const networkAddr = network.contractAddresses.networks[network.contractAddresses.networks.length - 1 ];
 const networkContract = new web3.eth.Contract(networkABI, networkAddr);
+
 
 class RateCrawler {
 
@@ -169,6 +174,8 @@ class RateCrawler {
   }
 
   _insertData(rows, callback) {
+    if(!rows || !rows.length) return callback(null, true);
+
     const exSession = new ExSession();
     async.waterfall([
       (next) => {
@@ -195,13 +202,13 @@ class RateCrawler {
   }
 
   _getRatesFromBlockPromise(blockNo) {
-    // if (network.contractAddresses.networks.length > 1 && blockNo >= network.startBlockNumberV2) {
-    //   networkAddr = network.contractAddresses.networks[1];
-    // }
+
+    const addressNetwork = blockNo >= network.startBlockNumberV2 ? networkAddr : oldNetworkAddr
+    const contractNetwork = blockNo >= network.startBlockNumberV2 ? networkContract : oldNetworkContract
 
     return new Promise((resolve, reject) => {
       return wrapperContract.methods.getExpectedRates(
-        networkAddr,
+        addressNetwork,
         rateTokenArrays.srcArray,
         rateTokenArrays.destArray,
         rateTokenArrays.qtyArray
@@ -211,7 +218,7 @@ class RateCrawler {
         if(!result || !result[0] || !result[0].length || !result[1] || !result[1].length){
           return Promise.all(rateTokenArrays.qtyArray.map((qty, i) => {
             return new Promise((_resolve, _reject) => {
-              networkContract.methods.getExpectedRate(
+              contractNetwork.methods.getExpectedRate(
                 rateTokenArrays.srcArray[i],
                 rateTokenArrays.destArray[i],
                 qty
@@ -232,6 +239,7 @@ class RateCrawler {
           .catch(errors => {
             return reject(errors)
           })
+
         } else {
           return resolve(result)
         }
@@ -345,7 +353,7 @@ class RateCrawler {
         dataArray.push(Resolution.addSeqs(data));
       }
     }
-
+    console.log("++++++++++ save rate :", JSON.stringify(dataArray))
     return dataArray;
   }
 

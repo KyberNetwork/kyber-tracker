@@ -269,7 +269,7 @@ module.exports = {
 
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
-  "rateStartBlockNumber": 6200000,
+  "rateStartBlockNumber": 5500000,
   "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
 
   "startPermissionlessReserveBlock": 4759402,
