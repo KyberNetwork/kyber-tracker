@@ -145,7 +145,6 @@ module.exports = BaseService.extends({
 
       const takers = _.keyBy(ret.source, 'address');
       const makers = _.keyBy(ret.dest, 'address');
-      console.log('+++++++++++++++', ret)
 
       const sumProp = (address, prop) => {
         let val = new BigNumber(0);
@@ -657,14 +656,11 @@ module.exports = BaseService.extends({
 
     const exportData = options.exportData;
     // Transaction hash
-    // console.log(q)
     if (this._isTxHash(q)) {
-      // console.log("is tx hash")
       this._searchByTxid(q, callback);
     }
     // Address
     else if (this._isAddress(q)) {
-      // console.log("+++++++++ is address")
       this._searchByAddress(q, page, limit, fromDate, toDate, {exportData: exportData}, callback);
     }
     else {

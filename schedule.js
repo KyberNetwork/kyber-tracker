@@ -15,7 +15,8 @@ const timer = 5 * 60 * 1000
 
 const Jobs = require('./config/cache/lists');
 
-let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, official: true}})
+let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, official: true, address: v.address.toLowerCase()}})
+
 const processTokens = (tokens) => {
   const allTokens = _.merge(tokens, tokenConfig)
   return {

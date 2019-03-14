@@ -539,7 +539,6 @@ module.exports = BaseService.extends({
       redisCacheService.setCacheByKey(CACHE_KEY, pairs, CACHE_TTL)
       const endTime = new Date().getTime()
       console.log(`______ saved 24H PAIRS to redis in ${endTime - startTime} ms, cache ${CACHE_TTL.ttl} s`)
-      console.log("=========== pairs", pairs)
       return callback(null, pairs)
   
     });

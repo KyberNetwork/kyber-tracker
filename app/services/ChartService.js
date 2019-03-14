@@ -78,9 +78,6 @@ module.exports = BaseService.extends({
             AND block_timestamp >= ? AND block_timestamp <= ?
             group by ${seqCol}`;
 
-
-        console.log('############ raw query', rawQuery)
-
         const params = [options.from, options.to];
 
         // From any model, get adapter to connect database
