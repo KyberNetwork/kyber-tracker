@@ -81,6 +81,7 @@ module.exports = AppController.extends({
   },
 
   search: function (req, res) {
+    
     Utils.cors(res);
     const [err, params] = new Checkit({
         query: ['string'],
@@ -91,32 +92,28 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-    if(params.query){
-      const token = global.TOKENS_BY_ADDR[params.query];
-      if (!token || !Utils.shouldShowToken(params.query)) {
-          res.json({
-              s: "error",
-              errmsg: "unknown_symbol " + params.query
-          });
-          return;
-      }
-    }
+   
     const ret = [];
     const query = (params.query || "").toUpperCase();
-    const limit = parseInt(params.limit || supportedTokens.length);
     let counter = 0;
-    supportedTokens.forEach((token) => {
-        if (counter => limit) return;
-        if (!token.delisted && (!query || token.address.indexOf(query && query.toLowerCase()) >= 0)) {
-            ret.push({
-                symbol: token.symbol,
-                address: token.address,
-                full_name: token.symbol,
-                description: token.name
-            });
-            counter++;
+
+    Object.keys(global.TOKENS_BY_ADDR).map(tokenAddr => {
+      const tokenInfo = global.TOKENS_BY_ADDR[tokenAddr]
+      if (params.limit && counter >= +params.limit) return res.json(ret);
+      if(tokenInfo){
+        if (!tokenInfo.delisted
+            && Utils.shouldShowToken(tokenAddr)
+            && tokenInfo.symbol && tokenInfo.symbol.includes(query)
+            ) {
+          ret.push({
+            symbol: tokenInfo.symbol,
+            full_name: tokenInfo.symbol,
+            description: tokenInfo.name
+          });
+          counter++;
         }
-    });
+      }
+    })
 
     res.json(ret);
 
