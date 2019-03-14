@@ -785,6 +785,7 @@ module.exports = {
   "averageBlockTime": 15000,
   "averageCGQuery": 13000,
   "startBlockNumber": 5060595,
+  "rateStartBlockNumber": 6200000,
   "startBlockNumberV2": 5926056,
   "rateBlockStepSize": 40,
   "newTokenDuration": 3 * 24 * 60 * 60 * 1000,

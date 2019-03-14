@@ -107,7 +107,7 @@ class RateCrawler {
   }
 
   _processBlocksOnce (latestOnchainBlock, callback) {
-    const blocks = this._breakPoints(LAST_PROCESSED_BLOCK + BLOCK_STEP_SIZE, latestOnchainBlock);
+    const blocks = this._breakPoints(LAST_PROCESSED_BLOCK + RATE_FREQ_BLOCK, latestOnchainBlock);
 
 
     if (!blocks.last()) {

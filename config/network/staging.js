@@ -802,6 +802,7 @@ module.exports = {
     "averageBlockTime": 15000,
     "averageCGQuery": 13000,
     "startBlockNumber": 5700000,
+    "rateStartBlockNumber": 6200000,
     "startBlockNumberV2": 5899403,
 
 		"rateBlockStepSize": 40,
