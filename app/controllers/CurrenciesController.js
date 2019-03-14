@@ -52,11 +52,13 @@ module.exports = AppController.extends({
         const id = token.address || address;
         const data = {
           address: id,
-          cmcName: token.cmcSymbol || id,
-          name: token.name,
           decimals: token.decimal,
           contractAddress: token.address
         };
+        if(token.name) data.name = token.name
+        if(token.symbol) data.symbol = token.symbol
+        if(token.cmcSymbol || token.symbol) data.cmcName = token.cmcSymbol || token.symbol
+
         if(includeDelisted && tokens[address].delisted){
           data.enable = false;
         }
