@@ -22,6 +22,7 @@ let LAST_PROCESSED_BLOCK = 0;
 const REQUIRED_CONFIRMATION = 2;
 // const BLOCK_STEP_SIZE = 40; // ~10 mins
 const BLOCK_STEP_SIZE = parseInt(process.env['RATE_BLOCK_STEP_SIZE'] || network.rateBlockStepSize)
+const RATE_FREQ_BLOCK = parseInt(process.env['RATE_FREQ_BLOCK'] || 40)
 const PARALLEL_QUERY_SIZE = 20;
 const PARALLEL_INSERT_LIMIT = 10;
 var rateTokenArrays
@@ -244,9 +245,9 @@ class RateCrawler {
     const blockNos = [];
     const blockPromises = [];
     for (let i = 0; i < PARALLEL_QUERY_SIZE; i++) {
-      const block = start + i * BLOCK_STEP_SIZE;
-      if (block <= max) {
-        const blockNo = start + i * BLOCK_STEP_SIZE;
+      const blockNo = start + i * RATE_FREQ_BLOCK;
+      if (blockNo <= max) {
+        // const blockNo = start + i * RATE_FREQ_BLOCK;
         blockNos.push(blockNo);
         blockPromises.push(this._getRatesFromBlockPromise(blockNo));
       } else {
@@ -326,15 +327,14 @@ class RateCrawler {
       if (this._isValidRate(sellExpected) || this._isValidRate(buyExpected)) {
         if (!this._isValidRate(sellExpected)) sellExpected = 0;
         if (!this._isValidRate(buyExpected)) buyExpected = 0;
-
         const data = {};
         data.blockNumber = blockNo;
         data.blockTimestamp = blockTimestamp;
-        data.baseAddress = baseAddress;
+        data.baseAddress = baseAddress.toLowerCase();
         data.baseSymbol = baseSymbol;
         data.baseDecimal = baseDecimal;
 
-        data.quoteAddress = supportedTokens[i].address;
+        data.quoteAddress = supportedTokens[i].address.toLowerCase();
         data.quoteSymbol = quoteSymbol;
         data.quoteDecimal = quoteDecimal
 
