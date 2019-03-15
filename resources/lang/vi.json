@@ -30,8 +30,8 @@
   },
 
   "navigator": {
-    "all_network": "All network",
-    "verified_reserves_network": "Verified reserves network",
+    "all_network": "Tất cả mạng",
+    "verified_reserves_network": "Mạng các quỹ đã xác nhận",
     "home": "Trang chính",
     "trades": "Giao dịch",
     "trade_history": "Lịch sử",
