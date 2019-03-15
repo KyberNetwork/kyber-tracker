@@ -10,7 +10,6 @@ import moment from "moment";
 import BigNumber from "bignumber.js";
 import AppRequest from "../request/AppRequest";
 import util from "../helper/util";
-import network from "../../../../../config/network";
 import datalabels from "chartjs-plugin-datalabels";
 
 export default {
@@ -37,7 +36,10 @@ export default {
 
       const sum = (all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0)) / 2;
       for (let i = 0; i < ret.length; i++) {
-        labels.push(ret[i].symbol);
+        if(ret[i].official && ret[i].symbol) labels.push(ret[i].symbol);
+        else {
+          labels.push(util.shortenAddress(ret[i].address, 4, 4))
+        }
         dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
         volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
         volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
@@ -73,7 +75,10 @@ export default {
         title: (tooltipItem, data) => {
           const index = tooltipItem[0].index;
           const symbol = data.labels[index];
-          const tokenName = util.getTokenInfo(symbol).name;
+          const tokenInfo = util.getTokenInfo(symbol)
+          if(!tokenInfo) return symbol
+
+          const tokenName = tokenInfo.name;
           return tokenName + " - " + symbol;
         },
         label: () => {},

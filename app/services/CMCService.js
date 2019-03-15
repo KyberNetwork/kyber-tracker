@@ -15,8 +15,8 @@ const CMC_GRAPH_API_TICKER = 300 * 1000; // 5 minutes in milliseconds
 module.exports = BaseService.extends({
   classname: 'CMCService',
 
-  getCurrentPrice: function (symbol, callback) {
-    const key = CacheInfo.CmcCurrentPrice.key + symbol;
+  getCurrentPrice: function (address, callback) {
+    const key = CacheInfo.CmcCurrentPrice.key + address;
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -24,17 +24,17 @@ module.exports = BaseService.extends({
       if (ret) {
         return callback(null, ret);
       }
-      if (!symbol || typeof symbol !== 'string') {
-        return callback(`Cannot get price of invalid symbol: ${symbol}`);
+      if (!address || typeof address !== 'string') {
+        return callback(`Cannot get price of invalid address: ${address}`);
       }
 
-      const tokenInfo = network.tokens[symbol];
+      const tokenInfo = global.TOKENS_BY_ADDR[address];
       if (!tokenInfo) {
-        return callback(`Cannot find token info of symbol: ${symbol}`);
+        return callback(`Cannot find token info of address: ${address}`);
       }
 
       request
-        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .get(`https://api.coinmarketcap.com/v2/ticker/${tokenInfo.cmcIdv2}/`)
         .timeout({
           response: 5000,  // Wait 5 seconds for the server to start sending,
           deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -46,12 +46,12 @@ module.exports = BaseService.extends({
           }
           let price;
           try {
-            price = parseFloat(response.body[0].price_usd);
+            price = parseFloat(response.body.data.quotes.USD.price);
           } catch (e) {
             return callback(e);
           }
 
-          logger.debug(`Current price of [${symbol}] is: $${price}`);
+          logger.debug(`Current price of [${address}] is: $${price}`);
           RedisCache.setAsync(key, price, CacheInfo.CmcCurrentPrice.TTL);
           return callback(null, price);
         });
@@ -110,8 +110,8 @@ module.exports = BaseService.extends({
     });
   },
 
-  getCurrentRate: function (symbol, base, callback) {
-    const key = CacheInfo.CmcCurrentRate.key + symbol;
+  getCurrentRate: function (address, base, callback) {
+    const key = CacheInfo.CmcCurrentRate.key + address;
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -119,17 +119,17 @@ module.exports = BaseService.extends({
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
-      if (!symbol || typeof symbol !== 'string') {
-        return callback(`Cannot get price of invalid symbol: ${symbol}`);
+      if (!address || typeof address !== 'string') {
+        return callback(`Cannot get price of invalid address: ${address}`);
       }
 
       if (!base || typeof base !== 'string') {
         return callback(`Cannot get price of invalid base: ${base}`);
       }
 
-      const tokenInfo = network.tokens[symbol];
+      const tokenInfo = global.TOKENS_BY_ADDR[address];
       if (!tokenInfo) {
-        return callback(`Cannot find token info of symbol: ${symbol}`);
+        return callback(`Cannot find token info of address: ${address}`);
       }
       request
         .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
@@ -147,7 +147,7 @@ module.exports = BaseService.extends({
           }
 
           let rateData = response.body.data.filter(x => {
-            return x.source === symbol && x.dest === base
+            return x.source === address && x.dest === base
           });
 
           if (!rateData || !rateData.length) {
@@ -163,16 +163,16 @@ module.exports = BaseService.extends({
   },
 
   getPriceOfAllTokens: function (callback) {
-    const tokenSymbols = _.keys(network.tokens);
+    const tokenAddresses = _.keys(global.TOKENS_BY_ADDR);
     const result = {};
 
-    async.forEach(tokenSymbols, (symbol, next) => {
-      this.getCurrentPrice(symbol, (err, price) => {
+    async.forEach(tokenAddresses, (address, next) => {
+      this.getCurrentPrice(address, (err, price) => {
         if (err) {
           return next(err);
         }
 
-        result[symbol] = price;
+        result[address] = price;
         return next(null, null);
       });
     }, (err, ret) => {
@@ -185,8 +185,8 @@ module.exports = BaseService.extends({
 
   },
 
-  getCMCTokenInfo: function (symbol, callback) {
-    const key = CacheInfo.CMCTokenInfo.key + symbol;
+  getCMCTokenInfo: function (address, callback) {
+    const key = CacheInfo.CMCTokenInfo.key + address;
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -194,17 +194,17 @@ module.exports = BaseService.extends({
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
-      if (!symbol || typeof symbol !== 'string') {
-        return callback(`Cannot get config of invalid symbol: ${symbol}`);
+      if (!address || typeof address !== 'string') {
+        return callback(`Cannot get config of invalid address: ${address}`);
       }
 
-      const tokenInfo = network.tokens[symbol];
+      const tokenInfo = global.TOKENS_BY_ADDR[address];
       if (!tokenInfo) {
-        return callback(`Cannot find token config of symbol: ${symbol}`);
+        return callback(`Cannot find token config of address: ${address}`);
       }
 
       request
-        .get(`https://api.coinmarketcap.com/v1/ticker/${tokenInfo.cmcId}/`)
+        .get(`https://api.coinmarketcap.com/v2/ticker/${tokenInfo.cmcIdv2}/`)
         .timeout({
           response: 5000,  // Wait 5 seconds for the server to start sending,
           deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -214,27 +214,57 @@ module.exports = BaseService.extends({
             return callback(err);
           }
 
-          const result = response.body[0];
+          const result = response.body.data;
 
           RedisCache.setAsync(key, JSON.stringify(result), CacheInfo.CMCTokenInfo.TTL);
           return callback(null, result);
         });
     });
   },
+  
+  getCoingeckoETHHistoryPrice: function(date, callback){
+    const cgId = network.ETH.cgId
+    request
+      .get(`https://api.coingecko.com/api/v3/coins/${cgId}/history?date=${date}`)
+      .timeout({
+        response: 5000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
 
-  getCoingeckoCurrentTokenInfo: function(symbol, callback){
+        const result = {};
 
-    if (!symbol || typeof symbol !== 'string') {
-      return callback(`Cannot get config of invalid symbol: ${symbol}`);
-    }
+        try {
+          const data = response.body;
 
-    const tokenInfo = network.tokens[symbol];
-    if (!tokenInfo) {
-      return callback(`Cannot find token config of symbol: ${symbol}`);
+          result.current_price= data.market_data.current_price.usd
+          result.market_cap= data.market_data.market_cap.usd
+          result.total_volume= data.market_data.total_volume.usd
+          
+
+          result.price_usd = result.current_price;
+        } catch (e) {
+          // Tried more than 3 times. It's failed.
+          return callback(`Cannot get price of [${cgId}] at [${date}]`);
+        }
+
+        logger.debug(`Price of [${cgId}] at [${date}] is: $${result.price_usd}`);
+        return callback(null, result);
+      });
+  },
+
+
+  getCoingeckoCurrentMarketInfo: function(cdId, callback){
+
+    if (!cdId || typeof cdId !== 'string') {
+      return callback(`Cannot get config of invalid cdId: ${cdId}`);
     }
 
     request
-      .get(`https://api.coingecko.com/api/v3/coins/${tokenInfo.cgId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
+      .get(`https://api.coingecko.com/api/v3/coins/${cdId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
       .timeout({
         response: 10000,  // Wait 5 seconds for the server to start sending,
         deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -243,27 +273,17 @@ module.exports = BaseService.extends({
         if (err) {
           return callback(err);
         }
-
         const result = response.body;
         const marketData = result.market_data;
         
         if(!marketData) return callback('Response no market data')
-        
-        const tokenMarketData = {
-          currentPrice: marketData.current_price,
-          priceChange24h: marketData.price_change_24h,
-          priceChangePercentage24h: marketData.price_change_percentage_24h
-        }
-
-        // RedisCache.setAsync(key, JSON.stringify(tokenMarketData), CacheInfo.CGTokenMaketData.TTL);
-        return callback(null, tokenMarketData);
+      
+        return callback(null, marketData);
       });
-
   },
 
-
-  getCoingeckoTokenMaketData: function(symbol, callback){
-    const key = CacheInfo.CGTokenMaketData.key + symbol;
+  getCoingeckoTokenMaketData: function(address, callback){
+    const key = CacheInfo.CGTokenMaketData.key + address;
 
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -272,52 +292,40 @@ module.exports = BaseService.extends({
       if (ret) {
         return callback(null, JSON.parse(ret));
       }
-      if (!symbol || typeof symbol !== 'string') {
-        return callback(`Cannot get config of invalid symbol: ${symbol}`);
+      if (!address || typeof address !== 'string') {
+        return callback(`Cannot get config of invalid address: ${address}`);
       }
 
-      const tokenInfo = network.tokens[symbol];
+      const tokenInfo = global.TOKENS_BY_ADDR[address.toLowerCase()];
       if (!tokenInfo) {
-        return callback(`Cannot find token config of symbol: ${symbol}`);
+        return callback(`Cannot find token config of address: ${address}`);
       }
 
-      request
-        .get(`https://api.coingecko.com/api/v3/coins/${tokenInfo.cgId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
-        .timeout({
-          response: 10000,  // Wait 5 seconds for the server to start sending,
-          deadline: 60000, // but allow 1 minute for the file to finish loading.
-        })
-        .end((err, response) => {
-          if (err) {
-            return callback(err);
-          }
+      this.getCoingeckoCurrentMarketInfo(tokenInfo.cgId, (err, marketData) => {
+        if (err) {
+          return callback(err);
+        }
+        const tokenMarketData = {
+          currentPrice: marketData.current_price,
+          priceChange24h: marketData.price_change_24h,
+          priceChangePercentage24h: marketData.price_change_percentage_24h
+        }
 
-          const result = response.body;
-          const marketData = result.market_data;
-          
-          if(!marketData) return callback('Response no market data')
-          
-          const tokenMarketData = {
-            currentPrice: marketData.current_price,
-            priceChange24h: marketData.price_change_24h,
-            priceChangePercentage24h: marketData.price_change_percentage_24h
-          }
-
-          RedisCache.setAsync(key, JSON.stringify(tokenMarketData), CacheInfo.CGTokenMaketData.TTL);
-          return callback(null, tokenMarketData);
-        });
+        RedisCache.setAsync(key, JSON.stringify(tokenMarketData), CacheInfo.CGTokenMaketData.TTL);
+        return callback(null, tokenMarketData);
+      })
     });
 
   },
 
-  getHistoricalPrice: function (symbol, timeInMillis, callback) {
-    if (!symbol || typeof symbol !== 'string') {
-      return callback(`Cannot get historical price of invalid symbol: ${symbol}`);
+  getHistoricalPrice: function (address, timeInMillis, callback) {
+    if (!address || typeof address !== 'string') {
+      return callback(`Cannot get historical price of invalid address: ${address}`);
     }
 
-    const tokenInfo = network.tokens[symbol];
+    const tokenInfo = global.TOKENS_BY_ADDR[address];
     if (!tokenInfo) {
-      return callback(`Cannot find token info of symbol: ${symbol}`);
+      return callback(`Cannot find token info of address: ${address}`);
     }
 
     const fromTime = timeInMillis - CMC_GRAPH_API_TICKER;
@@ -328,7 +336,7 @@ module.exports = BaseService.extends({
 
   _getHistoricalPrice: function (tokenInfo, fromTime, toTime, callback) {
     logger.debug(`_getHistoricalPrice tokenInfo=` + JSON.stringify(tokenInfo));
-    const symbol = tokenInfo.symbol;
+    const address = tokenInfo.address;
     const cmcId = tokenInfo.cmcId;
     const timeInMillis = (fromTime + toTime) / 2;
 
@@ -351,13 +359,13 @@ module.exports = BaseService.extends({
 
         try {
           const data = response.body;
-          if (symbol === 'BTC') {
+          if (address === 'BTC_address') {
             result.price_btc = 1;
           } else {
             result.price_btc = data.price_btc[0][1];
           }
 
-          if (symbol === 'ETH') {
+          if (address === network.ETH.address) {
             result.price_eth = 1;
           } else {
             result.price_eth = data.price_platform[0][1];
@@ -367,7 +375,7 @@ module.exports = BaseService.extends({
         } catch (e) {
           // Tried more than 3 times. It's failed.
           if (toTime - fromTime > 10 * CMC_GRAPH_API_TICKER) {
-            return callback(`Cannot get price of [${symbol}] at [${timeInMillis}]`);
+            return callback(`Cannot get price of [${address}] at [${timeInMillis}]`);
           }
 
           return this._getHistoricalPrice(tokenInfo, fromTime - CMC_GRAPH_API_TICKER, toTime + CMC_GRAPH_API_TICKER, callback);
@@ -376,6 +384,8 @@ module.exports = BaseService.extends({
         logger.debug(`Price of [${cmcId}] at [${timeInMillis}] is: $${result.price_usd}`);
         return callback(null, result);
       });
+
+
   },
 
   getEthPrice: function (timeInMillis, callback){

@@ -4,6 +4,7 @@
   "common": {
     "exchange": "Exchange",
     "name": "TÊN",
+    "address": "ĐỊA CHỈ",
     "symbol": "MÃ",
     "volume_24h_usd": "Giao dịch 24H (USD)",
     "volume_24h_eth": "Giao dịch 24H (ETH)",
@@ -20,6 +21,7 @@
     "home": "Trang chính",
     "trades": "Giao dịch",
     "tokens": "Danh sách Tokens",
+    "reserves": "Quỹ",
     "trade_list": "Danh sách giao dịch",
     "token_list": "Danh sách token",
     "trade_detail": "Chi tiết giao dịch",
@@ -28,10 +30,13 @@
   },
 
   "navigator": {
+    "all_network": "Tất cả mạng",
+    "verified_reserves_network": "Mạng các quỹ đã xác nhận",
     "home": "Trang chính",
     "trades": "Giao dịch",
     "trade_history": "Lịch sử",
     "tokens": "Tokens",
+    "reserves": "Quỹ",
     "top_token": "Top token",
     "trade_details": "Chi tiết giao dịch",
     "token_detail": "Chi tiết token",
@@ -39,6 +44,12 @@
     "network": "Network",
     "volume": "Khối lượng",
     "go_to_exchange": "Giao dịch ngay"
+  },
+
+  "reserves": {
+    "all": "Tất cả",
+    "verified": "Quỹ đã được xác nhận",
+    "permisionless": "Quỹ dự trữ tự do"
   },
 
   "filter": {
@@ -132,9 +143,12 @@
     "value_in_usd": "Giá trị theo USD",
     "notice": "Tỷ giá USD được tính tại thời điểm giao dịch",
     "wallet_detail": "Thông tin ví",
+    "reserve_detail": "Thông tin quỹ",
     "partner_details": "Thông tin đối tác",
     "history": "Lịch sử giao dịch",
-    "commission": "PHÍ TÍCH HỢP"
+    "commission": "PHÍ TÍCH HỢP",
+    "current_listing": "Danh sách tokens",
+    "tokens": "Tokens"
   },
 
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Symbol@2x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbol" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="#EFEFEF" cx="64" cy="64" r="64"></circle>
+        <g id="Group-5" transform="translate(64.011840, 63.158901) rotate(-244.000000) translate(-64.011840, -63.158901) translate(15.511840, 20.158901)" fill="#FFFFFF">
+            <circle id="Oval" cx="20" cy="28" r="20"></circle>
+            <circle id="Oval-Copy-2" cx="32" cy="74" r="12"></circle>
+            <circle id="Oval-Copy-3" cx="60" cy="6" r="6"></circle>
+            <circle id="Oval-Copy" cx="69" cy="46" r="28"></circle>
+        </g>
+    </g>
+</svg>

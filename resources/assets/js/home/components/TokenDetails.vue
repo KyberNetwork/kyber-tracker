@@ -2,21 +2,26 @@
   <div class="col-sm-12">
     <div class="panel-heading pb-16">
         <img class="token-logo-detail"  v-bind:src="this.logoUrl">
-        <span class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}</span>
+        <span v-if="this.isOfficial" class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}
+          - <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">({{getShortedAddr(this.tokenAddress)}})</a>
+        </span>
+        <span v-else class="no-margin panel-title">
+          <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">{{this.tokenAddress}}</a>
+        </span>
       </div>
 
-    <b-card :header="$t('chart.title.token_volume', [getFilterTokenSymbol()])">
+    <b-card :header="$t('chart.title.token_volume', [''])">
       <b-tab no-body active>
         <chart-volume ref="chartVolume"
           :elementId="'chart-volume'"
-          :tokenSymbol="getFilterTokenSymbol()">
+          :tokenSymbol="getFilterTokenAddress()">
         </chart-volume>
       </b-tab>
     </b-card>
 
     <trade-list ref="datatable"
       :title="getListTitle()"
-      :getFilterTokenSymbol="getFilterTokenSymbol">
+      :getFilterTokenAddress="getFilterTokenAddress">
     </trade-list>
   </div>
 </template>
@@ -30,6 +35,7 @@
   import AppRequest from '../../core/request/AppRequest';
   import util from '../../core/helper/util';
   import network from '../../../../../config/network';
+  const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
   import Chart from 'chart.js';
 
   const defaultChartOptions = {
@@ -47,13 +53,15 @@
 
     data() {
       return {
-        tokens: _.keyBy(_.values(network.tokens), 'address'),
+        tokens: TOKENS_BY_ADDR,
         selectedPeriod: 'D30',
         selectedInterval: 'D1',
         myChart: undefined,
         symbol: undefined,
         tokenName: undefined,
-        logoUrl: undefined
+        tokenAddress: undefined,
+        logoUrl: undefined,
+        isOffcial: undefined
       };
     },
 
@@ -63,14 +71,21 @@
           window.clearInterval(this._refreshInterval);
           return;
         }
-        this.symbol = this.getFilterTokenSymbol();
-        const tokenInfo = network.tokens[this.symbol];
-        this.tokenName = tokenInfo.name;
+        this.tokenAddress = this.getFilterTokenAddress();
+        const tokenInfo = this.tokens[this.tokenAddress.toLowerCase()];
+        this.tokenName = tokenInfo && tokenInfo.name;
+        this.isOfficial = tokenInfo && tokenInfo.official;
         //const icon = tokenInfo.icon || (tokenInfo.symbol.toLowerCase() + ".svg");
         // this.logoUrl = "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" + icon + "?sanitize=true";
-        this.logoUrl = util.getTokenIcon(tokenInfo.symbol, tokenInfo.icon, (replaceUrl) => {this.logoUrl = replaceUrl})
+        this.logoUrl = util.getTokenIcon(tokenInfo.symbol, (replaceUrl) => {this.logoUrl = replaceUrl})
         this.refreshChartsData();
         this.$refs.datatable.fetch();
+      },
+      getAddressLink(addr){
+        return network.endpoints.ethScan + "address/" + addr;
+      },
+      getShortedAddr(addr){
+        return util.shortenAddress(addr, 8, 7)
       },
       getListTitle() {
         return this.$t("common.token_trade_history");
@@ -78,18 +93,21 @@
       selectPeriod (period, interval) {
         this.selectedPeriod = period;
         this.selectedInterval = interval;
-        this.refreshChartsData(period, interval, this.symbol);
+        this.refreshChartsData(period, interval, this.tokenAddress);
       },
-      getFilterTokenSymbol() {
-        const tokenAddr = this.$route.params.tokenAddr;
-        const tokenDef = this.tokens[tokenAddr];
-        return tokenDef ? tokenDef.symbol : null;
+      getFilterTokenAddress() {
+        // const tokenAddr = this.$route.params.tokenAddr;
+        // const tokenDef = this.tokens[tokenAddr];
+        return this.$route.params.tokenAddr;
       },
       refreshChartsData () {
         if (this.$refs.chartVolume) {
-          this.$refs.chartVolume.refresh(this.selectedPeriod, this.selectedInterval, this.symbol);
+          this.$refs.chartVolume.refresh(this.selectedPeriod, this.selectedInterval, this.tokenAddress);
         }
       },
+      getAddressEtherscanLink(addr) {
+      return network.endpoints.ethScan + "address/" + addr;
+    },
     },
 
     watch: {
@@ -99,8 +117,8 @@
     },
 
     mounted() {
-      this.symbol = this.getFilterTokenSymbol();
-      if (!this.symbol) {
+      this.tokenAddress = this.getFilterTokenAddress();
+      if (!this.tokenAddress) {
         return;
       }
 

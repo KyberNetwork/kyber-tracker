@@ -5,10 +5,9 @@ const getLatestBlockNumber  = require('./getLatestBlockNumber');
 const getBurnedFeeFromTransaction     = require('./getBurnedFeeFromTransaction');
 const Utils                 = require('../common/Utils');
 const logger                = require('sota-core').getLogger('BurnCrawler');
-const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const BigNumber                   = require('bignumber.js');
-
+const configFetcher               = require('./configFetcher')
 const web3                  = Utils.getWeb3Instance();
 const abiDecoder            = Utils.getKyberABIDecoder();
 
@@ -17,6 +16,12 @@ const PARALLEL_INSERT_LIMIT = 10;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 10000);
 const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
 
+let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, address: v.address.toLowerCase()}})
+// networkConfig.tokens
+const processTokens = (tokens) => ({
+  tokensByAddress: _.keyBy(tokens, 'address'),
+  tokensBySymbol: _.keyBy(tokens, 'symbol')
+})
 /**
  * Traversal through all blocks from the moment contract was deployed
  * Find and record all burned fees in local database
@@ -27,12 +32,22 @@ class BurnCrawler {
 
   start() {
     async.auto({
-      startBlockNumber: (next) => {
+      config: (next) => {
+        configFetcher.fetchConfigTokens((err, tokens) => {
+          if(err) return next(err)
+          tokenConfig = _.merge(tokens, tokenConfig)
+          // processTokens(tokenConfig)
+          return next(null, processTokens(tokenConfig))
+        })
+      },
+      startBlockNumber: ['config', (ret, next) => {
+        global.TOKENS_BY_ADDR=ret.config.tokensByAddress
+
         if (LATEST_PROCESSED_BLOCK > 0) {
           return next(null, LATEST_PROCESSED_BLOCK);
         }
         getLatestBlockNumber(next, "BurnedFeeModel", "BURNED_BLOCK_START");
-      },
+      }],
       processBlock: ['startBlockNumber', (ret, next) => {
         this.processBlocks(ret.startBlockNumber, next);
       }],
@@ -102,9 +117,9 @@ class BurnCrawler {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: [networkConfig.tokens.KNC.address],
+          address: [network.KNC.address],
           topics: [
-              networkConfig.logTopics.burned
+              network.logTopics.burned
           ]
         }, (err, ret) => {
           if (err) {

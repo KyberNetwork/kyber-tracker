@@ -66,7 +66,7 @@ Vue.component('chart-token', ChartToken);
 Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
 
-
+Vue.prototype.$tokens = "akjsbndkjansdnsa"
 // const locale = localStorage.getItem('locale') || 'en';
 const getMomentLanguage = () => {
   let langPackage = util.getLocale(util.getBrowserLanguage())
@@ -101,7 +101,6 @@ moment.updateLocale('en', {
   }
 });
 moment.locale(getMomentLanguage());
-
 const router = new VueRouter(routes);
 window.vueRouter = router;
 

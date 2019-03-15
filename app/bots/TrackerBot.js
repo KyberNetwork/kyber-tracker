@@ -150,11 +150,10 @@ It supports 'd' and 'h'.
                         logger.error(err);
                     } else {
                         const seconds = Math.floor((new Date().getTime() - ret.last_updated * 1000)/1000);
-                        const text = `KNC/USD: *${ret.price_usd}*
-KNC/BTC: *${ret.price_btc}*
-1h change: *${emoji(ret.percent_change_1h)}*
-24h change: *${emoji(ret.percent_change_24h)}*
-7d change: *${emoji(ret.percent_change_7d)}*
+                        const text = `KNC/USD: *${ret.quotes.USD.price}*
+1h change: *${emoji(et.quotes.USD.percent_change_1h)}*
+24h change: *${emoji(et.quotes.USD.percent_change_24h)}*
+7d change: *${emoji(et.quotes.USD.percent_change_7d)}*
 
 Last updated: ${seconds} seconds ago.
 Credit: CoinMarketCap`;

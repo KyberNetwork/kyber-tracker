@@ -3,6 +3,7 @@
   "common": {
     "exchange": "거래",
     "name": "이름",
+    "address": "주소",
     "symbol": "심볼",
     "volume_24h_usd": "24H (USD) 거래량",
     "volume_24h_eth": "24H (ETH) 거래량",
@@ -18,6 +19,7 @@
     "home": "홈",
     "trades": "거래",
     "tokens": "토큰 목록",
+    "reserves": "리저브",
     "trade_list": "거래 리스트",
     "token_list": "토큰 리스트",
     "trade_detail": "거래 세부 정보",
@@ -25,10 +27,13 @@
     "search": "검색"
   },
   "navigator": {
+    "all_network": "모든 네트워크",
+    "verified_reserves_network": " 확인된 리저브 네트워크",
     "home": "홈",
     "trades": "거래",
     "trade_history": "거래 기록",
     "tokens": "토큰",
+    "reserves": "리저브",
     "top_token": "상위 거래 토큰",
     "trade_details": "거래 세부 정보",
     "token_detail": "토큰 세부 정보",
@@ -37,6 +42,13 @@
     "volume": "거래량",
     "go_to_exchange": "거래소로"
   },
+
+  "reserves": {
+    "all": "모든",
+    "verified": "확인됨",
+    "permisionless": "무허가성"
+  },
+
   "filter": {
     "from": "From",
     "to": "To"
@@ -123,9 +135,12 @@
     "value_in_usd": "가치 (USD)",
     "notice": "USD 환율은 거래 당시 기준입니다",
     "wallet_detail": "지갑 정보",
+    "reserve_detail": "Reserve detail",
     "partner_details": "파트너 세부 정보",
     "history": "최근 거래",
-    "commission": "파트너 비용"
+    "commission": "파트너 비용",
+    "current_listing": "Current listing tokens",
+    "tokens": "Tokens"
   },
 
 

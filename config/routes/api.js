@@ -12,7 +12,10 @@ module.exports = {
     '/fees/burned'                  : ['TradeController.getBurnedFees'],
     '/search'                       : ['TradeController.search'],
     '/partner/:partnerId'           : ['TradeController.getPartnerDetail'],
-    
+
+
+    '/reserves'                       : ['TradeController.getReservesList'],
+    '/reserves/:reserveAddr'          : ['TradeController.getReserveDetails'],
     // legacy
     '/currencies/convertiblePairs'  : ['CurrenciesController.getConvertiblePairs'],
     // same as above, but easier to remember & type

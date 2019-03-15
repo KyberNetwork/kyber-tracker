@@ -4,46 +4,72 @@ const network               = require('../../config/network');
 const kyberABI              = require('../../config/abi/kyber');
 const wrapperABI            = require('../../config/abi/wrapper');
 const networkABI            = require('../../config/abi/network')
+const oldNetwordABI         = require('../../config/abi/oldNetwork')
 const getLatestBlockNumber  = require('./getLatestBlockNumber');
 const Utils                 = require('../common/Utils');
 const Resolution            = require('../common/Resolution');
 const ExSession             = require('sota-core').load('common/ExSession');
 const logger                = require('sota-core').getLogger('RateCrawler');
+const configFetcher         = require('./configFetcher')
 
 const BigNumber             = require('bignumber.js');
 
 const web3                  = Utils.getWeb3Instance();
 const wrapperContract       = new web3.eth.Contract(wrapperABI, network.contractAddresses.wrapper);
 const abiDecoder            = Utils.getKyberABIDecoder();
-const rateTokenArrays       = Utils.getRateTokenArray();
+let tokenConfig = _.transform(network.tokens, (result, v, k) => {result[v.address.toLowerCase()] = {...v, address: v.address.toLowerCase()}})
 
 let LAST_PROCESSED_BLOCK = 0;
 const REQUIRED_CONFIRMATION = 2;
 // const BLOCK_STEP_SIZE = 40; // ~10 mins
 const BLOCK_STEP_SIZE = parseInt(process.env['RATE_BLOCK_STEP_SIZE'] || network.rateBlockStepSize)
-const PARALLEL_QUERY_SIZE = 20;
+const RATE_FREQ_BLOCK = parseInt(process.env['RATE_FREQ_BLOCK'] || 40)
+const PARALLEL_QUERY_SIZE = 100;
 const PARALLEL_INSERT_LIMIT = 10;
+var rateTokenArrays
+
+// networkConfig.tokens
+const processTokens = (tokens) => ({
+  tokensByAddress: _.keyBy(tokens, 'address'),
+  tokensBySymbol: _.keyBy(tokens, 'symbol')
+})
+
+const oldNetworkAddr = network.contractAddresses.networks[0];
+const oldNetworkContract = new web3.eth.Contract(oldNetwordABI, oldNetworkAddr);
 
 const networkAddr = network.contractAddresses.networks[network.contractAddresses.networks.length - 1 ];
 const networkContract = new web3.eth.Contract(networkABI, networkAddr);
+
 
 class RateCrawler {
 
   start() {
     async.auto({
-      startBlockNumber: (next) => {
+      config: (next) => {
+        configFetcher.fetchConfigTokens((err, tokens) => {
+          if(err) return next(err)
+          tokenConfig = _.merge(tokens, tokenConfig)
+          // processTokens(tokenConfig)
+          return next(null, processTokens(tokenConfig))
+        })
+      },
+      startBlockNumber: ['config', (ret, next) => {
+        global.TOKENS_BY_ADDR=ret.config.tokensByAddress
+        rateTokenArrays = Utils.getRateTokenArray();
+
         if (LAST_PROCESSED_BLOCK) {
           return next(null, LAST_PROCESSED_BLOCK);
         }
 
         getLatestBlockNumber(next, "RateModel", "RATE_BLOCK_START");
-      },
+      }],
       processBlocks: ['startBlockNumber', (ret, next) => {
         LAST_PROCESSED_BLOCK = ret.startBlockNumber;
         this.processBlocks(next);
       }],
     }, (err, ret) => {
-      let timer = network.averageBlockTime * PARALLEL_QUERY_SIZE;
+      // let timer = network.averageBlockTime * PARALLEL_QUERY_SIZE;
+      let timer = 15000
       if (err) {
         logger.error(err);
         timer = 15000;
@@ -87,7 +113,7 @@ class RateCrawler {
   }
 
   _processBlocksOnce (latestOnchainBlock, callback) {
-    const blocks = this._breakPoints(LAST_PROCESSED_BLOCK + BLOCK_STEP_SIZE, latestOnchainBlock);
+    const blocks = this._breakPoints(LAST_PROCESSED_BLOCK + RATE_FREQ_BLOCK, latestOnchainBlock);
 
 
     if (!blocks.last()) {
@@ -149,6 +175,8 @@ class RateCrawler {
   }
 
   _insertData(rows, callback) {
+    if(!rows || !rows.length) return callback(null, true);
+
     const exSession = new ExSession();
     async.waterfall([
       (next) => {
@@ -175,13 +203,13 @@ class RateCrawler {
   }
 
   _getRatesFromBlockPromise(blockNo) {
-    // if (network.contractAddresses.networks.length > 1 && blockNo >= network.startBlockNumberV2) {
-    //   networkAddr = network.contractAddresses.networks[1];
-    // }
+
+    const addressNetwork = blockNo >= network.startBlockNumberV2 ? networkAddr : oldNetworkAddr
+    const contractNetwork = blockNo >= network.startBlockNumberV2 ? networkContract : oldNetworkContract
 
     return new Promise((resolve, reject) => {
       return wrapperContract.methods.getExpectedRates(
-        networkAddr,
+        addressNetwork,
         rateTokenArrays.srcArray,
         rateTokenArrays.destArray,
         rateTokenArrays.qtyArray
@@ -191,7 +219,7 @@ class RateCrawler {
         if(!result || !result[0] || !result[0].length || !result[1] || !result[1].length){
           return Promise.all(rateTokenArrays.qtyArray.map((qty, i) => {
             return new Promise((_resolve, _reject) => {
-              networkContract.methods.getExpectedRate(
+              contractNetwork.methods.getExpectedRate(
                 rateTokenArrays.srcArray[i],
                 rateTokenArrays.destArray[i],
                 qty
@@ -212,6 +240,7 @@ class RateCrawler {
           .catch(errors => {
             return reject(errors)
           })
+
         } else {
           return resolve(result)
         }
@@ -225,9 +254,9 @@ class RateCrawler {
     const blockNos = [];
     const blockPromises = [];
     for (let i = 0; i < PARALLEL_QUERY_SIZE; i++) {
-      const block = start + i * BLOCK_STEP_SIZE;
-      if (block <= max) {
-        const blockNo = start + i * BLOCK_STEP_SIZE;
+      const blockNo = start + i * RATE_FREQ_BLOCK;
+      if (blockNo <= max) {
+        // const blockNo = start + i * RATE_FREQ_BLOCK;
         blockNos.push(blockNo);
         blockPromises.push(this._getRatesFromBlockPromise(blockNo));
       } else {
@@ -293,26 +322,30 @@ class RateCrawler {
     const expectedArray = rates.expectedRate;
 
     const dataArray = [];
-    const baseAddress = network.tokens.ETH.address;
-    const baseSymbol = "ETH";
+    const baseAddress = network.ETH.address;
+    const baseSymbol = network.ETH.symbol;
+    const baseDecimal = network.ETH.decimal
 
     const len = supportedTokens.length;
 
     for (let i = 0; i < len; i++) {
       const quoteSymbol = supportedTokens[i].symbol;
+      const quoteDecimal = supportedTokens[i].decimal;
       let sellExpected = this._sellRate(expectedArray[i]);
       let buyExpected = this._buyRate(expectedArray[len + i]);
       if (this._isValidRate(sellExpected) || this._isValidRate(buyExpected)) {
         if (!this._isValidRate(sellExpected)) sellExpected = 0;
         if (!this._isValidRate(buyExpected)) buyExpected = 0;
-
         const data = {};
         data.blockNumber = blockNo;
         data.blockTimestamp = blockTimestamp;
-        data.baseAddress = baseAddress;
+        data.baseAddress = baseAddress.toLowerCase();
         data.baseSymbol = baseSymbol;
-        data.quoteAddress = supportedTokens[i].address;
+        data.baseDecimal = baseDecimal;
+
+        data.quoteAddress = supportedTokens[i].address.toLowerCase();
         data.quoteSymbol = quoteSymbol;
+        data.quoteDecimal = quoteDecimal
 
         data.sellExpected = sellExpected;
         data.buyExpected = buyExpected;
@@ -321,7 +354,7 @@ class RateCrawler {
         dataArray.push(Resolution.addSeqs(data));
       }
     }
-
+    // console.log("++++++++++ save rate :", JSON.stringify(dataArray))
     return dataArray;
   }
 

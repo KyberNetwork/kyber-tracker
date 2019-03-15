@@ -4,6 +4,7 @@
   "common": {
     "exchange": "Exchange",
     "name": "NAME",
+    "address": "ADDRESS",
     "symbol": "SYMBOL",
     "volume_24h_usd": "24H Volume (USD)",
     "volume_24h_eth": "24H Volume (ETH)",
@@ -20,6 +21,7 @@
     "home": "Home",
     "trades": "Trades",
     "tokens": "Tokens",
+    "reserves": "Reserves",
     "trade_list": "Trade History",
     "token_list": "Supported Tokens",
     "trade_detail": "Trade Details",
@@ -28,10 +30,13 @@
   },
 
   "navigator": {
+    "all_network": "All network",
+    "verified_reserves_network": "Verified reserves network",
     "home": "Home",
     "trades": "Trade",
     "trade_history": "Trade History",
-    "tokens": "Token",
+    "tokens": "Tokens",
+    "reserves": "Reserves",
     "top_token": "Top Tokens",
     "trade_details": "Trade Details",
     "token_detail": "Token Details",
@@ -39,6 +44,12 @@
     "network": "Network",
     "volume": "Volume",
     "go_to_exchange": "Swap now"
+  },
+
+  "reserves": {
+    "all": "All",
+    "verified": "Verified",
+    "permisionless": "Permissionless"
   },
 
   "filter": {
@@ -134,9 +145,12 @@
     "value_in_usd": "Value in USD",
     "notice": "USD Rates are calculated at transaction time",
     "wallet_detail": "Wallet Details",
+    "reserve_detail": "Reserve detail",
     "partner_details": "Partner Details",
     "history": "History",
-    "commission": "Commission"
+    "commission": "Commission",
+    "current_listing": "Current listing tokens",
+    "tokens": "Tokens"
   },
 
   "token_list": {

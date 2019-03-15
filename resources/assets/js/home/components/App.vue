@@ -4,6 +4,22 @@
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12">
         <div class="no-padding d-flex justify-content-between col-12 col-sm-12" v-click-outside="onClickOutside">
           <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
+
+             <li>
+              <b-dropdown class="change-official" right>
+                <template slot="button-content">
+                  {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
+                </template>
+                <b-dropdown-item @click="onChangeOfficial('all')">
+                  <span>{{ $t('navigator.all_network') }}</span>
+                </b-dropdown-item>
+                <b-dropdown-item @click="onChangeOfficial('official')">
+                  <span>{{ $t('navigator.verified_reserves_network') }}</span>
+                </b-dropdown-item>
+              </b-dropdown> 
+            </li>
+
+
             <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
@@ -37,6 +53,7 @@
               <span class="topbar-value">{{ totalBurnedFee }}</span>
             </li> 
 
+           
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
             <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
             
@@ -85,84 +102,94 @@
 
       </b-navbar>
 
-      <b-navbar toggleable="sm" type="dark" class="second-heading-bar d-flex justify-content-between">
-        <div>
-          <!-- <b-navbar-toggle target="nav_collapse"></b-navbar-toggle> -->
-          <!-- <b-collapse is-nav id="nav_collapse"> -->
-            <b-navbar-nav>
-              <b-nav-item class="navbar tracker-logo">
-                <router-link to="/">
-                  <img class="kyber-logo" src="/images/logo.svg" />
-                  <!-- <span class="inline-logo"></span> -->
-                  <!-- <img src="/images/network.svg" /> -->
-                  <!-- <i class="fas fa-signal icon-second-header"></i> -->
-                  <span class="entypo-chart-bar icon-second-heade"></span>
-                  <span class="pl-1">{{ $t('navigator.volume') }}</span>
-                  
-                </router-link>
-              </b-nav-item>
-              <b-nav-item class="navbar">
-                <router-link to="/trades">
-                <!-- <img src="/images/trade.svg" /> -->
-                <!-- <i class="fas fa-exchange-alt icon-second-header"></i> -->
-                <span class="entypo-switch icon-second-heade"></span>
-                <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
-                </router-link>
-              </b-nav-item>
-              <b-nav-item class="navbar">
-                <router-link to="/tokens">
-                <!-- <img src="/images/token.svg" /> -->
-                <!-- <i class="fas fa-database icon-second-header"></i> -->
-                <span class="entypo-database icon-second-heade"></span>
-                <span class="pl-1">{{ $t('navigator.tokens') }}</span>
-                </router-link>
-              </b-nav-item>
-            </b-navbar-nav>
-          <!-- </b-collapse> -->
+      <b-navbar toggleable="md" type="dark" class="second-heading-bar ">
+        <b-navbar-brand to="/">
+          <img class="kyber-logo d-inline-block align-top" src="/images/logo.svg" />
+        </b-navbar-brand>
+        
+        <!-- <b-navbar-toggle target="nav_collapse" /> -->
+        <b-nav-item-dropdown v-if="($mq == 'sm' || $mq == 'ml')"
+          id="nav7_ddown"
+          :text="this.dropdownText"
+          extra-toggle-classes="nav-link-custom"
+          left
+        >
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.volume'))">
+            <router-link to="/">
+              <span class="entypo-chart-bar icon-second-header"></span>
+              <span class="pl-1">{{ $t('navigator.volume') }}</span>
+            </router-link> 
+          </b-nav-item>
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.trade_history'))">
+            <router-link to="/trades">
+            <span class="entypo-switch icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.tokens'))">
+            <router-link to="/tokens">
+            <span class="entypo-database icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.tokens') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar" @click="changeTextDropdown($t('navigator.reserves'))">
+            <router-link to="/reserves" >
+            <span class="entypo-users icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.reserves') }}</span>
+            </router-link>
+          </b-nav-item>
+        </b-nav-item-dropdown>
 
-          <!-- <b-navbar-nav class="ml-auto search-box-container">
-            <form action="javasript:void(0)" class="no-margin no-padding search-form">
-              <b-nav-item class="no-padding-right">
-                <b-input-group size="sm"> -->
-                  <!-- <b-form-input v-model="searchString" :placeholder="$t('common.searchbox_placeholder')"></b-form-input> -->
 
-                  
-                  <!-- <vue-autosuggest
-                      ref="seatchInputRef"
-                      :suggestions="[{
-                        data: [...this.addressesMetamask, ...this.searchData]
-                      }]"
-                      @keyup.enter="doSearch"
-                      @focus="onfocus"
-                      :getSuggestionValue="getSuggestionValue"
-                      :renderSuggestion="renderSuggestion"
-                      :onSelected="onSelected"
-                      :inputProps="{
-                        id:'autosuggest__input', 
-                        onInputChange: this.onInputChange, 
-                        placeholder:$t('common.searchbox_placeholder'),
-                        autocomplete: 'off'
-                      }"
-                  /> -->
-                  
-                  <!-- <b-input-group-append>
-                    <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
-                      <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
-                    </b-btn>
-                  </b-input-group-append> -->
-                  
-                <!-- </b-input-group>
-              </b-nav-item>
-            </form>
-          </b-navbar-nav> -->
-        </div>
-        <a href="https://kyber.network/swap" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
+        <b-nav v-if="($mq !== 'sm' && $mq !== 'ml')" class="expand-navbar">
+          <b-nav-item class="navbar">
+            <router-link to="/">
+              <span class="entypo-chart-bar icon-second-header"></span>
+              <span class="pl-1">{{ $t('navigator.volume') }}</span>
+              
+            </router-link> 
+          </b-nav-item>
+          <b-nav-item class="navbar">
+            <router-link to="/trades">
+            <span class="entypo-switch icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.trade_history') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar">
+            <router-link to="/tokens">
+            <span class="entypo-database icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.tokens') }}</span>
+            </router-link>
+          </b-nav-item>
+          <b-nav-item class="navbar">
+            <router-link to="/reserves">
+            <span class="entypo-users icon-second-header"></span>
+            <span class="pl-1">{{ $t('navigator.reserves') }}</span>
+            </router-link>
+          </b-nav-item>
+        </b-nav>
+
+
+
+
+
+        <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
           <button type="button" class="btn btn-default pointer">
-            <span class="entypo-right-circled icon-go"></span>
+            <!-- <span class="entypo-right-circled icon-go"></span> -->
             <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
           </button>
         </a>
       </b-navbar>
+<!-- 
+      <b-navbar toggleable type="dark" class="second-heading-bar">
+        <b-navbar-toggle target="nav_text_collapse" />
+
+        <b-collapse is-nav id="nav_text_collapse">
+          <b-navbar-nav>
+            <b-nav-text>Navbar text</b-nav-text>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar> -->
 
       <div class="container">
         <div class="row pt-40">
@@ -214,7 +241,6 @@ import moment,{ locale } from "moment";
 import request from "superagent";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
-import network from "../../../../../config/network";
 import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
@@ -238,7 +264,8 @@ export default {
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
-      indexShowmore: -1
+      indexShowmore: -1,
+      dropdownText: this.$t('navigator.volume')
     };
   },
 
@@ -361,7 +388,7 @@ export default {
       //   });
     },
     doSearch() {
-      if(this.$mq == 'sm' || this.$mq == 'ml'){
+      if(this.$mq == 'sm' || this.$mq == 'ml' || this.$mq == 'md'){
         if(this.$refs.seatchInputRef.$el && this.$refs.seatchInputRef.$el.className.indexOf("search-expand") == -1){
           this.$refs.seatchInputRef.$el.className = "search-expand ml-0"
           this.$refs.headingSum.className = "d-none"
@@ -409,6 +436,11 @@ export default {
       });
     },
 
+    changeTextDropdown(text){
+      console.log("============= change dropdown", text)
+      this.dropdownText = text
+    },
+
     clickHeading(){
       let headerClass = this.$refs.headingSum.className
       if(headerClass.indexOf("header-expand") !== -1 ){
@@ -419,6 +451,22 @@ export default {
       // 
       
     },
+
+    isAllTokens(){
+      return store.get('allTokens') ? true : false
+    },
+
+
+    onChangeOfficial(value){
+      if(value == 'official') {
+        // window.OFFICIAL_TOKENS = true
+        store.set('allTokens', false)
+      } else {
+        store.set('allTokens', true)
+      }
+      location.reload();
+    },
+    
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
       this.$refs.headingSum.className = "heading-summary p-relative"
@@ -491,14 +539,27 @@ export default {
   },
 
   mounted() {
-    
     this.refresh();
     this.searchData = store.get("searchData") || [];
     window.setInterval(this.refresh, 60000); // Refresh each minute
 
     this.intervalResize = window.setInterval(this.handleResize, 2000);
 
-
+    switch (this.$route.path) {
+      case '/trades':
+        this.dropdownText = this.$t('navigator.trade_history')
+        break;
+      case '/tokens':
+        this.dropdownText = this.$t('navigator.tokens')
+        break;
+      case '/reserves':
+        this.dropdownText = this.$t('navigator.reserves')
+        break;
+    
+      default:
+        this.dropdownText = this.$t('navigator.volume')
+        break;
+    }
     // this.debouncedOnResize = _.debounce(this.handleResize, 500)
     window.addEventListener('resize', () => {
       this.indexShowmore = -1

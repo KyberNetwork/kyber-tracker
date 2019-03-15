@@ -63,20 +63,21 @@
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
             <td class="pl-4">
                 <div class="token-name">
-                    <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item.symbol)" />
-                    <span>{{ slot.item.name }}</span>
+                    <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item)" />
+                    <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
+                    <span v-if="!slot.item.official || !slot.item.name"><a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a></span>
                     <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
                     <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
                 </div>
             </td>
-          <td  class="text-left pl-1">{{ slot.item.symbol }}</td>
-          <td class="text-left pl-5" >{{ formatVolumeUSD(slot.item) }}</td>
-          <td class="text-left pl-5">{{ slot.item.volumeETH }}</td>
+          <td  class="text-left pl-1">{{ slot.item.official ? slot.item.symbol : ''}}</td>
+          <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+          <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
           <!-- <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
           <td><span class="pull-right">
               <i class="k k-angle right"></i>
             </span></td> -->
-          <td class="pointer text-right pr-5" @click="toTokenDetails(slot.item.symbol)">
+          <td class="pointer text-right pr-5" @click="toTokenDetails(slot.item.address)">
             <!-- <img src="/images/more.svg" /> -->
             <span class="entypo-dot-3 table-more"></span>
           </td>
@@ -94,16 +95,22 @@
       </template>
 
       <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
-        <tr @click="toTokenDetails(slot.item.symbol)">
+        <tr @click="toTokenDetails(slot.item.address)">
           <td  class="text-left pl-4" style="white-space:nowrap !important">
               <div class="token-name">
-                  <span>{{ slot.item.symbol }}</span>
+                  <span>
+                    <span v-if="slot.item.official && slot.item.symbol">{{ slot.item.symbol }}</span>
+                    <span v-else>
+                      <a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a>
+                    </span>
+                  </span>
+                  
                   <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
               </div>
           </td>
-          <td class="text-right pr-4">{{ formatVolumeUSD(slot.item) }}</td>
-          <td class="text-right pr-4">{{ slot.item.volumeETH }}</td>
+          <td class="text-right pr-4">{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+          <td class="text-right pr-4">{{ formatVolumn(slot.item.volumeETH) }}</td>
         </tr>
       </template>
     </data-table>
@@ -122,13 +129,13 @@ import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 import network from '../../../../../config/network';
 import Chart from 'chart.js';
-
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 export default {
 
   data() {
     return {
-      tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+      tokens: TOKENS_BY_ADDR,
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
       tokenIcons: {}
@@ -142,6 +149,12 @@ export default {
     },
     getListTitle () {
       return '';
+    },
+    getAddressLink(addr){
+      return network.endpoints.ethScan + "address/" + addr;
+    },
+    getShortedAddr(addr){
+      return util.shortenAddress(addr, 9, 8)
     },
     selectPeriod(period, interval) {
       this.selectedPeriod = period;
@@ -163,29 +176,33 @@ export default {
 
     shouldShowToken (item) {
       // return !this.tokens[item.symbol].hidden;
-      return util.shouldShowToken(item.symbol)
+      return util.shouldShowToken(item.address)
     },
 
     // isNewToken(item) {
     //   return util.isNewToken(item.symbol);
     // },
-    formatVolumeUSD (item) {
-      return '$' + (new BigNumber(item.volumeUSD.toString())).toFormat(2);
+    formatVolumn(number){
+      return (new BigNumber(number.toString())).toFormat(2)
     },
-    getTokenImageLink (symbol) {
+    getTokenImageLink (token) {
       // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
       // // if (!this.tokens[symbol].hidden) {
       // //   return 'images/tokens/' + icon;
       // // }
       // return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
       //    icon + "?sanitize=true";
-      if(!this.tokenIcons[symbol]){
-        this.tokenIcons[symbol] = util.getTokenIcon(symbol, this.tokens[symbol].icon, (replaceUrl) => {
-          this.tokenIcons[symbol] = replaceUrl
-        })
+      if(!this.tokenIcons[token.address]){
+        if(!this.tokens[token.address.toLowerCase()] || !this.tokens[token.address.toLowerCase()].symbol) {
+          this.tokenIcons[token.address] = "/images/tokens/unknown-token.svg"
+        } else {
+          this.tokenIcons[token.address] = util.getTokenIcon(this.tokens[token.address.toLowerCase()].symbol, (replaceUrl) => {
+            this.tokenIcons[token.address] = replaceUrl
+          })
+        }
       }
        
-      return this.tokenIcons[symbol]
+      return this.tokenIcons[token.address]
 
     },
     

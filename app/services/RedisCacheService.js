@@ -2,11 +2,8 @@ const _ = require('lodash');
 const async = require('async');
 const logger = require('sota-core').getLogger('RedisCacheService');
 const BaseService = require('sota-core').load('service/BaseService');
-const Resolution = require('../common/Resolution');
+// const Resolution = require('../common/Resolution');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
-const network = require('../../config/network');
-
-const tokens = network.tokens;
 
 module.exports = BaseService.extends({
   classname: 'RedisCacheService',

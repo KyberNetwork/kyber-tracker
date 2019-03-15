@@ -23,16 +23,16 @@ module.exports = BaseService.extends({
 
     let params = [];
 
-    const supportedTokenList = _.filter(network.tokens, (e) => {
-      return UtilsHelper.shouldShowToken(e.symbol)
-    }).map(x => x.symbol).join('\',\'')
+    const supportedTokenList = _.filter(global.TOKENS_BY_ADDR, (e) => {
+      return UtilsHelper.shouldShowToken(e.address)
+    }).map(x => x.address).join('\',\'')
 
-    let whereClauses = `(taker_token_symbol IN ('${supportedTokenList}') AND maker_token_symbol IN ('${supportedTokenList}'))` + UtilsHelper.ignoreToken(['WETH']);
+    let whereClauses = `(taker_token_address IN ('${supportedTokenList}') AND maker_token_address IN ('${supportedTokenList}'))` + UtilsHelper.ignoreToken(['WETH']);
 
-    if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-      params.push(options.symbol);
-      params.push(options.symbol);
+    if (options.address) {
+      whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
+      params.push(options.address);
+      params.push(options.address);
     }
 
     if (options.fromDate) {
@@ -43,6 +43,17 @@ module.exports = BaseService.extends({
     if (options.toDate) {
       whereClauses += ' AND block_timestamp < ?';
       params.push(options.toDate);
+    }
+
+    if(options.official){
+      whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+      params.push(network.startPermissionlessReserveBlock);
+    }
+
+    if(options.reserve){
+      whereClauses += ` AND ( (LOWER(source_reserve) = ?) OR (LOWER(dest_reserve) = ?))`;
+      params.push(options.reserve.toLowerCase());
+      params.push(options.reserve.toLowerCase());
     }
 
     const queryOptions = {
@@ -62,7 +73,25 @@ module.exports = BaseService.extends({
           where: whereClauses,
           params: params
         }, next);
-      }
+      },
+      volumeUsd: (next) => {
+        KyberTradeModel.sum('volume_usd', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
+      volumeEth: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
+      collectedFees: (next) => {
+        KyberTradeModel.sum('collected_fees', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -74,6 +103,9 @@ module.exports = BaseService.extends({
           page: options.page,
           limit: options.limit,
           totalCount: ret.count,
+          volumeUsd: ret.volumeUsd,
+          volumeEth: ret.volumeEth,
+          collectedFees: ret.collectedFees,
           maxPage: Math.ceil(ret.count / options.limit)
         }
       });
@@ -85,38 +117,174 @@ module.exports = BaseService.extends({
     KyberTradeModel.findOne(tradeId, callback);
   },
 
+  getReservesList: function (options, callback){
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    const nowInSeconds = Utils.nowInSeconds();
+    const DAY_IN_SECONDS = 24 * 60 * 60;
+    const dayAgo = nowInSeconds - DAY_IN_SECONDS;
+
+
+    const makeSql = (side, callback) => {
+      const sql = `select ${side}_reserve as address,
+        sum(volume_eth) as eth,
+        sum(volume_usd) as usd
+      from kyber_trade
+      where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
+      group by ${side}_reserve`;
+      return adapter.execRaw(sql, [dayAgo, nowInSeconds], callback);
+    };
+
+    async.parallel({
+      source: _next => makeSql('source', _next),
+      dest: _next => makeSql('dest', _next),
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const takers = _.keyBy(ret.source, 'address');
+      const makers = _.keyBy(ret.dest, 'address');
+
+      const sumProp = (address, prop) => {
+        let val = new BigNumber(0);
+        const lowerAddr = address.toLowerCase()
+        if (takers[lowerAddr]) val = val.plus((takers[lowerAddr][prop] || 0).toString());
+        if (makers[lowerAddr]) val = val.plus((makers[lowerAddr][prop] || 0).toString());
+        return val;
+      };
+      const reserves = [];
+
+      Object.keys(global.NETWORK_RESERVES).forEach((r) => {
+        const volumeUSD = sumProp(r, 'usd');
+        const ethVolume = sumProp(r, 'eth');
+
+        reserves.push({
+          address: r,
+          volumeUSD: volumeUSD.toNumber(),
+          volumeETH: ethVolume.toNumber(),
+          type: global.NETWORK_RESERVES[r]
+        })
+      })
+
+      return callback(null, _.orderBy(reserves, ['volumeUSD' ], ['desc']));
+    })
+  },
+
+  getReserveDetails: function (options, callback){
+    async.parallel({
+      currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
+      tradedListTokens: _next => this._tradedList(options, _next)
+    }, (err, results) => {
+      if (err) {
+        return callback(err);
+      }
+      const allReserveTokens = results.currentListingTokens
+      results.tradedListTokens.map(t => {
+        allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
+      })
+
+
+      return callback(null, _.orderBy(Object.values(allReserveTokens), ['listed', 'eth' ], ['asc', 'desc']))
+    })
+  },
+
+  _currentList: function(reserveAddr){
+    const returnObj = {}
+
+    Object.keys(global.TOKENS_BY_ADDR).map(tokenAddr => {
+      if(global.TOKENS_BY_ADDR[tokenAddr].reserves){
+        if(UtilsHelper.shouldShowToken(tokenAddr) &&
+          tokenAddr != network.ETH.address &&
+          global.TOKENS_BY_ADDR[tokenAddr].reserves[reserveAddr.toLowerCase()]){
+            returnObj[tokenAddr] = {...global.TOKENS_BY_ADDR[tokenAddr], listed: true}
+        }
+      }
+    })
+
+    return returnObj
+  },
+
+  _tradedList: function(options, callback){
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    const makeSql = (side, callback) => {
+      const sql = `select ${side}_token_address as address,
+        sum(${side}_token_amount) as token,
+        sum(volume_eth) as eth,
+        sum(volume_usd) as usd
+      from kyber_trade
+      where (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}') 
+      ${UtilsHelper.ignoreToken(['WETH'])} ${UtilsHelper.ignoreETH(side)}
+      group by ${side}_token_address`;
+      return adapter.execRaw(sql, [], callback);
+    };
+
+    async.parallel({
+      maker: _next => makeSql('maker', _next),
+      taker: _next => makeSql('taker', _next)
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+      // const takers = _.keyBy(ret.taker, 'address');
+      // const makers = _.keyBy(ret.maker, 'address');
+
+      const toCollection = function(array) {
+        return _.chain(array).groupBy('address')
+              .map((v,i) => ({
+                address: i.toLowerCase(),
+                eth: _.sumBy(v, 'eth'),
+                usd: _.sumBy(v, 'usd')
+              })).value()
+      }
+      
+      return callback(null, toCollection([...ret.taker, ...ret.maker])) 
+    })
+
+  },
+  _reserveTrade: function(reserveAddr, callback){
+
+  },
   // Use for token list page & top token chart
   getTopTokensList: function (options, callback) {
 
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
+    const officialSql = options.official ? 
+    ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1)) `
+    :
+    ''
+
     const makeSql = (side, obj) => {
       obj = obj || {};
       obj[side] = (callback) => {
-        const sql = `select ${side}_token_symbol as symbol,
+        const sql = `select ${side}_token_address as address,
           sum(${side}_token_amount) as token,
           sum(volume_eth) as eth,
           sum(volume_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
-        group by ${side}_token_symbol`;
+        ${officialSql}
+        group by ${side}_token_address`;
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
       return obj;
     };
+
     async.auto(makeSql('maker', makeSql('taker')),
       (err, ret) => {
         if (err) {
           return callback(err);
         }
 
-        const takers = _.keyBy(ret.taker, 'symbol');
-        const makers = _.keyBy(ret.maker, 'symbol');
+        const takers = _.keyBy(ret.taker, 'address');
+        const makers = _.keyBy(ret.maker, 'address');
 
-        const sumProp = (symbol, prop, decimals) => {
+        const sumProp = (address, prop, decimals) => {
           let val = new BigNumber(0);
-          if (takers[symbol]) val = val.plus((takers[symbol][prop] || 0).toString());
-          if (makers[symbol]) val = val.plus((makers[symbol][prop] || 0).toString());
+          if (takers[address]) val = val.plus((takers[address][prop] || 0).toString());
+          if (makers[address]) val = val.plus((makers[address][prop] || 0).toString());
 
           if (decimals) {
             return val.div(Math.pow(10, decimals));
@@ -126,23 +294,26 @@ module.exports = BaseService.extends({
 
         const supportedTokens = [];
 
-        Object.keys(network.tokens).forEach((symbol) => {
-          if (UtilsHelper.shouldShowToken(symbol)) {
-            const token = network.tokens[symbol];
+        Object.keys(global.TOKENS_BY_ADDR).forEach((address) => {
+          if (UtilsHelper.shouldShowToken(address) && UtilsHelper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])) {
+            const token = global.TOKENS_BY_ADDR[address];
 
-            const tokenVolume = sumProp(symbol, 'token', token.decimal);
-            const volumeUSD = sumProp(symbol, 'usd');
-            const ethVolume = sumProp(symbol, 'eth');
+            const tokenVolume = sumProp(address, 'token', token.decimal);
+            const volumeUSD = sumProp(address, 'usd');
+            const ethVolume = sumProp(address, 'eth');
             supportedTokens.push({
               symbol: token.symbol,
+              address: token.address,
               name: token.name,
+              address: token.address,
               volumeToken: tokenVolume.toFormat(4).toString(),
+              official: token.official || UtilsHelper.filterOfficial(true, token),
               volumeTokenNumber: tokenVolume.toNumber(),
               volumeUSD: volumeUSD.toNumber(),
               volumeETH: ethVolume.toFormat(4).toString(),
               volumeEthNumber: ethVolume.toNumber(),
-              isNewToken: UtilsHelper.isNewToken(token.symbol),
-              isDelisted: UtilsHelper.isDelisted(token.symbol)
+              isNewToken: UtilsHelper.isNewToken(token.address),
+              isDelisted: UtilsHelper.isDelisted(token.address)
             })
 
           }
@@ -156,16 +327,23 @@ module.exports = BaseService.extends({
 
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
+    const officialSql = options.official ? 
+    ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`
+    :
+    ''
+
     const makeSql = (side, obj) => {
       obj = obj || {};
       obj[side] = (callback) => {
-        const sql = `select ${side}_token_symbol as symbol,
+        const sql = `select ${side}_token_address as address,
           sum(${side}_token_amount) as token,
           sum(volume_eth) as eth,
           sum(volume_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
-        group by ${side}_token_symbol`;
+        ${officialSql}
+        group by ${side}_token_address`;
+        
         adapter.execRaw(sql, [options.fromDate, options.toDate], callback);
       };
       return obj;
@@ -176,14 +354,13 @@ module.exports = BaseService.extends({
         if (err) {
           return callback(err);
         }
+        const takers = _.keyBy(ret.taker, 'address');
+        const makers = _.keyBy(ret.maker, 'address');
 
-        const takers = _.keyBy(ret.taker, 'symbol');
-        const makers = _.keyBy(ret.maker, 'symbol');
-
-        const sumProp = (symbol, prop, decimals) => {
+        const sumProp = (address, prop, decimals) => {
           let val = new BigNumber(0);
-          if (takers[symbol]) val = val.plus((takers[symbol][prop] || 0).toString());
-          if (makers[symbol]) val = val.plus((makers[symbol][prop] || 0).toString());
+          if (takers[address]) val = val.plus((takers[address][prop] || 0).toString());
+          if (makers[address]) val = val.plus((makers[address][prop] || 0).toString());
 
           if (decimals) {
             return val.div(Math.pow(10, decimals));
@@ -192,25 +369,26 @@ module.exports = BaseService.extends({
         };
 
         const supportedTokens = [];
+        Object.keys(global.TOKENS_BY_ADDR).forEach((address) => {
+          if (UtilsHelper.shouldShowToken(address, global.TOKENS_BY_ADDR, options.timeStamp) && UtilsHelper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])) {
+            const token = global.TOKENS_BY_ADDR[address];
 
-        Object.keys(network.tokens).forEach((symbol) => {
-          if (UtilsHelper.shouldShowToken(symbol, network.tokens, options.timeStamp)) {
-            const token = network.tokens[symbol];
-
-            const tokenVolume = sumProp(symbol, 'token', token.decimal);
-            const volumeUSD = sumProp(symbol, 'usd');
-            const ethVolume = sumProp(symbol, 'eth');
+            const tokenVolume = sumProp(address, 'token', token.decimal);
+            const volumeUSD = sumProp(address, 'usd');
+            const ethVolume = sumProp(address, 'eth');
 
             supportedTokens.push({
               symbol: token.symbol,
               name: token.name,
-              volumeToken: tokenVolume.toFormat(4).toString(),
+              address: token.address,
+              official: token.official || UtilsHelper.filterOfficial(true, token),
+              volumeToken: tokenVolume.toNumber(),
               volumeTokenNumber: tokenVolume.toNumber(),
               volumeUSD: volumeUSD.toNumber(),
-              volumeETH: ethVolume.toFormat(4).toString(),
+              volumeETH: ethVolume.toNumber(),
               volumeEthNumber: ethVolume.toNumber(),
-              isNewToken: UtilsHelper.isNewToken(token.symbol),
-              isDelisted: UtilsHelper.isDelisted(token.symbol)
+              isNewToken: UtilsHelper.isNewToken(token.address),
+              isDelisted: UtilsHelper.isDelisted(token.address)
             })
 
           }
@@ -328,10 +506,14 @@ module.exports = BaseService.extends({
   },
 
   // Use for topbar items
-  getStats24h: function (callback) {
-    const key = CacheInfo.Stats24h.key;
+  getStats24h: function (params, callback) {
+    let key = CacheInfo.Stats24h.key;
+    if(params.official){
+      key = 'official-' + key
+    }
+
     const time_exprire = CacheInfo.Stats24h.TTL;
-    let params = {};
+    // let params = {};
     params.time_exprire = time_exprire;
     params.key = key;
     RedisCache.getAsync(key, (err, ret) => {
@@ -359,18 +541,22 @@ module.exports = BaseService.extends({
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
+    let whereOffcial = ''
+    if(options.official){
+      whereOffcial += ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`;
+    }
     async.auto({
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
-          where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])}`,
+          where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])} ${whereOffcial}`,
           params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
       ethMarketData: (next) => {
-        CMCService.getCoingeckoTokenMaketData('ETH', next);
+        CMCService.getCoingeckoTokenMaketData(network.ETH.address, next);
       },
       kncMarketData: (next) => {
-        CMCService.getCoingeckoTokenMaketData('KNC', next);
+        CMCService.getCoingeckoTokenMaketData(network.KNC.address, next);
       },
       /*
       volumeEth: (next) => {
@@ -470,16 +656,11 @@ module.exports = BaseService.extends({
 
     const exportData = options.exportData;
     // Transaction hash
-
-    // console.log("+++++++++++****************")
-    // console.log(q)
     if (this._isTxHash(q)) {
-      // console.log("is tx hash")
       this._searchByTxid(q, callback);
     }
     // Address
     else if (this._isAddress(q)) {
-      // console.log("+++++++++ is address")
       this._searchByAddress(q, page, limit, fromDate, toDate, {exportData: exportData}, callback);
     }
     else {
@@ -615,8 +796,8 @@ module.exports = BaseService.extends({
     const period = options.period || 'D7';
     const time_exprire = CacheInfo.NetworkVolumes.TTL;
     let key = `${CacheInfo.NetworkVolumes.key + period}-${interval}`;
-    if (options.symbol) {
-      key = options.symbol + '-' + key;
+    if (options.address) {
+      key = options.address + '-' + key;
     }
     if (options.pair) {
       key = options.pair + '-' + key;
@@ -627,6 +808,10 @@ module.exports = BaseService.extends({
     if (options.toDate) {
       key = options.toDate + '-' + key;
     }
+    if(options.official){
+      key = 'official-' + key
+    }
+
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -656,13 +841,18 @@ module.exports = BaseService.extends({
 
     let whereClauses = `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`;
     let params = [fromDate, toDate];
-    if (options.symbol) {
-      whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-      params.push(options.symbol);
-      params.push(options.symbol);
+    if (options.address) {
+      whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
+      params.push(options.address.toLowerCase());
+      params.push(options.address.toLowerCase());
     } else if(options.pair){
       const pairTokens = options.pair.split('_')
-      whereClauses += ` AND ((taker_token_symbol = "${pairTokens[0]}" AND maker_token_symbol = "${pairTokens[1]}") OR (taker_token_symbol = "${pairTokens[1]}" AND maker_token_symbol = "${pairTokens[0]}"))`;
+      whereClauses += ` AND ((taker_token_address = "${pairTokens[0].toLowerCase()}" AND maker_token_address = "${pairTokens[1].toLowerCase()}") OR (taker_token_address = "${pairTokens[1]}" AND maker_token_address = "${pairTokens[0]}"))`;
+    }
+
+    if(options.official){
+      whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+      params.push(network.startPermissionlessReserveBlock);
     }
 
     async.auto({
@@ -789,7 +979,7 @@ module.exports = BaseService.extends({
       params.push(options.toTime)
     }
 
-    sqlQuery += `${sqlQuery && " AND "} ((maker_token_symbol = "${options.tokens[0]}" AND taker_token_symbol = "${options.tokens[1]}") OR (maker_token_symbol = "${options.tokens[1]}" AND taker_token_symbol = "${options.tokens[0]}"))`
+    sqlQuery += `${sqlQuery && " AND "} ((maker_token_address = "${options.tokens[0].toLowerCase()}" AND taker_token_address = "${options.tokens[1].toLowerCase()}") OR (maker_token_address = "${options.tokens[1].toLowerCase()}" AND taker_token_address = "${options.tokens[0].toLowerCase()}"))`
 
     async.auto({
       volumeEth: (next) => {
@@ -812,7 +1002,7 @@ module.exports = BaseService.extends({
     const BurnedFeeModel = this.getModel('BurnedFeeModel');
 
     let key = CacheInfo.TotalBurnedFees.key;
-
+    
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
@@ -938,8 +1128,12 @@ module.exports = BaseService.extends({
     const period = options.period || 'D7';
 
     let key = `${CacheInfo.CollectedFees.key + period}-${interval}`;
-    if (options.symbol) {
-      key = options.symbol + '-' + key;
+    if (options.address) {
+      key = options.address + '-' + key;
+    }
+
+    if(options.official){
+      key = 'official-' + key
     }
 
     RedisCache.getAsync(key, (err, ret) => {
@@ -955,10 +1149,15 @@ module.exports = BaseService.extends({
       let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
       let params = [fromDate, toDate];
 
-      if (options.symbol) {
-        whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-        params.push(options.symbol);
-        params.push(options.symbol);
+      if (options.address) {
+        whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
+        params.push(options.address.toLowerCase());
+        params.push(options.address.toLowerCase());
+      }
+
+      if(options.official){
+        whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+        params.push(network.startPermissionlessReserveBlock);
       }
 
       async.auto({
@@ -1020,8 +1219,12 @@ module.exports = BaseService.extends({
     const period = options.period || 'D7';
 
     let key = `${CacheInfo.ToBurnFees.key + period}-${interval}`;
-    if (options.symbol) {
-      key = options.symbol + '-' + key;
+    if (options.address) {
+      key = options.address + '-' + key;
+    }
+
+    if(options.official){
+      key = 'official-' + key
     }
 
     RedisCache.getAsync(key, (err, ret) => {
@@ -1037,10 +1240,15 @@ module.exports = BaseService.extends({
       let whereClauses = 'block_timestamp > ? AND block_timestamp <= ?';
       let params = [fromDate, toDate];
 
-      if (options.symbol) {
-        whereClauses += ' AND (taker_token_symbol = ? OR maker_token_symbol = ?)';
-        params.push(options.symbol);
-        params.push(options.symbol);
+      if (options.address) {
+        whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
+        params.push(options.address.toLowerCase());
+        params.push(options.address.toLowerCase());
+      }
+
+      if(options.official){
+        whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+        params.push(network.startPermissionlessReserveBlock);
       }
 
       async.auto({
@@ -1143,5 +1351,7 @@ module.exports = BaseService.extends({
     }
     return 'hourSeq';
   },
+
+  
 
 });

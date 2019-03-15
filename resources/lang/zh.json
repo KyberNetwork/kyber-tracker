@@ -3,6 +3,7 @@
   "common": {
     "exchange": "交易",
     "name": "名称",
+    "address": "地址",
     "symbol": "符号",
     "volume_24h_usd": "24小时 交易量 (USD)",
     "volume_24h_eth": "24小时 交易量 (ETH)",
@@ -18,6 +19,7 @@
     "home": "主页",
     "trades": "交易",
     "tokens": "代币",
+    "reserves": "储备库",
     "trade_list": "交易历史",
     "token_list": "支持的代币名单",
     "trade_detail": "交易详情",
@@ -25,10 +27,13 @@
     "search": "钱包详情"
   },
   "navigator": {
+    "all_network": "所有网络",
+    "verified_reserves_network": "认证储备库网络",
     "home": "主页",
     "trades": "交易历史",
     "trade_history": "交易历史",
     "tokens": "代币",
+    "reserves": "储备库",
     "top_token": "交易量排名（代币）",
     "trade_details": "交易详情",
     "token_detail": "代币详情",
@@ -37,6 +42,13 @@
     "volume": "交易量",
     "go_to_exchange": "立即兑换"
   },
+
+  "reserves": {
+    "all": "所有",
+    "verified": "认证的",
+    "permisionless": "无需权限"
+  },
+  
   "filter": {
     "from": "从",
     "to": "到"
@@ -124,9 +136,12 @@
     "value_in_usd": "价值（USD)",
     "notice": "USD 汇率在交易时间点计算",
     "wallet_detail": "钱包详情",
+    "reserve_detail": "Reserve detail",
     "partner_details": "合作伙伴详情",
     "history": "交易历史",
-    "commission": "佣金"
+    "commission": "佣金",
+    "current_listing": "Current listing tokens",
+    "tokens": "Tokens"
   },
   "token_list": {
     "title": "交易代币名单",

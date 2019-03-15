@@ -46,11 +46,15 @@
       },
       pageSize: {
         type: Number,
+      },
+      rows: {
+        type: Array,
+        default: () => []
       }
     },
     data() {
       return {
-        rows: [],
+        // rows: this.rows || [],
         hasPreviousList: true,
         hasNextList: true,
       };

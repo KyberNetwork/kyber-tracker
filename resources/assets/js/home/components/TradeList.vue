@@ -5,7 +5,7 @@
       </div>
     <trade-list ref="datatable"
       :title="getListTitle()"
-      :getFilterTokenSymbol="getFilterTokenSymbol"
+      :getFilterTokenAddress="getFilterTokenAddress"
       :x="true"
       :isShowTotal="true"
       >
@@ -22,15 +22,17 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
-import network from '../../../../../config/network';
+// import network from '../../../../../config/network';
 import Chart from 'chart.js';
 
+console.log("+++++++++++++++", window["GLOBAL_STATE"])
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 export default {
 
   data() {
     return {
       pageSize: 10,
-      tokens: _.keyBy(_.values(network.tokens), 'symbol'),
+      tokens: _.keyBy(_.values(TOKENS_BY_ADDR), 'symbol'),
       query: this.$route.query,
     };
   },
@@ -47,7 +49,7 @@ export default {
     getListTitle () {
       return '';
     },
-    getFilterTokenSymbol () {
+    getFilterTokenAddress () {
       return null;
     },
   },

@@ -81,6 +81,7 @@ module.exports = AppController.extends({
   },
 
   search: function (req, res) {
+    
     Utils.cors(res);
     const [err, params] = new Checkit({
         query: ['string'],
@@ -91,31 +92,28 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
-    if(params.query){
-      const token = network.tokens[params.query];
-      if (!token || !Utils.shouldShowToken(params.query)) {
-          res.json({
-              s: "error",
-              errmsg: "unknown_symbol " + params.query
-          });
-          return;
-      }
-    }
+   
     const ret = [];
     const query = (params.query || "").toUpperCase();
-    const limit = parseInt(params.limit || supportedTokens.length);
     let counter = 0;
-    supportedTokens.forEach((token) => {
-        if (counter > limit) return;
-        if (!token.delisted && (!query || token.symbol.indexOf(query) >= 0)) {
-            ret.push({
-                symbol: token.symbol,
-                full_name: token.symbol,
-                description: token.name
-            });
-            counter++;
+
+    Object.keys(global.TOKENS_BY_ADDR).map(tokenAddr => {
+      const tokenInfo = global.TOKENS_BY_ADDR[tokenAddr]
+      if (params.limit && counter >= +params.limit) return res.json(ret);
+      if(tokenInfo){
+        if (!tokenInfo.delisted
+            && Utils.shouldShowToken(tokenAddr)
+            && tokenInfo.symbol && tokenInfo.symbol.includes(query)
+            ) {
+          ret.push({
+            symbol: tokenInfo.symbol,
+            full_name: tokenInfo.symbol,
+            description: tokenInfo.name
+          });
+          counter++;
         }
-    });
+      }
+    })
 
     res.json(ret);
 
@@ -124,7 +122,8 @@ module.exports = AppController.extends({
   history: function (req, res) {
       Utils.cors(res);
       const [err, params] = new Checkit({
-          symbol: ['string', 'required'],
+          symbol: ['string'],
+          token: ['string'],
           resolution: ['string', 'required'],
           from: ['naturalNonZero', 'required'],
           to: ['naturalNonZero', 'required'],
@@ -134,6 +133,11 @@ module.exports = AppController.extends({
       if (err) {
           res.badRequest(err.toString());
           return;
+      }
+
+      if(!params.symbol && !params.token){
+        res.badRequest("The symbol or token address is required");
+        return;
       }
 
       if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
@@ -180,7 +184,8 @@ module.exports = AppController.extends({
   klines: function (req, res) {
     Utils.cors(res);
     const [err, params] = new Checkit({
-      symbol: ['string', 'required'],
+      symbol: ['string'],
+      token: ['string'],
       interval: ['string', 'required'],
       rateType: ['string']
     }).validateSync(req.allParams);
@@ -189,6 +194,12 @@ module.exports = AppController.extends({
       res.badRequest(err.toString());
       return;
     }
+
+    if(!params.symbol && !params.token){
+      res.badRequest("token symbol or address is required");
+      return;
+    }
+
     const resolution = Resolution.toSeq(params.interval);
 
     if (!resolution) {
@@ -210,7 +221,7 @@ module.exports = AppController.extends({
     const nowInSeconds = Math.floor(nowInMs / 1000);
     params.from = nowInSeconds - resolution.value;
     params.to = nowInSeconds;
-    const key = CacheInfo.klines.key + params.interval.toString() + params.rateType.toString() + params.symbol;
+    const key = CacheInfo.klines.key + params.interval.toString() + params.rateType.toString() + (params.symbol || params.token);
     const time_exprire = CacheInfo.klines.TTL;
     const chartService = req.getService('ChartService');
     RedisCache.getAsync(key, (err, ret) => {
@@ -226,6 +237,11 @@ module.exports = AppController.extends({
       chartService.klines(params,(err, ret_1)=>{
         if(err){
           logger.error(err);
+          res.json({
+            s: "error",
+            errmsg: err
+          });
+          return;
         }
         if (params.rateType === 'sell') {
           RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);

@@ -2,7 +2,8 @@ module.exports = {
   "endpoints": {
     "web3Provider": "https://mainnet.infura.io",
     "ethScan": "https://etherscan.io/",
-    "getRate": "https://production-cache.kyber.network/getRate"
+    "getRate": "https://production-cache.kyber.network/getRate",
+    "apis": "https://api.kyber.network"
   },
   "contractAddresses": {
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
@@ -17,8 +18,72 @@ module.exports = {
     "burnFee": "0xf838f6ddc89706878e3c3e698e9b5cbfbf2c0e3d3dcd0bd2e00f1ccf313e0185",
     "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-    "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"]
+    "burned": ["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
+    "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
   },
+
+  "reserves": {
+    "0xd6000fda0b38f4bff4cfab188e0bd18e8725a5e7": "DutchX reserve",
+    "0x45eb33d008801d547990caf3b63b4f8ae596ea57": "REN rerserve",
+    "0x57f8160e1c59d16c01bbe181fd94db4e56b60495": "WETH reserve",
+    "0x3e9FFBA3C3eB91f501817b031031a71de2d3163B": "Abyss reserve",
+    "0xa33c7c22d0bb673c2aea2c048bb883b679fa1be9": "Melonport reserve",
+    "0x13032deb2d37556cf49301f713e9d7e1d1a8b169": "Uniswap reserve",
+    "0x5b756435bf2c8895bab3e3898dd7ed2ba073d7b9": "Bancor reserve",
+    "0xa9312cb86d1e532b7c21881ce03a1a9d52f6adb1": "TTC reserve",
+    "0x8463fDa3567D9228D6Bc2A9b6219fC85a19b89aa": "Oasis reserve",
+    "0x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10": "PT reserve",
+    "0x63825c174ab367968ec60f061753d3bbd36a0d8f": "Kyber reserve",
+    "0x35183769bbbf63d2b4cac32ef593f4ad08104fba": "KCC reserve",
+    "0x21433dec9cb634a23c6a4bbcce08c83f5ac2ec18": "Prycto reserve",
+    "0xfe4474d73be9307ebb5b5519dca19e8109286acb": "Tomo Reserve",
+    "0x2631a5222522156dfafaa5ca8480223d6465782d": "Dether reserve",
+    "0x494696162d3c21b4b8ee08a7fcecc9b4a1dd1566": "Tvnd reserve",
+    "0xe0e1f00a2537eccdbb993929a4265658353affc6": "Mossland reserve",
+    "0x91be8fa21dc21cff073e07bae365669e154d6ee1": "BBO reserve",
+    "0xc97094dced8b43be3d275e725f41e63eba2d4cb6": "Snap reserve",
+    "0xb50b0d0ed29603c66c65c0582cf9e49b6a9e9da5": "DCC reserve",
+    "0x56e37b6b79d4e895618b8bb287748702848ae8c0": "Midas reserve",
+    "0x2aab2b157a03915c8a73adae735d0cf51c872f31": "Prycto reserve",
+    "0x742e8bb8e6bde9cb2df5449f8de7510798727fb1": "Mossland reserve",
+    "0xc935cad589bebd8673104073d5a5eccfe67fb7b1": "CoinFi reserve",
+    "0x582ea0af091ae0d98fdf08216cb2846711a65f6a": "Kyber reserve",
+    "0xe1213e46efcb8785b47ae0620a51f490f747f1da": "Prycto reserve",
+    "0x4d864b5b4f866f65f53cbaad32eb9574760865e6": "Snap reserve",
+    "0x5337d1df2d450945392d60b35f562b92fd96b6b6": "Abyss reserve",
+    "0x9e2b650f890236ab49609c5a6b00cddb4e61f408": "MKR, DAI reserve",
+    "0x8bf5c569ecfd167f96fae6d9610e17571568a6a1": "DAI reserve",
+    "0x148332cd398321989f37803188b9a69fa32b133c": "Kyber reserve"
+  },
+
+  "ETH": {
+    "name": "Ethereum",
+    "symbol": "ETH",
+    "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "decimal": 18,
+    "cmcId": "ethereum",
+    "cmcIdv2": "1027",
+    "cgId": "ethereum",
+    "official": true
+  },
+  
+  "KNC": {
+    "name": "Kyber Network",
+    "symbol": "KNC",
+    "address": "0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
+    "decimal": 18,
+    "cmcId": "kyber-network",
+    "cmcIdv2": "1982"
+  },
+
+  "WETH": {
+    "name": "Wrapped Ether",
+    "symbol" : "WETH",
+    "decimal": 18,
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "hidden": true
+  },
+  
   "tokens": {
     "ETH": {
       "name": "Ethereum",
@@ -157,7 +222,10 @@ module.exports = {
       "name": "Dai Stablecoin",
       "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
       "symbol": "DAI",
-      "decimal": 18
+      "decimal": 18,
+      "reserves": {
+        "0x44aef3101432a64d1aa16388f4b9b352b09f42a9": '1'
+      }
     },
     "AION": {
       "name": "AION",
@@ -441,7 +509,10 @@ module.exports = {
       "address": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
       "symbol": "BNT",
       "decimal": 18,
-      "hidden": 1531486800000
+      "hidden": 1531486800000,
+      "reserves": {
+        "0xba92981e049a79de1b79c2396d48063e02f47239": '1'
+      }
     },
     "TUSD": {
       "name": "TrueUSD",
@@ -747,10 +818,14 @@ module.exports = {
 
   "preburntAmount": 48.61873337,
   "averageBlockTime": 15000,
+  "averageCGQuery": 13000,
   "startBlockNumber": 5060595,
+  "rateStartBlockNumber": 5500000,
   "startBlockNumberV2": 5926056,
   "rateBlockStepSize": 40,
   "newTokenDuration": 3 * 24 * 60 * 60 * 1000,
+
+  "startPermissionlessReserveBlock": 7024980,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
@@ -764,9 +839,9 @@ module.exports = {
 
   "supportedLanguage": ["en", "vi", "ko", "zh"],
   "mappingLang_Moment": {
-    "en" : "en",
-    "vi" : "vi",
-    "ko" : "ko",
-    "zh" : "zh-cn"
+    "en": "en",
+    "vi": "vi",
+    "ko": "ko",
+    "zh": "zh-cn"
   }
 };

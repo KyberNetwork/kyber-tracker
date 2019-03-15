@@ -1,5 +1,6 @@
 <template>
-  <span @click.stop="onClickToken()">{{ symbol }}</span>
+  <span v-if="isOfficial(address)" @click.stop="onClickToken()">{{ getSymbol() }}</span>
+  <span v-else @click.stop="onClickToken()">({{ getShortedAddr(address)}})</span>
 </template>
 
 <script>
@@ -10,30 +11,42 @@ import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../request/AppRequest';
 import util from '../helper/util';
-import network from '../../../../../config/network';
-
+// import network from '../../../../../config/network';
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 export default {
   props: {
-    symbol: {
+    address: {
       type: String,
     },
   },
   data() {
     return {
-      tokens: _.keyBy(_.values(network.tokens), 'symbol')
+      // tokens: _.keyBy(_.values(TOKENS_BY_ADDR), 'symbol')
+      tokens: TOKENS_BY_ADDR
     };
   },
   methods: {
     getLink () {
-      const tokenDef = this.tokens[this.symbol];
+      const tokenDef = this.tokens[this.address && this.address.toLowerCase()];
       if (!tokenDef) {
         return '';
       }
 
-      return `/tokens/${tokenDef.address}`;
+      return `/tokens/${this.address}`;
+    },
+    getSymbol(){
+      const token = this.tokens[this.address]
+      if(!token) return ''
+      return token.symbol || this.getShortedAddr(this.address)
+    },
+    getShortedAddr(addr){
+      return util.shortenAddress(addr, 4, 4)
+    },
+    isOfficial(address = ''){
+      return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     onClickToken () {
-      const tokenDef = this.tokens[this.symbol];
+      const tokenDef = this.tokens[this.address && this.address.toLowerCase()];
       if (!tokenDef) {
         return;
       }

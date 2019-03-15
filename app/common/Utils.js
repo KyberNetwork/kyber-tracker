@@ -11,11 +11,22 @@ abiDecoder.addABI(burnedFeeABI);
 abiDecoder.addABI(wrapperABI);
 
 const network = require('../../config/network');
-const tokens = network.tokens;
+const ethConfig = network.ETH
+// const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
-const tokensByAddress = _.keyBy(_.values(tokens), o => o.address.toLowerCase());
 
 module.exports = {
+  isBurnableToken: function(tokenAddr){
+    const tokenData = global.TOKENS_BY_ADDR[tokenAddr.toLowerCase()]
+
+    if(!tokenData) return true
+
+    if(['ETH', 'WETH', 'KNC', 'PT'].indexOf(tokenData.symbol) >= 0){
+      return false
+    }
+
+    return true
+  },
 
   getKyberABIDecoder: function() {
     return abiDecoder;
@@ -26,14 +37,25 @@ module.exports = {
   },
 
   getTokenFromAddress: function(address) {
-    return tokensByAddress[address.toLowerCase()] || null;
+    return global.TOKENS_BY_ADDR[address.toLowerCase()] || null;
   },
 
-  shouldShowToken: function(tokenSymbol, tokenList, timeStamp) {
-    tokenList = tokenList || tokens;
-    if(!tokenList[tokenSymbol].hidden) return true;
-    if (typeof tokenList[tokenSymbol].hidden != 'number') return false;
-    return (timeStamp || Date.now()) >= tokenList[tokenSymbol].hidden;
+  shouldShowToken: function(tokenAddress, tokenList, timeStamp) {
+    tokenList = tokenList || global.TOKENS_BY_ADDR;
+
+    if(!tokenList[tokenAddress.toLowerCase()] || !tokenList[tokenAddress.toLowerCase()].hidden) return true;
+    
+    if (typeof tokenList[tokenAddress].hidden != 'number') return false;
+    return (timeStamp || Date.now()) >= tokenList[tokenAddress].hidden;
+  },
+
+  filterOfficial(official, tokenData){
+    if(!official) return true
+
+    if(tokenData.official) return true
+
+    if(tokenData && tokenData.reserves && Object.values(tokenData.reserves).indexOf('1') >= 0) return true
+    return false
   },
 
   getStringExp10: function(decimal) {
@@ -45,7 +67,7 @@ module.exports = {
   },
 
   getKNCTokenAddress: function() {
-    return network.tokens.KNC.address;
+    return network.KNC.address;
   },
 
   isBurnerContractAddress: function (addr) {
@@ -79,16 +101,15 @@ module.exports = {
     let supportedTokens = [];
     let supportedAddressArray = []
     let tokenRateAmountArray = []
-    Object.keys(tokens).forEach(symbol => {
-      if (this.shouldShowToken(symbol) && symbol !== "ETH") {
-        supportedAddressArray.push(tokens[symbol].address);
-        supportedTokens.push(tokens[symbol]);
-
-        tokenRateAmountArray.push(this.caculateTokenRateAmount(tokens[symbol].decimal))
+    Object.keys(global.TOKENS_BY_ADDR).forEach(address => {
+      if (this.shouldShowToken(address.toLowerCase()) && address.toLowerCase() !== network.ETH.address ) {
+        supportedAddressArray.push(address);
+        supportedTokens.push(global.TOKENS_BY_ADDR[address]);
+        tokenRateAmountArray.push(this.caculateTokenRateAmount(global.TOKENS_BY_ADDR[address].decimal))
       }
     })
 
-    const ethArray = Array(supportedAddressArray.length).fill(tokens.ETH.address);
+    const ethArray = Array(supportedAddressArray.length).fill(network.ETH.address);
 
     const srcArray = supportedAddressArray.concat(ethArray);
     const destArray = ethArray.concat(supportedAddressArray);
@@ -131,13 +152,13 @@ module.exports = {
 
     return false;
   },
-  isNewToken (tokenSymbol) {
-      var bornMs = tokens[tokenSymbol].hidden;
+  isNewToken (tokenAddress) {
+      var bornMs = global.TOKENS_BY_ADDR[tokenAddress].hidden;
       if (typeof bornMs != 'number') return false;
       return Date.now() <= bornMs + (network.newTokenDuration || 3 * 24 * 60 * 60 * 1000);
   },
-  isDelisted (tokenSymbol) {
-    let delisted = tokens[tokenSymbol].delisted;
+  isDelisted (tokenAddress) {
+    let delisted = global.TOKENS_BY_ADDR[tokenAddress].delisted;
     if (typeof bornMs !== 'undefined') return false;
     return delisted;
   },
@@ -145,11 +166,18 @@ module.exports = {
   ignoreToken: (arraySymbol) => {
     let queryString = ''
     if(!arraySymbol) return queryString
-
-    queryString = arraySymbol
-    .map(s => `!(maker_token_symbol = "ETH" AND taker_token_symbol = "${s}") AND !(maker_token_symbol = "${s}" AND taker_token_symbol = "ETH")`)
+    let arrayAddress = []
+    arraySymbol.map(s => {
+      if(network.tokens[s]) arrayAddress.push(network.tokens[s].address)
+    })
+    
+    queryString = arrayAddress
+    .map(s => `!(maker_token_address = "${ethConfig.address}" AND taker_token_address = "${s}") AND !(maker_token_address = "${s}" AND taker_token_address = "${ethConfig.address}") `)
     .join(' AND ')
 
     return ` AND (${queryString})`
+  },
+  ignoreETH: (side) => {
+    return ` AND ${side}_token_address <> "${network.ETH.address}"`
   }
 };

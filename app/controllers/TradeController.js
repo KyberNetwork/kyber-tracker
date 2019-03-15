@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const async = require('async');
 const AppController = require('./AppController');
-const network = require('../../config/network');
+// const network = require('../../config/network');
 const Checkit = require('cc-checkit');
 const Const = require('../common/Const');
 const Utils = require('sota-core').load('util/Utils');
@@ -15,29 +15,38 @@ module.exports = AppController.extends({
 
   getTradesList: function (req, res) {
     const [err, params] = new Checkit({
-      symbol: ['string'],
+      address: ['string'],
       page: ['required', 'natural'],
       limit: ['required', 'naturalNonZero'],
       fromDate: ['naturalNonZero'],
       toDate: ['naturalNonZero'],
+      official: ['string'],
+      reserve: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
       res.badRequest(err.toString());
       return;
     }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
     
     let key = `${CacheInfo.TradesList.key + params.page}-${params.limit}`;
-    if (params.symbol) {
-      const token = network.tokens[params.symbol];
-      if (!token || !Utils_Common.shouldShowToken(params.symbol)) {
+    if (params.address) {
+      const token = global.TOKENS_BY_ADDR[params.address];
+      if (!token || !Utils_Common.shouldShowToken(params.address)) {
           res.json({
               s: "error",
-              errmsg: "unknown_symbol " + params.symbol
+              errmsg: "unknown_address " + params.address
           });
           return;
       }
-      key = params.symbol + '-' + key;
+      key = params.address + '-' + key;
     }
     if (params.fromDate) {
       key = params.fromDate + '-' + key;
@@ -45,6 +54,13 @@ module.exports = AppController.extends({
     if (params.toDate) {
       key = params.toDate + '-' + key;
     }
+    if (params.reserve){
+      key = params.reserve + '-' + key;
+    }
+    if(params.official){
+      key = 'official-' + key
+    }
+
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -87,6 +103,7 @@ module.exports = AppController.extends({
     const [err, params] = new Checkit({
       fromDate: ['natural'],
       toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -94,11 +111,20 @@ module.exports = AppController.extends({
       return;
     }
 
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
     const now = Utils.nowInSeconds();
     let fromDate = params.fromDate || 0;
     let toDate = params.toDate || now;
 
     let key = `${CacheInfo.TopTokensList.key}${Math.floor(fromDate / 60)}-${Math.floor(toDate / 60)}`;
+    if(params.official){
+      key = 'official-' + key
+    }
 
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
@@ -111,7 +137,8 @@ module.exports = AppController.extends({
       }
       let options = {
         fromDate: fromDate,
-        toDate: toDate
+        toDate: toDate,
+        official: params.official
       };
       TradeService.getTopTokensList(options, (err, ret_1) => {
         if (err) {
@@ -134,7 +161,8 @@ module.exports = AppController.extends({
     const [err, params] = new Checkit({
       fromDate: ['natural'],
       toDate: ['natural'],
-      timeStamp: ['natural']
+      timeStamp: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -142,13 +170,22 @@ module.exports = AppController.extends({
       return;
     }
 
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+
     const now = Utils.nowInSeconds();
     let fromDate = params.fromDate || 0;
     let toDate = params.toDate || now;
 
     let key = `${CacheInfo.TokensList.key}${Math.floor(fromDate / 60)}-${Math.floor(toDate / 60)}`;
     if(params.timeStamp) key = key + '-' + params.timeStamp
-    
+    if(params.official){
+      key = 'official-' + key
+    }
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -161,7 +198,8 @@ module.exports = AppController.extends({
       let options = {
         fromDate: fromDate,
         toDate: toDate,
-        timeStamp: params.timeStamp
+        timeStamp: params.timeStamp,
+        official: params.official
       };
       TradeService.getTokensList(options, (err, ret_1) => {
         if (err) {
@@ -179,25 +217,136 @@ module.exports = AppController.extends({
     // const TradeService = req.getService('TradeService');
     // TradeService.getTopTokensList(fromDate, toDate, this.ok.bind(this, req, res));
   },
+
+  getReservesList: function (req, res) {
+    // const [err, params] = new Checkit({
+    //   fromDate: ['natural'],
+    //   toDate: ['natural'],
+    // }).validateSync(req.allParams);
+
+    // if (err) {
+    //   res.badRequest(err.toString());
+    //   return;
+    // }
+
+    // if(!params.fromDate) params.fromDate = 0;
+    // if(!params.toDate){
+    //   params.toDate = Utils.nowInSeconds()
+    // }
+
+    let key = `${CacheInfo.ReservesList.key}`;
+
+    
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+        return res.send(err)
+      }
+      if (ret) {
+        return res.send(JSON.parse(ret));
+      }
+
+      const TradeService = req.getService('TradeService');
+      TradeService.getReservesList({}, (err, results) => {
+        if (err) {
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+  
+        if (results) {
+          RedisCache.setAsync(key, JSON.stringify(results), CacheInfo.ReservesList.TTL);
+        }
+        return res.json(results)
+      });
+    })
+  },
+  
+  getReserveDetails: function (req, res) {
+    const [err, params] = new Checkit({
+      reserveAddr: ['required', 'string'],
+      // fromDate: ['natural'],
+      // toDate: ['natural'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    // if(!params.fromDate) params.fromDate = 0;
+    // if(!params.toDate){
+    //   params.toDate = Utils.nowInSeconds()
+    // }
+
+    let key = `${CacheInfo.ReserveDetail.key}` + params.reserveAddr;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+        return res.send(err)
+      }
+      if (ret) {
+        return res.send(JSON.parse(ret));
+      }
+      const TradeService = req.getService('TradeService');
+      TradeService.getReserveDetails(params, (err, results) => {
+        if (err) {
+          logger.error(err)
+          return res.send(err)
+        }
+
+        if (results) {
+          RedisCache.setAsync(key, JSON.stringify(results), CacheInfo.ReservesList.TTL);
+        }
+        return res.json(results)
+      });
+    })
+    
+  },
+
   getStats24h: function (req, res) {
+    const [err, params] = new Checkit({
+      official: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
     const TradeService = req.getService('TradeService');
-    TradeService.getStats24h(this.ok.bind(this, req, res));
+    TradeService.getStats24h(params, this.ok.bind(this, req, res));
   },
 
   getVolumes: function (req, res) {
     const [err, params] = new Checkit({
-      symbol: ['string'],
+      address: ['string'],
       period: ['string'],
       interval: ['string'],
       fromDate: ['natural'],
       toDate: ['natural'],
-      pair: ['string']
+      pair: ['string'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
       res.badRequest(err && err.toString() || "Interval is not support");
       return;
     }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
 
     const TradeService = req.getService('TradeService');
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
@@ -245,17 +394,19 @@ module.exports = AppController.extends({
       return;
     }
 
+
     const TradeService = req.getService('TradeService');
     TradeService.getBurnedFees(params, this.ok.bind(this, req, res));
   },
 
   getCollectedFees: function (req, res) {
     const [err, params] = new Checkit({
-      symbol: ['string'],
+      address: ['string'],
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
@@ -263,17 +414,25 @@ module.exports = AppController.extends({
       return;
     }
 
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+
     const TradeService = req.getService('TradeService');
     TradeService.getCollectedFees(params, this.ok.bind(this, req, res));
   },
 
   getToBurnFees: function (req, res) {
     const [err, params] = new Checkit({
-      symbol: ['string'],
+      address: ['string'],
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
@@ -281,23 +440,38 @@ module.exports = AppController.extends({
       return;
     }
 
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+
     const TradeService = req.getService('TradeService');
     TradeService.getToBurnFees(params, this.ok.bind(this, req, res));
   },
 
   getToWalletFees: function (req, res) {
     const [err, params] = new Checkit({
-      symbol: ['string'],
+      address: ['string'],
       interval: ['string'],
       period: ['string'],
       fromDate: ['natural'],
-      toDate: ['natural']
+      toDate: ['natural'],
+      official: ['string']
     }).validateSync(req.allParams);
 
     if (err) {
       res.badRequest(err.toString());
       return;
     }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
 
     const TradeService = req.getService('TradeService');
     TradeService.getToWalletFees(params, this.ok.bind(this, req, res));
@@ -341,6 +515,8 @@ module.exports = AppController.extends({
     const TradeService = req.getService('TradeService');
     TradeService.search(params, this.ok.bind(this, req, res));
   },
+
+  
 
   /*
   NOT USED

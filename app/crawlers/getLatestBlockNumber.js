@@ -23,7 +23,13 @@ module.exports = (callback, modelName = 'KyberTradeModel', startName = "TRADE_BL
     }
 
     if (!ret || !ret.blockNumber) {
-      return callback(null, network.startBlockNumber);
+      if(modelName == 'RateModel') {
+        return callback(null, network.rateStartBlockNumber)
+      }
+      else {
+        return callback(null, network.startBlockNumber);
+      }
+      
     }
 
     return callback(null, ret.blockNumber);

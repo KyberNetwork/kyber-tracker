@@ -1,7 +1,7 @@
 <template>
   <div class="col-sm-12">
     <trade-list ref="datatable"
-      :getFilterTokenSymbol="getFilterTokenSymbol"
+      :getFilterTokenAddress="getFilterTokenAddress"
       :fetch="requestSearch"
       :exportData="exportData"
       :isHideDatepicker="false"
@@ -25,8 +25,9 @@ import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 import network from '../../../../../config/network';
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 const partners = network.partners;
-const tokens = network.tokens;
+// const tokens = network.tokens;
 import Chart from 'chart.js';
 
 export default {
@@ -39,7 +40,7 @@ export default {
       totalCollectedFees: 0,
       searchFromDate: null,
       searchToDate: null,
-      tokens: _.keyBy(_.values(network.tokens), 'address')
+      tokens: TOKENS_BY_ADDR
     };
   },
 
@@ -51,7 +52,7 @@ export default {
       this.$refs.datatable.fetch();
     },
 
-    getFilterTokenSymbol () {
+    getFilterTokenAddress () {
       return undefined;
     },
     getSearchResultTitle(){
@@ -145,11 +146,11 @@ export default {
             var csvContent = ""
             csvContent += data.map(function(d){
               let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
-              let fromToken = d.takerTokenSymbol
-              let fromAmount = tokens[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, tokens[fromToken].decimal)).toString() : 0
+              let fromToken = d.takerTokenAddress
+              let fromAmount = TOKENS_BY_ADDR[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[fromToken].decimal)).toString() : 0
 
-              let toToken = d.makerTokenSymbol
-              let toAmount = tokens[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, tokens[toToken].decimal)).toString() : 0
+              let toToken = d.makerTokenAddress
+              let toAmount = TOKENS_BY_ADDR[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[toToken].decimal)).toString() : 0
               let commission = d.commission ? new BigNumber(d.commission.toString()).div(Math.pow(10, 18)).toString() : 0
               // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
               let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0

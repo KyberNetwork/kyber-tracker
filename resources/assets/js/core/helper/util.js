@@ -4,10 +4,10 @@ import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import network from '../../../../../config/network/production';
 const iconEndpont = 'https://files.kyber.network/DesignAssets/tokens'
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
-const tokens = _.keyBy(_.values(network.tokens), 'symbol');
-
+const tokens = TOKENS_BY_ADDR
 const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
   '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
@@ -47,6 +47,41 @@ function kyberRoundingNumber (number) {
     result += '.' + arr[1];
   }
   return result;
+}
+
+function newRoundingNumber (input = 0, maxDigis) {
+  const DEFAULT_DIGITS = 4
+  const MAX_DIGIS = !maxDigis && maxDigis !== 0 ? DEFAULT_DIGITS : maxDigis
+
+  const CustomBigNumber = BigNumber.clone({
+    FORMAT: {
+      // the decimal separator
+      decimalSeparator: '.',
+      // the grouping separator of the integer part
+      groupSeparator: ',',
+      // the primary grouping size of the integer part
+      groupSize: 3,
+      // the secondary grouping size of the integer part
+      secondaryGroupSize: 0,
+      // the grouping separator of the fraction part
+      fractionGroupSeparator: ' ',
+      // the grouping size of the fraction part
+      fractionGroupSize: 0
+    }
+  })
+
+  let bigInput = new CustomBigNumber(input.toString())
+  if (bigInput == 'NaN' || bigInput == 'Infinity') {
+    return "NaN"
+  }
+
+  // console.log("_________max digits", maxDigis, MAX_DIGIS, bigInput.e + 1)
+  let precision = bigInput.e < 0 ? 
+    bigInput.toPrecision(MAX_DIGIS || DEFAULT_DIGITS) 
+    : 
+    bigInput.toPrecision(Math.max(MAX_DIGIS, bigInput.e + 1) || DEFAULT_DIGITS)
+
+  return new CustomBigNumber(precision).toFormat()
 }
 
 export default {
@@ -102,8 +137,8 @@ export default {
     return defaultLanguage
   },
 
-  getTokenInfo: function (symbol) {
-    return tokens[symbol];
+  getTokenInfo: function (address) {
+    return tokens[address];
   },
 
   getDateInfo: function(timestamp, isShort) {
@@ -123,27 +158,31 @@ export default {
     return this.numberWithCommas(parseFloat(bn.toFixed(2).toString()));
   },
 
-  shouldShowToken (tokenSymbol, timeStamp) {
+  shouldShowToken (tokenAddress, timeStamp) {
     // return !this.tokens[item.symbol].hidden;
-    if(!tokens[tokenSymbol].hidden) return true;
-    if (typeof tokens[tokenSymbol].hidden != 'number') return false;
-    return (timeStamp || Date.now()) >= tokens[tokenSymbol].hidden;
+    if(!tokens[tokenAddress.toLowerCase()].hidden) return true;
+    if (typeof tokens[tokenAddress.toLowerCase()].hidden != 'number') return false;
+    return (timeStamp || Date.now()) >= tokens[tokenAddress.toLowerCase()].hidden;
   },
 
-  isNewToken (tokenSymbol) {
-    var bornMs = tokens[tokenSymbol].hidden;
+  isNewToken (tokenAddress) {
+    var bornMs = tokens[tokenAddress].hidden;
     if (typeof bornMs != 'number') return false;
     return Date.now() <= bornMs + 24 * 60 * 60 * 1000;
   },
 
-  formatTokenAmount: function (amount, decimal=18, decimalFormat = 3) {
+  formatTokenAmount: function (amount, decimal=18, decimalFormat = 2) {
     const bigNumber = new BigNumber(amount.toString());
     let result = bigNumber.div(Math.pow(10, decimal));
     return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
   },
 
   roundingNumber: function (number) {
-    return kyberRoundingNumber(number);
+    // return kyberRoundingNumber(number);
+    return newRoundingNumber(number, 6)
+  },
+  roundingAmount: function (number) {
+    return newRoundingNumber(number, 2)
   },
   isTxHash: function(hash) {
     return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
@@ -152,25 +191,36 @@ export default {
     return /^(0x)?[0-9a-f]{40}$/i.test(address)
   },
 
-  getTokenIcon: (symbol, fileName, callback) => {
-    let iconName = fileName || (symbol.toLowerCase() + '.svg');
+  getTokenIcon: (symbol, callback) => {
+    if(!symbol) return '/images/tokens/token-unknown.svg'
+    
+    let iconName = symbol.toLowerCase() + '.svg'
     let urlIcon = iconEndpont + '/' + iconName
 
-    if (!fileName) {
-      let img = new Image(); 
-      img.onerror = () => {
-        iconName = symbol.toLowerCase() + '.png';
-        urlIcon = iconEndpont + '/' + iconName
-        return callback(urlIcon)
-      };
-      img.src = urlIcon;
-    }
+    let img = new Image(); 
+    img.onerror = () => {
+      return callback('/images/tokens/token-unknown.svg')
+    };
+    img.src = urlIcon;
 
     return urlIcon
     
     // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
     // return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
     //      icon + "?sanitize=true";
+  },
+  shortenAddress(address, startNum, endNum){
+    if(!address) return ''
+    return address.slice(0, startNum) + '...' + address.slice(-endNum)
+  },
+
+  isOfficial(tokenData){
+    if(!tokenData) return false
+
+    if(tokenData.official) return true
+
+    if(tokenData.reserves && Object.values(tokenData.reserves).indexOf('1') >= 0) return true
+    return false
   }
 
 };

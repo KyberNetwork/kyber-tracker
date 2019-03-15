@@ -10,7 +10,9 @@ module.exports = [
     //   name: CacheInfo.CurrenciesAllRates.key,
     //   time_exprire: CacheInfo.CurrenciesAllRates.TTLTool
     // },
-    params: {},
+    params: {
+      official: true
+    },
     setCache: false
   },
   {
@@ -99,6 +101,7 @@ module.exports = [
       // time_exprire: CacheInfo.ConvertiblePairs.TTLTool
     // },
     params: {
+      official: true
     },
     setCache: false
   }

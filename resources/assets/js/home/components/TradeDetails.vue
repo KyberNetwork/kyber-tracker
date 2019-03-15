@@ -14,16 +14,16 @@
           <div class="left-trade-rate d-flex justify-content-around">
             <div class="token col-5">
               <span class="token-symbol">
-                 <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenSymbol) }}</span>
-                <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>
+                 <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenAddress) }}</span>
+                <token-link class="token-link" :address="record.takerTokenAddress"></token-link>
               </span>
             </div>
             <!-- <span class="to">to</span> -->
             <span class="entypo-right to col-2"></span>
             <div class="token col-5">
               <span class="token-symbol">
-                <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenSymbol) }}</span>
-                <token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link>
+                <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenAddress) }}</span>
+                <token-link class="token-link" :address="record.makerTokenAddress"></token-link>
               </span>
             </div>
             
@@ -58,7 +58,10 @@
         <div class="rate-detail-title">
           <!-- <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> 
           RATE -->
-          {{$t("trade_detail.rate", [record.takerTokenSymbol, record.makerTokenSymbol])}}
+          {{$t("trade_detail.rate", [
+          isOfficial(record.takerTokenAddress) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
+          isOfficial(record.makerTokenAddress) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
+          ])}}
         </div>
         <div class="rate-detail-value">
           <!-- {{ Math.round(1/getRate(record)*100000000) / 100000000 }} -->
@@ -71,7 +74,7 @@
           {{$t("trade_detail.collected_fees")}}
         </div>
         <div class="rate-detail-value">
-          {{ getTokenAmount(record.collectedFees, 'KNC') }} KNC
+          {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
         </div>
         
       </div>
@@ -80,7 +83,7 @@
           {{$t("trade_detail.commission")}}
         </div>
         <div class="rate-detail-value">
-          {{ getTokenAmount(record.commission, 'KNC') }} KNC
+          {{ getTokenAmount(record.commission, KNCAddr() ) }} KNC
         </div>
         
       </div>
@@ -98,6 +101,7 @@ import BigNumber from "bignumber.js";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
 import network from "../../../../../config/network";
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 export default {
   data() {
@@ -118,7 +122,7 @@ export default {
         volumeUsd: "",
         burnFees: ""
       },
-      tokens: _.keyBy(_.values(network.tokens), "symbol")
+      tokens: TOKENS_BY_ADDR
     };
   },
 
@@ -132,6 +136,12 @@ export default {
         this.record = data;
       });
     },
+    getShortedAddr(addr){
+      return util.shortenAddress(addr, 4, 4)
+    },
+    isOfficial(address = ''){
+      return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
+    },
     getDateInfo(timestamp) {
       const locale = localStorage.getItem("locale") || "en";
       if (locale === "vi") {
@@ -144,12 +154,12 @@ export default {
         );
       }
     },
-    getTokenAmount(amount, symbol) {
-      if (!amount || !symbol) {
+    getTokenAmount(amount, address) {
+      if (!amount || !address) {
         return null;
       }
 
-      const tokenInfo = util.getTokenInfo(symbol);
+      const tokenInfo = util.getTokenInfo(address.toLowerCase());
       return util.formatTokenAmount(amount, tokenInfo.decimal, 6);
     },
     getTxEtherscanLink(tx) {
@@ -165,24 +175,41 @@ export default {
       });
     },
     getRate(trade) {
-      if (!this.record.makerTokenSymbol || !this.record.takerTokenSymbol) {
+      if (!this.record.makerTokenAddress || !this.record.takerTokenAddress) {
         return "";
       }
 
-      const makerToken = this.tokens[this.record.makerTokenSymbol];
-      const takerToken = this.tokens[this.record.takerTokenSymbol];
+      const makerToken = this.tokens[this.record.makerTokenAddress];
+      const takerToken = this.tokens[this.record.takerTokenAddress];
 
-      const makerAmount = new BigNumber(
+      if(!makerToken || !takerToken) return ''
+
+      const bigMakerTokenAmount = new BigNumber(
         this.record.makerTokenAmount.toString()
-      ).div(Math.pow(10, makerToken.decimal));
-      
-      const takerAmount = new BigNumber(
+      )
+
+      const bigTakerTokenAmount = new BigNumber(
         this.record.takerTokenAmount.toString()
-      ).div(Math.pow(10, takerToken.decimal));
-      return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
+      )
+
+      // const makerAmount = new BigNumber(
+      //   this.record.makerTokenAmount.toString()
+      // ).div(Math.pow(10, makerToken.decimal));
+      
+      // const takerAmount = new BigNumber(
+      //   this.record.takerTokenAmount.toString()
+      // ).div(Math.pow(10, takerToken.decimal));
+
+      const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
+      // console.log("--------", makerAmount.toString(), takerAmount.toString())
+      // console.log("============= rouding rate", bigMakerTokenAmount.div(bigTakerTokenAmount).toString())
+      return util.roundingNumber(bigRate.toString());
     },
     formatFiatCurrency(amount) {
       return util.formatFiatCurrency(amount);
+    },
+    KNCAddr(){
+      return network.KNC.address
     }
   },
 
