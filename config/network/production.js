@@ -21,6 +21,17 @@ module.exports = {
     "burned": ["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
     "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
   },
+
+  "reserves": {
+    "0x63825c174ab367968ec60f061753d3bbd36a0d8f": "Kyber Network production reserve",
+    "0x13032deb2d37556cf49301f713e9d7e1d1a8b169": "Uniswap hybrid reserve, kyber operates",
+    "0x04a487afd662c4f9deacc07a7b10cfb686b682a4": "new production oasis hybrid reserve",
+    "0x21433dec9cb634a23c6a4bbcce08c83f5ac2ec18": "Prycto reserve",
+    "0x4d864b5b4f866f65f53cbaad32eb9574760865e6": "snap reserve",
+    "0xa33c7c22d0bb673c2aea2c048bb883b679fa1be9": "Melonport reserve",
+    "0x3e9ffba3c3eb91f501817b031031a71de2d3163b": "Abyss reserve"
+  },
+
   "ETH": {
     "name": "Ethereum",
     "symbol": "ETH",

@@ -21,7 +21,7 @@
           <template slot="body" scope="slot">
             <tr>
                 <td class="pl-4">
-                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
+                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getReservename(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
               <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
@@ -48,7 +48,7 @@
           <template slot="body" scope="slot">
             <tr>
                 <td class="pl-4">
-                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
+                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getReservename(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
               <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
@@ -75,7 +75,7 @@
           <template slot="body" scope="slot">
             <tr>
                 <td class="pl-4">
-                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
+                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getReservename(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
               <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
@@ -151,6 +151,9 @@ export default {
     },
     getShortedAddr(addr){
       return util.shortenAddress(addr, 9, 8)
+    },
+    getReservename(addr){
+      return network.reserves[addr.toLowerCase()] ||  util.shortenAddress(addr, 9, 8)
     },
     selectPeriod(period, interval) {
       this.selectedPeriod = period;

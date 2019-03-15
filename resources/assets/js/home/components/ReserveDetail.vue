@@ -1,7 +1,7 @@
 <template>
   <div class="col-sm-12">
     <div class="wallet-detail-title panel-heading pb-16">
-    <span class="no-margin panel-title">{{$t('wallet_detail.reserve_detail')}} </span>
+    <span class="no-margin panel-title">{{ getReservename(getFilterReserveAddress())}} </span>
   </div>
 
   <!-- address detail ################## -->
@@ -176,6 +176,9 @@ export default {
     },
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
+    },
+    getReservename(addr){
+      return network.reserves[addr.toLowerCase()] ||  this.$t('wallet_detail.reserve_detail')
     },
     getAddressEtherscanLink(address) {
       return network.endpoints.ethScan + "address/" + address;
