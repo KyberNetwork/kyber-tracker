@@ -5,7 +5,7 @@
     </div>
 
     <b-tabs>
-      <b-tab title="All" active>
+      <b-tab :title="$t('reserves.all') " active>
         <!-- all              -->
         <!-- <data-table :items="getReserveByType('all')">
           
@@ -35,7 +35,7 @@
 
         <!-- ########################  -->
       </b-tab>
-      <b-tab title="Verified" >
+      <b-tab :title="$t('reserves.verified') " >
         <!-- <br>Offical -->
         <data-table :rows="getReserveByType('offical')">
           <template slot="header">
@@ -61,7 +61,7 @@
         </data-table>
         <!-- ################################ -->
       </b-tab>
-      <b-tab title="Permissionless">
+      <b-tab :title="$t('reserves.permisionless') ">
         <!-- <br>Permissionless -->
         <data-table :rows="getReserveByType('permissionless')">
           <template slot="header">
@@ -105,6 +105,9 @@ import util from '../../core/helper/util';
 import network from '../../../../../config/network';
 import Chart from 'chart.js';
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
+
+
+const reserveName = _.transform(network.reserves, (r, v, k) => {r[k.toLowerCase()] = v})
 
 export default {
 
@@ -153,7 +156,7 @@ export default {
       return util.shortenAddress(addr, 9, 8)
     },
     getReservename(addr){
-      return network.reserves[addr.toLowerCase()] ||  util.shortenAddress(addr, 9, 8)
+      return reserveName[addr.toLowerCase()] ||  util.shortenAddress(addr, 9, 8)
     },
     selectPeriod(period, interval) {
       this.selectedPeriod = period;

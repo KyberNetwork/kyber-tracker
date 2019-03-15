@@ -8,13 +8,13 @@
              <li>
               <b-dropdown class="change-official" right>
                 <template slot="button-content">
-                  {{isAllTokens() ? 'All network' : 'Verified reserves network'}}
+                  {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
                 </template>
                 <b-dropdown-item @click="onChangeOfficial('all')">
-                  <span>All network</span>
+                  <span>{{ $t('navigator.all_network') }}</span>
                 </b-dropdown-item>
                 <b-dropdown-item @click="onChangeOfficial('official')">
-                  <span>Verified reserves network</span>
+                  <span>{{ $t('navigator.verified_reserves_network') }}</span>
                 </b-dropdown-item>
               </b-dropdown> 
             </li>

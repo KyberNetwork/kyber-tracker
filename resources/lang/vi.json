@@ -30,6 +30,8 @@
   },
 
   "navigator": {
+    "all_network": "All network",
+    "verified_reserves_network": "Verified reserves network",
     "home": "Trang chính",
     "trades": "Giao dịch",
     "trade_history": "Lịch sử",
@@ -42,6 +44,12 @@
     "network": "Network",
     "volume": "Khối lượng",
     "go_to_exchange": "Giao dịch ngay"
+  },
+
+  "reserves": {
+    "all": "Tất cả",
+    "verified": "Quỹ đã được xác nhận",
+    "permisionless": "Quỹ dự trữ tự do"
   },
 
   "filter": {

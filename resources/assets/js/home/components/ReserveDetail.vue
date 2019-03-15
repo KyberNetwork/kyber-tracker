@@ -133,6 +133,8 @@ const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 import Chart from 'chart.js';
 // const tokens = network.tokens;
 
+const reserveName = _.transform(network.reserves, (r, v, k) => {r[k.toLowerCase()] = v})
+
 export default {
 
   data() {
@@ -178,7 +180,7 @@ export default {
       return util.shortenAddress(addr, 4, 4)
     },
     getReservename(addr){
-      return network.reserves[addr.toLowerCase()] ||  this.$t('wallet_detail.reserve_detail')
+      return reserveName[addr.toLowerCase()] ||  this.$t('wallet_detail.reserve_detail')
     },
     getAddressEtherscanLink(address) {
       return network.endpoints.ethScan + "address/" + address;

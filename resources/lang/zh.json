@@ -19,7 +19,7 @@
     "home": "主页",
     "trades": "交易",
     "tokens": "代币",
-    "reserves": "Reserves",
+    "reserves": "储备库",
     "trade_list": "交易历史",
     "token_list": "支持的代币名单",
     "trade_detail": "交易详情",
@@ -27,11 +27,13 @@
     "search": "钱包详情"
   },
   "navigator": {
+    "all_network": "所有网络",
+    "verified_reserves_network": "认证储备库网络",
     "home": "主页",
     "trades": "交易历史",
     "trade_history": "交易历史",
     "tokens": "代币",
-    "reserves": "Reserves",
+    "reserves": "储备库",
     "top_token": "交易量排名（代币）",
     "trade_details": "交易详情",
     "token_detail": "代币详情",
@@ -40,6 +42,13 @@
     "volume": "交易量",
     "go_to_exchange": "立即兑换"
   },
+
+  "reserves": {
+    "all": "所有",
+    "verified": "认证的",
+    "permisionless": "无需权限"
+  },
+  
   "filter": {
     "from": "从",
     "to": "到"

@@ -30,6 +30,8 @@
   },
 
   "navigator": {
+    "all_network": "All network",
+    "verified_reserves_network": "Verified reserves network",
     "home": "Home",
     "trades": "Trade",
     "trade_history": "Trade History",
@@ -42,6 +44,12 @@
     "network": "Network",
     "volume": "Volume",
     "go_to_exchange": "Swap now"
+  },
+
+  "reserves": {
+    "all": "All",
+    "verified": "Verified",
+    "permisionless": "Permissionless"
   },
 
   "filter": {
