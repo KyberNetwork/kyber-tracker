@@ -280,7 +280,7 @@ module.exports = AppController.extends({
     //   params.toDate = Utils.nowInSeconds()
     // }
 
-    let key = `${CacheInfo.ReserveDetail.key}`;
+    let key = `${CacheInfo.ReserveDetail.key}` + params.reserveAddr;
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
