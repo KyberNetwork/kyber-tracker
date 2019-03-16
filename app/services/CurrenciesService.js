@@ -276,6 +276,7 @@ module.exports = BaseService.extends({
     let baseTokenData = global.TOKENS_BY_ADDR[base]
 
     const KyberTradeModel = this.getModel('KyberTradeModel');
+    const Rate7dModel = this.getModel('Rate7dModel')
     const CMCService = this.getService('CMCService');
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
@@ -300,11 +301,16 @@ module.exports = BaseService.extends({
         }, next);
       },
       price: (next) => {
-        CMCService.getCurrentRate(tokenAddress, base, next);
+        // CMCService.getCurrentRate(tokenAddress, base, next);
+        Rate7dModel.findOne({
+          where: 'block_timestamp > ? AND quote_address = ?',
+          params: [nowInSeconds - DAY_IN_SECONDS, tokenAddress],
+          orderBy: 'block_timestamp DESC',
+        }, next)
       },
       lastTrade: (next) => {
         KyberTradeModel.findOne({
-          where: 'taker_token_symbol = ? OR maker_token_address = ?',
+          where: 'taker_token_address = ? OR maker_token_address = ?',
           params: [tokenAddress, tokenAddress],
           orderBy: 'block_timestamp DESC',
         }, next)
@@ -329,14 +335,18 @@ module.exports = BaseService.extends({
           let amountTaker = bigTakerAmount.div(Math.pow(10, tokenData.decimal))
           lastPrice = new BigNumber(amountMaker).div(amountTaker).toNumber()
         }
+      }
 
+      let currentPrice = 0
+      if(ret.price){
+        currentPrice = ret.price.sellExpected
       }
 
       // const baseVolume = new BigNumber(ret.baseVolume.toString()).div(Math.pow(10, baseTokenData.decimal)).toNumber()
       let bigQuoteVolumeTaker = ret.quoteVolumeTaker ? new BigNumber(ret.quoteVolumeTaker.toString()) : new BigNumber(0)
       let bigQuoteVolumeMaker = ret.quoteVolumeMaker ? new BigNumber(ret.quoteVolumeMaker.toString()) : new BigNumber(0)
       const quoteVolume = bigQuoteVolumeTaker.plus(bigQuoteVolumeMaker).div(Math.pow(10, tokenData.decimal)).toNumber()
-      const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
+      // const currentPrice = ret.price ? new BigNumber(ret.price.rate.toString()).div(Math.pow(10, baseTokenData.decimal)) : null
       return callback(null, {
         "symbol": tokenData.cmcSymbol || tokenData.symbol,
         "name": tokenData.name,
@@ -344,7 +354,7 @@ module.exports = BaseService.extends({
         // "code": tokenData.symbol,
         "contractAddress": tokenData.address,
         "decimals": tokenData.decimal,
-        currentPrice: currentPrice.toNumber(),
+        currentPrice: currentPrice,
         lastPrice: lastPrice,
         lastTimestamp: ret.lastTrade ? ret.lastTrade.blockTimestamp : null,
         baseVolume: ret.baseVolume,
