@@ -127,10 +127,20 @@ module.exports = BaseService.extends({
         return callback(`Cannot get price of invalid base: ${base}`);
       }
 
-      const tokenInfo = global.TOKENS_BY_ADDR[address];
+      const baseInfo = global.TOKENS_BY_ADDR[base.toLowerCase()];
+      if(!baseInfo) {
+        return callback(`Cannot find token info of base: ${base}`);
+      }
+
+      const tokenInfo = global.TOKENS_BY_ADDR[address.toLowerCase()];
       if (!tokenInfo) {
         return callback(`Cannot find token info of address: ${address}`);
       }
+
+      if(!baseInfo.symbol || !tokenInfo.symbol) {
+        return callback(null, {rate: 0});
+      }
+
       request
         .get(network.endpoints.getRate || `https://production-cache.kyber.network/getRate`)
         .timeout({
@@ -147,7 +157,7 @@ module.exports = BaseService.extends({
           }
 
           let rateData = response.body.data.filter(x => {
-            return x.source === address && x.dest === base
+            return x.source === tokenInfo.symbol && x.dest === baseInfo.symbol
           });
 
           if (!rateData || !rateData.length) {
