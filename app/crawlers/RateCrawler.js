@@ -24,7 +24,7 @@ const REQUIRED_CONFIRMATION = 2;
 // const BLOCK_STEP_SIZE = 40; // ~10 mins
 const BLOCK_STEP_SIZE = parseInt(process.env['RATE_BLOCK_STEP_SIZE'] || network.rateBlockStepSize)
 const RATE_FREQ_BLOCK = parseInt(process.env['RATE_FREQ_BLOCK'] || 40)
-const PARALLEL_QUERY_SIZE = 100;
+const PARALLEL_QUERY_SIZE = 20;
 const PARALLEL_INSERT_LIMIT = 10;
 var rateTokenArrays
 
