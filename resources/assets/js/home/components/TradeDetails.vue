@@ -184,25 +184,31 @@ export default {
 
       if(!makerToken || !takerToken) return ''
 
-      const bigMakerTokenAmount = new BigNumber(
-        this.record.makerTokenAmount.toString()
-      )
-
-      const bigTakerTokenAmount = new BigNumber(
-        this.record.takerTokenAmount.toString()
-      )
-
-      // const makerAmount = new BigNumber(
+      // const bigMakerTokenAmount = new BigNumber(
       //   this.record.makerTokenAmount.toString()
-      // ).div(Math.pow(10, makerToken.decimal));
-      
-      // const takerAmount = new BigNumber(
-      //   this.record.takerTokenAmount.toString()
-      // ).div(Math.pow(10, takerToken.decimal));
+      // )
 
-      const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
+      // const bigTakerTokenAmount = new BigNumber(
+      //   this.record.takerTokenAmount.toString()
+      // )
+
+      // const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
       // console.log("--------", makerAmount.toString(), takerAmount.toString())
       // console.log("============= rouding rate", bigMakerTokenAmount.div(bigTakerTokenAmount).toString())
+      // console.log("++++++++++++ rate", bigRate.toString(), takerToken.decimal, makerToken.decimal, this.record.makerTokenAmount, this.record.takerTokenAmount, bigMakerTokenAmount.toString(), bigTakerTokenAmount.toString())
+
+      
+      const makerAmount = new BigNumber(
+        this.record.makerTokenAmount.toString()
+      ).div(Math.pow(10, makerToken.decimal));
+      
+      const takerAmount = new BigNumber(
+        this.record.takerTokenAmount.toString()
+      ).div(Math.pow(10, takerToken.decimal));
+
+      const bigRate = makerAmount.div(takerAmount)
+      
+
       return util.roundingNumber(bigRate.toString());
     },
     formatFiatCurrency(amount) {
