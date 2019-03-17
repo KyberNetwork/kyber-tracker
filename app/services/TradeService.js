@@ -706,7 +706,7 @@ module.exports = BaseService.extends({
       whereClauses = 'LOWER(commission_receive_address) = ?';
       params = [address];
     } else {
-      whereClauses = 'LOWER(maker_address) = ? OR LOWER(taker_address) = ?';
+      whereClauses = '(LOWER(maker_address) = ? OR LOWER(taker_address) = ?)';
       params = [address, address];
     }
 
