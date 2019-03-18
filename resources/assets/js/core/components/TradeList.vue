@@ -437,29 +437,28 @@ export default {
         return "";
       }
 
-      // const bigMakerTokenAmount = new BigNumber(
-      //   trade.makerTokenAmount.toString()
-      // )
-
-      // const bigTakerTokenAmount = new BigNumber(
-      //   trade.takerTokenAmount.toString()
-      // )
-
-      // const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
-      
-
-      const makerAmount = new BigNumber(
+      const bigMakerTokenAmount = new BigNumber(
         trade.makerTokenAmount.toString()
-      ).div(Math.pow(10, trade.makerTokenDecimal));
-      
-      const takerAmount = new BigNumber(
+      )
+
+      const bigTakerTokenAmount = new BigNumber(
         trade.takerTokenAmount.toString()
-      ).div(Math.pow(10, trade.takerTokenDecimal));
+      )
+      
+
+      const makerAmount = bigMakerTokenAmount.div(Math.pow(10, trade.makerTokenDecimal));
+      
+      const takerAmount = bigTakerTokenAmount.div(Math.pow(10, trade.takerTokenDecimal));
 
       const bigRate = makerAmount.div(takerAmount)
 
+      if(!bigRate.isZero()){
+        return util.roundingNumber(bigRate.toString());
+      }
 
-      return util.roundingNumber(bigRate.toString());
+      const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+
+      return util.roundingNumber(newBigRate.toString());
     },
     formatTokenNumber (address, amount, decimal) {
       const tokenInfo = this.tokens[address.toLowerCase()];
