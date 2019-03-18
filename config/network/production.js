@@ -40,7 +40,7 @@ module.exports = {
     "0xa9312cb86d1e532b7c21881ce03a1a9d52f6adb1": "TTC reserve",
     "0x8463fDa3567D9228D6Bc2A9b6219fC85a19b89aa": "Oasis hybrid reserve",
     "0x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10": "PT reserve",
-    "0x63825c174ab367968ec60f061753d3bbd36a0d8f": "Binance & Huobi hybrid reserve",
+    "0x63825c174ab367968ec60f061753d3bbd36a0d8f": "Kyber reserve",
     "0x35183769bbbf63d2b4cac32ef593f4ad08104fba": "KCC reserve",
     "0x21433dec9cb634a23c6a4bbcce08c83f5ac2ec18": "Prycto reserve",
     "0xfe4474d73be9307ebb5b5519dca19e8109286acb": "Tomo Reserve",
@@ -54,13 +54,13 @@ module.exports = {
     "0x2aab2b157a03915c8a73adae735d0cf51c872f31": "Prycto reserve",
     "0x742e8bb8e6bde9cb2df5449f8de7510798727fb1": "Mossland reserve",
     "0xc935cad589bebd8673104073d5a5eccfe67fb7b1": "CoinFi reserve",
-    "0x582ea0af091ae0d98fdf08216cb2846711a65f6a": "Binance & Huobi hybrid reserve",
+    "0x582ea0af091ae0d98fdf08216cb2846711a65f6a": "Kyber reserve",
     "0xe1213e46efcb8785b47ae0620a51f490f747f1da": "Prycto reserve",
     "0x4d864b5b4f866f65f53cbaad32eb9574760865e6": "Snap reserve",
     "0x5337d1df2d450945392d60b35f562b92fd96b6b6": "Abyss reserve",
     "0x9e2b650f890236ab49609c5a6b00cddb4e61f408": "MKR, DAI reserve",
     "0x8bf5c569ecfd167f96fae6d9610e17571568a6a1": "DAI reserve",
-    "0x148332cd398321989f37803188b9a69fa32b133c": "Binance & Huobi hybrid reserve"
+    "0x148332cd398321989f37803188b9a69fa32b133c": "Kyber reserve"
   },
 
   "ETH": {
