@@ -444,13 +444,21 @@ export default {
       const bigTakerTokenAmount = new BigNumber(
         trade.takerTokenAmount.toString()
       )
+      
 
-      const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+      const makerAmount = bigMakerTokenAmount.div(Math.pow(10, trade.makerTokenDecimal));
+      
+      const takerAmount = bigTakerTokenAmount.div(Math.pow(10, trade.takerTokenDecimal));
 
-      // const makerAmount = (new BigNumber(trade.makerTokenAmount.toString())).div(Math.pow(10, trade.makerTokenDecimal));
-      // const takerAmount = (new BigNumber(trade.takerTokenAmount.toString())).div(Math.pow(10, trade.takerTokenDecimal));
-      // return util.roundingNumber(makerAmount.div(takerAmount).toNumber());
-      return util.roundingNumber(bigRate.toString());
+      const bigRate = makerAmount.div(takerAmount)
+
+      if(!bigRate.isZero()){
+        return util.roundingNumber(bigRate.toString());
+      }
+
+      const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+
+      return util.roundingNumber(newBigRate.toString());
     },
     formatTokenNumber (address, amount, decimal) {
       const tokenInfo = this.tokens[address.toLowerCase()];

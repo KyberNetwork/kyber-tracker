@@ -192,18 +192,24 @@ export default {
         this.record.takerTokenAmount.toString()
       )
 
-      // const makerAmount = new BigNumber(
-      //   this.record.makerTokenAmount.toString()
-      // ).div(Math.pow(10, makerToken.decimal));
-      
-      // const takerAmount = new BigNumber(
-      //   this.record.takerTokenAmount.toString()
-      // ).div(Math.pow(10, takerToken.decimal));
-
-      const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
+      // const bigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
       // console.log("--------", makerAmount.toString(), takerAmount.toString())
       // console.log("============= rouding rate", bigMakerTokenAmount.div(bigTakerTokenAmount).toString())
-      return util.roundingNumber(bigRate.toString());
+      // console.log("++++++++++++ rate", bigRate.toString(), takerToken.decimal, makerToken.decimal, this.record.makerTokenAmount, this.record.takerTokenAmount, bigMakerTokenAmount.toString(), bigTakerTokenAmount.toString())
+
+      
+      const makerAmount = bigMakerTokenAmount.div(Math.pow(10, makerToken.decimal));
+      
+      const takerAmount = bigTakerTokenAmount.div(Math.pow(10, takerToken.decimal));
+
+      const bigRate = makerAmount.div(takerAmount)
+      
+      if(!bigRate.isZero()) return util.roundingNumber(bigRate.toString());
+
+      
+      const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
+      return util.roundingNumber(newBigRate.toString());
+
     },
     formatFiatCurrency(amount) {
       return util.formatFiatCurrency(amount);
