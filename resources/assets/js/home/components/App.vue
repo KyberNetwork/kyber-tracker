@@ -417,6 +417,7 @@ export default {
         } 
       }
       if (!this.searchString) {
+        this.onClickOutside()
         return;
       }
       this.searchString = this.searchString.trim();
