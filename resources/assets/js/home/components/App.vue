@@ -93,8 +93,14 @@
               </b-btn>
             </b-input-group-append>
           </div>
+
+          
+          
         </div>
 
+          <div v-if="this.showColapseBtn" class="colapse-button indicator" @click="colapseHeader()">
+            <span  class="entypo-up-open"></span>
+          </div>
         
         
 
@@ -265,6 +271,7 @@ export default {
       addressesMetamask: [],
       isOpenFee: false,
       indexShowmore: -1,
+      showColapseBtn: false,
       dropdownText: this.$t('navigator.volume')
     };
   },
@@ -305,6 +312,19 @@ export default {
       if(arrayLi && arrayLi.length){
         this.indexShowmore = [...arrayLi].findIndex( x => x.offsetTop > 60) - 1
       }
+
+      if(arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60){
+        let headerClass = this.$refs.headingSum.className
+        if(headerClass.indexOf("header-expand") > -1 ){
+          this.showColapseBtn = true
+        } else {
+          this.showColapseBtn = false
+        }
+      } else {
+        this.showColapseBtn = false
+      }
+
+
     },
     getLanguage() {
       if (
@@ -442,7 +462,7 @@ export default {
     },
 
     clickHeading(){
-      let headerClass = this.$refs.headingSum.className
+      // let headerClass = this.$refs.headingSum.className
       // if(headerClass.indexOf("header-expand") !== -1 ){
       //   this.$refs.headingSum.className = "heading-summary p-relative"
       // } else {
@@ -451,7 +471,11 @@ export default {
       // 
 
       this.$refs.headingSum.className = "heading-summary p-relative header-expand"
-      
+      this.handleResize()
+    },
+
+    colapseHeader(){
+      this.$refs.headingSum.className = "heading-summary p-relative"
     },
 
     isAllTokens(){
@@ -473,7 +497,7 @@ export default {
       this.$refs.seatchInputRef.$el.className = ""
       this.$refs.headingSum.className = "heading-summary p-relative"
       this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3'
-
+      this.handleResize()
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
@@ -565,6 +589,7 @@ export default {
     // this.debouncedOnResize = _.debounce(this.handleResize, 500)
     window.addEventListener('resize', () => {
       this.indexShowmore = -1
+      this.showColapseBtn = false
       this.handleResize()
     })
     this.handleResize()

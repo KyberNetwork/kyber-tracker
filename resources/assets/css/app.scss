@@ -111,6 +111,7 @@ a {
 }
 
 .heading-bar {
+  position: relative;
   background-color: #192a56;
   color: rgba(255, 255, 255, 0.56);
   min-height: 0px !important;
@@ -124,6 +125,12 @@ a {
   -moz-transition: height 2s ease;
   transition: height 2s ease;
 
+  .colapse-button{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .panel-title{
