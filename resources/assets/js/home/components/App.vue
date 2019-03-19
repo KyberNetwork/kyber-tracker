@@ -6,7 +6,7 @@
           <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
 
              <li>
-              <b-dropdown class="change-official" @shown="clickHeading()" right >
+              <b-dropdown class="change-official" @shown="clickHeading()" >
                 <template slot="button-content">
                   {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
                 </template>
