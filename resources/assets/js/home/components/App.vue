@@ -6,7 +6,7 @@
           <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
 
              <li>
-              <b-dropdown class="change-official" right>
+              <b-dropdown class="change-official" @shown="clickHeading()" right >
                 <template slot="button-content">
                   {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
                 </template>
@@ -23,7 +23,7 @@
             <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
-              <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
             <li id="knc-price">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
@@ -31,20 +31,20 @@
                 {{ kncPrice }} 
                 </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-              <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
 
             <li id="eth-price">
               <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
               <span class="topbar-value" >{{ ethPrice }} </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-              <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
 
             <li id="fee-to-burn">
               <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
               <span class="topbar-value">{{ collectedFees }}</span>
-              <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
                 
 
@@ -443,12 +443,14 @@ export default {
 
     clickHeading(){
       let headerClass = this.$refs.headingSum.className
-      if(headerClass.indexOf("header-expand") !== -1 ){
-        this.$refs.headingSum.className = "heading-summary p-relative"
-      } else {
-        this.$refs.headingSum.className = "heading-summary p-relative header-expand"
-      }
+      // if(headerClass.indexOf("header-expand") !== -1 ){
+      //   this.$refs.headingSum.className = "heading-summary p-relative"
+      // } else {
+      //   this.$refs.headingSum.className = "heading-summary p-relative header-expand"
+      // }
       // 
+
+      this.$refs.headingSum.className = "heading-summary p-relative header-expand"
       
     },
 
