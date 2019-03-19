@@ -68,7 +68,7 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3" >
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3" >
             <vue-autosuggest
               class="ajsbd"
               ref="seatchInputRef"
@@ -472,7 +472,7 @@ export default {
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
       this.$refs.headingSum.className = "heading-summary p-relative"
-      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3'
+      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3'
 
     },
     isTxHash(hash) {
