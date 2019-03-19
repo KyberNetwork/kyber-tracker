@@ -132,7 +132,7 @@
         ref="topPaginator"
         :page-count="maxPage"
         :initial-page="currentPage"
-        :page-range="1"
+        :page-range="($mq !== 'md' && $mq !== 'lg') ? 0 : 1"
         :click-handler="clickToPage"
         :prev-text="$t('token_list.prev')"
         :next-text="$t('token_list.next')"
@@ -145,6 +145,7 @@
         :next-link-class="'page-link'"
         :active-class="'active'"
         :class="'home-pagination-block full-width-pagination'"
+        :hide-prev-next="true"
         >
       </paginate>
       
@@ -265,7 +266,7 @@
         ref="bottomPaginator"
         :page-count="maxPage"
         :initial-page="currentPage"
-        :page-range="1"
+        :page-range="($mq !== 'md' && $mq !== 'lg') ? 0 : 1"
         :click-handler="clickToPage"
         :prev-text="$t('token_list.prev')"
         :next-text="$t('token_list.next')"
@@ -278,6 +279,7 @@
         :next-link-class="'page-link'"
         :active-class="'active'"
         :class="'home-pagination-block full-width-pagination'"
+        :hide-prev-next="true"
         >
       </paginate>
 
