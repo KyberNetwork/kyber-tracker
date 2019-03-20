@@ -390,6 +390,7 @@ export default {
       searchFromDate: null,
       searchToDate: null,
       tokens: TOKENS_BY_ADDR,
+      network: network,
       highlightedToday: {
         dates: [new Date()]
       },
