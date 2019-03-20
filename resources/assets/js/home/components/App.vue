@@ -6,7 +6,7 @@
           <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
 
              <li>
-              <b-dropdown class="change-official" right>
+              <b-dropdown class="change-official" @shown="clickHeading()" >
                 <template slot="button-content">
                   {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
                 </template>
@@ -23,7 +23,7 @@
             <li id="network-volume">
               <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
-              <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
             <li id="knc-price">
               <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
@@ -31,20 +31,20 @@
                 {{ kncPrice }} 
                 </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-              <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
 
             <li id="eth-price">
               <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
               <span class="topbar-value" >{{ ethPrice }} </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-              <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
 
             <li id="fee-to-burn">
               <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
               <span class="topbar-value">{{ collectedFees }}</span>
-              <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/>
+              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
                 
 
@@ -68,7 +68,7 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3" >
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3" >
             <vue-autosuggest
               class="ajsbd"
               ref="seatchInputRef"
@@ -93,8 +93,14 @@
               </b-btn>
             </b-input-group-append>
           </div>
+
+          
+          
         </div>
 
+          <div v-if="this.showColapseBtn" class="colapse-button indicator" @click="colapseHeader()">
+            <span  class="entypo-up-open"></span>
+          </div>
         
         
 
@@ -265,6 +271,7 @@ export default {
       addressesMetamask: [],
       isOpenFee: false,
       indexShowmore: -1,
+      showColapseBtn: false,
       dropdownText: this.$t('navigator.volume')
     };
   },
@@ -305,6 +312,19 @@ export default {
       if(arrayLi && arrayLi.length){
         this.indexShowmore = [...arrayLi].findIndex( x => x.offsetTop > 60) - 1
       }
+
+      if(arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60){
+        let headerClass = this.$refs.headingSum.className
+        if(headerClass.indexOf("header-expand") > -1 ){
+          this.showColapseBtn = true
+        } else {
+          this.showColapseBtn = false
+        }
+      } else {
+        this.showColapseBtn = false
+      }
+
+
     },
     getLanguage() {
       if (
@@ -397,6 +417,7 @@ export default {
         } 
       }
       if (!this.searchString) {
+        this.onClickOutside()
         return;
       }
       this.searchString = this.searchString.trim();
@@ -442,14 +463,20 @@ export default {
     },
 
     clickHeading(){
-      let headerClass = this.$refs.headingSum.className
-      if(headerClass.indexOf("header-expand") !== -1 ){
-        this.$refs.headingSum.className = "heading-summary p-relative"
-      } else {
-        this.$refs.headingSum.className = "heading-summary p-relative header-expand"
-      }
+      // let headerClass = this.$refs.headingSum.className
+      // if(headerClass.indexOf("header-expand") !== -1 ){
+      //   this.$refs.headingSum.className = "heading-summary p-relative"
+      // } else {
+      //   this.$refs.headingSum.className = "heading-summary p-relative header-expand"
+      // }
       // 
-      
+
+      this.$refs.headingSum.className = "heading-summary p-relative header-expand"
+      this.handleResize()
+    },
+
+    colapseHeader(){
+      this.$refs.headingSum.className = "heading-summary p-relative"
     },
 
     isAllTokens(){
@@ -470,8 +497,8 @@ export default {
     onClickOutside(){
       this.$refs.seatchInputRef.$el.className = ""
       this.$refs.headingSum.className = "heading-summary p-relative"
-      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-2 pr-3'
-
+      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3'
+      this.handleResize()
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
@@ -563,6 +590,7 @@ export default {
     // this.debouncedOnResize = _.debounce(this.handleResize, 500)
     window.addEventListener('resize', () => {
       this.indexShowmore = -1
+      this.showColapseBtn = false
       this.handleResize()
     })
     this.handleResize()
