@@ -23,11 +23,12 @@ module.exports = BaseService.extends({
 
     let params = [];
 
-    const supportedTokenList = _.filter(global.TOKENS_BY_ADDR, (e) => {
-      return UtilsHelper.shouldShowToken(e.address)
-    }).map(x => x.address).join('\',\'')
+    // const supportedTokenList = _.filter(global.TOKENS_BY_ADDR, (e) => {
+    //   return UtilsHelper.shouldShowToken(e.address)
+    // }).map(x => x.address).join('\',\'')
 
-    let whereClauses = `(taker_token_address IN ('${supportedTokenList}') AND maker_token_address IN ('${supportedTokenList}'))` + UtilsHelper.ignoreToken(['WETH']);
+    // let whereClauses = `(taker_token_address IN ('${supportedTokenList}') AND maker_token_address IN ('${supportedTokenList}'))` + UtilsHelper.ignoreToken(['WETH']);
+    let whereClauses = " ( 1=1 ) "
 
     if (options.address) {
       whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
