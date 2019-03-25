@@ -182,7 +182,10 @@ module.exports = BaseService.extends({
       }
       const allReserveTokens = results.currentListingTokens
       results.tradedListTokens.map(t => {
-        allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
+        if(allReserveTokens[t.address]){
+          allReserveTokens[t.address] = {...allReserveTokens[t.address], ...t}
+        }
+        // allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
       })
 
 
