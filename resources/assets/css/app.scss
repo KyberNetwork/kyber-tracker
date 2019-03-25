@@ -1403,6 +1403,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       position: absolute;
       bottom: 0;
       background-image: linear-gradient(rgba(255, 0, 0, 0), white);
+      background: -webkit-linear-gradient(bottom,white,white 50%,rgba(255, 255, 255, 0.53));
       width: 100%;
       height: 67px;
     }
