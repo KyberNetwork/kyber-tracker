@@ -25,7 +25,6 @@ import util from '../../core/helper/util';
 // import network from '../../../../../config/network';
 import Chart from 'chart.js';
 
-console.log("+++++++++++++++", window["GLOBAL_STATE"])
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 export default {
 

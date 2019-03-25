@@ -113,7 +113,7 @@
       :isHideDatepicker="false"
       :searchFromDate="searchFromDate"
       :searchToDate="searchToDate"
-      :isShowExport="true"
+      :isShowExport="false"
       v-on:fetchDone="reloadView"
     >
     </trade-list>
