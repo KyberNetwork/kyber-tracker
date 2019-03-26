@@ -312,6 +312,10 @@ export default {
     getFilterReserveAddress: {
       type: Function,
     },
+
+    searchFromDate: {
+      type: Number
+    },
     title: {
       type: String,
     },
