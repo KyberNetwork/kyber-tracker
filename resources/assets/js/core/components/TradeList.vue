@@ -328,9 +328,9 @@ export default {
       type: Function,
     },
 
-    searchFromDate: {
-      type: Number
-    },
+    // searchFromDate: {
+    //   type: Number
+    // },
     title: {
       type: String,
     },

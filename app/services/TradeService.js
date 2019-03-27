@@ -15,6 +15,7 @@ const UtilsHelper = require('../common/Utils');
 
 const CacheInfo = require('../../config/cache/info');
 
+const THREE_MONTH_IN_SECOND = 60 * 60 * 24 * 90
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
@@ -732,7 +733,16 @@ module.exports = BaseService.extends({
       orderBy: 'block_timestamp DESC',
     }
 
-    if (!option || !option.exportData) {
+    if(option.exportData){
+      if(!fromDate || !toDate){
+        return callback('Please select time range to export')
+      } else {
+        console.log("***************** time range", toDate, fromDate, toDate - fromDate)
+        if(toDate - fromDate > THREE_MONTH_IN_SECOND) {
+          return callback("Max time range is 3 months")
+        }
+      }
+    } else {
       findObj.limit = limit
       findObj.offset = page * limit
     }
