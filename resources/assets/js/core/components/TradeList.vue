@@ -270,7 +270,7 @@
         </table>
       </div>
 
-      <div v-if="rows.length == 0" class="trade-loading"><div></div><div></div><div></div></div>
+      <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
 
 
 
@@ -346,6 +346,10 @@ export default {
     isShowExport: {
       type: Boolean
     },
+    isParentLoading: {
+      type: Boolean,
+      default: false
+    },
     searchResult: {
       // type: Function,
       // default: function () {
@@ -369,6 +373,7 @@ export default {
       type: Function,
       default: function () {
         const params = this.getRequestParams();
+        this.isLoading = true
         AppRequest
           .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
             const data = res.data;
@@ -414,7 +419,7 @@ export default {
       highlightedToday: {
         dates: [new Date()]
       },
-      isLoading: true,
+      isLoading: false,
       disabledFromDates: {
         //
       },

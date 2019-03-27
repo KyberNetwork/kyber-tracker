@@ -10,6 +10,7 @@
       :searchFromDate="searchFromDate"
       :searchToDate="searchToDate"
       :isShowExport="true"
+      :isParentLoading="isParentLoading"
     >
     </trade-list>
   </div>
@@ -39,7 +40,8 @@ export default {
       // searchFromDate: moment().subtract(7, 'days').startOf('day').unix(),
       searchFromDate: null,
       searchToDate: null,
-      tokens: TOKENS_BY_ADDR
+      tokens: TOKENS_BY_ADDR,
+      isParentLoading: false
     };
   },
 
@@ -127,7 +129,7 @@ export default {
       const q = this.$route.query.q;
       const fromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
       const toDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
-
+      this.isParentLoading = true
       AppRequest
           .searchTrades(q, currentPage, pageSize, fromDate, toDate, false,(err, res) => {
             const data = res.data;
@@ -149,6 +151,7 @@ export default {
             } else {
               this.resultCount = 0;
             }
+            this.isParentLoading = false
           });
     },
 

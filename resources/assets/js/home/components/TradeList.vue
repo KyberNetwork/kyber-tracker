@@ -42,7 +42,6 @@ export default {
         window.clearInterval(this._refreshInterval);
         return;
       }
-
       this.$refs.datatable.fetch();
     },
     getListTitle () {
@@ -60,6 +59,10 @@ export default {
 
     this.refresh();
   },
+
+  destroyed(){
+    window.clearInterval(this._refreshInterval)
+  }
 
 }
 </script>

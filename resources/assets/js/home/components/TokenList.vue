@@ -239,6 +239,10 @@ export default {
         this.refresh();
       }, 10000);
     this.refresh();
+  },
+
+  destroyed(){
+    window.clearInterval(this._refreshInterval)
   }
 
 }
