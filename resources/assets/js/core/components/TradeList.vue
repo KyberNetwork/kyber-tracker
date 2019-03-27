@@ -168,24 +168,24 @@
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
-            <tr v-for="(row, index) in rows" :item="row" :index="index">
-              <td class="pl-4">{{ getDateInfo(row) }}</td>
-              <td class="text-left pl-4 font-semi-bold">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
+            <tr v-for="(row, index) in rows" :item="row" :index="index" class="pointer">
+              <td class="pl-4"  @click="onClickRow(row)">{{ getDateInfo(row) }}</td>
+              <td class="text-left pl-4 font-semi-bold"  @click="onClickRow(row)">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
                 <!-- {{ row.takerTokenSymbol }} 
                 <i>(<a :href="getAddressLink(row.takerTokenAddress)" target="_blank">{{getShortedAddr(row.takerTokenAddress)}}</a>)</i> -->
                 <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left no-padding-right"></td> -->
-              <td><i class="k k-angle right"></i></td>
-              <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
+              <td  @click="onClickRow(row)"><i class="k k-angle right"></i></td>
+              <td class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
                 <!-- {{ row.makerTokenSymbol }}
                 <i>(<a :href="getAddressLink(row.makerTokenAddress)" target="_blank">{{getShortedAddr(row.makerTokenAddress)}}</a>)</i> -->
                 <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left"></td> -->
-              <td class="text-left pl-4">1 
+              <td class="text-left pl-4"  @click="onClickRow(row)">1 
                 <span class="font-semi-bold">
                   <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
@@ -195,14 +195,24 @@
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                 </span></td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
-              <td v-if="partner" class="text-left pl-4">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
+              <td v-if="partner" class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
               <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td> -->
-              <td class="pointer text-right pr-4" @click="onClickRow(row)">
+              <td class="text-right pr-4">
                 <!-- <img src="/images/more.svg" /> -->
-                <span class="entypo-dot-3 table-more"></span>
+                <!-- <span class="entypo-dot-3 table-more"></span> -->
+
+                <b-dropdown class="trade-view-on" no-caret right>
+                  <template slot="button-content">
+                    <span class="entypo-dot-3 table-more" data-toggle="dropdown"></span>
+                  </template>
+                  <b-dropdown-item :href="getTxEtherscanLink(row.tx)" taget="_blank">View on Etherscan</b-dropdown-item>
+                  <b-dropdown-item :href="getEnjinxLink(row.tx)" taget="_blank">View on Kyber.enjinx</b-dropdown-item>
+                  
+                </b-dropdown>
+
               </td>
             </tr>
           </tbody>
@@ -429,6 +439,12 @@ export default {
     getAddressEtherscanLink(tx) {
       if(!util.isAddress(tx)) tx=partners[tx.toLowerCase()]
       return network.endpoints.ethScan + "address/" + tx;
+    },
+    getTxEtherscanLink(tx) {
+      return network.endpoints.ethScan + "tx/" + tx;
+    },
+    getEnjinxLink(tx){
+      return "https://kyber.enjinx.io/eth/transaction/" + tx;
     },
     getRequestParams () {
       let params = {

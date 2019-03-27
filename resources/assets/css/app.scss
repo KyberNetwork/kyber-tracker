@@ -38,12 +38,18 @@ a {
 }
 
 .table-striped tbody tr:nth-of-type(even) {
+  &:hover{
+    background-color: rgba(231,234,243,.4) !important;
+  }
   background-color: rgba(31, 52, 104, 0.02);
   // opacity: 0.02;
 }
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: transparent !important;
   // opacity: 0.02;
+  &:hover{
+    background-color: rgba(231,234,243,.4) !important;
+  }
+  background-color: transparent;
 }
 
 
@@ -69,11 +75,13 @@ a {
 
   .dropdown-menu {
     padding: 0;
+    background-color: #fcfcfc;
+    font-size: 0.9rem;
   }
 
-  .dropdown-item {
-    padding: 6px 6px 6px 10px;
-  }
+  // .dropdown-item {
+  //   padding: 6px 6px 6px 10px;
+  // }
 
 }
 .network-fee{
@@ -1963,4 +1971,36 @@ table.table-round {
     top: 19px;
     height: 26px;
   }
+}
+
+
+.trade-view-on {
+
+  button:first-child, button:first-child:hover, button:first-child:active {
+    background: transparent !important;
+    outline: none !important;
+    border: none !important;
+    color: #2a4552 !important;
+    box-shadow: none !important;
+  }
+
+  .dropdown-toggle::after {
+    vertical-align: middle;
+  }
+
+  .dropdown-item:hover {
+    color: #fff;
+    text-decoration: none;
+    background-color: rgba(51,102,204,.75);
+  }
+
+  .dropdown-menu {
+    padding: 0;
+    background-color: #fcfcfc;
+  }
+
+  .dropdown-item {
+    padding: 6px 6px 6px 10px;
+  }
+
 }

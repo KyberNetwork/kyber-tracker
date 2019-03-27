@@ -36,7 +36,8 @@ export default {
       totalUsd: 0,
       totalEth: 0,
       totalCollectedFees: 0,
-      searchFromDate: moment().subtract(7, 'days').startOf('day').unix(),
+      // searchFromDate: moment().subtract(7, 'days').startOf('day').unix(),
+      searchFromDate: null,
       searchToDate: null,
       tokens: TOKENS_BY_ADDR
     };
