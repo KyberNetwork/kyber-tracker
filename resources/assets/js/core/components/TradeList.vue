@@ -10,6 +10,8 @@
         <b v-html="getSearchResultTitle()" />
       </div> -->
 
+      
+
       <div v-if="searchResult" class="clear pb-10">
         <!-- <div v-html="getSearchResultMessage()" /> -->
 
@@ -152,6 +154,7 @@
       <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
+        
         <table class="table table-responsive table-round table-striped">
           <thead>
             <tr>
@@ -256,6 +259,8 @@
           </tbody>
         </table>
       </div>
+
+      <div v-if="rows.length == 0" class="trade-loading"><div></div><div></div><div></div></div>
 
 
 
@@ -366,6 +371,7 @@ export default {
             this.volumeUsd = pagination.volumeUsd;
             this.volumeEth = pagination.volumeEth;
             this.collectedFees = pagination.collectedFees;
+            this.isLoading = false
             this.$emit('fetchDone')
           });
       }
@@ -398,6 +404,7 @@ export default {
       highlightedToday: {
         dates: [new Date()]
       },
+      isLoading: true,
       disabledFromDates: {
         //
       },
