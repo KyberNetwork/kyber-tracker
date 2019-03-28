@@ -37,12 +37,12 @@ export default {
   },
 
   methods: {
-    refresh () {
+    refresh (isShowLoading) {
       if (!this.$refs.datatable) {
         window.clearInterval(this._refreshInterval);
         return;
       }
-      this.$refs.datatable.fetch();
+      this.$refs.datatable.fetch(isShowLoading);
     },
     getListTitle () {
       return '';
@@ -57,7 +57,7 @@ export default {
       this.refresh();
     }, 10000);
 
-    this.refresh();
+    this.refresh(true);
   },
 
   destroyed(){

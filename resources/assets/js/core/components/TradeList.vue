@@ -371,9 +371,12 @@ export default {
     },
     fetch: {
       type: Function,
-      default: function () {
+      default: function (isShowLoading) {
         const params = this.getRequestParams();
-        this.isLoading = true
+        if(isShowLoading) {
+          this.isLoading = true
+          this.rows = [];
+        }
         AppRequest
           .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
             const data = res.data;
@@ -529,7 +532,7 @@ export default {
     },
     clickToPage (page) {
       this.currentPage = this.$refs.topPaginator.selected = this.$refs.bottomPaginator.selected = page - 1;
-      this.fetch();
+      this.fetch(true);
     },
 
     shouldShowRow (row) {
@@ -562,7 +565,7 @@ export default {
 
       window.setTimeout(() => {
         this.disabledToDates = { to: this.searchFromDate };
-        this.fetch();
+        this.fetch(true);
       });
     },
     searchToDate (val) {
@@ -578,7 +581,7 @@ export default {
 
       window.setTimeout(() => {
         this.disabledFromDates = { from: this.searchToDate };
-        this.fetch();
+        this.fetch(true);
       });
     }
   }
