@@ -202,12 +202,17 @@ export default {
       
       const takerAmount = bigTakerTokenAmount.div(Math.pow(10, takerToken.decimal));
 
+      
       const bigRate = makerAmount.div(takerAmount)
-      
-      if(!bigRate.isZero()) return util.roundingNumber(bigRate.toString());
 
+      console.log("++++++++++", makerAmount.toString(), takerAmount.toString(), bigRate.isZero(), bigRate.isNaN(), bigRate.isFinite(), bigRate.toString())
       
-      const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
+      if(!bigRate.isZero() && !bigRate.isNaN() && !bigRate.isFinite() && !takerAmount.isZero()) return util.roundingNumber(bigRate.toString());
+
+      console.log("********** new big rate")
+      
+      // const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, takerToken.decimal - makerToken.decimal ))
+      const newBigRate =( bigMakerTokenAmount.times(Math.pow(10, takerToken.decimal)) ).div(   bigTakerTokenAmount.times(Math.pow(10, makerToken.decimal))  )
       return util.roundingNumber(newBigRate.toString());
 
     },

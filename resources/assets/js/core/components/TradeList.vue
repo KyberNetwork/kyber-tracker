@@ -490,11 +490,12 @@ export default {
 
       const bigRate = makerAmount.div(takerAmount)
 
-      if(!bigRate.isZero()){
+      if(!bigRate.isZero() && !bigRate.isNaN() && !bigRate.isFinite() && !takerAmount.isZero()){
         return util.roundingNumber(bigRate.toString());
       }
 
-      const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+      // const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+      const newBigRate =( bigMakerTokenAmount.times(Math.pow(10, trade.takerTokenDecimal)) ).div(   bigTakerTokenAmount.times(Math.pow(10, trade.makerTokenDecimal))  )
 
       return util.roundingNumber(newBigRate.toString());
     },
