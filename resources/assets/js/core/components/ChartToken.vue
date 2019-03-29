@@ -1,6 +1,15 @@
 <template>
-  <div>
-    <canvas :id="elementId" height="250px" class="mt-20"></canvas>
+  <div class="token-chart">
+    <canvas :id="elementId" height="0px;" class="mt-20"></canvas>
+    <div v-if="!chartInstance" class="content-loading-wrapper">
+      <div class="timeline-item">
+        <div class="animated-background" style="width: 96%;"></div> 
+        <div class="animated-background" style="width: 30%;"></div> 
+        <div class="animated-background" style="width: 15%;"></div>
+        <div class="animated-background" style="width: 8%;"></div> 
+        <div class="animated-background" style="width: 2%;"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -218,6 +227,7 @@ export default {
           break;
       }
       AppRequest.getTopToken(start, now, (err, ret) => {
+        console.log("========= get top token")
         const ctx = document.getElementById(this.elementId);
 
         // Ignore render chart if the page has been changed and the chart element is omitted
@@ -236,13 +246,16 @@ export default {
           this.chartInstance.plugins = [datalabels];
           this.chartInstance.update(0);
         } else {
+          console.log("+create chart token")
           this.chartInstance = new Chart(ctx, {
             type: "horizontalBar",
             data: data,
             options: options,
             plugins: [datalabels]
           });
-        }        
+        }   
+        console.log("=+++++++")
+        console.log("**********", this.chartInstance)     
       });
     }
   }

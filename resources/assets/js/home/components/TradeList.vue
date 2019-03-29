@@ -25,7 +25,6 @@ import util from '../../core/helper/util';
 // import network from '../../../../../config/network';
 import Chart from 'chart.js';
 
-console.log("+++++++++++++++", window["GLOBAL_STATE"])
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 export default {
 
@@ -38,13 +37,12 @@ export default {
   },
 
   methods: {
-    refresh () {
+    refresh (isShowLoading) {
       if (!this.$refs.datatable) {
         window.clearInterval(this._refreshInterval);
         return;
       }
-
-      this.$refs.datatable.fetch();
+      this.$refs.datatable.fetch(isShowLoading);
     },
     getListTitle () {
       return '';
@@ -59,8 +57,12 @@ export default {
       this.refresh();
     }, 10000);
 
-    this.refresh();
+    this.refresh(true);
   },
+
+  destroyed(){
+    window.clearInterval(this._refreshInterval)
+  }
 
 }
 </script>

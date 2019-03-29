@@ -185,6 +185,10 @@
       //this._refreshNetworkVolumeChart();
     },
 
+    destroyed(){
+      window.clearInterval(this._refreshInterval)
+    }
+
   }
 </script>
 

@@ -10,6 +10,8 @@
         <b v-html="getSearchResultTitle()" />
       </div> -->
 
+      
+
       <div v-if="searchResult" class="clear pb-10">
         <!-- <div v-html="getSearchResultMessage()" /> -->
 
@@ -152,6 +154,7 @@
       <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
+        
         <table class="table table-responsive table-round table-striped">
           <thead>
             <tr>
@@ -165,24 +168,24 @@
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
-            <tr v-for="(row, index) in rows" :item="row" :index="index">
-              <td class="pl-4">{{ getDateInfo(row) }}</td>
-              <td class="text-left pl-4 font-semi-bold">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
+            <tr v-for="(row, index) in rows" :item="row" :index="index" class="pointer">
+              <td class="pl-4"  @click="onClickRow(row)">{{ getDateInfo(row) }}</td>
+              <td class="text-left pl-4 font-semi-bold"  @click="onClickRow(row)">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
                 <!-- {{ row.takerTokenSymbol }} 
                 <i>(<a :href="getAddressLink(row.takerTokenAddress)" target="_blank">{{getShortedAddr(row.takerTokenAddress)}}</a>)</i> -->
                 <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left no-padding-right"></td> -->
-              <td><i class="k k-angle right"></i></td>
-              <td class="text-left pl-4">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
+              <td  @click="onClickRow(row)"><i class="k k-angle right"></i></td>
+              <td class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
                 <!-- {{ row.makerTokenSymbol }}
                 <i>(<a :href="getAddressLink(row.makerTokenAddress)" target="_blank">{{getShortedAddr(row.makerTokenAddress)}}</a>)</i> -->
                 <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </td>
               <!-- <td class="text-left"></td> -->
-              <td class="text-left pl-4">1 
+              <td class="text-left pl-4"  @click="onClickRow(row)">1 
                 <span class="font-semi-bold">
                   <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
@@ -192,14 +195,24 @@
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                 </span></td>
               <!-- <td>{{ row.makerTokenSymbol }}</td> -->
-              <td v-if="partner" class="text-left pl-4">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
+              <td v-if="partner" class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
               <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
               <td><span class="pull-right ml-10">
                 <i class="k k-angle right"></i>
               </span></td> -->
-              <td class="pointer text-right pr-4" @click="onClickRow(row)">
+              <td class="text-right pr-4">
                 <!-- <img src="/images/more.svg" /> -->
-                <span class="entypo-dot-3 table-more"></span>
+                <!-- <span class="entypo-dot-3 table-more"></span> -->
+
+                <b-dropdown class="trade-view-on" no-caret right>
+                  <template slot="button-content">
+                    <span class="entypo-dot-3 table-more" data-toggle="dropdown"></span>
+                  </template>
+                  <b-dropdown-item :href="getTxEtherscanLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_etherscan") }}</b-dropdown-item>
+                  <b-dropdown-item :href="getEnjinxLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_enjinx") }}</b-dropdown-item>
+                  
+                </b-dropdown>
+
               </td>
             </tr>
           </tbody>
@@ -257,6 +270,8 @@
         </table>
       </div>
 
+      <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
+      <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
 
 
 
@@ -312,6 +327,10 @@ export default {
     getFilterReserveAddress: {
       type: Function,
     },
+
+    // searchFromDate: {
+    //   type: Number
+    // },
     title: {
       type: String,
     },
@@ -326,6 +345,10 @@ export default {
     },
     isShowExport: {
       type: Boolean
+    },
+    isParentLoading: {
+      type: Boolean,
+      default: false
     },
     searchResult: {
       // type: Function,
@@ -348,8 +371,12 @@ export default {
     },
     fetch: {
       type: Function,
-      default: function () {
+      default: function (isShowLoading) {
         const params = this.getRequestParams();
+        if(isShowLoading) {
+          this.isLoading = true
+          this.rows = [];
+        }
         AppRequest
           .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
             const data = res.data;
@@ -362,6 +389,7 @@ export default {
             this.volumeUsd = pagination.volumeUsd;
             this.volumeEth = pagination.volumeEth;
             this.collectedFees = pagination.collectedFees;
+            this.isLoading = false
             this.$emit('fetchDone')
           });
       }
@@ -394,6 +422,7 @@ export default {
       highlightedToday: {
         dates: [new Date()]
       },
+      isLoading: false,
       disabledFromDates: {
         //
       },
@@ -418,6 +447,12 @@ export default {
     getAddressEtherscanLink(tx) {
       if(!util.isAddress(tx)) tx=partners[tx.toLowerCase()]
       return network.endpoints.ethScan + "address/" + tx;
+    },
+    getTxEtherscanLink(tx) {
+      return network.endpoints.ethScan + "tx/" + tx;
+    },
+    getEnjinxLink(tx){
+      return "https://kyber.enjinx.io/eth/transaction/" + tx;
     },
     getRequestParams () {
       let params = {
@@ -455,11 +490,12 @@ export default {
 
       const bigRate = makerAmount.div(takerAmount)
 
-      if(!bigRate.isZero()){
+      if(!bigRate.isZero() && !bigRate.isNaN() && !bigRate.isFinite() && !takerAmount.isZero()){
         return util.roundingNumber(bigRate.toString());
       }
 
-      const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+      // const newBigRate = bigMakerTokenAmount.div(bigTakerTokenAmount).times(Math.pow(10, trade.takerTokenDecimal - trade.makerTokenDecimal))
+      const newBigRate =( bigMakerTokenAmount.times(Math.pow(10, trade.takerTokenDecimal)) ).div(   bigTakerTokenAmount.times(Math.pow(10, trade.makerTokenDecimal))  )
 
       return util.roundingNumber(newBigRate.toString());
     },
@@ -497,7 +533,7 @@ export default {
     },
     clickToPage (page) {
       this.currentPage = this.$refs.topPaginator.selected = this.$refs.bottomPaginator.selected = page - 1;
-      this.fetch();
+      this.fetch(true);
     },
 
     shouldShowRow (row) {
@@ -530,7 +566,7 @@ export default {
 
       window.setTimeout(() => {
         this.disabledToDates = { to: this.searchFromDate };
-        this.fetch();
+        this.fetch(true);
       });
     },
     searchToDate (val) {
@@ -546,7 +582,7 @@ export default {
 
       window.setTimeout(() => {
         this.disabledFromDates = { from: this.searchToDate };
-        this.fetch();
+        this.fetch(true);
       });
     }
   }

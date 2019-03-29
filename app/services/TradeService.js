@@ -15,6 +15,7 @@ const UtilsHelper = require('../common/Utils');
 
 const CacheInfo = require('../../config/cache/info');
 
+const THREE_MONTH_IN_SECOND = 60 * 60 * 24 * 90
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
@@ -23,11 +24,12 @@ module.exports = BaseService.extends({
 
     let params = [];
 
-    const supportedTokenList = _.filter(global.TOKENS_BY_ADDR, (e) => {
-      return UtilsHelper.shouldShowToken(e.address)
-    }).map(x => x.address).join('\',\'')
+    // const supportedTokenList = _.filter(global.TOKENS_BY_ADDR, (e) => {
+    //   return UtilsHelper.shouldShowToken(e.address)
+    // }).map(x => x.address).join('\',\'')
 
-    let whereClauses = `(taker_token_address IN ('${supportedTokenList}') AND maker_token_address IN ('${supportedTokenList}'))` + UtilsHelper.ignoreToken(['WETH']);
+    // let whereClauses = `(taker_token_address IN ('${supportedTokenList}') AND maker_token_address IN ('${supportedTokenList}'))` + UtilsHelper.ignoreToken(['WETH']);
+    let whereClauses = " ( 1=1 ) "
 
     if (options.address) {
       whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
@@ -181,7 +183,10 @@ module.exports = BaseService.extends({
       }
       const allReserveTokens = results.currentListingTokens
       results.tradedListTokens.map(t => {
-        allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
+        if(allReserveTokens[t.address]){
+          allReserveTokens[t.address] = {...allReserveTokens[t.address], ...t}
+        }
+        // allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
       })
 
 
@@ -197,7 +202,7 @@ module.exports = BaseService.extends({
         if(UtilsHelper.shouldShowToken(tokenAddr) &&
           tokenAddr != network.ETH.address &&
           global.TOKENS_BY_ADDR[tokenAddr].reserves[reserveAddr.toLowerCase()]){
-            returnObj[tokenAddr] = {...global.TOKENS_BY_ADDR[tokenAddr], listed: true}
+            returnObj[tokenAddr] = {...global.TOKENS_BY_ADDR[tokenAddr], listed: true, volumeUSD: 0, volumeETH: 0}
         }
       }
     })
@@ -728,7 +733,16 @@ module.exports = BaseService.extends({
       orderBy: 'block_timestamp DESC',
     }
 
-    if (!option || !option.exportData) {
+    if(option.exportData){
+      if(!fromDate || !toDate){
+        return callback('Please select time range to export')
+      } else {
+        console.log("***************** time range", toDate, fromDate, toDate - fromDate)
+        if(toDate - fromDate > THREE_MONTH_IN_SECOND) {
+          return callback("Max time range is 3 months")
+        }
+      }
+    } else {
       findObj.limit = limit
       findObj.offset = page * limit
     }

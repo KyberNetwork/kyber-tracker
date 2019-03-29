@@ -10,6 +10,7 @@
       :searchFromDate="searchFromDate"
       :searchToDate="searchToDate"
       :isShowExport="true"
+      :isParentLoading="isParentLoading"
     >
     </trade-list>
   </div>
@@ -36,9 +37,11 @@ export default {
       totalUsd: 0,
       totalEth: 0,
       totalCollectedFees: 0,
+      // searchFromDate: moment().subtract(7, 'days').startOf('day').unix(),
       searchFromDate: null,
       searchToDate: null,
-      tokens: TOKENS_BY_ADDR
+      tokens: TOKENS_BY_ADDR,
+      isParentLoading: false
     };
   },
 
@@ -120,13 +123,16 @@ export default {
               }
             }
     },
-    requestSearch () {
+    requestSearch (isShowLoading) {
       const currentPage = this.$refs.datatable.currentPage;
       const pageSize = this.$refs.datatable.pageSize || 20;
       const q = this.$route.query.q;
       const fromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
       const toDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
-
+      if(isShowLoading){
+        this.isParentLoading = true
+        this.$refs.datatable.rows = []
+      } 
       AppRequest
           .searchTrades(q, currentPage, pageSize, fromDate, toDate, false,(err, res) => {
             const data = res.data;
@@ -148,6 +154,7 @@ export default {
             } else {
               this.resultCount = 0;
             }
+            this.isParentLoading = false
           });
     },
 

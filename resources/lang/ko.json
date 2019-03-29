@@ -106,7 +106,10 @@
     "exchange_from": "보내는 곳",
     "exchange_to": "받는 곳",
     "pair": "거래쌍",
-    "export_csv": "출력(CSV파일)"
+    "export_csv": "출력(CSV파일)",
+    "no_row": "기록이 없습니다",
+    "view_on_etherscan": "Etherscan에서 확인",
+    "view_on_enjinx": "Kyber.enjinx에서 확인"
   },
   "trade_detail": {
     "transaction_hash": "트랜잭션 해시",
