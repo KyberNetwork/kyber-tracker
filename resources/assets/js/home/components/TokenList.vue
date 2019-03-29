@@ -65,7 +65,7 @@
                 <div class="token-name">
                     <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item)" />
                     <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
-                    <span v-if="!slot.item.official || !slot.item.name"><a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a></span>
+                    <span v-if="!slot.item.official || !slot.item.name"><a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a></span>
                     <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
                     <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
                 </div>
@@ -101,7 +101,7 @@
                   <span>
                     <span v-if="slot.item.official && slot.item.symbol">{{ slot.item.symbol }}</span>
                     <span v-else>
-                      <a class="address-link" :href="getAddressLink(slot.item.address)" target="_blank">{{getShortedAddr(slot.item.address)}}</a>
+                      <a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                     </span>
                   </span>
                   
