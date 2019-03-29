@@ -208,8 +208,8 @@
                   <template slot="button-content">
                     <span class="entypo-dot-3 table-more" data-toggle="dropdown"></span>
                   </template>
-                  <b-dropdown-item :href="getTxEtherscanLink(row.tx)" taget="_blank">View on Etherscan</b-dropdown-item>
-                  <b-dropdown-item :href="getEnjinxLink(row.tx)" taget="_blank">View on Kyber.enjinx</b-dropdown-item>
+                  <b-dropdown-item :href="getTxEtherscanLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_etherscan") }}</b-dropdown-item>
+                  <b-dropdown-item :href="getEnjinxLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_enjinx") }}</b-dropdown-item>
                   
                 </b-dropdown>
 
@@ -271,7 +271,7 @@
       </div>
 
       <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
-
+      <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
 
 
 

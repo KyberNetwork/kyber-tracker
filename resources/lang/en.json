@@ -115,7 +115,10 @@
     "exchange_from" : "From",
     "exchange_to" : "To",
     "pair": "Pair",
-    "export_csv": "Export (CSV)"
+    "export_csv": "Export (CSV)",
+    "no_row": "No record found",
+    "view_on_etherscan": "View on Etherscan",
+    "view_on_enjinx": "View on Kyber.enjinx"
   },
 
   "trade_detail": {

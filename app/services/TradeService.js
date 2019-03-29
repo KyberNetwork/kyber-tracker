@@ -202,7 +202,7 @@ module.exports = BaseService.extends({
         if(UtilsHelper.shouldShowToken(tokenAddr) &&
           tokenAddr != network.ETH.address &&
           global.TOKENS_BY_ADDR[tokenAddr].reserves[reserveAddr.toLowerCase()]){
-            returnObj[tokenAddr] = {...global.TOKENS_BY_ADDR[tokenAddr], listed: true}
+            returnObj[tokenAddr] = {...global.TOKENS_BY_ADDR[tokenAddr], listed: true, volumeUSD: 0, volumeETH: 0}
         }
       }
     })
