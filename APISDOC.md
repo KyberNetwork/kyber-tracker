@@ -764,7 +764,7 @@ Input Request Parameters
 
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
-|symbol|STRING|YES| Symbol of currency. If `null` will return all history of all tokens with Kyber Network contract|
+|symbol|STRING|YES| Symbol of currency. Return all history of all tokens with Kyber Network contract|
 |resolution|STRING|YES| resolution of chart data|
 |from|INT|YES| Limit start time of trades in ms|
 |to|INT|YES| Limit end time of trades in ms|
