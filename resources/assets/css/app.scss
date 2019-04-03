@@ -887,13 +887,6 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 //   }
 // }
 
-@media (min-width: 1030px){
-  .navbar{
-    // .show-more{
-    //   display: none;
-    // }
-  }
-}
 
 @media (max-width: 1113px){
   .navbar{
@@ -1059,6 +1052,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
   .second-heading-bar {
     padding: 15px;
+  }
+
+  .reserve-detail-container{
+    .datepicker-container{
+      margin: 0 !important;
+      padding-left: 0px !important;
+    }
   }
 
 }
