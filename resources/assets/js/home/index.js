@@ -14,6 +14,7 @@ import VTooltip from 'v-tooltip'
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
 import TradeList from '../core/components/TradeList.vue';
+import MiniTradeList from '../core/components/MiniTradeList.vue';
 import TokenLink from '../core/components/TokenLink.vue';
 import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
@@ -58,6 +59,7 @@ Vue.use(VueMq, {
 
 Vue.component('data-table', DataTable);
 Vue.component('trade-list', TradeList);
+Vue.component('mini-trade-list', MiniTradeList);
 Vue.component('token-link', TokenLink);
 Vue.component('chart-volume', ChartVolume);
 Vue.component('chart-fee', ChartFee);
