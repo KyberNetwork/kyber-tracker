@@ -542,6 +542,17 @@ export default {
 
       return util.shouldShowToken(row.takerTokenAddress) && util.shouldShowToken(row.makerTokenAddress)
      
+    },
+
+    resetPagingate(){
+      this.currentPage = 0
+      if(this.$refs.topPaginator){
+        this.$refs.topPaginator.selected = 0
+      }
+      if(this.$refs.bottomPaginator){
+        this.$refs.bottomPaginator.selected = 0
+      }
+      
     }
   },
 
@@ -555,6 +566,7 @@ export default {
     searchFromDate (val) {
 
       this.$emit('changeDate')
+      this.resetPagingate()
       const fromDate = val ? val.getTime() : 0;
       const toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
 
@@ -573,6 +585,7 @@ export default {
     },
     searchToDate (val) {
       this.$emit('changeDate')
+      this.resetPagingate()
       const toDate = val ? val.getTime() : 0;
       const fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
       if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
