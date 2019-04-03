@@ -124,6 +124,7 @@
       :searchToDate="searchToDate"
       :isShowExport="false"
       v-on:fetchDone="reloadView"
+      v-on:changeDate="onchangeDate"
     >
     </trade-list>
   </div>
@@ -216,6 +217,14 @@ export default {
       return this.isOpenlLoadmore ? 'View less' : 'See more'
     },
 
+    onchangeDate(){
+      this.isLoading = true
+      this.reserveTokens = []
+      this.searchFromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
+      this.searchToDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
+      this.fetchReserveDetail()
+    },
+
     exportData (){
       const currentPage = this.$refs.datatable.currentPage;
       const pageSize = this.$refs.datatable.pageSize || 20;
@@ -260,7 +269,7 @@ export default {
     },
 
     fetchReserveDetail(){
-       AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress()}).then(data => {
+       AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress(), fromDate: this.searchFromDate, toDate: this.searchToDate}).then(data => {
           this.reserveTokens = data
           this.isLoading = false
           if(data && data.length > 10) {

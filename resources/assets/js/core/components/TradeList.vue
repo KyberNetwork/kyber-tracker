@@ -318,7 +318,7 @@ const partners = network.partners
 
 export default {
   model: {
-    event: 'fetchDone'
+    event: ['fetchDone', 'changeDate']
   },
   props: {
     getFilterTokenAddress: {
@@ -553,6 +553,8 @@ export default {
   },
   watch: {
     searchFromDate (val) {
+
+      this.$emit('changeDate')
       const fromDate = val ? val.getTime() : 0;
       const toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
 
@@ -570,6 +572,7 @@ export default {
       });
     },
     searchToDate (val) {
+      this.$emit('changeDate')
       const toDate = val ? val.getTime() : 0;
       const fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
       if (fromDate > 0 && toDate > 0 && fromDate > toDate) {

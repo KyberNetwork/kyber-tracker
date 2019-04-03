@@ -266,21 +266,29 @@ module.exports = AppController.extends({
   getReserveDetails: function (req, res) {
     const [err, params] = new Checkit({
       reserveAddr: ['required', 'string'],
-      // fromDate: ['natural'],
-      // toDate: ['natural'],
+      fromDate: ['natural'],
+      toDate: ['natural'],
     }).validateSync(req.allParams);
 
     if (err) {
       res.badRequest(err.toString());
       return;
     }
+    let key = CacheInfo.ReserveDetail.key + '-' + params.reserveAddr;
 
-    // if(!params.fromDate) params.fromDate = 0;
-    // if(!params.toDate){
-    //   params.toDate = Utils.nowInSeconds()
-    // }
+    if(params.fromDate){
+      key = key + '-' + params.fromDate
+    } else {
+      params.fromDate = 0;
+    } 
 
-    let key = `${CacheInfo.ReserveDetail.key}` + params.reserveAddr;
+    if(params.toDate){
+      key = key + '-' + params.toDate
+    } else {
+      params.toDate = Utils.nowInSeconds()
+    }
+
+    
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
         logger.error(err)
