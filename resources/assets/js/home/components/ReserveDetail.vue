@@ -22,7 +22,8 @@
               {{$t('wallet_detail.trades')}}
             </div>
             <div class="font-semi-bold">
-              {{totalTrade}}
+              <span v-if="!isLoading">{{totalTrade}}</span>
+              <img v-else src="/images/waiting.svg" />
             </div>
             
           </div>
@@ -31,7 +32,9 @@
               {{$t('wallet_detail.collected_fees')}}
             </div>
             <div class="font-semi-bold">
-              {{formatTokenAmount(collectedFees, 18)}} KNC
+              <span v-if="!isLoading">{{formatTokenAmount(collectedFees, 18)}}</span>
+              <img v-else src="/images/waiting.svg" />
+               KNC
               <!-- {{round(collectedFees)}} KNC -->
             </div>
           </div>
@@ -50,7 +53,9 @@
                 {{$t('wallet_detail.value_in_eth')}}
               </div> -->
               <div class="font-semi-bold">
-                {{round(volumeEth)}} ETH
+                <span v-if="!isLoading">{{round(volumeEth)}}</span>
+                <img v-else src="/images/waiting.svg" />
+                 ETH
               </div>
               
               
@@ -60,7 +65,9 @@
                 {{$t('wallet_detail.value_in_usd')}}*
               </div> -->
               <div class="font-semi-bold">
-                {{round(volumeUsd)}} USD*
+                <span v-if="!isLoading">{{round(volumeUsd)}}</span>
+                <img v-else src="/images/waiting.svg" />
+                 USD*
               </div>
             </div>
           </div>
@@ -74,7 +81,9 @@
         <div class="reserve-title pb-4">
           {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
         </div>
-
+        <div v-if="isLoading">
+          <img src="/images/waiting.svg" />
+        </div>
         <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
           <div class="col-12 col-sm-6" v-for="item in reserveTokens">
             <div class="row pb-2">
@@ -115,6 +124,7 @@
       :searchToDate="searchToDate"
       :isShowExport="false"
       v-on:fetchDone="reloadView"
+      v-on:changeDate="onchangeDate"
     >
     </trade-list>
   </div>
@@ -155,7 +165,9 @@ export default {
       reserveTokens: [],
 
       isShowLoadmore: false,
-      isOpenlLoadmore: false
+      isOpenlLoadmore: false,
+
+      isLoading: true
     };
   },
 
@@ -205,6 +217,14 @@ export default {
       return this.isOpenlLoadmore ? 'View less' : 'See more'
     },
 
+    onchangeDate(){
+      this.isLoading = true
+      this.reserveTokens = []
+      this.searchFromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
+      this.searchToDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
+      this.fetchReserveDetail()
+    },
+
     exportData (){
       const currentPage = this.$refs.datatable.currentPage;
       const pageSize = this.$refs.datatable.pageSize || 20;
@@ -249,8 +269,9 @@ export default {
     },
 
     fetchReserveDetail(){
-       AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress()}).then(data => {
+       AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress(), fromDate: this.searchFromDate, toDate: this.searchToDate}).then(data => {
           this.reserveTokens = data
+          this.isLoading = false
           if(data && data.length > 10) {
             this.isShowLoadmore = true
           }

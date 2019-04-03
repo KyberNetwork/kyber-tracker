@@ -215,11 +215,12 @@ module.exports = BaseService.extends({
 
     const makeSql = (side, callback) => {
       const sql = `select ${side}_token_address as address,
-        sum(${side}_token_amount) as token,
-        sum(volume_eth) as eth,
-        sum(volume_usd) as usd
+        IFNULL(sum(${side}_token_amount), 0) as token,
+        IFNULL(sum(volume_eth),0) as eth,
+        IFNULL(sum(volume_usd),0) as usd
       from kyber_trade
-      where (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}') 
+      where block_timestamp > ${options.fromDate} AND block_timestamp < ${options.toDate}
+      and (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}') 
       ${UtilsHelper.ignoreToken(['WETH'])} ${UtilsHelper.ignoreETH(side)}
       group by ${side}_token_address`;
       return adapter.execRaw(sql, [], callback);
