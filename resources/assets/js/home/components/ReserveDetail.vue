@@ -5,13 +5,36 @@
   </div>
 
   <!-- address detail ################## -->
-  <div class="reserve-detail-container">
+  <div class="reserve-detail-container mb-2">
     <div class="reserve-address-title">
       <div>{{$t('wallet_detail.address')}}</div>
       <div>
         <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
       </div>
       
+    </div>
+
+    <div v-if="!isHideDatepicker" class="datepicker-container pb-16">
+      <!-- <span>{{ $t('filter.from') }}</span> -->
+      <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
+        :language="locale"
+        :format="formatDatepicker"
+        :clear-button="true"
+        :highlighted="highlightedToday"
+        :disabled="disabledFromDates"
+        :placeholder="$t('filter.from')"
+        >
+      </datepicker>
+      <!-- <span>{{ $t('filter.to') }}</span> -->
+      <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon to ml-2"
+        :language="locale"
+        :format="formatDatepicker"
+        :clear-button="true"
+        :highlighted="highlightedToday"
+        :disabled="disabledToDates"
+        :placeholder="$t('filter.to')"
+        >
+      </datepicker>
     </div>
 
     <div class="reserve-body">
@@ -112,10 +135,10 @@
 
   </div>
 
-  <div class="wallet-detail-title panel-heading pt-56 pb-16">
+  <!-- <div class="wallet-detail-title panel-heading pt-56 pb-16">
     <span class="no-margin">{{$t('wallet_detail.history')}} </span>
-  </div>
-    <trade-list ref="datatable"
+  </div> -->
+    <mini-trade-list ref="datatable"
       :getFilterTokenAddress="getFilterTokenAddress"
       :getFilterReserveAddress="getFilterReserveAddress"
       :exportData="exportData"
@@ -124,9 +147,8 @@
       :searchToDate="searchToDate"
       :isShowExport="false"
       v-on:fetchDone="reloadView"
-      v-on:changeDate="onchangeDate"
     >
-    </trade-list>
+    </mini-trade-list>
   </div>
 </template>
 
@@ -134,7 +156,7 @@
 
 import _ from 'lodash';
 import io from 'socket.io-client';
-import moment from 'moment';
+import moment,{ locale } from 'moment';
 import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
@@ -167,7 +189,16 @@ export default {
       isShowLoadmore: false,
       isOpenlLoadmore: false,
 
-      isLoading: true
+      isLoading: true,
+      highlightedToday: {
+        dates: [new Date()]
+      },
+      disabledFromDates: {
+        //
+      },
+      disabledToDates: {
+        //
+      }
     };
   },
 
@@ -220,8 +251,7 @@ export default {
     onchangeDate(){
       this.isLoading = true
       this.reserveTokens = []
-      this.searchFromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
-      this.searchToDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
+      
       this.fetchReserveDetail()
     },
 
@@ -269,14 +299,31 @@ export default {
     },
 
     fetchReserveDetail(){
-       AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress(), fromDate: this.searchFromDate, toDate: this.searchToDate}).then(data => {
+      let fromDate = this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined
+      let toDate = this.searchToDate ? moment(this.searchToDate).endOf('day').unix() : undefined
+       AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress(), fromDate: fromDate, toDate: toDate}).then(data => {
           this.reserveTokens = data
           this.isLoading = false
           if(data && data.length > 10) {
             this.isShowLoadmore = true
           }
        })
-    }
+    },
+
+    formatDatepicker (date) {
+      switch (util.getLocale()) {
+        case 'vi':
+          return moment(date).format('DD/MM/YYYY');
+          break;
+        case 'ko':
+          return moment(date).format('YYYY MM DD');
+          break;
+      
+        default:
+          return moment(date).format('DD MMM YYYY');
+          break;
+      }
+    },
   },
 
   computed: {
@@ -288,7 +335,13 @@ export default {
   watch: {
     '$route.query' () {
       this.refresh();
-    }
+    },
+     searchFromDate (val) {
+       this.onchangeDate()
+     },
+     searchToDate (val) {
+       this.onchangeDate()
+     }
   },
 
   mounted() {
