@@ -287,8 +287,6 @@ export default {
       volumeUsd: 0,
       volumeEth: 0,
       collectedFees: 0,
-      searchFromDate: null,
-      searchToDate: null,
       tokens: TOKENS_BY_ADDR,
       network: network,
       highlightedToday: {
