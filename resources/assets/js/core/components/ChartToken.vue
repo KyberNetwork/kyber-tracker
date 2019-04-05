@@ -227,7 +227,6 @@ export default {
           break;
       }
       AppRequest.getTopToken(start, now, (err, ret) => {
-        console.log("========= get top token")
         const ctx = document.getElementById(this.elementId);
 
         // Ignore render chart if the page has been changed and the chart element is omitted
@@ -246,16 +245,13 @@ export default {
           this.chartInstance.plugins = [datalabels];
           this.chartInstance.update(0);
         } else {
-          console.log("+create chart token")
           this.chartInstance = new Chart(ctx, {
             type: "horizontalBar",
             data: data,
             options: options,
             plugins: [datalabels]
           });
-        }   
-        console.log("=+++++++")
-        console.log("**********", this.chartInstance)     
+        }       
       });
     }
   }
