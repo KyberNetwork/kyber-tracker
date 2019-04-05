@@ -198,10 +198,10 @@ export default {
     },
 
     searchFromDate: {
-      type: Object
+      type: Date
     },
     searchToDate: {
-      type: Object
+      type: Date
     },
     title: {
       type: String,

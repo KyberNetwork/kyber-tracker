@@ -147,6 +147,7 @@
       :searchToDate="searchToDate"
       :isShowExport="false"
       v-on:fetchDone="reloadView"
+      :isParentLoading="isLoading"
     >
     </mini-trade-list>
   </div>
