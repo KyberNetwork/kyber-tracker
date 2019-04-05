@@ -820,6 +820,13 @@ module.exports = {
       "address": "0x177d39ac676ed1c67a2b268ad7f1e58826e5b0af",
       "hidden": 1549976400000       
     },
+    "UPP": {
+      "name": "Sentinel Protocol",
+      "symbol" : "UPP",
+      "decimal": 18,
+      "address": "0xc86d054809623432210c107af2e3f619dcfbf652",
+      "hidden": true  
+    }
 
   },
 
