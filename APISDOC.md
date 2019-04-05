@@ -104,14 +104,14 @@ Response:
 ```
    
 #### '/api/trades/:tradeId'  
-ex: /api/trades/142014?official=false
+ex: /api/trades/142014
 
 (GET) returns detail of trade with id (not txHash)
 
-Input Request Parameters
+<!-- Input Request Parameters -->
 
-|Name | Type | Required | Description |
-| ----------| ---------|------|-----------------------------|
+<!-- |Name | Type | Required | Description | -->
+<!-- | ----------| ---------|------|-----------------------------| -->
 <!-- |offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical| -->
 
 Response:

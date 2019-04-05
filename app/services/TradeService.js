@@ -213,22 +213,22 @@ module.exports = BaseService.extends({
   _tradedList: function(options, callback){
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
-    const makeSql = (side, callback) => {
+    const makeSql = (side, rside, callback) => {
       const sql = `select ${side}_token_address as address,
         IFNULL(sum(${side}_token_amount), 0) as token,
         IFNULL(sum(volume_eth),0) as eth,
         IFNULL(sum(volume_usd),0) as usd
       from kyber_trade
       where block_timestamp > ${options.fromDate} AND block_timestamp < ${options.toDate}
-      and (source_reserve = '${options.reserveAddr.toLowerCase()}' OR dest_reserve = '${options.reserveAddr.toLowerCase()}') 
-      ${UtilsHelper.ignoreToken(['WETH'])} ${UtilsHelper.ignoreETH(side)}
+      and ${rside}_reserve = '${options.reserveAddr.toLowerCase()}'
+      ${UtilsHelper.ignoreETH(side)}
       group by ${side}_token_address`;
       return adapter.execRaw(sql, [], callback);
     };
 
     async.parallel({
-      maker: _next => makeSql('maker', _next),
-      taker: _next => makeSql('taker', _next)
+      maker: _next => makeSql('maker', 'dest', _next),
+      taker: _next => makeSql('taker', 'source', _next)
     }, (err, ret) => {
       if (err) {
         return callback(err);
