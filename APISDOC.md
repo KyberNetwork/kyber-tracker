@@ -167,7 +167,7 @@ Input Request Parameters
 
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
-|offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
+|official|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
 |fromDate|INT|NO| Limit start time of trades in ms. If `null` will return all trades from blockno 5060595|
 |toDate|INT|NO| Limit end time of trades in ms. If `null` will return all trades to current block|
 
