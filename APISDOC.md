@@ -16,7 +16,7 @@ Input Request Parameters
 |limit|INT|NO| Limit number of trades each page. (default is `20`)|
 |fromDate|INT|NO| Limit start time of trades in ms. If `null` will return all trades from blockno 5060595|
 |toDate|INT|NO| Limit end time of trades in ms. If `null` will return all trades to current block|
-<!-- |offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical| -->
+|offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
 
 Response:
 ```javascript
@@ -224,7 +224,7 @@ Input Request Parameters
 
 |Name | Type | Required | Description |
 | ----------| ---------|------|-----------------------------|
-<!-- |offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical| -->
+|offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
 
 Response:
 ```javascript
@@ -256,7 +256,7 @@ Input Request Parameters
 |period|STRING|NO| `H24`(24 hours) or `D7`(7 days) or `D30`(1 month) or `Y1`(1 year) or `ALL`(all time 100years) String time range. (default is `D7`)|
 |fromDate|INT|NO| Limit start time of volume in ms. If `null` will return volume from blockno 5060595|
 |toDate|INT|NO| Limit end time of volume in ms. If `null` will return volume to current block|
-<!-- |offcial|BOOL|NO| true or false (default is true). If `false` will return volume of all tokens (offical and unoffical trades), if `true` will return only offical| -->
+|offcial|BOOL|NO| true or false (default is true). If `false` will return volume of all tokens (offical and unoffical trades), if `true` will return only offical|
 
 Response:
 ```javascript
@@ -298,7 +298,7 @@ Input Request Parameters
 |period|STRING|NO| `H24`(24 hours) or `D7`(7 days) or `D30`(1 month) or `Y1`(1 year) or `ALL`(all time 100years) String time range. (default is `D7`)|
 |fromDate|INT|NO| Limit start time in ms. If `null` will return fee will burn from blockno 5060595|
 |toDate|INT|NO| Limit end time in ms. If `null` will return fee will burn to current block|
-
+|offcial|BOOL|NO| true or false (default is true). If `false` will return all fee will burn of all tokens (offical and unoffical trades), if `true` will return only offical|
 Response:
 ```javascript
 {
@@ -353,7 +353,7 @@ Input Request Parameters
 |limit|INT|NO| Limit number of trades each page. (default is `20`)|
 |fromDate|INT|NO| Limit start time in ms. If `null` will return data from blockno 5060595|
 |toDate|INT|NO| Limit end time in ms. If `null` will return data to current block|
-
+|offcial|BOOL|NO| true or false (default is true). If `false` will return all data of all tokens (offical and unoffical trades), if `true` will return only offical|
 Response:
 ```javascript
 // TX
@@ -396,7 +396,7 @@ Response:
   "month": 201904,
   "year": 2019,
   "volumeEth": 0.6505524912,
-  }
+  }|offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
 }
 
 ```
@@ -416,6 +416,7 @@ Input Request Parameters
 |limit|INT|NO| Limit number of trades each page. (default is `20`)|
 |fromDate|INT|NO| Limit start time in ms. If `null` will return data from blockno 5060595|
 |toDate|INT|NO| Limit end time in ms. If `null` will return data to current block|
+|offcial|BOOL|NO| true or false (default is true). If `false` will return all data of all tokens (offical and unoffical trades), if `true` will return only offical|
 
 Response:
 ```javascript
