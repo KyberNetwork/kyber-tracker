@@ -396,7 +396,7 @@ Response:
   "month": 201904,
   "year": 2019,
   "volumeEth": 0.6505524912,
-  }|offcial|BOOL|NO| true or false (default is true). If `false` will return all trades of all tokens (offical and unoffical trades), if `true` will return only offical|
+  }
 }
 
 ```
