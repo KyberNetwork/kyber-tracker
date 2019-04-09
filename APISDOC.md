@@ -299,6 +299,7 @@ Input Request Parameters
 |fromDate|INT|NO| Limit start time in ms. If `null` will return fee will burn from blockno 5060595|
 |toDate|INT|NO| Limit end time in ms. If `null` will return fee will burn to current block|
 |official|BOOL|NO| true or false (default is true). If `false` will return all fee will burn of all tokens (offical and unoffical trades), if `true` will return only offical|
+
 Response:
 ```javascript
 {
@@ -354,6 +355,7 @@ Input Request Parameters
 |fromDate|INT|NO| Limit start time in ms. If `null` will return data from blockno 5060595|
 |toDate|INT|NO| Limit end time in ms. If `null` will return data to current block|
 |official|BOOL|NO| true or false (default is true). If `false` will return all data of all tokens (offical and unoffical trades), if `true` will return only offical|
+
 Response:
 ```javascript
 // TX
@@ -396,6 +398,7 @@ Response:
   "month": 201904,
   "year": 2019,
   "volumeEth": 0.6505524912,
+  "volumeUsd": 0.4476723949
   }
 }
 
