@@ -2,7 +2,7 @@ const network = require('../../config/network');
 const Utils = require('sota-core').load('util/Utils');
 const logger = log4js.getLogger('TrackerBot');
 const Bot = require('node-telegram-bot-api');
-
+let lastCommand = {}
 const commands = {
     start: {
         match: /^\/?start(?:@\w+)?$/i,
@@ -86,6 +86,21 @@ It supports 'd' and 'h'.
             const sinceSeconds = nowSeconds - seconds;
 
             sendPartnerSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
+    },
+    whois: {
+        match: /^\/?whois?(?:@\w+)?(?:\s+(\w+))?$/i,
+        // internal: true,
+        reply: (bot, msg, match) => {
+            const addr = match[1]
+
+            const responseMsg = `do you want to know this address: ${addr}`
+            reply(bot, msg, responseMsg, {
+                parse_mode: "Markdown",
+                no_mention: true,
+            })
+            bot._context.finish();
+            return;
         }
     },
     trader: {
@@ -369,7 +384,7 @@ function reply(bot, msg, text, options) {
             text = mention(msg.reply_to_message.from) + "\n" + text;
             options.parse_mode = "Markdown";
     }
-    bot.sendMessage(msg.chat.id, text, {
+    return bot.sendMessage(msg.chat.id, text, {
         reply_to_message_id: !options.no_reply ? msg.message_id : undefined,
         parse_mode: !!options.parse_mode ? options.parse_mode : undefined,
         disable_web_page_preview: !!options.no_preview
@@ -621,6 +636,17 @@ function todayStartInSeconds(){
     return Math.floor(today.getTime() / 1000);
 }
 
+
+function handleUserReplyWhois(bot, msg){
+    console.log("********** last command", lastCommand, lastCommand[msg.from.id], msg)
+    if(lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois'){
+        const newAddrName = msg.text
+        const addr = lastCommand[msg.from.id].match[1]
+        console.log("___________reply new address: ", newAddrName)
+        reply(bot, msg, `new address name ${newAddrName} was saved for address: ${addr}`);
+    }
+}
+
 function setupBot(bot, body) {
     if (!body.message) return;
     if (!body.message.text) return;
@@ -641,6 +667,7 @@ function setupBot(bot, body) {
             let text = value.reply;
             if (text) {
                 bot.onText(value.match, (msg, match) => {
+                    lastCommand[msg.from.id] = {key, match}
                     if (text.call) {
                         text.call(value, bot, msg, match);
                     } else {
@@ -656,9 +683,14 @@ function setupBot(bot, body) {
 
     if (!matchFound) {
         bot.on('message', (msg) => {
-            if (msg.text.startsWith("/") || msg.chat.type === "private") {
+            console.log("************ messenger", msg)
+            
+            if (msg.text.startsWith("/")) {
                 reply(bot, msg, "Invalid command. Try /help.");
             }
+
+            handleUserReplyWhois(bot, msg)
+            lastCommand[msg.from.id] = null
           });
     }
 };
