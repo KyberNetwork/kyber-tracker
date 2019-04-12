@@ -2,7 +2,13 @@ const network = require('../../config/network');
 const Utils = require('sota-core').load('util/Utils');
 const logger = log4js.getLogger('TrackerBot');
 const Bot = require('node-telegram-bot-api');
+const HttpSignatures = require('http-signatures')
 let lastCommand = {}
+
+
+const httpSignatures = new HttpSignatures(process.env.GATEWAY_ENDPOINT, process.env.KEY_ID, process.env.KEY_STRING)
+
+
 const commands = {
     start: {
         match: /^\/?start(?:@\w+)?$/i,
@@ -94,13 +100,42 @@ It supports 'd' and 'h'.
         reply: (bot, msg, match) => {
             const addr = match[1]
 
-            const responseMsg = `do you want to know this address: ${addr}`
-            reply(bot, msg, responseMsg, {
-                parse_mode: "Markdown",
-                no_mention: true,
+            bot.sendChatAction(msg.chat.id, "typing");
+
+            httpSignatures.signingSend('applications', 'GET', null, {address: addr})
+            .then(data => {
+                console.log("********&^^^^^^^^^^^", data)
+                if(data && data.length){
+                    const responseMsg = `${addr} is address of: ${data.map(r => r.name).join(', ')}`
+                    console.log('&&&&&&&&&&&&& repomst msg: ', responseMsg)
+                    reply(bot, msg, responseMsg)
+                    bot._context.finish();
+                    return;
+                } else {
+                    if(lastCommand && lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois'){
+                        const responseMsg = `Name of this address: ${addr} not found, do you want to add name for this address?`
+                        lastCommand[msg.from.id].waitingReply = true
+                        reply(bot, msg, responseMsg)
+                    }
+                    
+                    bot._context.finish();
+                    return;
+                }
             })
-            bot._context.finish();
-            return;
+            .catch(err => {
+                reply(bot, msg, "An unknown error occurs. Please try again later.");
+                logger.error(err);
+                bot._context.finish();
+                return;
+            })
+
+            // const responseMsg = `do you want to know this address: ${addr}`
+            // reply(bot, msg, responseMsg, {
+            //     parse_mode: "Markdown",
+            //     no_mention: true,
+            // })
+            // bot._context.finish();
+            // return;
         }
     },
     trader: {
@@ -638,12 +673,24 @@ function todayStartInSeconds(){
 
 
 function handleUserReplyWhois(bot, msg){
-    console.log("********** last command", lastCommand, lastCommand[msg.from.id], msg)
-    if(lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois'){
+    if(lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois' && lastCommand[msg.from.id].waitingReply){
         const newAddrName = msg.text
         const addr = lastCommand[msg.from.id].match[1]
-        console.log("___________reply new address: ", newAddrName)
-        reply(bot, msg, `new address name ${newAddrName} was saved for address: ${addr}`);
+        httpSignatures.signingSend('applications', 'POST', {
+            name: newAddrName,
+            addresses: [addr]
+        }, null)
+        .then(data => {
+            if(data.error){
+                reply(bot, msg, data.error);
+            } else {
+                reply(bot, msg, `new address name ${newAddrName} was saved for address: ${addr}`);  
+            }
+        })
+        .catch(err => {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        })
     }
 }
 
