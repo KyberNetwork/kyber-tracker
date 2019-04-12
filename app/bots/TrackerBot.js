@@ -104,18 +104,33 @@ It supports 'd' and 'h'.
 
             httpSignatures.signingSend('applications', 'GET', null, {address: addr})
             .then(data => {
-                console.log("********&^^^^^^^^^^^", data)
                 if(data && data.length){
                     const responseMsg = `${addr} is address of: ${data.map(r => r.name).join(', ')}`
-                    console.log('&&&&&&&&&&&&& repomst msg: ', responseMsg)
                     reply(bot, msg, responseMsg)
                     bot._context.finish();
                     return;
                 } else {
                     if(lastCommand && lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois'){
-                        const responseMsg = `Name of this address: ${addr} not found, do you want to add name for this address?`
-                        lastCommand[msg.from.id].waitingReply = true
-                        reply(bot, msg, responseMsg)
+                        if(process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME && process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME.includes(msg.from.username)){
+                            const responseMsg = `Name of this address: ${addr} not found, do you want to add name for this address?`
+                            bot.sendMessage(msg.chat.id, responseMsg, {
+                                reply_markup: {
+                                    inline_keyboard: [[
+                                    {
+                                        text: 'Add new Name',
+                                        callback_data: 'add_name_whois'
+                                    },{
+                                        text: 'Cancel',
+                                        callback_data: 'cancel_whois'
+                                    }
+                                    ]]
+                                }
+                            });
+                        } else {
+                            reply(bot, msg, `Name of this address: ${addr} not found, we will add later.`);
+                        }
+                    } else {
+                        reply(bot, msg, "An unknown error occurs. Please try again later.");
                     }
                     
                     bot._context.finish();
@@ -694,7 +709,32 @@ function handleUserReplyWhois(bot, msg){
     }
 }
 
+function handleCallbackQuery(bot){
+    bot.on("callback_query", (callbackQuery) => {
+        const message = callbackQuery.message;
+        if(callbackQuery.data == 'add_name_whois') {
+            if(lastCommand && callbackQuery && callbackQuery.from &&lastCommand[callbackQuery.from.id] && lastCommand[callbackQuery.from.id].key == 'whois'){
+                if(process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME && process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME.includes(callbackQuery.from.username)){
+                    lastCommand[callbackQuery.from.id].waitingReply = true
+                    bot.sendMessage(message.chat.id, "Pls enter new address name: ")
+                } else {
+                    bot.sendMessage(message.chat.id, "You dont have permission!")
+                }
+                
+            } else {
+                bot.sendMessage(message.chat.id, "An unknown error occurs. Please try again later.");
+            }
+            
+        } else if (callbackQuery.data == 'cancel_whois'){
+            bot.sendMessage(message.chat.id, "whois command canceled")
+        }
+      });
+}
+
 function setupBot(bot, body) {
+
+    handleCallbackQuery(bot)
+
     if (!body.message) return;
     if (!body.message.text) return;
 
@@ -740,6 +780,8 @@ function setupBot(bot, body) {
             lastCommand[msg.from.id] = null
           });
     }
+
+    
 };
 
 module.exports = {
