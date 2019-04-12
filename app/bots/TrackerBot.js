@@ -691,21 +691,34 @@ function handleUserReplyWhois(bot, msg){
     if(lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois' && lastCommand[msg.from.id].waitingReply){
         const newAddrName = msg.text
         const addr = lastCommand[msg.from.id].match[1]
-        httpSignatures.signingSend('applications', 'POST', {
-            name: newAddrName,
-            addresses: [addr]
-        }, null)
-        .then(data => {
-            if(data.error){
-                reply(bot, msg, data.error);
-            } else {
-                reply(bot, msg, `new address name ${newAddrName} was saved for address: ${addr}`);  
+        httpSignatures.signingSend('applications', 'GET', null, {name: newAddrName, active: true})
+        .then(existed => {
+            let currentAddrs = []
+            if(existed && existed.length){
+                const existedApp = existed[0]
+                currentAddrs = existedApp.addresses
             }
+
+            httpSignatures.signingSend('applications', 'POST', {
+                name: newAddrName,
+                addresses: [...currentAddrs, addr]
+            }, null)
+            .then(data => {
+                if(data.error){
+                    reply(bot, msg, data.error);
+                } else {
+                    reply(bot, msg, `new address name ${newAddrName} was saved for address: ${addr}`);  
+                }
+            })
+            .catch(err2 => {
+                reply(bot, msg, "An unknown error occurs. Please try again later.");
+                logger.error(err2);
+            })
         })
         .catch(err => {
             reply(bot, msg, "An unknown error occurs. Please try again later.");
             logger.error(err);
-        })
+        }) 
     }
 }
 
@@ -770,8 +783,6 @@ function setupBot(bot, body) {
 
     if (!matchFound) {
         bot.on('message', (msg) => {
-            console.log("************ messenger", msg)
-            
             if (msg.text.startsWith("/")) {
                 reply(bot, msg, "Invalid command. Try /help.");
             }
