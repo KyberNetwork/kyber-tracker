@@ -26,7 +26,6 @@ It supports 'd' and 'h'.
                 text += `/today to see volume for today (UTC time)
 /yesterday to see volume for yesterday (UTC time)
 /burn to see how much KNC burned to date
-/token to see volume by token
 /whois [address] to lookup user name by address
 `;
 
@@ -49,7 +48,8 @@ It supports 'd' and 'h'.
                 text += `/today to see volume for today (UTC time)
 /yesterday to see volume for yesterday (UTC time)
 /burn to see how much KNC burned to date
-/token to see volume by token`;
+/whois [address] to lookup user name by address
+`;
             } else {
                 text += "Other common used commands: /today, /yesterday, /burn, /token, /partner, /trader, /price.";
             }
