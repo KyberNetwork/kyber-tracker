@@ -2,6 +2,12 @@ const network = require('../../config/network');
 const Utils = require('sota-core').load('util/Utils');
 const logger = log4js.getLogger('TrackerBot');
 const Bot = require('node-telegram-bot-api');
+const HttpSignatures = require('http-signatures')
+let lastCommand = {}
+
+
+const httpSignatures = new HttpSignatures(process.env.GATEWAY_ENDPOINT, process.env.KEY_ID, process.env.KEY_STRING)
+
 
 const commands = {
     start: {
@@ -20,7 +26,9 @@ It supports 'd' and 'h'.
                 text += `/today to see volume for today (UTC time)
 /yesterday to see volume for yesterday (UTC time)
 /burn to see how much KNC burned to date
-/token to see volume by token`;
+/whois [address] to lookup user name by address
+`;
+
             } else {
                 text += "Other common used commands: /today, /yesterday, /burn, /token, /partner, /trader, /price.";
             }
@@ -40,7 +48,8 @@ It supports 'd' and 'h'.
                 text += `/today to see volume for today (UTC time)
 /yesterday to see volume for yesterday (UTC time)
 /burn to see how much KNC burned to date
-/token to see volume by token`;
+/whois [address] to lookup user name by address
+`;
             } else {
                 text += "Other common used commands: /today, /yesterday, /burn, /token, /partner, /trader, /price.";
             }
@@ -86,6 +95,65 @@ It supports 'd' and 'h'.
             const sinceSeconds = nowSeconds - seconds;
 
             sendPartnerSummary(bot, msg, sinceSeconds, nowSeconds, "LAST " + resp);
+        }
+    },
+    whois: {
+        match: /^\/?whois?(?:@\w+)?(?:\s+(\w+))?$/i,
+        // internal: true,
+        reply: (bot, msg, match) => {
+            const addr = match[1]
+
+            bot.sendChatAction(msg.chat.id, "typing");
+
+            httpSignatures.signingSend('applications', 'GET', null, {address: addr})
+            .then(data => {
+                if(data && data.length){
+                    const responseMsg = `${addr} is address of: ${data.map(r => r.name).join(', ')}`
+                    reply(bot, msg, responseMsg)
+                    bot._context.finish();
+                    return;
+                } else {
+                    if(lastCommand && lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois'){
+                        if(process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME && process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME.includes(msg.from.username)){
+                            const responseMsg = `Name of this address: ${addr} not found, do you want to add name for this address?`
+                            bot.sendMessage(msg.chat.id, responseMsg, {
+                                reply_markup: {
+                                    inline_keyboard: [[
+                                    {
+                                        text: 'Add new Name',
+                                        callback_data: 'add_name_whois'
+                                    },{
+                                        text: 'Cancel',
+                                        callback_data: 'cancel_whois'
+                                    }
+                                    ]]
+                                }
+                            });
+                        } else {
+                            reply(bot, msg, `Name of this address: ${addr} not found, we will add later.`);
+                        }
+                    } else {
+                        reply(bot, msg, "An unknown error occurs. Please try again later.");
+                    }
+                    
+                    bot._context.finish();
+                    return;
+                }
+            })
+            .catch(err => {
+                reply(bot, msg, "An unknown error occurs. Please try again later.");
+                logger.error(err);
+                bot._context.finish();
+                return;
+            })
+
+            // const responseMsg = `do you want to know this address: ${addr}`
+            // reply(bot, msg, responseMsg, {
+            //     parse_mode: "Markdown",
+            //     no_mention: true,
+            // })
+            // bot._context.finish();
+            // return;
         }
     },
     trader: {
@@ -369,7 +437,7 @@ function reply(bot, msg, text, options) {
             text = mention(msg.reply_to_message.from) + "\n" + text;
             options.parse_mode = "Markdown";
     }
-    bot.sendMessage(msg.chat.id, text, {
+    return bot.sendMessage(msg.chat.id, text, {
         reply_to_message_id: !options.no_reply ? msg.message_id : undefined,
         parse_mode: !!options.parse_mode ? options.parse_mode : undefined,
         disable_web_page_preview: !!options.no_preview
@@ -621,7 +689,68 @@ function todayStartInSeconds(){
     return Math.floor(today.getTime() / 1000);
 }
 
+
+function handleUserReplyWhois(bot, msg){
+    if(lastCommand[msg.from.id] && lastCommand[msg.from.id].key == 'whois' && lastCommand[msg.from.id].waitingReply){
+        const newAddrName = msg.text
+        const addr = lastCommand[msg.from.id].match[1]
+        httpSignatures.signingSend('applications', 'GET', null, {name: newAddrName, active: true})
+        .then(existed => {
+            let currentAddrs = []
+            if(existed && existed.length){
+                const existedApp = existed[0]
+                currentAddrs = existedApp.addresses
+            }
+
+            httpSignatures.signingSend('applications', 'POST', {
+                name: newAddrName,
+                addresses: [...currentAddrs, addr]
+            }, null)
+            .then(data => {
+                if(data.error){
+                    reply(bot, msg, data.error);
+                } else {
+                    reply(bot, msg, `new address name ${newAddrName} was saved for address: ${addr}`);  
+                }
+            })
+            .catch(err2 => {
+                reply(bot, msg, "An unknown error occurs. Please try again later.");
+                logger.error(err2);
+            })
+        })
+        .catch(err => {
+            reply(bot, msg, "An unknown error occurs. Please try again later.");
+            logger.error(err);
+        }) 
+    }
+}
+
+function handleCallbackQuery(bot){
+    bot.on("callback_query", (callbackQuery) => {
+        const message = callbackQuery.message;
+        if(callbackQuery.data == 'add_name_whois') {
+            if(lastCommand && callbackQuery && callbackQuery.from &&lastCommand[callbackQuery.from.id] && lastCommand[callbackQuery.from.id].key == 'whois'){
+                if(process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME && process.env.ALLOW_TELENAME_CHANGE_ADDR_NAME.includes(callbackQuery.from.username)){
+                    lastCommand[callbackQuery.from.id].waitingReply = true
+                    bot.sendMessage(message.chat.id, "Pls enter new address name: ")
+                } else {
+                    bot.sendMessage(message.chat.id, "You dont have permission!")
+                }
+                
+            } else {
+                bot.sendMessage(message.chat.id, "An unknown error occurs. Please try again later.");
+            }
+            
+        } else if (callbackQuery.data == 'cancel_whois'){
+            bot.sendMessage(message.chat.id, "whois command canceled")
+        }
+      });
+}
+
 function setupBot(bot, body) {
+
+    handleCallbackQuery(bot)
+
     if (!body.message) return;
     if (!body.message.text) return;
 
@@ -641,6 +770,7 @@ function setupBot(bot, body) {
             let text = value.reply;
             if (text) {
                 bot.onText(value.match, (msg, match) => {
+                    lastCommand[msg.from.id] = {key, match}
                     if (text.call) {
                         text.call(value, bot, msg, match);
                     } else {
@@ -656,17 +786,22 @@ function setupBot(bot, body) {
 
     if (!matchFound) {
         bot.on('message', (msg) => {
-            if (msg.text.startsWith("/") || msg.chat.type === "private") {
+            if (msg.text.startsWith("/")) {
                 reply(bot, msg, "Invalid command. Try /help.");
             }
+
+            handleUserReplyWhois(bot, msg)
+            lastCommand[msg.from.id] = null
           });
     }
+
+    
 };
 
 module.exports = {
     processRequest: (body, context) => {
         // new bot per req, to avoid concerns about simultanous requests
-        const bot = new Bot(context.botToken || process.env.TRACKER_BOT_TOKEN);
+        const bot = new Bot(context.botToken || process.env.INTERNAL_BOT_TOKEN);
         bot._context = context;
         setupBot(bot, body);
         bot.processUpdate(body);
