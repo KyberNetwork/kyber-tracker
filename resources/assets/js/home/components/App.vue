@@ -178,6 +178,21 @@
 
 
 
+        <span style="font-size:30px;cursor:pointer" @click="openNav()">&#9776; open</span>
+        <div id="mySidenav" class="sidenav">
+          <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
+          <a href="#">
+            
+            About
+          </a>
+          <a href="#">Services</a>
+          <a href="#">Clients</a>
+          <a href="#">Contact</a>
+        </div>
+
+
+
+
 
         <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
           <button type="button" class="btn btn-default pointer">
@@ -186,16 +201,6 @@
           </button>
         </a>
       </b-navbar>
-<!-- 
-      <b-navbar toggleable type="dark" class="second-heading-bar">
-        <b-navbar-toggle target="nav_text_collapse" />
-
-        <b-collapse is-nav id="nav_text_collapse">
-          <b-navbar-nav>
-            <b-nav-text>Navbar text</b-nav-text>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar> -->
 
       <div class="container">
         <div class="row pt-40">
@@ -553,6 +558,14 @@ export default {
 
     onfocus() {
       this.connectMetaMask();
+    },
+
+    openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+    },
+
+    closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
     }
   },
 
