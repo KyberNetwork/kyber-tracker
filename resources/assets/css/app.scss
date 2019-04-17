@@ -26,6 +26,10 @@ a {
     outline: none;
 }
 
+.w-0{
+  width: 0% !important;
+}
+
 .table th, .table td {
   border-top: none;
   white-space: normal !important;
@@ -1611,6 +1615,7 @@ html {
 #wrapper {
   min-height: 100%;
   position: relative;
+  padding-left: 50px;
 }
 
 #page-content {
@@ -2055,28 +2060,76 @@ table.table-round {
 
 .sidenav {
   height: 100%;
-  width: 0;
+  width: 50px;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
   background-color: #111;
   overflow-x: hidden;
+  overflow-y:hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
+  border: solid 1px #e3e5eb;
+  background-color: #ffffff;
+  
+  .nav-line{
+    display: flex;
+    width: 199px;
+    height: 50px;
+    align-items: center;
+    &.highlight-hover{
+      &:hover{
+        background-color: #f5f6fa;
+        .icon-side{
+          background-color: #21b78b;
+        }
+      }
+    }
+    
+    .icon-side{
+      width: 50px;
+      height: 50px;
+      background-color: #31cb9e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+  
+    .nav-text{
+      width: 140px;
+      overflow-x: hidden;
+      overflow-y:hidden;
+      // transition: width 0.5s;
+    }
+  }
+
+  .nav-logo{
+    height: 85px;
+    img{
+      width: 100px;
+      height: 52px;
+      margin: 15px;  
+    }
+  }
+  
 }
 
 .sidenav a {
-  padding: 8px 8px 8px 32px;
   text-decoration: none;
-  font-size: 25px;
-  color: #818181;
+  font-size: 18px;
+  font-weight: 500;
+  color: #4a4c52;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 0.89;
   display: block;
   transition: 0.3s;
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
+  color: #4a4c52;
 }
 
 .sidenav .closebtn {

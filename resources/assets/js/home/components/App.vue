@@ -68,7 +68,7 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3" >
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3 d-none" >
             <vue-autosuggest
               class="ajsbd"
               ref="seatchInputRef"
@@ -178,16 +178,51 @@
 
 
 
-        <span style="font-size:30px;cursor:pointer" @click="openNav()">&#9776; open</span>
         <div id="mySidenav" class="sidenav">
-          <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
-          <a href="#">
-            
-            About
+          <div class="nav-line nav-logo">
+             <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
+               <span class="entypo-switch icon-side h-100"></span>
+            </a>
+              <a href="#"  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
+                <img class="nav-logo" src="/images/logo.svg" />
+              </a>
+          </div>
+         
+          
+
+          
+          <a href="#" class="nav-line highlight-hover">
+            <div class="icon-side">
+              <span class="entypo-chart-bar"></span>
+            </div>
+            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.volume') }}</div>
           </a>
-          <a href="#">Services</a>
-          <a href="#">Clients</a>
-          <a href="#">Contact</a>
+          <a href="#" class="nav-line highlight-hover">
+            <div class="icon-side">
+              <span class="entypo-switch icon-side"></span>
+            </div>
+            
+            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.trade_history') }}</div>
+          </a>
+          <a href="#" class="nav-line highlight-hover">
+            <div class="icon-side">
+              <span class="entypo-database icon-side"></span>
+            </div>
+            
+            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.tokens') }}</div>
+          </a>
+          <a href="#" class="nav-line highlight-hover">
+            <div class="icon-side">
+              <span class="entypo-users icon-side"></span>
+            </div>
+            
+            <div v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']" >{{ $t('navigator.reserves') }}</div>
+          </a>
+          <div class="nav-line h-100">
+            <div class="icon-side h-100">
+            </div>
+            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']"></div>
+          </div>
         </div>
 
 
@@ -277,7 +312,8 @@ export default {
       isOpenFee: false,
       indexShowmore: -1,
       showColapseBtn: false,
-      dropdownText: this.$t('navigator.volume')
+      dropdownText: this.$t('navigator.volume'),
+      isNavOpen: true
     };
   },
 
@@ -560,13 +596,22 @@ export default {
       this.connectMetaMask();
     },
 
-    openNav() {
-      document.getElementById("mySidenav").style.width = "250px";
-    },
+    toggleNav() {
+      // document.getElementById("mySidenav").style.width = "250px";
 
-    closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-    }
+      // var myElements = document.querySelectorAll(".nav-text");
+
+      // for (var i = 0; i < myElements.length; i++) {
+      //   myElements[i].style.display = "inline-block !important";
+      // }
+      this.isNavOpen = !this.isNavOpen
+      if(this.isNavOpen){
+        document.getElementById("mySidenav").style.width = "200px";
+      } else {
+        document.getElementById("mySidenav").style.width = "50px";
+      }
+      
+    },
   },
 
   updated: function () {
