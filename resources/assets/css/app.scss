@@ -599,6 +599,10 @@ td {
 
 .table-responsive-wraper {
   overflow: auto;
+  padding: 33px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
 }
 table.table-round th {
   vertical-align: top;
@@ -668,7 +672,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     padding: 15px 6px;
 
     height: 40px;
-    background-color: #1f3468;
+    background-color: #215bb2;
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
@@ -685,6 +689,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     line-height: 20px;
     height: 20px;
     vertical-align: middle;
+
+    .angle{
+      margin: 0 20px;
+      color: #00d3a7
+    }
   }
 }
 

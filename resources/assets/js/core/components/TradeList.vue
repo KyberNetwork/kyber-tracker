@@ -152,40 +152,48 @@
       </paginate>
       
       <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
+      
+      
+      
+      
       <!-- trade list for large screen device -->
       <div v-if="($mq == 'md' || $mq == 'lg')" class="table-responsive-wraper clear pt-10">
         
         <table class="table table-responsive table-round table-striped">
           <thead>
             <tr>
-              <th class="pl-4">{{ $t("trade_list.date") }}</th>
-              <th colspan="2" class="pl-4">{{ $t("trade_list.exchange_from") }}</th>
-              <th class="pl-4">{{ $t("trade_list.exchange_to") }}</th>
-              <th v-bind:colspan="partner ? 1 : 2" class="pl-4">{{ $t("trade_list.rate") }}</th>
-              <th v-if="partner" colspan="2" class="pl-4" >{{ $t("trade_list.commission") }}</th>
-              <!-- <th class="text-right">{{ $t("trade_list.fee_to_burn") }}</th> -->
+              <th class="pl-4" >{{ $t("trade_list.date") }}</th>
+              <!-- <th  class="pl-4">{{ $t("trade_list.exchange_from") }}</th> -->
+              <th class="text-center" >{{ $t("trade_list.trade") }}</th>
+              <th v-bind:colspan="partner ? 1 : 1" class="text-center" >{{ $t("trade_list.rate") }}</th>
+              <th v-if="partner" class="pl-4" >{{ $t("trade_list.commission") }}</th>
+              <th class="text-center" >VIEW ON</th>
               <!-- <th></th> -->
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index" class="pointer">
-              <td class="pl-4"  @click="onClickRow(row)">{{ getDateInfo(row) }}</td>
-              <td class="text-left pl-4 font-semi-bold"  @click="onClickRow(row)">{{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
-                <!-- {{ row.takerTokenSymbol }} 
-                <i>(<a :href="getAddressLink(row.takerTokenAddress)" target="_blank">{{getShortedAddr(row.takerTokenAddress)}}</a>)</i> -->
-                <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
-                <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
+              <td class="pl-4"   @click="onClickRow(row)">{{ getDateInfo(row) }}</td>
+              <td class="text-center font-semi-bold d-flex justify-content-center "  @click="onClickRow(row)">
+                <span class="source">
+                  {{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
+                
+                  <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
+                  <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
+                </span>
+                <span class="angle">
+                  <!-- <i class="k k-angle right"></i> -->
+                  <span class="entypo-right"></span>
+                </span>
+                <span class="dest">
+                  {{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
+                  <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
+                  <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
+                </span>
+                
               </td>
-              <!-- <td class="text-left no-padding-right"></td> -->
-              <td  @click="onClickRow(row)"><i class="k k-angle right"></i></td>
-              <td class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
-                <!-- {{ row.makerTokenSymbol }}
-                <i>(<a :href="getAddressLink(row.makerTokenAddress)" target="_blank">{{getShortedAddr(row.makerTokenAddress)}}</a>)</i> -->
-                <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
-                <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
-              </td>
-              <!-- <td class="text-left"></td> -->
-              <td class="text-left pl-4"  @click="onClickRow(row)">1 
+              
+              <td class="text-center pl-4 rate"  @click="onClickRow(row)">1 
                 <span class="font-semi-bold">
                   <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
@@ -193,14 +201,10 @@
                 <span class="font-semi-bold">
                   <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
-                </span></td>
-              <!-- <td>{{ row.makerTokenSymbol }}</td> -->
+                </span>
+              </td>
               <td v-if="partner" class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
-              <!-- <td class="text-right no-padding-right">{{ formatFeeToBurn('KNC', row.burnFees) }} KNC</td>
-              <td><span class="pull-right ml-10">
-                <i class="k k-angle right"></i>
-              </span></td> -->
-              <td class="text-right pr-4">
+              <td class="text-center pr-4" >
                 <!-- <img src="/images/more.svg" /> -->
                 <!-- <span class="entypo-dot-3 table-more"></span> -->
 
@@ -218,6 +222,10 @@
           </tbody>
         </table>
       </div>
+
+
+
+
 
       <!-- small trade list for mobile -->
       <div v-if="$mq !== 'md' && $mq !== 'lg'" class=" clear pt-10">

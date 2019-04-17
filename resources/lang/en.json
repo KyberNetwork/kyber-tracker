@@ -114,6 +114,7 @@
     "msg_no_result": "There's no trade found.",
     "exchange_from" : "From",
     "exchange_to" : "To",
+    "trade" : "TRADE",
     "pair": "Pair",
     "export_csv": "Export (CSV)",
     "no_row": "No record found",
