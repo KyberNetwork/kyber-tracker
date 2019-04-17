@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-12">
-    <div class="panel-heading pb-16">
+    <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.reserves')}} </span>
     </div>
 

@@ -22,7 +22,7 @@
 
         <div v-if="searchResult.isValid && searchResult.data">          
 
-          <div class="wallet-detail-title panel-heading pb-16">
+          <div class="wallet-detail-title panel-heading pb-20">
             <span v-if="!partner" class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
             <span v-else class="no-margin panel-title">{{$t('wallet_detail.partner_details')}} </span>
           </div>
@@ -98,7 +98,7 @@
             </div>
           </div>
 
-          <div class="wallet-detail-title panel-heading pt-56 pb-16">
+          <div class="wallet-detail-title panel-heading pt-56 pb-20">
             <span class="no-margin">{{$t('wallet_detail.history')}} </span>
           </div>
 

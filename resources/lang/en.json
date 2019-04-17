@@ -43,7 +43,7 @@
     "search": "Wallet Details",
     "network": "Network",
     "volume": "Volume",
-    "go_to_exchange": "Swap now"
+    "go_to_exchange": "Swap Token"
   },
 
   "reserves": {

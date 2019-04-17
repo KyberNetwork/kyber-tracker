@@ -1,23 +1,26 @@
 <template>
   <div id="wrapper">
     <div id="page-content">
-      <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12">
+      <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
         <div class="no-padding d-flex justify-content-between col-12 col-sm-12" v-click-outside="onClickOutside">
+
+
+          <b-dropdown class="change-official h-100" @shown="clickHeading()" >
+            <template slot="button-content">
+              {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
+            </template>
+            <b-dropdown-item @click="onChangeOfficial('all')">
+              <span>{{ $t('navigator.all_network') }}</span>
+            </b-dropdown-item>
+            <b-dropdown-item @click="onChangeOfficial('official')">
+              <span>{{ $t('navigator.verified_reserves_network') }}</span>
+            </b-dropdown-item>
+          </b-dropdown> 
+
+
           <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
 
-             <li>
-              <b-dropdown class="change-official" @shown="clickHeading()" >
-                <template slot="button-content">
-                  {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
-                </template>
-                <b-dropdown-item @click="onChangeOfficial('all')">
-                  <span>{{ $t('navigator.all_network') }}</span>
-                </b-dropdown-item>
-                <b-dropdown-item @click="onChangeOfficial('official')">
-                  <span>{{ $t('navigator.verified_reserves_network') }}</span>
-                </b-dropdown-item>
-              </b-dropdown> 
-            </li>
+            
 
 
             <li id="network-volume">
@@ -68,7 +71,7 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3" >
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end" >
             <!-- <vue-autosuggest
               class="d-none"
               ref="seatchInputRef"
@@ -96,10 +99,8 @@
 
 
           
-          <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
-            <button type="button" class="btn btn-default pointer">
+          <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange d-flex" target="_blank">
               <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
-            </button>
           </a>
           
           

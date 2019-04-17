@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-12">
-    <div class="wallet-detail-title panel-heading pb-16">
+    <div class="wallet-detail-title panel-heading pb-20">
     <span class="no-margin panel-title">{{ getReservename(getFilterReserveAddress())}} </span>
   </div>
 

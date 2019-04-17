@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-12">
-    <div class="panel-heading pb-16">
+    <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.top_token')}} </span>
     </div>
 
@@ -39,7 +39,7 @@
       </b-tabs>
     </b-card>
 
-    <div class="panel-heading pt-56 pb-16">
+    <div class="panel-heading pt-56 pb-20">
       <span class="no-margin panel-title">{{ $t("common.all_token") }}</span>
     </div>
 
