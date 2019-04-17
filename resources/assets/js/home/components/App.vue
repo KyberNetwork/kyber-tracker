@@ -21,12 +21,12 @@
 
 
             <li id="network-volume">
-              <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
+              <span >{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
               <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
             <li id="knc-price">
-              <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
+              <span >{{ $t('status_bar.knc_price') }}</span><br />
               <span class="topbar-value">
                 {{ kncPrice }} 
                 </span>
@@ -35,21 +35,21 @@
             </li>
 
             <li id="eth-price">
-              <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
+              <span >{{ $t('status_bar.eth_price') }}</span><br />
               <span class="topbar-value" >{{ ethPrice }} </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
               <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
 
             <li id="fee-to-burn">
-              <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
+              <span >{{ $t('status_bar.collected_fees') }}</span><br />
               <span class="topbar-value">{{ collectedFees }}</span>
               <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
             </li>
                 
 
             <li id="total-burn-fee">
-              <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
+              <span >{{ $t('status_bar.fees_burned') }}</span><br />
               <span class="topbar-value">{{ totalBurnedFee }}</span>
             </li> 
 
@@ -68,9 +68,9 @@
              -->
           </ul>
 
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3 d-none" >
-            <vue-autosuggest
-              class="ajsbd"
+          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3" >
+            <!-- <vue-autosuggest
+              class="d-none"
               ref="seatchInputRef"
               :suggestions="[{
                 data: [...this.addressesMetamask, ...this.searchData]
@@ -86,7 +86,7 @@
                 placeholder:$t('common.searchbox_placeholder'),
                 autocomplete: 'off'
               }"
-            />
+            /> -->
             <b-input-group-append class="btn-search">
               <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
                 <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
@@ -94,6 +94,13 @@
             </b-input-group-append>
           </div>
 
+
+          
+          <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
+            <button type="button" class="btn btn-default pointer">
+              <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
+            </button>
+          </a>
           
           
         </div>
@@ -108,12 +115,55 @@
 
       </b-navbar>
 
-      <b-navbar toggleable="md" type="dark" class="second-heading-bar ">
+
+      <div id="mySidenav" class="sidenav">
+        <div class="nav-line nav-logo">
+            <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
+              <span class="entypo-switch icon-side h-100"></span>
+          </a>
+            <a href="#"  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
+              <img class="nav-logo" src="/images/logo.svg" />
+            </a>
+        </div>
+        
+        <a href="#" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <span class="entypo-chart-bar"></span>
+          </div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.volume') }}</div>
+        </a>
+        <a href="#" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <span class="entypo-switch icon-side"></span>
+          </div>
+          
+          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.trade_history') }}</div>
+        </a>
+        <a href="#" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <span class="entypo-database icon-side"></span>
+          </div>
+          
+          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.tokens') }}</div>
+        </a>
+        <a href="#" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <span class="entypo-users icon-side"></span>
+          </div>
+          
+          <div v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']" >{{ $t('navigator.reserves') }}</div>
+        </a>
+        <div class="nav-line h-100">
+          <div class="icon-side h-100">
+          </div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']"></div>
+        </div>
+      </div>
+
+      <!-- <b-navbar toggleable="md" type="dark" class="second-heading-bar ">
         <b-navbar-brand to="/">
           <img class="kyber-logo d-inline-block align-top" src="/images/logo.svg" />
         </b-navbar-brand>
-        
-        <!-- <b-navbar-toggle target="nav_collapse" /> -->
         <b-nav-item-dropdown v-if="($mq == 'sm' || $mq == 'ml')"
           id="nav7_ddown"
           :text="this.dropdownText"
@@ -175,67 +225,12 @@
           </b-nav-item>
         </b-nav>
 
-
-
-
-        <div id="mySidenav" class="sidenav">
-          <div class="nav-line nav-logo">
-             <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
-               <span class="entypo-switch icon-side h-100"></span>
-            </a>
-              <a href="#"  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
-                <img class="nav-logo" src="/images/logo.svg" />
-              </a>
-          </div>
-         
-          
-
-          
-          <a href="#" class="nav-line highlight-hover">
-            <div class="icon-side">
-              <span class="entypo-chart-bar"></span>
-            </div>
-            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.volume') }}</div>
-          </a>
-          <a href="#" class="nav-line highlight-hover">
-            <div class="icon-side">
-              <span class="entypo-switch icon-side"></span>
-            </div>
-            
-            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.trade_history') }}</div>
-          </a>
-          <a href="#" class="nav-line highlight-hover">
-            <div class="icon-side">
-              <span class="entypo-database icon-side"></span>
-            </div>
-            
-            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.tokens') }}</div>
-          </a>
-          <a href="#" class="nav-line highlight-hover">
-            <div class="icon-side">
-              <span class="entypo-users icon-side"></span>
-            </div>
-            
-            <div v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']" >{{ $t('navigator.reserves') }}</div>
-          </a>
-          <div class="nav-line h-100">
-            <div class="icon-side h-100">
-            </div>
-            <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']"></div>
-          </div>
-        </div>
-
-
-
-
-
         <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
           <button type="button" class="btn btn-default pointer">
-            <!-- <span class="entypo-right-circled icon-go"></span> -->
             <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
           </button>
         </a>
-      </b-navbar>
+      </b-navbar> -->
 
       <div class="container">
         <div class="row pt-40">
@@ -283,15 +278,15 @@
 </template>
 
 <script>
-import moment,{ locale } from "moment";
+import moment, { locale } from "moment";
 import request from "superagent";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
 import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
-import ClickOutside from 'vue-click-outside'
-import _ from'lodash'
+import ClickOutside from "vue-click-outside";
+import _ from "lodash";
 
 export default {
   data() {
@@ -312,7 +307,7 @@ export default {
       isOpenFee: false,
       indexShowmore: -1,
       showColapseBtn: false,
-      dropdownText: this.$t('navigator.volume'),
+      dropdownText: this.$t("navigator.volume"),
       isNavOpen: true
     };
   },
@@ -320,8 +315,8 @@ export default {
   // ready: function () {
   //   window.addEventListener('resize', this.handleResize)
   // },
-  beforeDestroy: function () {
-    window.removeEventListener('resize', this.handleResize)
+  beforeDestroy: function() {
+    window.removeEventListener("resize", this.handleResize);
   },
 
   computed: {
@@ -348,24 +343,22 @@ export default {
       moment.locale(locale);
       window.location.reload();
     },
-    handleResize (event) { 
-      let arrayLi = this.$refs.headingSum.children
-      if(arrayLi && arrayLi.length){
-        this.indexShowmore = [...arrayLi].findIndex( x => x.offsetTop > 60) - 1
+    handleResize(event) {
+      let arrayLi = this.$refs.headingSum.children;
+      if (arrayLi && arrayLi.length) {
+        this.indexShowmore = [...arrayLi].findIndex(x => x.offsetTop > 60) - 1;
       }
 
-      if(arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60){
-        let headerClass = this.$refs.headingSum.className
-        if(headerClass.indexOf("header-expand") > -1 ){
-          this.showColapseBtn = true
+      if (arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60) {
+        let headerClass = this.$refs.headingSum.className;
+        if (headerClass.indexOf("header-expand") > -1) {
+          this.showColapseBtn = true;
         } else {
-          this.showColapseBtn = false
+          this.showColapseBtn = false;
         }
       } else {
-        this.showColapseBtn = false
+        this.showColapseBtn = false;
       }
-
-
     },
     getLanguage() {
       if (
@@ -401,11 +394,13 @@ export default {
       }
 
       try {
-        let address = web3.eth.accounts[0]
-        this.addressesMetamask = [{
-          type: "metamask",
-          addr: address
-        }];
+        let address = web3.eth.accounts[0];
+        this.addressesMetamask = [
+          {
+            type: "metamask",
+            addr: address
+          }
+        ];
       } catch (e) {
         console.log(e);
       }
@@ -419,10 +414,10 @@ export default {
         this.totalBurnedFee = stats.totalBurnedFee + " KNC";
         this.collectedFees = stats.collectedFees + " KNC";
 
-        this.kncPrice = "$" + stats.kncPrice
-        this.kncPriceChange24h = stats.kncChange24h
-        this.ethPrice = "$" + stats.ethPrice
-        this.ethPriceChange24h = stats.ethChange24h
+        this.kncPrice = "$" + stats.kncPrice;
+        this.kncPriceChange24h = stats.kncChange24h;
+        this.ethPrice = "$" + stats.ethPrice;
+        this.ethPriceChange24h = stats.ethChange24h;
       });
 
       // request
@@ -449,16 +444,19 @@ export default {
       //   });
     },
     doSearch() {
-      if(this.$mq == 'sm' || this.$mq == 'ml' || this.$mq == 'md'){
-        if(this.$refs.seatchInputRef.$el && this.$refs.seatchInputRef.$el.className.indexOf("search-expand") == -1){
-          this.$refs.seatchInputRef.$el.className = "search-expand ml-0"
-          this.$refs.headingSum.className = "d-none"
-          this.$refs.searchComponent.className += ' col-12'
-          return
-        } 
+      if (this.$mq == "sm" || this.$mq == "ml" || this.$mq == "md") {
+        if (
+          this.$refs.seatchInputRef.$el &&
+          this.$refs.seatchInputRef.$el.className.indexOf("search-expand") == -1
+        ) {
+          this.$refs.seatchInputRef.$el.className = "search-expand ml-0";
+          this.$refs.headingSum.className = "d-none";
+          this.$refs.searchComponent.className += " col-12";
+          return;
+        }
       }
       if (!this.searchString) {
-        this.onClickOutside()
+        this.onClickOutside();
         return;
       }
       this.searchString = this.searchString.trim();
@@ -498,48 +496,49 @@ export default {
       });
     },
 
-    changeTextDropdown(text){
-      console.log("============= change dropdown", text)
-      this.dropdownText = text
+    changeTextDropdown(text) {
+      console.log("============= change dropdown", text);
+      this.dropdownText = text;
     },
 
-    clickHeading(){
+    clickHeading() {
       // let headerClass = this.$refs.headingSum.className
       // if(headerClass.indexOf("header-expand") !== -1 ){
       //   this.$refs.headingSum.className = "heading-summary p-relative"
       // } else {
       //   this.$refs.headingSum.className = "heading-summary p-relative header-expand"
       // }
-      // 
+      //
 
-      this.$refs.headingSum.className = "heading-summary p-relative header-expand"
-      this.handleResize()
+      this.$refs.headingSum.className =
+        "heading-summary p-relative header-expand";
+      this.handleResize();
     },
 
-    colapseHeader(){
-      this.$refs.headingSum.className = "heading-summary p-relative"
+    colapseHeader() {
+      this.$refs.headingSum.className = "heading-summary p-relative";
     },
 
-    isAllTokens(){
-      return store.get('allTokens') ? true : false
+    isAllTokens() {
+      return store.get("allTokens") ? true : false;
     },
 
-
-    onChangeOfficial(value){
-      if(value == 'official') {
+    onChangeOfficial(value) {
+      if (value == "official") {
         // window.OFFICIAL_TOKENS = true
-        store.set('allTokens', false)
+        store.set("allTokens", false);
       } else {
-        store.set('allTokens', true)
+        store.set("allTokens", true);
       }
       location.reload();
     },
-    
-    onClickOutside(){
-      this.$refs.seatchInputRef.$el.className = ""
-      this.$refs.headingSum.className = "heading-summary p-relative"
-      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3'
-      this.handleResize()
+
+    onClickOutside() {
+      this.$refs.seatchInputRef.$el.className = "";
+      this.$refs.headingSum.className = "heading-summary p-relative";
+      this.$refs.searchComponent.className =
+        "p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3";
+      this.handleResize();
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
@@ -549,17 +548,19 @@ export default {
     },
 
     renderSuggestion(suggestion) {
-      let logoUrl ;
+      let logoUrl;
       switch (suggestion.item.type) {
         case "address":
-          logoUrl = <span class="entypo-layout history-logo"></span>
+          logoUrl = <span class="entypo-layout history-logo" />;
           break;
         case "txHash":
-          logoUrl = <span class="entypo-switch history-logo"></span>
+          logoUrl = <span class="entypo-switch history-logo" />;
           break;
         case "metamask":
-          logoUrl = <img class="history-logo" src="/images/metamask-icon.svg" />
-          
+          logoUrl = (
+            <img class="history-logo" src="/images/metamask-icon.svg" />
+          );
+
           break;
       }
       return (
@@ -567,7 +568,7 @@ export default {
           <div class="logo-suggest-wraper float-left text-center">
             {logoUrl}
           </div>
-          
+
           <span class="suggest-text">
             {suggestion.item.addr.slice(0, 14)} ...{" "}
             {suggestion.item.addr.slice(-12)}{" "}
@@ -604,23 +605,22 @@ export default {
       // for (var i = 0; i < myElements.length; i++) {
       //   myElements[i].style.display = "inline-block !important";
       // }
-      this.isNavOpen = !this.isNavOpen
-      if(this.isNavOpen){
+      this.isNavOpen = !this.isNavOpen;
+      if (this.isNavOpen) {
         document.getElementById("mySidenav").style.width = "200px";
       } else {
         document.getElementById("mySidenav").style.width = "50px";
       }
-      
-    },
+    }
   },
 
-  updated: function () {
-    this.handleResize()
+  updated: function() {
+    this.handleResize();
   },
 
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     // window.removeEventListener('resize', this.handleResize)
-    window.clearInterval(this.intervalResize)
+    window.clearInterval(this.intervalResize);
   },
 
   mounted() {
@@ -631,27 +631,27 @@ export default {
     this.intervalResize = window.setInterval(this.handleResize, 2000);
 
     switch (this.$route.path) {
-      case '/trades':
-        this.dropdownText = this.$t('navigator.trade_history')
+      case "/trades":
+        this.dropdownText = this.$t("navigator.trade_history");
         break;
-      case '/tokens':
-        this.dropdownText = this.$t('navigator.tokens')
+      case "/tokens":
+        this.dropdownText = this.$t("navigator.tokens");
         break;
-      case '/reserves':
-        this.dropdownText = this.$t('navigator.reserves')
+      case "/reserves":
+        this.dropdownText = this.$t("navigator.reserves");
         break;
-    
+
       default:
-        this.dropdownText = this.$t('navigator.volume')
+        this.dropdownText = this.$t("navigator.volume");
         break;
     }
     // this.debouncedOnResize = _.debounce(this.handleResize, 500)
-    window.addEventListener('resize', () => {
-      this.indexShowmore = -1
-      this.showColapseBtn = false
-      this.handleResize()
-    })
-    this.handleResize()
+    window.addEventListener("resize", () => {
+      this.indexShowmore = -1;
+      this.showColapseBtn = false;
+      this.handleResize();
+    });
+    this.handleResize();
   },
   directives: {
     ClickOutside

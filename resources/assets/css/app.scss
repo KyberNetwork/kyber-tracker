@@ -14,6 +14,10 @@ body {
   color: #2a4552;
 }
 
+.container{
+  padding: 0 60px;
+}
+
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: $code-font-family;
 }
@@ -109,7 +113,7 @@ a {
 }
 
 .search-button {
-  border-radius: 0px 4px 4px 0px;
+  border-radius: 4px;
   background-color: #31467d;
   width: 49px;
   height: 40px;
@@ -124,14 +128,15 @@ a {
 
 .heading-bar {
   position: relative;
-  background-color: #192a56;
-  color: rgba(255, 255, 255, 0.56);
+  // background-color: #192a56;
   min-height: 0px !important;
   padding: 0.5rem 1rem 0rem 1rem;
   // padding: 10px 0;
   padding-top: 10px;
-  border-top: 1px solid #243c47;
+  // border-top: 1px solid #243c47;
   align-items: flex-start !important;
+  border: solid 1px #e3e5eb;
+  color: #4a4c52;
 
   -webkit-transition: height 2s ease;
   -moz-transition: height 2s ease;
@@ -270,6 +275,20 @@ a {
 
 .card-header-tabs {
   outline: none;
+  li{
+    a{
+      border-color: #31cb9e !important;
+      border: none !important;
+      &.active{
+        // border: 0 0 2px 0;
+        border-bottom: solid 2px #31cb9e !important;
+        // border-top: none;
+        // border-left: none;
+        // border-right: none;
+      }
+    }
+  }
+  
 }
 
 .nav-tabs {
@@ -638,7 +657,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .card-header {
   min-height: 40px;
-  background-color: #f4f4f4;
+  background-color: #ffffff;
+  padding: 0.75rem;
+  border-bottom:  solid 2px #ececec;
 
   .nav-item{
     font-size: 12px;
@@ -856,7 +877,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     float: left;
     float: left;
     margin-right: 15px;
-    color: #fff;
+    // color: #fff;
     min-width: 105px;
     padding-bottom: 23px;
 
@@ -1523,8 +1544,20 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .chart-period-picker {
   position: absolute;
-  top: 11px !important;
+  top: 49px !important;
   right: 33px !important;
+  color: #3d464d;
+  font-size: 12px;
+  font-weight: 900;
+  .btn-active{
+    background-color: #ffffff;
+    &:hover{
+      background-color: #ffffff;
+    }
+    &:active{
+      background-color: #ffffff;
+    }
+  }
 }
 
 .image-inline-td {
@@ -1615,7 +1648,8 @@ html {
 #wrapper {
   min-height: 100%;
   position: relative;
-  padding-left: 50px;
+  padding-left: 200px;
+  background-color: #f6f7fa;
 }
 
 #page-content {
@@ -2060,7 +2094,7 @@ table.table-round {
 
 .sidenav {
   height: 100%;
-  width: 50px;
+  width: 200px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -2138,6 +2172,13 @@ table.table-round {
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
+}
+
+.card{
+  border: none;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
 }
 
 

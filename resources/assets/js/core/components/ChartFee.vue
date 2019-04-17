@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :id="elementId" height="250px" class="mt-20"></canvas>
+    <canvas :id="elementId" height="300px" class="mt-20"></canvas>
   </div>
 </template>
 
@@ -63,7 +63,7 @@
             data: dataset,
             pointRadius: 0,
             backgroundColor: (accumulated ? 'rgba(255, 165, 2,.3)' : 'rgba(0,173,168,.3)'),
-            borderColor: (accumulated ? 'rgb(255, 165, 2)' : 'rgb(0,173,168)'),
+            borderColor: (accumulated ? 'rgba(255, 165, 2,.3)' : 'rgba(0,173,168,.3)'),
             borderWidth: 2,
             showLine: true,
             spanGaps: true,
@@ -93,7 +93,7 @@
             this.chartInstance.update(0);
           } else {
             this.chartInstance = new Chart(ctx, {
-              type: 'LineWithLine',
+              type: 'bar',
               data: data,
               options: options,
             });
