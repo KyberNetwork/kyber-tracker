@@ -131,33 +131,33 @@
             </a>
         </div>
         
-        <a href="#" class="nav-line highlight-hover">
+        <router-link to="/" class="nav-line highlight-hover">
           <div class="icon-side">
             <span class="entypo-chart-bar"></span>
           </div>
           <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.volume') }}</div>
-        </a>
-        <a href="#" class="nav-line highlight-hover">
+        </router-link>
+        <router-link to="/trades" class="nav-line highlight-hover">
           <div class="icon-side">
             <span class="entypo-switch icon-side"></span>
           </div>
           
           <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.trade_history') }}</div>
-        </a>
-        <a href="#" class="nav-line highlight-hover">
+        </router-link>
+        <router-link to="/tokens" class="nav-line highlight-hover">
           <div class="icon-side">
             <span class="entypo-database icon-side"></span>
           </div>
           
           <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.tokens') }}</div>
-        </a>
-        <a href="#" class="nav-line highlight-hover">
+        </router-link>
+        <router-link to="/reserves" class="nav-line highlight-hover">
           <div class="icon-side">
             <span class="entypo-users icon-side"></span>
           </div>
           
           <div v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']" >{{ $t('navigator.reserves') }}</div>
-        </a>
+        </router-link>
         <div class="nav-line h-100">
           <div class="icon-side h-100">
           </div>
