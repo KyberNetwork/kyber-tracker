@@ -85,12 +85,12 @@ a {
   .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
-    background-color: rgba(51,102,204,.75);
+    background-color: #31cb9e;
   }
 
   .dropdown-menu {
     padding: 0;
-    background-color: #fcfcfc;
+    // background-color: #fcfcfc;
     font-size: 0.9rem;
   }
 
@@ -120,7 +120,7 @@ a {
 }
 
 .search-button {
-  // border-radius: 4px;
+  border-radius: 0px;
   background-color: transparent;
   width: 73px;
   height: 100%;
@@ -162,6 +162,7 @@ a {
 
   .change-official{
     button{
+      font-size: 14px;
       border-right: solid 1px #e3e5eb;
       border-top: none;
       border-bottom: none;
@@ -171,6 +172,30 @@ a {
       color: #4a4c52;
       padding: 0 20px;
 
+      &[aria-expanded="true"]{
+        background-color: #ffffff;
+        color: #4a4c52;
+        border-color: #f6f7fa;
+        box-shadow: none;
+      }
+    }
+    .dropdown-menu{
+      width: 100%;
+      // min-width: auto;
+      min-width: 235px;
+      // background-color: #3a5492;
+      // border-color: #5276c3;
+      .dropdown-item{
+        color: #4a4c52;
+        padding: 0.20rem 1rem;
+        background-color: #ffffff;
+        &:hover, &:focus{
+          background-color: #f5f6fa;
+        }
+        &:active{
+          background-color: #31cb9e;
+        }
+      }
     }
   }
 }
@@ -709,6 +734,21 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     &.rate{
       padding-left: 4rem;
     }
+
+    &.view-on{
+      a{
+        padding: 0 5px;
+        img{
+          &.etherscan{
+            width: 18px
+          }
+          &.enj{
+            width: 14px;
+          }
+        }
+      }
+      
+    }
   }
 }
 
@@ -917,20 +957,6 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
   .dropdown-toggle{
     min-width: 150px;
-  }
-  .dropdown-menu{
-    width: 100%;
-    // min-width: auto;
-    min-width: 235px;
-    background-color: #3a5492;
-    border-color: #5276c3;
-    .dropdown-item{
-      color: #fff;
-      padding: 0.20rem 1rem;
-      &:hover, &:focus{
-        background-color: #5c81ca;
-      }
-    }
   }
   li {
     float: left;
@@ -1650,7 +1676,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .dropdown-menu{
-  background-color: #1f3468;
+  // background-color: #1f3468;
   min-width: 13rem;
   left: -45px;
 }
@@ -2093,12 +2119,11 @@ table.table-round {
   .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
-    background-color: rgba(51,102,204,.75);
   }
 
   .dropdown-menu {
     padding: 0;
-    background-color: #fcfcfc;
+    // background-color: #fcfcfc;
   }
 
   .dropdown-item {

@@ -161,7 +161,7 @@
           </datepicker>
         </div>
 
-        <div v-if="isShowTotal" class="pt-1">Total: {{totalTrade && totalTrade >= 2 ? `${totalTrade} trades` : `${totalTrade} trade`}}</div>
+        <div v-if="isShowTotal" class="pt-3 float-right">Total: {{totalTrade && totalTrade >= 2 ? `${totalTrade} trades` : `${totalTrade} trade`}}</div>
 
         <table class="table table-responsive table-round table-striped">
           <thead>
@@ -171,7 +171,7 @@
               <th class="text-center" style="width: 40%;" >{{ $t("trade_list.trade") }}</th>
               <th v-bind:colspan="partner ? 1 : 1" class="text-left rate" style="width: 30%;">{{ $t("trade_list.rate") }}</th>
               <th v-if="partner" class="pl-4" >{{ $t("trade_list.commission") }}</th>
-              <th class="text-center" style="width: 10%;">VIEW ON</th>
+              <th class="text-left" style="width: 10%;">VIEW ON</th>
               <!-- <th></th> -->
             </tr>
           </thead>
@@ -208,18 +208,20 @@
                 </span>
               </td>
               <td v-if="partner" class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
-              <td class="text-center pr-4" >
+              <td class="text-center pr-4 view-on" >
                 <!-- <img src="/images/more.svg" /> -->
                 <!-- <span class="entypo-dot-3 table-more"></span> -->
+                <a :href="getTxEtherscanLink(row.tx)" target="_blank"><img class="etherscan" src="/images/etherscan-logo.png" /></a>
+                <a :href="getEnjinxLink(row.tx)" target="_blank"><img class="enj" src="/images/kyber-enj-logo.png" /></a>
 
-                <b-dropdown class="trade-view-on" no-caret right>
+                <!-- <b-dropdown class="trade-view-on" no-caret right>
                   <template slot="button-content">
                     <span class="entypo-dot-3 table-more" data-toggle="dropdown"></span>
                   </template>
                   <b-dropdown-item :href="getTxEtherscanLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_etherscan") }}</b-dropdown-item>
                   <b-dropdown-item :href="getEnjinxLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_enjinx") }}</b-dropdown-item>
                   
-                </b-dropdown>
+                </b-dropdown> -->
 
               </td>
             </tr>
