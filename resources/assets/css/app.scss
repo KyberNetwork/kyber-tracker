@@ -29,6 +29,10 @@ a {
   color: #2ed573;
 }
 
+.color-green{
+  color: #31cb9e;
+}
+
 :focus {
     outline: none;
 }
@@ -339,30 +343,33 @@ a {
 
 .pagination {
   display: -ms-flexbox;
+  font-size: 14px;
   display: flex;
   padding-left: 0;
   list-style: none;
   border-radius: .25rem;
   .page-item.active .page-link{
     z-index: unset;
+    background-color: white;
   }
   li.page-item {
     margin: 0 3px 0 0;
 
     a.page-link {
-      background-color: #e7e9ec;
+      // background-color: #e7e9ec;
       border: none;
       border-radius: 0;
       color: currentColor;
       cursor: pointer;
       display: block;
       outline: none;
-      padding: 10px 15px;
+      padding: 10px 10px;
     }
   }
 
   li.page-item.active a.page-link {
-    background-color: #dadce2;
+    // background-color: #dadce2;
+    color: #31cb9e
   }
 }
 
@@ -477,7 +484,7 @@ btn {
 }
 
 .home-pagination-block {
-  float: right;
+  // float: right;
   padding: 10px 0 10px 0;
   margin: 0;
 
@@ -681,6 +688,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     letter-spacing: normal;
     text-align: left;
     color: #ffffff;
+
+    &.rate{
+      padding-left: 6rem;
+    }
   }
 
   th, td {
@@ -691,8 +702,12 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     vertical-align: middle;
 
     .angle{
-      margin: 0 20px;
+      // margin: 0 20px;
       color: #00d3a7
+    }
+
+    &.rate{
+      padding-left: 4rem;
     }
   }
 }
@@ -1688,7 +1703,7 @@ html {
 #wrapper {
   min-height: 100%;
   position: relative;
-  padding-left: 200px;
+  margin-left: 200px;
   background-color: #f6f7fa;
 }
 
@@ -1931,7 +1946,7 @@ html {
   .calendar-icon > div:first-child:after{
     background-image: url(/images/calendar.svg);
     right: 8px;
-    top: 6px;
+    top: 8px;
   }
   .vdp-datepicker__calendar{
     border-radius: 3px;

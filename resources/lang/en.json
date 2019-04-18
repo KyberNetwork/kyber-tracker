@@ -159,8 +159,8 @@
 
   "token_list": {
     "title": "Trade Tokens",
-    "prev": "Prev",
-    "next": "Next",
+    "prev": "PREVIOUS",
+    "next": "NEXT",
     "no" : "No."
   },
 
