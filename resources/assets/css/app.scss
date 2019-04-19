@@ -1309,7 +1309,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .trade-details-container{
   .background-detail{
-    background-color: #f9fafc;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
   }
   color: #0c0033;
   letter-spacing: normal;
@@ -1317,30 +1320,32 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   font-stretch: normal;
   word-wrap: break-word;
   .left-trade-detail{
-    padding: 32px 15px 35px 15px;
-    border-bottom: solid 1px #d7d8d9;
+    // padding: 32px 15px 35px 15px;
+    // border-bottom: solid 1px #d7d8d9;
+    .trade-detail-wrapper{
+      border-radius: 5px;
+      background-color: #f6f7fa;
+      color: #5a5e67;
+    }
     .trade-time{
-      padding-left: 15px;
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 1.43;
-      text-align: left;
+      font-size: 13px;
+      // font-weight: 500;
+      // line-height: 1.43;
+      // text-align: left;
+      color: #9ea1aa;
       // text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
     .left-trade-rate{
-      background-color: #ffffff;
-      box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);
-      margin: 20px 0px;
+      // background-color: #ffffff;
+      // box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);
+      // margin: 20px 0px;
       /* align-items: center; */
       // text-align: center;
+      margin: 0 25px;
+      border-bottom: solid 1px #eceef3;
 
 
       font-size: 18px;
-      font-weight: 500;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
       text-align: center;
       color: #0c0033;
       .token{
@@ -1366,21 +1371,19 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
     .trade-note{
       font-size: 14px;
-      padding-left: 15px;
+      margin: 0 25px;
       // text-align: center;
+    }
+    .trade-wallet{
+      margin: 0 25px;
     }
   }
 
   .right-trade-detail{
     padding: 32px 24px 0px 36px;
+    
     .trade-detail-title{
       font-size: 16px;
-      font-weight: 500;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      text-align: left;
       color: #0c0033 !important;
       padding-bottom: 6px;
     }
@@ -1399,37 +1402,37 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 
   .rate-detail{
-    text-align: center;
-    margin: 0;
-    padding: 15px 0;
+    // text-align: center;
+    // margin: 0;
+    margin: 0 25px;
     span{
       color: #0c0033;
     }
     .rate-detail-title{
-      font-size: 12px;
-      font-weight: 600;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      text-align: left;
+      font-size: 14px;
+      // font-weight: 600;
+      // font-style: normal;
+      // font-stretch: normal;
+      // line-height: normal;
+      // letter-spacing: normal;
+      // text-align: left;
       color: #0c0033;
-      text-align: center;
+      // text-align: center;
     }
     .rate-detail-value{
       font-size: 16px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 1;
-      letter-spacing: normal;
-      text-align: left;
+      // font-weight: normal;
+      // font-style: normal;
+      // font-stretch: normal;
+      // line-height: 1;
+      // letter-spacing: normal;
+      // text-align: left;
       color: #0c0033;
       padding-top: 10px;
-      text-align: center;
+      // text-align: center;
     }
     // box-shadow: 0 2px 2px 0 rgba(31, 52, 104, 0.29);
-    box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);
+    // box-shadow: 0 2px 2px 0 rgba(10, 59, 122, 0.29);
   }
 }
 
@@ -1741,7 +1744,7 @@ html {
 
 .token-link {
   cursor: pointer;
-  color: #2ed573;
+  // color: #2ed573;
 }
 
 .token-link:hover {
@@ -2221,6 +2224,7 @@ table.table-round {
     }
   
     .nav-text{
+      line-height: 1.89;
       width: 140px;
       overflow-x: hidden;
       overflow-y:hidden;
