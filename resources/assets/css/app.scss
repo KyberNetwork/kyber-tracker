@@ -2226,7 +2226,7 @@ table.table-round {
     width: 199px;
     height: 50px;
     align-items: center;
-    &.active{
+    &.router-link-exact-active{
       background-color: #f5f6fa;
       .icon-side{
         background-color: #21b78b;

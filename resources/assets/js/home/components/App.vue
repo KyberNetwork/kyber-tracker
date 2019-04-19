@@ -543,11 +543,11 @@ export default {
     },
 
     onClickOutside() {
-      this.$refs.seatchInputRef.$el.className = "";
-      this.$refs.headingSum.className = "heading-summary p-relative";
-      this.$refs.searchComponent.className =
-        "cursor-pointer d-flex justify-content-between ";
-      this.handleResize();
+      // this.$refs.seatchInputRef.$el.className = "";
+      // this.$refs.headingSum.className = "heading-summary p-relative";
+      // this.$refs.searchComponent.className =
+      //   "cursor-pointer d-flex justify-content-between ";
+      // this.handleResize();
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);

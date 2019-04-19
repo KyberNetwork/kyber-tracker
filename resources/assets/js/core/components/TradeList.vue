@@ -254,6 +254,9 @@
           <span slot="prevContent"><span class="color-green prev-last"><img src="/images/ic-arrow-left.svg" class="pb-1"/>  {{$t('token_list.prev')}}</span></span>
           <span slot="nextContent" ><span class="color-green prev-last">{{$t('token_list.next')}}  <img src="/images/ic-arrow-right.svg"  class="pb-1"/></span></span>
         </paginate>
+
+        <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
+        <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
       </div>
 
 
@@ -309,10 +312,13 @@
             </tr>
           </tbody>
         </table>
+
+
+        <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
+        <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
       </div>
 
-      <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
-      <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
+      
 
 
 
