@@ -29,7 +29,7 @@
                 </span>
               </div>
               <!-- <span class="to">to</span> -->
-              <span class="entypo-right to col-2 color-green"></span>
+              <span class="entypo-right col-2 color-green"></span>
               <div class="token col-5">
                 <span class="token-symbol font-semi-bold">
                   <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenAddress) }}</span>
