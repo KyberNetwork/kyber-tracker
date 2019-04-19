@@ -98,9 +98,13 @@
             </div>
           </div>
 
-          <div class="wallet-detail-title panel-heading pt-56 pb-20">
-            <span class="no-margin">{{$t('wallet_detail.history')}} </span>
+          <div class="wallet-detail-title panel-heading pt-56 pb-20 d-flex justify-content-between">
+            <span class="no-margin panel-title">{{$t('wallet_detail.history')}} </span>
+
+            <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer float-left" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
           </div>
+
+          
 
 
         </div>
@@ -130,7 +134,7 @@
         >
       </paginate> -->
       
-      <button v-if="isShowExport" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
+      
       
       
       

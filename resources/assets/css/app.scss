@@ -1289,7 +1289,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
   .btn-export{
     float: right;
-    margin-top: 10px;
+    // margin-top: 10px;
     border: solid 1px #56c7c4;
     color: #00d3a7;
     font-size: 14px;
@@ -1438,7 +1438,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 .address-detail-container{
   // background-color: #f9fafc;
-  box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);
+  // box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
   color: #3d464d;
   letter-spacing: normal;
   font-style: normal;
@@ -1452,9 +1455,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
   .wallet-title{
     font-size: 16px;
-    font-weight: 600;
+    // font-weight: 600;
     padding: 14px 20px 12px 20px;
-    background-color: #f5f6f7;
+    background-color: #f5f6f78a;
 
     .wallet-address{
       font-size: 16px;
@@ -1480,7 +1483,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     font-style: italic;
     line-height: 1.17;
     letter-spacing: 1px;
-    color: #0c0033;
+    color: #9ea1aa;
     padding-left: 20px;
     padding-bottom: 10px;
   }
