@@ -1892,16 +1892,19 @@ html {
 }
 #autosuggest__input{
   // padding-right: 49px;
+  border-left: solid 2px #d2d3d4 !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.5;
   width: 350px;
-  height: 40px;
-  border-radius: 20px;
-  background-color: #ffffff;
+  // height: 40px;
+  border-radius: 0;
+  background-color: #f6f7fa;
   border-style: none;
-  color: #ffffff;
+  color: #3d464d;
 
   outline: none;
   box-shadow:none !important;
-  border:none !important;
 }
 #autosuggest__input::placeholder{
   font-size: 10px;
