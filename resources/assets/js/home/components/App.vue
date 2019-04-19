@@ -128,7 +128,10 @@
       <div id="mySidenav" class="sidenav">
         <div class="nav-line nav-logo">
             <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
-              <span class="entypo-switch icon-side h-100"></span>
+              <span class=" icon-side h-100">
+                <img src="/images/collapse-icon.svg" />
+              </span>
+              
           </a>
             <a href="#"  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
               <img class="nav-logo" src="/images/logo.svg" />
