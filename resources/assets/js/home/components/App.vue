@@ -132,10 +132,10 @@
                 <img src="/images/collapse-icon.svg" />
               </span>
               
-          </a>
-            <a href="#"  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
-              <img class="nav-logo" src="/images/logo.svg" />
             </a>
+            <router-link to="/" v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
+              <img class="nav-logo" src="/images/logo.svg" />
+            </router-link>
         </div>
         
         <router-link to="/" class="nav-line highlight-hover">

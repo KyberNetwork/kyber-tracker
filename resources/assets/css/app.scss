@@ -1440,6 +1440,15 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.token-detail-container{
+  .token-name{
+    .address-link{
+      color: #76777a !important;
+      font-size: 18px;
+    }
+  }
+}
+
 .address-detail-container{
   // background-color: #f9fafc;
   // box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);
