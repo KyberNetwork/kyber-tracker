@@ -134,7 +134,7 @@
               
             </a>
             <router-link to="/" v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
-              <img class="nav-logo" src="/images/logo.svg" />
+              <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
             </router-link>
         </div>
         
