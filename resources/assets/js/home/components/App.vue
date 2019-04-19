@@ -73,28 +73,32 @@
           </span>
 
           <span class="d-flex justify-content-end">
-            <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end" >
-              <!-- <vue-autosuggest
-                class="d-none"
-                ref="seatchInputRef"
-                :suggestions="[{
-                  data: [...this.addressesMetamask, ...this.searchData]
-                }]"
-                @keyup.enter="doSearch"
-                @focus="onfocus"
-                :getSuggestionValue="getSuggestionValue"
-                :renderSuggestion="renderSuggestion"
-                :onSelected="onSelected"
-                :inputProps="{
-                  id:'autosuggest__input', 
-                  onInputChange: this.onInputChange, 
-                  placeholder:$t('common.searchbox_placeholder'),
-                  autocomplete: 'off'
-                }"
-              /> -->
-              <b-input-group-append class="btn-search">
+            <div ref="searchComponent" class="cursor-pointer" >
+              <b-input-group-append class="btn-search d-flex justify-content-between">
+                <vue-autosuggest
+                  class="d-none search-expand"
+                  ref="seatchInputRef"
+                  :suggestions="[{
+                    data: [...this.addressesMetamask, ...this.searchData]
+                  }]"
+                  @keyup.enter="doSearch"
+                  @focus="onfocus"
+                  :getSuggestionValue="getSuggestionValue"
+                  :renderSuggestion="renderSuggestion"
+                  :onSelected="onSelected"
+                  :inputProps="{
+                    id:'autosuggest__input', 
+                    class: 'mr-0',
+                    onInputChange: this.onInputChange, 
+                    placeholder:$t('common.searchbox_placeholder'),
+                    autocomplete: 'off'
+                  }"
+                />
+
                 <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
-                  <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+                  <!-- <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+                   -->
+                   <img class="search" src="/images/search-icon.svg" />
                 </b-btn>
               </b-input-group-append>
           
@@ -542,7 +546,7 @@ export default {
       this.$refs.seatchInputRef.$el.className = "";
       this.$refs.headingSum.className = "heading-summary p-relative";
       this.$refs.searchComponent.className =
-        "p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3";
+        "cursor-pointer d-flex justify-content-between ";
       this.handleResize();
     },
     isTxHash(hash) {
