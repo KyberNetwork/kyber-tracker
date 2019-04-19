@@ -146,9 +146,12 @@
 
   </div>
 
-  <!-- <div class="wallet-detail-title panel-heading pt-56 pb-16">
-    <span class="no-margin">{{$t('wallet_detail.history')}} </span>
-  </div> -->
+
+  
+
+  <div class="wallet-detail-title panel-heading pt-56 pb-16">
+    <span class="no-margin panel-title">{{$t('wallet_detail.history')}} </span>
+  </div>
     <mini-trade-list ref="datatable"
       :getFilterTokenAddress="getFilterTokenAddress"
       :getFilterReserveAddress="getFilterReserveAddress"
