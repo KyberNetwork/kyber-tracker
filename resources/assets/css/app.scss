@@ -2141,6 +2141,33 @@ table.table-round {
 
   }
 }
+
+
+.notfound-wrapper{
+  padding-top: 20%;
+  margin: auto;
+  .notfound-img{
+    width: 324px;
+  }
+
+  .notfound-title{
+    font-family: Cera;
+    font-size: 52px;
+  }
+  .notfound-note{
+    color: #666666;
+    font-size: 18px;
+  }
+  .go-home{
+    button{
+      border-radius: 5px;
+      background-color: #31cb9e;
+      color: white;
+    }
+  }
+}
+
+
 @keyframes trade-loading {
   0% {
     top: 6px;
