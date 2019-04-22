@@ -1285,11 +1285,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       opacity: 0.15;
     }
   }
-  .wallet-detail-title{
-    font-size: 24px;
-    font-weight: 600;
-    color: #3d464d;
-  }
+  // .wallet-detail-title{
+  //   font-size: 24px;
+  //   font-weight: 600;
+  //   color: #3d464d;
+  // }
 
   .btn-export{
     float: right;
@@ -1453,6 +1453,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 .address-detail-container{
+  padding: 30px;
   // background-color: #f9fafc;
   // box-shadow: 0px 2px 1px 0px rgba(10, 59, 122, 0.37);
   background-color: #ffffff;
@@ -1472,8 +1473,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .wallet-title{
     font-size: 16px;
     // font-weight: 600;
-    padding: 14px 20px 12px 20px;
-    background-color: #f5f6f78a;
+    // padding: 14px 20px 12px 20px;
+    // background-color: #f5f6f78a;
 
     .wallet-address{
       font-size: 16px;
@@ -1486,9 +1487,14 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
   }
   .wallet-value{
-    text-align: center;
+    // text-align: center;
     padding-top: 32px;
     padding-bottom: 39px;
+    border-radius: 5px;
+    background-color: #f6f7fa;
+    .wallet-column{
+      padding: 0 30px;
+    }
     .value-number{
       font-size: 24px;
       line-height: 1;
@@ -1500,8 +1506,6 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     line-height: 1.17;
     letter-spacing: 1px;
     color: #9ea1aa;
-    padding-left: 20px;
-    padding-bottom: 10px;
   }
 }
 
