@@ -600,7 +600,8 @@ module.exports = {
       "symbol" : "BNB",
       "decimal": 18,
       "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-      "hidden": 1537590437000
+      "hidden": 1537590437000,
+      "delisted": true
     },
     "REP": {
       "name": "Augur",
