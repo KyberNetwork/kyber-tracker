@@ -1,79 +1,119 @@
 <template>
   <div id="wrapper">
     <div id="page-content">
+      <b-nav class="mobile-header d-flex justify-content-between">
+        <b-nav-item>
+          <img class="nav-burger ml-0" src="/images/hamburger.svg" />
+        </b-nav-item>
+        <b-nav-item>
+          <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
+        </b-nav-item>
+        <b-nav-item class="d-flex h-100 mobile-search-nav">
+          <div ref="searchComponent" class="cursor-pointer ml-auto d-flex justify-content-center" >
+            <b-input-group-append class="btn-mobile-search d-flex justify-content-between">
+              <vue-autosuggest
+                class="d-none search-expand"
+                ref="seatchInputRef"
+                :suggestions="[{
+                  data: [...this.addressesMetamask, ...this.searchData]
+                }]"
+                @keyup.enter="doSearch"
+                @focus="onfocus"
+                :getSuggestionValue="getSuggestionValue"
+                :renderSuggestion="renderSuggestion"
+                :onSelected="onSelected"
+                :inputProps="{
+                  id:'autosuggest__input', 
+                  class: 'mr-0',
+                  onInputChange: this.onInputChange, 
+                  placeholder:$t('common.searchbox_placeholder'),
+                  autocomplete: 'off'
+                }"
+              />
+
+              <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
+                <!-- <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+                  -->
+                  <img class="search" src="/images/search-icon.svg" />
+              </b-btn>
+            </b-input-group-append>
+        
+          </div>
+        </b-nav-item>
+      </b-nav>
+
+
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
-        <div class="no-padding d-flex justify-content-between col-12 col-sm-12" v-click-outside="onClickOutside">
+        <div class="no-padding col-12 col-sm-12 d-flex" v-click-outside="onClickOutside">
 
-          <span class="d-flex justify-content-start">
-            <b-dropdown class="change-official h-100" @shown="clickHeading()" >
-              <template slot="button-content">
-                {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
-              </template>
-              <b-dropdown-item @click="onChangeOfficial('all')">
-                <span>{{ $t('navigator.all_network') }}</span>
-              </b-dropdown-item>
-              <b-dropdown-item @click="onChangeOfficial('official')">
-                <span>{{ $t('navigator.verified_reserves_network') }}</span>
-              </b-dropdown-item>
-            </b-dropdown> 
-
-
-            <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
-
-              
+          <b-dropdown class="change-official h-100" @shown="clickHeading()" >
+            <template slot="button-content">
+              {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
+            </template>
+            <b-dropdown-item @click="onChangeOfficial('all')">
+              <span>{{ $t('navigator.all_network') }}</span>
+            </b-dropdown-item>
+            <b-dropdown-item @click="onChangeOfficial('official')">
+              <span>{{ $t('navigator.verified_reserves_network') }}</span>
+            </b-dropdown-item>
+          </b-dropdown> 
 
 
-              <li id="network-volume">
-                <span >{{ $t('status_bar.network_volume') }}</span><br />
-                <span class="topbar-value">{{ networkVolume }}</span>
-                <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
-              </li>
-              <li id="knc-price">
-                <span >{{ $t('status_bar.knc_price') }}</span><br />
-                <span class="topbar-value">
-                  {{ kncPrice }} 
-                  </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-                <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
-              </li>
-
-              <li id="eth-price">
-                <span >{{ $t('status_bar.eth_price') }}</span><br />
-                <span class="topbar-value" >{{ ethPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-                <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
-              </li>
-
-              <li id="fee-to-burn">
-                <span >{{ $t('status_bar.collected_fees') }}</span><br />
-                <span class="topbar-value">{{ collectedFees }}</span>
-                <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
-              </li>
-                  
-
-              <li id="total-burn-fee">
-                <span >{{ $t('status_bar.fees_burned') }}</span><br />
-                <span class="topbar-value">{{ totalBurnedFee }}</span>
-              </li> 
+          <ul ref="headingSum" class="heading-summary p-relative " @click="clickHeading()">
 
             
-              <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
-              <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
-              
 
-              <!-- <li>
-                <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-                <span class="topbar-value">{{ tradeCount }}</span>
-              </li> 
-              <li class="network-fee" >
-                  
-              </li>
-              -->
-            </ul>
-          </span>
 
-          <span class="d-flex justify-content-end">
-            <div ref="searchComponent" class="cursor-pointer" >
+            <li id="network-volume">
+              <span >{{ $t('status_bar.network_volume') }}</span><br />
+              <span class="topbar-value">{{ networkVolume }}</span>
+              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
+            </li>
+            <li id="knc-price">
+              <span >{{ $t('status_bar.knc_price') }}</span><br />
+              <span class="topbar-value">
+                {{ kncPrice }} 
+                </span>
+              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+              <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
+            </li>
+
+            <li id="eth-price">
+              <span >{{ $t('status_bar.eth_price') }}</span><br />
+              <span class="topbar-value" >{{ ethPrice }} </span>
+              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
+            </li>
+
+            <li id="fee-to-burn">
+              <span >{{ $t('status_bar.collected_fees') }}</span><br />
+              <span class="topbar-value">{{ collectedFees }}</span>
+              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
+            </li>
+                
+
+            <li id="total-burn-fee">
+              <span >{{ $t('status_bar.fees_burned') }}</span><br />
+              <span class="topbar-value">{{ totalBurnedFee }}</span>
+            </li> 
+
+          
+            <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
+            <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
+            
+
+            <!-- <li>
+              <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
+              <span class="topbar-value">{{ tradeCount }}</span>
+            </li> 
+            <li class="network-fee" >
+                
+            </li>
+            -->
+          </ul>
+          
+          <div class="search-and-swap d-flex ml-auto">
+            <div ref="searchComponent" class="cursor-pointer ml-auto" >
               <b-input-group-append class="btn-search d-flex justify-content-between">
                 <vue-autosuggest
                   class="d-none search-expand"
@@ -97,21 +137,20 @@
 
                 <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
                   <!-- <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
-                   -->
-                   <img class="search" src="/images/search-icon.svg" />
+                    -->
+                    <img class="search" src="/images/search-icon.svg" />
                 </b-btn>
               </b-input-group-append>
           
             </div>
 
           
-            <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange d-flex" target="_blank">
+            <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange d-flex ml-auto" target="_blank">
                 <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
             </a>
+          </div>
           
-          
-          </span>
-          
+        
         </div>
 
           <!-- <div v-if="this.showColapseBtn" class="colapse-button indicator" @click="colapseHeader()">

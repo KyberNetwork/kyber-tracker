@@ -156,7 +156,7 @@
       :getFilterTokenAddress="getFilterTokenAddress"
       :getFilterReserveAddress="getFilterReserveAddress"
       :exportData="exportData"
-      :isHideDatepicker="false"
+      :isHideDatepicker="true"
       :searchFromDate="searchFromDate"
       :searchToDate="searchToDate"
       :isShowExport="false"
