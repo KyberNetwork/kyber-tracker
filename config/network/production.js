@@ -217,7 +217,8 @@ module.exports = {
       "name": "Zilliqa",
       "decimal": 12,
       "address": "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
-      "symbol": "ZIL"
+      "symbol": "ZIL",
+      "delisted": true
     },
     "LINK": {
       "name": "Chain Link",
