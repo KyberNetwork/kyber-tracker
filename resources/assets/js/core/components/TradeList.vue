@@ -264,8 +264,49 @@
 
 
       <!-- small trade list for mobile -->
-      <div v-if="$mq !== 'md' && $mq !== 'lg'" class=" clear pt-10">
-        <table class="table table-hover  table-striped">
+      <div v-if="$mq !== 'md' && $mq !== 'lg'" class="mini-trade clear pt-10 list-group-striped">
+        <b-list-group v-for="row in rows">
+          <b-list-group-item class="pointer">
+            <div class="time-link d-flex justify-content-between">
+              <span class="time-ago"> {{ getDateInfo(row) }}</span>
+              <span class="link">
+                <a :href="getTxEtherscanLink(row.tx)" target="_blank"><img class="etherscan" src="/images/etherscan-logo.png" /></a>
+                <a :href="getEnjinxLink(row.tx)" target="_blank"><img class="enj" src="/images/kyber-enj-logo.png" /></a>
+              </span>
+            </div>
+            <div class="trade font-semi-bold pt-2 pb-2" @click="onClickRow(row)">
+              <span class="source col-5 text-right no-padding">
+                {{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
+              
+                <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
+                <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
+              </span>
+              <span class="angle col-2 text-center no-padding color-green">
+                <!-- <i class="k k-angle right"></i> -->
+                <span class="entypo-right"></span>
+              </span>
+              <span class="dest col-5 text-left no-padding">
+                {{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
+                <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
+                <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
+              </span>
+            </div>
+            <div class="rate"  @click="onClickRow(row)">
+              <span>
+                <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
+                <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
+              </span> = {{ getRate(row) }} 
+              <span>
+                <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
+                <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
+              </span>
+            </div>
+
+          </b-list-group-item>
+        </b-list-group>
+
+
+        <!-- <table class="table table-hover  table-striped">
           <thead>
             <tr>
               <th class="pl-4">{{ $t("trade_list.date") }}</th>
@@ -279,7 +320,7 @@
               <td class="text-left pl-4 trade-direction">
                 <span class="font-semi-bold">
                   {{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
-                  <!-- {{ row.takerTokenSymbol }} -->
+              
                   <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
                 </span>
@@ -291,7 +332,6 @@
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
                 </span>
               </td>
-              <!-- <td class="text-left pl-4"></td> -->
               <td class="text-left pl-4">
                 <span class="font-semi-bold">
                   <span>
@@ -307,12 +347,32 @@
                 <br/>
                 {{ getRate(row) }}
               </td>
-              
-              <!-- <td class="pointer text-right pr-4" @click="onClickRow(row)"><img src="/images/more.svg" /></td> -->
             </tr>
           </tbody>
-        </table>
+        </table> -->
 
+        <paginate v-if="maxPage > 1 && !isHidePaginate"
+          ref="bottomPaginator"
+          :page-count="maxPage"
+          :initial-page="currentPage"
+          :page-range="($mq !== 'md' && $mq !== 'lg') ? 0 : 1"
+          :click-handler="clickToPage"
+          :prev-text="$t('token_list.prev')"
+          :next-text="$t('token_list.next')"
+          :container-class="'pagination'"
+          :page-class="'page-item'"
+          :page-link-class="'page-link'"
+          :prev-class="'page-item'"
+          :prev-link-class="'page-link'"
+          :next-class="'page-item'"
+          :next-link-class="'page-link'"
+          :active-class="'active'"
+          :class="'home-pagination-block full-width-pagination justify-content-center font-semi-bold'"
+          :hide-prev-next="true"
+          >
+          <span slot="prevContent"><span class="color-green prev-last"><img src="/images/ic-arrow-left.svg" class="pb-1"/>  {{$t('token_list.mini-prev')}}</span></span>
+          <span slot="nextContent" ><span class="color-green prev-last">{{$t('token_list.next')}}  <img src="/images/ic-arrow-right.svg"  class="pb-1"/></span></span>
+        </paginate>
 
         <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
         <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>

@@ -161,6 +161,7 @@
 
   "token_list": {
     "title": "Trade Tokens",
+    "mini-prev": "PREV",
     "prev": "PREVIOUS",
     "next": "NEXT",
     "no" : "No."

@@ -1375,6 +1375,50 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.mini-trade{
+  .list-group{
+    .list-group-item{
+      background-color: transparent;
+      border: none;
+    }
+  }
+  &.list-group-striped{
+    .list-group{
+      &:nth-of-type(odd){
+        background-color: white;
+      }
+      &:nth-of-type(even){
+        
+      }
+      &:hover{
+
+      }
+    }
+  }
+  
+
+  .link{
+    a {
+      padding: 0 10px;
+    }
+    .etherscan{
+      width: 22px;
+    }
+    .enj{
+      width: 18px;
+    }
+  }
+  .trade{
+    font-size: 1.1em;
+  }
+
+  .pagination{
+    .page-link{
+      background-color: transparent !important;
+    }
+     
+  }
+}
 
 
 .trade-details-container{
