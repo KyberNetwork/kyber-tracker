@@ -59,43 +59,40 @@
           </b-dropdown> 
 
 
-          <ul ref="headingSum" class="heading-summary p-relative " @click="clickHeading()">
+          <hooper :autoPlay="true" :playSpeed="5000" ref="headingSum" class="heading-summary p-relative " @click="clickHeading()">
 
-            
-
-
-            <li id="network-volume">
+            <slide id="network-volume">
               <span >{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
               <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
-            <li id="knc-price">
+            </slide>
+            <slide id="knc-price">
               <span >{{ $t('status_bar.knc_price') }}</span><br />
               <span class="topbar-value">
                 {{ kncPrice }} 
                 </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
               <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
+            </slide>
 
-            <li id="eth-price">
+            <slide id="eth-price">
               <span >{{ $t('status_bar.eth_price') }}</span><br />
               <span class="topbar-value" >{{ ethPrice }} </span>
               <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
               <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
+            </slide>
 
-            <li id="fee-to-burn">
+            <slide id="fee-to-burn">
               <span >{{ $t('status_bar.collected_fees') }}</span><br />
               <span class="topbar-value">{{ collectedFees }}</span>
               <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
+            </slide>
                 
 
-            <li id="total-burn-fee">
+            <slide id="total-burn-fee">
               <span >{{ $t('status_bar.fees_burned') }}</span><br />
               <span class="topbar-value">{{ totalBurnedFee }}</span>
-            </li> 
+            </slide> 
 
           
             <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
@@ -110,7 +107,7 @@
                 
             </li>
             -->
-          </ul>
+          </hooper>
           
           <div class="search-and-swap d-flex ml-auto">
             <div ref="searchComponent" class="cursor-pointer ml-auto" >
