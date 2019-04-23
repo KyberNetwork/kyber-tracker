@@ -1204,6 +1204,23 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 }
 
 @media (max-width: 768px){
+  #wrapper{
+    margin-left: 0 !important;
+
+    .sidenav{
+      .go-exchange{
+        justify-content: flex-end;
+        .text-go{
+          border-radius: 5px;
+          background-color: #fda04f;
+          padding: 5px;
+          color: white;
+          font-size: 14px;
+          float: right;
+        }
+      }
+    }
+  }
 
   .mobile-header{
     height: 72px;
@@ -1223,6 +1240,30 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       // }
     }
     
+  }
+
+  .heading-bar{
+    height: auto !important;
+    .heading-wrapper{
+      display: block !important;
+      .change-official{
+        height: 80px !important;
+        width: 100%;
+        border-bottom: solid 1px #e3e5eb;
+        button{
+          border-right: none;
+        }
+      }
+      .heading-summary{
+        height: 80px !important;
+        display: block;
+      }
+
+      .search-and-swap{
+        display: none !important;
+      }
+      
+    }
   }
 }
 @media (max-width: 780px) {

@@ -1,8 +1,8 @@
 <template>
   <div id="wrapper">
     <div id="page-content">
-      <b-nav class="mobile-header d-flex justify-content-between">
-        <b-nav-item>
+      <b-nav v-if="$mq !== 'md' && $mq !== 'lg'" class="mobile-header d-flex justify-content-between">
+        <b-nav-item @click="toggleNav()">
           <img class="nav-burger ml-0" src="/images/hamburger.svg" />
         </b-nav-item>
         <b-nav-item>
@@ -44,7 +44,7 @@
 
 
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
-        <div class="no-padding col-12 col-sm-12 d-flex" v-click-outside="onClickOutside">
+        <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="onClickOutside">
 
           <b-dropdown class="change-official h-100" @shown="clickHeading()" >
             <template slot="button-content">
@@ -172,8 +172,12 @@
               </span>
               
             </a>
-            <router-link to="/" v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
-              <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
+            
+            <a v-if="$mq !== 'md' && $mq !== 'lg'"  href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')"  target="_blank" v-bind:class="[isNavOpen ? 'nav-text go-exchange d-flex' : 'nav-text go-exchange d-flex w-0']">
+              <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
+            </a>
+            <router-link v-else to="/" v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
+              <img  class="nav-logo ml-0" src="/images/nav-logo.svg" />
             </router-link>
         </div>
         
@@ -660,7 +664,12 @@ export default {
       if (this.isNavOpen) {
         document.getElementById("mySidenav").style.width = "200px";
       } else {
-        document.getElementById("mySidenav").style.width = "50px";
+        if(this.$mq !== 'md' && this.$mq !== 'lg'){
+          document.getElementById("mySidenav").style.width = "0px";
+        } else {
+          document.getElementById("mySidenav").style.width = "50px";
+        }
+        
       }
     }
   },
