@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
-    <div id="page-content">
-      <b-nav v-if="$mq !== 'md' && $mq !== 'lg'" class="mobile-header d-flex justify-content-between">
+    <div id="page-content" class="content-wrapper">
+      <b-nav v-if="$mq !== 'md' && $mq !== 'lg'" class="mobile-header d-flex justify-content-between" v-click-outside="() => onClickOutside(true)">
         <b-nav-item @click="toggleNav()">
           <img class="nav-burger ml-0" src="/images/hamburger.svg" />
         </b-nav-item>
@@ -9,10 +9,9 @@
           <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
         </b-nav-item>
         <b-nav-item class="d-flex h-100 mobile-search-nav">
-          <div ref="searchComponent" class="cursor-pointer ml-auto d-flex justify-content-center" >
+          <div ref="searchComponent"  v-bind:class="[openSearchInput ? 'search-expand' : 'search-colapse']">
             <b-input-group-append class="btn-mobile-search d-flex justify-content-between">
               <vue-autosuggest
-                class="d-none search-expand"
                 ref="seatchInputRef"
                 :suggestions="[{
                   data: [...this.addressesMetamask, ...this.searchData]
@@ -24,7 +23,7 @@
                 :onSelected="onSelected"
                 :inputProps="{
                   id:'autosuggest__input', 
-                  class: 'mr-0',
+                  class: 'mr-0 p-0',
                   onInputChange: this.onInputChange, 
                   placeholder:$t('common.searchbox_placeholder'),
                   autocomplete: 'off'
@@ -37,14 +36,13 @@
                   <img class="search" src="/images/search-icon.svg" />
               </b-btn>
             </b-input-group-append>
-        
           </div>
         </b-nav-item>
       </b-nav>
 
 
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
-        <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="onClickOutside">
+        <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="() => onClickOutside()">
 
           <b-dropdown class="change-official h-100" @shown="clickHeading()" >
             <template slot="button-content">
@@ -102,11 +100,10 @@
             </carousel>
             
           
-          <div class="search-and-swap d-flex ml-auto">
-            <div ref="searchComponent" class="cursor-pointer ml-auto" >
+          <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
+            <div ref="searchComponent" :class="openSearchInput ? 'search-expand' : 'search-colapse'"  >
               <b-input-group-append class="btn-search d-flex justify-content-between">
                 <vue-autosuggest
-                  class="d-none search-expand"
                   ref="seatchInputRef"
                   :suggestions="[{
                     data: [...this.addressesMetamask, ...this.searchData]
@@ -118,7 +115,7 @@
                   :onSelected="onSelected"
                   :inputProps="{
                     id:'autosuggest__input', 
-                    class: 'mr-0',
+                    class: 'mr-0 p-0',
                     onInputChange: this.onInputChange, 
                     placeholder:$t('common.searchbox_placeholder'),
                     autocomplete: 'off'
@@ -135,7 +132,7 @@
             </div>
 
           
-            <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange d-flex ml-auto" target="_blank">
+            <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange d-flex" target="_blank">
                 <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
             </a>
           </div>
@@ -353,7 +350,8 @@ export default {
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
-      isNavOpen: true
+      isNavOpen: true,
+      openSearchInput: false
     };
   },
 
@@ -489,19 +487,17 @@ export default {
       //   });
     },
     doSearch() {
-      if (this.$mq == "sm" || this.$mq == "ml" || this.$mq == "md") {
-        if (
-          this.$refs.seatchInputRef.$el &&
-          this.$refs.seatchInputRef.$el.className.indexOf("search-expand") == -1
-        ) {
-          this.$refs.seatchInputRef.$el.className = "search-expand ml-0";
-          this.$refs.headingSum.className = "d-none";
-          this.$refs.searchComponent.className += " col-12";
-          return;
-        }
+      console.log("@@@@@@@@@@@@@@@@@", this.$refs.searchComponent)
+      if(this.$refs.searchComponent && this.$refs.searchComponent.className.indexOf("search-expand") == -1){
+        this.openSearchInput = true
+        console.log("________________", this.openSearchInput, this.$refs.searchComponent)
+        return;
       }
-      if (!this.searchString) {
-        this.onClickOutside();
+      
+      
+      if (!this.searchString && this.$refs.searchComponent.className.indexOf("search-expand") > -1) {
+        // this.onClickOutside();
+        this.openSearchInput = false
         return;
       }
       this.searchString = this.searchString.trim();
@@ -578,11 +574,18 @@ export default {
       location.reload();
     },
 
-    onClickOutside() {
+    onClickOutside(isMobile) {
       // this.$refs.seatchInputRef.$el.className = "";
       // this.$refs.headingSum.className = "heading-summary p-relative";
-      // this.$refs.searchComponent.className =
-      //   "cursor-pointer d-flex justify-content-between ";
+      if(isMobile){
+        if(this.$mq !== 'md' && this.$mq !== 'lg'){
+          this.openSearchInput = false
+        }
+      } else {
+        if(this.$mq == 'md' || this.$mq == 'lg'){
+          this.openSearchInput = false
+        }
+      }
       // this.handleResize();
     },
     isTxHash(hash) {

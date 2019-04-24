@@ -119,6 +119,33 @@ a {
   bottom: 10;
 }
 
+.content-wrapper{
+  .search-colapse{
+    margin: auto;
+    #autosuggest{
+      // width: 0px;
+      margin-left: 0px !important;
+      input{
+        width: 0px !important;
+        border-left: none;
+        padding: 0 !important;
+      }
+    }
+    
+  }
+  .search-expand{
+    margin: auto;
+    #autosuggest{
+      input{
+        border-left: solid 2px #d2d3d4 !important;
+      }
+    }
+    
+  }
+
+  
+}
+
 .btn-search{
   border-left: solid 1px #e3e5eb;
   border-right: solid 1px #e3e5eb;
@@ -172,7 +199,7 @@ a {
 
   .change-official{
     button{
-      width: 215px;
+      // width: 215px;
       font-size: 14px;
       border-right: solid 1px #e3e5eb;
       border-top: none;
@@ -224,9 +251,9 @@ a {
 }
 
 .heading-bar{
-  .search-and-swap{
-    width: 250px;
-  }
+  // .search-and-swap{
+  //   width: 250px;
+  // }
   .go-exchange{
     // position: absolute;
     // right: 16px;
@@ -934,11 +961,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
 }
 .heading-summary {
-  max-width: 750px;
-  width: calc(100% - 215px - 250px);
+
+  width: 100%;
+  // max-width: 800px;
+  // width: calc(100% - 215px - 250px);
   list-style: none;
   margin: 0;
-  padding: 20px 30px 0 30px;
+  // padding: 20px 30px 0 30px;
   line-height: 20px;
   height: 73px;
   -webkit-transition: height .5s ease;
@@ -969,16 +998,24 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .dropdown-toggle{
     min-width: 150px;
   }
-  .VueCarousel-slide {
-    // float: left;
-    // float: left;
-    margin-right: 30px;
-    // color: #fff;
-    min-width: 120px;
-    padding-bottom: 23px;
 
-    // position: relative;
+  .VueCarousel-wrapper{
+    .VueCarousel-inner{
+      margin: 20px 30px 0px;
+      max-width: 750px;
+      .VueCarousel-slide {
+        // float: left;
+        // float: left;
+        margin-right: 30px;
+        // color: #fff;
+        min-width: 120px;
+        padding-bottom: 23px;
+    
+        // position: relative;
+      }
+    }
   }
+  
   .show-more{
     position: absolute;
     right: -18px;
@@ -2020,8 +2057,9 @@ html {
     transition: width .5s ease;
 }
 #autosuggest__input{
+  transition: 0.5s;
   // padding-right: 49px;
-  border-left: solid 2px #d2d3d4 !important;
+  // border-left: solid 2px #d2d3d4 !important;
   padding-top: 0;
   padding-bottom: 0;
   line-height: 1.5;
