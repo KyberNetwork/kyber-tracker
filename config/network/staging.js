@@ -806,6 +806,12 @@ module.exports = {
         "symbol" : "UPP",
         "decimal": 18,
         "address": "0xc86d054809623432210c107af2e3f619dcfbf652",
+      },
+      "MCO": {
+        "name": "Crypto.com",
+        "symbol" : "MCO",
+        "decimal": 8,
+        "address": "0xB63B606Ac810a52cCa15e44bB630fd42D8d1d83d",
       }
     },
     "averageBlockTime": 15000,
