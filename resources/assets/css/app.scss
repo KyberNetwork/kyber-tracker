@@ -172,6 +172,7 @@ a {
 
   .change-official{
     button{
+      width: 215px;
       font-size: 14px;
       border-right: solid 1px #e3e5eb;
       border-top: none;
@@ -933,7 +934,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
 }
 .heading-summary {
-
+  max-width: 750px;
+  width: calc(100% - 215px - 250px);
   list-style: none;
   margin: 0;
   padding: 20px 30px 0 30px;
@@ -967,16 +969,15 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   .dropdown-toggle{
     min-width: 150px;
   }
-  li {
-    float: left;
-    float: left;
+  .VueCarousel-slide {
+    // float: left;
+    // float: left;
     margin-right: 30px;
     // color: #fff;
-    min-width: 105px;
-    max-width: 120px;
+    min-width: 120px;
     padding-bottom: 23px;
 
-    position: relative;
+    // position: relative;
   }
   .show-more{
     position: absolute;

@@ -58,6 +58,7 @@
     "sw-precache-webpack-plugin": "^0.11.5",
     "v-tooltip": "^2.0.0-rc.31",
     "vue-autosuggest": "^1.4.1",
+    "vue-carousel": "^0.18.0",
     "vue-click-outside": "^1.0.7",
     "vue-content-loader": "^0.2.1",
     "vue-mq": "^0.1.3",

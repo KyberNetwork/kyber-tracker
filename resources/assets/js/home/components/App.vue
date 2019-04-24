@@ -59,55 +59,48 @@
           </b-dropdown> 
 
 
-          <hooper :autoPlay="true" :playSpeed="5000" ref="headingSum" class="heading-summary p-relative " @click="clickHeading()">
-
-            <slide id="network-volume">
-              <span >{{ $t('status_bar.network_volume') }}</span><br />
-              <span class="topbar-value">{{ networkVolume }}</span>
-              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
-            </slide>
-            <slide id="knc-price">
-              <span >{{ $t('status_bar.knc_price') }}</span><br />
-              <span class="topbar-value">
-                {{ kncPrice }} 
-                </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-              <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
-            </slide>
-
-            <slide id="eth-price">
-              <span >{{ $t('status_bar.eth_price') }}</span><br />
-              <span class="topbar-value" >{{ ethPrice }} </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
-            </slide>
-
-            <slide id="fee-to-burn">
-              <span >{{ $t('status_bar.collected_fees') }}</span><br />
-              <span class="topbar-value">{{ collectedFees }}</span>
-              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
-            </slide>
-                
-
-            <slide id="total-burn-fee">
-              <span >{{ $t('status_bar.fees_burned') }}</span><br />
-              <span class="topbar-value">{{ totalBurnedFee }}</span>
-            </slide> 
-
-          
-            <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
-            <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
+          <!-- <div ref="headingSum" class="heading-summary" @click="clickHeading()">
             
 
-            <!-- <li>
-              <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-              <span class="topbar-value">{{ tradeCount }}</span>
-            </li> 
-            <li class="network-fee" >
-                
-            </li>
-            -->
-          </hooper>
+        
+          </div> -->
+
+          <carousel :perPage="5" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" class="heading-summary">
+              <slide >
+                <span >{{ $t('status_bar.network_volume') }}</span><br />
+                <span class="topbar-value">{{ networkVolume }}</span>
+                <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
+              </slide>
+              <slide >
+                <span >{{ $t('status_bar.knc_price') }}</span><br />
+                <span class="topbar-value">
+                  {{ kncPrice }} 
+                  </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+                <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
+              </slide>
+
+              <slide >
+                <span >{{ $t('status_bar.eth_price') }}</span><br />
+                <span class="topbar-value" >{{ ethPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+                <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
+              </slide>
+
+              <slide >
+                <span >{{ $t('status_bar.collected_fees') }}</span><br />
+                <span class="topbar-value">{{ collectedFees }}</span>
+                <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
+              </slide>
+                  
+
+              <slide>
+                <span >{{ $t('status_bar.fees_burned') }}</span><br />
+                <span class="topbar-value">{{ totalBurnedFee }}</span>
+              </slide> 
+
+            </carousel>
+            
           
           <div class="search-and-swap d-flex ml-auto">
             <div ref="searchComponent" class="cursor-pointer ml-auto" >

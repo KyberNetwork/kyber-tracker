@@ -11,7 +11,9 @@ import VueDatePicker from 'vuejs-datepicker';
 import moment from 'moment';
 import VTooltip from 'v-tooltip';
 import { Hooper, Slide } from 'hooper';
-import 'hooper/dist/hooper.css';
+// import 'hooper/dist/hooper.css';
+
+import VueCarousel from 'vue-carousel';
 
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
@@ -50,6 +52,7 @@ Vue.use(VueResource);
 Vue.use(BootstrapVue);
 Vue.use(VTooltip)
 Vue.use(VueAutosuggest)
+Vue.use(VueCarousel);
 Vue.use(VueMq, {
   breakpoints: {
     sm: 450,
@@ -70,8 +73,8 @@ Vue.component('chart-token', ChartToken);
 Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
 
-Vue.component('hooper', Hooper);
-Vue.component('slide', Slide);
+// Vue.component('hooper', Hooper);
+// Vue.component('slide', Slide);
 
 Vue.prototype.$tokens = "akjsbndkjansdnsa"
 // const locale = localStorage.getItem('locale') || 'en';
