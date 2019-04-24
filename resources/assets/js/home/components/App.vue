@@ -44,7 +44,7 @@
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
         <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="() => onClickOutside()">
 
-          <b-dropdown class="change-official h-100" @shown="clickHeading()" >
+          <b-dropdown v-bind:class="openSearchInput ? 'd-none' : ''" class="change-official h-100" @shown="clickHeading()" >
             <template slot="button-content">
               {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
             </template>
@@ -63,41 +63,41 @@
         
           </div> -->
 
-          <carousel :perPage="5" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" class="heading-summary">
-              <slide >
-                <span >{{ $t('status_bar.network_volume') }}</span><br />
-                <span class="topbar-value">{{ networkVolume }}</span>
-                <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
-              </slide>
-              <slide >
-                <span >{{ $t('status_bar.knc_price') }}</span><br />
-                <span class="topbar-value">
-                  {{ kncPrice }} 
-                  </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-                <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
-              </slide>
+          <carousel :perPage="5" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" v-bind:class="openSearchInput ? 'd-none' : ''" class="heading-summary">
+            <slide >
+              <span >{{ $t('status_bar.network_volume') }}</span><br />
+              <span class="topbar-value">{{ networkVolume }}</span>
+              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
+            </slide>
+            <slide >
+              <span >{{ $t('status_bar.knc_price') }}</span><br />
+              <span class="topbar-value">
+                {{ kncPrice }} 
+                </span>
+              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+              <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
+            </slide>
 
-              <slide >
-                <span >{{ $t('status_bar.eth_price') }}</span><br />
-                <span class="topbar-value" >{{ ethPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-                <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
-              </slide>
+            <slide >
+              <span >{{ $t('status_bar.eth_price') }}</span><br />
+              <span class="topbar-value" >{{ ethPrice }} </span>
+              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
+            </slide>
 
-              <slide >
-                <span >{{ $t('status_bar.collected_fees') }}</span><br />
-                <span class="topbar-value">{{ collectedFees }}</span>
-                <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
-              </slide>
-                  
+            <slide >
+              <span >{{ $t('status_bar.collected_fees') }}</span><br />
+              <span class="topbar-value">{{ collectedFees }}</span>
+              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
+            </slide>
+                
 
-              <slide>
-                <span >{{ $t('status_bar.fees_burned') }}</span><br />
-                <span class="topbar-value">{{ totalBurnedFee }}</span>
-              </slide> 
+            <slide>
+              <span >{{ $t('status_bar.fees_burned') }}</span><br />
+              <span class="topbar-value">{{ totalBurnedFee }}</span>
+            </slide> 
 
-            </carousel>
+          </carousel>
             
           
           <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
@@ -151,7 +151,7 @@
       </b-navbar>
 
 
-      <div id="mySidenav" class="sidenav">
+      <div id="mySidenav" class="sidenav" v-bind:style="getSideNavWidth()">
         <div class="nav-line nav-logo">
             <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
               <span class=" icon-side h-100">
@@ -351,7 +351,8 @@ export default {
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
       isNavOpen: true,
-      openSearchInput: false
+      openSearchInput: false,
+      initSideNav: true
     };
   },
 
@@ -646,21 +647,32 @@ export default {
     },
 
     toggleNav() {
-      // document.getElementById("mySidenav").style.width = "250px";
+      this.initSideNav = false
 
-      // var myElements = document.querySelectorAll(".nav-text");
+      if(this.$mq !== 'md' && this.$mq !== 'lg'){
+        this.isNavOpen = !this.isNavOpen;
+      }
+      
+    },
 
-      // for (var i = 0; i < myElements.length; i++) {
-      //   myElements[i].style.display = "inline-block !important";
-      // }
-      this.isNavOpen = !this.isNavOpen;
+    getSideNavWidth(){
+      if(this.$mq == 'md' || this.$mq == 'lg') return {width: "200px"}
+
+      if(this.initSideNav){
+        if(this.$mq == 'sm'){
+          return {width: "0px"};
+        } else if(this.$mq == 'ml') {
+          return {width: "50px"};
+        }
+      }
       if (this.isNavOpen) {
-        document.getElementById("mySidenav").style.width = "200px";
+        // document.getElementById("mySidenav").style.width = "200px";
+        return {width: "200px"}
       } else {
-        if(this.$mq !== 'md' && this.$mq !== 'lg'){
-          document.getElementById("mySidenav").style.width = "0px";
-        } else {
-          document.getElementById("mySidenav").style.width = "50px";
+        if(this.$mq == 'sm'){
+           return {width: "0px"};
+        } else if(this.$mq == 'ml') {
+          return {width: "50px"};
         }
         
       }
@@ -669,6 +681,7 @@ export default {
 
   updated: function() {
     this.handleResize();
+    // if(this.$mq !== 'md' && this.$mq !== 'lg')  this.isNavOpen = false
   },
 
   beforeDestroy: function() {
@@ -705,6 +718,10 @@ export default {
       this.handleResize();
     });
     this.handleResize();
+
+    setTimeout(() => {
+      if(this.$mq !== 'md' && this.$mq !== 'lg')  this.isNavOpen = false
+    }, 1000);
   },
   directives: {
     ClickOutside

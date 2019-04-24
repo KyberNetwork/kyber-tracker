@@ -55,8 +55,8 @@ Vue.use(VueAutosuggest)
 Vue.use(VueCarousel);
 Vue.use(VueMq, {
   breakpoints: {
-    sm: 450,
-    ml: 850,
+    sm: 576,
+    ml: 768,
     md: 1250,
     lg: Infinity,
   }

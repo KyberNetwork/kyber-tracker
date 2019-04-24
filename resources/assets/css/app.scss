@@ -137,8 +137,10 @@ a {
     margin: auto;
     #autosuggest{
       input{
-        width: 50vw;
         border-left: solid 2px #d2d3d4 !important;
+        @media (max-width: 768px) {
+          width: 50vw;
+        }
       }
     }
     
@@ -199,6 +201,7 @@ a {
   }
 
   .change-official{
+    transition: all 0.5s;
     button{
       // width: 215px;
       font-size: 14px;
@@ -962,7 +965,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
 }
 .heading-summary {
-
+  transition: all 0.5s;
   width: 100%;
   // max-width: 800px;
   // width: calc(100% - 215px - 250px);
@@ -1246,7 +1249,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 @media (max-width: 768px){
   #wrapper{
-    margin-left: 0 !important;
+    margin-left: 50px !important;
 
     .sidenav{
       .go-exchange{
@@ -1265,7 +1268,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
   .mobile-header{
     height: 72px;
-    overflow: auto;
+    // overflow: auto;
     box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
     border: solid 1px #e3e5eb;
     background-color: #ffffff;
@@ -1315,6 +1318,15 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     }
   }
 }
+
+@media (max-width: 576px){
+  #wrapper{
+    margin-left: 0px !important;
+  }
+}
+
+
+
 @media (max-width: 780px) {
   .full-width-btn-group {
     display: flex;
