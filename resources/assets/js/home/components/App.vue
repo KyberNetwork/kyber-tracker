@@ -5,7 +5,7 @@
         <b-nav-item @click="toggleNav()">
           <img class="nav-burger ml-0" src="/images/hamburger.svg" />
         </b-nav-item>
-        <b-nav-item>
+        <b-nav-item :class="openSearchInput ? 'transform-0 w-0 nav-item-logo' : 'nav-item-logo'">
           <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
         </b-nav-item>
         <b-nav-item class="d-flex h-100 mobile-search-nav">

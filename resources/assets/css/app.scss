@@ -137,6 +137,7 @@ a {
     margin: auto;
     #autosuggest{
       input{
+        width: 50vw;
         border-left: solid 2px #d2d3d4 !important;
       }
     }
@@ -1264,12 +1265,20 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
   .mobile-header{
     height: 72px;
+    overflow: auto;
     box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
     border: solid 1px #e3e5eb;
     background-color: #ffffff;
 
     .nav-burger{
       padding-top: 20px;
+    }
+    .nav-item-logo{
+      transition:all 0.6s;
+      overflow: auto;
+      &.transform-0{
+        transform: scale(0)
+      }
     }
     .mobile-search-nav{
       a{
