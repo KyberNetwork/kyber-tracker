@@ -44,7 +44,7 @@
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
         <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="() => onClickOutside()">
 
-          <b-dropdown v-bind:class="openSearchInput ? 'd-none' : ''" class="change-official h-100" @shown="clickHeading()" >
+          <b-dropdown class="change-official h-100" @shown="clickHeading()" >
             <template slot="button-content">
               {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
             </template>
@@ -63,7 +63,7 @@
         
           </div> -->
 
-          <carousel :perPage="5" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" v-bind:class="openSearchInput ? 'd-none' : ''" class="heading-summary">
+          <carousel :perPage="5" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" class="heading-summary">
             <slide >
               <span >{{ $t('status_bar.network_volume') }}</span><br />
               <span class="topbar-value">{{ networkVolume }}</span>
@@ -292,21 +292,48 @@
             Copyright 2018 @ Kyber Network 
           </div>
           <div class="col footer-menu text-right footer-link">
-            <div class="d-inline-block">
+            <div class="d-inline-block footer-ul">
               <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
-                <li><a href="https://t.me/KyberTrackerBot" target="_blank"><img class="footer-icon" src="/images/telegram.svg" /></a></li>
-                <li><a href="https://twitter.com/KyberNetwork" target="_blank"><img class="footer-icon" src="/images/twitter.svg" /></a></li>
-                <li><a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank"><img class="footer-icon" src="/images/github.svg" /></a></li>
                 <li>
+                  <a href="https://t.me/KyberTrackerBot" target="_blank">
+                    <img class="footer-icon" src="/images/telegram.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://twitter.com/KyberNetwork" target="_blank">
+                    <img class="footer-icon" src="/images/twitter.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                    <img class="footer-icon" src="/images/github.svg" />
+                  </a>
+                </li>
+                <li class="select-lang-box">
                   <b-dropdown class="change-language-button" no-caret right>
                     <template slot="button-content">
-                      <span><img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
+                      <span class="footer-icon">
+                        <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
+                        {{this.getLanguageText()}}
+                      </span>
                     </template>
-                    <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('ko')"><img src="images/locales/ko.svg" /> 한국어</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('zh')"><img src="images/locales/zh.svg" /> 中文</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('en')">
+                      <img src="images/locales/en.svg" /> 
+                      English
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('vi')">
+                      <img src="images/locales/vi.svg" /> 
+                      Tiếng Việt
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('ko')">
+                      <img src="images/locales/ko.svg" /> 
+                      한국어
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('zh')">
+                      <img src="images/locales/zh.svg" /> 
+                      中文
+                    </b-dropdown-item>
                   </b-dropdown> 
               </li>
               </ul>
@@ -413,6 +440,30 @@ export default {
       } else {
         moment.locale("en");
         return "en";
+      }
+    },
+
+    getLanguageText(){
+      if (
+        typeof window.i18n != "undefined" &&
+        typeof window.i18n.locale != "undefined"
+      ) {
+        // return window.i18n.locale;
+        switch (window.i18n.locale) {
+          case 'en':
+            return 'English';
+          case 'vi':
+            return 'Tiếng Việt';
+          case 'ko':
+            return '한국어';
+          case 'zh':
+            return '中文';
+          default:
+            return 'English';
+        }
+      } else {
+        moment.locale("en");
+        return 'English';
       }
     },
 

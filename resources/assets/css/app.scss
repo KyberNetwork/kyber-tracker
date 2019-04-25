@@ -14,7 +14,7 @@ body {
   color: #4a4c52;
 }
 
-.container{
+.footer-container{
   padding: 0 60px;
   // .navbar{
   //   padding: 0px;
@@ -223,11 +223,14 @@ a {
     }
     .dropdown-menu{
       width: 100%;
+      border-radius: 0;
+      left: -5px !important;
       // min-width: auto;
       min-width: 235px;
       // background-color: #3a5492;
       // border-color: #5276c3;
       .dropdown-item{
+        line-height: 40px;
         color: #4a4c52;
         padding: 0.20rem 1rem;
         background-color: #ffffff;
@@ -456,24 +459,19 @@ a {
 }
 
 #footer {
-  position: absolute;
+  // position: absolute;
   width: 100%;
   clear: both;
   bottom: 0;
   //padding: 0;
   height: 56px;
   padding: 20px 0px;
-  opacity: 0.9;
-  font-size: 12px;
-  font-weight: 600;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.33;
-  letter-spacing: normal;
   text-align: left;
-  color: #1f3468;
-  background-color: #f4f5f4;
-
+  color: #5a5e67;
+  // background-color: #f4f5f4;
+  background-color: #f0f1f4;
+  font-size: 13px;
+  line-height: 2.46;
   .footer-menu {
     font-size: 0.8rem;
 
@@ -1338,7 +1336,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
 
 
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .full-width-btn-group {
     display: flex;
 
@@ -1383,29 +1381,36 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
   #footer{
     height: auto !important;
-    background-color: #ffffff;
+    background-color: #f6f7fa;
     padding-bottom: 0;
-    font-size: 12px;
-    font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.33;
-    letter-spacing: normal;
-    text-align: left;
-    color: #1f3468;
+   
     .row{
-      display: block;
-
+      display: flex;
+      height: 120px;
+      flex-direction: column-reverse;
       .footer-menu,.footer-menu{
         text-align: center !important;
         padding-bottom: 10px;
+        height: 53px;
       }
       .footer-icon{
         margin: 0 15px !important;
       }
       .footer-link{
-        background-color: #f4f5f4;
-        padding: 20px 0;
+        background-color: #f0f1f4;
+        padding: 20px 10px;
+        height: 66px;
+        .footer-ul{
+          width: 100%;
+          ul{
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            .select-lang-box{
+              margin-left: auto;
+            }
+          }
+        }
       }
     }
   }
@@ -1963,7 +1968,7 @@ html {
 
 #wrapper {
   min-height: 100%;
-  position: relative;
+  // position: relative;
   margin-left: 200px;
   background-color: #f6f7fa;
 }
