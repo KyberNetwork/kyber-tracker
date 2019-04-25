@@ -1460,9 +1460,15 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     padding: 20px;
   }
 }
+.search-result{
+  .mini-trade{
+    padding: 10px 15px;
+  }
+
+}
 
 .mini-trade{
-  padding: 10px 15px;
+  // padding: 10px 15px;
   .list-group{
     .list-group-item{
       background-color: transparent;
@@ -2550,6 +2556,12 @@ table.table-round {
 .card{
   border: none;
   padding: 30px;
+  @media (max-width: 576px) {
+    padding: 30px 10px;
+    .card-header{
+      border-top: none;
+    }
+  }
   border-radius: 5px;
   box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
 }

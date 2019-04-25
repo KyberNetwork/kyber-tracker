@@ -5,7 +5,7 @@
     </div>
 
     <b-card no-body>
-      <div class="chart-period-picker">
+      <div class="chart-period-picker" v-if="$mq !== 'sm'">
         <b-button-group class="cus-pagination full-width-btn-group">
           <b-button
             :variant="selectedPeriod === 'H24' ? 'active' : ''"
@@ -31,6 +31,34 @@
       </div>
       <b-tabs card>
         <b-tab :title="$t('chart.title.top_token')">
+
+
+          <div class="chart-period-picker pt-3 text-right pr-3" v-if="$mq !== 'sm'">
+            <b-button-group class="cus-pagination full-width-btn-group">
+              <b-button
+                :variant="selectedPeriod === 'H24' ? 'active' : ''"
+                @click="selectPeriod('H24', 'H1')">24H
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'D7' ? 'active' : ''"
+                @click="selectPeriod('D7', 'H1')">7D
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'D30' ? 'active' : ''"
+                @click="selectPeriod('D30', 'D1')">1M
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'Y1' ? 'active' : ''"
+                @click="selectPeriod('Y1', 'D1')">1Y
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'ALL' ? 'active' : ''"
+                @click="selectPeriod('ALL', 'D1')">ALL
+              </b-button>
+            </b-button-group>
+          </div>
+
+
           <chart-token
             ref="chartToken"
             :elementId="'chart-token'">

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="panel panel-default trade-list w-100">
+  <div class="panel panel-default trade-list search-result w-100">
 
     <div v-if="!!title" class="panel-heading pt-56 pb-16">
       <span class="panel-title no-margin"> {{ title }} </span>

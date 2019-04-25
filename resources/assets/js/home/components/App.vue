@@ -180,7 +180,7 @@
       </b-navbar>
 
 
-      <div id="mySidenav" class="sidenav" v-bind:style="getSideNavWidth()">
+      <div id="mySidenav" class="sidenav" v-bind:style="getSideNavWidth()" v-click-outside="() => onClickOutsideNav()">
         <div class="nav-line nav-logo">
             <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
               <span class=" icon-side h-100">
@@ -576,10 +576,8 @@ export default {
       //   });
     },
     doSearch() {
-      console.log("@@@@@@@@@@@@@@@@@", this.$refs.searchComponent)
       if(this.$refs.searchComponent && this.$refs.searchComponent.className.indexOf("search-expand") == -1){
         this.openSearchInput = true
-        console.log("________________", this.openSearchInput, this.$refs.searchComponent)
         return;
       }
       
@@ -677,6 +675,10 @@ export default {
       }
       // this.handleResize();
     },
+
+    onClickOutsideNav(){
+      if(this.$mq !== 'sm') this.isNavOpen = false;
+    },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
     },
@@ -744,7 +746,10 @@ export default {
     },
 
     getSideNavWidth(){
-      if(this.$mq == 'md' || this.$mq == 'lg') return {width: "200px"}
+      if(this.$mq == 'md' || this.$mq == 'lg'){
+        this.isNavOpen = true
+        return {width: "200px"}
+      } 
 
       if(this.initSideNav){
         if(this.$mq == 'sm'){
