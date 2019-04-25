@@ -33,7 +33,7 @@
         <b-tab :title="$t('chart.title.top_token')">
 
 
-          <div class="chart-period-picker pt-3 text-right pr-3" v-if="$mq !== 'sm'">
+          <div class="chart-period-picker pt-3 text-right pr-3" v-if="$mq == 'sm'">
             <b-button-group class="cus-pagination full-width-btn-group">
               <b-button
                 :variant="selectedPeriod === 'H24' ? 'active' : ''"
