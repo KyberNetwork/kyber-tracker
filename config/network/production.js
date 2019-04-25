@@ -834,7 +834,7 @@ module.exports = {
       "symbol" : "MCO",
       "decimal": 8,
       "address": "0xB63B606Ac810a52cCa15e44bB630fd42D8d1d83d",
-      "hidden": true  
+      "hidden": 1556283600000  
     }
 
   },
