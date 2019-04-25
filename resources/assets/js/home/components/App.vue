@@ -286,13 +286,13 @@
 
     <div id="footer">
 
-      <div class="container">
+      <div class="container" v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'footer-container' : ''">
         <div class="row">
           <div class="col footer-menu">
             Copyright 2018 @ Kyber Network 
           </div>
-          <div class="col footer-menu text-right footer-link">
-            <div class="d-inline-block footer-ul">
+          <div class="col footer-menu text-right footer-link" >
+            <div class="d-inline-block footer-ul " v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'container' : ''">
               <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
                 <li>

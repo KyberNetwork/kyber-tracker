@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="panel panel-default trade-list">
+    <div class="panel panel-default trade-list total-trades">
 
       <div v-if="!!title" class="panel-heading pt-56 pb-16">
         <span class="panel-title no-margin"> {{ title }} </span>
@@ -212,7 +212,7 @@
                 </span>
               </td>
               <td v-if="partner" class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
-              <td class="text-center pr-4 view-on" >
+              <td class="text-center view-on" >
                 <!-- <img src="/images/more.svg" /> -->
                 <!-- <span class="entypo-dot-3 table-more"></span> -->
                 <a :href="getTxEtherscanLink(row.tx)" target="_blank"><img class="etherscan" src="/images/etherscan-logo.png" /></a>
@@ -257,6 +257,13 @@
 
         <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
         <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
+
+        <div class="text-center" v-if="seeAllUrl">
+          <router-link :to="seeAllUrl">
+            <button type="button" class="btn btn-default see-all-trade mx-auto">{{ $t("common.see_all") }}</button>
+          </router-link>
+          
+        </div>
       </div>
 
 
@@ -376,6 +383,14 @@
 
         <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
         <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
+
+
+        <div class="text-center" v-if="seeAllUrl">
+          <router-link :to="seeAllUrl">
+            <button type="button" class="btn btn-default see-all-trade mx-auto">{{ $t("common.see_all") }}</button>
+          </router-link>
+          
+        </div>
       </div>
 
       
@@ -452,6 +467,9 @@ export default {
     },
     partner:{
       type: Boolean
+    },
+    seeAllUrl: {
+      type: String,
     },
     getSearchResultTitle: {
       type: Function,

@@ -459,7 +459,7 @@ a {
 }
 
 #footer {
-  // position: absolute;
+  position: absolute;
   width: 100%;
   clear: both;
   bottom: 0;
@@ -472,6 +472,9 @@ a {
   background-color: #f0f1f4;
   font-size: 13px;
   line-height: 2.46;
+  .footer-container{
+    max-width: initial;
+  }
   .footer-menu {
     font-size: 0.8rem;
 
@@ -1428,6 +1431,12 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       opacity: 0.15;
     }
   }
+  &.total-trades{
+    .datepicker-container {
+      float: left;
+    }
+  }
+  
   // .wallet-detail-title{
   //   font-size: 24px;
   //   font-weight: 600;
@@ -1473,7 +1482,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       }
     }
   }
-  
+  .see-all-trade{
+    background-color: transparent;
+  }
 
   .link{
     a {
@@ -1780,19 +1791,19 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   border: none;
 }
 
-@media (min-width: 576px) and (max-width: 730px) {
-  .vdp-datepicker__calendar {
-    left: -80px;
-  }
-}
+// @media (min-width: 576px) and (max-width: 730px) {
+//   .vdp-datepicker__calendar {
+//     left: -80px;
+//   }
+// }
 
-@media (max-width: 320px){
-  .datepicker-container {
-    .vdp-datepicker {
-      display: block;
-    }
-  }
-}
+// @media (max-width: 320px){
+//   .datepicker-container {
+//     .vdp-datepicker {
+//       display: block;
+//     }
+//   }
+// }
 
 @media (max-width: 576px){
   .datepicker-container {
@@ -1968,14 +1979,14 @@ html {
 
 #wrapper {
   min-height: 100%;
-  // position: relative;
+  position: relative;
   margin-left: 200px;
   background-color: #f6f7fa;
 }
 
 #page-content {
   min-width: 330px;
-  padding-bottom: 115px;
+  padding-bottom: 145px;
   overflow-x: hidden;
 }
 
@@ -2267,21 +2278,12 @@ html {
 }
 
 .see-all-trade{
-  margin-top: 56px;
+  margin-top: 16px;
   cursor: pointer;
   width: 116px;
   height: 36px;
-  border-radius: 3px;
-  border: solid 1px #56c7c4;
-  // width: 84px;
-  // height: 20px;
-  // font-family: OpenSans;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
   line-height: 1.43;
-  letter-spacing: normal;
   text-align: center;
   color: #00d3a7;
   background-color: white;

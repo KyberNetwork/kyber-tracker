@@ -59,14 +59,9 @@
                 :isHideDatepicker="true"
                 :isHidePaginate="true"
                 :pageSize="5"
+                :seeAllUrl="'/trades'"
                 >
     </trade-list>
-    <div class="text-center">
-      <router-link to="/trades">
-        <button type="button" class="btn btn-default see-all-trade mx-auto">{{ $t("common.see_all") }}</button>
-      </router-link>
-      
-    </div>
     
 
   </div>
