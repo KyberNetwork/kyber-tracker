@@ -148,7 +148,7 @@
 
 
       <!-- small trade list for mobile -->
-      <div v-if="$mq !== 'md' && $mq !== 'lg'" class="mini-trade clear pt-10 list-group-striped">
+      <div v-if="$mq !== 'md' && $mq !== 'lg'" class="mini-trade clear list-group-striped">
         <b-list-group v-for="row in rows">
           <b-list-group-item class="pointer">
             <div class="time-link d-flex justify-content-between">

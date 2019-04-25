@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="wallet-detail-title panel-heading pb-20">
     <span class="no-margin panel-title">{{ getReservename(getFilterReserveAddress())}} </span>
-    <div v-if="!isHideDatepicker" class="datepicker-container pb-16 pt-0 float-right">
+    <div v-if="!isHideDatepicker" class="datepicker-container pb-16">
       <!-- <span>{{ $t('filter.from') }}</span> -->
       <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
         :language="locale"
@@ -39,7 +39,7 @@
     <div class="reserve-body row">
 
 
-      <div class="reserve-stat reserve-column col-5 mr-md-2">
+      <div class="reserve-stat reserve-column col-xl-5 mr-xl-2">
         <div class="reserve-value vdivide border-bottom">
           <div class="row pb-3">
             <div class="col">
@@ -105,7 +105,7 @@
       
      
 
-      <div class="reserve-tokens-list reserve-column vdivide no-border col ml-md-2">
+      <div class="reserve-tokens-list reserve-column vdivide no-border col ml-xl-2">
         <div class="reserve-value">
           <div class="reserve-title pb-4">
             {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}

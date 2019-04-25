@@ -22,7 +22,7 @@
           <span v-else class="no-margin panel-title">{{$t('wallet_detail.partner_details')}} </span>
 
 
-          <div v-if="!isHideDatepicker" class="datepicker-container pb-16 pt-0 float-right">
+          <div v-if="!isHideDatepicker" class="datepicker-container pb-16 ">
             <!-- <span>{{ $t('filter.from') }}</span> -->
             <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
               :language="locale"

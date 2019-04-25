@@ -1,5 +1,5 @@
 <template>
-  <div class="trade-details-container col-md-8 col-sm-10 col-12">
+  <div class="trade-details-container col-md-10 col-12">
     <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.trade_details')}} </span>
     </div>
