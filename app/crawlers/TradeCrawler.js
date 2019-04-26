@@ -233,7 +233,7 @@ class TradeCrawler {
           record.makerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
           record.takerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
           record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
-          record.uniqueTag = log.transactionHash + "_" + logIndex
+          record.uniqueTag = log.transactionHash + "_" + log.id
 
 
           record.blockNumber= log.blockNumber,
