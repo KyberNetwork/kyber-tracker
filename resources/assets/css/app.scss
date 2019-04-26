@@ -2527,6 +2527,15 @@ table.table-round {
       width: 100px;
       height: 52px;
       margin: 15px;  
+
+      -webkit-transition: -webkit-transform .2s ease-in-out;
+      -ms-transition: -ms-transform .2s ease-in-out;
+      transition: transform .2s ease-in-out;  
+      &.rolate{
+        transform:rotate(180deg);
+        -ms-transform:rotate(180deg);
+        -webkit-transform:rotate(180deg);
+      }
     }
   }
   

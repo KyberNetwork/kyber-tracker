@@ -184,7 +184,7 @@
         <div class="nav-line nav-logo">
             <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
               <span class=" icon-side h-100">
-                <img src="/images/collapse-icon.svg" />
+                <img src="/images/collapse-icon.svg" v-bind:class="isNavOpen ? '' : 'rolate'"/>
               </span>
               
             </a>
