@@ -232,6 +232,9 @@
           </tbody>
         </table>
 
+        <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
+        <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
+
         <paginate v-if="maxPage > 1 && !isHidePaginate"
           ref="bottomPaginator"
           :page-count="maxPage"
@@ -254,9 +257,6 @@
           <span slot="prevContent"><span class="color-green prev-last"><img src="/images/ic-arrow-left.svg" class="pb-1"/>  {{$t('token_list.prev')}}</span></span>
           <span slot="nextContent" ><span class="color-green prev-last">{{$t('token_list.next')}}  <img src="/images/ic-arrow-right.svg"  class="pb-1"/></span></span>
         </paginate>
-
-        <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
-        <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
 
         <div class="text-center" v-if="seeAllUrl">
           <router-link :to="seeAllUrl">
@@ -358,6 +358,11 @@
           </tbody>
         </table> -->
 
+        
+
+        <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
+        <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
+
         <paginate v-if="maxPage > 1 && !isHidePaginate"
           ref="bottomPaginator"
           :page-count="maxPage"
@@ -380,11 +385,7 @@
           <span slot="prevContent"><span class="color-green prev-last"><img src="/images/ic-arrow-left.svg" class="pb-1"/>  {{$t('token_list.mini-prev')}}</span></span>
           <span slot="nextContent" ><span class="color-green prev-last">{{$t('token_list.next')}}  <img src="/images/ic-arrow-right.svg"  class="pb-1"/></span></span>
         </paginate>
-
-        <div v-if="isLoading || isParentLoading" class="trade-loading"><div></div><div></div><div></div></div>
-        <div v-if="rows.length == 0 && !isLoading && !isParentLoading" class="no-row">{{ $t("trade_list.no_row") }}</div>
-
-
+        
         <div class="text-center" v-if="seeAllUrl">
           <router-link :to="seeAllUrl">
             <button type="button" class="btn btn-default see-all-trade mx-auto">{{ $t("common.see_all") }}</button>
@@ -638,7 +639,8 @@ export default {
       });
     },
     clickToPage (page) {
-      this.currentPage = this.$refs.topPaginator.selected = this.$refs.bottomPaginator.selected = page - 1;
+      console.log("************* click to page", page)
+      this.currentPage = this.$refs.bottomPaginator.selected = page - 1;
       this.fetch(true);
     },
 
@@ -652,9 +654,7 @@ export default {
 
     resetPagingate(){
       this.currentPage = 0
-      if(this.$refs.topPaginator){
-        this.$refs.topPaginator.selected = 0
-      }
+
       if(this.$refs.bottomPaginator){
         this.$refs.bottomPaginator.selected = 0
       }

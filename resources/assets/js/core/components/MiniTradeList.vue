@@ -453,7 +453,7 @@ export default {
       });
     },
     clickToPage (page) {
-      this.currentPage = this.$refs.topPaginator.selected = this.$refs.bottomPaginator.selected = page - 1;
+      this.currentPage = this.$refs.bottomPaginator.selected = page - 1;
       this.fetch(true);
     },
 
@@ -467,9 +467,6 @@ export default {
 
     resetPagingate(){
       this.currentPage = 0
-      if(this.$refs.topPaginator){
-        this.$refs.topPaginator.selected = 0
-      }
       if(this.$refs.bottomPaginator){
         this.$refs.bottomPaginator.selected = 0
       }

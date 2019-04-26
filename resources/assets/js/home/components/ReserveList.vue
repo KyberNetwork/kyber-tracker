@@ -12,8 +12,8 @@
       </template>
 
       <template slot="body" scope="slot">
-        <tr>
-            <td class="pl-4 pointer"  @click="toReserveDetails(slot.item.address)">
+        <tr  @click="toReserveDetails(slot.item.address)" class="pointer">
+            <td class="pl-4" >
               <a class="address-link" >{{getReservename(slot.item.address)}}</a>
             </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
