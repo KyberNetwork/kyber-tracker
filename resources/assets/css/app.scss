@@ -2568,10 +2568,15 @@ table.table-round {
 .card{
   border: none;
   padding: 30px;
-  @media (max-width: $sm) {
+  @media (max-width: $md) {
     padding: 30px 10px;
     .card-header{
       border-top: none;
+    }
+    .tab-content{
+      .tab-pane{
+        padding: 0;
+      }
     }
   }
   border-radius: 5px;

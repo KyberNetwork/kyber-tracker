@@ -5,7 +5,7 @@
         <span class="no-margin panel-title">{{$t('navigator.network')}} </span>
       </div>
     <b-card no-body>
-      <div class="chart-period-picker" v-if="$mq !== 'sm'">
+      <div class="chart-period-picker" v-if="$mq !== 'sm' && $mq !== 'ml'">
         <b-button-group class="cus-pagination full-width-btn-group">
           <b-button
             :variant="selectedPeriod === 'H24' ? 'active' : ''"
@@ -31,7 +31,7 @@
       </div>
       <b-tabs card>
 
-        <div class="chart-period-picker pt-3 text-right pr-3" v-if="$mq == 'sm'">
+        <div class="chart-period-picker pt-3 text-right" v-if="$mq == 'sm' || $mq == 'ml'">
           <b-button-group class="cus-pagination full-width-btn-group">
             <b-button
               :variant="selectedPeriod === 'H24' ? 'active' : ''"
