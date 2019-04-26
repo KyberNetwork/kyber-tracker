@@ -1,93 +1,105 @@
 <template>
-  <div class="trade-details-container col-md-8 col-sm-10 col-12">
-    <div class="panel-heading pb-16">
+  <div class="trade-details-container col-md-10 col-12">
+    <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.trade_details')}} </span>
     </div>
 
     <div class="col-12 background-detail">
       <b-row>
         <b-col sm="12 left-trade-detail">
-          <div class="trade-time">
-            <span class="entypo-clock"></span> {{ getDateInfo(record.blockTimestamp) }}
-          </div>
 
-          <div class="left-trade-rate d-flex justify-content-around">
-            <div class="token col-5">
-              <span class="token-symbol">
-                 <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenAddress) }}</span>
-                <token-link class="token-link" :address="record.takerTokenAddress"></token-link>
-              </span>
-            </div>
-            <!-- <span class="to">to</span> -->
-            <span class="entypo-right to col-2"></span>
-            <div class="token col-5">
-              <span class="token-symbol">
-                <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenAddress) }}</span>
-                <token-link class="token-link" :address="record.makerTokenAddress"></token-link>
-              </span>
-            </div>
-            
-          </div>
-          
-          <div v-if="record.volumeUsd" class="trade-note">
-            <i>{{ $t("trade_detail.trade_note", [formatFiatCurrency(record.volumeUsd)]) }}</i>
-          </div>
-        </b-col>
-        <b-col sm="12 right-trade-detail">
           <div class="trade-tx-hash">
             <div class="trade-detail-title">{{ $t("trade_detail.transaction_hash") }}</div>
-            <div class="trade-detail-link">
+            <div class="trade-detail-link pt-2">
               <a target="_blank" :href="getTxEtherscanLink(record.tx)">{{ record.tx }}</a>
             </div>
           </div>
+          <div class="trade-time pt-2 pb-4">
+            <!-- <span class="entypo-clock"></span>  -->
+            {{ getDateInfo(record.blockTimestamp) }}
+          </div>
+          <div class="trade-detail-wrapper">
+           
 
-          <div class="trade-detail-title">
-            <div class="trade-detail-title">{{ $t("trade_detail.wallet") }}</div>
-            <div class="trade-detail-link">
-              <router-link class="trade-detail-link" :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link>
+            <div class="left-trade-rate d-flex justify-content-around">
+              <div class="token col-5">
+                <span class="token-symbol font-semi-bold">
+                  <span class="token-symbol">{{ getTokenAmount(record.takerTokenAmount, record.takerTokenAddress) }}</span>
+                  <token-link class="token-link" :address="record.takerTokenAddress"></token-link>
+                </span>
+              </div>
+              <!-- <span class="to">to</span> -->
+              <span class="entypo-right col-2 color-green"></span>
+              <div class="token col-5">
+                <span class="token-symbol font-semi-bold">
+                  <span>{{ getTokenAmount(record.makerTokenAmount, record.makerTokenAddress) }}</span>
+                  <token-link class="token-link" :address="record.makerTokenAddress"></token-link>
+                </span>
+              </div>
+              
             </div>
             
+            <div v-if="record.volumeUsd" class="trade-note pt-3">
+              {{ $t("trade_detail.trade_note", [formatFiatCurrency(record.volumeUsd)]) }}
+            </div>
+
+
+            <div class="rate-detail pt-4 pb-4 d-flex justify-content-between">
+              <div class="rate">
+                <div class="rate-detail-title">
+                  <!-- <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> 
+                  RATE -->
+                  {{$t("trade_detail.rate", [
+                  isOfficial(record.takerTokenAddress) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
+                  isOfficial(record.makerTokenAddress) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
+                  ])}}
+                </div>
+                <div class="rate-detail-value">
+                  <!-- {{ Math.round(1/getRate(record)*100000000) / 100000000 }} -->
+                  {{getRate(record)}}
+                </div>
+                
+              </div>
+              <div class="collected">
+                <div class="rate-detail-title">
+                  {{$t("trade_detail.collected_fees")}}
+                </div>
+                <div class="rate-detail-value">
+                  {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
+                </div>
+                
+              </div>
+              <div v-if="$route.query.partner" class="commision">
+                <div class="rate-detail-title">
+                  {{$t("trade_detail.commission")}}
+                </div>
+                <div class="rate-detail-value">
+                  {{ getTokenAmount(record.commission, KNCAddr() ) }} KNC
+                </div>
+                
+              </div>
+            </div>
+
+            <div class="trade-wallet pb-4">
+              <div class="trade-detail-title">{{ $t("trade_detail.wallet") }}</div>
+              <div class="trade-detail-link">
+                <router-link class="trade-detail-link" :to="`/search?q=${record.takerAddress}`">{{ record.takerAddress }}</router-link>
+              </div>
+              
+            </div>
           </div>
+          
+
+
+          
+
+
         </b-col>
       </b-row>
 
     </div>
 
-    <div class="row rate-detail">
-      <div class="col">
-        <div class="rate-detail-title">
-          <!-- <token-link class="token-link" :symbol="record.takerTokenSymbol"></token-link>/<token-link class="token-link" :symbol="record.makerTokenSymbol"></token-link> 
-          RATE -->
-          {{$t("trade_detail.rate", [
-          isOfficial(record.takerTokenAddress) ? record.takerTokenSymbol : getShortedAddr(record.takerTokenAddress), 
-          isOfficial(record.makerTokenAddress) ? record.makerTokenSymbol : getShortedAddr(record.makerTokenAddress)
-          ])}}
-        </div>
-        <div class="rate-detail-value">
-          <!-- {{ Math.round(1/getRate(record)*100000000) / 100000000 }} -->
-          {{getRate(record)}}
-        </div>
-        
-      </div>
-      <div class="col">
-        <div class="rate-detail-title">
-          {{$t("trade_detail.collected_fees")}}
-        </div>
-        <div class="rate-detail-value">
-          {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
-        </div>
-        
-      </div>
-      <div v-if="$route.query.partner" class="col">
-        <div class="rate-detail-title">
-          {{$t("trade_detail.commission")}}
-        </div>
-        <div class="rate-detail-value">
-          {{ getTokenAmount(record.commission, KNCAddr() ) }} KNC
-        </div>
-        
-      </div>
-    </div>
+    
     
 
   </div>

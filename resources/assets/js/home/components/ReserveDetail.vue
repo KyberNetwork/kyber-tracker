@@ -1,19 +1,7 @@
 <template>
   <div class="col-sm-12">
-    <div class="wallet-detail-title panel-heading pb-16">
+    <div class="wallet-detail-title panel-heading pb-20">
     <span class="no-margin panel-title">{{ getReservename(getFilterReserveAddress())}} </span>
-  </div>
-
-  <!-- address detail ################## -->
-  <div class="reserve-detail-container mb-2">
-    <div class="reserve-address-title">
-      <div>{{$t('wallet_detail.address')}}</div>
-      <div>
-        <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
-      </div>
-      
-    </div>
-
     <div v-if="!isHideDatepicker" class="datepicker-container pb-16">
       <!-- <span>{{ $t('filter.from') }}</span> -->
       <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
@@ -36,96 +24,119 @@
         >
       </datepicker>
     </div>
+  </div>
 
-    <div class="reserve-body">
-      <div class="reserve-value vdivide">
-        <div class="row">
-          <div class="col">
-            <div class="pb-2">
-              {{$t('wallet_detail.trades')}}
-            </div>
-            <div class="font-semi-bold">
-              <span v-if="!isLoading">{{totalTrade}}</span>
-              <img v-else src="/images/waiting.svg" />
-            </div>
-            
-          </div>
-          <div class="col">
-            <div class="pb-2">
-              {{$t('wallet_detail.collected_fees')}}
-            </div>
-            <div class="font-semi-bold">
-              <span v-if="!isLoading">{{formatTokenAmount(collectedFees, 18)}}</span>
-              <img v-else src="/images/waiting.svg" />
-               KNC
-              <!-- {{round(collectedFees)}} KNC -->
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- address detail ################## -->
+  <div class="reserve-detail-container mb-2">
+    <div class="reserve-address-title">
+      <span>{{$t('wallet_detail.address')}}</span>
+      <span class="pl-4">
+        <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
+      </span>
       
+    </div>
 
-      <div class="reserve-value vdivide">
-         <div class="reserve-title pb-2">
-            {{$t('wallet_detail.total_trading_volune')}}
-          </div>
-          
+    <div class="reserve-body row">
+
+
+      <div class="reserve-stat reserve-column col-xl-5 mr-xl-2">
+        <div class="reserve-value vdivide border-bottom">
           <div class="row pb-3">
             <div class="col">
-              <!-- <div>
-                {{$t('wallet_detail.value_in_eth')}}
-              </div> -->
+              <div class="pb-2">
+                {{$t('wallet_detail.trades')}}
+              </div>
               <div class="font-semi-bold">
-                <span v-if="!isLoading">{{round(volumeEth)}}</span>
+                <span v-if="!isLoading">{{totalTrade}}</span>
                 <img v-else src="/images/waiting.svg" />
-                 ETH
               </div>
               
-              
             </div>
-            <div class="col ">
-              <!-- <div>
-                {{$t('wallet_detail.value_in_usd')}}*
-              </div> -->
+            <div class="col">
+              <div class="pb-2">
+                {{$t('wallet_detail.collected_fees')}}
+              </div>
               <div class="font-semi-bold">
-                <span v-if="!isLoading">{{round(volumeUsd)}}</span>
+                <span v-if="!isLoading">{{formatTokenAmount(collectedFees, 18)}}</span>
                 <img v-else src="/images/waiting.svg" />
-                 USD*
+                KNC
+                <!-- {{round(collectedFees)}} KNC -->
               </div>
             </div>
           </div>
-          <div class="note">
-            *{{$t('wallet_detail.notice')}}
-          </div>
-      </div>
-     
-
-      <div class="reserve-value vdivide no-border">
-        <div class="reserve-title pb-4">
-          {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
-        </div>
-        <div v-if="isLoading">
-          <img src="/images/waiting.svg" />
-        </div>
-        <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
-          <div class="col-12 col-sm-6" v-for="item in reserveTokens">
-            <div class="row pb-2">
-              <div class="col-4">
-                <span v-if="isOfficial(item.address)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
-                <span v-else><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">({{getShortedAddr(item.address)}})</a></span>
-              </div>
-              <div class="col-8 font-semi-bold">
-                {{(item.usd && round(item.usd)) || 0}} USD
-              </div>
-            </div> 
-          </div>
-
-          <div v-if="!isOpenlLoadmore && isShowLoadmore" class="gradient-trans row"></div>
         </div>
         
-        <label v-if="isShowLoadmore" class="row d-flex justify-content-center mt-5">
-          <button type="button" class="btn btn-light" @click="toggleLoadMore()">{{getLoadmoreTitle()}}</button>
-        </label>  
+
+        <div class="reserve-value vdivide">
+          <div class="reserve-title pb-2">
+              {{$t('wallet_detail.total_trading_volune')}}
+            </div>
+            
+            <div class="row pb-3">
+              <div class="col">
+                <!-- <div>
+                  {{$t('wallet_detail.value_in_eth')}}
+                </div> -->
+                <div class="font-semi-bold">
+                  <span v-if="!isLoading">{{round(volumeEth)}}</span>
+                  <img v-else src="/images/waiting.svg" />
+                  ETH
+                </div>
+                
+                
+              </div>
+              <div class="col ">
+                <!-- <div>
+                  {{$t('wallet_detail.value_in_usd')}}*
+                </div> -->
+                <div class="font-semi-bold">
+                  <span v-if="!isLoading">{{round(volumeUsd)}}</span>
+                  <img v-else src="/images/waiting.svg" />
+                  USD*
+                </div>
+              </div>
+            </div>
+            <div class="note">
+              *{{$t('wallet_detail.notice')}}
+            </div>
+        </div>
+      </div>
+
+      
+     
+
+      <div class="reserve-tokens-list reserve-column vdivide no-border col ml-xl-2">
+        <div class="reserve-value">
+          <div class="reserve-title pb-4">
+            {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
+          </div>
+          <div v-if="isLoading">
+            <img src="/images/waiting.svg" />
+          </div>
+          <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
+            <div class="col-12 col-sm-6" v-for="item in reserveTokens">
+              <div class="row pb-2">
+                <div class="col-4 ">
+                  <span v-if="isOfficial(item.address)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
+                  <span v-else><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">({{getShortedAddr(item.address)}})</a></span>
+                </div>
+                <div class="col-8 font-semi-bold">
+                  {{(item.usd && round(item.usd)) || 0}} USD
+                </div>
+              </div> 
+            </div>
+
+            <!-- <div v-if="!isOpenlLoadmore && isShowLoadmore" class="gradient-trans row"></div> -->
+          </div>
+          
+          <label v-if="isShowLoadmore" class="row d-flex justify-content-center mt-5">
+            <button type="button" class="btn btn-light" @click="toggleLoadMore()">{{getLoadmoreTitle()}}</button>
+          </label>  
+
+
+        </div>
+
+        
       </div>
 
       
@@ -135,14 +146,17 @@
 
   </div>
 
-  <!-- <div class="wallet-detail-title panel-heading pt-56 pb-16">
-    <span class="no-margin">{{$t('wallet_detail.history')}} </span>
-  </div> -->
+
+  
+
+  <div class="wallet-detail-title panel-heading pt-56 pb-16">
+    <span class="no-margin panel-title">{{$t('wallet_detail.history')}} </span>
+  </div>
     <mini-trade-list ref="datatable"
       :getFilterTokenAddress="getFilterTokenAddress"
       :getFilterReserveAddress="getFilterReserveAddress"
       :exportData="exportData"
-      :isHideDatepicker="false"
+      :isHideDatepicker="true"
       :searchFromDate="searchFromDate"
       :searchToDate="searchToDate"
       :isShowExport="false"
@@ -246,7 +260,7 @@ export default {
       this.isOpenlLoadmore = !this.isOpenlLoadmore
     },
     getLoadmoreTitle(){
-      return this.isOpenlLoadmore ? 'View less' : 'See more'
+      return this.isOpenlLoadmore ? 'View less' : 'See all tokens'
     },
 
     onchangeDate(){

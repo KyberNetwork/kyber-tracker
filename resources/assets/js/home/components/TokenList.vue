@@ -1,11 +1,11 @@
 <template>
   <div class="col-sm-12">
-    <div class="panel-heading pb-16">
+    <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.top_token')}} </span>
     </div>
 
     <b-card no-body>
-      <div class="chart-period-picker">
+      <div class="chart-period-picker" v-if="$mq !== 'sm' && $mq !== 'ml'">
         <b-button-group class="cus-pagination full-width-btn-group">
           <b-button
             :variant="selectedPeriod === 'H24' ? 'active' : ''"
@@ -31,6 +31,34 @@
       </div>
       <b-tabs card>
         <b-tab :title="$t('chart.title.top_token')">
+
+
+          <div class="chart-period-picker text-right pt-2" v-if="$mq == 'sm' || $mq == 'ml'">
+            <b-button-group class="cus-pagination full-width-btn-group">
+              <b-button
+                :variant="selectedPeriod === 'H24' ? 'active' : ''"
+                @click="selectPeriod('H24', 'H1')">24H
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'D7' ? 'active' : ''"
+                @click="selectPeriod('D7', 'H1')">7D
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'D30' ? 'active' : ''"
+                @click="selectPeriod('D30', 'D1')">1M
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'Y1' ? 'active' : ''"
+                @click="selectPeriod('Y1', 'D1')">1Y
+              </b-button>
+              <b-button
+                :variant="selectedPeriod === 'ALL' ? 'active' : ''"
+                @click="selectPeriod('ALL', 'D1')">ALL
+              </b-button>
+            </b-button-group>
+          </div>
+
+
           <chart-token
             ref="chartToken"
             :elementId="'chart-token'">
@@ -39,7 +67,7 @@
       </b-tabs>
     </b-card>
 
-    <div class="panel-heading pt-56 pb-16">
+    <div class="panel-heading pt-56 pb-20">
       <span class="no-margin panel-title">{{ $t("common.all_token") }}</span>
     </div>
 
@@ -49,8 +77,9 @@
         :getData="getList">
       <template slot="header">
         <!-- <th class="text-center">{{ $t("token_list.no") }}</th> -->
-        <th class="text-left pl-4">{{ $t("common.name") }}</th>
-        <th class="text-left ">{{ $t("common.symbol") }}</th>
+        <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
+        <th class="text-left pl-5">{{ $t("common.name") }}</th>
+        
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
         <th ></th>
@@ -59,28 +88,31 @@
       </template>
 
       <template slot="body" scope="slot">
-        <tr>
+        <tr class="pointer" @click="toTokenDetails(slot.item.address)">
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
-            <td class="pl-4">
-                <div class="token-name">
-                    <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item)" />
-                    <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
-                    <span v-if="!slot.item.official || !slot.item.name"><a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a></span>
-                    <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
-                    <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
-                </div>
-            </td>
-          <td  class="text-left pl-1">{{ slot.item.official ? slot.item.symbol : ''}}</td>
+          <td  class="text-left pl-3">
+            <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item)" />
+            {{ slot.item.official ? slot.item.symbol : ''}}
+            
+          </td>
+
+          <td class="pl-5">
+              <div class="token-name">
+                  
+                  <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
+                  <span v-if="!slot.item.official || !slot.item.name"><a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a></span>
+                  <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
+                  <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
+              </div>
+          </td>
+          
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
-          <!-- <td class="text-right">{{ slot.item.volumeToken }}<span class="td-inline-symbol">{{ slot.item.symbol }}</span></td>
-          <td><span class="pull-right">
-              <i class="k k-angle right"></i>
-            </span></td> -->
-          <td class="pointer text-right pr-5" @click="toTokenDetails(slot.item.address)">
-            <!-- <img src="/images/more.svg" /> -->
+
+
+          <!-- <td class="pointer text-right pr-5" >
             <span class="entypo-dot-3 table-more"></span>
-          </td>
+          </td> -->
         </tr>
       </template>
     </data-table>

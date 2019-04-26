@@ -1,7 +1,7 @@
 <template>
   <div class="token-chart">
     <canvas :id="elementId" height="0px;" class="mt-20"></canvas>
-    <div v-if="!chartInstance" class="content-loading-wrapper">
+    <!-- <div v-if="!chartInstance" class="content-loading-wrapper">
       <div class="timeline-item">
         <div class="animated-background" style="width: 96%;"></div> 
         <div class="animated-background" style="width: 30%;"></div> 
@@ -9,7 +9,7 @@
         <div class="animated-background" style="width: 8%;"></div> 
         <div class="animated-background" style="width: 2%;"></div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -36,12 +36,12 @@ export default {
     _buildChartData(ret) {
       const all = ret;//.filter(x => x.symbol !== "ETH");
 
-      ret = all.slice(0, 5);
+      ret = all.slice(0, 7);
       const labels = [];
       const dataset = [];
       const volumeTokens = [];
       const volumeEths = [];
-      const percentVolume = [];
+      // const percentVolume = [];
 
       const sum = (all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0)) / 2;
       for (let i = 0; i < ret.length; i++) {
@@ -52,9 +52,9 @@ export default {
         dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
         volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
         volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
-        percentVolume.push(
-          sum ? Math.round(ret[i].volumeUSD / sum * 1000) / 10 : 0
-        );
+        // percentVolume.push(
+        //   sum ? Math.round(ret[i].volumeUSD / sum * 1000) / 10 : 0
+        // );
       }
 
       return {
@@ -66,17 +66,19 @@ export default {
             data: dataset,
             pointRadius: 0,
             backgroundColor: [
-              "#2ed573",
-              "#2ed573",
-              "#2ed573",
-              "#2ed573",
-              "#2ed573"
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
             ],
             showLine: true,
             spanGaps: true
           }
         ],
-        percentVolume
+        // percentVolume
       };
     },
     _getChartOptions() {
@@ -117,20 +119,21 @@ export default {
         }
       };
 
-      const yAxeScale = {
+      const xAxeScale  = {
         ticks: {
-          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontFamily: "Avenir",
           fontSize: 12
         },
         gridLines: {
           drawBorder: false
-        }
+        },
+        categoryPercentage: 0.4
       };
 
-      const xAxeScale = {
+      const yAxeScale = {
         ticks: {
           beginAtZero: true,
-          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontFamily: "Avenir",
           fontSize: 12,
           gridLines: {
             offsetGridLines: true
@@ -149,8 +152,8 @@ export default {
           mode: "index",
           axis: "y",
           intersect: false,
-          fontFamily: "Montserrat, My-Montserrat, sans-serif",
-          backgroundColor: "rgba(25, 46, 59, 0.8)",
+          fontFamily: "Avenir",
+          backgroundColor: 'rgba(25, 46, 59, 0.8)',
           titleFontSize: 14,
           titleFontColor: "#f8f8f8",
           bodyFontSize: 14,
@@ -168,40 +171,35 @@ export default {
         legend: {
           display: false
         },
+        plugins: {
+          datalabels: false
+        },
+        maintainAspectRatio: false,
         layout: {
             padding: {
                 right: 50,
             }
         },
 
-        plugins: {
-          datalabels: {
-            display: true,
-            align: "right",
-            anchor: function(context) {
-              // console.log(context)
-              return "end";
-            },
-            // color: [
-            //   'red',    // color for data at index 0
-            //   'blue',   // color for data at index 1
-            //   'green',  // color for data at index 2
-            //   'black',  // color for data at index 3
-            //   //...
-            // ],
-            formatter: function(value, context) {
-              let dataIndex = context.dataIndex;
-              let percentVolume = context.chart.data.percentVolume;
+        // plugins: {
+        //   datalabels: {
+        //     display: true,
+        //     align: "right",
+        //     anchor: function(context) {
+        //       // console.log(context)
+        //       return "end";
+        //     },
+          
+        //     formatter: function(value, context) {
+        //       let dataIndex = context.dataIndex;
+        //       let percentVolume = context.chart.data.percentVolume;
 
-              // let sum = volumeEths.reduce((a,b) => (a + b), 0)
-              return percentVolume[dataIndex] ? percentVolume[dataIndex] + "%" : "";
-            }
-            // display: function(context) {
-            //   console.log(context)
-            //     return context.dataIndex % 2; // display labels with an odd index
-            // }
-          }
-        },
+        //       // let sum = volumeEths.reduce((a,b) => (a + b), 0)
+        //       return percentVolume[dataIndex] ? percentVolume[dataIndex] + "%" : "";
+        //     }
+           
+        //   }
+        // },
 
         maintainAspectRatio: false
       };
@@ -246,7 +244,7 @@ export default {
           this.chartInstance.update(0);
         } else {
           this.chartInstance = new Chart(ctx, {
-            type: "horizontalBar",
+            type: "bar",
             data: data,
             options: options,
             plugins: [datalabels]

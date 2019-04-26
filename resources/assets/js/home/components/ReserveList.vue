@@ -1,94 +1,111 @@
 <template>
   <div class="col-sm-12">
-    <div class="panel-heading pb-16">
+    <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.reserves')}} </span>
     </div>
 
-    <b-tabs>
-      <b-tab :title="$t('reserves.all') " active>
-        <!-- all              -->
-        <!-- <data-table :items="getReserveByType('all')">
+    <data-table v-if="isAllTokens()" :rows="getReserveByType('all')">
+      <template slot="header">
+        <th class="text-left pl-4">{{ $t("common.address") }}</th>
+        <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
+        <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+      </template>
+
+      <template slot="body" scope="slot">
+        <tr  @click="toReserveDetails(slot.item.address)" class="pointer">
+            <td class="pl-4" >
+              <a class="address-link" >{{getReservename(slot.item.address)}}</a>
+            </td>
+          <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+          <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
           
-        </data-table> -->
+        </tr>
+      </template>
+    </data-table>
+
+    <data-table v-else :rows="getReserveByType('offical')">
+      <template slot="header">
+        <th class="text-left pl-4">{{ $t("common.address") }}</th>
+        <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
+        <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+      </template>
+
+      <template slot="body" scope="slot">
+        <tr @click="toReserveDetails(slot.item.address)" class="pointer">
+            <td class="pl-4">
+              <a class="address-link">{{getReservename(slot.item.address)}}</a>
+            </td>
+          <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+          <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
+          
+        </tr>
+      </template>
+    </data-table>
+
+
+    <!-- <b-tabs>
+      <b-tab :title="$t('reserves.all') " active>
         <data-table :rows="getReserveByType('all')">
           <template slot="header">
             <th class="text-left pl-4">{{ $t("common.address") }}</th>
             <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
             <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
-            <th ></th>
           </template>
 
           <template slot="body" scope="slot">
             <tr>
-                <td class="pl-4">
-                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getReservename(slot.item.address)}}</a>
+                <td class="pl-4 pointer"  @click="toReserveDetails(slot.item.address)">
+                  <a class="address-link" >{{getReservename(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
               <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
              
-              <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
-                <span class="entypo-dot-3 table-more"></span>
-              </td>
             </tr>
           </template>
         </data-table>
 
-        <!-- ########################  -->
       </b-tab>
       <b-tab :title="$t('reserves.verified') " >
-        <!-- <br>Offical -->
         <data-table :rows="getReserveByType('offical')">
           <template slot="header">
             <th class="text-left pl-4">{{ $t("common.address") }}</th>
             <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
             <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
-            <th ></th>
           </template>
 
           <template slot="body" scope="slot">
-            <tr>
+            <tr @click="toReserveDetails(slot.item.address)" class="pointer">
                 <td class="pl-4">
-                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getReservename(slot.item.address)}}</a>
+                  <a class="address-link">{{getReservename(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
               <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
              
-              <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
-                <span class="entypo-dot-3 table-more"></span>
-              </td>
             </tr>
           </template>
         </data-table>
-        <!-- ################################ -->
       </b-tab>
       <b-tab :title="$t('reserves.permisionless') ">
-        <!-- <br>Permissionless -->
         <data-table :rows="getReserveByType('permissionless')">
           <template slot="header">
             
             <th class="text-left pl-4">{{ $t("common.address") }}</th>
             <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
             <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
-            <th ></th>
           </template>
 
           <template slot="body" scope="slot">
-            <tr>
+            <tr @click="toReserveDetails(slot.item.address)" class="pointer">
                 <td class="pl-4">
-                  <a class="address-link" @click="toReserveDetails(slot.item.address)">{{getReservename(slot.item.address)}}</a>
+                  <a class="address-link">{{getReservename(slot.item.address)}}</a>
                 </td>
               <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
               <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
-             
-              <td class="pointer text-right pr-5" @click="toReserveDetails(slot.item.address)">
-                <span class="entypo-dot-3 table-more"></span>
-              </td>
             </tr>
           </template>
         </data-table>
-        <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
       </b-tab>
-    </b-tabs>
+    </b-tabs> -->
 
 
   </div>
@@ -103,6 +120,7 @@ import BigNumber from 'bignumber.js';
 import AppRequest from '../../core/request/AppRequest';
 import util from '../../core/helper/util';
 import network from '../../../../../config/network';
+import store from "../../core/helper/store";
 import Chart from 'chart.js';
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
@@ -224,7 +242,10 @@ export default {
 
     beforeDestroy() {
       window.clearInterval(this._refreshInterval);
-    }
+    },
+    isAllTokens() {
+      return store.get("allTokens") ? true : false;
+    },
   },
 
   watch: {

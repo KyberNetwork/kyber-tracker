@@ -1,11 +1,11 @@
 <template>
   
   <div class="col-sm-12">
-    <div class="panel-heading pb-16">
+    <div class="panel-heading pb-20">
         <span class="no-margin panel-title">{{$t('navigator.network')}} </span>
       </div>
     <b-card no-body>
-      <div class="chart-period-picker">
+      <div class="chart-period-picker" v-if="$mq !== 'sm' && $mq !== 'ml'">
         <b-button-group class="cus-pagination full-width-btn-group">
           <b-button
             :variant="selectedPeriod === 'H24' ? 'active' : ''"
@@ -30,6 +30,32 @@
         </b-button-group>
       </div>
       <b-tabs card>
+
+        <div class="chart-period-picker pt-3 text-right" v-if="$mq == 'sm' || $mq == 'ml'">
+          <b-button-group class="cus-pagination full-width-btn-group">
+            <b-button
+              :variant="selectedPeriod === 'H24' ? 'active' : ''"
+              @click="selectPeriod('H24', 'H1')">24H
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'D7' ? 'active' : ''"
+              @click="selectPeriod('D7', 'H1')">7D
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'D30' ? 'active' : ''"
+              @click="selectPeriod('D30', 'D1')">1M
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'Y1' ? 'active' : ''"
+              @click="selectPeriod('Y1', 'D1')">1Y
+            </b-button>
+            <b-button
+              :variant="selectedPeriod === 'ALL' ? 'active' : ''"
+              @click="selectPeriod('ALL', 'D1')">ALL
+            </b-button>
+          </b-button-group>
+        </div>
+
         <b-tab @click="onSelectTab('chartVolume')" :title="$t('chart.title.network_volume')" active>
           <chart-volume ref="chartVolume"
             :elementId="'chart-volume'">
@@ -45,11 +71,6 @@
             :elementId="'chart-burned'">
           </chart-fee>
         </b-tab>
-        <!-- <b-tab @click="onSelectTab('chartToken')" :title="$t('chart.title.top_token')">
-          <chart-token ref="chartToken"
-            :elementId="'chart-token'">
-          </chart-token>
-        </b-tab> -->
       </b-tabs>
     </b-card>
     <trade-list ref="datatable"
@@ -59,14 +80,9 @@
                 :isHideDatepicker="true"
                 :isHidePaginate="true"
                 :pageSize="5"
+                :seeAllUrl="'/trades'"
                 >
     </trade-list>
-    <div class="text-center">
-      <router-link to="/trades">
-        <button type="button" class="btn btn-default see-all-trade mx-auto">{{ $t("common.see_all") }}</button>
-      </router-link>
-      
-    </div>
     
 
   </div>

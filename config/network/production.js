@@ -217,7 +217,8 @@ module.exports = {
       "name": "Zilliqa",
       "decimal": 12,
       "address": "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
-      "symbol": "ZIL"
+      "symbol": "ZIL",
+      "delisted": true
     },
     "LINK": {
       "name": "Chain Link",
@@ -600,7 +601,8 @@ module.exports = {
       "symbol" : "BNB",
       "decimal": 18,
       "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-      "hidden": 1537590437000
+      "hidden": 1537590437000,
+      "delisted": true
     },
     "REP": {
       "name": "Augur",
@@ -826,6 +828,13 @@ module.exports = {
       "decimal": 18,
       "address": "0xc86d054809623432210c107af2e3f619dcfbf652",
       "hidden": true  
+    },
+    "MCO": {
+      "name": "Crypto.com",
+      "symbol" : "MCO",
+      "decimal": 8,
+      "address": "0xB63B606Ac810a52cCa15e44bB630fd42D8d1d83d",
+      "hidden": 1556283600000  
     }
 
   },
