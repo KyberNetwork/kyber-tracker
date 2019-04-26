@@ -97,7 +97,7 @@
                 </span>
               </td>
               <td v-if="partner" class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
-              <td class="text-center pr-4 view-on" >
+              <td class="text-center pr-4 view-on d-flex" >
                 <!-- <img src="/images/more.svg" /> -->
                 <!-- <span class="entypo-dot-3 table-more"></span> -->
                 <a :href="getTxEtherscanLink(row.tx)" target="_blank"><img class="etherscan" src="/images/etherscan-logo.png" /></a>
