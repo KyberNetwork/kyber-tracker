@@ -797,7 +797,7 @@ module.exports = {
       "symbol" : "PAX",
       "decimal": 18,
       "address": "0x8e870d67f660d95d5be530380d0ec0bd388289e1",
-      "hidden": 1556499600000
+      "hidden": 1556542800000
     },
 
     "MLN":{
