@@ -121,7 +121,10 @@ a {
 
 .content-wrapper{
   .search-colapse{
-    margin: auto;
+    // margin: auto;
+    @media (max-width: $md) {
+      margin: auto;
+    }
     #autosuggest{
       // width: 0px;
       margin-left: 0px !important;
@@ -133,8 +136,17 @@ a {
     }
     
   }
+
+  .search-and-swap{
+    background-color: #f6f7fa;
+  }
   .search-expand{
-    margin: auto;
+    // margin: auto;
+    
+    @media (max-width: $md) {
+      margin: auto;
+    }
+
     #autosuggest{
       input{
         border-left: solid 2px #d2d3d4 !important;
@@ -192,7 +204,24 @@ a {
   -webkit-transition: height 2s ease;
   -moz-transition: height 2s ease;
   transition: height 2s ease;
+  
+  @media(min-width: $md){
 
+    .heading-wrapper{
+      position: relative;
+      .change-official{
+        button{
+          width: 215px;
+        }
+      }
+      .search-and-swap{
+        position: absolute;
+        right: 0;
+        height: 83px;
+        
+      }
+    }
+  }
   .colapse-button{
     position: absolute;
     bottom: 0px;
@@ -999,6 +1028,10 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       overflow: auto;
     }
   }
+
+  @media(min-width: $md){
+    width: calc(100% - 215px - 225px);
+  }
   &.header-expand{
     height: auto !important;
     img.show-more{
@@ -1027,7 +1060,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
         // float: left;
         margin-right: 30px;
         // color: #fff;
-        min-width: 120px;
+        // min-width: 120px;
         padding-bottom: 23px;
     
         // position: relative;
@@ -1048,46 +1081,6 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
 }
 
-// @media (min-width: 576px) and (max-width: $lg) {
-//   .heading-summary{
-//     li {
-//       width: 50%;
-//       margin: 0;
-//     }
-//   }
-// }
-
-
-// @media (min-width: 576px) and (max-width: 779px) {
-//   .heading-summary {
-//     padding-left: 15px;
-//   }
-// }
-
-
-@media (max-width: 1113px){
-  .navbar{
-    // #total-burn-fee{
-    //   display: none;
-    // }
-
-    // .show-more{
-    //   display: block;
-    // }
-    // .heading-summary:hover{
-    //   height: 110px;
-    //   #total-burn-fee{
-    //     // padding-top: 5px;
-    //     display: block;
-    //   }
-
-    //   .show-more{
-    //     display: none;
-    //   }
-    // }
-  }
-}
-
 @media (max-width: 993px){
   .navbar{
     .expand-navbar{
@@ -1098,104 +1091,56 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-@media (max-width: 500px){
-  .navbar{
-    // #eth-price{
-    //   display: none;
-    // }
-    // .heading-summary:hover{
-    //   #eth-price{
-    //     // padding-top: 5px;
-    //     display: block;
-    //   }
-    // }
-  }
-}
-@media (max-width: 360px){
-  .navbar{
-    // #knc-price{
-    //   display: none;
-    // }
-    // .heading-summary:hover{
-    //   #knc-price{
-    //     // padding-top: 5px;
-    //     display: block;
-    //   }
-    // }
-  }
-}
+// @media (max-width: 1250px){
+//   .navbar{
+//     font-style: normal;
+//     font-stretch: normal;
+//     line-height: 1.43;
+//     letter-spacing: normal;
 
-@media (max-width: 1250px){
-  .navbar{
-    // .heading-summary{
-    //   padding-left: 10px;
-    // }
-    // font-size: 14px;
-    // font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.43;
-    letter-spacing: normal;
+//     #autosuggest{
+//       // display: none;
+//       visibility: hidden;
+//       width: 0px;
 
-    #autosuggest{
-      // display: none;
-      visibility: hidden;
-      width: 0px;
+//     }
+//     .search-button{
+//       // border-radius: 4px;
+//     }
 
-    }
-    .search-button{
-      // border-radius: 4px;
-    }
+//     .search-expand{
+//       // display: block !important;
+//       visibility: visible !important;
+//       width: 100% !important;
+//       width: 365px !important;
 
-    .search-expand{
-      // display: block !important;
-      visibility: visible !important;
-      width: 100% !important;
-      width: 365px !important;
+//     }
 
-    }
-
-  }
-}
+//   }
+// }
 
 
-@media (max-width: 493px){
-  // .navbar{
-  //   .heading-summary:hover{
-  //     height: 150px;
-  //   }
-  // }
-}
-
-@media (max-width: 610px){
-  .icon-second-heade{
-    display: none
-  }
-  .go-exchange{
-    display: none;
-    // .text-go{
-    //   display: none;
-    // }
-    // .icon-go{
-    //   font-size: 24px !important;
-    // }
-    // button{
-    //   padding: 0px !important;
-    //   background-color: transparent !important;
-    // }
-  }
-}
+// @media (max-width: 610px){
+//   .icon-second-heade{
+//     display: none
+//   }
+//   .go-exchange{
+//     display: none;
+//     // .text-go{
+//     //   display: none;
+//     // }
+//     // .icon-go{
+//     //   font-size: 24px !important;
+//     // }
+//     // button{
+//     //   padding: 0px !important;
+//     //   background-color: transparent !important;
+//     // }
+//   }
+// }
 
 
 @media (max-width: $md){
-  // .heading-summary{
-  //   margin: 0 15px;
-
-  //   li {
-  //     width: 50%;
-  //     margin: 0;
-  //   }
-  // }
   .container{
     padding: 0px;
   }
@@ -1768,7 +1713,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     @media (max-width: $xl) {
       border-radius: 0 0 5px 5px;
     }
-    font-size: 14px;
+    // font-size: 14px;
     
     .reserve-tokens{
       max-height: 200px;
@@ -1799,20 +1744,6 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 .borderless td, .borderless th {
   border: none;
 }
-
-// @media (min-width: 576px) and (max-width: 730px) {
-//   .vdp-datepicker__calendar {
-//     left: -80px;
-//   }
-// }
-
-// @media (max-width: 320px){
-//   .datepicker-container {
-//     .vdp-datepicker {
-//       display: block;
-//     }
-//   }
-// }
 
 @media (max-width: $sm){
   .datepicker-container {
@@ -2124,7 +2055,7 @@ html {
   // border-left: solid 2px #d2d3d4 !important;
   padding-top: 0;
   padding-bottom: 0;
-  line-height: 1.5;
+  line-height: 2.5;
   width: 350px;
   // height: 40px;
   border-radius: 0;
@@ -2213,7 +2144,7 @@ html {
     padding-left: 10px;
     font-size: 16px;
     border-radius: 3px;
-    border: solid 1px #1f3468;
+    border: solid 1px #e3e5eb;
   }
 
   .vdp-datepicker input::placeholder{

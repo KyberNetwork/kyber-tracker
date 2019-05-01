@@ -166,29 +166,6 @@
       </div>
 
     </div>
-
-    
-
-    <!-- <paginate v-if="maxPage > 1 && !isHidePaginate"
-      ref="topPaginator"
-      :page-count="maxPage"
-      :initial-page="currentPage"
-      :page-range="($mq !== 'md' && $mq !== 'lg') ? 0 : 1"
-      :click-handler="clickToPage"
-      :prev-text="$t('token_list.prev')"
-      :next-text="$t('token_list.next')"
-      :container-class="'pagination'"
-      :page-class="'page-item'"
-      :page-link-class="'page-link'"
-      :prev-class="'page-item'"
-      :prev-link-class="'page-link'"
-      :next-class="'page-item'"
-      :next-link-class="'page-link'"
-      :active-class="'active'"
-      :class="'home-pagination-block full-width-pagination'"
-      :hide-prev-next="true"
-      >
-    </paginate> -->
     
     
     <mini-trade-list ref="datatable"
@@ -207,31 +184,6 @@
     
   </div>
 
-
-
-
-
-
-
-
-
-
-
-  <!-- <div class="col-sm-12">
-    <trade-list ref="datatable"
-      :getFilterTokenAddress="getFilterTokenAddress"
-      :fetch="requestSearch"
-      :exportData="exportData"
-      :isHideDatepicker="false"
-      :searchResult="getSearchResultMessage()"
-      :getSearchResultTitle="getSearchResultTitle"
-      :searchFromDate="searchFromDate"
-      :searchToDate="searchToDate"
-      :isShowExport="true"
-      :isParentLoading="isParentLoading"
-    >
-    </trade-list>
-  </div> -->
 </template>
 
 <script>
@@ -324,23 +276,23 @@ export default {
         !util.isTxHash(this.$route.query.q) &&
         !util.isAddress(this.$route.query.q)
       ) {
-        // let vaidQuery = this.$t('search_page.invalid_query')
-        // return <span>{{vaidQuery}}</span>
-        return {
-          isValid: false,
-          error: this.$t("search_page.invalid_query"),
-          data: null
-        };
+        this.$router.push(`/not-found`);
+        return;
+        // return {
+        //   isValid: false,
+        //   error: this.$t("search_page.invalid_query"),
+        //   data: null
+        // };
       }
 
       if (util.isTxHash(this.$route.query.q) && !this.resultCount) {
-        // let noTxHash = this.$t('search_page.no_txhash_data')
-        // return <span>{{noTxHash}}</span>
-        return {
-          isValid: true,
-          error: this.$t("search_page.no_txhash_data"),
-          data: null
-        };
+        this.$router.push(`/not-found`);
+        return;
+        // return {
+        //   isValid: true,
+        //   error: this.$t("search_page.no_txhash_data"),
+        //   data: null
+        // };
       }
 
       // let returnDiv = <span>
