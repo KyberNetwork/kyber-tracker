@@ -135,6 +135,7 @@
         };
 
         const xAxeScale = {
+          barThickness: 'flex',
           ticks: {
             maxRotation: 0,
             fontFamily: "Montserrat, My-Montserrat, sans-serif",

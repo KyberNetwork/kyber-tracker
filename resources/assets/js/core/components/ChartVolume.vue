@@ -136,6 +136,7 @@ export default {
       const xAxeScale = {
         // categoryPercentage: 1,
         // barPercentage: 1,
+        barThickness: 'flex',
         ticks: {
           maxRotation: 0,
           fontFamily: "Montserrat, My-Montserrat, sans-serif",
