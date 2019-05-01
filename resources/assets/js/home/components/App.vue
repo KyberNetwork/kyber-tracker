@@ -56,18 +56,10 @@
             </b-dropdown-item>
           </b-dropdown> 
 
-
-          <!-- <div ref="headingSum" class="heading-summary" @click="clickHeading()">
-            
-
-        
-          </div> -->
-
           <carousel :perPage="5" :scrollPerPage="false" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" class="heading-summary" >
             <slide >
               <div class="text-nowrap">{{ $t('status_bar.network_volume') }}</div>
               <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
-              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
             </slide>
             <slide >
               <span class="text-nowrap">{{ $t('status_bar.knc_price') }}</span>
@@ -86,14 +78,11 @@
                 <span class="topbar-value" >{{ ethPrice }} </span>
                 <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
               </div>
-             
-              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
             </slide>
 
             <slide >
               <span class="text-nowrap">{{ $t('status_bar.collected_fees') }}</span>
               <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
-              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
             </slide>
             <slide>
               <span class="text-nowrap">{{ $t('status_bar.fees_burned') }}</span>
@@ -101,35 +90,38 @@
             </slide> 
 
 
-            <!-- <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.network_volume') }}</span>
-              <span class="topbar-value">{{ networkVolume }}</span>
+            <!-- ============================== -->
+            <slide v-if="checkLoopSumary()">
+              <div class="text-nowrap">{{ $t('status_bar.network_volume') }}</div>
+              <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
             </slide>
             <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.knc_price') }}</span><br />
-              <span class="topbar-value">
-                {{ kncPrice }} 
-                </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-            </slide>
-
-            <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.eth_price') }}</span><br />
-              <span class="topbar-value" >{{ ethPrice }} </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              <span class="text-nowrap">{{ $t('status_bar.knc_price') }}</span>
+              <div class="d-inline-flex">
+                <span class="topbar-value text-nowrap">
+                  {{ kncPrice }} 
+                  </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+              </div>
               
             </slide>
 
             <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.collected_fees') }}</span><br />
-              <span class="topbar-value">{{ collectedFees }}</span>
+              <span class="text-nowrap">{{ $t('status_bar.eth_price') }}</span>
+              <div class="d-inline-flex">
+                <span class="topbar-value" >{{ ethPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              </div>
             </slide>
-                
 
             <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.fees_burned') }}</span><br />
-              <span class="topbar-value">{{ totalBurnedFee }}</span>
-            </slide>  -->
+              <span class="text-nowrap">{{ $t('status_bar.collected_fees') }}</span>
+              <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+            </slide>
+            <slide v-if="checkLoopSumary()">
+              <span class="text-nowrap">{{ $t('status_bar.fees_burned') }}</span>
+              <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
+            </slide> 
 
           </carousel>
             
@@ -479,7 +471,7 @@ export default {
 
     checkLoopSumary(){
       if(this.$refs.headingSum){
-        if(this.$refs.headingSum.carouselWidth < 750) return true
+        if(this.$refs.headingSum.carouselWidth < 800) return true
         return false
       }
       return false

@@ -18,6 +18,7 @@ const appConst = {
     H1  : 60 * 60,
     D1  : 60 * 60 * 24,
     W1  : 60 * 60 * 24 * 7,
+    D30  : 60 * 60 * 24 * 30,
   },
 
   CHART_PERIOD: {
@@ -27,7 +28,7 @@ const appConst = {
     Y1  : 60 * 60 * 24 * 365,
     ALL : 60 * 60 * 24 * 365 * 100, // 100 years
   },
-  INTERVAL: ['H1','M1','D1']
+  INTERVAL: ['H1','M1','D1', 'D30']
 };
 
 module.exports = _.assign(coreConst, appConst);
