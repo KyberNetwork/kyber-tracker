@@ -38,8 +38,8 @@ class AppRequest extends BaseRequest {
               return callback(null, res.body);
             })
             .catch((err => {
-              callback(err)
               this._handleError(err)
+              callback(err)
             }));
   }
 
@@ -57,8 +57,8 @@ class AppRequest extends BaseRequest {
               return callback(null, res.body);
             })
             .catch(err => {
-              callback(err)
               this._handleError(err)
+              callback(err)
             });
   }
 

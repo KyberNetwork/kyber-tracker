@@ -169,7 +169,7 @@
           </div> -->
         </div>
 
-        <div class="wallet-detail-title panel-heading pt-56 pb-20">
+        <div class="wallet-detail-title panel-heading pt-56 pb-20 d-flex justify-content-between">
           <div class="no-margin panel-title">{{$t('wallet_detail.history')}} </div>
 
           <button type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>

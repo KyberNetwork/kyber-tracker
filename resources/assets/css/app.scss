@@ -1402,6 +1402,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     margin-left: 37px;
     padding: 8px 16px;
     background-color: white;
+    @media (max-width: $md) {
+      margin-right: 30px;
+    }
   }
   .no-row{
     text-align: center;
