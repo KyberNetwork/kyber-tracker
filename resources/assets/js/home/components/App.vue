@@ -189,7 +189,7 @@
             <a v-if="$mq !== 'md' && $mq !== 'lg'"  href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')"  target="_blank" v-bind:class="[isNavOpen ? 'nav-text go-exchange d-flex' : 'nav-text go-exchange d-flex w-0']">
               <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
             </a>
-            <router-link v-else to="/" v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
+            <router-link v-else to="/" v-bind:class="[isNavOpen ? 'nav-text ' : 'nav-text w-0']">
               <img  class="nav-logo ml-0" src="/images/nav-logo.svg" />
             </router-link>
         </div>
@@ -198,33 +198,33 @@
           <div class="icon-side">
             <img src="/images/volumn-icon.svg" />
           </div>
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.volume') }}</div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.volume') }}</div>
         </router-link>
         <router-link to="/trades" class="nav-line highlight-hover">
           <div class="icon-side">
             <img src="/images/trade-icon.svg" />
           </div>
           
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.trade_history') }}</div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.trade_history') }}</div>
         </router-link>
         <router-link to="/tokens" class="nav-line highlight-hover">
           <div class="icon-side">
             <img class="nav-logo icon-token" src="/images/token-icon.svg" />
           </div>
           
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.tokens') }}</div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.tokens') }}</div>
         </router-link>
         <router-link to="/reserves" class="nav-line highlight-hover">
           <div class="icon-side">
             <img class="nav-logo icon-reserve" src="/images/reserve-icon.svg" />
           </div>
           
-          <div v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']" >{{ $t('navigator.reserves') }}</div>
+          <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.reserves') }}</div>
         </router-link>
         <div class="nav-line h-100">
           <div class="icon-side h-100">
           </div>
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']"></div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']"></div>
         </div>
       </div>
 

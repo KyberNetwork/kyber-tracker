@@ -46,7 +46,7 @@ a {
   white-space: normal !important;
 }
 .font-semi-bold{
-  font-weight: 500;
+  font-weight: 600;
 }
 .pointer{
   cursor: pointer;
@@ -149,6 +149,7 @@ a {
 
     #autosuggest{
       input{
+        text-indent: 16px;
         border-left: solid 2px #d2d3d4 !important;
         @media (max-width: $md) {
           width: 50vw;
@@ -2082,7 +2083,7 @@ html {
   font-size: 14px !important;
   vertical-align: middle;
   opacity: 0.7;
-  padding-left: 16px;
+  // padding-left: 16px;
 }
 
 // #autosuggest{
