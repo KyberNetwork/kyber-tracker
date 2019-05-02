@@ -150,7 +150,7 @@ export default {
       return {
         tooltips: {
           mode: "index",
-          axis: "y",
+          axis: "x",
           intersect: false,
           fontFamily: "Avenir",
           backgroundColor: 'rgba(25, 46, 59, 0.8)',
