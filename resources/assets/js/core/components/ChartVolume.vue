@@ -34,10 +34,18 @@ export default {
       const counts = [];
       const dataset = [];
       const eths = [];
+      const momentNow = moment()
       if (interval === 'H1') {
         const keyedVolumeData = _.keyBy(volumeData, 'hourSeq');
+        const lastHour = momentNow.subtract(1, 'hours').endOf('hour')
         for (let seq = volumeData[0].hourSeq; seq <= volumeData[volumeData.length - 1].hourSeq; seq++) {
-          labels.push(seq * 3600 * 1000);
+          // check if seq > end of last hour -> continue
+          const seqMs = seq * 3600 * 1000
+          const thisTime = moment(seqMs)
+          if(thisTime.isAfter(lastHour)){
+            continue;
+          }
+          labels.push(seqMs);
           const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
           dataset.push(Math.round(volume * 100) / 100);
           const volumeEth = (keyedVolumeData[seq] ? keyedVolumeData[seq].sumEth : 0);
@@ -46,8 +54,16 @@ export default {
         }
       } else if (interval === 'D1') {
         const keyedVolumeData = _.keyBy(volumeData, 'daySeq');
+        const lastDay = momentNow.subtract(1, 'days').endOf('day')
         for (let seq = volumeData[0].daySeq; seq <= volumeData[volumeData.length - 1].daySeq; seq++) {
-          labels.push(seq * 3600 * 24 * 1000);
+          // check if seq > end of last day -> continue
+          const seqMs = seq * 3600 * 24 * 1000
+          const thisTime = moment(seqMs)
+          if(thisTime.isAfter(lastDay)){
+            continue;
+          }
+
+          labels.push(seqMs);
           const volume = (keyedVolumeData[seq] ? keyedVolumeData[seq].sum : 0);
           dataset.push(Math.round(volume * 100) / 100);
           const volumeEth = (keyedVolumeData[seq] ? keyedVolumeData[seq].sumEth : 0);
