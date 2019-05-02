@@ -29,10 +29,18 @@
         const labels = [];
         const dataset = [];
         let lastSum = feeData[0].sum;
+        const momentNow = moment()
         if (interval === 'H1') {
           const keyedVolumeData = _.keyBy(feeData, 'hourSeq');
+          const lastHour = momentNow.subtract(1, 'hours').endOf('hour')
           for (let seq = feeData[0].hourSeq; seq <= feeData[feeData.length - 1].hourSeq; seq++) {
-            labels.push(seq * 3600 * 1000);
+            const seqMs = seq * 3600 * 1000
+            const thisTime = moment(seqMs)
+            if(thisTime.isAfter(lastHour)){
+              continue;
+            }
+
+            labels.push(seqMs);
             let volume = 0;
             if (keyedVolumeData[seq]) {
               volume = keyedVolumeData[seq].sum;
@@ -44,8 +52,15 @@
           }
         } else if (interval === 'D1') {
           const keyedVolumeData = _.keyBy(feeData, 'daySeq');
+          const lastDay = momentNow.subtract(1, 'days').endOf('day')
           for (let seq = feeData[0].daySeq; seq <= feeData[feeData.length - 1].daySeq; seq++) {
-            labels.push(seq * 3600 * 24 * 1000);
+            const seqMs = seq * 3600 * 24 * 1000
+            const thisTime = moment(seqMs)
+            if(thisTime.isAfter(lastDay)){
+              continue;
+            }
+
+            labels.push(seqMs);
             let volume = 0;
             if (keyedVolumeData[seq]) {
               volume = keyedVolumeData[seq].sum;
