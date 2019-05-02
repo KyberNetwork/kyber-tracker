@@ -313,7 +313,7 @@
     <div id="footer">
 
       <div class="container" v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'footer-container' : ''">
-        <div class="row">
+        <div class="row m-0">
           <div class="col footer-menu">
             Copyright 2018 @ Kyber Network 
           </div>
@@ -337,7 +337,7 @@
                   </a>
                 </li>
                 <li class="select-lang-box">
-                  <b-dropdown class="change-language-button" no-caret right>
+                  <b-dropdown class="change-language-button" right>
                     <template slot="button-content">
                       <span class="footer-icon">
                         <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
