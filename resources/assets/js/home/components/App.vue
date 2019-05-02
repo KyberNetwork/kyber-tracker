@@ -159,7 +159,7 @@
 
           
             <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange d-flex" target="_blank">
-                <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
+                <span class="text-go text-nowrap">{{ $t('navigator.go_to_exchange') }}</span>
             </a>
           </div>
           
@@ -187,7 +187,7 @@
             </a>
             
             <a v-if="$mq !== 'md' && $mq !== 'lg'"  href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')"  target="_blank" v-bind:class="[isNavOpen ? 'nav-text go-exchange d-flex' : 'nav-text go-exchange d-flex w-0']">
-              <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
+              <span class="text-go text-nowrap">{{ $t('navigator.go_to_exchange') }}</span>
             </a>
             <router-link v-else to="/" v-bind:class="[isNavOpen ? 'nav-text ' : 'nav-text w-0']">
               <img  class="nav-logo ml-0" src="/images/nav-logo.svg" />
