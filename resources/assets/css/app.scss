@@ -287,7 +287,7 @@ a {
   letter-spacing: normal;
   text-align: left;
   color: #3d464d;
-  font-family: $code-font-title;
+  // font-family: $code-font-title;
 
   @media(max-width: $md){
     padding-left: 15px;
@@ -716,6 +716,9 @@ td {
 .table-responsive-wraper {
   overflow: auto;
   padding: 33px;
+  @media (max-width: $sm) {
+    padding: 0;
+  }
   background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
@@ -982,7 +985,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
   .btn-active {
     margin-right: 0 !important;
-    color: #2ed573;
+    color: #2ed573 !important;
   }
   .btn-secondary {
     margin-right: 0 !important;
@@ -1328,9 +1331,9 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     border-top: 1px solid rgba(0, 0, 0, 0.125);
   }
 
-  table tr,table th{
-    border-radius: 0px !important;
-  }
+  // table tr,table th{
+  //   border-radius: 0px !important;
+  // }
   #footer{
     height: auto !important;
     background-color: #f6f7fa;
@@ -1824,7 +1827,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   right: 33px !important;
   color: #3d464d;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 600;
   .btn-active{
     background-color: #ffffff;
     &:hover{
@@ -2355,12 +2358,21 @@ table.table-round {
 }
 .content-loading-wrapper{
   width: 100%;
+  display: flex;
   .timeline-item {
-    background: #fff;
-    padding: 15px 38px;
-    min-height: 200px;
+    // background: #fff;
+    // padding: 15px 38px;
+    // min-height: 200px;
+    border-bottom: #ebebeb 1px dashed;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    // padding: 20px;
+    justify-content: space-between;
+    align-items: flex-end;
   }
   .animated-background {
+    width: 50%;
     animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
@@ -2369,20 +2381,21 @@ table.table-round {
     background: #f6f7f8;
     background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
     background-size: 800px 104px;
-    position: relative;
-    height: 30px;
-    margin-bottom: 12px;
+    margin: 0 7%;
   }
 }
 
 
 
 @keyframes placeHolderShimmer{
-  0%{
-      background-position: -468px 0
+  0% {
+    opacity: 0.5;
   }
-  100%{
-      background-position: 468px 0
+  50%  {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
   }
 }
 

@@ -1,15 +1,15 @@
 <template>
   <div class="token-chart">
     <canvas :id="elementId" height="0px;" class="mt-20"></canvas>
-    <!-- <div v-if="!chartInstance" class="content-loading-wrapper">
+    <div v-if="!chartInstance" class="content-loading-wrapper">
       <div class="timeline-item">
-        <div class="animated-background" style="width: 96%;"></div> 
-        <div class="animated-background" style="width: 30%;"></div> 
-        <div class="animated-background" style="width: 15%;"></div>
-        <div class="animated-background" style="width: 8%;"></div> 
-        <div class="animated-background" style="width: 2%;"></div>
+        <div class="animated-background" style="height: 96%;"></div> 
+        <div class="animated-background" style="height: 30%;"></div> 
+        <div class="animated-background" style="height: 15%;"></div>
+        <div class="animated-background" style="height: 8%;"></div> 
+        <div class="animated-background" style="height: 2%;"></div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
