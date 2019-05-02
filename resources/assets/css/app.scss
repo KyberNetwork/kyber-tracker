@@ -722,6 +722,9 @@ td {
   background-color: #ffffff;
   border-radius: 5px;
   box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
+  .table-responsive {
+    display: table;
+  }
 }
 table.table-round th {
   vertical-align: top;
@@ -1188,11 +1191,11 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 
 }
-.small-table{
-  .table-responsive {
-    display: table;
-  }
-}
+// .small-table{
+//   .table-responsive {
+//     display: table;
+//   }
+// }
 
 @media (min-width: $sm){
   .tracker-logo {
@@ -1204,12 +1207,12 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-@media (min-width: 720px) {
-  .table-responsive {
-    display: table;
-  }
+// @media (min-width: 720px) {
+//   .table-responsive {
+//     display: table;
+//   }
 
-}
+// }
 
 @media (max-width: $md){
   #wrapper{
