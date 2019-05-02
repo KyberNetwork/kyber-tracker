@@ -65,10 +65,10 @@ export default {
           pointRadius: 0,
           backgroundColor: 'rgba(139, 206, 241, 0.6)',
           borderColor: 'rgba(139, 206, 241, 0.6)',
-          barRadius: '3px',
-          borderWidth: 2,
-          showLine: true,
-          spanGaps: true,
+          // barRadius: '3px',
+          // borderWidth: 2,
+          // showLine: true,
+          // spanGaps: true,
         }]
       };
     },
@@ -134,6 +134,9 @@ export default {
       };
 
       const xAxeScale = {
+        // categoryPercentage: 1,
+        // barPercentage: 1,
+        barThickness: 'flex',
         ticks: {
           maxRotation: 0,
           fontFamily: "Montserrat, My-Montserrat, sans-serif",
@@ -157,6 +160,7 @@ export default {
       };
 
       return {
+        responsive: true,
         tooltips: {
           mode: 'index',
           axis: 'x',

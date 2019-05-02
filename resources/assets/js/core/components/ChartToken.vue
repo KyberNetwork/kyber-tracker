@@ -36,7 +36,7 @@ export default {
     _buildChartData(ret) {
       const all = ret;//.filter(x => x.symbol !== "ETH");
 
-      ret = all.slice(0, 7);
+      ret = all.slice(0, 5);
       const labels = [];
       const dataset = [];
       const volumeTokens = [];

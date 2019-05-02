@@ -64,10 +64,10 @@
             pointRadius: 0,
             backgroundColor: (accumulated ? 'rgba(255, 165, 2,.3)' : 'rgba(0,173,168,.3)'),
             borderColor: (accumulated ? 'rgba(255, 165, 2,.3)' : 'rgba(0,173,168,.3)'),
-            borderWidth: 2,
-            showLine: true,
-            spanGaps: true,
-            cubicInterpolationMode: (accumulated ? 'monotone' : 'default')
+            // borderWidth: 2,
+            // showLine: true,
+            // spanGaps: true,
+            // cubicInterpolationMode: (accumulated ? 'monotone' : 'default')
             //lineTension: 0
           }]
         };
@@ -135,6 +135,7 @@
         };
 
         const xAxeScale = {
+          barThickness: 'flex',
           ticks: {
             maxRotation: 0,
             fontFamily: "Montserrat, My-Montserrat, sans-serif",

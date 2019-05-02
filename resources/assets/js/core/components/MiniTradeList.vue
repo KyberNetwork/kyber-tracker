@@ -175,7 +175,7 @@
                 <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </span>
             </div>
-            <div class="rate"  @click="onClickRow(row)">
+            <div class="rate"  @click="onClickRow(row)">1
               <span>
                 <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>

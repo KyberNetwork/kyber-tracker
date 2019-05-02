@@ -56,74 +56,71 @@
             </b-dropdown-item>
           </b-dropdown> 
 
-
-          <!-- <div ref="headingSum" class="heading-summary" @click="clickHeading()">
-            
-
-        
-          </div> -->
-
           <carousel :perPage="5" :scrollPerPage="false" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" class="heading-summary" >
             <slide >
-              <span >{{ $t('status_bar.network_volume') }}</span><br />
-              <span class="topbar-value">{{ networkVolume }}</span>
-              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
+              <div class="text-nowrap">{{ $t('status_bar.network_volume') }}</div>
+              <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
             </slide>
             <slide >
-              <span >{{ $t('status_bar.knc_price') }}</span><br />
-              <span class="topbar-value">
-                {{ kncPrice }} 
-                </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-              <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
-            </slide>
-
-            <slide >
-              <span >{{ $t('status_bar.eth_price') }}</span><br />
-              <span class="topbar-value" >{{ ethPrice }} </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
+              <span class="text-nowrap">{{ $t('status_bar.knc_price') }}</span>
+              <div class="d-inline-flex">
+                <span class="topbar-value text-nowrap">
+                  {{ kncPrice }} 
+                  </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+              </div>
+              
             </slide>
 
             <slide >
-              <span >{{ $t('status_bar.collected_fees') }}</span><br />
-              <span class="topbar-value">{{ collectedFees }}</span>
-              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
+              <span class="text-nowrap">{{ $t('status_bar.eth_price') }}</span>
+              <div class="d-inline-flex">
+                <span class="topbar-value" >{{ ethPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              </div>
+            </slide>
+
+            <slide >
+              <span class="text-nowrap">{{ $t('status_bar.collected_fees') }}</span>
+              <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
             </slide>
             <slide>
-              <span >{{ $t('status_bar.fees_burned') }}</span><br />
-              <span class="topbar-value">{{ totalBurnedFee }}</span>
+              <span class="text-nowrap">{{ $t('status_bar.fees_burned') }}</span>
+              <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
             </slide> 
 
 
+            <!-- ============================== -->
             <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.network_volume') }}</span><br />
-              <span class="topbar-value">{{ networkVolume }}</span>
+              <div class="text-nowrap">{{ $t('status_bar.network_volume') }}</div>
+              <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
             </slide>
             <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.knc_price') }}</span><br />
-              <span class="topbar-value">
-                {{ kncPrice }} 
-                </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-            </slide>
-
-            <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.eth_price') }}</span><br />
-              <span class="topbar-value" >{{ ethPrice }} </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              <span class="text-nowrap">{{ $t('status_bar.knc_price') }}</span>
+              <div class="d-inline-flex">
+                <span class="topbar-value text-nowrap">
+                  {{ kncPrice }} 
+                  </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+              </div>
               
             </slide>
 
             <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.collected_fees') }}</span><br />
-              <span class="topbar-value">{{ collectedFees }}</span>
+              <span class="text-nowrap">{{ $t('status_bar.eth_price') }}</span>
+              <div class="d-inline-flex">
+                <span class="topbar-value" >{{ ethPrice }} </span>
+                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              </div>
             </slide>
-                
 
             <slide v-if="checkLoopSumary()">
-              <span >{{ $t('status_bar.fees_burned') }}</span><br />
-              <span class="topbar-value">{{ totalBurnedFee }}</span>
+              <span class="text-nowrap">{{ $t('status_bar.collected_fees') }}</span>
+              <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+            </slide>
+            <slide v-if="checkLoopSumary()">
+              <span class="text-nowrap">{{ $t('status_bar.fees_burned') }}</span>
+              <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
             </slide> 
 
           </carousel>
@@ -192,7 +189,7 @@
             <a v-if="$mq !== 'md' && $mq !== 'lg'"  href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')"  target="_blank" v-bind:class="[isNavOpen ? 'nav-text go-exchange d-flex' : 'nav-text go-exchange d-flex w-0']">
               <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
             </a>
-            <router-link v-else to="/" v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">
+            <router-link v-else to="/" v-bind:class="[isNavOpen ? 'nav-text ' : 'nav-text w-0']">
               <img  class="nav-logo ml-0" src="/images/nav-logo.svg" />
             </router-link>
         </div>
@@ -201,33 +198,33 @@
           <div class="icon-side">
             <img src="/images/volumn-icon.svg" />
           </div>
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.volume') }}</div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.volume') }}</div>
         </router-link>
         <router-link to="/trades" class="nav-line highlight-hover">
           <div class="icon-side">
             <img src="/images/trade-icon.svg" />
           </div>
           
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.trade_history') }}</div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.trade_history') }}</div>
         </router-link>
         <router-link to="/tokens" class="nav-line highlight-hover">
           <div class="icon-side">
             <img class="nav-logo icon-token" src="/images/token-icon.svg" />
           </div>
           
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']">{{ $t('navigator.tokens') }}</div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.tokens') }}</div>
         </router-link>
         <router-link to="/reserves" class="nav-line highlight-hover">
           <div class="icon-side">
             <img class="nav-logo icon-reserve" src="/images/reserve-icon.svg" />
           </div>
           
-          <div v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']" >{{ $t('navigator.reserves') }}</div>
+          <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.reserves') }}</div>
         </router-link>
         <div class="nav-line h-100">
           <div class="icon-side h-100">
           </div>
-          <div  v-bind:class="[isNavOpen ? 'nav-text' : 'nav-text w-0']"></div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']"></div>
         </div>
       </div>
 
@@ -316,7 +313,7 @@
     <div id="footer">
 
       <div class="container" v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'footer-container' : ''">
-        <div class="row">
+        <div class="row m-0">
           <div class="col footer-menu">
             Copyright 2018 @ Kyber Network 
           </div>
@@ -340,7 +337,7 @@
                   </a>
                 </li>
                 <li class="select-lang-box">
-                  <b-dropdown class="change-language-button" no-caret right>
+                  <b-dropdown class="change-language-button" right>
                     <template slot="button-content">
                       <span class="footer-icon">
                         <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
@@ -474,7 +471,7 @@ export default {
 
     checkLoopSumary(){
       if(this.$refs.headingSum){
-        if(this.$refs.headingSum.carouselWidth < 750) return true
+        if(this.$refs.headingSum.carouselWidth < 800) return true
         return false
       }
       return false
