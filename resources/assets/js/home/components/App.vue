@@ -56,47 +56,51 @@
             </b-dropdown-item>
           </b-dropdown> 
 
-          <carousel :perPage="5" :scrollPerPage="false" :paginationEnabled="false" :autoplay="true" :autoplayTimeout="4000" :loop="true" ref="headingSum" class="heading-summary" >
-            <slide >
-              <div class="text-nowrap">{{ $t('status_bar.network_volume') }}</div>
-              <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
-            </slide>
-            <slide >
-              <span class="text-nowrap">{{ $t('status_bar.knc_price') }}</span>
-              <div class="d-inline-flex">
-                <span class="topbar-value text-nowrap">
-                  {{ kncPrice }} 
-                  </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+          <carousel  
+          ref="headingSum" class="heading-summary position-relative" >
+            <div ref="headingInner" class="heading-inner d-flex position-absolute">
+              <div ref="slide_0" class="slide-item">
+                <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
+                <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
               </div>
-              
-            </slide>
-
-            <slide >
-              <span class="text-nowrap">{{ $t('status_bar.eth_price') }}</span>
-              <div class="d-inline-flex">
-                <span class="topbar-value" >{{ ethPrice }} </span>
-                <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+              <div ref="slide_1" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
+                <div class="d-inline-flex">
+                  <span class="topbar-value text-nowrap">
+                    {{ kncPrice }} 
+                    </span>
+                  <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+                </div>
+                
               </div>
-            </slide>
 
-            <slide >
-              <span class="text-nowrap">{{ $t('status_bar.collected_fees') }}</span>
-              <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
-            </slide>
-            <slide>
-              <span class="text-nowrap">{{ $t('status_bar.fees_burned') }}</span>
-              <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
-            </slide> 
+              <div ref="slide_2" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
+                <div class="d-inline-flex">
+                  <span class="topbar-value" >{{ ethPrice }} </span>
+                  <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+                </div>
+              </div>
+
+              <div ref="slide_3" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
+                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+              </div>
+              <div ref="slide_4" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
+                <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
+              </div> 
+            </div>
+            
 
 
             <!-- ============================== -->
-            <slide v-if="checkLoopSumary()">
-              <div class="text-nowrap">{{ $t('status_bar.network_volume') }}</div>
+            <!-- <slide v-if="loopHeading">
+              <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
               <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
             </slide>
-            <slide v-if="checkLoopSumary()">
-              <span class="text-nowrap">{{ $t('status_bar.knc_price') }}</span>
+            <slide v-if="loopHeading">
+              <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
               <div class="d-inline-flex">
                 <span class="topbar-value text-nowrap">
                   {{ kncPrice }} 
@@ -106,22 +110,22 @@
               
             </slide>
 
-            <slide v-if="checkLoopSumary()">
-              <span class="text-nowrap">{{ $t('status_bar.eth_price') }}</span>
+            <slide v-if="loopHeading">
+              <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
               <div class="d-inline-flex">
                 <span class="topbar-value" >{{ ethPrice }} </span>
                 <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
               </div>
             </slide>
 
-            <slide v-if="checkLoopSumary()">
-              <span class="text-nowrap">{{ $t('status_bar.collected_fees') }}</span>
+            <slide v-if="loopHeading">
+              <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
               <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
             </slide>
-            <slide v-if="checkLoopSumary()">
-              <span class="text-nowrap">{{ $t('status_bar.fees_burned') }}</span>
+            <slide v-if="loopHeading">
+              <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
               <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
-            </slide> 
+            </slide>  -->
 
           </carousel>
             
@@ -405,7 +409,10 @@ export default {
       dropdownText: this.$t("navigator.volume"),
       isNavOpen: true,
       openSearchInput: false,
-      initSideNav: true
+      initSideNav: true,
+      loopHeading: false,
+      slideNavigate: 0,
+      intervalSlide: null
     };
   },
 
@@ -441,20 +448,24 @@ export default {
       window.location.reload();
     },
     handleResize(event) {
-      let arrayLi = this.$refs.headingSum.children;
-      if (arrayLi && arrayLi.length) {
-        this.indexShowmore = [...arrayLi].findIndex(x => x.offsetTop > 60) - 1;
-      }
+      // let arrayLi = this.$refs.headingSum.children;
+      // if (arrayLi && arrayLi.length) {
+      //   this.indexShowmore = [...arrayLi].findIndex(x => x.offsetTop > 60) - 1;
+      // }
 
-      if (arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60) {
-        let headerClass = this.$refs.headingSum.className;
-        if (headerClass.indexOf("header-expand") > -1) {
-          this.showColapseBtn = true;
-        } else {
-          this.showColapseBtn = false;
-        }
-      } else {
-        this.showColapseBtn = false;
+      // if (arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60) {
+      //   let headerClass = this.$refs.headingSum.className;
+      //   if (headerClass.indexOf("header-expand") > -1) {
+      //     this.showColapseBtn = true;
+      //   } else {
+      //     this.showColapseBtn = false;
+      //   }
+      // } else {
+      //   this.showColapseBtn = false;
+      // }
+      if(!this.checkLoopSumary()){
+        this.$refs.headingInner.style.transform = `translate(-0px)`
+        return
       }
     },
     getLanguage() {
@@ -471,10 +482,26 @@ export default {
 
     checkLoopSumary(){
       if(this.$refs.headingSum){
-        if(this.$refs.headingSum.carouselWidth < 800) return true
+        if(this.$refs.headingSum.clientWidth < 760) return true
         return false
       }
       return false
+    },
+
+    intervalSlideSumary(){
+      this.intervalSlide = setInterval(() => {
+        if(!this.checkLoopSumary()){
+          this.$refs.headingInner.style.transform = `translate(-0px)`
+          return
+        }
+        this.slideNavigate = this.slideNavigate + 1
+        if(this.slideNavigate >= 5) this.slideNavigate = 0
+        let scrollWidth = 0
+        for(let i=0; i < this.slideNavigate; i++){
+          scrollWidth = scrollWidth + this.$refs[`slide_${i}`].clientWidth
+        }
+        this.$refs.headingInner.style.transform = `translate(-${scrollWidth}px)`
+      }, 5000)
     },
 
     getLanguageText(){
@@ -508,7 +535,7 @@ export default {
     getPriceChangeClass(price) {
       if (price === 0) return "";
       return price < 0 ? "neg-value" : "pos-value";
-    },
+    }, 
     connectMetaMask(e) {
       if (typeof web3 === "undefined") {
         return;
@@ -532,6 +559,23 @@ export default {
         ];
       } catch (e) {
         console.log(e);
+      }
+    },
+
+    getSlideItemPerPage(){
+      if(this.$mq == 'sm' || this.$mq == 'ml'){
+        return [
+          [445, 3],
+          [655, 4]
+        ]
+      } else {
+        return [
+          [785, 1],
+          [925, 2],
+          [1075, 3],
+          [1240, 4],
+          [1500, 5]
+        ]
       }
     },
 
@@ -777,6 +821,7 @@ export default {
   beforeDestroy: function() {
     // window.removeEventListener('resize', this.handleResize)
     window.clearInterval(this.intervalResize);
+    window.clearInterval(this.intervalSlide)
   },
 
   mounted() {
@@ -812,6 +857,8 @@ export default {
     setTimeout(() => {
       if(this.$mq !== 'md' && this.$mq !== 'lg')  this.isNavOpen = false
     }, 1000);
+
+    this.intervalSlideSumary()
   },
   directives: {
     ClickOutside

@@ -231,6 +231,7 @@ a {
   }
 
   .change-official{
+    z-index: 2;
     transition: all 0.5s;
     @media (max-width: $sm){
       height: 60px;
@@ -306,11 +307,6 @@ a {
     // position: absolute;
     // right: 16px;
     margin: auto 20px;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-
     width: 110px;
     height: 42px;
     border-radius: 5px;
@@ -1016,19 +1012,28 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
 }
 .heading-summary {
-  transition: all 0.5s;
+  // transition: all 0.5s;
   width: 100%;
-  // max-width: 800px;
+  max-width: 800px;
   // width: calc(100% - 215px - 250px);
   list-style: none;
   margin: 0;
   // padding: 20px 30px 0 30px;
-  line-height: 20px;
-  height: 73px;
-  -webkit-transition: height .5s ease;
-  -moz-transition: height .5s ease;
-  transition: height .5s ease;
-  overflow: auto;
+  padding-top: 20px;
+  // line-height: 20px;
+  height: 73px !important;
+  // -webkit-transition: height .5s ease;
+  // -moz-transition: height .5s ease;
+  // transition: height .5s ease;
+  // overflow: auto;
+
+
+  .heading-inner{
+    transition:all 0.5s;
+    -webkit-transition:all 0.5s; /* For Safari 3.1 to 6.0 */
+  }
+ 
+
   @media (max-width: $sm) {
     overflow: hidden;
     &.header-expand{
@@ -1039,16 +1044,16 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   @media(min-width: $md){
     width: calc(100% - 215px - 225px);
   }
-  &.header-expand{
-    height: auto !important;
-    img.show-more{
-      -webkit-transform: rotate(180deg);     /* Chrome and other webkit browsers */
-      -moz-transform: rotate(180deg);        /* FF */
-      -o-transform: rotate(180deg);          /* Opera */
-      -ms-transform: rotate(180deg);         /* IE9 */
-      transform: rotate(180deg);
-    }
-  }
+  // &.header-expand{
+  //   height: auto !important;
+  //   img.show-more{
+  //     -webkit-transform: rotate(180deg);     /* Chrome and other webkit browsers */
+  //     -moz-transform: rotate(180deg);        /* FF */
+  //     -o-transform: rotate(180deg);          /* Opera */
+  //     -ms-transform: rotate(180deg);         /* IE9 */
+  //     transform: rotate(180deg);
+  //   }
+  // }
   .dropdown-toggle, .dropdown-toggle:focus, .show > .dropdown-toggle{ 
     box-shadow: none;
     background-color: #3a5492;
@@ -1058,21 +1063,21 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     min-width: 150px;
   }
 
-  .VueCarousel-wrapper{
-    .VueCarousel-inner{
-      margin: 20px 30px 0px;
-      max-width: 750px;
-      .VueCarousel-slide {
-        // float: left;
-        // float: left;
-        margin-right: 30px;
-        // color: #fff;
-        // min-width: 120px;
-        padding-bottom: 23px;
+  // .VueCarousel-wrapper{
+  //   .VueCarousel-inner{
+  //     margin: 20px 30px 0px;
+  //     max-width: 750px;
+  //     .VueCarousel-slide {
+  //       margin-right: 30px;
+  //       padding-bottom: 23px;
     
-        // position: relative;
-      }
-    }
+  //       position: relative;
+  //     }
+  //   }
+  // }
+
+  .slide-item{
+    padding: 0 25px;
   }
   
   .show-more{
