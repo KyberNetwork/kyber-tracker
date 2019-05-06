@@ -1796,17 +1796,17 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       position: relative;
       margin: 0;
 
-      &.from{
-        .vdp-datepicker__calendar {
-          left: 0px !important;
-        }
-      }
+      // &.from{
+      //   .vdp-datepicker__calendar {
+      //     left: 0px !important;
+      //   }
+      // }
 
-      &.to{
-        .vdp-datepicker__calendar {
-          right: 0px !important;
-        }
-      }
+      // &.to{
+      //   .vdp-datepicker__calendar {
+      //     right: 0px !important;
+      //   }
+      // }
     }
 
     .vdp-datepicker__calendar {
@@ -2177,6 +2177,19 @@ html {
 }
 
 .datepicker-container{
+  .vdp-datepicker{
+    &.from{
+      .vdp-datepicker__calendar {
+        left: 0px !important;
+      }
+    }
+
+    &.to{
+      .vdp-datepicker__calendar {
+        right: 0px !important;
+      }
+    }
+  }
   .vdp-datepicker input{
     padding-left: 10px;
     font-size: 16px;

@@ -487,6 +487,44 @@ export default {
   watch: {
     "$route.query"() {
       this.refresh();
+    },
+    searchFromDate (val) {
+
+      // this.$emit('changeDate')
+      // this.resetPagingate()
+      // const fromDate = val ? val.getTime() : 0;
+      // const toDate = this.searchToDate ? this.searchToDate.getTime() : 0;
+
+      // if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
+      //   window.EventBus.$emit('EVENT_COMMON_ERROR', `From-date must be equal or less than to-date`);
+      //   window.setTimeout(() => {
+      //     this.searchFromDate = null;
+      //   });
+      //   return;
+      // }
+
+      window.setTimeout(() => {
+        this.disabledToDates = { to: this.searchFromDate };
+        // this.fetch(true);
+      });
+    },
+    searchToDate (val) {
+      // this.$emit('changeDate')
+      // this.resetPagingate()
+      // const toDate = val ? val.getTime() : 0;
+      // const fromDate = this.searchFromDate ? this.searchFromDate.getTime() : 0;
+      // if (fromDate > 0 && toDate > 0 && fromDate > toDate) {
+      //   window.EventBus.$emit('EVENT_COMMON_ERROR', `To-date must be equal or greater than from-date`);
+      //   window.setTimeout(() => {
+      //     this.searchToDate = null;
+      //   });
+      //   return;
+      // }
+
+      window.setTimeout(() => {
+        this.disabledFromDates = { from: this.searchToDate };
+        // this.fetch(true);
+      });
     }
   },
 
