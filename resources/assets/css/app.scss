@@ -1242,16 +1242,23 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 
   .mobile-header{
     height: 72px;
+    position: relative;
     // overflow: hidden;
     box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
     border: solid 1px #e3e5eb;
     background-color: #ffffff;
 
-    .nav-burger{
-      padding-top: 20px;
+    .nav-burger-wrapper{
+      position: absolute;
+      left: 0;
+      .nav-burger{
+        padding-top: 20px;
+      }
     }
+    
 
     .nav-item-logo{
+      margin: auto;
       .nav-link{
         padding: 0.5rem 0;
       }
@@ -1268,6 +1275,8 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
       }
     }
     .mobile-search-nav{
+      position: absolute;
+      right: 0;
       a{
         display: flex;
       }

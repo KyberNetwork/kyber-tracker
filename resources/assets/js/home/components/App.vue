@@ -1,8 +1,8 @@
 <template>
   <div id="wrapper">
     <div id="page-content" class="content-wrapper">
-      <b-nav v-if="$mq !== 'md' && $mq !== 'lg'" class="mobile-header d-flex justify-content-between" v-click-outside="() => onClickOutside(true)">
-        <b-nav-item @click="toggleNav()">
+      <b-nav v-if="$mq !== 'md' && $mq !== 'lg'" class="mobile-header" v-click-outside="() => onClickOutside(true)">
+        <b-nav-item @click="toggleNav()" class="nav-burger-wrapper">
           <img class="nav-burger ml-0" src="/images/hamburger.svg" />
         </b-nav-item>
         <b-nav-item :class="openSearchInput ? 'transform-0 w-0 nav-item-logo' : 'nav-item-logo'">
