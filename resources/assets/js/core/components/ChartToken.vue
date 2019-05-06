@@ -1,15 +1,17 @@
 <template>
-  <div class="token-chart">
-    <canvas :id="elementId" height="0px;" class="mt-20"></canvas>
-    <div v-if="!chartInstance" class="content-loading-wrapper">
-      <div class="timeline-item">
-        <div class="animated-background" style="height: 96%;"></div> 
-        <div class="animated-background" style="height: 30%;"></div> 
-        <div class="animated-background" style="height: 15%;"></div>
-        <div class="animated-background" style="height: 8%;"></div> 
-        <div class="animated-background" style="height: 2%;"></div>
+  <div class="chart-token_wrapper">
+      <div v-if="loading" class="content-loading-wrapper">
+        <div class="timeline-item">
+          <div class="animated-background" style="height: 96%;"></div> 
+          <div class="animated-background" style="height: 30%;"></div> 
+          <div class="animated-background" style="height: 15%;"></div>
+          <div class="animated-background" style="height: 8%;"></div> 
+          <div class="animated-background" style="height: 2%;"></div>
+        </div>
       </div>
-    </div>
+      <div class="token-chart">
+        <canvas :id="elementId" :height="'250px'" v-bind:class="loading? 'd-none':'' " class="mt-20"></canvas>
+      </div>
   </div>
 </template>
 
@@ -29,7 +31,9 @@ export default {
   },
   data() {
     return {
-      chartInstance: undefined
+      chartInstance: undefined,
+      loading: true,
+      period: null
     };
   },
   methods: {
@@ -224,14 +228,21 @@ export default {
           start = now - 60 * 60 * 24 * 365 * 10;
           break;
       }
+      if(this.period !== period){
+        console.log("++++++++++++++++ ", this.period, period)
+        this.period = period
+        this.loading = true
+      }
       AppRequest.getTopToken(start, now, (err, ret) => {
+        
         const ctx = document.getElementById(this.elementId);
 
         // Ignore render chart if the page has been changed and the chart element is omitted
         if (!ctx) {
+          console.log("********* return ")
           return;
         }
-
+        
         const data = this._buildChartData(ret);
         const options = this._getChartOptions();
         if (this.chartInstance) {
@@ -249,7 +260,8 @@ export default {
             options: options,
             plugins: [datalabels]
           });
-        }       
+        } 
+        this.loading = false;      
       });
     }
   }

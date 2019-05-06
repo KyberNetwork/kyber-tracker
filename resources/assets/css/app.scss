@@ -2398,38 +2398,41 @@ table.table-round {
 
 }
 
-
-.token-chart{
+.chart-token_wrapper{
   height: 250px !important;
-}
-.content-loading-wrapper{
-  width: 100%;
-  display: flex;
-  .timeline-item {
-    // background: #fff;
-    // padding: 15px 38px;
-    // min-height: 200px;
-    border-bottom: #ebebeb 1px dashed;
-    flex-grow: 1;
+  .token-chart{
+    height: 250px !important;
+  }
+  .content-loading-wrapper{
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    // padding: 20px;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-  .animated-background {
-    width: 50%;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: placeHolderShimmer;
-    animation-timing-function: linear;
-    background: #f6f7f8;
-    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-    background-size: 800px 104px;
-    margin: 0 7%;
+    .timeline-item {
+      // background: #fff;
+      // padding: 15px 38px;
+      // min-height: 200px;
+      border-bottom: #ebebeb 1px dashed;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
+      // padding: 20px;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .animated-background {
+      width: 50%;
+      animation-duration: 1s;
+      animation-fill-mode: forwards;
+      animation-iteration-count: infinite;
+      animation-name: placeHolderShimmer;
+      animation-timing-function: linear;
+      background: #f6f7f8;
+      background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+      background-size: 800px 104px;
+      margin: 0 7%;
+    }
   }
 }
+
 
 
 
