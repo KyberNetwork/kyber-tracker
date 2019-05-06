@@ -7,7 +7,11 @@
       <div class="notfound-title">
         404
       </div>
-      <div class="notfound-note pb-4">
+      {{notFoundString}}
+      <div v-if="notFoundString" class="notfound-note pb-4">
+        {{notFoundString}}
+      </div>
+      <div v-else class="notfound-note pb-4">
         The page you're looking for can't be found
       </div>
       <div class="go-home">
@@ -18,3 +22,21 @@
     </div>
   </div>
 </template>
+
+
+<script>
+export default {
+  props: {
+    notFoundString: {
+      type: String,
+    },
+  },
+  data() {
+    return {
+      // chartInstance: undefined
+    };
+  },
+  methods: {
+  }
+}
+</script>

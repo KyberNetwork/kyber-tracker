@@ -1014,6 +1014,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   vertical-align: middle;
 }
 .heading-summary {
+  overflow: hidden;
   // transition: all 0.5s;
   width: 100%;
   max-width: 800px;
@@ -1036,12 +1037,12 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
  
 
-  @media (max-width: $sm) {
-    overflow: hidden;
-    &.header-expand{
-      overflow: auto;
-    }
-  }
+  // @media (max-width: $sm) {
+  //   overflow: hidden;
+  //   &.header-expand{
+  //     overflow: auto;
+  //   }
+  // }
 
   @media(min-width: $md){
     width: calc(100% - 215px - 225px);
@@ -2269,12 +2270,12 @@ table.table-round {
   th {
     border-top: 0;
   }
-  tr:first-child th:first-child {
-    border-top-left-radius: 6px;
-  }
-  tr:first-child th:last-child {
-    border-top-right-radius: 6px;
-  }
+  // tr:first-child th:first-child {
+  //   border-top-left-radius: 6px;
+  // }
+  // tr:first-child th:last-child {
+  //   border-top-right-radius: 6px;
+  // }
 }
 
 
@@ -2317,6 +2318,9 @@ table.table-round {
 .notfound-wrapper{
   padding-top: 20%;
   margin: auto;
+  @media(max-width: $sm){
+    text-align: center;
+  }
   .notfound-img{
     width: 324px;
   }

@@ -29,8 +29,8 @@
   <!-- address detail ################## -->
   <div class="reserve-detail-container mb-2">
     <div class="reserve-address-title">
-      <span>{{$t('wallet_detail.address')}}</span>
-      <span class="pl-4">
+      <span>{{$t('wallet_detail.address')}}:</span>
+      <span>
         <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
       </span>
       

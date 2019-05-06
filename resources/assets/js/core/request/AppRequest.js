@@ -39,7 +39,7 @@ class AppRequest extends BaseRequest {
             })
             .catch((err => {
               this._handleError(err)
-              callback(err)
+              // callback(err)
             }));
   }
 

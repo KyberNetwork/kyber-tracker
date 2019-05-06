@@ -11,9 +11,10 @@
     <div v-if="searchResult" class="clear pb-10">
 
 
-      <div v-if="!searchResult.data">
+      <div v-if="searchResult.error" class="text-center pb-4">
         {{searchResult.error}}
       </div>
+      
 
       <div v-if="searchResult.isValid && searchResult.data">          
 
@@ -168,7 +169,8 @@
     </div>
     
     
-    <mini-trade-list ref="datatable"
+    <mini-trade-list 
+      ref="datatable"
       :getFilterTokenAddress="getFilterTokenAddress"
       :fetch="requestSearch"
       :exportData="exportData"
@@ -276,23 +278,29 @@ export default {
         !util.isTxHash(this.$route.query.q) &&
         !util.isAddress(this.$route.query.q)
       ) {
-        this.$router.push(`/not-found`);
+        // this.$router.push(`/not-found`);
+        // return;
+
+        this.searchResult =  {
+          isValid: false,
+          error: this.$t("search_page.invalid_query"),
+          data: null
+        };
+
+        console.log('********** ', this.searchResult)
         return;
-        // return {
-        //   isValid: false,
-        //   error: this.$t("search_page.invalid_query"),
-        //   data: null
-        // };
       }
 
       if (util.isTxHash(this.$route.query.q) && !this.resultCount) {
-        this.$router.push(`/not-found`);
+        // this.$router.push(`/not-found`);
+        // return;
+        this.searchResult = {
+          isValid: true,
+          error: this.$t("search_page.no_txhash_data"),
+          data: null
+        };
+        console.log('-------------- ', this.searchResult)
         return;
-        // return {
-        //   isValid: true,
-        //   error: this.$t("search_page.no_txhash_data"),
-        //   data: null
-        // };
       }
 
       // let returnDiv = <span>
