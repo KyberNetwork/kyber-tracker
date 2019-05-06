@@ -169,7 +169,7 @@
           
           <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
             <div ref="searchComponent" :class="openSearchInput ? 'search-expand' : 'search-colapse'"  >
-              <b-input-group-append class="btn-search d-flex justify-content-between">
+              <b-input-group-append class="btn-search d-flex justify-content-between h-100">
                 <vue-autosuggest
                   ref="seatchInputRef"
                   :suggestions="[{
@@ -220,8 +220,8 @@
 
       <div id="mySidenav" class="sidenav" v-bind:style="getSideNavWidth()" v-click-outside="() => onClickOutsideNav()">
         <div class="nav-line nav-logo">
-            <a href="javascript:void(0)" class="icon-icon-side" @click="toggleNav()">
-              <span class=" icon-side h-100">
+            <a href="javascript:void(0)" class="icon-icon-side h-100" @click="toggleNav()">
+              <span class=" icon-side h-100 icon-arrow">
                 <img src="/images/collapse-icon.svg" v-if="$mq == 'sm' || $mq == 'ml'" v-bind:class="isNavOpen ? '' : 'rolate'"/>
               </span>
               

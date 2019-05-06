@@ -1,6 +1,6 @@
 <template>
   <div class="chart-token_wrapper">
-      <div v-if="loading" class="content-loading-wrapper">
+      <div v-if="loading" class="content-loading-wrapper h-100">
         <div class="timeline-item">
           <div class="animated-background" style="height: 96%;"></div> 
           <div class="animated-background" style="height: 30%;"></div> 

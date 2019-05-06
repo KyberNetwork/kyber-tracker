@@ -25,6 +25,7 @@ import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
 import NotFound from './components/NotFound.vue';
+import Oop from '../core/components/oop.vue';
 // import ImportAcount from '../core/components/ImportAccount.vue';
 import VueAutosuggest from "vue-autosuggest";
 import VueMq from 'vue-mq'
@@ -72,6 +73,7 @@ Vue.component('chart-volume', ChartVolume);
 Vue.component('chart-fee', ChartFee);
 Vue.component('chart-token', ChartToken);
 Vue.component('not-found', NotFound);
+Vue.component('oop', Oop);
 
 // Vue.component('import-acount', ImportAcount)
 Vue.component('paginate', VuePaginate);

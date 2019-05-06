@@ -209,12 +209,13 @@ a {
   transition: height 2s ease;
   
   @media(min-width: $md){
-
+    // height: 100%;
     .heading-wrapper{
       position: relative;
       .change-official{
         button{
           width: 215px;
+          height: 83px;
         }
       }
       .search-and-swap{
@@ -2532,6 +2533,11 @@ table.table-round {
         transform:rotate(180deg);
         -ms-transform:rotate(180deg);
         -webkit-transform:rotate(180deg);
+      }
+    }
+    .icon-arrow{
+      img{
+        width: 28px;
       }
     }
   }

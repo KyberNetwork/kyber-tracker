@@ -12,7 +12,9 @@
 
 
       <div v-if="searchResult.error" class="text-center pb-4">
-        {{searchResult.error}}
+        <!-- {{searchResult.error}} -->
+        <oop :notFoundString="searchResult.error">
+        </oop>
       </div>
       
 
