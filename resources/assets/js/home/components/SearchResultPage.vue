@@ -172,7 +172,9 @@
     
     
     <mini-trade-list 
+      v-if="(rows && rows.length ) || isLoading"
       ref="datatable"
+      :hideTableWhenNoData="true"
       :getFilterTokenAddress="getFilterTokenAddress"
       :fetch="requestSearch"
       :exportData="exportData"
@@ -217,6 +219,8 @@ export default {
       tokens: TOKENS_BY_ADDR,
       isParentLoading: false,
       searchResult: {},
+      rows: [],
+      isLoading: true,
       highlightedToday: {
         dates: [new Date()]
       },
@@ -365,7 +369,8 @@ export default {
 
           const pagination = res.pagination;
           this.$refs.datatable.rows = data;
-
+          this.rows = data
+          this.isLoading = false
           if (pagination) {
             this.resultCount = pagination.totalCount;
             this.totalUsd = new BigNumber(
