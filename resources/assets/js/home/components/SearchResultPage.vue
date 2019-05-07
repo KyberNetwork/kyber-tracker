@@ -167,7 +167,7 @@
         <div class="wallet-detail-title panel-heading pt-56 pb-20 d-flex justify-content-between">
           <span class="no-margin panel-title">{{$t('wallet_detail.history')}} </span>
 
-          <button v-if="!timeRangeError" :disabled="timeRangeError" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
+          <button :disabled="timeRangeError" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
         </div>
 
         
@@ -180,7 +180,7 @@
     
     <mini-trade-list 
       ref="datatable"
-      :hideTableWhenNoData="true"
+      :hideTable="searchResult && searchResult.error"
       :getFilterTokenAddress="getFilterTokenAddress"
       :fetch="requestSearch"
       :exportData="exportData"

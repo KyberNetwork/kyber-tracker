@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!hideTable">
     <div class="panel panel-default trade-list">
 
       <!-- <paginate v-if="maxPage > 1 && !isHidePaginate"
@@ -275,6 +275,11 @@ export default {
       type: Boolean,
       default: false
     },
+    hideTable: {
+      type: Boolean,
+      default: false
+    },
+
     searchResult: {
       // type: Function,
       // default: function () {
