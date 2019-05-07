@@ -68,21 +68,20 @@
             <tr v-for="(row, index) in rows" :item="row" :index="index" class="pointer">
               <td class="pl-4"   @click="onClickRow(row)">{{ getDateInfo(row) }}</td>
               <td class="font-semi-bold row"  @click="onClickRow(row)">
-                <span class="source col-5 text-right no-padding">
+                <div class="source col-5 text-right no-padding d-inline-block">
                   {{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
                 
                   <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
-                </span>
-                <span class="angle col-2 text-center no-padding">
-                  <!-- <i class="k k-angle right"></i> -->
+                </div><!--  
+             --><div class="angle col-2 text-center no-padding d-inline-block">
                   <span class="entypo-right"></span>
-                </span>
-                <span class="dest col-5 text-left no-padding">
+                </div><!-- 
+             --><div class="dest text-left no-padding d-inline-block">
                   {{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
                   <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
                   <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
-                </span>
+                </div>
                 
               </td>
               

@@ -21,6 +21,12 @@ body {
   // }
 }
 
+// display bootstrap column on firefox
+// .row:before, .row:after{
+//   display: inline-block !important;
+//   // display: none !important;
+// }
+
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: $code-font-family;
 }
@@ -42,6 +48,14 @@ a {
 
 .w-0{
   width: 0% !important;
+}
+
+.w-20{
+  width: 20% !important;
+}
+
+.w-40{
+  width: 40% !important;
 }
 
 .table th, .table td {
@@ -1027,7 +1041,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   overflow: hidden;
   // transition: all 0.5s;
   width: 100%;
-  max-width: 800px;
+  // max-width: 800px;
   // width: calc(100% - 215px - 250px);
   list-style: none;
   margin: 0;
@@ -2102,7 +2116,7 @@ html {
   // border-left: solid 2px #d2d3d4 !important;
   padding-top: 0;
   padding-bottom: 0;
-  line-height: 2.5;
+  line-height: 1.5;
   width: 350px;
   // height: 40px;
   border-radius: 0;
