@@ -25,7 +25,7 @@ import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
 import NotFound from './components/NotFound.vue';
-import Oop from '../core/components/oop.vue';
+import Oop from '../core/components/Oop.vue';
 // import ImportAcount from '../core/components/ImportAccount.vue';
 import VueAutosuggest from "vue-autosuggest";
 import VueMq from 'vue-mq'
