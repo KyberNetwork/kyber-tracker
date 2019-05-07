@@ -8,7 +8,7 @@
 
 
 
-    <div v-if="searchResult" class="clear pb-10">
+    <div v-if="searchResult && !isLoading" class="clear pb-10">
 
 
       <div v-if="searchResult.error" class="text-center pb-4">
@@ -25,7 +25,7 @@
           <span v-else class="no-margin panel-title">{{$t('wallet_detail.partner_details')}} </span>
 
 
-          <div v-if="!isHideDatepicker" class="datepicker-container pb-16 ">
+          <div v-if="!isHideDatepicker" class="datepicker-container pb-16 " v-bind:class="timeRangeError ? 'date-error' : ''">
             <!-- <span>{{ $t('filter.from') }}</span> -->
             <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
               :language="locale"
@@ -46,8 +46,15 @@
               :placeholder="$t('filter.to')"
               >
             </datepicker>
+            <div v-if="timeRangeError" class="picker-error color-red pt-2">
+              <i>{{timeRangeError}}</i>
+            </div>
           </div>
+
+          <div class="clearfix"/>
         </div>
+
+        
 
         <!-- address detail ################## -->
         <div class="address-detail-container">
@@ -160,7 +167,7 @@
         <div class="wallet-detail-title panel-heading pt-56 pb-20 d-flex justify-content-between">
           <span class="no-margin panel-title">{{$t('wallet_detail.history')}} </span>
 
-          <button type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
+          <button v-if="!timeRangeError" :disabled="timeRangeError" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
         </div>
 
         
@@ -172,7 +179,6 @@
     
     
     <mini-trade-list 
-      v-if="(rows && rows.length ) || isLoading"
       ref="datatable"
       :hideTableWhenNoData="true"
       :getFilterTokenAddress="getFilterTokenAddress"
@@ -205,7 +211,7 @@ const partners = network.partners
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens;
 import Chart from "chart.js";
 // const tokens = network.tokens;
-
+const TREE_MONTH = 60 * 60 * 24 * 90
 export default {
   data() {
     return {
@@ -229,13 +235,16 @@ export default {
       },
       disabledToDates: {
         //
-      }
+      },
+      timeRangeError: null
     };
   },
 
   methods: {
     refresh() {
+      this.isLoading = true;
       if (!this.$refs.datatable) {
+        this.requestSearch()
         return;
       }
       this.$refs.datatable.fetch();
@@ -336,7 +345,7 @@ export default {
       };
     },
     requestSearch(isShowLoading) {
-      const currentPage = this.$refs.datatable.currentPage;
+      const currentPage = this.$refs.datatable.currentPage || 0;
       const pageSize = this.$refs.datatable.pageSize || 20;
       const q = this.$route.query.q;
       const fromDate = this.$refs.datatable.searchFromDate
@@ -410,6 +419,16 @@ export default {
             .endOf("day")
             .unix()
         : undefined;
+
+      if(!fromDate || !toDate){
+        this.timeRangeError = 'Please select time range to export'
+        return
+      }
+
+      if(toDate - fromDate > TREE_MONTH){
+        this.timeRangeError = 'Max time range is 90 days'
+        return
+      }
 
       AppRequest.searchTrades(
         q,
@@ -509,7 +528,7 @@ export default {
       //   });
       //   return;
       // }
-
+      this.timeRangeError = null
       window.setTimeout(() => {
         this.disabledToDates = { to: this.searchFromDate };
         // this.fetch(true);
@@ -527,7 +546,7 @@ export default {
       //   });
       //   return;
       // }
-
+      this.timeRangeError = null
       window.setTimeout(() => {
         this.disabledFromDates = { from: this.searchToDate };
         // this.fetch(true);

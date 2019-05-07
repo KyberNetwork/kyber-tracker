@@ -32,6 +32,9 @@ a {
 .color-green{
   color: #31cb9e;
 }
+.color-red{
+  color: #d6473c;
+}
 
 :focus {
     outline: none;
@@ -571,6 +574,12 @@ btn {
     float: right;
     padding-top: 0px;
   }
+  &.date-error{
+    input{
+      border: solid 1px #d6473c !important;
+    }
+    
+  }
 
   .vdp-datepicker {
     display: inline-block;
@@ -713,7 +722,7 @@ td {
 }
 
 .table-responsive-wraper {
-  overflow: auto;
+  // overflow: auto;
   padding: 33px;
   @media (max-width: $sm) {
     padding: 0;
@@ -2284,12 +2293,12 @@ table.table-round {
   th {
     border-top: 0;
   }
-  // tr:first-child th:first-child {
-  //   border-top-left-radius: 6px;
-  // }
-  // tr:first-child th:last-child {
-  //   border-top-right-radius: 6px;
-  // }
+  tr:first-child th:first-child {
+    border-top-left-radius: 6px;
+  }
+  tr:first-child th:last-child {
+    border-top-right-radius: 6px;
+  }
 }
 
 
@@ -2330,7 +2339,7 @@ table.table-round {
 
 
 .notfound-wrapper{
-  padding-top: 20%;
+  padding-top: 15%;
   margin: auto;
   @media(max-width: $sm){
     text-align: center;
