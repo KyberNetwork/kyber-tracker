@@ -353,9 +353,17 @@ export default {
     },
      searchFromDate (val) {
        this.onchangeDate()
+       window.setTimeout(() => {
+        this.disabledToDates = { to: this.searchFromDate };
+        // this.fetch(true);
+      });
      },
      searchToDate (val) {
        this.onchangeDate()
+       window.setTimeout(() => {
+        this.disabledFromDates = { from: this.searchToDate };
+        // this.fetch(true);
+      });
      }
   },
 

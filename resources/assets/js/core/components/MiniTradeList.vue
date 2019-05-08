@@ -204,7 +204,7 @@
           :next-class="'page-item'"
           :next-link-class="'page-link'"
           :active-class="'active'"
-          :class="'home-pagination-block full-width-pagination justify-content-center font-semi-bold'"
+          :class="'home-pagination-block full-width-pagination justify-content-center font-semi-bold pt-5'"
           :hide-prev-next="true"
           >
           <span slot="prevContent"><span class="color-green prev-last"><img src="/images/ic-arrow-left.svg" class="pb-1"/>  {{$t('token_list.mini-prev')}}</span></span>

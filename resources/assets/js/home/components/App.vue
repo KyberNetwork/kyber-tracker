@@ -95,11 +95,11 @@
 
 
               <!-- ============================== -->
-              <div v-if="checkLoopSumary()" class="slide-item">
+              <div v-if="isLoopSumary" class="slide-item">
                 <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
                 <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
               </div>
-              <div v-if="checkLoopSumary()" class="slide-item">
+              <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
                 <div class="d-inline-flex">
                   <span class="topbar-value text-nowrap">
@@ -110,7 +110,7 @@
                 
               </div>
 
-              <div v-if="checkLoopSumary()" class="slide-item">
+              <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
                 <div class="d-inline-flex">
                   <span class="topbar-value" >{{ ethPrice }} </span>
@@ -118,48 +118,14 @@
                 </div>
               </div>
 
-              <div v-if="checkLoopSumary()" class="slide-item">
+              <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
                 <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
               </div>
-              <div v-if="checkLoopSumary()" class="slide-item">
+              <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
                 <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
               </div> 
-
-
-
-              <!-- <slide v-if="checkLoopSumary()">
-                <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
-                <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
-              </slide>
-              <slide v-if="checkLoopSumary()">
-                <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
-                <div class="d-inline-flex">
-                  <span class="topbar-value text-nowrap">
-                    {{ kncPrice }} 
-                    </span>
-                  <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-                </div>
-                
-              </slide>
-
-              <slide v-if="checkLoopSumary()">
-                <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
-                <div class="d-inline-flex">
-                  <span class="topbar-value" >{{ ethPrice }} </span>
-                  <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-                </div>
-              </slide>
-
-              <slide v-if="checkLoopSumary()">
-                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
-                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
-              </slide>
-              <slide v-if="checkLoopSumary()">
-                <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
-                <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
-              </slide>  -->
 
 
             </div>
@@ -449,7 +415,8 @@ export default {
       initSideNav: true,
       loopHeading: false,
       slideNavigate: 0,
-      intervalSlide: null
+      intervalSlide: null,
+      isLoopSumary: false
     };
   },
 
@@ -500,7 +467,8 @@ export default {
       // } else {
       //   this.showColapseBtn = false;
       // }
-      if(!this.checkLoopSumary()){
+      this.isLoopSumary = this.checkLoopSumary()
+      if(!this.isLoopSumary){
         this.$refs.headingInner.style.transform = `translate(-0px)`
         return
       }
@@ -518,16 +486,22 @@ export default {
     },
 
     checkLoopSumary(){
-      if(this.$refs.headingSum){
-        if(this.$refs.headingSum.clientWidth < 760) return true
+      if(!this.$refs.slide_0 || !this.$refs.slide_1 || !this.$refs.slide_2 || !this.$refs.slide_3 || !this.$refs.slide_4 || !this.$refs.headingSum){
         return false
-      }
-      return false
+      } else {
+        let sumaryWidth = 0
+        for(let i=0; i <= 4; i++){
+          sumaryWidth = sumaryWidth + this.$refs[`slide_${i}`].clientWidth
+        }
+        const headingSumWidth = this.$refs.headingSum.clientWidth
+        if(headingSumWidth < sumaryWidth - 25) return true
+        return false
+      }  
     },
 
     intervalSlideSumary(){
       this.intervalSlide = setInterval(() => {
-        if(!this.checkLoopSumary()){
+        if(!this.isLoopSumary){
           this.$refs.headingInner.style.transform = `translate(-0px)`
           return
         }

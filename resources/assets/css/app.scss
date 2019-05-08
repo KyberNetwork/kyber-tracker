@@ -494,7 +494,10 @@ a {
       cursor: pointer;
       display: block;
       outline: none;
-      padding: 10px 10px;
+      // padding: 10px 10px;
+      @media (max-width: $sm) {
+        padding: 0;
+      }
     }
   }
 
