@@ -230,6 +230,7 @@ export default {
       searchToDate: null,
       tokens: TOKENS_BY_ADDR,
       isParentLoading: false,
+      isLoading: true,
       searchResult: {},
       highlightedToday: {
         dates: [new Date()]
@@ -339,7 +340,7 @@ export default {
             }
 
             this.getSearchResultMessage()
-            this.isParentLoading = false;
+            this.isLoading = false;
           });
     },
 
