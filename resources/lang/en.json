@@ -6,9 +6,9 @@
     "name": "NAME",
     "address": "ADDRESS",
     "symbol": "SYMBOL",
-    "volume_24h_usd": "24H Volume (USD)",
-    "volume_24h_eth": "24H Volume (ETH)",
-    "volume_24h_token": "24H Volume (Token)",
+    "volume_24h_usd": "24H VOLUME (USD)",
+    "volume_24h_eth": "24H VOLUME (ETH)",
+    "volume_24h_token": "24H VOLUME (TOKEN)",
     "search": "Search",
     "network_activity": "Latest Trade",
     "searchbox_placeholder" : "Tx Hash/ Wallet Address/ MetaMask",
@@ -43,7 +43,7 @@
     "search": "Wallet Details",
     "network": "Network",
     "volume": "Volume",
-    "go_to_exchange": "Swap now"
+    "go_to_exchange": "Swap Token"
   },
 
   "reserves": {
@@ -100,10 +100,10 @@
   "trade_list": {
     "title": "Trade History",
     "address": "Address",
-    "date": "Time",
+    "date": "TIME",
     "taker_token": "Exchange from",
     "maker_token": "Exchange to",
-    "rate": "Rates",
+    "rate": "RATE",
     "description": "Description",
     "amount": "Amount",
     "collected_fees": "Collected Fees",
@@ -114,6 +114,7 @@
     "msg_no_result": "There's no trade found.",
     "exchange_from" : "From",
     "exchange_to" : "To",
+    "trade" : "TRADE",
     "pair": "Pair",
     "export_csv": "Export (CSV)",
     "no_row": "No record found",
@@ -153,13 +154,16 @@
     "history": "History",
     "commission": "Commission",
     "current_listing": "Current listing tokens",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "eth": "ETH",
+    "usd": "USD"
   },
 
   "token_list": {
     "title": "Trade Tokens",
-    "prev": "Prev",
-    "next": "Next",
+    "mini-prev": "PREV",
+    "prev": "PREVIOUS",
+    "next": "NEXT",
     "no" : "No."
   },
 

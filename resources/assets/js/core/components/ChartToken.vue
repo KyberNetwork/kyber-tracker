@@ -1,15 +1,17 @@
 <template>
-  <div class="token-chart">
-    <canvas :id="elementId" height="0px;" class="mt-20"></canvas>
-    <div v-if="!chartInstance" class="content-loading-wrapper">
-      <div class="timeline-item">
-        <div class="animated-background" style="width: 96%;"></div> 
-        <div class="animated-background" style="width: 30%;"></div> 
-        <div class="animated-background" style="width: 15%;"></div>
-        <div class="animated-background" style="width: 8%;"></div> 
-        <div class="animated-background" style="width: 2%;"></div>
+  <div class="chart-token_wrapper">
+      <div v-if="loading" class="content-loading-wrapper h-100">
+        <div class="timeline-item">
+          <div class="animated-background" style="height: 96%;"></div> 
+          <div class="animated-background" style="height: 30%;"></div> 
+          <div class="animated-background" style="height: 15%;"></div>
+          <div class="animated-background" style="height: 8%;"></div> 
+          <div class="animated-background" style="height: 2%;"></div>
+        </div>
       </div>
-    </div>
+      <div class="token-chart">
+        <canvas :id="elementId" :height="'250px'" v-bind:class="loading? 'd-none':'' " class="mt-20"></canvas>
+      </div>
   </div>
 </template>
 
@@ -29,7 +31,9 @@ export default {
   },
   data() {
     return {
-      chartInstance: undefined
+      chartInstance: undefined,
+      loading: true,
+      period: null
     };
   },
   methods: {
@@ -41,7 +45,7 @@ export default {
       const dataset = [];
       const volumeTokens = [];
       const volumeEths = [];
-      const percentVolume = [];
+      // const percentVolume = [];
 
       const sum = (all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0)) / 2;
       for (let i = 0; i < ret.length; i++) {
@@ -52,9 +56,9 @@ export default {
         dataset.push(Math.round(ret[i].volumeUSD * 100) / 100);
         volumeTokens.push(Math.round(ret[i].volumeTokenNumber * 1000) / 1000);
         volumeEths.push(Math.round(ret[i].volumeEthNumber * 1000) / 1000);
-        percentVolume.push(
-          sum ? Math.round(ret[i].volumeUSD / sum * 1000) / 10 : 0
-        );
+        // percentVolume.push(
+        //   sum ? Math.round(ret[i].volumeUSD / sum * 1000) / 10 : 0
+        // );
       }
 
       return {
@@ -66,17 +70,19 @@ export default {
             data: dataset,
             pointRadius: 0,
             backgroundColor: [
-              "#2ed573",
-              "#2ed573",
-              "#2ed573",
-              "#2ed573",
-              "#2ed573"
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
+              "rgba(33, 91, 178, 0.6)",
             ],
             showLine: true,
             spanGaps: true
           }
         ],
-        percentVolume
+        // percentVolume
       };
     },
     _getChartOptions() {
@@ -117,20 +123,21 @@ export default {
         }
       };
 
-      const yAxeScale = {
+      const xAxeScale  = {
         ticks: {
-          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontFamily: "Avenir",
           fontSize: 12
         },
         gridLines: {
           drawBorder: false
-        }
+        },
+        categoryPercentage: 0.4
       };
 
-      const xAxeScale = {
+      const yAxeScale = {
         ticks: {
           beginAtZero: true,
-          fontFamily: "Montserrat, My-Montserrat, sans-serif",
+          fontFamily: "Avenir",
           fontSize: 12,
           gridLines: {
             offsetGridLines: true
@@ -147,10 +154,10 @@ export default {
       return {
         tooltips: {
           mode: "index",
-          axis: "y",
+          axis: "x",
           intersect: false,
-          fontFamily: "Montserrat, My-Montserrat, sans-serif",
-          backgroundColor: "rgba(25, 46, 59, 0.8)",
+          fontFamily: "Avenir",
+          backgroundColor: 'rgba(25, 46, 59, 0.8)',
           titleFontSize: 14,
           titleFontColor: "#f8f8f8",
           bodyFontSize: 14,
@@ -168,40 +175,35 @@ export default {
         legend: {
           display: false
         },
+        plugins: {
+          datalabels: false
+        },
+        maintainAspectRatio: false,
         layout: {
             padding: {
                 right: 50,
             }
         },
 
-        plugins: {
-          datalabels: {
-            display: true,
-            align: "right",
-            anchor: function(context) {
-              // console.log(context)
-              return "end";
-            },
-            // color: [
-            //   'red',    // color for data at index 0
-            //   'blue',   // color for data at index 1
-            //   'green',  // color for data at index 2
-            //   'black',  // color for data at index 3
-            //   //...
-            // ],
-            formatter: function(value, context) {
-              let dataIndex = context.dataIndex;
-              let percentVolume = context.chart.data.percentVolume;
+        // plugins: {
+        //   datalabels: {
+        //     display: true,
+        //     align: "right",
+        //     anchor: function(context) {
+        //       // console.log(context)
+        //       return "end";
+        //     },
+          
+        //     formatter: function(value, context) {
+        //       let dataIndex = context.dataIndex;
+        //       let percentVolume = context.chart.data.percentVolume;
 
-              // let sum = volumeEths.reduce((a,b) => (a + b), 0)
-              return percentVolume[dataIndex] ? percentVolume[dataIndex] + "%" : "";
-            }
-            // display: function(context) {
-            //   console.log(context)
-            //     return context.dataIndex % 2; // display labels with an odd index
-            // }
-          }
-        },
+        //       // let sum = volumeEths.reduce((a,b) => (a + b), 0)
+        //       return percentVolume[dataIndex] ? percentVolume[dataIndex] + "%" : "";
+        //     }
+           
+        //   }
+        // },
 
         maintainAspectRatio: false
       };
@@ -226,14 +228,21 @@ export default {
           start = now - 60 * 60 * 24 * 365 * 10;
           break;
       }
+      if(this.period !== period){
+        console.log("++++++++++++++++ ", this.period, period)
+        this.period = period
+        this.loading = true
+      }
       AppRequest.getTopToken(start, now, (err, ret) => {
+        
         const ctx = document.getElementById(this.elementId);
 
         // Ignore render chart if the page has been changed and the chart element is omitted
         if (!ctx) {
+          console.log("********* return ")
           return;
         }
-
+        
         const data = this._buildChartData(ret);
         const options = this._getChartOptions();
         if (this.chartInstance) {
@@ -246,12 +255,13 @@ export default {
           this.chartInstance.update(0);
         } else {
           this.chartInstance = new Chart(ctx, {
-            type: "horizontalBar",
+            type: "bar",
             data: data,
             options: options,
             plugins: [datalabels]
           });
-        }       
+        } 
+        this.loading = false;      
       });
     }
   }

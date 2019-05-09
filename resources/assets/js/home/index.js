@@ -9,7 +9,12 @@ import BootstrapVue from 'bootstrap-vue';
 import VuePaginate from 'vuejs-paginate';
 import VueDatePicker from 'vuejs-datepicker';
 import moment from 'moment';
-import VTooltip from 'v-tooltip'
+import VTooltip from 'v-tooltip';
+import { Hooper, Slide } from 'hooper';
+// import 'hooper/dist/hooper.css';
+
+import VueCarousel from 'vue-carousel';
+// import carousel from 'vue-owl-carousel'
 
 import App from './components/App.vue';
 import DataTable from '../core/components/DataTable.vue';
@@ -19,6 +24,8 @@ import TokenLink from '../core/components/TokenLink.vue';
 import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
 import ChartToken from '../core/components/ChartToken.vue';
+import NotFound from './components/NotFound.vue';
+import Oop from '../core/components/Oop.vue';
 // import ImportAcount from '../core/components/ImportAccount.vue';
 import VueAutosuggest from "vue-autosuggest";
 import VueMq from 'vue-mq'
@@ -48,11 +55,12 @@ Vue.use(VueResource);
 Vue.use(BootstrapVue);
 Vue.use(VTooltip)
 Vue.use(VueAutosuggest)
+// Vue.use(VueCarousel);
 Vue.use(VueMq, {
   breakpoints: {
-    sm: 450,
-    ml: 850,
-    md: 1250,
+    sm: 576,
+    ml: 768,
+    md: 1200,
     lg: Infinity,
   }
 })
@@ -64,9 +72,16 @@ Vue.component('token-link', TokenLink);
 Vue.component('chart-volume', ChartVolume);
 Vue.component('chart-fee', ChartFee);
 Vue.component('chart-token', ChartToken);
+Vue.component('not-found', NotFound);
+Vue.component('oop', Oop);
+
 // Vue.component('import-acount', ImportAcount)
 Vue.component('paginate', VuePaginate);
 Vue.component('datepicker', VueDatePicker);
+// Vue.component('carousel', carousel);
+
+// Vue.component('hooper', Hooper);
+// Vue.component('slide', Slide);
 
 Vue.prototype.$tokens = "akjsbndkjansdnsa"
 // const locale = localStorage.getItem('locale') || 'en';

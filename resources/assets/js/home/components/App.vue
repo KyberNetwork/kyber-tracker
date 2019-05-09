@@ -1,106 +1,181 @@
 <template>
   <div id="wrapper">
-    <div id="page-content">
-      <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12">
-        <div class="no-padding d-flex justify-content-between col-12 col-sm-12" v-click-outside="onClickOutside">
-          <ul ref="headingSum" class="heading-summary p-relative" @click="clickHeading()">
+    <div id="page-content" class="content-wrapper">
+      <b-nav v-if="$mq !== 'md' && $mq !== 'lg'" class="mobile-header" v-click-outside="() => onClickOutside(true)">
+        <b-nav-item @click="toggleNav()" class="nav-burger-wrapper">
+          <img class="nav-burger ml-0" src="/images/hamburger.svg" />
+        </b-nav-item>
+        <b-nav-item :class="openSearchInput ? 'transform-0 w-0 nav-item-logo' : 'nav-item-logo'">
+          <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
+        </b-nav-item>
+        <b-nav-item class="d-flex h-100 mobile-search-nav">
+          <div ref="searchComponent"  v-bind:class="[openSearchInput ? 'search-expand' : 'search-colapse']">
+            <b-input-group-append class="btn-mobile-search d-flex justify-content-between">
+              <vue-autosuggest
+                ref="seatchInputRef"
+                :suggestions="[{
+                  data: [...this.addressesMetamask, ...this.searchData]
+                }]"
+                @keyup.enter="doSearch"
+                @focus="onfocus"
+                :getSuggestionValue="getSuggestionValue"
+                :renderSuggestion="renderSuggestion"
+                :onSelected="onSelected"
+                :inputProps="{
+                  id:'autosuggest__input', 
+                  class: 'mr-0 p-0',
+                  onInputChange: this.onInputChange, 
+                  placeholder:$t('common.searchbox_placeholder'),
+                  autocomplete: 'off'
+                }"
+              />
 
-             <li>
-              <b-dropdown class="change-official" @shown="clickHeading()" >
-                <template slot="button-content">
-                  {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
-                </template>
-                <b-dropdown-item @click="onChangeOfficial('all')">
-                  <span>{{ $t('navigator.all_network') }}</span>
-                </b-dropdown-item>
-                <b-dropdown-item @click="onChangeOfficial('official')">
-                  <span>{{ $t('navigator.verified_reserves_network') }}</span>
-                </b-dropdown-item>
-              </b-dropdown> 
-            </li>
-
-
-            <li id="network-volume">
-              <span class="light-text">{{ $t('status_bar.network_volume') }}</span><br />
-              <span class="topbar-value">{{ networkVolume }}</span>
-              <!-- <img v-if="this.indexShowmore == 0" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
-            <li id="knc-price">
-              <span class="light-text">{{ $t('status_bar.knc_price') }}</span><br />
-              <span class="topbar-value">
-                {{ kncPrice }} 
-                </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
-              <!-- <img v-if="this.indexShowmore == 1" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
-
-            <li id="eth-price">
-              <span class="light-text">{{ $t('status_bar.eth_price') }}</span><br />
-              <span class="topbar-value" >{{ ethPrice }} </span>
-              <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
-              <!-- <img v-if="this.indexShowmore == 2" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
-
-            <li id="fee-to-burn">
-              <span class="light-text">{{ $t('status_bar.collected_fees') }}</span><br />
-              <span class="topbar-value">{{ collectedFees }}</span>
-              <!-- <img v-if="this.indexShowmore == 3" class="show-more" src="/images/drop-down.svg"/> -->
-            </li>
-                
-
-            <li id="total-burn-fee">
-              <span class="light-text">{{ $t('status_bar.fees_burned') }}</span><br />
-              <span class="topbar-value">{{ totalBurnedFee }}</span>
-            </li> 
-
-           
-            <!-- <i class="fas fa-caret-down fa-2x show-more"></i> -->
-            <!-- <img class="show-more" src="/images/drop-down.svg"/> -->
-            
-
-            <!-- <li>
-              <span class="light-text">{{ $t('status_bar.trades') }}</span><br />
-              <span class="topbar-value">{{ tradeCount }}</span>
-            </li> 
-            <li class="network-fee" >
-                
-            </li>
-             -->
-          </ul>
-
-          <div ref="searchComponent" class="p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3" >
-            <vue-autosuggest
-              class="ajsbd"
-              ref="seatchInputRef"
-              :suggestions="[{
-                data: [...this.addressesMetamask, ...this.searchData]
-              }]"
-              @keyup.enter="doSearch"
-              @focus="onfocus"
-              :getSuggestionValue="getSuggestionValue"
-              :renderSuggestion="renderSuggestion"
-              :onSelected="onSelected"
-              :inputProps="{
-                id:'autosuggest__input', 
-                onInputChange: this.onInputChange, 
-                placeholder:$t('common.searchbox_placeholder'),
-                autocomplete: 'off'
-              }"
-            />
-            <b-input-group-append class="btn-search">
               <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
-                <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+                <!-- <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+                  -->
+                  <img class="search" src="/images/search-icon.svg" />
               </b-btn>
             </b-input-group-append>
           </div>
+        </b-nav-item>
+      </b-nav>
+
+
+      <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
+        <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="() => onClickOutside()">
+
+          <b-dropdown class="change-official h-100" @shown="clickHeading()" >
+            <template slot="button-content">
+              {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
+            </template>
+            <b-dropdown-item @click="onChangeOfficial('all')">
+              <span>{{ $t('navigator.all_network') }}</span>
+            </b-dropdown-item>
+            <b-dropdown-item @click="onChangeOfficial('official')">
+              <span>{{ $t('navigator.verified_reserves_network') }}</span>
+            </b-dropdown-item>
+          </b-dropdown> 
+
+          <carousel  
+          ref="headingSum" class="heading-summary position-relative" draggable="true">
+            <div ref="headingInner" class="heading-inner d-flex position-absolute">
+              <div ref="slide_0" class="slide-item">
+                <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
+                <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
+              </div>
+              <div ref="slide_1" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
+                <div class="d-inline-flex">
+                  <span class="topbar-value text-nowrap">
+                    {{ kncPrice }} 
+                    </span>
+                  <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+                </div>
+                
+              </div>
+
+              <div ref="slide_2" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
+                <div class="d-inline-flex">
+                  <span class="topbar-value" >{{ ethPrice }} </span>
+                  <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+                </div>
+              </div>
+
+              <div ref="slide_3" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
+                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+              </div>
+              <div ref="slide_4" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
+                <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
+              </div> 
+            
+            
+
+
+              <!-- ============================== -->
+              <div v-if="isLoopSumary" class="slide-item">
+                <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
+                <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
+              </div>
+              <div v-if="isLoopSumary" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
+                <div class="d-inline-flex">
+                  <span class="topbar-value text-nowrap">
+                    {{ kncPrice }} 
+                    </span>
+                  <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+                </div>
+                
+              </div>
+
+              <div v-if="isLoopSumary" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
+                <div class="d-inline-flex">
+                  <span class="topbar-value" >{{ ethPrice }} </span>
+                  <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+                </div>
+              </div>
+
+              <div v-if="isLoopSumary" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
+                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+              </div>
+              <div v-if="isLoopSumary" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
+                <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
+              </div> 
+
+
+            </div>
+
+          </carousel>
+            
+          
+          <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
+            <div ref="searchComponent" :class="openSearchInput ? 'search-expand' : 'search-colapse'"  >
+              <b-input-group-append class="btn-search d-flex justify-content-between h-100">
+                <vue-autosuggest
+                  ref="seatchInputRef"
+                  :suggestions="[{
+                    data: [...this.addressesMetamask, ...this.searchData]
+                  }]"
+                  @keyup.enter="doSearch"
+                  @focus="onfocus"
+                  :getSuggestionValue="getSuggestionValue"
+                  :renderSuggestion="renderSuggestion"
+                  :onSelected="onSelected"
+                  :inputProps="{
+                    id:'autosuggest__input', 
+                    class: 'mr-0 p-0',
+                    onInputChange: this.onInputChange, 
+                    placeholder:$t('common.searchbox_placeholder'),
+                    autocomplete: 'off'
+                  }"
+                />
+
+                <b-btn type="submit" class="search-button" variant="default cursor-pointer" @click="doSearch()">
+                  <!-- <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="26px" width="26px" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m34.8 30.2c0.3 0.3 0.3 0.8 0 1.1l-3.4 3.5c-0.1 0.1-0.4 0.2-0.6 0.2s-0.4-0.1-0.6-0.2l-6.5-6.8c-2 1.2-4.1 1.8-6.3 1.8-6.8 0-12.4-5.5-12.4-12.4s5.6-12.4 12.4-12.4 12.4 5.5 12.4 12.4c0 2.1-0.6 4.2-1.7 6.1z m-17.4-20.4c-4.1 0-7.6 3.4-7.6 7.6s3.5 7.6 7.6 7.6 7.5-3.4 7.5-7.6-3.3-7.6-7.5-7.6z"></path></g></svg>
+                    -->
+                    <img class="search" src="/images/search-icon.svg" />
+                </b-btn>
+              </b-input-group-append>
+          
+            </div>
 
           
+            <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange d-flex" target="_blank">
+                <span class="text-go text-nowrap">{{ $t('navigator.go_to_exchange') }}</span>
+            </a>
+          </div>
           
+        
         </div>
 
-          <div v-if="this.showColapseBtn" class="colapse-button indicator" @click="colapseHeader()">
+          <!-- <div v-if="this.showColapseBtn" class="colapse-button indicator" @click="colapseHeader()">
             <span  class="entypo-up-open"></span>
-          </div>
+          </div> -->
         
         
 
@@ -108,12 +183,62 @@
 
       </b-navbar>
 
-      <b-navbar toggleable="md" type="dark" class="second-heading-bar ">
+
+      <div id="mySidenav" class="sidenav" v-bind:style="getSideNavWidth()" v-click-outside="() => onClickOutsideNav()">
+        <div class="nav-line nav-logo">
+            <a href="javascript:void(0)" class="icon-icon-side h-100" @click="toggleNav()">
+              <span class=" icon-side h-100 icon-arrow">
+                <img src="/images/collapse-icon.svg" v-if="$mq == 'sm' || $mq == 'ml'" v-bind:class="isNavOpen ? '' : 'rolate'"/>
+              </span>
+              
+            </a>
+            
+            <a v-if="$mq !== 'md' && $mq !== 'lg'"  href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')"  target="_blank" v-bind:class="[isNavOpen ? 'nav-text go-exchange d-flex' : 'nav-text go-exchange d-flex w-0']">
+              <span class="text-go text-nowrap">{{ $t('navigator.go_to_exchange') }}</span>
+            </a>
+            <router-link v-else to="/" v-bind:class="[isNavOpen ? 'nav-text ' : 'nav-text w-0']">
+              <img  class="nav-logo ml-0" src="/images/nav-logo.svg" />
+            </router-link>
+        </div>
+        
+        <router-link to="/" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img src="/images/volumn-icon.svg" />
+          </div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.volume') }}</div>
+        </router-link>
+        <router-link to="/trades" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img src="/images/trade-icon.svg" />
+          </div>
+          
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.trade_history') }}</div>
+        </router-link>
+        <router-link to="/tokens" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img class="nav-logo icon-token" src="/images/token-icon.svg" />
+          </div>
+          
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.tokens') }}</div>
+        </router-link>
+        <router-link to="/reserves" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img class="nav-logo icon-reserve" src="/images/reserve-icon.svg" />
+          </div>
+          
+          <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.reserves') }}</div>
+        </router-link>
+        <div class="nav-line h-100">
+          <div class="icon-side h-100">
+          </div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']"></div>
+        </div>
+      </div>
+
+      <!-- <b-navbar toggleable="md" type="dark" class="second-heading-bar ">
         <b-navbar-brand to="/">
           <img class="kyber-logo d-inline-block align-top" src="/images/logo.svg" />
         </b-navbar-brand>
-        
-        <!-- <b-navbar-toggle target="nav_collapse" /> -->
         <b-nav-item-dropdown v-if="($mq == 'sm' || $mq == 'ml')"
           id="nav7_ddown"
           :text="this.dropdownText"
@@ -175,26 +300,11 @@
           </b-nav-item>
         </b-nav>
 
-
-
-
-
         <a href="https://kyberswap.com" :title="$t('navigator.go_to_exchange')" class="go-exchange" target="_blank">
           <button type="button" class="btn btn-default pointer">
-            <!-- <span class="entypo-right-circled icon-go"></span> -->
             <span class="text-go">{{ $t('navigator.go_to_exchange') }}</span>
           </button>
         </a>
-      </b-navbar>
-<!-- 
-      <b-navbar toggleable type="dark" class="second-heading-bar">
-        <b-navbar-toggle target="nav_text_collapse" />
-
-        <b-collapse is-nav id="nav_text_collapse">
-          <b-navbar-nav>
-            <b-nav-text>Navbar text</b-nav-text>
-          </b-navbar-nav>
-        </b-collapse>
       </b-navbar> -->
 
       <div class="container">
@@ -209,27 +319,54 @@
 
     <div id="footer">
 
-      <div class="container">
-        <div class="row">
+      <div class="container" v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'footer-container' : ''">
+        <div class="row m-0">
           <div class="col footer-menu">
             Copyright 2018 @ Kyber Network 
           </div>
-          <div class="col footer-menu text-right footer-link">
-            <div class="d-inline-block">
+          <div class="col footer-menu text-right footer-link" >
+            <div class="d-inline-block footer-ul " v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'container' : ''">
               <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
               <ul class="links">
-                <li><a href="https://t.me/KyberTrackerBot" target="_blank"><img class="footer-icon" src="/images/telegram.svg" /></a></li>
-                <li><a href="https://twitter.com/KyberNetwork" target="_blank"><img class="footer-icon" src="/images/twitter.svg" /></a></li>
-                <li><a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank"><img class="footer-icon" src="/images/github.svg" /></a></li>
                 <li>
-                  <b-dropdown class="change-language-button" no-caret right>
+                  <a href="https://t.me/KyberTrackerBot" target="_blank">
+                    <img class="footer-icon" src="/images/telegram.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://twitter.com/KyberNetwork" target="_blank">
+                    <img class="footer-icon" src="/images/twitter.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                    <img class="footer-icon" src="/images/github.svg" />
+                  </a>
+                </li>
+                <li class="select-lang-box">
+                  <b-dropdown class="change-language-button" right>
                     <template slot="button-content">
-                      <span><img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /></span>
+                      <span class="footer-icon">
+                        <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
+                        {{this.getLanguageText()}}
+                      </span>
                     </template>
-                    <b-dropdown-item @click="changeLanguage('en')"><img src="images/locales/en.svg" /> English</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('vi')"><img src="images/locales/vi.svg" /> Tiếng Việt</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('ko')"><img src="images/locales/ko.svg" /> 한국어</b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('zh')"><img src="images/locales/zh.svg" /> 中文</b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('en')">
+                      <img src="images/locales/en.svg" /> 
+                      English
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('vi')">
+                      <img src="images/locales/vi.svg" /> 
+                      Tiếng Việt
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('ko')">
+                      <img src="images/locales/ko.svg" /> 
+                      한국어
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="changeLanguage('zh')">
+                      <img src="images/locales/zh.svg" /> 
+                      中文
+                    </b-dropdown-item>
                   </b-dropdown> 
               </li>
               </ul>
@@ -243,15 +380,15 @@
 </template>
 
 <script>
-import moment,{ locale } from "moment";
+import moment, { locale } from "moment";
 import request from "superagent";
 import AppRequest from "../../core/request/AppRequest";
 import util from "../../core/helper/util";
 import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
-import ClickOutside from 'vue-click-outside'
-import _ from'lodash'
+import ClickOutside from "vue-click-outside";
+import _ from "lodash";
 
 export default {
   data() {
@@ -272,15 +409,22 @@ export default {
       isOpenFee: false,
       indexShowmore: -1,
       showColapseBtn: false,
-      dropdownText: this.$t('navigator.volume')
+      dropdownText: this.$t("navigator.volume"),
+      isNavOpen: true,
+      openSearchInput: false,
+      initSideNav: true,
+      loopHeading: false,
+      slideNavigate: 0,
+      intervalSlide: null,
+      isLoopSumary: false
     };
   },
 
   // ready: function () {
   //   window.addEventListener('resize', this.handleResize)
   // },
-  beforeDestroy: function () {
-    window.removeEventListener('resize', this.handleResize)
+  beforeDestroy: function() {
+    window.removeEventListener("resize", this.handleResize);
   },
 
   computed: {
@@ -307,24 +451,27 @@ export default {
       moment.locale(locale);
       window.location.reload();
     },
-    handleResize (event) { 
-      let arrayLi = this.$refs.headingSum.children
-      if(arrayLi && arrayLi.length){
-        this.indexShowmore = [...arrayLi].findIndex( x => x.offsetTop > 60) - 1
+    handleResize(event) {
+      // let arrayLi = this.$refs.headingSum.children;
+      // if (arrayLi && arrayLi.length) {
+      //   this.indexShowmore = [...arrayLi].findIndex(x => x.offsetTop > 60) - 1;
+      // }
+
+      // if (arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60) {
+      //   let headerClass = this.$refs.headingSum.className;
+      //   if (headerClass.indexOf("header-expand") > -1) {
+      //     this.showColapseBtn = true;
+      //   } else {
+      //     this.showColapseBtn = false;
+      //   }
+      // } else {
+      //   this.showColapseBtn = false;
+      // }
+      this.isLoopSumary = this.checkLoopSumary()
+      if(!this.isLoopSumary){
+        this.$refs.headingInner.style.transform = `translate(-0px)`
+        return
       }
-
-      if(arrayLi && arrayLi[arrayLi.length - 1].offsetTop > 60){
-        let headerClass = this.$refs.headingSum.className
-        if(headerClass.indexOf("header-expand") > -1 ){
-          this.showColapseBtn = true
-        } else {
-          this.showColapseBtn = false
-        }
-      } else {
-        this.showColapseBtn = false
-      }
-
-
     },
     getLanguage() {
       if (
@@ -338,6 +485,60 @@ export default {
       }
     },
 
+    checkLoopSumary(){
+      if(!this.$refs.slide_0 || !this.$refs.slide_1 || !this.$refs.slide_2 || !this.$refs.slide_3 || !this.$refs.slide_4 || !this.$refs.headingSum){
+        return false
+      } else {
+        let sumaryWidth = 0
+        for(let i=0; i <= 4; i++){
+          sumaryWidth = sumaryWidth + this.$refs[`slide_${i}`].clientWidth
+        }
+        const headingSumWidth = this.$refs.headingSum.clientWidth
+        if(headingSumWidth < sumaryWidth - 25) return true
+        return false
+      }  
+    },
+
+    intervalSlideSumary(){
+      this.intervalSlide = setInterval(() => {
+        if(!this.isLoopSumary){
+          this.$refs.headingInner.style.transform = `translate(-0px)`
+          return
+        }
+        this.slideNavigate = this.slideNavigate + 1
+        if(this.slideNavigate >= 5) this.slideNavigate = 0
+        let scrollWidth = 0
+        for(let i=0; i < this.slideNavigate; i++){
+          scrollWidth = scrollWidth + this.$refs[`slide_${i}`].clientWidth
+        }
+        this.$refs.headingInner.style.transform = `translate(-${scrollWidth}px)`
+      }, 5000)
+    },
+
+    getLanguageText(){
+      if (
+        typeof window.i18n != "undefined" &&
+        typeof window.i18n.locale != "undefined"
+      ) {
+        // return window.i18n.locale;
+        switch (window.i18n.locale) {
+          case 'en':
+            return 'English';
+          case 'vi':
+            return 'Tiếng Việt';
+          case 'ko':
+            return '한국어';
+          case 'zh':
+            return '中文';
+          default:
+            return 'English';
+        }
+      } else {
+        moment.locale("en");
+        return 'English';
+      }
+    },
+
     onToggleFee() {
       this.isOpenFee = !this.isOpenFee;
     },
@@ -345,7 +546,7 @@ export default {
     getPriceChangeClass(price) {
       if (price === 0) return "";
       return price < 0 ? "neg-value" : "pos-value";
-    },
+    }, 
     connectMetaMask(e) {
       if (typeof web3 === "undefined") {
         return;
@@ -360,13 +561,32 @@ export default {
       }
 
       try {
-        let address = web3.eth.accounts[0]
-        this.addressesMetamask = [{
-          type: "metamask",
-          addr: address
-        }];
+        let address = web3.eth.accounts[0];
+        this.addressesMetamask = [
+          {
+            type: "metamask",
+            addr: address
+          }
+        ];
       } catch (e) {
         console.log(e);
+      }
+    },
+
+    getSlideItemPerPage(){
+      if(this.$mq == 'sm' || this.$mq == 'ml'){
+        return [
+          [445, 3],
+          [655, 4]
+        ]
+      } else {
+        return [
+          [785, 1],
+          [925, 2],
+          [1075, 3],
+          [1240, 4],
+          [1500, 5]
+        ]
       }
     },
 
@@ -378,10 +598,10 @@ export default {
         this.totalBurnedFee = stats.totalBurnedFee + " KNC";
         this.collectedFees = stats.collectedFees + " KNC";
 
-        this.kncPrice = "$" + stats.kncPrice
-        this.kncPriceChange24h = stats.kncChange24h
-        this.ethPrice = "$" + stats.ethPrice
-        this.ethPriceChange24h = stats.ethChange24h
+        this.kncPrice = "$" + stats.kncPrice;
+        this.kncPriceChange24h = stats.kncChange24h;
+        this.ethPrice = "$" + stats.ethPrice;
+        this.ethPriceChange24h = stats.ethChange24h;
       });
 
       // request
@@ -408,16 +628,15 @@ export default {
       //   });
     },
     doSearch() {
-      if(this.$mq == 'sm' || this.$mq == 'ml' || this.$mq == 'md'){
-        if(this.$refs.seatchInputRef.$el && this.$refs.seatchInputRef.$el.className.indexOf("search-expand") == -1){
-          this.$refs.seatchInputRef.$el.className = "search-expand ml-0"
-          this.$refs.headingSum.className = "d-none"
-          this.$refs.searchComponent.className += ' col-12'
-          return
-        } 
+      if(this.$refs.searchComponent && this.$refs.searchComponent.className.indexOf("search-expand") == -1){
+        this.openSearchInput = true
+        return;
       }
-      if (!this.searchString) {
-        this.onClickOutside()
+      
+      
+      if (!this.searchString && this.$refs.searchComponent.className.indexOf("search-expand") > -1) {
+        // this.onClickOutside();
+        this.openSearchInput = false
         return;
       }
       this.searchString = this.searchString.trim();
@@ -457,48 +676,60 @@ export default {
       });
     },
 
-    changeTextDropdown(text){
-      console.log("============= change dropdown", text)
-      this.dropdownText = text
+    changeTextDropdown(text) {
+      console.log("============= change dropdown", text);
+      this.dropdownText = text;
     },
 
-    clickHeading(){
+    clickHeading() {
       // let headerClass = this.$refs.headingSum.className
       // if(headerClass.indexOf("header-expand") !== -1 ){
       //   this.$refs.headingSum.className = "heading-summary p-relative"
       // } else {
       //   this.$refs.headingSum.className = "heading-summary p-relative header-expand"
       // }
-      // 
+      //
 
-      this.$refs.headingSum.className = "heading-summary p-relative header-expand"
-      this.handleResize()
+      this.$refs.headingSum.className =
+        "heading-summary p-relative header-expand";
+      this.handleResize();
     },
 
-    colapseHeader(){
-      this.$refs.headingSum.className = "heading-summary p-relative"
+    colapseHeader() {
+      this.$refs.headingSum.className = "heading-summary p-relative";
     },
 
-    isAllTokens(){
-      return store.get('allTokens') ? true : false
+    isAllTokens() {
+      return store.get("allTokens") ? true : false;
     },
 
-
-    onChangeOfficial(value){
-      if(value == 'official') {
+    onChangeOfficial(value) {
+      if (value == "official") {
         // window.OFFICIAL_TOKENS = true
-        store.set('allTokens', false)
+        store.set("allTokens", false);
       } else {
-        store.set('allTokens', true)
+        store.set("allTokens", true);
       }
       location.reload();
     },
-    
-    onClickOutside(){
-      this.$refs.seatchInputRef.$el.className = ""
-      this.$refs.headingSum.className = "heading-summary p-relative"
-      this.$refs.searchComponent.className = 'p-relative cursor-pointer d-flex justify-content-end pt-2 pb-4 pr-3'
-      this.handleResize()
+
+    onClickOutside(isMobile) {
+      // this.$refs.seatchInputRef.$el.className = "";
+      // this.$refs.headingSum.className = "heading-summary p-relative";
+      if(isMobile){
+        if(this.$mq !== 'md' && this.$mq !== 'lg'){
+          this.openSearchInput = false
+        }
+      } else {
+        if(this.$mq == 'md' || this.$mq == 'lg'){
+          this.openSearchInput = false
+        }
+      }
+      // this.handleResize();
+    },
+
+    onClickOutsideNav(){
+      if(this.$mq !== 'sm') this.isNavOpen = false;
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
@@ -508,17 +739,19 @@ export default {
     },
 
     renderSuggestion(suggestion) {
-      let logoUrl ;
+      let logoUrl;
       switch (suggestion.item.type) {
         case "address":
-          logoUrl = <span class="entypo-layout history-logo"></span>
+          logoUrl = <span class="entypo-layout history-logo" />;
           break;
         case "txHash":
-          logoUrl = <span class="entypo-switch history-logo"></span>
+          logoUrl = <span class="entypo-switch history-logo" />;
           break;
         case "metamask":
-          logoUrl = <img class="history-logo" src="/images/metamask-icon.svg" />
-          
+          logoUrl = (
+            <img class="history-logo" src="/images/metamask-icon.svg" />
+          );
+
           break;
       }
       return (
@@ -526,7 +759,7 @@ export default {
           <div class="logo-suggest-wraper float-left text-center">
             {logoUrl}
           </div>
-          
+
           <span class="suggest-text">
             {suggestion.item.addr.slice(0, 14)} ...{" "}
             {suggestion.item.addr.slice(-12)}{" "}
@@ -553,16 +786,53 @@ export default {
 
     onfocus() {
       this.connectMetaMask();
+    },
+
+    toggleNav() {
+      this.initSideNav = false
+
+      if(this.$mq !== 'md' && this.$mq !== 'lg'){
+        this.isNavOpen = !this.isNavOpen;
+      }
+      
+    },
+
+    getSideNavWidth(){
+      if(this.$mq == 'md' || this.$mq == 'lg'){
+        this.isNavOpen = true
+        return {width: "200px"}
+      } 
+
+      if(this.initSideNav){
+        if(this.$mq == 'sm'){
+          return {width: "0px"};
+        } else if(this.$mq == 'ml') {
+          return {width: "50px"};
+        }
+      }
+      if (this.isNavOpen) {
+        // document.getElementById("mySidenav").style.width = "200px";
+        return {width: "200px"}
+      } else {
+        if(this.$mq == 'sm'){
+           return {width: "0px"};
+        } else if(this.$mq == 'ml') {
+          return {width: "50px"};
+        }
+        
+      }
     }
   },
 
-  updated: function () {
-    this.handleResize()
+  updated: function() {
+    this.handleResize();
+    // if(this.$mq !== 'md' && this.$mq !== 'lg')  this.isNavOpen = false
   },
 
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     // window.removeEventListener('resize', this.handleResize)
-    window.clearInterval(this.intervalResize)
+    window.clearInterval(this.intervalResize);
+    window.clearInterval(this.intervalSlide)
   },
 
   mounted() {
@@ -573,27 +843,33 @@ export default {
     this.intervalResize = window.setInterval(this.handleResize, 2000);
 
     switch (this.$route.path) {
-      case '/trades':
-        this.dropdownText = this.$t('navigator.trade_history')
+      case "/trades":
+        this.dropdownText = this.$t("navigator.trade_history");
         break;
-      case '/tokens':
-        this.dropdownText = this.$t('navigator.tokens')
+      case "/tokens":
+        this.dropdownText = this.$t("navigator.tokens");
         break;
-      case '/reserves':
-        this.dropdownText = this.$t('navigator.reserves')
+      case "/reserves":
+        this.dropdownText = this.$t("navigator.reserves");
         break;
-    
+
       default:
-        this.dropdownText = this.$t('navigator.volume')
+        this.dropdownText = this.$t("navigator.volume");
         break;
     }
     // this.debouncedOnResize = _.debounce(this.handleResize, 500)
-    window.addEventListener('resize', () => {
-      this.indexShowmore = -1
-      this.showColapseBtn = false
-      this.handleResize()
-    })
-    this.handleResize()
+    window.addEventListener("resize", () => {
+      this.indexShowmore = -1;
+      this.showColapseBtn = false;
+      this.handleResize();
+    });
+    this.handleResize();
+
+    setTimeout(() => {
+      if(this.$mq !== 'md' && this.$mq !== 'lg')  this.isNavOpen = false
+    }, 1000);
+
+    this.intervalSlideSumary()
   },
   directives: {
     ClickOutside

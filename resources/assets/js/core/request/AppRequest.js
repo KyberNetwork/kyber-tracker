@@ -37,7 +37,10 @@ class AppRequest extends BaseRequest {
             .then((res) => {
               return callback(null, res.body);
             })
-            .catch(this._handleError);
+            .catch((err => {
+              this._handleError(err)
+              // callback(err)
+            }));
   }
 
   getPartnerDetail (partnerId, page=0, limit=20, fromDate, toDate, exportData, callback) {
@@ -53,7 +56,10 @@ class AppRequest extends BaseRequest {
             .then((res) => {
               return callback(null, res.body);
             })
-            .catch(this._handleError);
+            .catch(err => {
+              this._handleError(err)
+              callback(err)
+            });
   }
 
   // searchAllToExport (q, fromDate, toDate, callback) {

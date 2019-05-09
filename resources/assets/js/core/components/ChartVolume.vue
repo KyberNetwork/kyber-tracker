@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :id="elementId" height="250px" class="mt-20"></canvas>
+    <canvas :id="elementId" height="300px" class="mt-20"></canvas>
   </div>
 </template>
 
@@ -79,11 +79,12 @@ export default {
         datasets: [{
           data: dataset,
           pointRadius: 0,
-          backgroundColor: 'rgba(51,102,204,.3)',
-          borderColor: 'rgb(51,102,204)',
-          borderWidth: 2,
-          showLine: true,
-          spanGaps: true,
+          backgroundColor: 'rgba(139, 206, 241, 0.6)',
+          borderColor: 'rgba(139, 206, 241, 0.6)',
+          // barRadius: '3px',
+          // borderWidth: 2,
+          // showLine: true,
+          // spanGaps: true,
         }]
       };
     },
@@ -105,7 +106,7 @@ export default {
         }
         else {
           this.chartInstance = new Chart(ctx, {
-            type: 'LineWithLine',
+            type: 'bar',
             data: data,
             options: options,
           });
@@ -149,6 +150,9 @@ export default {
       };
 
       const xAxeScale = {
+        // categoryPercentage: 1,
+        // barPercentage: 1,
+        barThickness: 'flex',
         ticks: {
           maxRotation: 0,
           fontFamily: "Montserrat, My-Montserrat, sans-serif",
@@ -172,6 +176,7 @@ export default {
       };
 
       return {
+        responsive: true,
         tooltips: {
           mode: 'index',
           axis: 'x',

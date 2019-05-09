@@ -1337,6 +1337,8 @@ module.exports = BaseService.extends({
         return 'minute_seq';
       case 'D1':
         return 'day_seq';
+      case 'D30':
+        return 'month';
     }
   },
 

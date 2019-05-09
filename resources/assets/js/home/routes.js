@@ -7,7 +7,7 @@ import ReserveList      from './components/ReserveList.vue';
 import ReserveDetails   from './components/ReserveDetail.vue';
 import SearchResult   from './components/SearchResultPage.vue';
 import PartnerDetail  from './components/PartnerDetail.vue';
-import PageNotFound   from './components/PageNotFound.vue';
+import NotFound   from './components/NotFound.vue';
 
 export default {
   routes: [
@@ -22,7 +22,8 @@ export default {
 
     { path: '/search',            name: 'search',         component: SearchResult },
     { path: '/partner/:partnerId',name: 'partner-detail', component: PartnerDetail },
-    { path: '*',                  name: 'not-found',      component: PageNotFound },
+    { path: '/not-found',                  name: 'not-found',      component: NotFound },
+    { path: '*',                  name: 'not-found',      component: NotFound },
   ],
   // mode: 'history'
 };

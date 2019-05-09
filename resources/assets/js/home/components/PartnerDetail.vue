@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-12">
+  <!-- <div class="col-sm-12">
     <trade-list ref="datatable"
       :getFilterTokenAddress="getFilterTokenAddress"
       :fetch="requestSearch"
@@ -13,10 +13,198 @@
       :partner="true"
     >
     </trade-list>
+  </div> -->
+
+  <div class="panel panel-default trade-list search-result w-100">
+
+    <div v-if="!!title" class="panel-heading pt-56 pb-16">
+      <span class="panel-title no-margin"> {{ title }} </span>
+    </div>
+
+
+
+    <div v-if="searchResult" class="clear pb-10">
+
+
+      <div v-if="!searchResult.data">
+        {{searchResult.error}}
+      </div>
+
+      <div v-if="searchResult.isValid && searchResult.data">          
+
+        <div class="panel-heading pb-20">
+          <span v-if="!partner" class="no-margin panel-title">{{$t('wallet_detail.wallet_detail')}} </span>
+          <span v-else class="no-margin panel-title">{{$t('wallet_detail.partner_details')}} </span>
+
+
+          <div v-if="!isHideDatepicker" class="datepicker-container pb-16 ">
+            <!-- <span>{{ $t('filter.from') }}</span> -->
+            <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
+              :language="locale"
+              :format="formatDatepicker"
+              :clear-button="true"
+              :highlighted="highlightedToday"
+              :disabled="disabledFromDates"
+              :placeholder="$t('filter.from')"
+              >
+            </datepicker>
+            <!-- <span>{{ $t('filter.to') }}</span> -->
+            <datepicker v-model="searchToDate" name="searchToDate" class="calendar-icon to ml-2"
+              :language="locale"
+              :format="formatDatepicker"
+              :clear-button="true"
+              :highlighted="highlightedToday"
+              :disabled="disabledToDates"
+              :placeholder="$t('filter.to')"
+              >
+            </datepicker>
+          </div>
+        </div>
+
+        <!-- address detail ################## -->
+        <div class="address-detail-container">
+          <div class="wallet-title">
+            {{$t('wallet_detail.address')}}:
+            <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(searchResult.data.query)">{{ searchResult.data.query }}</a>
+          </div>
+
+          <div class="wallet-value vdivide row mt-4 mr-0 ml-0">
+            <div class="col border-right wallet-column">
+              <div class="row">
+                  <div class="col">
+                  <div class="value-label">
+                    {{$t('wallet_detail.trades')}}
+                  </div>
+                  <div class="font-semi-bold pt-2">
+                    {{searchResult.data.numberTrades || '0'}}
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="value-label">
+                    {{$t('wallet_detail.collected_fees')}}
+                  </div>
+                  <div class="font-semi-bold pt-2">
+                    {{searchResult.data.totalCollectedFees || '0'}} KNC
+                  </div>
+                </div>
+
+                <div v-if="partner" class="col">
+                  <div class="value-label">
+                    {{$t('wallet_detail.commission')}}
+                  </div>
+                  <div class="font-semi-bold pt-2">
+                    {{searchResult.data.commission || '0'}} KNC
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col wallet-column">
+              <span>
+                Total Trading Volume
+              </span>
+              <div class="row">
+                <div class="col pt-2">
+                  <!-- <div class="value-number">
+                    {{searchResult.data.totalEth}}
+                  </div>
+                  <div class="value-label">
+                    {{$t('wallet_detail.eth')}}
+                  </div> -->
+                  {{$t('wallet_detail.eth')}}
+                  <span class="font-semi-bold">{{searchResult.data.totalEth}}</span>
+                </div>
+
+                <div class="col pt-2">
+                  <!-- <div class="value-number">
+                    {{searchResult.data.totalUsd}}
+                  </div>
+                  <div class="value-label">
+                    {{$t('wallet_detail.udd')}}*
+                  </div> -->
+                  {{$t('wallet_detail.usd')}}*
+                  <span class="font-semi-bold">{{searchResult.data.totalUsd}}</span>
+                </div>
+              </div>
+              
+              <div class="walet-note pt-3">
+                *{{$t('wallet_detail.notice')}}
+              </div>
+
+              
+            </div>
+
+          </div>
+
+
+          <!-- <div class="wallet-title">
+            {{$t('wallet_detail.total_trading_volune')}}
+          </div>
+
+          <div class="row wallet-value vdivide">
+            <div class="col border-right">
+              <div class="value-number">
+                {{searchResult.data.totalEth}}
+              </div>
+              <div class="value-label">
+                {{$t('wallet_detail.value_in_eth')}}
+              </div>
+              
+            </div>
+            <div class="col">
+              <div class="value-number">
+                {{searchResult.data.totalUsd}}
+              </div>
+              <div class="value-label">
+                {{$t('wallet_detail.value_in_usd')}}*
+              </div>
+              
+            </div>
+          </div> -->
+
+
+          <!-- <div class="walet-note">
+            *{{$t('wallet_detail.notice')}}
+          </div> -->
+        </div>
+
+        <div class="wallet-detail-title panel-heading pt-56 pb-20 d-flex justify-content-between">
+          <div class="no-margin panel-title">{{$t('wallet_detail.history')}} </div>
+
+          <button type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
+        </div>
+
+        
+
+
+      </div>
+
+    </div>
+    
+    
+    <mini-trade-list ref="datatable"
+      :getFilterTokenAddress="getFilterTokenAddress"
+      :fetch="requestSearch"
+      :exportData="exportData"
+      :isHideDatepicker="true"
+      :getSearchResultTitle="getSearchResultTitle"
+      :searchFromDate="searchFromDate"
+      :searchToDate="searchToDate"
+      :isShowExport="false"
+      v-on:fetchDone="reloadView"
+      :isParentLoading="isLoading"
+    >
+    </mini-trade-list>
+    
   </div>
 </template>
 
 <script>
+
+
+
+
 
 import _ from 'lodash';
 import io from 'socket.io-client';
@@ -40,20 +228,39 @@ export default {
       totalCollectedFees: 0,
       searchFromDate: null,
       searchToDate: null,
-      tokens: TOKENS_BY_ADDR
+      tokens: TOKENS_BY_ADDR,
+      isParentLoading: false,
+      isLoading: true,
+      searchResult: {},
+      highlightedToday: {
+        dates: [new Date()]
+      },
+      disabledFromDates: {
+        //
+      },
+      disabledToDates: {
+        //
+      }
     };
   },
 
   methods: {
     refresh () {
+      console.log("********* run to request")
       if (!this.$refs.datatable) {
         return;
       }
+
+      console.log("*********** fetch")
       this.$refs.datatable.fetch();
     },
 
     getFilterTokenAddress () {
       return undefined;
+    },
+    getAddressEtherscanLink(tx) {
+      if(!util.isAddress(tx)) tx=partners[tx.toLowerCase()]
+      return network.endpoints.ethScan + "address/" + tx;
     },
     getSearchResultTitle(){
       if(!util.isTxHash(this.$route.query.q) && !util.isAddress(this.$route.query.q)){
@@ -84,7 +291,7 @@ export default {
           data: null
         }
       }
-      return {
+      this.searchResult = {
         isValid: true,
         error: null,
         data: {
@@ -108,6 +315,10 @@ export default {
 
       AppRequest
           .getPartnerDetail(partnerId, currentPage, pageSize, fromDate, toDate, false, (err, res) => {
+            if(err){
+              this.$router.push(`/not-found`);
+              return;
+            }
             const data = res.data;
             if (data && data.id > 0) {
               this.$router.push(`/trades/${data.id}`);
@@ -127,6 +338,9 @@ export default {
             } else {
               this.resultCount = 0;
             }
+
+            this.getSearchResultMessage()
+            this.isLoading = false;
           });
     },
 
@@ -182,7 +396,7 @@ export default {
   },
 
   watch: {
-    '$route.query' () {
+    '$route' () {
       this.refresh();
     }
   },

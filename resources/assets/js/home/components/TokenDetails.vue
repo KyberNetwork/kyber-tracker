@@ -1,9 +1,9 @@
 <template>
-  <div class="col-sm-12">
-    <div class="panel-heading pb-16">
+  <div class="col-sm-12 token-detail-container">
+    <div class="panel-heading pb-20 token-name">
         <img class="token-logo-detail"  v-bind:src="this.logoUrl">
         <span v-if="this.isOfficial" class="no-margin panel-title">{{this.symbol}} - {{this.tokenName}}
-          - <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">({{getShortedAddr(this.tokenAddress)}})</a>
+          <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">  {{getShortedAddr(this.tokenAddress)}}</a>
         </span>
         <span v-else class="no-margin panel-title">
           <a class="address-link" :href="getAddressLink(this.tokenAddress)" target="_blank">{{this.tokenAddress}}</a>
