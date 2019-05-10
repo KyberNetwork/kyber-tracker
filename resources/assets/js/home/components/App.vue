@@ -2,7 +2,7 @@
   <div id="wrapper">
     <div id="page-content" class="content-wrapper">
       <b-nav v-if="$mq !== 'md' && $mq !== 'lg'" class="mobile-header" v-click-outside="() => onClickOutside(true)">
-        <b-nav-item @click="toggleNav()" class="nav-burger-wrapper">
+        <b-nav-item @click="toggleNav()" class="nav-burger-wrapper" id="nav-burger-wrapper">
           <img class="nav-burger ml-0" src="/images/hamburger.svg" />
         </b-nav-item>
         <b-nav-item :class="openSearchInput ? 'transform-0 w-0 nav-item-logo' : 'nav-item-logo'">
@@ -189,7 +189,7 @@
       </b-navbar>
 
 
-      <div id="mySidenav" class="sidenav" v-bind:style="getSideNavWidth()" v-click-outside="() => onClickOutsideNav()">
+      <div id="mySidenav" class="sidenav" v-bind:style="getSideNavWidth()" v-click-outside="onClickOutsideNav">
         <div class="nav-line nav-logo">
             <a href="javascript:void(0)" class="icon-icon-side h-100" @click="toggleNav()">
               <span class=" icon-side h-100 icon-arrow">
@@ -735,8 +735,16 @@ export default {
       // this.handleResize();
     },
 
-    onClickOutsideNav(){
-      if(this.$mq !== 'sm') this.isNavOpen = false;
+    onClickOutsideNav(e){
+      // check contain 'nav-burger-wrapper
+      if(!e || !e.path) return 
+      let isClickBurger = false
+      e.path.map(el => {
+        if(el.id == 'nav-burger-wrapper') isClickBurger = true
+      })
+      console.log("++++++ burger", isClickBurger)
+      if(isClickBurger) return
+      this.isNavOpen = false;
     },
     isTxHash(hash) {
       return /^0x([A-Fa-f0-9]{64})$/i.test(hash);
