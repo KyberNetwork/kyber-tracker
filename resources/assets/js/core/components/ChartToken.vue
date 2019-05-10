@@ -229,7 +229,6 @@ export default {
           break;
       }
       if(this.period !== period){
-        console.log("++++++++++++++++ ", this.period, period)
         this.period = period
         this.loading = true
       }

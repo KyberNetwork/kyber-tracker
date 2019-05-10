@@ -60,7 +60,7 @@
               <th class="text-center" style="width: 40%;" >{{ $t("trade_list.trade") }}</th>
               <th v-bind:colspan="partner ? 1 : 1" class="text-left rate" style="width: 30%;">{{ $t("trade_list.rate") }}</th>
               <th v-if="partner" class="pl-4" >{{ $t("trade_list.commission") }}</th>
-              <th class="text-left" style="width: 10%;">VIEW ON</th>
+              <th class="text-left" style="width: 10%;">{{ $t("trade_list.view_on") }}</th>
               <!-- <th></th> -->
             </tr>
           </thead>

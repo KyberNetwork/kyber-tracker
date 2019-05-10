@@ -6,7 +6,9 @@
           <img class="nav-burger ml-0" src="/images/hamburger.svg" />
         </b-nav-item>
         <b-nav-item :class="openSearchInput ? 'transform-0 w-0 nav-item-logo' : 'nav-item-logo'">
-          <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
+          <router-link to="/">
+            <img class="nav-logo ml-0" src="/images/nav-logo.svg" />
+          </router-link>
         </b-nav-item>
         <b-nav-item class="d-flex h-100 mobile-search-nav">
           <div ref="searchComponent"  v-bind:class="[openSearchInput ? 'search-expand' : 'search-colapse']">
@@ -57,7 +59,10 @@
           </b-dropdown> 
 
           <carousel  
-          ref="headingSum" class="heading-summary position-relative" draggable="true">
+          ref="headingSum" class="heading-summary position-relative" 
+          @mouseover="isHoverSumary = true"
+          @mouseleave="isHoverSumary = false"
+          >
             <div ref="headingInner" class="heading-inner d-flex position-absolute">
               <div ref="slide_0" class="slide-item">
                 <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
@@ -416,7 +421,8 @@ export default {
       loopHeading: false,
       slideNavigate: 0,
       intervalSlide: null,
-      isLoopSumary: false
+      isLoopSumary: false,
+      isHoverSumary: false
     };
   },
 
@@ -501,6 +507,7 @@ export default {
 
     intervalSlideSumary(){
       this.intervalSlide = setInterval(() => {
+        if(this.isHoverSumary) return;
         if(!this.isLoopSumary){
           this.$refs.headingInner.style.transform = `translate(-0px)`
           return
