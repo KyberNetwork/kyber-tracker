@@ -107,6 +107,8 @@
     "msg_no_result": "没有找到任何交易.",
     "exchange_from": "从",
     "exchange_to": "换至",
+    "trade" : "交易",
+    "view_on": "查看",
     "pair": "交易对",
     "export_csv": "导出(CSV文件)",
     "no_row": "查无记录",

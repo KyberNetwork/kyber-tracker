@@ -31,7 +31,7 @@
 
   "navigator": {
     "all_network": "All network",
-    "verified_reserves_network": "Verified reserves network",
+    "verified_reserves_network": "Verified Reserves Network",
     "home": "Home",
     "trades": "Trade",
     "trade_history": "Trade History",
@@ -115,6 +115,7 @@
     "exchange_from" : "From",
     "exchange_to" : "To",
     "trade" : "TRADE",
+    "view_on": "VIEW ON",
     "pair": "Pair",
     "export_csv": "Export (CSV)",
     "no_row": "No record found",
