@@ -742,7 +742,6 @@ export default {
       e.path.map(el => {
         if(el.id == 'nav-burger-wrapper') isClickBurger = true
       })
-      console.log("++++++ burger", isClickBurger)
       if(isClickBurger) return
       this.isNavOpen = false;
     },
