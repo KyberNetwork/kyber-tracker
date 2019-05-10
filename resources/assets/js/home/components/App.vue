@@ -835,6 +835,24 @@ export default {
         }
         
       }
+    },
+    addPathToMouseEvent(){
+      if (!("path" in MouseEvent.prototype))
+      Object.defineProperty(MouseEvent.prototype, "path", {
+        get: function() {
+          var path = [];
+          var currentElem = this.target;
+          while (currentElem) {
+            path.push(currentElem);
+            currentElem = currentElem.parentElement;
+          }
+          if (path.indexOf(window) === -1 && path.indexOf(document) === -1)
+            path.push(document);
+          if (path.indexOf(window) === -1)
+            path.push(window);
+          return path;
+        }
+      });
     }
   },
 
@@ -884,6 +902,7 @@ export default {
     }, 1000);
 
     this.intervalSlideSumary()
+    this.addPathToMouseEvent()
   },
   directives: {
     ClickOutside
