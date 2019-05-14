@@ -408,7 +408,8 @@ module.exports = {
       "name": "Aeternity",
       "address": "0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d",
       "symbol": "AE",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "PPT": {
       "name": "Populous",
