@@ -60,7 +60,8 @@ module.exports = {
     "0x5337d1df2d450945392d60b35f562b92fd96b6b6": "Abyss reserve",
     "0x9e2b650f890236ab49609c5a6b00cddb4e61f408": "MKR, DAI reserve",
     "0x8bf5c569ecfd167f96fae6d9610e17571568a6a1": "DAI reserve",
-    "0x148332cd398321989f37803188b9a69fa32b133c": "Kyber reserve"
+    "0x148332cd398321989f37803188b9a69fa32b133c": "Kyber reserve",
+    "0xA467b88BBF9706622be2784aF724C4B44a9d26F4": "Automated price reserve (KNC)"
   },
 
   "ETH": {
