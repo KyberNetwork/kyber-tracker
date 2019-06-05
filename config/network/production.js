@@ -837,6 +837,14 @@ module.exports = {
       "decimal": 8,
       "address": "0xB63B606Ac810a52cCa15e44bB630fd42D8d1d83d",
       "hidden": 1556283600000  
+    },
+
+    "GNO": {
+      "name": "Gnosis",
+      "symbol" : "GNO",
+      "decimal": 18,
+      "address": "0x6810e776880c02933d47db1b9fc05908e5386b96",
+      "hidden": true  
     }
 
   },
