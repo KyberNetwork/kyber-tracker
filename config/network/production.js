@@ -161,7 +161,8 @@ module.exports = {
       "name": "GIFTO",
       "address": "0xc5bbae50781be1669306b9e001eff57a2957b09d",
       "symbol": "GTO",
-      "decimal": 5
+      "decimal": 5,
+      "delisted": true
     },
     "RDN": {
       "name": "Raiden Network",
