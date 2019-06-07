@@ -1,4 +1,5 @@
 import Home           from './components/Home.vue';
+import Fees           from './components/Fees.vue';
 import TradeList      from './components/TradeList.vue';
 import TradeDetails   from './components/TradeDetails.vue';
 import TokenList      from './components/TokenList.vue';
@@ -19,6 +20,8 @@ export default {
 
     { path: '/reserves',            name: 'reserve-list',     component: ReserveList },
     { path: '/reserves/:reserveAddr', name: 'reserve-details',  component: ReserveDetails },
+
+    { path: '/fees',              name: 'fees',           component: Fees },
 
     { path: '/search',            name: 'search',         component: SearchResult },
     { path: '/partner/:partnerId',name: 'partner-detail', component: PartnerDetail },

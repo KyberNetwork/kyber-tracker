@@ -43,7 +43,10 @@
     "search": "Thông tin ví",
     "network": "Network",
     "volume": "Khối lượng",
-    "go_to_exchange": "Giao dịch ngay"
+    "go_to_exchange": "Giao dịch ngay",
+    "fees": "Phí",
+    "collected_fee_history": "Lịch sử phí",
+    "burned_fee_history": "Lịch sử đốt"
   },
 
   "reserves": {
@@ -118,7 +121,9 @@
     "export_csv": "Xuất dữ liệu (CSV)",
     "no_row": "Không tìm thấy giao dịch nào",
     "view_on_etherscan": "Xem trên Etherscan",
-    "view_on_enjinx": "Xem trên Kyber.enjinx"
+    "view_on_enjinx": "Xem trên Kyber.enjinx",
+    "tx": "TX",
+    "fee": "FEE"
   },
 
   "trade_detail": {
@@ -153,7 +158,8 @@
     "history": "Lịch sử giao dịch",
     "commission": "PHÍ TÍCH HỢP",
     "current_listing": "Danh sách tokens",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "burned_fee": "Phí đã đốt"
   },
 
 

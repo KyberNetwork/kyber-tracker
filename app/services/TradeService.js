@@ -16,6 +16,7 @@ const UtilsHelper = require('../common/Utils');
 const CacheInfo = require('../../config/cache/info');
 
 const THREE_MONTH_IN_SECOND = 60 * 60 * 24 * 90
+const ONE_MONTH_IN_SECOND = 60 * 60 * 24 * 30
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
@@ -56,7 +57,7 @@ module.exports = BaseService.extends({
       whereClauses += ` AND ( (LOWER(source_reserve) = ?) OR (LOWER(dest_reserve) = ?))`;
       params.push(options.reserve.toLowerCase());
       params.push(options.reserve.toLowerCase());
-    }
+    } 
 
     const queryOptions = {
       where: whereClauses,
@@ -88,12 +89,28 @@ module.exports = BaseService.extends({
           params: params,
         }, next);
       },
-      collectedFees: (next) => {
-        KyberTradeModel.sum('collected_fees', {
-          where: whereClauses,
-          params: params,
-        }, next);
-      },
+      // collectedFees: (next) => {
+      //   // if(options.reserve){
+          
+      //   //   this.getCollectedReserveFee(options, (err, result) => {
+      //   //     if(err) return next(err)
+      //   //     let collectedFee = new BigNumber(0)
+      //   //     if(result.totalBurnFee){
+      //   //       collectedFee = collectedFee.plus(new BigNumber(result.totalBurnFee.toString()))
+      //   //     }
+      //   //     if(result.totalCommision){
+      //   //       collectedFee = collectedFee.plus(new BigNumber(result.totalCommision.toString()))
+      //   //     }
+      //   //     return next(null, collectedFee.toString())
+      //   //   })
+      //   // } else {
+      //     KyberTradeModel.sum('collected_fees', {
+      //       where: whereClauses,
+      //       params: params,
+      //     }, next);
+      //   // }
+        
+      // },
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -112,6 +129,181 @@ module.exports = BaseService.extends({
         }
       });
     });
+  },
+
+
+  getCollectedFeeList: function(options, callback){
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    let params = [];
+
+
+    if(options.exportData){
+      if(!options.fromDate || !options.toDate){
+        return callback('Please select time range to export')
+      } else {
+        if(options.toDate - options.fromDate > THREE_MONTH_IN_SECOND) {
+          return callback("Max time range is 30 days")
+        }
+      }
+    }
+
+   
+    let whereClauses = " ( 1=1 ) "
+
+    if (options.fromDate) {
+      whereClauses += ' AND block_timestamp > ?';
+      params.push(options.fromDate);
+    }
+
+    if (options.toDate) {
+      whereClauses += ' AND block_timestamp < ?';
+      params.push(options.toDate);
+    }
+
+    if(options.official){
+      whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+      params.push(network.startPermissionlessReserveBlock);
+    }
+
+    // const queryOptions = {
+    //   where: whereClauses,
+    //   params: params,
+    //   ...(options.limit && !options.exportData && {limit: options.limit}),
+    //   ...(options.limit && options.page && !options.exportData && {offset: options.page * options.limit}),
+    // };
+
+    const sql = `select id,block_timestamp as blockTimestamp,tx,collected_fees as collectedFees 
+      from kyber_trade
+      where ${whereClauses}
+      order by block_timestamp DESC
+      ${options.limit && !options.exportData ? ` limit ${options.limit} ` : ''}
+      ${options.limit && options.page && !options.exportData ? ` offset ${options.page * options.limit} `: ''}
+      
+    `;
+
+    const countSql = `select count(1) as count
+      from kyber_trade
+      where ${whereClauses}      
+    `;
+
+    async.auto({
+      list: (next) => {
+        adapter.execRaw(sql, params, next);
+      },
+      count: (next) => {
+        adapter.execRaw(countSql, params, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const totalCount = ret.count && ret.count[0] ? ret.count[0].count : 0
+
+      return callback(null, {
+        data: ret.list,
+        pagination: {
+          page: options.page,
+          limit: options.limit,
+          totalCount: totalCount,
+          maxPage: Math.ceil(totalCount / options.limit)
+        }
+      });
+    });
+  },
+
+
+  getBurnedList: function (options, callback) {
+    const BurnedFeeModel = this.getModel('BurnedFeeModel');
+
+    let params = [];
+
+    if(options.exportData){
+      if(!options.fromDate || !options.toDate){
+        return callback('Please select time range to export')
+      } else {
+        if(options.toDate - options.fromDate > THREE_MONTH_IN_SECOND) {
+          return callback("Max time range is 3 months")
+        }
+      }
+    }
+
+    let whereClauses = " ( 1=1 ) "
+
+    if (options.fromDate) {
+      whereClauses += ' AND block_timestamp > ?';
+      params.push(options.fromDate);
+    }
+
+    if (options.toDate) {
+      whereClauses += ' AND block_timestamp < ?';
+      params.push(options.toDate);
+    }
+
+    const queryOptions = {
+      where: whereClauses,
+      params: params,
+      ...(options.limit && !options.exportData && {limit: options.limit}),
+      ...(options.limit && options.page && !options.exportData && {offset: options.page * options.limit}),
+      orderBy: 'block_timestamp DESC'
+    };
+
+    async.auto({
+      list: (next) => {
+        BurnedFeeModel.find(queryOptions, next);
+      },
+      count: (next) => {
+        BurnedFeeModel.count({
+          where: whereClauses,
+          params: params
+        }, next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      return callback(null, {
+        data: ret.list,
+        pagination: {
+          page: options.page,
+          limit: options.limit,
+          totalCount: ret.count,
+          maxPage: Math.ceil(ret.count / options.limit)
+        }
+      });
+    });
+  },
+
+  getCollectedReserveFee: function(options, callback){
+    const CollectedFeeModel = this.getModel('CollectedFeeModel');
+    let params = [options.reserve];
+    let whereClauses = " reserve = ? "
+    if (options.fromDate) {
+      whereClauses += ' AND block_timestamp > ?';
+      params.push(options.fromDate);
+    }
+
+    if (options.toDate) {
+      whereClauses += ' AND block_timestamp < ?';
+      params.push(options.toDate);
+    }
+    async.auto({
+      totalBurnFee: (next) => {
+        CollectedFeeModel.sum('burn_fee', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      },
+      totalCommision: (next) => {
+        CollectedFeeModel.sum('commission_fee', {
+          where: whereClauses,
+          params: params,
+        }, next);
+      }
+    }, callback)
+    
   },
 
   getTradeDetails: function (tradeId, callback) {
@@ -176,7 +368,8 @@ module.exports = BaseService.extends({
   getReserveDetails: function (options, callback){
     async.parallel({
       currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
-      tradedListTokens: _next => this._tradedList(options, _next)
+      tradedListTokens: _next => this._tradedList(options, _next),
+      burnnedFee: _next => this._burnedFee(options, _next)
     }, (err, results) => {
       if (err) {
         return callback(err);
@@ -190,7 +383,10 @@ module.exports = BaseService.extends({
       })
 
 
-      return callback(null, _.orderBy(Object.values(allReserveTokens), ['listed', 'eth' ], ['asc', 'desc']))
+      return callback(null, {
+        tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'eth' ], ['asc', 'desc']),
+        burned: results.burnnedFee
+      })
     })
   },
 
@@ -249,8 +445,12 @@ module.exports = BaseService.extends({
     })
 
   },
-  _reserveTrade: function(reserveAddr, callback){
-
+  _burnedFee: function(options, callback){
+    const BurnedFeeModel = this.getModel('BurnedFeeModel')
+    BurnedFeeModel.sum('amount', {
+      where: `block_timestamp > ? AND block_timestamp <= ? AND reserve_contract = ?`,
+      params: [options.fromDate, options.toDate, options.reserveAddr],
+    }, callback);
   },
   // Use for token list page & top token chart
   getTopTokensList: function (options, callback) {
