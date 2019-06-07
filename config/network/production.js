@@ -867,6 +867,13 @@ module.exports = {
       "decimal": 18,
       "address": "0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3",
       "hidden": true 
+    },
+    "GEN": {
+      "name": "DAOStack",
+      "symbol" : "GEN",
+      "decimal": 18,
+      "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf",
+      "hidden": true 
     }
 
   },
