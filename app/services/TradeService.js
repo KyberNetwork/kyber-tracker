@@ -89,28 +89,28 @@ module.exports = BaseService.extends({
           params: params,
         }, next);
       },
-      collectedFees: (next) => {
-        // if(options.reserve){
+      // collectedFees: (next) => {
+      //   // if(options.reserve){
           
-        //   this.getCollectedReserveFee(options, (err, result) => {
-        //     if(err) return next(err)
-        //     let collectedFee = new BigNumber(0)
-        //     if(result.totalBurnFee){
-        //       collectedFee = collectedFee.plus(new BigNumber(result.totalBurnFee.toString()))
-        //     }
-        //     if(result.totalCommision){
-        //       collectedFee = collectedFee.plus(new BigNumber(result.totalCommision.toString()))
-        //     }
-        //     return next(null, collectedFee.toString())
-        //   })
-        // } else {
-          KyberTradeModel.sum('collected_fees', {
-            where: whereClauses,
-            params: params,
-          }, next);
-        // }
+      //   //   this.getCollectedReserveFee(options, (err, result) => {
+      //   //     if(err) return next(err)
+      //   //     let collectedFee = new BigNumber(0)
+      //   //     if(result.totalBurnFee){
+      //   //       collectedFee = collectedFee.plus(new BigNumber(result.totalBurnFee.toString()))
+      //   //     }
+      //   //     if(result.totalCommision){
+      //   //       collectedFee = collectedFee.plus(new BigNumber(result.totalCommision.toString()))
+      //   //     }
+      //   //     return next(null, collectedFee.toString())
+      //   //   })
+      //   // } else {
+      //     KyberTradeModel.sum('collected_fees', {
+      //       where: whereClauses,
+      //       params: params,
+      //     }, next);
+      //   // }
         
-      },
+      // },
     }, (err, ret) => {
       if (err) {
         return callback(err);

@@ -321,7 +321,7 @@ export default {
           this.reserveTokens = data.tokens
           this.burnedFee = data.burned
           this.isLoading = false
-          if(data && data.length > 10) {
+          if(data && data.tokens && data.tokens.length > 10) {
             this.isShowLoadmore = true
           }
        })
