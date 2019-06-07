@@ -361,6 +361,8 @@
           let csvUrl = URL.createObjectURL(csvData);
           let link = document.createElement('a');
           link.href =  csvUrl;
+          const fileName = this.selectedTab == 'chartFee' ? 'Collected Fees' : 'Burnt Fees'
+          link.download = new Date().toUTCString() + " " + fileName + '.csv'
           link.click();
 
           // let link = document.createElement('a');
