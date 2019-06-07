@@ -40,7 +40,10 @@
     "search": "钱包详情",
     "network": "网络",
     "volume": "交易量",
-    "go_to_exchange": "立即兑换"
+    "go_to_exchange": "立即兑换",
+    "fees": "Fees",
+    "collected_fee_history": "Collected Fee History",
+    "burned_fee_history": "Burned Fee History"
   },
 
   "reserves": {
@@ -146,7 +149,8 @@
     "history": "交易历史",
     "commission": "佣金",
     "current_listing": "Current listing tokens",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "burned_fee": "Burned Fee"
   },
   "token_list": {
     "title": "交易代币名单",

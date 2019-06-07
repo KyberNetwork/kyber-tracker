@@ -24,6 +24,34 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
+  getCollectedFeeList (page=0, limit=20, query={}, callback) {
+    const url = `/api/collectedFeeList`;
+    if(this.isOfficial()) query.official = true
+    else query.official = false
+
+    return request
+            .get(url)
+            .query(_.assign({ limit, page }, query))
+            .then((res) => {
+              return callback(null, res.body);
+            })
+            .catch(this._handleError)
+  }
+
+  getBuntTransaction (page=0, limit=20, query={}, callback) {
+    const url = `/api/fees/burned-list`;
+    if(this.isOfficial()) query.official = true
+    else query.official = false
+
+    return request
+            .get(url)
+            .query(_.assign({ limit, page }, query))
+            .then((res) => {
+              return callback(null, res.body);
+            })
+            .catch(this._handleError)
+  }
+
   searchTrades (q, page=0, limit=20, fromDate, toDate, exportData, callback) {
     const url = `/api/search`;
     let queryParams = { q, limit, page, fromDate, toDate }

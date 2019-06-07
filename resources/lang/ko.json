@@ -40,7 +40,10 @@
     "search": "검색",
     "network": "개요",
     "volume": "거래량",
-    "go_to_exchange": "거래소로"
+    "go_to_exchange": "거래소로",
+    "fees": "Fees",
+    "collected_fee_history": "Collected Fee History",
+    "burned_fee_history": "Burned Fee History"
   },
 
   "reserves": {
@@ -145,7 +148,8 @@
     "history": "최근 거래",
     "commission": "파트너 비용",
     "current_listing": "Current listing tokens",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "burned_fee": "Burned Fee"
   },
 
 

@@ -43,7 +43,10 @@
     "search": "Thông tin ví",
     "network": "Network",
     "volume": "Khối lượng",
-    "go_to_exchange": "Giao dịch ngay"
+    "go_to_exchange": "Giao dịch ngay",
+    "fees": "Phí",
+    "collected_fee_history": "Lịch sử phí",
+    "burned_fee_history": "Lịch sử đốt"
   },
 
   "reserves": {
@@ -153,7 +156,8 @@
     "history": "Lịch sử giao dịch",
     "commission": "PHÍ TÍCH HỢP",
     "current_listing": "Danh sách tokens",
-    "tokens": "Tokens"
+    "tokens": "Tokens",
+    "burned_fee": "Phí đã đốt"
   },
 
 
