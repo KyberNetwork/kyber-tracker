@@ -121,7 +121,9 @@
     "export_csv": "Xuất dữ liệu (CSV)",
     "no_row": "Không tìm thấy giao dịch nào",
     "view_on_etherscan": "Xem trên Etherscan",
-    "view_on_enjinx": "Xem trên Kyber.enjinx"
+    "view_on_enjinx": "Xem trên Kyber.enjinx",
+    "tx": "TX",
+    "fee": "FEE"
   },
 
   "trade_detail": {

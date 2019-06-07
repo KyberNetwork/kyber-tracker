@@ -114,7 +114,9 @@
     "export_csv": "출력(CSV파일)",
     "no_row": "기록이 없습니다",
     "view_on_etherscan": "Etherscan에서 확인",
-    "view_on_enjinx": "Kyber.enjinx에서 확인"
+    "view_on_enjinx": "Kyber.enjinx에서 확인",
+    "tx": "TX",
+    "fee": "FEE"
   },
   "trade_detail": {
     "transaction_hash": "트랜잭션 해시",

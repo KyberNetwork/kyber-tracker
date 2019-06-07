@@ -124,8 +124,8 @@
     "no_row": "No record found",
     "view_on_etherscan": "View on Etherscan",
     "view_on_enjinx": "View on Kyber.enjinx",
-    "tx": "tx",
-    "fee": "Fee"
+    "tx": "TX",
+    "fee": "FEE"
   },
 
   "trade_detail": {

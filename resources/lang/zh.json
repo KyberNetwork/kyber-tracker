@@ -116,7 +116,9 @@
     "export_csv": "导出(CSV文件)",
     "no_row": "查无记录",
     "view_on_etherscan": "通过Etherscan查看",
-    "view_on_enjinx": "通过Kyber.enjinx查看"
+    "view_on_enjinx": "通过Kyber.enjinx查看",
+    "tx": "TX",
+    "fee": "FEE"
   },
   "trade_detail": {
     "transaction_hash": "交易哈希",
