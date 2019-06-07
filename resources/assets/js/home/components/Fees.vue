@@ -151,6 +151,7 @@
   };
 
   const TREE_MONTH = 60 * 60 * 24 * 90
+  const ONE_MONTH = 60 * 60 * 24 * 30
 
   export default {
 
@@ -324,8 +325,8 @@
           return
         }
 
-        if(toDate - fromDate > TREE_MONTH){
-          this.timeRangeError = 'Max time range is 90 days'
+        if(toDate - fromDate > ONE_MONTH){
+          this.timeRangeError = 'Max time range is 30 days'
           return
         }
 

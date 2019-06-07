@@ -16,6 +16,7 @@ const UtilsHelper = require('../common/Utils');
 const CacheInfo = require('../../config/cache/info');
 
 const THREE_MONTH_IN_SECOND = 60 * 60 * 24 * 90
+const ONE_MONTH_IN_SECOND = 60 * 60 * 24 * 30
 module.exports = BaseService.extends({
   classname: 'TradeService',
 
@@ -23,17 +24,6 @@ module.exports = BaseService.extends({
     const KyberTradeModel = this.getModel('KyberTradeModel');
 
     let params = [];
-
-
-    if(options.exportData){
-      if(!options.fromDate || !options.toDate){
-        return callback('Please select time range to export')
-      } else {
-        if(options.toDate - options.fromDate > THREE_MONTH_IN_SECOND) {
-          return callback("Max time range is 3 months")
-        }
-      }
-    }
 
     // const supportedTokenList = _.filter(global.TOKENS_BY_ADDR, (e) => {
     //   return UtilsHelper.shouldShowToken(e.address)
@@ -72,8 +62,8 @@ module.exports = BaseService.extends({
     const queryOptions = {
       where: whereClauses,
       params: params,
-      ...(options.limit && !options.exportData && {limit: options.limit}),
-      ...(options.limit && options.page && !options.exportData && {offset: options.page * options.limit}),
+      ...(options.limit && {limit: options.limit}),
+      ...(options.limit && options.page && {offset: options.page * options.limit}),
       orderBy: 'block_timestamp DESC'
     };
 
@@ -153,7 +143,7 @@ module.exports = BaseService.extends({
         return callback('Please select time range to export')
       } else {
         if(options.toDate - options.fromDate > THREE_MONTH_IN_SECOND) {
-          return callback("Max time range is 3 months")
+          return callback("Max time range is 30 days")
         }
       }
     }
