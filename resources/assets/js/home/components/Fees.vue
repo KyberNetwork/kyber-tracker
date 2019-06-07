@@ -352,19 +352,25 @@
           })
           .join('\n') 
           .replace(/(^\{)|(\}$)/mg, '');
-          let csvData = csvHeader + 'Time,Tx,Fee(KNC)\n' + csvContent
+          let csvString = 'Time,Tx,Fee(KNC)\n' + csvContent
 
           // window.open( encodeURI(csvData) );
-          let dataCSV = encodeURI(csvData);
+          // let dataCSV = encodeURI(csvData);
 
+          let csvData = new Blob([csvString], { type: 'text/csv' }); 
+          let csvUrl = URL.createObjectURL(csvData);
           let link = document.createElement('a');
-          link.href = dataCSV
-          link.target = '_blank'
-          const fileName = this.selectedTab == 'chartFee' ? 'Collected Fees' : 'Burnt Fees'
-          link.download = new Date().toUTCString() + " " + fileName + '.csv'
-          
-          document.body.appendChild(link);
+          link.href =  csvUrl;
           link.click();
+
+          // let link = document.createElement('a');
+          // link.href = dataCSV
+          // link.target = '_blank'
+          // const fileName = this.selectedTab == 'chartFee' ? 'Collected Fees' : 'Burnt Fees'
+          // link.download = new Date().toUTCString() + " " + fileName + '.csv'
+          
+          // document.body.appendChild(link);
+          // link.click();
         });
 
 
