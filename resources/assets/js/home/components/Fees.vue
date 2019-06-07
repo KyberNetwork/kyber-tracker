@@ -310,11 +310,13 @@
         const pageSize = this.$refs.datatable.pageSize || 20;
         const fromDate = this.searchFromDate
           ? moment(this.searchFromDate)
+            .utc()
               .startOf("day")
               .unix()
           : undefined;
         const toDate = this.searchToDate
           ? moment(this.searchToDate)
+            .utc()
               .endOf("day")
               .unix()
           : undefined;
