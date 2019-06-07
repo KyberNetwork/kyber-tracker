@@ -144,7 +144,7 @@ class TradeCrawler {
         });
       },
       blockTimestamps: ['logs', (ret, next) => {
-        const blockNumbers = _.map(ret.logs, 'blockNumber');
+        const blockNumbers = _.uniq(_.map(ret.logs, 'blockNumber'));
         const blockTimestamps = {};
         async.each(blockNumbers, (blockNumber, _next) => {
           getBlockTimestamp(blockNumber, (_err, timestamp) => {
