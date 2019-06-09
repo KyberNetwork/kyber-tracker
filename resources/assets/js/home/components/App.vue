@@ -233,6 +233,13 @@
           
           <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.reserves') }}</div>
         </router-link>
+        <router-link to="/fees" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img class="nav-logo icon-reserve" src="/images/fees.svg" />
+          </div>
+          
+          <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.fees') }}</div>
+        </router-link>
         <div class="nav-line h-100">
           <div class="icon-side h-100">
           </div>

@@ -1,6 +1,7 @@
 module.exports = {
   GET: {
     '/trades'                       : ['TradeController.getTradesList'],
+    '/collectedFeeList'             : ['TradeController.getCollectedFeeList'],
     '/trades/:tradeId'              : ['TradeController.getTradeDetails'],
     '/tokens'                       : ['TradeController.getTokens'],
     '/tokens/top'                   : ['TradeController.getTopTokensList'],
@@ -10,6 +11,8 @@ module.exports = {
     '/fees/to_burn'                 : ['TradeController.getToBurnFees'],
     '/fees/collected'               : ['TradeController.getCollectedFees'],
     '/fees/burned'                  : ['TradeController.getBurnedFees'],
+    '/fees/burned-list'             : ['TradeController.getBurnedList'],
+
     '/search'                       : ['TradeController.search'],
     '/partner/:partnerId'           : ['TradeController.getPartnerDetail'],
 

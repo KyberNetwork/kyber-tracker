@@ -43,7 +43,10 @@
     "search": "Wallet Details",
     "network": "Network",
     "volume": "Volume",
-    "go_to_exchange": "Swap Token"
+    "go_to_exchange": "Swap Token",
+    "fees": "Fees",
+    "collected_fee_history": "Collected Fee History",
+    "burned_fee_history": "Burned Fee History"
   },
 
   "reserves": {
@@ -120,7 +123,9 @@
     "export_csv": "Export (CSV)",
     "no_row": "No record found",
     "view_on_etherscan": "View on Etherscan",
-    "view_on_enjinx": "View on Kyber.enjinx"
+    "view_on_enjinx": "View on Kyber.enjinx",
+    "tx": "TX",
+    "fee": "FEE"
   },
 
   "trade_detail": {
@@ -157,7 +162,8 @@
     "current_listing": "Current listing tokens",
     "tokens": "Tokens",
     "eth": "ETH",
-    "usd": "USD"
+    "usd": "USD",
+    "burned_fee": "Burned Fee"
   },
 
   "token_list": {

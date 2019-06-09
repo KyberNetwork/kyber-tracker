@@ -41,6 +41,16 @@ module.exports = {
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
   },
+  "CollectedFeeList": {
+    key: "collected-fee-list-",
+    TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
+    TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
+  },
+  "BurnedList": {
+    key: "burned-list-",
+    TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
+    TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
+  },
   "TopTokensList": {
     key: "top-token-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},

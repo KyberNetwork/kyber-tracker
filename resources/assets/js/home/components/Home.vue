@@ -61,7 +61,7 @@
             :elementId="'chart-volume'">
           </chart-volume>
         </b-tab>
-        <b-tab @click="onSelectTab('chartFee')" :title="$t('chart.title.collected_fees')">
+        <!-- <b-tab @click="onSelectTab('chartFee')" :title="$t('chart.title.collected_fees')">
           <chart-fee ref="chartFee"
             :elementId="'chart-fee'">
           </chart-fee>
@@ -70,7 +70,7 @@
           <chart-fee ref="chartBurned"
             :elementId="'chart-burned'">
           </chart-fee>
-        </b-tab>
+        </b-tab> -->
       </b-tabs>
     </b-card>
     <trade-list ref="datatable"

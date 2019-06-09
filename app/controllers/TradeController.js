@@ -16,6 +16,7 @@ module.exports = AppController.extends({
   getTradesList: function (req, res) {
     const [err, params] = new Checkit({
       address: ['string'],
+      exportData: ['string'],
       page: ['required', 'natural'],
       limit: ['required', 'naturalNonZero'],
       fromDate: ['naturalNonZero'],
@@ -61,6 +62,10 @@ module.exports = AppController.extends({
       key = 'official-' + key
     }
 
+    if(params.exportData){
+      key = 'export-' + key
+    }
+
     const TradeService = req.getService('TradeService');
     RedisCache.getAsync(key, (err, ret) => {
       if (err) {
@@ -77,7 +82,88 @@ module.exports = AppController.extends({
           return;
         }
         if (ret_1) {
-          RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.TTL);
+          if(!params.exportData) {
+            RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.TTL);
+          }
+          res.send(ret_1)
+          return;
+        }
+      });
+    });
+  },
+
+  getCollectedFeeList: function (req, res) {
+    const [err, params] = new Checkit({
+      address: ['string'],
+      exportData: ['string'],
+      page: ['required', 'natural'],
+      limit: ['required', 'naturalNonZero'],
+      fromDate: ['naturalNonZero'],
+      toDate: ['naturalNonZero'],
+      official: ['string'],
+      reserve: ['string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    if(!params.official || params.official == 'true'){
+      params.official = true
+    } else {
+      params.official = false
+    }
+
+    
+    let key = `${CacheInfo.CollectedFeeList.key + params.page}-${params.limit}`;
+    if (params.address) {
+      const token = global.TOKENS_BY_ADDR[params.address];
+      if (!token || !Utils_Common.shouldShowToken(params.address)) {
+          res.json({
+              s: "error",
+              errmsg: "unknown_address " + params.address
+          });
+          return;
+      }
+      key = params.address + '-' + key;
+    }
+    if (params.fromDate) {
+      key = params.fromDate + '-' + key;
+    }
+    if (params.toDate) {
+      key = params.toDate + '-' + key;
+    }
+    if (params.reserve){
+      key = params.reserve + '-' + key;
+    }
+    if(params.official){
+      key = 'official-' + key
+    }
+
+    if(params.exportData){
+      key = 'export-' + key
+    }
+
+    const TradeService = req.getService('TradeService');
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        res.send(JSON.parse(ret));
+        return;
+      }
+      TradeService.getCollectedFeeList(params, (err, ret_1) => {
+        if (err) {
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+        if (ret_1) {
+          if(!params.exportData) {
+            RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.TradesList.TTL);
+          }
           res.send(ret_1)
           return;
         }
@@ -457,6 +543,66 @@ module.exports = AppController.extends({
 
     const TradeService = req.getService('TradeService');
     TradeService.getToBurnFees(params, this.ok.bind(this, req, res));
+  },
+
+  getBurnedList: function (req, res) {
+    const [err, params] = new Checkit({
+      exportData: ['string'],
+      address: ['string'],
+      page: ['required', 'natural'],
+      limit: ['required', 'naturalNonZero'],
+      fromDate: ['naturalNonZero'],
+      toDate: ['naturalNonZero']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+    
+    let key = `${CacheInfo.BurnedList.key + params.page}-${params.limit}`;
+
+    if (params.fromDate) {
+      key = params.fromDate + '-' + key;
+    }
+    if (params.toDate) {
+      key = params.toDate + '-' + key;
+    }
+    if (params.reserve){
+      key = params.reserve + '-' + key;
+    }
+    if(params.official){
+      key = 'official-' + key
+    }
+
+    if(params.exportData){
+      key = 'export-' + key
+    }
+
+    const TradeService = req.getService('TradeService');
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        res.send(JSON.parse(ret));
+        return;
+      }
+      TradeService.getBurnedList(params, (err, ret_1) => {
+        if (err) {
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+        if (ret_1) {
+          if(!params.exportData) {
+            RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.BurnedList.TTL);
+          }
+          res.send(ret_1)
+          return;
+        }
+      });
+    });
   },
 
   getToWalletFees: function (req, res) {

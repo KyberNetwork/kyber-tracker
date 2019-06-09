@@ -1429,7 +1429,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
-.trade-list{
+.trade-list, .fee-data{
   min-height: 500px;
   .trade-direction{
     position: relative;
@@ -1473,6 +1473,24 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
     padding: 20px;
   }
 }
+
+.fee-data{
+  @media (min-width: $lg) {
+    
+    .datepicker-container{
+      float: left;
+    }
+    .btn-export{
+      float: right;
+    }
+  }
+  
+  .btn-export{
+    margin-left: 15px;
+    margin-bottom: 15px;
+  }
+}
+
 .search-result{
   .mini-trade{
     padding: 10px 15px;
