@@ -61,7 +61,9 @@ module.exports = {
     "0x9e2b650f890236ab49609c5a6b00cddb4e61f408": "MKR, DAI reserve",
     "0x8bf5c569ecfd167f96fae6d9610e17571568a6a1": "DAI reserve",
     "0x148332cd398321989f37803188b9a69fa32b133c": "Kyber reserve",
-    "0xA467b88BBF9706622be2784aF724C4B44a9d26F4": "Automated price reserve (KNC)"
+    "0xA467b88BBF9706622be2784aF724C4B44a9d26F4": "Automated price reserve (KNC)",
+    "0x1c802020eea688e2b05936cdb98b8e6894acc1c2": "ABYSS APR",
+    "0x1670dfb52806de7789d5cf7d5c005cf7083f9a5d": "USDC APR"
   },
 
   "ETH": {
@@ -853,28 +855,28 @@ module.exports = {
       "symbol" : "RLC",
       "decimal": 9,
       "address": "0x607f4c5bb672230e8672085532f7e901544a7375",
-      "hidden": 1560283200000 
+      "hidden": 1560258000000 
     },
     "LRC": {
       "name": "LoopringCoin",
       "symbol" : "LRC",
       "decimal": 18,
       "address": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd",
-      "hidden": 1560283200000 
+      "hidden": 1560258000000 
     },
     "NPXS": {
       "name": "Pundi X",
       "symbol" : "NPXS",
       "decimal": 18,
       "address": "0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3",
-      "hidden": 1560283200000 
+      "hidden": 1560258000000 
     },
     "GEN": {
       "name": "DAOStack",
       "symbol" : "GEN",
       "decimal": 18,
       "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf",
-      "hidden": true 
+      "hidden": 1560258000000
     }
 
   },
