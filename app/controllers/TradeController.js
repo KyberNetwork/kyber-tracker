@@ -9,7 +9,6 @@ const Utils_Common = require('../common/Utils');
 const logger = log4js.getLogger('TradeController');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
-
 module.exports = AppController.extends({
   classname: 'TradeController',
 
@@ -400,6 +399,8 @@ module.exports = AppController.extends({
   },
 
   getStats24h: function (req, res) {
+    Utils_Common.cors(res);
+
     const [err, params] = new Checkit({
       official: ['string']
     }).validateSync(req.allParams);
