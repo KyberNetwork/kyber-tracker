@@ -855,28 +855,28 @@ module.exports = {
       "symbol" : "RLC",
       "decimal": 9,
       "address": "0x607f4c5bb672230e8672085532f7e901544a7375",
-      "hidden": 1560283200000 
+      "hidden": 1560258000000 
     },
     "LRC": {
       "name": "LoopringCoin",
       "symbol" : "LRC",
       "decimal": 18,
       "address": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd",
-      "hidden": 1560283200000 
+      "hidden": 1560258000000 
     },
     "NPXS": {
       "name": "Pundi X",
       "symbol" : "NPXS",
       "decimal": 18,
       "address": "0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3",
-      "hidden": 1560283200000 
+      "hidden": 1560258000000 
     },
     "GEN": {
       "name": "DAOStack",
       "symbol" : "GEN",
       "decimal": 18,
       "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf",
-      "hidden": 1560283200000
+      "hidden": 1560258000000
     }
 
   },
