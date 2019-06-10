@@ -734,7 +734,7 @@ module.exports = {
         "symbol" : "ABYSS",
         "decimal": 18,
         "address": "0x0E8d6b471e332F140e7d9dbB99E5E3822F728DA6",
-        "hidden": true       
+        // "hidden": true       
       },
       "PT":{
         "name": "Promotion Token",
@@ -812,6 +812,37 @@ module.exports = {
         "symbol" : "MCO",
         "decimal": 8,
         "address": "0xB63B606Ac810a52cCa15e44bB630fd42D8d1d83d",
+      },
+      "GNO": {
+        "name": "Gnosis",
+        "symbol" : "GNO",
+        "decimal": 18,
+        "address": "0x6810e776880c02933d47db1b9fc05908e5386b96"
+      },
+
+      "RLC": {
+        "name": " iExec RLC",
+        "symbol" : "RLC",
+        "decimal": 9,
+        "address": "0x607f4c5bb672230e8672085532f7e901544a7375"
+      },
+      "LRC": {
+        "name": "LoopringCoin",
+        "symbol" : "LRC",
+        "decimal": 18,
+        "address": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd"
+      },
+      "NPXS": {
+        "name": "Pundi X Token",
+        "symbol" : "NPXS",
+        "decimal": 18,
+        "address": "0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3"
+      },
+      "GEN": {
+        "name": "DAOStack",
+        "symbol" : "GEN",
+        "decimal": 18,
+        "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
       }
     },
     "averageBlockTime": 15000,
