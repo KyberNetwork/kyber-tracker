@@ -68,7 +68,7 @@
                 <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
                 <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
               </div>
-              <div ref="slide_1" class="slide-item">
+              <div v-if="isShowKncPrice" ref="slide_1" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
                 <div class="d-inline-flex">
                   <span class="topbar-value text-nowrap">
@@ -79,7 +79,7 @@
                 
               </div>
 
-              <div ref="slide_2" class="slide-item">
+              <div v-if="isShowEthPrice" ref="slide_2" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
                 <div class="d-inline-flex">
                   <span class="topbar-value" >{{ ethPrice }} </span>
@@ -412,6 +412,8 @@ export default {
       kncPriceChange24h: 0,
       ethPrice: "",
       ethPriceChange24h: 0,
+      isShowKncPrice: false,
+      isShowEthPrice: false,
       totalBurnedFee: "",
       searchString: "",
       pageTitle: "",
@@ -613,8 +615,10 @@ export default {
         this.collectedFees = stats.collectedFees + " KNC";
 
         this.kncPrice = "$" + stats.kncPrice;
+        this.isShowKncPrice = stats.kncPrice ? true : false;
         this.kncPriceChange24h = stats.kncChange24h;
         this.ethPrice = "$" + stats.ethPrice;
+        this.isShowEthPrice = stats.ethPrice ? true : false;
         this.ethPriceChange24h = stats.ethChange24h;
       });
 
