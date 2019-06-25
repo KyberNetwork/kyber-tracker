@@ -22,6 +22,8 @@ services:
 #   - mysql -u root -e "GRANT ALL ON kyber_tracker.* TO 'kyber_tracker'@'localhost';"
 
 install:
+  - sudo apt-get update
+  - sudo apt-get install ca-certificates
   - NODE_ENV=production npm ci
 
 # before_script:
