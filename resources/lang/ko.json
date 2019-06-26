@@ -41,9 +41,9 @@
     "network": "개요",
     "volume": "거래량",
     "go_to_exchange": "거래소로",
-    "fees": "Fees",
-    "collected_fee_history": "Collected Fee History",
-    "burned_fee_history": "Burned Fee History"
+    "fees": "수수료",
+    "collected_fee_history": "수수료 내역",
+    "burned_fee_history": "소각된 수수료 내역"
   },
 
   "reserves": {
@@ -115,8 +115,8 @@
     "no_row": "기록이 없습니다",
     "view_on_etherscan": "Etherscan에서 확인",
     "view_on_enjinx": "Kyber.enjinx에서 확인",
-    "tx": "TX",
-    "fee": "FEE"
+    "tx": "트랜잭션",
+    "fee": "수수료"
   },
   "trade_detail": {
     "transaction_hash": "트랜잭션 해시",
@@ -150,8 +150,8 @@
     "history": "최근 거래",
     "commission": "파트너 비용",
     "current_listing": "Current listing tokens",
-    "tokens": "Tokens",
-    "burned_fee": "Burned Fee"
+    "tokens": "토큰",
+    "burned_fee": "소각된 수수료"
   },
 
 
