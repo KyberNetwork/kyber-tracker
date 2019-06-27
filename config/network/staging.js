@@ -843,6 +843,13 @@ module.exports = {
         "symbol" : "GEN",
         "decimal": 18,
         "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
+      },
+
+      "SPN": {
+        "name": "Sapien",
+        "symbol" : "SPN",
+        "decimal": 18,
+        "address": "0x20F7A3DdF244dc9299975b4Da1C39F8D5D75f05A"
       }
     },
     "averageBlockTime": 15000,
