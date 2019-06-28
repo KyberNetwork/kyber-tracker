@@ -850,6 +850,12 @@ module.exports = {
         "symbol" : "SPN",
         "decimal": 6,
         "address": "0x20F7A3DdF244dc9299975b4Da1C39F8D5D75f05A"
+      },
+      "BAM": {
+        "name": "Bamboo",
+        "symbol" : "BAM",
+        "decimal": 18,
+        "address": "0x22b3faaa8df978f6bafe18aade18dc2e3dfa0e0c"
       }
     },
     "averageBlockTime": 15000,
