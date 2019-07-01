@@ -856,6 +856,12 @@ module.exports = {
         "symbol" : "BAM",
         "decimal": 18,
         "address": "0x22b3faaa8df978f6bafe18aade18dc2e3dfa0e0c"
+      },
+      "MYB": {
+        "name": "MyBit",
+        "symbol" : "MYB",
+        "decimal": 18,
+        "address": "0x5d60d8d7ef6d37e16ebabc324de3be57f135e0bc"
       }
     },
     "averageBlockTime": 15000,
