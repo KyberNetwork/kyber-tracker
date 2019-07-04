@@ -891,7 +891,7 @@ module.exports = {
       "symbol" : "MYB",
       "decimal": 18,
       "address": "0x5d60d8d7ef6d37e16ebabc324de3be57f135e0bc",
-      "hidden": 1562245200000
+      "hidden": true
     }
 
   },
