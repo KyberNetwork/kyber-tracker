@@ -877,6 +877,21 @@ module.exports = {
       "decimal": 18,
       "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf",
       "hidden": 1560258000000
+    },
+
+    "BAM": {
+      "name": "Bamboo",
+      "symbol" : "BAM",
+      "decimal": 18,
+      "address": "0x22b3faaa8df978f6bafe18aade18dc2e3dfa0e0c",
+      "hidden": 1562317200000
+    },
+    "MYB": {
+      "name": "MyBit",
+      "symbol" : "MYB",
+      "decimal": 18,
+      "address": "0x5d60d8d7ef6d37e16ebabc324de3be57f135e0bc",
+      "hidden": 1562252400000
     }
 
   },

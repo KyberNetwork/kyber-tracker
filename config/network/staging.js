@@ -220,8 +220,7 @@ module.exports = {
         "name": "AION",
         "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
         "symbol": "AION",
-        "decimal": 8,
-        "delisted": true,
+        "decimal": 8
       },
       "SUB": {
         "name": "Substratum",
@@ -843,6 +842,25 @@ module.exports = {
         "symbol" : "GEN",
         "decimal": 18,
         "address": "0x543ff227f64aa17ea132bf9886cab5db55dcaddf"
+      },
+
+      "SPN": {
+        "name": "Sapien",
+        "symbol" : "SPN",
+        "decimal": 6,
+        "address": "0x20F7A3DdF244dc9299975b4Da1C39F8D5D75f05A"
+      },
+      "BAM": {
+        "name": "Bamboo",
+        "symbol" : "BAM",
+        "decimal": 18,
+        "address": "0x22b3faaa8df978f6bafe18aade18dc2e3dfa0e0c"
+      },
+      "MYB": {
+        "name": "MyBit",
+        "symbol" : "MYB",
+        "decimal": 18,
+        "address": "0x5d60d8d7ef6d37e16ebabc324de3be57f135e0bc"
       }
     },
     "averageBlockTime": 15000,

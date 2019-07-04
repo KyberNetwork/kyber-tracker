@@ -6,25 +6,28 @@ const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io
 const contract = new web3.eth.Contract(JSON.parse(wrapperABI), "0x6172AFC8c00c46E0D07ce3AF203828198194620a");
 
 const networkContract = new web3.eth.Contract(JSON.parse(networkABI), "0x818E6FECD516Ecc3849DAf6845e3EC868087B755");
+const BigNumber                   = require('bignumber.js');
 
+const tokenAmount = new BigNumber(10).pow(18).times(269).times(0.01).toString(16)
+const halfDecimalQty = new BigNumber(10).pow(18).toString(16)
 contract.methods.getExpectedRates(
     '0x818E6FECD516Ecc3849DAf6845e3EC868087B755',
-    ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2', '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'],
-    ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
-    ['0x3B9ACA00', '0x0']
+    ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0x408e41876cccdc0f92210600ef50372656052a38'],
+    ['0x408e41876cccdc0f92210600ef50372656052a38', '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'],
+    ['0x2386F26FC10000', '0x' + halfDecimalQty]
 )
-    .call(undefined, 7076544)
+    .call(undefined, 8070280)
     .then(console.log);
 
 
-
+    console.log('0x' + halfDecimalQty)
 
     networkContract.methods.getExpectedRate(
-        '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
+        '0x408e41876cccdc0f92210600ef50372656052a38',
         '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-        '0x0'
+        '0x' + halfDecimalQty
     )
-        .call(undefined, 7076544)
+        .call(undefined, 8070280)
         .then(console.log);
 
 
