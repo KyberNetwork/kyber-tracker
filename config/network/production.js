@@ -884,7 +884,7 @@ module.exports = {
       "symbol" : "BAM",
       "decimal": 18,
       "address": "0x22b3faaa8df978f6bafe18aade18dc2e3dfa0e0c",
-      "hidden": true
+      "hidden": 1562311830000
     },
     "MYB": {
       "name": "MyBit",
