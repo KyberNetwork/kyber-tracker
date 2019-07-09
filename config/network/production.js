@@ -879,6 +879,13 @@ module.exports = {
       "hidden": 1560258000000
     },
 
+    "SPN": {
+      "name": "Sapien",
+      "symbol" : "SPN",
+      "decimal": 6,
+      "address": "0x20F7A3DdF244dc9299975b4Da1C39F8D5D75f05A",
+      "hidden": 1562677200000
+    },
     "BAM": {
       "name": "Bamboo",
       "symbol" : "BAM",
