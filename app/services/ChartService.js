@@ -11,7 +11,7 @@ const BaseService = require('sota-core').load('service/BaseService');
 const logger = require('sota-core').getLogger('CurrenciesService');
 const Resolution = require('../common/Resolution');
 
-const LIMIT_NUMBER_CANDLE = 500
+const LIMIT_NUMBER_CANDLE = 800
 
 // const tokens = network.tokens;
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
