@@ -101,6 +101,18 @@ module.exports = {
         return row;
     },
 
+    getKeyTime(timeStamp, seq, diff){
+        const item = config["seq" + seq];
+        if (!item) return null;
+
+         const seqValue = item.value
+        let keyTime = Math.floor(timeStamp / seqValue);
+        if(diff){
+            keyTime = keyTime - diff 
+        }
+        return keyTime
+    },
+
     toSeq: (inteval) => {
       const item = interval["interval" + inteval];
       if (!item) return null;

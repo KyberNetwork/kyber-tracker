@@ -115,6 +115,11 @@ module.exports = {
     TTL: {ttl: HOUR_IN_MILISECONDS},
     TTLTool: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}
   },
+  "TradingView": {
+    key: "tradingview-data",
+    TTL: {ttl: WEEK_IN_MILISECONDS},
+    TTLTool: {ttl: WEEK_IN_MILISECONDS}
+  },
   "TotalBurnedFees": {
     key: "burned-fee-total",
     TTL: {ttl: 10 * Const.MINUTE_IN_MILLISECONDS}

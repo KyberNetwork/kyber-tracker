@@ -3,7 +3,7 @@ module.exports = {
       '/config' : ['ChartController.config'],
       '/symbols' : ['ChartController.symbols'],
       '/search' : ['ChartController.search'],
-      '/history' : ['ChartController.history'],
+      '/history' : ['ChartController.historyCache'],
       '/time' : ['ChartController.time'],
       '/klines' : ['ChartController.klines'],
     },

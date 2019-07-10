@@ -76,34 +76,21 @@ module.exports = [
     setCache: true
   },
   {
-    when: "*/10 * * * *",
-    run: 'HistoryCacheRefresher',
+    when: "*/15 * * * *",
+    run: 'InDayTradingViewCacheRefresher',
     service: 'ChartService',
-    functionName: 'chart_history_all',
-    cache: {
-      name: CacheInfo.chart_history_1h.key,
-      time_exprire: CacheInfo.chart_history_1h.TTLTool
-    },
-    params: {
-      rateType: 'sell',
-      resolution: '60',
-    },
+    functionName: '_getInDayHistoryCache',
+    params: {},
     setCache: false
   },
 
   {
-    when: "*/10 * * * *",
-    run: 'TickersCacheRefresher',
-    service: 'CurrenciesService',
-    functionName: 'getPair24hData',
-    // cache: {
-      // name: CacheInfo.ConvertiblePairs.key,
-      // time_exprire: CacheInfo.ConvertiblePairs.TTLTool
-    // },
-    params: {
-      official: true
-    },
-    setCache: false
-  }
-  ];
+    when: "*/30 * * * *",
+    run: 'InMonthTradingViewCacheRefresher',
+    service: 'ChartService',
+    functionName: '_getInMonthHistoryCache',
+    params: {},
+    setCache: true
+  },
+];
 

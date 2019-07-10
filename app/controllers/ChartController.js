@@ -1,35 +1,35 @@
-const _                       = require('lodash');
-const async                   = require('async');
-const network                 = require('../../config/network');
-const AppController           = require('./AppController');
-const Checkit                 = require('cc-checkit');
-const Utils                   = require('../common/Utils');
-const Resolution              = require('../common/Resolution');
-const logger                  = log4js.getLogger('ChartController');
-const CacheInfo               = require('../../config/cache/info');
-const supportedTokens         = Utils.getRateTokenArray().supportedTokens;
-const RedisCache              = require('sota-core').load('cache/foundation/RedisCache');
+const _ = require('lodash');
+const async = require('async');
+const network = require('../../config/network');
+const AppController = require('./AppController');
+const Checkit = require('cc-checkit');
+const Utils = require('../common/Utils');
+const Resolution = require('../common/Resolution');
+const logger = log4js.getLogger('ChartController');
+const CacheInfo = require('../../config/cache/info');
+const supportedTokens = Utils.getRateTokenArray().supportedTokens;
+const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 
 module.exports = AppController.extends({
   classname: 'ChartController',
 
   config: function (req, res) {
-      Utils.cors(res).json({
-        supported_resolutions: ['60','120','240','360','720','D','W','M'],
-        supports_group_request: false,
-        supports_marks: false,
-        supports_search: true,
-        supports_timescale_marks: false,
-        supports_time: true,
-        exchanges: [],
-        symbolsTypes: []
-      });
+    Utils.cors(res).json({
+      supported_resolutions: ['60', '120', '240', '360', '720', 'D', 'W', 'M'],
+      supports_group_request: false,
+      supports_marks: false,
+      supports_search: true,
+      supports_timescale_marks: false,
+      supports_time: true,
+      exchanges: [],
+      symbolsTypes: []
+    });
   },
 
   symbols: function (req, res) {
     Utils.cors(res);
     const [err, params] = new Checkit({
-        symbol: ['string', 'required']
+      symbol: ['string', 'required']
     }).validateSync(req.allParams);
 
     if (err) {
@@ -39,60 +39,60 @@ module.exports = AppController.extends({
 
     const token = network.tokens[params.symbol];
     if (!token || !Utils.shouldShowToken(params.symbol)) {
-        res.json({
-            s: "error",
-            errmsg: "unknown_symbol " + params.symbol
-        });
-        return;
+      res.json({
+        s: "error",
+        errmsg: "unknown_symbol " + params.symbol
+      });
+      return;
     }
 
     res.json({
-        name: token.symbol,
-        ticker: token.symbol,
-        description: token.name,
-        type: "Ethereum Token",
-        session: "24x7",
-        //exchange: "Kyber Network",
-        listed_exchange: "Kyber Network",
-        timezone: token.timezone || "Asia/Singapore",
-        minmov: token.minmov || 1,
-        pricescale: token.pricescale || 1000000,
-        minmove2: 0,
-        fractional: false,
-        has_intraday: true,
-        supported_resolutions: ['60','120','240','360','720','D','W','M'],
-        intraday_multipliers: ['60','120','240','360','720'],
-        has_seconds: false,
-        seconds_multipliers: [],
-        has_daily: true,
-        has_weekly_and_monthly: true,
-        has_empty_bars: true,
-        force_session_rebuild: false,
-        has_no_volume: true,
-        volume_precision: token.volume_precision || 3,
-        data_status: "pulsed",
-        expired: false,
-        //expiration_date: null,
-        sector: token.sector,
-        industry: token.industry,
-        currency_code: "ETH"
+      name: token.symbol,
+      ticker: token.symbol,
+      description: token.name,
+      type: "Ethereum Token",
+      session: "24x7",
+      //exchange: "Kyber Network",
+      listed_exchange: "Kyber Network",
+      timezone: token.timezone || "Asia/Singapore",
+      minmov: token.minmov || 1,
+      pricescale: token.pricescale || 1000000,
+      minmove2: 0,
+      fractional: false,
+      has_intraday: true,
+      supported_resolutions: ['60', '120', '240', '360', '720', 'D', 'W', 'M'],
+      intraday_multipliers: ['60', '120', '240', '360', '720'],
+      has_seconds: false,
+      seconds_multipliers: [],
+      has_daily: true,
+      has_weekly_and_monthly: true,
+      has_empty_bars: true,
+      force_session_rebuild: false,
+      has_no_volume: true,
+      volume_precision: token.volume_precision || 3,
+      data_status: "pulsed",
+      expired: false,
+      //expiration_date: null,
+      sector: token.sector,
+      industry: token.industry,
+      currency_code: "ETH"
     });
 
   },
 
   search: function (req, res) {
-    
+
     Utils.cors(res);
     const [err, params] = new Checkit({
-        query: ['string'],
-        limit:  ['naturalNonZero']
+      query: ['string'],
+      limit: ['naturalNonZero']
     }).validateSync(req.allParams);
 
     if (err) {
       res.badRequest(err.toString());
       return;
     }
-   
+
     const ret = [];
     const query = (params.query || "").toUpperCase();
     let counter = 0;
@@ -100,11 +100,11 @@ module.exports = AppController.extends({
     Object.keys(global.TOKENS_BY_ADDR).map(tokenAddr => {
       const tokenInfo = global.TOKENS_BY_ADDR[tokenAddr]
       if (params.limit && counter >= +params.limit) return res.json(ret);
-      if(tokenInfo){
+      if (tokenInfo) {
         if (!tokenInfo.delisted
-            && Utils.shouldShowToken(tokenAddr)
-            && tokenInfo.symbol && tokenInfo.symbol.includes(query)
-            ) {
+          && Utils.shouldShowToken(tokenAddr)
+          && tokenInfo.symbol && tokenInfo.symbol.includes(query)
+        ) {
           ret.push({
             symbol: tokenInfo.symbol,
             full_name: tokenInfo.symbol,
@@ -120,62 +120,148 @@ module.exports = AppController.extends({
   },
 
   history: function (req, res) {
-      Utils.cors(res);
-      const [err, params] = new Checkit({
-          symbol: ['string'],
-          token: ['string'],
-          resolution: ['string', 'required'],
-          from: ['naturalNonZero', 'required'],
-          to: ['naturalNonZero', 'required'],
-          rateType: ['string', 'required']
-      }).validateSync(req.allParams);
+    Utils.cors(res);
+    const [err, params] = new Checkit({
+      symbol: ['string'],
+      token: ['string'],
+      resolution: ['string', 'required'],
+      from: ['naturalNonZero', 'required'],
+      to: ['naturalNonZero', 'required'],
+      rateType: ['string', 'required']
+    }).validateSync(req.allParams);
 
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    if (!params.symbol && !params.token) {
+      res.badRequest("The symbol or token address is required");
+      return;
+    }
+
+    if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
+      res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
+      return;
+    }
+
+    params.seqType = Resolution.toColumn(params.resolution);
+    if (!params.seqType) {
+      res.badRequest("Unsupported resolution.");
+      return;
+    }
+    const time_exprire = CacheInfo.chart_history_1h.TTL;
+
+    const minutes_to = Math.floor(params.to / 600);
+    const key = CacheInfo.chart_history_1h.key + minutes_to.toString() + params.symbol + params.seqType;
+    const chartService = req.getService('ChartService');
+    RedisCache.getAsync(key, (err, ret) => {
       if (err) {
-          res.badRequest(err.toString());
-          return;
-      }
-
-      if(!params.symbol && !params.token){
-        res.badRequest("The symbol or token address is required");
+        logger.error(err);
+        res.json(ret);
         return;
       }
-
-      if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
-          res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
-          return;
+      if (ret) {
+        res.json(JSON.parse(ret));
+        return;
       }
-
-      params.seqType = Resolution.toColumn(params.resolution);
-      if (!params.seqType) {
-          res.badRequest("Unsupported resolution.");
-          return;
-      }
-      const time_exprire = CacheInfo.chart_history_1h.TTL;
-
-      const minutes_to = Math.floor(params.to / 600);
-      const key = CacheInfo.chart_history_1h.key + minutes_to.toString() + params.symbol + params.seqType;
-      const chartService = req.getService('ChartService');
-      RedisCache.getAsync(key, (err, ret) => {
+      chartService.history(params, (err, ret_1) => {
         if (err) {
           logger.error(err);
-          res.json(ret);
-          return;
         }
-        if (ret) {
-          res.json(JSON.parse(ret));
-          return;
+        if (params.rateType === 'sell' && params.resolution === '60') {
+          RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
         }
-        chartService.history(params,(err, ret_1)=>{
-          if(err){
-            logger.error(err);
-          }
-          if (params.rateType === 'sell' && params.resolution === '60') {
-            RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
-          }
-          res.json(ret_1);
-        });
+        res.json(ret_1);
       });
-},
+    });
+  },
+
+  historyCache: function (req, res) {
+    Utils.cors(res);
+    const [err, params] = new Checkit({
+      symbol: ['string'],
+      token: ['string'],
+      resolution: ['string', 'required'],
+      from: ['naturalNonZero', 'required'],
+      to: ['naturalNonZero', 'required'],
+      rateType: ['string', 'required']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    if (!params.symbol && !params.token) {
+      res.badRequest("The symbol or token address is required");
+      return;
+    }
+
+    if (params.rateType !== "sell" && params.rateType !== "buy" && params.rateType !== "mid") {
+      res.badRequest("rateType must be 'sell', 'buy', or 'mid'.");
+      return;
+    }
+
+    params.seqType = Resolution.toColumn(params.resolution);
+    if (!params.seqType) {
+      res.badRequest("Unsupported resolution.");
+      return;
+    }
+    const key = CacheInfo.TradingView.key + '_' + params.resolution + '_' + params.symbol;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err);
+        return res.json(err);
+      }
+
+      const noData = {
+        t: [],
+        o: [],
+        h: [],
+        l: [],
+        c: [],
+        s: "no_data"
+      }
+
+      if (!ret) return res.json(noData)
+
+      const cachedData = JSON.parse(ret)
+      if (!cachedData.length) return res.json(noData)
+      const filterData = cachedData.filter(x => {
+        if (params.from && params.to) {
+          return x.t >= params.from && x.t <= params.to
+        } else if (params.from) {
+          return x.t >= params.from
+        } else if (params.to) {
+          return x.t <= params.to
+        } else {
+          return true
+        }
+      })
+
+      const returnData = {
+        t: [],
+        o: [],
+        h: [],
+        l: [],
+        c: []
+      }
+      if (!filterData.length) {
+        returnData.s = 'no_data'
+        return res.json(returnData)
+      }
+      filterData.map(f => {
+        returnData.t.push(f.t);
+        returnData.o.push(f.o);
+        returnData.h.push(f.h);
+        returnData.l.push(f.l);
+        returnData.c.push(f.c)
+      })
+      returnData.s = 'ok'
+      return res.json(returnData)
+    });
+  },
 
   time: function (req, res) {
     Utils.cors(res).send("" + Math.floor(Date.now() / 1000));
@@ -195,7 +281,7 @@ module.exports = AppController.extends({
       return;
     }
 
-    if(!params.symbol && !params.token){
+    if (!params.symbol && !params.token) {
       res.badRequest("token symbol or address is required");
       return;
     }
@@ -234,8 +320,8 @@ module.exports = AppController.extends({
         res.json(JSON.parse(ret));
         return;
       }
-      chartService.klines(params,(err, ret_1)=>{
-        if(err){
+      chartService.klines(params, (err, ret_1) => {
+        if (err) {
           logger.error(err);
           res.json({
             s: "error",
