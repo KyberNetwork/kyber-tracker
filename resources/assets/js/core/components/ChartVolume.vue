@@ -34,7 +34,7 @@ export default {
       const counts = [];
       const dataset = [];
       const eths = [];
-      const momentNow = moment()
+      const momentNow = moment.utc()
       if (interval === 'H1') {
         const keyedVolumeData = _.keyBy(volumeData, 'hourSeq');
         const lastHour = momentNow.subtract(1, 'hours').endOf('hour')
@@ -118,7 +118,7 @@ export default {
         title: (tooltipItem, data) => {
           const index = tooltipItem[0].index;
           const value = data.labels[index];
-          const d= moment(value);
+          const d= moment.utc(value);
           if(interval === 'H1') {
             return util.getLocale() === 'vi' ? d.format('dddd, D/MM/YYYY, HH:mm UTCZ') : d.format('ddd, MMM Do YYYY, HH:mm UTCZ');
           } else {
@@ -162,7 +162,7 @@ export default {
             if (index === 0) {
               return " ";
             }
-            const d = moment(label);
+            const d = moment.utc(label);
             if (util.getLocale() === 'vi') {
               return d.format('D/MM');
             } else {
