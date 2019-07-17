@@ -868,6 +868,12 @@ module.exports = {
         "symbol" : "EQUAD",
         "decimal": 18,
         "address": "0xC28e931814725BbEB9e670676FaBBCb694Fe7DF2"
+      },
+      "SNX": {
+        "name": "Synthetix Network Token",
+        "symbol" : "SNX",
+        "decimal": 18,
+        "address": "0xC011A72400E58ecD99Ee497CF89E3775d4bd732F"
       }
     },
     "averageBlockTime": 15000,
