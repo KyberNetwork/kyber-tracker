@@ -168,6 +168,7 @@ module.exports = AppController.extends({
         chartService.history(params,(err, ret_1)=>{
           if(err){
             logger.error(err);
+            return res.badRequest(err.toString());
           }
           if (params.rateType === 'sell' && params.resolution === '60') {
             RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
