@@ -355,7 +355,7 @@ module.exports = BaseService.extends({
       const totalReserveVol = _.merge(takers, makers)
       const arrayTotalReserve = _.uniq([...ret.listSource.map(r=> r.address), ...ret.listDest.map(r=> r.address)])
       const reserves = [];
-      
+
       arrayTotalReserve.map(r => {
         if(!totalReserveVol[r]) {
           reserves.push({
@@ -363,7 +363,7 @@ module.exports = BaseService.extends({
             volumeUSD: 0,
             volumeETH: 0,
             type: global.NETWORK_RESERVES[r],
-            listing: global.NETWORK_RESERVES[r] ? true : false
+            isDelisted: global.NETWORK_RESERVES[r] ? false : true
           })
         } else {
           const takerAndMaker = totalReserveVol[r]
@@ -378,12 +378,12 @@ module.exports = BaseService.extends({
             volumeUSD: valEth.toNumber(),
             volumeETH: valUsd.toNumber(),
             type: global.NETWORK_RESERVES[r],
-            listing: global.NETWORK_RESERVES[r] ? true : false
+            isDelisted: global.NETWORK_RESERVES[r] ? false : true
           })
         }
       })
 
-      return callback(null, _.orderBy(reserves, ['volumeUSD', 'listing' ], ['desc']));
+      return callback(null, _.orderBy(reserves, ['isDelisted', 'volumeUSD' ], ['esc', 'desc']));
     })
   },
 
