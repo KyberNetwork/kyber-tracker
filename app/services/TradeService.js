@@ -362,7 +362,9 @@ module.exports = BaseService.extends({
       const arrayTotalReserve = _.uniq([...ret.listSource.map(r=> r.address), ...ret.listDest.map(r=> r.address)])
       const reserves = [];
 
-      arrayTotalReserve.map(r => {
+      arrayTotalReserve
+      .filter(r => (r !== '0x0000000000000000000000000000000000000000'))
+      .map(r => {
         if(!totalReserveVol[r]) {
           reserves.push({
             address: r,
