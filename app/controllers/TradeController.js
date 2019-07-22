@@ -328,9 +328,9 @@ module.exports = AppController.extends({
         logger.error(err)
         return res.send(err)
       }
-      if (ret) {
-        return res.send(JSON.parse(ret));
-      }
+      // if (ret) {
+      //   return res.send(JSON.parse(ret));
+      // }
 
       const TradeService = req.getService('TradeService');
       TradeService.getReservesList({}, (err, results) => {

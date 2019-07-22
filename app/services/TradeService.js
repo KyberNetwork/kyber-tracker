@@ -352,7 +352,13 @@ module.exports = BaseService.extends({
       const takers = _.groupBy(ret.source, 'address');
       const makers = _.groupBy(ret.dest, 'address');
 
-      const totalReserveVol = _.merge(takers, makers)
+
+      function customizer(objValue, srcValue) {
+        if (_.isArray(objValue)) {
+          return objValue.concat(srcValue);
+        }
+      }
+      const totalReserveVol = _.mergeWith(takers, makers, customizer)
       const arrayTotalReserve = _.uniq([...ret.listSource.map(r=> r.address), ...ret.listDest.map(r=> r.address)])
       const reserves = [];
 
@@ -375,8 +381,8 @@ module.exports = BaseService.extends({
           })
           reserves.push({
             address: r,
-            volumeUSD: valEth.toNumber(),
-            volumeETH: valUsd.toNumber(),
+            volumeUSD: valUsd.toNumber(),
+            volumeETH: valEth.toNumber(),
             type: global.NETWORK_RESERVES[r],
             isDelisted: global.NETWORK_RESERVES[r] ? false : true
           })
