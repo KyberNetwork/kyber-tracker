@@ -781,7 +781,7 @@ table.table-round th {
   bottom: 5px;
   left: 5px;
 }
-.token-name,.reserve-name .tooltiptext {
+.token-name .tooltiptext,.reserve-name .tooltiptext {
   visibility: hidden;
   background-color: rgba(5, 4, 29, 0.69);
   color: #fff;
@@ -797,7 +797,7 @@ table.table-round th {
   opacity: 0;
 }
 
-.token-name:hover,.reserve-name:hover .tooltiptext {
+.token-name:hover .tooltiptext, .reserve-name:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
 }
