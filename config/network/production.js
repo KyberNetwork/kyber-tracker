@@ -832,7 +832,7 @@ module.exports = {
       "symbol" : "UPP",
       "decimal": 18,
       "address": "0xc86d054809623432210c107af2e3f619dcfbf652",
-      "hidden": true  
+      "hidden": 1563973688000
     },
     "MCO": {
       "name": "Crypto.com",
