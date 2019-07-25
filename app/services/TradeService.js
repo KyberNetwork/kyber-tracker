@@ -322,46 +322,76 @@ module.exports = BaseService.extends({
     const makeSql = (side, callback) => {
       const sql = `select ${side}_reserve as address,
         sum(volume_eth) as eth,
-        sum(volume_usd) as usd
+        sum(volume_usd) as usd,
+        '${side}' as type
       from kyber_trade
       where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
       group by ${side}_reserve`;
       return adapter.execRaw(sql, [dayAgo, nowInSeconds], callback);
     };
 
+    const totalReserveList = (side, callback) => {
+      const sql = `
+        SELECT DISTINCT ${side}_reserve as address
+        FROM kyber_trade
+        WHERE ${side}_reserve IS NOT NULL
+      `
+      return adapter.execRaw(sql, [], callback);
+    } 
+
     async.parallel({
       source: _next => makeSql('source', _next),
       dest: _next => makeSql('dest', _next),
+      listSource: _next => totalReserveList('source', _next),
+      listDest: _next => totalReserveList('dest', _next),
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
 
-      const takers = _.keyBy(ret.source, 'address');
-      const makers = _.keyBy(ret.dest, 'address');
+      const takers = _.groupBy(ret.source, 'address');
+      const makers = _.groupBy(ret.dest, 'address');
 
-      const sumProp = (address, prop) => {
-        let val = new BigNumber(0);
-        const lowerAddr = address.toLowerCase()
-        if (takers[lowerAddr]) val = val.plus((takers[lowerAddr][prop] || 0).toString());
-        if (makers[lowerAddr]) val = val.plus((makers[lowerAddr][prop] || 0).toString());
-        return val;
-      };
+
+      function customizer(objValue, srcValue) {
+        if (_.isArray(objValue)) {
+          return objValue.concat(srcValue);
+        }
+      }
+      const totalReserveVol = _.mergeWith(takers, makers, customizer)
+      const arrayTotalReserve = _.uniq([...ret.listSource.map(r=> r.address), ...ret.listDest.map(r=> r.address)])
       const reserves = [];
 
-      Object.keys(global.NETWORK_RESERVES).forEach((r) => {
-        const volumeUSD = sumProp(r, 'usd');
-        const ethVolume = sumProp(r, 'eth');
-
-        reserves.push({
-          address: r,
-          volumeUSD: volumeUSD.toNumber(),
-          volumeETH: ethVolume.toNumber(),
-          type: global.NETWORK_RESERVES[r]
-        })
+      arrayTotalReserve
+      .filter(r => (r !== '0x0000000000000000000000000000000000000000'))
+      .map(r => {
+        if(!totalReserveVol[r]) {
+          reserves.push({
+            address: r,
+            volumeUSD: 0,
+            volumeETH: 0,
+            type: global.NETWORK_RESERVES[r],
+            isDelisted: global.NETWORK_RESERVES[r] ? false : true
+          })
+        } else {
+          const takerAndMaker = totalReserveVol[r]
+          let valEth = new BigNumber(0);
+          let valUsd = new BigNumber(0);
+          takerAndMaker.map(i => {
+            valEth = valEth.plus(i.eth.toString())
+            valUsd = valUsd.plus(i.usd.toString())
+          })
+          reserves.push({
+            address: r,
+            volumeUSD: valUsd.toNumber(),
+            volumeETH: valEth.toNumber(),
+            type: global.NETWORK_RESERVES[r],
+            isDelisted: global.NETWORK_RESERVES[r] ? false : true
+          })
+        }
       })
 
-      return callback(null, _.orderBy(reserves, ['volumeUSD' ], ['desc']));
+      return callback(null, _.orderBy(reserves, ['isDelisted', 'volumeUSD' ], ['esc', 'desc']));
     })
   },
 
