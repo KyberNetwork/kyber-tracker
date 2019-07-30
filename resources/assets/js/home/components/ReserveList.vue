@@ -13,12 +13,13 @@
 
       <template slot="body" scope="slot">
         <tr  @click="toReserveDetails(slot.item.address)" class="pointer">
-            <td class="pl-4" >
+            <td class="pl-4 reserve-name" >
               <a class="address-link" >{{getReservename(slot.item.address)}}</a>
+              <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
+              <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
-          
         </tr>
       </template>
     </data-table>
@@ -32,8 +33,10 @@
 
       <template slot="body" scope="slot">
         <tr @click="toReserveDetails(slot.item.address)" class="pointer">
-            <td class="pl-4">
+            <td class="pl-4 reserve-name">
               <a class="address-link">{{getReservename(slot.item.address)}}</a>
+              <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
+              <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
