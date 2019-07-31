@@ -99,7 +99,7 @@ module.exports = {
   "Stats24h": {
     key: "stats24h",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
-    TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS}
+    TTLTool: {ttl: 0.5 * Const.MINUTE_IN_MILLISECONDS}
   },
   "Change24h": {
     key: "24h-change-",
