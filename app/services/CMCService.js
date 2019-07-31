@@ -328,6 +328,80 @@ module.exports = BaseService.extends({
 
   },
 
+  getKyberCurrentPrice: function(symbol, callback){
+    request
+      .get(`https://api.kyber.network/prices`)
+      .timeout({
+        response: 10000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+        const result = response.body;
+        const marketData = result.data;
+        
+        if(!marketData) return callback('Response no market data')
+
+        if(!marketData[symbol.toUpperCase()]) return callback(`Market data not include token ${symbol}`)
+      
+        return callback(null, marketData[symbol.toUpperCase()]);
+      });
+  },
+
+  getKyberChange24hPrice: function(symbol, callback){
+    request
+      .get(`https://api.kyber.network/change24h`)
+      .timeout({
+        response: 10000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+        const change24hData = response.body;
+        
+        if(!change24hData) return callback('Response no change 24h data')
+
+        if(!change24hData[`ETH_${symbol.toUpperCase()}`]) return callback(`Change 24h data not include token ${symbol}`)
+      
+        return callback(null, change24hData[`ETH_${symbol.toUpperCase()}`]);
+      });
+  },
+
+  getKyberTokenMarketData: function(symbol, callback){
+    const key = CacheInfo.CGTokenMaketData.key + symbol;
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+
+
+      async.auto({
+        currentPrice: next => this.getKyberCurrentPrice(symbol, next),
+        change24h: next => this.getKyberChange24hPrice(symbol, next)
+      }, (err, ret) => {
+        
+        if(err) return callback(err)
+        console.log("==========ret", ret)
+        const tokenMarketData = {
+          currentPrice: ret.currentPrice.price_USD,
+          // priceChange24h: marketData.price_change_24h,
+          priceChangePercentage24h: ret.change24h.change_usd_24h
+        }
+
+        RedisCache.setAsync(key, JSON.stringify(tokenMarketData), CacheInfo.CGTokenMaketData.TTL);
+        return callback(null, tokenMarketData);
+      })
+    });
+
+  },
+
   getHistoricalPrice: function (address, timeInMillis, callback) {
     if (!address || typeof address !== 'string') {
       return callback(`Cannot get historical price of invalid address: ${address}`);

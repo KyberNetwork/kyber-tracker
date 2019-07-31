@@ -759,10 +759,10 @@ module.exports = BaseService.extends({
         }, next);
       },
       ethMarketData: (next) => {
-        CMCService.getCoingeckoTokenMaketData(network.ETH.address, next);
+        CMCService.getKyberTokenMarketData(network.ETH.symbol, next);
       },
       kncMarketData: (next) => {
-        CMCService.getCoingeckoTokenMaketData(network.KNC.address, next);
+        CMCService.getKyberTokenMarketData(network.KNC.symbol, next);
       },
       /*
       volumeEth: (next) => {
@@ -814,10 +814,10 @@ module.exports = BaseService.extends({
       }
 
       const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
-      const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice && ret.kncMarketData.currentPrice.usd? ret.kncMarketData.currentPrice.usd.toString() : 0)
+      const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPrice.toString() : 0)
       const KNCchange24h = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24h.toString() : 0)
 
-      const ETHprice = new BigNumber(ret.ethMarketData && ret.ethMarketData.currentPrice && ret.ethMarketData.currentPrice.usd ? ret.ethMarketData.currentPrice.usd.toString() : 0)
+      const ETHprice = new BigNumber(ret.ethMarketData && ret.ethMarketData.currentPrice ? ret.ethMarketData.currentPrice.toString() : 0)
       const ETHchange24h = new BigNumber(ret.ethMarketData && ret.ethMarketData.priceChangePercentage24h ? ret.ethMarketData.priceChangePercentage24h.toString() : 0)
       //const volumeInETH = new BigNumber(ret.volumeEth.toString());
       //const feeInKNC = new BigNumber(ret.partnerFee.toString()).div(Math.pow(10, 18));
