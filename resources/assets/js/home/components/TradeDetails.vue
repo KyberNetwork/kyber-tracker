@@ -39,8 +39,8 @@
               
             </div>
             
-            <div v-if="record.volumeUsd" class="trade-note pt-3">
-              {{ $t("trade_detail.trade_note", [formatFiatCurrency(record.volumeUsd)]) }}
+            <div v-if="record.txValueUsd" class="trade-note pt-3">
+              {{ $t("trade_detail.trade_note", [formatFiatCurrency(record.txValueUsd)]) }}
             </div>
 
 

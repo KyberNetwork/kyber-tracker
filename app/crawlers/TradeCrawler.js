@@ -449,7 +449,7 @@ class TradeCrawler {
         }
       }
 
-
+      record.txValueEth = record.volumeEth
       if(record.numberBurnEvent > 1){
         record.volumeEth = record.volumeEth * record.numberBurnEvent
       }

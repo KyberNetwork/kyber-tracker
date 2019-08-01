@@ -52,7 +52,10 @@
      month: { type: 'number', length: 6 },
      year: { type: 'number', length: 4 },
      volume_eth: { type: 'number', length: 22 },
-     volume_usd: { type: 'number', length: 22 } },
+     volume_usd: { type: 'number', length: 22 },
+     tx_value_eth: { type: 'number', length: 22 },
+     tx_value_usd: { type: 'number', length: 22 } 
+  },
   Rate7dModel: 
    { block_number: { type: 'number', length: 11 },
      block_timestamp: { type: 'number', length: 20 },
