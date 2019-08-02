@@ -216,6 +216,12 @@ class TradeCrawler {
             record.destReserve = bAddr
           }
 
+          if(!record.numberBurnEvent){
+            record.numberBurnEvent = 1
+          } else {
+            record.numberBurnEvent = record.numberBurnEvent + 1
+          }
+
           if(!record.burnReserveArray) record.burnReserveArray = []
           record.burnReserveArray.push(bAddr)
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
@@ -441,6 +447,11 @@ class TradeCrawler {
         } else {
           record.destOfficial = 0
         }
+      }
+
+      record.txValueEth = record.volumeEth
+      if(record.numberBurnEvent > 1){
+        record.volumeEth = record.volumeEth * record.numberBurnEvent
       }
 
 

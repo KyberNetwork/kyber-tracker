@@ -145,7 +145,8 @@ class EthVolumeCrawler {
     packTrades.map(t => {
       updateRows.push({
         id: t.id,
-        volumeUsd: t.volume_eth * datePrice[t.date].usdPrice
+        volumeUsd: t.volume_eth * datePrice[t.date].usdPrice,
+        txValueUsd: t.tx_value_eth * datePrice[t.date].usdPrice
       })
     })
 
