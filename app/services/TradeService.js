@@ -160,7 +160,7 @@ module.exports = BaseService.extends({
         KyberTradeModel.sum('tx_value_usd', this.makeReserveSql('source', options, false), next);
       },
       volumeUsdDest: (next) => {
-        KyberTradeModel.sum('tx_value_usd', this.makeReserveSql('source', options, false), next);
+        KyberTradeModel.sum('tx_value_usd', this.makeReserveSql('dest', options, false), next);
       },
       volumeEthSource: (next) => {
         KyberTradeModel.sum('tx_value_eth', this.makeReserveSql('source', options, false), next);
