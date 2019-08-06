@@ -564,8 +564,8 @@ module.exports = BaseService.extends({
       obj[side] = (callback) => {
         const sql = `select ${side}_token_address as address,
           sum(${side}_token_amount) as token,
-          sum(volume_eth) as eth,
-          sum(volume_usd) as usd
+          sum(tx_value_eth) as eth,
+          sum(tx_value_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         ${officialSql}
@@ -640,8 +640,8 @@ module.exports = BaseService.extends({
       obj[side] = (callback) => {
         const sql = `select ${side}_token_address as address,
           sum(${side}_token_amount) as token,
-          sum(volume_eth) as eth,
-          sum(volume_usd) as usd
+          sum(tx_value_eth) as eth,
+          sum(tx_value_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         ${officialSql}
