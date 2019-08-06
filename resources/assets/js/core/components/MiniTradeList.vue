@@ -306,8 +306,8 @@ export default {
           this.isLoading = true
           this.rows = [];
         }
-        AppRequest
-          .getTrades(this.currentPage, this.pageSize || 20, params, (err, res) => {
+        const requestFunc = params.reserve ? 'getReserveTrades' : 'getTrades'
+        AppRequest[requestFunc](this.currentPage, this.pageSize || 20, params, (err, res) => {
             const data = res.data;
             const pagination = res.pagination;
 

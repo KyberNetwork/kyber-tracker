@@ -91,6 +91,64 @@ module.exports = AppController.extends({
     });
   },
 
+  getReserveTradesList: function (req, res) {
+    const [err, params] = new Checkit({
+      address: ['string'],
+      exportData: ['string'],
+      page: ['required', 'natural'],
+      limit: ['required', 'naturalNonZero'],
+      fromDate: ['naturalNonZero'],
+      toDate: ['naturalNonZero'],
+      reserve: ['required','string']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    
+    let key = `${CacheInfo.ReserveTradesList.key + params.page}-${params.limit}`;
+
+    if (params.fromDate) {
+      key = params.fromDate + '-' + key;
+    }
+    if (params.toDate) {
+      key = params.toDate + '-' + key;
+    }
+    if (params.reserve){
+      key = params.reserve + '-' + key;
+    }
+    if(params.official){
+      key = 'official-' + key
+    }
+
+    const TradeService = req.getService('TradeService');
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        res.send(JSON.parse(ret));
+        return;
+      }
+      TradeService.getReserveTradeList(params, (err, ret_1) => {
+        if (err) {
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+        if (ret_1) {
+          if(!params.exportData) {
+            RedisCache.setAsync(key, JSON.stringify(ret_1), CacheInfo.ReserveTradesList.TTL);
+          }
+          res.send(ret_1)
+          return;
+        }
+      });
+    });
+  },
+
   getCollectedFeeList: function (req, res) {
     const [err, params] = new Checkit({
       address: ['string'],
