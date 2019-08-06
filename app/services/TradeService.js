@@ -509,8 +509,8 @@ module.exports = BaseService.extends({
     const makeSql = (side, rside, callback) => {
       const sql = `select ${side}_token_address as address,
         IFNULL(sum(${side}_token_amount), 0) as token,
-        IFNULL(sum(volume_eth),0) as eth,
-        IFNULL(sum(volume_usd),0) as usd
+        IFNULL(sum(tx_value_eth),0) as eth,
+        IFNULL(sum(tx_value_usd),0) as usd
       from kyber_trade
       where block_timestamp > ${options.fromDate} AND block_timestamp < ${options.toDate}
       and ${rside}_reserve = '${options.reserveAddr.toLowerCase()}'
