@@ -24,6 +24,17 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
+  getReserveTrades (page=0, limit=20, query={}, callback) {
+    const url = `/api/reserveTrades`;
+    return request
+            .get(url)
+            .query(_.assign({ limit, page }, query))
+            .then((res) => {
+              return callback(null, res.body);
+            })
+            .catch(this._handleError)
+  }
+
   getCollectedFeeList (page=0, limit=20, query={}, callback) {
     const url = `/api/collectedFeeList`;
     if(this.isOfficial()) query.official = true

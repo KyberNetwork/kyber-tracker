@@ -271,48 +271,48 @@ export default {
       this.fetchReserveDetail()
     },
 
-    exportData (){
-      const currentPage = this.$refs.datatable.currentPage;
-      const pageSize = this.$refs.datatable.pageSize || 20;
-      const q = this.$route.query.q;
-      const fromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
-      const toDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
+    // exportData (){
+    //   const currentPage = this.$refs.datatable.currentPage;
+    //   const pageSize = this.$refs.datatable.pageSize || 20;
+    //   const q = this.$route.query.q;
+    //   const fromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
+    //   const toDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
 
-      AppRequest
-        .searchTrades(q, currentPage, pageSize, fromDate, toDate, true, (err, res) => {
-          const data = res.data;
-          var csvHeader = "data:text/csv;charset=utf-8,";
-          var notice = "*USD Rates are calculated at transaction time\n"
-          var csvContent = ""
-          csvContent += data.map(function(d){
-            let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
-            let fromToken = d.takerTokenAddress
-            let fromAmount = TOKENS_BY_ADDR[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[fromToken].decimal)).toString() : 0
+    //   AppRequest
+    //     .searchTrades(q, currentPage, pageSize, fromDate, toDate, true, (err, res) => {
+    //       const data = res.data;
+    //       var csvHeader = "data:text/csv;charset=utf-8,";
+    //       var notice = "*USD Rates are calculated at transaction time\n"
+    //       var csvContent = ""
+    //       csvContent += data.map(function(d){
+    //         let time = new Date(+d.blockTimestamp * 1000).toUTCString().replace(",",'')
+    //         let fromToken = d.takerTokenAddress
+    //         let fromAmount = TOKENS_BY_ADDR[fromToken] ? (new BigNumber(d.takerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[fromToken].decimal)).toString() : 0
 
-            let toToken = d.makerTokenAddress
-            let toAmount = TOKENS_BY_ADDR[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[toToken].decimal)).toString() : 0
+    //         let toToken = d.makerTokenAddress
+    //         let toAmount = TOKENS_BY_ADDR[toToken] ? (new BigNumber(d.makerTokenAmount.toString())).div(Math.pow(10, TOKENS_BY_ADDR[toToken].decimal)).toString() : 0
 
-            // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
-            let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0
+    //         // let rate = fromAmount.isZero() ? 0 : toAmount.div(fromAmount)
+    //         let usdAmount =  d.volumeUsd ? d.volumeUsd.toString() : 0
 
-            return `${time},${fromToken},${fromAmount},${toToken},${toAmount},${usdAmount}`
-          })
-          .join('\n') 
-          .replace(/(^\{)|(\}$)/mg, '');
-          let csvData = csvHeader + notice + 'Time,From Token,From Amount,To Token,To Amount,USD Value*\n' + csvContent
+    //         return `${time},${fromToken},${fromAmount},${toToken},${toAmount},${usdAmount}`
+    //       })
+    //       .join('\n') 
+    //       .replace(/(^\{)|(\}$)/mg, '');
+    //       let csvData = csvHeader + notice + 'Time,From Token,From Amount,To Token,To Amount,USD Value*\n' + csvContent
 
-          // window.open( encodeURI(csvData) );
-          let dataCSV = encodeURI(csvData);
+    //       // window.open( encodeURI(csvData) );
+    //       let dataCSV = encodeURI(csvData);
 
-          let link = document.createElement('a');
-          link.href = dataCSV
-          link.target = '_blank'
-          link.download = new Date().toUTCString() + " " + q + '.csv'
+    //       let link = document.createElement('a');
+    //       link.href = dataCSV
+    //       link.target = '_blank'
+    //       link.download = new Date().toUTCString() + " " + q + '.csv'
           
-          document.body.appendChild(link);
-          link.click();
-        });
-    },
+    //       document.body.appendChild(link);
+    //       link.click();
+    //     });
+    // },
 
     fetchReserveDetail(){
       let fromDate = this.searchFromDate ? moment(this.searchFromDate).startOf('day').unix() : undefined
