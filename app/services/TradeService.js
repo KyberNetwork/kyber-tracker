@@ -88,29 +88,7 @@ module.exports = BaseService.extends({
           where: whereClauses,
           params: params,
         }, next);
-      },
-      // collectedFees: (next) => {
-      //   // if(options.reserve){
-          
-      //   //   this.getCollectedReserveFee(options, (err, result) => {
-      //   //     if(err) return next(err)
-      //   //     let collectedFee = new BigNumber(0)
-      //   //     if(result.totalBurnFee){
-      //   //       collectedFee = collectedFee.plus(new BigNumber(result.totalBurnFee.toString()))
-      //   //     }
-      //   //     if(result.totalCommision){
-      //   //       collectedFee = collectedFee.plus(new BigNumber(result.totalCommision.toString()))
-      //   //     }
-      //   //     return next(null, collectedFee.toString())
-      //   //   })
-      //   // } else {
-      //     KyberTradeModel.sum('collected_fees', {
-      //       where: whereClauses,
-      //       params: params,
-      //     }, next);
-      //   // }
-        
-      // },
+      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -124,6 +102,95 @@ module.exports = BaseService.extends({
           totalCount: ret.count,
           volumeUsd: ret.volumeUsd,
           volumeEth: ret.volumeEth,
+          collectedFees: ret.collectedFees,
+          maxPage: Math.ceil(ret.count / options.limit)
+        }
+      });
+    });
+  },
+
+  makeReserveSql:function(side, options, isOrder, isLimit){
+    let whereClauses = " ( 1=1 ) "
+    let params = [];
+    
+    if (options.fromDate) {
+      whereClauses += ' AND block_timestamp > ?';
+      params.push(options.fromDate);
+    }
+
+    if (options.toDate) {
+      whereClauses += ' AND block_timestamp < ?';
+      params.push(options.toDate);
+    }
+
+
+    if(options.reserve){
+      if(side){
+        whereClauses += ` AND (LOWER(${side}_reserve) = ?)`;
+        params.push(options.reserve.toLowerCase());
+      } else {
+        whereClauses += ` AND ( (LOWER(source_reserve) = ?) OR (LOWER(dest_reserve) = ?))`;
+        params.push(options.reserve.toLowerCase());
+        params.push(options.reserve.toLowerCase());
+      }
+    } 
+
+    const queryOptions = {
+      where: whereClauses,
+      params: params,
+      ...(options.limit && isLimit && {limit: options.limit}),
+      ...(options.limit && isLimit && options.page && {offset: options.page * options.limit}),
+      ...(isOrder && {orderBy: 'block_timestamp DESC'})
+    };
+    return queryOptions
+  },
+
+  getReserveTradeList: function(options, callback){
+    const KyberTradeModel = this.getModel('KyberTradeModel');
+    let params = [];
+
+    async.auto({
+      list: (next) => {
+        KyberTradeModel.find(this.makeReserveSql(null, options, true, true), next);
+      },
+      count: (next) => {
+        KyberTradeModel.count(this.makeReserveSql(null, options, false), next);
+      },
+      volumeUsdSource: (next) => {
+        KyberTradeModel.sum('tx_value_usd', this.makeReserveSql('source', options, false), next);
+      },
+      volumeUsdDest: (next) => {
+        KyberTradeModel.sum('tx_value_usd', this.makeReserveSql('dest', options, false), next);
+      },
+      volumeEthSource: (next) => {
+        KyberTradeModel.sum('tx_value_eth', this.makeReserveSql('source', options, false), next);
+      },
+      volumeEthDest: (next) => {
+        KyberTradeModel.sum('tx_value_eth', this.makeReserveSql('dest', options, false), next);
+      }
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const bigVolumeUsdSource = new BigNumber(ret.volumeUsdSource ? ret.volumeUsdSource.toString() : 0)
+      const bigVolumeUsdDest = new BigNumber(ret.volumeUsdDest ? ret.volumeUsdDest.toString() : 0)
+
+      const bigVolumeEthSource = new BigNumber(ret.volumeEthSource ? ret.volumeEthSource.toString() : 0)
+      const bigVolumeEthDest = new BigNumber(ret.volumeEthDest ? ret.volumeEthDest.toString() : 0)
+
+
+      const volumeUsd = bigVolumeUsdSource.plus(bigVolumeUsdDest).toString()
+      const volumeEth = bigVolumeEthSource.plus(bigVolumeEthDest).toString()
+
+      return callback(null, {
+        data: ret.list,
+        pagination: {
+          page: options.page,
+          limit: options.limit,
+          totalCount: ret.count,
+          volumeUsd: volumeUsd,
+          volumeEth: volumeEth,
           collectedFees: ret.collectedFees,
           maxPage: Math.ceil(ret.count / options.limit)
         }
@@ -321,8 +388,8 @@ module.exports = BaseService.extends({
 
     const makeSql = (side, callback) => {
       const sql = `select ${side}_reserve as address,
-        sum(volume_eth) as eth,
-        sum(volume_usd) as usd,
+        sum(tx_value_eth) as eth,
+        sum(tx_value_usd) as usd,
         '${side}' as type
       from kyber_trade
       where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
@@ -442,8 +509,8 @@ module.exports = BaseService.extends({
     const makeSql = (side, rside, callback) => {
       const sql = `select ${side}_token_address as address,
         IFNULL(sum(${side}_token_amount), 0) as token,
-        IFNULL(sum(volume_eth),0) as eth,
-        IFNULL(sum(volume_usd),0) as usd
+        IFNULL(sum(tx_value_eth),0) as eth,
+        IFNULL(sum(tx_value_usd),0) as usd
       from kyber_trade
       where block_timestamp > ${options.fromDate} AND block_timestamp < ${options.toDate}
       and ${rside}_reserve = '${options.reserveAddr.toLowerCase()}'
@@ -497,8 +564,8 @@ module.exports = BaseService.extends({
       obj[side] = (callback) => {
         const sql = `select ${side}_token_address as address,
           sum(${side}_token_amount) as token,
-          sum(volume_eth) as eth,
-          sum(volume_usd) as usd
+          sum(tx_value_eth) as eth,
+          sum(tx_value_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         ${officialSql}
@@ -573,8 +640,8 @@ module.exports = BaseService.extends({
       obj[side] = (callback) => {
         const sql = `select ${side}_token_address as address,
           sum(${side}_token_amount) as token,
-          sum(volume_eth) as eth,
-          sum(volume_usd) as usd
+          sum(tx_value_eth) as eth,
+          sum(tx_value_usd) as usd
         from kyber_trade
         where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
         ${officialSql}

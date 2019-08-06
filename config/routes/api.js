@@ -1,6 +1,7 @@
 module.exports = {
   GET: {
     '/trades'                       : ['TradeController.getTradesList'],
+    '/reserveTrades'                : ['TradeController.getReserveTradesList'],
     '/collectedFeeList'             : ['TradeController.getCollectedFeeList'],
     '/trades/:tradeId'              : ['TradeController.getTradeDetails'],
     '/tokens'                       : ['TradeController.getTokens'],
