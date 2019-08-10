@@ -874,6 +874,12 @@ module.exports = {
         "symbol" : "SNX",
         "decimal": 18,
         "address": "0xC011A72400E58ecD99Ee497CF89E3775d4bd732F"
+      },
+      "CND": {
+        "name": "Cindicator",
+        "symbol" : "CND",
+        "decimal": 18,
+        "address": "0xd4c435f5b09f855c3317c8524cb1f586e42795fa"
       }
     },
     "averageBlockTime": 15000,
