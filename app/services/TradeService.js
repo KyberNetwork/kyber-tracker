@@ -598,7 +598,7 @@ module.exports = BaseService.extends({
         const supportedTokens = [];
 
         Object.keys(global.TOKENS_BY_ADDR).forEach((address) => {
-          if (UtilsHelper.shouldShowToken(address) && UtilsHelper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])) {
+          if (UtilsHelper.shouldShowToken(address) && address.toLowerCase() != network.ETH.address  && UtilsHelper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])) {
             const token = global.TOKENS_BY_ADDR[address];
 
             const tokenVolume = sumProp(address, 'token', token.decimal);
