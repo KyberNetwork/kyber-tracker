@@ -40,15 +40,15 @@ export default {
     _buildChartData(ret) {
       const all = ret;//.filter(x => x.symbol !== "ETH");
 
-      ret = all.slice(0, 4);
+      ret = all.slice(0, 5);
       const labels = [];
       const dataset = [];
       const volumeTokens = [];
       const volumeEths = [];
       // const percentVolume = [];
 
-      const sumVolUSD = (all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0));
-      const sumVolETH = (all.map(i => i.volumeEthNumber).reduce((a, b) => a + b, 0));
+      // const sumVolUSD = (all.map(i => i.volumeUSD).reduce((a, b) => a + b, 0));
+      // const sumVolETH = (all.map(i => i.volumeEthNumber).reduce((a, b) => a + b, 0));
       for (let i = 0; i < ret.length; i++) {
         if(ret[i].official && ret[i].symbol) labels.push(ret[i].symbol);
         else {
@@ -62,10 +62,10 @@ export default {
         // );
       }
 
-      labels.unshift('ETH')
-      dataset.unshift(Math.round(sumVolUSD * 100) / 100)
-      volumeTokens.unshift(Math.round(sumVolETH * 1000) / 1000)
-      volumeEths.unshift(Math.round(sumVolETH * 1000) / 1000)
+      // labels.unshift('ETH')
+      // dataset.unshift(Math.round(sumVolUSD * 100) / 100)
+      // volumeTokens.unshift(Math.round(sumVolETH * 1000) / 1000)
+      // volumeEths.unshift(Math.round(sumVolETH * 1000) / 1000)
       return {
         labels,
         volumeTokens,
