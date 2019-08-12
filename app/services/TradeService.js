@@ -684,7 +684,7 @@ module.exports = BaseService.extends({
             const volumeUSD = sumProp(address, 'usd');
             const ethVolume = sumProp(address, 'eth');
 
-            if(token.symbol !== 'WETH' && token.symbol !== 'PT'){
+            if(token.symbol !== 'WETH' && token.symbol !== 'PT' && token.symbol != 'ETH'){
               sumVolUSD = sumVolUSD.plus(volumeUSD)
               sumVolETH = sumVolETH.plus(ethVolume)
             }
