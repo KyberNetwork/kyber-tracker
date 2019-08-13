@@ -908,6 +908,13 @@ module.exports = {
       "decimal": 18,
       "address": "0xC28e931814725BbEB9e670676FaBBCb694Fe7DF2",
       "hidden": 1563195600000
+    },
+    "CND": {
+      "name": "Cindicator",
+      "symbol" : "CND",
+      "decimal": 18,
+      "address": "0xd4c435f5b09f855c3317c8524cb1f586e42795fa",
+      "hidden": 1565701200000
     }
 
   },
