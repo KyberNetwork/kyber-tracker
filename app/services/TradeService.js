@@ -1124,6 +1124,39 @@ module.exports = BaseService.extends({
     });
   },
 
+  getVolumePairTokensInterval: function(options, callback){
+    const sql = `
+      SELECT
+          ROUND(block_timestamp/300, 0) as time, 
+          sum(volume_usd) as volumeUSD,
+          sum(volume_eth) as volumeEth,
+          sum( CASE WHEN taker_token_symbol = '${options.quote}' THEN taker_token_amount ELSE 0 END ) as takerBaseVolume,
+          sum( CASE WHEN maker_token_symbol = '${options.quote}' THEN maker_token_amount ELSE 0 END ) as makerBaseVolume
+      FROM kyber_trade
+      WHERE 
+        block_timestamp >= ${options.fromDate} AND block_timestamp <= ${options.toDate}
+        AND
+        (
+            (maker_token_symbol = '${options.base}' AND taker_token_symbol = '${options.quote}')
+            OR
+            (maker_token_symbol = '${options.quote}' AND taker_token_symbol = '${options.base}')
+        )
+      GROUP BY time
+    `;
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+    adapter.execRaw(sql, [], (err, results) => {
+      if(err) return callback(err)
+
+      return callback(err, results.map(r => ({
+        timeStamp: r.time * 300,
+        volumeUSD: r.volumeUSD, 
+        volumeEth: r.volumeEth,
+        quoteTokenVolumeWei: new BigNumber(r.takerBaseVolume.toString()).plus(new BigNumber(r.makerBaseVolume.toString())).toString() 
+      })))
+    });
+
+  },
+
   // Use for Volume charts
   getNetworkVolumes: function (options, callback) {
     const interval = options.interval || 'H1';
