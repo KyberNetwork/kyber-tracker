@@ -819,7 +819,8 @@ module.exports = {
       "symbol" : "BIX",
       "decimal": 18,
       "address": "0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069",
-      "hidden": 1549976400000       
+      // "hidden": 1549976400000
+      "delisted": true       
     },
     "CDT":{
       "name": "CoinDash",

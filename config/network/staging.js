@@ -873,7 +873,7 @@ module.exports = {
         "name": "Synthetix Network Token",
         "symbol" : "SNX",
         "decimal": 18,
-        "address": "0xC011A72400E58ecD99Ee497CF89E3775d4bd732F"
+        "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F"
       },
       "CND": {
         "name": "Cindicator",
