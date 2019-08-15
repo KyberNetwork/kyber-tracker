@@ -598,7 +598,7 @@ module.exports = BaseService.extends({
         const supportedTokens = [];
 
         Object.keys(global.TOKENS_BY_ADDR).forEach((address) => {
-          if (UtilsHelper.shouldShowToken(address) && UtilsHelper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])) {
+          if (UtilsHelper.shouldShowToken(address) && address.toLowerCase() != network.ETH.address  && UtilsHelper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])) {
             const token = global.TOKENS_BY_ADDR[address];
 
             const tokenVolume = sumProp(address, 'token', token.decimal);
@@ -672,6 +672,10 @@ module.exports = BaseService.extends({
         };
 
         const supportedTokens = [];
+
+        let sumVolUSD = new BigNumber(0)
+        let sumVolETH = new BigNumber(0)
+
         Object.keys(global.TOKENS_BY_ADDR).forEach((address) => {
           if (UtilsHelper.shouldShowToken(address, global.TOKENS_BY_ADDR, options.timeStamp) && UtilsHelper.filterOfficial(options.official, global.TOKENS_BY_ADDR[address])) {
             const token = global.TOKENS_BY_ADDR[address];
@@ -680,22 +684,40 @@ module.exports = BaseService.extends({
             const volumeUSD = sumProp(address, 'usd');
             const ethVolume = sumProp(address, 'eth');
 
-            supportedTokens.push({
-              symbol: token.symbol,
-              name: token.name,
-              address: token.address,
-              official: token.official || UtilsHelper.filterOfficial(true, token),
-              volumeToken: tokenVolume.toNumber(),
-              volumeTokenNumber: tokenVolume.toNumber(),
-              volumeUSD: volumeUSD.toNumber(),
-              volumeETH: ethVolume.toNumber(),
-              volumeEthNumber: ethVolume.toNumber(),
-              isNewToken: UtilsHelper.isNewToken(token.address),
-              isDelisted: UtilsHelper.isDelisted(token.address)
-            })
-
+            if(token.symbol !== 'WETH' && token.symbol !== 'PT' && token.symbol != 'ETH'){
+              sumVolUSD = sumVolUSD.plus(volumeUSD)
+              sumVolETH = sumVolETH.plus(ethVolume)
+            }
+            if(token.symbol != 'ETH'){
+              supportedTokens.push({
+                symbol: token.symbol,
+                name: token.name,
+                address: token.address,
+                official: token.official || UtilsHelper.filterOfficial(true, token),
+                volumeToken: tokenVolume.toNumber(),
+                volumeTokenNumber: tokenVolume.toNumber(),
+                volumeUSD: volumeUSD.toNumber(),
+                volumeETH: ethVolume.toNumber(),
+                volumeEthNumber: ethVolume.toNumber(),
+                isNewToken: UtilsHelper.isNewToken(token.address),
+                isDelisted: UtilsHelper.isDelisted(token.address)
+              })
+            }
           }
         });
+
+        supportedTokens.unshift({
+          symbol: network.ETH.symbol,
+          name: network.ETH.name,
+          address: network.ETH.address,
+          official: true,
+          volumeToken: sumVolETH.toNumber(),
+          volumeTokenNumber: sumVolETH.toNumber(),
+          volumeUSD: sumVolUSD.toNumber(),
+          volumeETH: sumVolETH.toNumber(),
+          volumeEthNumber: sumVolETH.toNumber()
+        })
+
 
         return callback(null, _.orderBy(supportedTokens, ['isNewToken', 'isDelisted', 'volumeUSD' ], ['desc', 'desc', 'desc']));
       });
@@ -1100,6 +1122,39 @@ module.exports = BaseService.extends({
         }
       });
     });
+  },
+
+  getVolumePairTokensInterval: function(options, callback){
+    const sql = `
+      SELECT
+          ROUND(block_timestamp/300, 0) as time, 
+          sum(volume_usd) as volumeUSD,
+          sum(volume_eth) as volumeEth,
+          sum( CASE WHEN taker_token_symbol = '${options.quote}' THEN taker_token_amount ELSE 0 END ) as takerBaseVolume,
+          sum( CASE WHEN maker_token_symbol = '${options.quote}' THEN maker_token_amount ELSE 0 END ) as makerBaseVolume
+      FROM kyber_trade
+      WHERE 
+        block_timestamp >= ${options.fromDate} AND block_timestamp <= ${options.toDate}
+        AND
+        (
+            (maker_token_symbol = '${options.base}' AND taker_token_symbol = '${options.quote}')
+            OR
+            (maker_token_symbol = '${options.quote}' AND taker_token_symbol = '${options.base}')
+        )
+      GROUP BY time
+    `;
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+    adapter.execRaw(sql, [], (err, results) => {
+      if(err) return callback(err)
+
+      return callback(err, results.map(r => ({
+        timeStamp: r.time * 300,
+        volumeUSD: r.volumeUSD, 
+        volumeEth: r.volumeEth,
+        quoteTokenVolumeWei: new BigNumber(r.takerBaseVolume.toString()).plus(new BigNumber(r.makerBaseVolume.toString())).toString() 
+      })))
+    });
+
   },
 
   // Use for Volume charts
