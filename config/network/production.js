@@ -924,6 +924,13 @@ module.exports = {
       "symbol" : "USDT",
       "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "hidden": 1565960400000
+    },
+    "SNX": {
+      "name": "Synthetix Network Token",
+      "symbol" : "SNX",
+      "decimal": 18,
+      "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+      "hidden": 1565960400000
     }
 
   },
