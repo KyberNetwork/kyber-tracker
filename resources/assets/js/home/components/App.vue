@@ -714,15 +714,15 @@ export default {
     },
 
     isAllTokens() {
-      return store.get("allTokens") ? true : false;
+      return store.get("kyber-official-network") ? false : true;
     },
 
     onChangeOfficial(value) {
       if (value == "official") {
         // window.OFFICIAL_TOKENS = true
-        store.set("allTokens", false);
+        store.set("kyber-official-network", true);
       } else {
-        store.set("allTokens", true);
+        store.set("kyber-official-network", false);
       }
       location.reload();
     },

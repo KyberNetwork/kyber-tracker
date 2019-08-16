@@ -7,7 +7,7 @@ import store from "../../core/helper/store";
 class AppRequest extends BaseRequest {
 
   isOfficial(){
-    return store.get('allTokens') ? false : true
+    return store.get('kyber-official-network') ? true : false
   }
 
   getTrades (page=0, limit=20, query={}, callback) {

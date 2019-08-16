@@ -247,7 +247,7 @@ export default {
       window.clearInterval(this._refreshInterval);
     },
     isAllTokens() {
-      return store.get("allTokens") ? true : false;
+      return store.get("kyber-official-network") ? false : true;
     },
   },
 

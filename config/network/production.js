@@ -916,6 +916,14 @@ module.exports = {
       "decimal": 18,
       "address": "0xd4c435f5b09f855c3317c8524cb1f586e42795fa",
       "hidden": 1565701200000
+    },
+
+    "USDT": {
+      "name": "Tether USD",
+      "decimal": 6,
+      "symbol" : "USDT",
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "hidden": 1565960400000
     }
 
   },
