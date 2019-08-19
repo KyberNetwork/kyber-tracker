@@ -204,7 +204,8 @@ module.exports = {
       "name": "AdEx",
       "address": "0x4470BB87d77b963A013DB939BE332f927f2b992e",
       "decimal": 4,
-      "symbol": "ADX"
+      "symbol": "ADX",
+      "delisted": true
     },
     "AST": {
       "name": "AirSwap",
@@ -216,7 +217,8 @@ module.exports = {
       "name": "Ripio Credit Network",
       "decimal": 18,
       "address": "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
-      "symbol": "RCN"
+      "symbol": "RCN",
+      "delisted": true
     },
     "ZIL": {
       "name": "Zilliqa",
@@ -564,7 +566,8 @@ module.exports = {
       "address": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
       "symbol": "WINGS",
       "decimal": 18,
-      "hidden": 1532336400000
+      // "hidden": 1532336400000
+      "delisted": true 
     },
     "MTL": {
       "name": "Metal",
@@ -578,7 +581,8 @@ module.exports = {
       "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
       "symbol": "WABI",
       "decimal": 18,
-      "hidden": 1532336400000
+      // "hidden": 1532336400000
+      "delisted": true 
     },
     "NULS": {
       "name": "Nuls",
@@ -685,21 +689,24 @@ module.exports = {
       "symbol" : "SSP",
       "decimal": 4,
       "address": "0x624d520BAB2E4aD83935Fa503fB130614374E850",
-      "hidden": 1542027600000       
+      // "hidden": 1542027600000     
+      "delisted": true   
     },
     "PRO":{
       "name": "Propy",
       "symbol" : "PRO",
       "decimal": 8,
       "address": "0x226bb599a12C826476e3A771454697EA52E9E220",
-      "hidden": 1542027600000       
+      // "hidden": 1542027600000    
+      "delisted": true    
     },
     "OCN":{
       "name": "OCoin",
       "symbol" : "OCN",
       "decimal": 18,
       "address": "0x4092678e4E78230F46A1534C0fbc8fA39780892B",
-      "hidden": 1542027600000       
+      // "hidden": 1542027600000   
+      "delisted": true     
     },
     
     "EKO":{
