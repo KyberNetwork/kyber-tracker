@@ -304,7 +304,8 @@ module.exports = {
       "address": "0xffa93aacf49297d51e211817452839052fdfb961",
       "symbol": "DCC",
       "decimal": 18,
-      "hidden": 1540731600000
+      "hidden": 1540731600000,
+      "delisted": true
     },
     "ENJ": {
       "name": "EnjinCoin",
@@ -336,7 +337,8 @@ module.exports = {
       "name": "Olympus Labs",
       "address": "0x263c618480dbe35c300d8d5ecda19bbb986acaed",
       "symbol": "MOT",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "ICX": {
       "name": "ICON",
@@ -349,7 +351,8 @@ module.exports = {
       "name": "ElectrifyAsia",
       "address": "0xd49ff13661451313ca1553fd6954bd1d9b6e02b9",
       "symbol": "ELEC",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "IOST": {
       "name": "IOStoken",
@@ -464,13 +467,15 @@ module.exports = {
       "address": "0x3136ef851592acf49ca4c825131e364170fa32b3",
       "symbol": "COFI",
       "decimal": 18,
-      "hidden": 1533214800000
+      "hidden": 1533214800000,
+      "delisted": true
     },
     "BBO": {
       "name": "Bigbom",
       "address": "0x84f7c44b6fed1080f647e354d552595be2cc602f",
       "symbol": "BBO",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "POLY": {
       "name": "Polymath",
@@ -642,7 +647,8 @@ module.exports = {
       "symbol" : "MAS",
       "decimal": 18,
       "address": "0x23ccc43365d9dd3882eab88f43d515208f832430",   
-      "hidden": 1537963200000           
+      "hidden": 1537963200000,
+      "delisted": true           
     },
 
     "KCC":{
@@ -737,7 +743,8 @@ module.exports = {
       "symbol" : "DTH",
       "decimal": 18,
       "address": "0x5adc961D6AC3f7062D2eA45FEFB8D8167d44b190",
-      "hidden": 1542891600000       
+      "hidden": 1542891600000,
+      "delisted": true    
     },
     "TVND":{
       "name": "TrueVND",
@@ -775,14 +782,16 @@ module.exports = {
       "symbol" : "TTC",
       "decimal": 18,
       "address": "0x9389434852b94bbad4c8afed5b7bdbc5ff0c2275",
-      "hidden": 1546088400000       
+      "hidden": 1546088400000,
+      "delisted": true    
     },
     "INF":{
       "name": "InfinitusTokens",
       "symbol" : "INF",
       "decimal": 18,
       "address": "0x00e150d741eda1d49d341189cae4c08a73a49c95",
-      "hidden": 1545048000000       
+      "hidden": 1545048000000,
+      "delisted": true     
     },
     "USDC":{
       "name": "USD Coin",
