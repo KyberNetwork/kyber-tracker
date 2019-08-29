@@ -371,7 +371,8 @@ module.exports = {
       "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
       "symbol": "WAX",
       "decimal": 8,
-      "hidden": 1531486800000
+      // "hidden": 1531486800000
+      "delisted": true
     },
     "ABT": {
       "name": "ArcBlock",
