@@ -388,8 +388,8 @@ module.exports = BaseService.extends({
 
     const makeSql = (side, callback) => {
       const sql = `select ${side}_reserve as address,
-        sum(tx_value_eth) as eth,
-        sum(tx_value_usd) as usd,
+        IFNULL(sum(tx_value_eth),0) as eth,
+        IFNULL(sum(tx_value_usd),0) as usd,
         '${side}' as type
       from kyber_trade
       where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
@@ -445,8 +445,8 @@ module.exports = BaseService.extends({
           let valEth = new BigNumber(0);
           let valUsd = new BigNumber(0);
           takerAndMaker.map(i => {
-            valEth = valEth.plus(i.eth.toString())
-            valUsd = valUsd.plus(i.usd.toString())
+            valEth = valEth.plus(i.eth ? i.eth.toString() : 0)
+            valUsd = valUsd.plus(i.usd ? i.usd.toString() : 0)
           })
           reserves.push({
             address: r,
