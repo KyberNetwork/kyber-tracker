@@ -953,7 +953,7 @@ module.exports = {
 
 
     "TKN": {
-      "name": "TokenCard",
+      "name": "Monolith",
       "symbol" : "TKN",
       "decimal": 8,
       "address": "0xaaaf91d9b90df800df4f55c205fd6989c977e73a",
