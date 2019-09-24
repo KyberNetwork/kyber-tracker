@@ -948,6 +948,23 @@ module.exports = {
       "decimal": 18,
       "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
       "hidden": 1565960400000
+    },
+
+
+
+    "TKN": {
+      "name": "TokenCard",
+      "symbol" : "TKN",
+      "decimal": 8,
+      "address": "0xaaaf91d9b90df800df4f55c205fd6989c977e73a",
+      "hidden": 1569330000000
+    },
+    "BTU": {
+      "name": "BTU Protocol",
+      "symbol" : "BTU",
+      "decimal": 18,
+      "address": "0xb683d83a532e2cb7dfa5275eed3698436371cc9f",
+      "hidden": 1569330000000
     }
 
   },
