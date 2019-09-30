@@ -21,7 +21,7 @@ module.exports = {
 
     if(!tokenData) return true
 
-    if(['ETH', 'WETH', 'KNC', 'PT'].indexOf(tokenData.symbol) >= 0){
+    if(['ETH', 'WETH', 'KCC', 'PT'].indexOf(tokenData.symbol) >= 0){
       return false
     }
 
