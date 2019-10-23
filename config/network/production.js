@@ -64,7 +64,8 @@ module.exports = {
     "0xA467b88BBF9706622be2784aF724C4B44a9d26F4": "Automated price reserve (KNC)",
     "0x1c802020eea688e2b05936cdb98b8e6894acc1c2": "ABYSS APR",
     "0x1670dfb52806de7789d5cf7d5c005cf7083f9a5d": "USDC APR",
-    "0x485c4ec93d18ebd16623d455567886475ae28d04": "WBTC APR"
+    "0x485c4ec93d18ebd16623d455567886475ae28d04": "WBTC APR",
+    "0x95f1f428485Bd41729938D620af61718Ea9B1F9E": "Axe Capital"
   },
 
   "ETH": {
