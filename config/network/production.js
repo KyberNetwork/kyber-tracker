@@ -489,7 +489,8 @@ module.exports = {
       "name": "Cred",
       "address": "0xfe5f141bf94fe84bc28ded0ab966c16b17490657",
       "symbol": "LBA",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "EDU": {
       "name": "EduCoin",
@@ -889,7 +890,8 @@ module.exports = {
       "symbol" : "NPXS",
       "decimal": 18,
       "address": "0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3",
-      "hidden": 1560258000000 
+      "hidden": 1560258000000,
+      "delisted": true
     },
     "GEN": {
       "name": "DAOStack",
