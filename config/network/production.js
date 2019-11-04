@@ -243,6 +243,16 @@ module.exports = {
         "0x44aef3101432a64d1aa16388f4b9b352b09f42a9": '1'
       }
     },
+    "SAI": {
+      "name": "Old Dai Stablecoin",
+      "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+      "symbol": "SAI",
+      "decimal": 18,
+      "reserves": {
+        "0x44aef3101432a64d1aa16388f4b9b352b09f42a9": '1'
+      },
+      "delisted": true
+    },
     "AION": {
       "name": "AION",
       "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
