@@ -110,9 +110,14 @@ const getTokensFromApis = callback => {
         return callback(null, standardizeReserveTokenType(tokens))
       })
     })
-    .catch(err => callback(err));
+    .catch(err => {
+      console.log(err)
+      return callback(null, {})
+      // callback(err)
+    });
   } catch (error) {
     return callback(error)
+    
   }
 }
 
