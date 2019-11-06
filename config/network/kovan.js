@@ -3,7 +3,7 @@ module.exports = {
     "web3Provider":"https://kovan.infura.io",
     "ethScan": "https://kovan.etherscan.io/",
     "getRate": "https://kovan-cache.knstats.com/getRate",
-    "apis": "https://kovan-api.kyber.network"
+    "apis": "https://dev-kovan-api.knstats.com"
     // "apis": "https://api.kyber.network"
   },
   "contractAddresses": {
