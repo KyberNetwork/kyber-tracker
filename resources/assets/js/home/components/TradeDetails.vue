@@ -171,6 +171,7 @@ export default {
         return null;
       }
 
+      console.log("============= token info ", address, TOKENS_BY_ADDR)
       const tokenInfo = util.getTokenInfo(address.toLowerCase());
       return util.formatTokenAmount(amount, tokenInfo.decimal, 6);
     },
