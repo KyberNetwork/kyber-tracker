@@ -38,7 +38,7 @@ module.exports = {
   "KNC": {
     "name": "Kyber Network",
     "symbol": "KNC",
-    "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
+    "address": "0xb5034418f6cc1fd494535f2d38f770c9827f88a1",
     "decimal": 18,
     "cmcIdv2": "1982",
     "cgId": "kyber-network",
@@ -65,7 +65,7 @@ module.exports = {
     "KNC": {
       "name": "Kyber Network",
       "symbol": "KNC",
-      "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
+      "address": "0xb5034418f6cc1fd494535f2d38f770c9827f88a1",
       "decimal": 18,
       "cmcIdv2": "1982",
       "cgId": "kyber-network",

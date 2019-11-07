@@ -1,7 +1,7 @@
 FROM node:8 as build-env
 COPY . /kyber-tracker/
 WORKDIR /kyber-tracker
-RUN npm install && npm run build-prod
+RUN npm install && npm run build-kovan
 
 FROM node:8-slim
 ENV NODE_ENV=production
