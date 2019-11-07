@@ -83,24 +83,24 @@ module.exports = {
       "address": "0x4BFBa4a8F28755Cb2061c413459EE562c6B9c51b",
       "decimal": 18,
     },
-    // "SAI": {
-    //   "symbol": "SAI",
-    //   "name": "SAI",
-    //   "address": "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
-    //   "decimal": 18
-    // },
-    // "DAI": {
-    //   "symbol": "DAI",
-    //   "name": "DAI",
-    //   "address": "0x1d7e3a1a65a367db1d1d3f51a54ac01a2c4c92ff",
-    //   "decimal": 18
-    // }
+    "SAI": {
+      "symbol": "SAI",
+      "name": "SAI",
+      "address": "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
+      "decimal": 18
+    },
     "DAI": {
       "symbol": "DAI",
       "name": "DAI",
-      "address": "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
+      "address": "0x1d7e3a1a65a367db1d1d3f51a54ac01a2c4c92ff",
       "decimal": 18
     }
+    // "DAI": {
+    //   "symbol": "DAI",
+    //   "name": "DAI",
+    //   "address": "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
+    //   "decimal": 18
+    // }
   },
 
   "averageBlockTime": 15000,
