@@ -65,7 +65,7 @@
                   {{$t("trade_detail.collected_fees")}}
                 </div>
                 <div class="rate-detail-value">
-                  {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
+                  {{ getKncAmount(record.collectedFees ) }} KNC
                 </div>
                 
               </div>
@@ -74,7 +74,7 @@
                   {{$t("trade_detail.commission")}}
                 </div>
                 <div class="rate-detail-value">
-                  {{ getTokenAmount(record.commission, KNCAddr() ) }} KNC
+                  {{ getKncAmount(record.commission ) }} KNC
                 </div>
                 
               </div>
@@ -174,6 +174,12 @@ export default {
       console.log("============= token info ", address, TOKENS_BY_ADDR)
       const tokenInfo = util.getTokenInfo(address.toLowerCase());
       return util.formatTokenAmount(amount, tokenInfo.decimal, 6);
+    },
+    getKncAmount(amount) {
+      if (!amount ) {
+        return null;
+      }
+      return util.formatTokenAmount(amount, 18, 6);
     },
     getTxEtherscanLink(tx) {
       return network.endpoints.ethScan + "tx/" + tx;
