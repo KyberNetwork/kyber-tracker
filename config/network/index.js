@@ -1,9 +1,6 @@
-const mainnetSettings = require('./production');
-const stagingSettings = require('./staging');
-const ropstenSettings = require('./ropsten');
-const kovanSettings = require('./kovan');
 
 module.exports = (function(chain) {
+    console.log('____________------------____________', process.env.NODE_ENV, chain)
     try {
         const configData = require('./' + chain );
         return configData

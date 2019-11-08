@@ -7,6 +7,7 @@ const MinifyPlugin = require("babel-minify-webpack-plugin");
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 module.exports = () => {
+  console.log('__________________________', process.env.NODE_ENV)
   const minimize = process.env.NODE_ENV === 'production';
   let plugins;
   if(minimize){
