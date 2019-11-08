@@ -4,7 +4,7 @@ WORKDIR /kyber-tracker
 RUN npm install && npm run build-kovan
 
 FROM node:8-slim
-ENV NODE_ENV=production
+ENV NODE_ENV=kovan
 COPY --from=build-env /kyber-tracker /kyber-tracker
 WORKDIR /kyber-tracker
 ENTRYPOINT ["/kyber-tracker/entrypoint.sh"]
