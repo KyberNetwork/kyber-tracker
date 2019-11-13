@@ -968,6 +968,14 @@ module.exports = {
       "decimal": 18,
       "address": "0xb683d83a532e2cb7dfa5275eed3698436371cc9f",
       "hidden": 1569330000000
+    },
+
+    "RAE": {
+      "name": "Receive Access Ecosystem",
+      "symbol" : "RAE",
+      "decimal": 18,
+      "address": "0xe5a3229ccb22b6484594973a03a3851dcd948756",
+      "hidden": 1573650000000
     }
 
   },
