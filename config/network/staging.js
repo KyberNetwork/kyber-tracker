@@ -209,13 +209,22 @@ module.exports = {
         "symbol": "LINK",
         // "hidden": true
       },
-      "DAI": {
-        "name": "Dai Stablecoin",
+      "SAI": {
+        "name": "SAI Stablecoin",
         "address": "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+        "symbol": "SAI",
+        "decimal": 18,
+        // "hidden": true
+      },
+
+      "DAI": {
+        "name": "DAI Stablecoin",
+        "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
         "symbol": "DAI",
         "decimal": 18,
         // "hidden": true
       },
+
       "AION": {
         "name": "AION",
         "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
