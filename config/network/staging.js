@@ -218,7 +218,7 @@ module.exports = {
       },
 
       "DAI": {
-        "name": "Dai Stablecoin",
+        "name": "DAI Stablecoin",
         "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
         "symbol": "DAI",
         "decimal": 18,
