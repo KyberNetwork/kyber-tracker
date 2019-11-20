@@ -896,6 +896,12 @@ module.exports = {
         "decimal": 18,
         "address": "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892"    
       },
+      "EDO":{
+        "name": "Eidoo",
+        "symbol" : "EDO",
+        "decimal": 18,
+        "address": "0xced4e93198734ddaff8492d525bd258d49eb388e"    
+      },
     },
     "averageBlockTime": 15000,
     "averageCGQuery": 13000,
