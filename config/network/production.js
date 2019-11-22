@@ -594,14 +594,26 @@ module.exports = {
       "decimal": 8,
       "hidden": 1532336400000
     },
+
+
     "WABI": {
       "name": "WaBi",
       "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
       "symbol": "WABI",
       "decimal": 18,
-      // "hidden": 1532336400000
-      "delisted": true 
+      "hidden": 1574427600000
+      // "delisted": true 
     },
+    "EDO": {
+      "name": "Eidoo",
+      "address": "0xced4e93198734ddaff8492d525bd258d49eb388e",
+      "symbol": "EDO",
+      "decimal": 18,
+      "hidden": 1574427600000
+      // "delisted": true 
+    },
+
+
     "NULS": {
       "name": "Nuls",
       "address": "0xb91318f35bdb262e9423bc7c7c2a3a93dd93c92c",
