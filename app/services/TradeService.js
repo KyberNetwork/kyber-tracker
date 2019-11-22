@@ -430,7 +430,7 @@ module.exports = BaseService.extends({
       const reserves = [];
 
       arrayTotalReserve
-      .filter(r => (r !== '0x0000000000000000000000000000000000000000'))
+      .filter(r => (r !== '0x0000000000000000000000000000000000000000' && r !==  "0x964f35fae36d75b1e72770e244f6595b68508cf5" && r !== "0x818e6fecd516ecc3849daf6845e3ec868087b755" ))
       .map(r => {
         if(!totalReserveVol[r]) {
           reserves.push({

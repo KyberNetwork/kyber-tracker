@@ -68,7 +68,10 @@ module.exports = {
     "0x95f1f428485Bd41729938D620af61718Ea9B1F9E": "Axe Capital",
     "0xa107dfa919c3f084a7893a260b99586981beb528": "SNX APR reserve",
     "0xcf1394c5e2e879969fdb1f464ce1487147863dcb": "Oasis bridge reserve - v2",
-    "0xAA14DCAA0AdbE79cBF00edC6cC4ED17ed39240AC": "DAO stack APR reserve"
+    "0xAA14DCAA0AdbE79cBF00edC6cC4ED17ed39240AC": "DAO stack APR reserve",
+
+    "0xb45C8956a080d336934cEE52A35D4dbABF025b6F": "Maker APR reserve",
+    "0x05461124c86c0ad7c5d8e012e1499fd9109ffb7d": "Gnosis APR reserve"
   },
 
   "ETH": {
