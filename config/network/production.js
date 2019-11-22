@@ -65,7 +65,10 @@ module.exports = {
     "0x1c802020eea688e2b05936cdb98b8e6894acc1c2": "ABYSS APR",
     "0x1670dfb52806de7789d5cf7d5c005cf7083f9a5d": "USDC APR",
     "0x485c4ec93d18ebd16623d455567886475ae28d04": "WBTC APR",
-    "0x95f1f428485Bd41729938D620af61718Ea9B1F9E": "Axe Capital"
+    "0x95f1f428485Bd41729938D620af61718Ea9B1F9E": "Axe Capital",
+    "0xa107dfa919c3f084a7893a260b99586981beb528": "SNX APR reserve",
+    "0xcf1394c5e2e879969fdb1f464ce1487147863dcb": "Oasis bridge reserve - v2",
+    "0xAA14DCAA0AdbE79cBF00edC6cC4ED17ed39240AC": "DAO stack APR reserve"
   },
 
   "ETH": {
