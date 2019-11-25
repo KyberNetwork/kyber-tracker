@@ -71,7 +71,9 @@ module.exports = {
     "0xAA14DCAA0AdbE79cBF00edC6cC4ED17ed39240AC": "DAO stack APR reserve",
 
     "0xb45C8956a080d336934cEE52A35D4dbABF025b6F": "Maker APR reserve",
-    "0x05461124c86c0ad7c5d8e012e1499fd9109ffb7d": "Gnosis APR reserve"
+    "0x05461124c86c0ad7c5d8e012e1499fd9109ffb7d": "Gnosis APR reserve",
+
+    "0x4Cb01bd05E4652CbB9F312aE604f4549D2bf2C99": "Synth USD APR reserve" 
   },
 
   "ETH": {
@@ -1001,6 +1003,14 @@ module.exports = {
       "decimal": 18,
       "address": "0xe5a3229ccb22b6484594973a03a3851dcd948756",
       "hidden": 1573650000000
+    },
+
+    "SUSD": {
+      "name": "Synth USD",
+      "symbol" : "SUSD",
+      "decimal": 18,
+      "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
+      "hidden": 1574686800000
     }
 
   },
