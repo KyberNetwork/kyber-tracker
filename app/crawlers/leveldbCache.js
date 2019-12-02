@@ -20,7 +20,10 @@ const conversionRateAbi = require('../../config/abi/conversion_rate');
 const db = level(path.join(__dirname, '../../db/level'));
 const LOCAL_CMC_DATA = {};
 const MAXIMUN_RESERVES = 1000;
-const internalContract = new web3.eth.Contract(internalAbi, network.contractAddresses.internal)
+
+const currentInternalAddr = network.contractAddresses.internal && network.contractAddresses.internal.length ? network.contractAddresses.internal[network.contractAddresses.internal.length - 1] : network.contractAddresses.internal
+console.log("************ current addr ", currentInternalAddr)
+const internalContract = new web3.eth.Contract(internalAbi, currentInternalAddr)
 
 function getBlockTimestamp (blockNumber, callback) {
   const key = getBlockTimestampKey(blockNumber);
