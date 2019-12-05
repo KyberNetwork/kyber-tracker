@@ -69,11 +69,16 @@ module.exports = {
     "0xa107dfa919c3f084a7893a260b99586981beb528": "SNX APR reserve",
     "0xcf1394c5e2e879969fdb1f464ce1487147863dcb": "Oasis bridge reserve - v2",
     "0xAA14DCAA0AdbE79cBF00edC6cC4ED17ed39240AC": "DAO stack APR reserve",
-
     "0xb45C8956a080d336934cEE52A35D4dbABF025b6F": "Maker APR reserve",
     "0x05461124c86c0ad7c5d8e012e1499fd9109ffb7d": "Gnosis APR reserve",
+    "0x4Cb01bd05E4652CbB9F312aE604f4549D2bf2C99": "Synth USD APR reserve" ,
 
-    "0x4Cb01bd05E4652CbB9F312aE604f4549D2bf2C99": "Synth USD APR reserve" 
+    "0x54A4a1167B004b004520c605E3f01906f683413d": "Uniswap bridge reserve v3",
+    "0x3480e12b6c2438e02319e34b4c23770679169190": "TKN reserve",
+    "0x08030715560a146e306b87ca93fd618bb2a80363": "BTU reserve",
+    "0x751eea622edd1e3d768c18afbcaec7dce7750c65": "RAE reserve",
+    "0x1833ad67362249823515b59a8aa8b4f6b4358d1b": "MYB reserve"
+
   },
 
   "ETH": {
