@@ -1016,6 +1016,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
       "hidden": 1574686800000
+    },
+
+    "SPIKE": {
+      "name": "Spiking",
+      "symbol" : "SPIKE",
+      "decimal": 10,
+      "address": "0xa7fc5d2453e3f68af0cc1b78bcfee94a1b293650",
+      "hidden": 1575637200000
     }
 
   },
