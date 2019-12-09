@@ -172,6 +172,10 @@ export default {
       }
 
       const tokenInfo = util.getTokenInfo(address.toLowerCase());
+      if(!tokenInfo || !tokenInfo.decimal){
+        return "--"
+      }
+
       return util.formatTokenAmount(amount, tokenInfo.decimal, 6);
     },
     getTxEtherscanLink(tx) {
