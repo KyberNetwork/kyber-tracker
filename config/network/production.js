@@ -1024,7 +1024,15 @@ module.exports = {
       "decimal": 10,
       "address": "0xa7fc5d2453e3f68af0cc1b78bcfee94a1b293650",
       "hidden": 1575637200000
-    }
+    },
+
+    "SAN": {
+      "name": "Santiment",
+      "symbol" : "SAN",
+      "decimal": 18,
+      "address": "0x7c5a0ce9267ed19b22f8cae653f198e3e8daf098",
+      "hidden": 1575896400000
+    },
 
   },
 
