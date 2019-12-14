@@ -1035,6 +1035,14 @@ module.exports = {
       "hidden": 1575896400000
     },
 
+    "USDS": {
+      "name": "StableUSD",
+      "symbol" : "USDS",
+      "decimal": 6,
+      "address": "0xa4bdb11dc0a2bec88d24a3aa1e6bb17201112ebe",
+      "hidden": 1576328400000
+    },
+
   },
 
   "preburntAmount": 48.61873337,
