@@ -1043,6 +1043,14 @@ module.exports = {
       "hidden": 1576328400000
     },
 
+    "NEXXO": {
+      "name": "Nexxo",
+      "symbol" : "NEXXO",
+      "decimal": 18,
+      "address": "0x278a83b64c3e3e1139f8e8a52d96360ca3c69a3d",
+      "hidden": 1576846800000
+    },
+
   },
 
   "preburntAmount": 48.61873337,
