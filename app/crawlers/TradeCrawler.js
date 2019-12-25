@@ -428,6 +428,7 @@ class TradeCrawler {
       const ethAddress = networkConfig.ETH.address.toLowerCase();
       if (record.takerTokenAddress === ethAddress) {
         record.volumeEth = Utils.fromWei(record.takerTokenAmount);
+        record.sourceReserve = null
         record.sourceOfficial = 1
       } else {
         if(!record.sourceReserve || (record.sourceReserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.sourceReserve] == '1')){
@@ -440,6 +441,7 @@ class TradeCrawler {
       
       if (record.makerTokenAddress === ethAddress) {
         record.volumeEth = Utils.fromWei(record.makerTokenAmount);
+        record.destReserve = null
         record.destOfficial = 1
       } else {
         if(!record.destReserve ||  (record.destReserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.destReserve] == '1')){
@@ -452,6 +454,17 @@ class TradeCrawler {
       record.txValueEth = record.volumeEth
       if(record.numberBurnEvent > 1){
         record.volumeEth = record.volumeEth * record.numberBurnEvent
+      } else if( record.blockNumber >= networkConfig.startPermissionlessReserveBlock ) {
+        let numberMultipleVol = 0
+        if(record.sourceReserve && !networkConfig.zeroFeeReserve[record.sourceReserve]){
+          numberMultipleVol = numberMultipleVol + 1
+        }
+        if(record.destReserve && !networkConfig.zeroFeeReserve[record.destReserve]){
+          numberMultipleVol = numberMultipleVol + 1
+        }
+        if(numberMultipleVol > 1){
+          record.volumeEth = record.volumeEth * numberMultipleVol
+        }
       }
 
 

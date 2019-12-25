@@ -21,6 +21,12 @@ module.exports = {
       "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
       "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
     },
+
+    "ignoreReserveVolume": { 
+      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": "WETH",
+      "0x094c875704c14783049ddf8136e298b3a099c446": "PT"
+    },
+
     "reserves": {
 
     },
