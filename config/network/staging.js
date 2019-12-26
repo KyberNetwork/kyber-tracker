@@ -23,8 +23,8 @@ module.exports = {
     },
 
     "ignoreReserveVolume": { 
-      "0x57f8160e1c59D16C01BbE181fD94db4E56b60495": "WETH",
-      "0x29382a4c3b22a39B83c76F261439bBCC78c72dd0": "PT"
+      "0x57f8160e1c59d16c01bbe181fd94db4e56b60495": "WETH",
+      "0x29382a4c3b22a39b83c76f261439bbcc78c72dd0": "PT"
     },
 
     "reserves": {
