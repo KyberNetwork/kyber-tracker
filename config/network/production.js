@@ -1057,6 +1057,14 @@ module.exports = {
       "hidden": 1576846800000
     },
 
+    "EKG": {
+      "name": "Ekon Gold",
+      "symbol" : "EKG",
+      "decimal": 18,
+      "address": "0x6a9b3e36436b7abde8c4e2e2a98ea40455e615cf",
+      "hidden": 1577970000000
+    }
+
   },
 
   "preburntAmount": 48.61873337,
