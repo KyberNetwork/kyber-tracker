@@ -22,6 +22,11 @@ module.exports = {
     "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
   },
 
+  "ignoreReserveVolume": { 
+    "0x57f8160e1c59d16c01bbe181fd94db4e56b60495": "WETH",
+    "0x2295fc6bc32cd12fdbb852cff4014ceac6d79c10": "PT"
+  },
+
   "reserves": {
     "0x9d27a2d71ac44e075f764d5612581e9afc1964fd": "Orderbook reserve",
     "0xba92981e049a79de1b79c2396d48063e02f47239": "Bancor hybrid reserve",
