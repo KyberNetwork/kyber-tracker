@@ -78,7 +78,13 @@ module.exports = {
     "0x3480e12b6c2438e02319e34b4c23770679169190": "TKN APR reserve",
     "0x08030715560a146e306b87ca93fd618bb2a80363": "BTU APR reserve",
     "0x751eea622edd1e3d768c18afbcaec7dce7750c65": "RAE APR reserve",
-    "0x1833ad67362249823515b59a8aa8b4f6b4358d1b": "MYB APR reserve"
+    "0x1833ad67362249823515b59a8aa8b4f6b4358d1b": "MYB APR reserve",
+
+    "0x053aa84fcc676113a57e0ebb0bd1913839874be4": "Bancor Reserve",
+    "0xa9742ee9a5407f4c2f8a49f65e3a440f3694960a": "Santiment Reserve",
+    "0x7e2fd015616263add31a2acc2a437557cee80fc4": "UPP Reserve",
+    "0xc6c8bce5e9383df025f982d6bbd84163957a6979": "Nexxo reserve",
+    "0x6b84dbd29643294703dbabf8ed97cdef74edd227": "Sapien"
 
   },
 
