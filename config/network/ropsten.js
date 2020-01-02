@@ -23,7 +23,7 @@ module.exports = {
     "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
   },
 
-  "zeroFeeReserve": { 
+  "ignoreReserveVolume": { 
     
   },
   "reserves": {

@@ -456,10 +456,10 @@ class TradeCrawler {
         record.volumeEth = record.volumeEth * record.numberBurnEvent
       } else if( record.blockNumber >= networkConfig.startPermissionlessReserveBlock ) {
         let numberMultipleVol = 0
-        if(record.sourceReserve && !networkConfig.zeroFeeReserve[record.sourceReserve]){
+        if(record.sourceReserve && !networkConfig.ignoreReserveVolume[record.sourceReserve]){
           numberMultipleVol = numberMultipleVol + 1
         }
-        if(record.destReserve && !networkConfig.zeroFeeReserve[record.destReserve]){
+        if(record.destReserve && !networkConfig.ignoreReserveVolume[record.destReserve]){
           numberMultipleVol = numberMultipleVol + 1
         }
         if(numberMultipleVol > 1){
