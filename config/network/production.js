@@ -1068,6 +1068,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x6a9b3e36436b7abde8c4e2e2a98ea40455e615cf",
       "hidden": 1577970000000
+    },
+
+    "ANT": {
+      "name": "Aragon",
+      "symbol" : "ANT",
+      "decimal": 18,
+      "address": "0x960b236A07cf122663c4303350609A66A7B288C0",
+      "hidden": 1578488400000
     }
 
   },
