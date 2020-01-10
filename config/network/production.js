@@ -89,7 +89,9 @@ module.exports = {
     "0xa9742ee9a5407f4c2f8a49f65e3a440f3694960a": "Santiment Reserve",
     "0x7e2fd015616263add31a2acc2a437557cee80fc4": "UPP Reserve",
     "0xc6c8bce5e9383df025f982d6bbd84163957a6979": "Nexxo reserve",
-    "0x6b84dbd29643294703dbabf8ed97cdef74edd227": "Sapien"
+    "0x6b84dbd29643294703dbabf8ed97cdef74edd227": "Sapien",
+
+    "0x1fe867bfe9cbe0045467605b959a355223e3885d": "Bancor's Bridge Reserve"
 
   },
 
