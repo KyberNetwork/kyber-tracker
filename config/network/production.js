@@ -78,6 +78,7 @@ module.exports = {
     "0xb45C8956a080d336934cEE52A35D4dbABF025b6F": "MKR APR reserve",
     "0x05461124c86c0ad7c5d8e012e1499fd9109ffb7d": "GNO APR reserve",
     "0x4Cb01bd05E4652CbB9F312aE604f4549D2bf2C99": "Synth USD APR reserve" ,
+    "0x7a3370075a54b187d7bd5dcebf0ff2b5552d4f7d": "SCP reserve",
 
     "0x54A4a1167B004b004520c605E3f01906f683413d": "Uniswap bridge reserve v3",
     "0x3480e12b6c2438e02319e34b4c23770679169190": "TKN APR reserve",
