@@ -1086,6 +1086,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x301C755bA0fcA00B1923768Fffb3Df7f4E63aF31",
       "hidden": 1579611600000
+    },
+
+    "AMPL": {
+      "name": "Ampleforth",
+      "symbol" : "AMPL",
+      "decimal": 9,
+      "address": "0xD46bA6D942050d489DBd938a2C909A5d5039A161",
+      "hidden": 1580389200000
     }
 
   },
