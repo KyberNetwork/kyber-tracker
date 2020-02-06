@@ -1095,8 +1095,15 @@ module.exports = {
       "decimal": 9,
       "address": "0xD46bA6D942050d489DBd938a2C909A5d5039A161",
       "hidden": 1580389200000
-    }
+    },
 
+    "TKX": {
+      "name": "Tokenize Xchange",
+      "symbol" : "TKX",
+      "decimal": 8,
+      "address": "0x667102BD3413bFEaa3Dffb48fa8288819E480a88",
+      "hidden": 1580994000000
+    },
   },
 
   "preburntAmount": 48.61873337,
