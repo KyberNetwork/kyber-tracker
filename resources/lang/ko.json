@@ -15,6 +15,13 @@
     "see_all": "모두 보기",
     "token_trade_history": "토큰 거래 기록"
   },
+
+  "info_bar": {
+    "info_text": "KNC trading contest goes live with $5,000 prize to be won",
+    "join": "Join Now"
+  },
+
+  
   "page_title": {
     "home": "홈",
     "trades": "거래",

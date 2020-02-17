@@ -15,6 +15,13 @@
     "see_all": "查看全部",
     "token_trade_history": "代币交易历史"
   },
+
+  "info_bar": {
+    "info_text": "KNC trading contest goes live with $5,000 prize to be won",
+    "join": "Join Now"
+  },
+
+  
   "page_title": {
     "home": "主页",
     "trades": "交易",
