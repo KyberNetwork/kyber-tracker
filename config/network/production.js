@@ -1106,6 +1106,14 @@ module.exports = {
       "address": "0x667102BD3413bFEaa3Dffb48fa8288819E480a88",
       "hidden": 1580994000000
     },
+
+    "MET": {
+      "name": "Metronome",
+      "symbol" : "MET",
+      "decimal": 18,
+      "address": "0xa3d58c4e56fedcae3a7c43a725aee9a71f0ece4e",
+      "hidden": 1581944400000
+    },
   },
 
   "preburntAmount": 48.61873337,
