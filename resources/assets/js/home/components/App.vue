@@ -324,7 +324,7 @@
           <div class="btn-group">
             <button type="button" class="btn btn-primary border-right-white">{{ $t('info_bar.info_text') }}</button>
             <button type="button" class="btn btn-primary clearfix">
-              <a href="https://kyberswap.com/promo/knc?utm_source=ks-web&amp;utm_medium=notibar&amp;utm_campaign=knc-contest" target="_blank">{{ $t('info_bar.join') }} &nbsp;<img class="search" src="/images/ic-arrow-forward.svg" /></a></button>
+              <a href="https://kyberswap.com/promo/knc?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=knc-contest" target="_blank">{{ $t('info_bar.join') }} &nbsp;<img class="search" src="/images/ic-arrow-forward.svg" /></a></button>
               
             <button type="button" class="btn btn-primary close-btn" @click="closeInfoBar()"><img class="search" src="/images/ic-close.svg" /></button>
           </div>
