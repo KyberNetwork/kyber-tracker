@@ -320,6 +320,16 @@
       </b-navbar> -->
 
       <div class="container">
+        <div v-if="isShowInfoBar" class="info-bar d-flex justify-content-center">
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary border-right-white">{{ $t('info_bar.info_text') }}</button>
+            <button type="button" class="btn btn-primary clearfix">
+              <a href="https://kyberswap.com/promo/knc?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=knc-contest" target="_blank">{{ $t('info_bar.join') }} &nbsp;<img class="search" src="/images/ic-arrow-forward.svg" /></a></button>
+              
+            <button type="button" class="btn btn-primary close-btn" @click="closeInfoBar()"><img class="search" src="/images/ic-close.svg" /></button>
+          </div>
+          <!-- <span class="label label-primary">KNC trading contest goes live with $5,000 prize to be won&nbsp;<a href="https://kyberswap.com/promo/knc?utm_source=ks-web&amp;utm_medium=notibar&amp;utm_campaign=knc-contest"><button type="button" class="btn btn-primary">Join Now</button></a></span> -->
+        </div>
         <div class="row pt-40">
           <router-view></router-view>
         </div>
@@ -419,6 +429,7 @@ export default {
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
+      isShowInfoBar: true,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
@@ -485,6 +496,9 @@ export default {
         this.$refs.headingInner.style.transform = `translate(-0px)`
         return
       }
+    },
+    closeInfoBar(){
+      this.isShowInfoBar = false
     },
     getLanguage() {
       if (

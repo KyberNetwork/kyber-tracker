@@ -136,6 +136,30 @@ a {
   bottom: 10;
 }
 
+.info-bar{
+  button{
+    border-color: #215bb2;
+    background-color: #215bb2;
+    a{
+      color: white !important;
+    text-decoration:none;
+    }
+    a:hover{
+      color: white !important;
+    }
+  }
+  .border-right-white{
+    // border-right: solid 1px #ffffff !important;
+    border-right: 1.5px solid #376ab8 !important;
+  }
+  .close-btn{
+    background-color: #376ab8;
+    border-color: #376ab8;
+  }
+  
+  
+}
+
 .content-wrapper{
   .search-colapse{
     // margin: auto;

@@ -16,6 +16,10 @@
     "see_all": "See All",
     "token_trade_history": "Token Trading History"
   },
+  "info_bar": {
+    "info_text": "KNC trading contest goes live with $5,000 prize to be won",
+    "join": "Join Now"
+  },
 
   "page_title": {
     "home": "Home",
