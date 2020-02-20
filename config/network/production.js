@@ -215,7 +215,8 @@ module.exports = {
       "name": "Enigma",
       "address": "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4",
       "symbol": "ENG",
-      "decimal": 8
+      "decimal": 8,
+      "delisted": true
     },
     "SALT": {
       "name": "Salt",
@@ -1113,6 +1114,14 @@ module.exports = {
       "decimal": 18,
       "address": "0xa3d58c4e56fedcae3a7c43a725aee9a71f0ece4e",
       "hidden": 1581944400000
+    },
+
+    "MFG": {
+      "name": "SyncFab Smart Manufacturing Blockchain",
+      "symbol" : "MFG",
+      "decimal": 18,
+      "address": "0x6710c63432A2De02954fc0f851db07146a6c0312",
+      "hidden": 1582203600000
     },
   },
 
