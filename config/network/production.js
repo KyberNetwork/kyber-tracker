@@ -91,7 +91,7 @@ module.exports = {
     "0xc6c8bce5e9383df025f982d6bbd84163957a6979": "Nexxo reserve",
     "0x6b84dbd29643294703dbabf8ed97cdef74edd227": "Sapien",
 
-    "0x1fe867bfe9cbe0045467605b959a355223e3885d": "Bancor's Bridge Reserve",
+    "0x1fe867bfe9cbe0045467605b959a355223e3885d": "Bancor Bridge Reserve",
     "0x31e085afd48a1d6e51cc193153d625e8f0514c7f": "Uniswap bridge reserve v4",
 
     "0x1e158c0e93c30d24e918ef83d1e0be23595c3c0f": "Oasis bridge reserve v3"
