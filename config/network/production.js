@@ -94,8 +94,8 @@ module.exports = {
     "0x1fe867bfe9cbe0045467605b959a355223e3885d": "Bancor Bridge Reserve",
     "0x31e085afd48a1d6e51cc193153d625e8f0514c7f": "Uniswap bridge reserve v4",
 
-    "0x1e158c0e93c30d24e918ef83d1e0be23595c3c0f": "Oasis bridge reserve v3"
-
+    "0x1e158c0e93c30d24e918ef83d1e0be23595c3c0f": "Oasis bridge reserve v3",
+    "0x3398d35d6e9941216c464a64658b707262ac0e2d": "OneBit Quant"
   },
 
   "ETH": {
