@@ -58,6 +58,7 @@
     "sota-core": "2.0.19",
     "superagent": "^3.8.2",
     "sw-precache-webpack-plugin": "^0.11.5",
+    "twitter-lite": "^0.9.4",
     "v-tooltip": "^2.0.0-rc.31",
     "vue-autosuggest": "^1.4.1",
     "vue-carousel": "^0.18.0",
