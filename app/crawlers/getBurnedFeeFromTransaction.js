@@ -6,9 +6,18 @@ const ExSession       = require('sota-core').load('common/ExSession');
 const logger          = require('sota-core').getLogger('getBurnedFeeFromTransaction');
 const request         = require('superagent');
 const BigNumber       = require('bignumber.js');
+const Twitter         = require('twitter-lite');
 
 const web3            = Utils.getWeb3Instance();
 const abiDecoder      = Utils.getKyberABIDecoder();
+const PRE_BURN = 48.61873337
+const twitClient = new Twitter({
+  subdomain: "api",
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+});
 
 module.exports = (block, tx, callback) => {
   async.auto({
@@ -92,33 +101,37 @@ function insertRecord(data, callback) {
         return next(null, null);
       }
 
-      BurnedFeeModel.add(data, next);
+      BurnedFeeModel.add(data, (err) => {
+        return next(err, data)
+      });
     }],
     commit: ['insert', (ret, next) => {
       exSession.commit(next);
-
+    }],
+    notify : ['commit', (ret, next) => {
       if (ret.existed) {
-        return;
+        return next(null)
+      }
+      if(!ret.insert){
+        return next(null)
       }
 
-      const mins = Math.floor((Date.now() / 1000 - data.blockTimestamp) / 60);
-      if (mins > 30) return;
+      const mins = Math.floor((Date.now() / 1000 - ret.insert.blockTimestamp) / 60);
+      if (mins > 30) return next(null);
 
-      const amount = new BigNumber(data.amount).div(Math.pow(10, 18));
-      if (amount.lt(100)) return;
+      const amount = new BigNumber(ret.insert.amount).div(Math.pow(10, 18));
+      if (amount.lt(100)) return next(null)
       
       let notifyGroups = (process.env.NOTIFY_GROUPS || "").split(";");
-      if (!notifyGroups || !notifyGroups.length) return;
+      if (!notifyGroups || !notifyGroups.length) return next(null);
 
-      const link = `https://etherscan.io/tx/${data.tx}`;
-
+      const link = `https://etherscan.io/tx/${ret.insert.tx}`;
       const text = encodeURIComponent(`${amount.toFormat(1)} KNC was burnt just ${mins} minutes ago ${link}`);
 
       const botToken = process.env.TRACKER_BOT_TOKEN;
       const sanityLog = (e) => {
         return JSON.stringify(e).replace(botToken, "TRACKER_BOT_TOKEN");
       };
-
       notifyGroups.forEach((group) => {
         if (!group) return;
         try {
@@ -136,6 +149,29 @@ function insertRecord(data, callback) {
           logger.error(sanityLog(e));
         }
       });
+
+      BurnedFeeModel.sum('amount', {
+        where: '1',
+        params: []
+      }, (err, totalBurn) => {
+        if(err){
+          logger.info(err);
+        }
+
+        const bigTotal = new BigNumber(totalBurn.toString()).div(Math.pow(10, 18))
+        const bigPreburn = new BigNumber(PRE_BURN)
+        const rawText = `${amount.toFormat(1)} KNC was burnt just ${mins} minutes ago.\nTotal burn: ${bigTotal.plus(bigPreburn).toFormat(1)} KNC ${link}`
+        twitClient.post('statuses/update', {status: rawText})
+        .then(results => {
+          return;
+        })
+        .catch(e => {
+          console.log("twitter error: ", e)
+          return;
+        })
+      }); 
+
+      return next(null)
     }]
   }, (err, ret) => {
     exSession.destroy();
