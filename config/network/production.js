@@ -1123,6 +1123,13 @@ module.exports = {
       "address": "0x6710c63432A2De02954fc0f851db07146a6c0312",
       "hidden": 1582203600000
     },
+    "FXC": {
+      "name": "Flexacoin",
+      "symbol" : "FXC",
+      "decimal": 18,
+      "address": "0x4a57E687b9126435a9B19E4A802113e266AdeBde",
+      "hidden": 1582808400000
+    },
   },
 
   "preburntAmount": 48.61873337,
