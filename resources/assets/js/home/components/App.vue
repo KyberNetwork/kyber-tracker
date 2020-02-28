@@ -429,7 +429,7 @@ export default {
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
-      isShowInfoBar: true,
+      isShowInfoBar: false,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
