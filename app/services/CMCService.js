@@ -388,11 +388,13 @@ module.exports = BaseService.extends({
       }, (err, ret) => {
         
         if(err) return callback(err)
-        console.log("==========ret", ret)
+        
         const tokenMarketData = {
           currentPrice: ret.currentPrice.price_USD,
+          currentPriceWithETH: ret.currentPrice.price_ETH,
           // priceChange24h: marketData.price_change_24h,
-          priceChangePercentage24h: ret.change24h.change_usd_24h
+          priceChangePercentage24h: ret.change24h.change_usd_24h,
+          priceChangePercentage24hWithETH: ret.change24h.change_eth_24h
         }
 
         RedisCache.setAsync(key, JSON.stringify(tokenMarketData), CacheInfo.CGTokenMaketData.TTL);
