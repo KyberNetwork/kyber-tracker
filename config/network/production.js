@@ -1130,6 +1130,14 @@ module.exports = {
       "address": "0x4a57E687b9126435a9B19E4A802113e266AdeBde",
       "hidden": 1582808400000
     },
+
+    "UBT": {
+      "name": "UniBright",
+      "symbol" : "UBT",
+      "decimal": 8,
+      "address": "0x8400d94a5cb0fa0d041a3788e395285d61c9ee5e",
+      "hidden": 1583154000000
+    },
   },
 
   "preburntAmount": 48.61873337,
