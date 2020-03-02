@@ -936,6 +936,9 @@ module.exports = BaseService.extends({
       const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPrice.toString() : 0)
       const KNCchange24h = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24h.toString() : 0)
 
+      const KNCpriceWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPriceWithETH.toString() : 0)
+      const KNCchange24hWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24hWithETH.toString() : 0)
+
       const ETHprice = new BigNumber(ret.ethMarketData && ret.ethMarketData.currentPrice ? ret.ethMarketData.currentPrice.toString() : 0)
       const ETHchange24h = new BigNumber(ret.ethMarketData && ret.ethMarketData.priceChangePercentage24h ? ret.ethMarketData.priceChangePercentage24h.toString() : 0)
       //const volumeInETH = new BigNumber(ret.volumeEth.toString());
@@ -957,6 +960,9 @@ module.exports = BaseService.extends({
         // feeToBurn: feeToBurn.toFormat(2).toString()
         kncPrice: KNCprice.toFormat(4).toString(),
         kncChange24h: KNCchange24h.toFormat(2).toString(),
+
+        kncPriceWithEth: KNCpriceWithETH.toFormat(6).toString(),
+        kncChange24hWithEth: KNCchange24hWithETH.toFormat(2).toString(),
 
         ethPrice: ETHprice.toFormat(2).toString(),
         ethChange24h: ETHchange24h.toFormat(2).toString(),
