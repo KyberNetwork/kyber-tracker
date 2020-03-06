@@ -404,8 +404,18 @@ module.exports = {
       "name": "Storm",
       "address": "0xd0a4b8946cb52f0661273bfbc6fd0e0c75fc6433",
       "symbol": "STORM",
-      "decimal": 18
+      "decimal": 18,
+      "hidden": 1583499600000
     },
+
+    "LOOM": {
+      "name": "Loom",
+      "address": "0xa4e8c3ec456107ea67d3075bf9e3df3a75823db0",
+      "symbol": "LOOM",
+      "decimal": 18,
+      "hidden": 1583499600000
+    },
+
     "WAX": {
       "name": "Wax",
       "address": "0x39bb259f66e1c59d5abef88375979b4d20d98022",
