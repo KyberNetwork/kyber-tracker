@@ -1149,6 +1149,14 @@ module.exports = {
       "address": "0x8400d94a5cb0fa0d041a3788e395285d61c9ee5e",
       "hidden": 1583154000000
     },
+
+    "PBTC": {
+      "name": "Provable BTC",
+      "symbol" : "PBTC",
+      "decimal": 18,
+      "address": "0x5228a22e72ccc52d415ecfd199f99d0665e7733b",
+      "hidden": 1583758800000
+    },
   },
 
   "preburntAmount": 48.61873337,
