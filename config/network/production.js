@@ -1157,6 +1157,13 @@ module.exports = {
       "address": "0x5228a22e72ccc52d415ecfd199f99d0665e7733b",
       "hidden": 1583758800000
     },
+    "OGN": {
+      "name": "Origin Protocol",
+      "symbol" : "OGN",
+      "decimal": 18,
+      "address": "0x8207c1ffc5b6804f6024322ccf34f29c3541ae26",
+      "hidden": 1584018000000
+    },
   },
 
   "preburntAmount": 48.61873337,
