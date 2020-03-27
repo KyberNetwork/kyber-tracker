@@ -320,11 +320,11 @@
       </b-navbar> -->
 
       <div class="container">
-        <div v-if="isShowInfoBar" class="info-bar d-flex justify-content-center">
+        <div v-if="isShowInfoBar && Date.now() > infoBarTimeFrom && Date.now() < infoBarTimeTo" class="info-bar d-flex justify-content-center">
           <div class="btn-group">
-            <button type="button" class="btn btn-primary border-right-white">{{ $t('info_bar.info_text') }}</button>
+            <button type="button" class="btn btn-primary border-right-white">{{ infoBarMess }}</button>
             <button type="button" class="btn btn-primary clearfix">
-              <a href="https://kyberswap.com/promo/knc?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=knc-contest" target="_blank">{{ $t('info_bar.join') }} &nbsp;<img class="search" src="/images/ic-arrow-forward.svg" /></a></button>
+              <a :href="infoBarUrl" target="_blank">{{ $t('info_bar.join') }} &nbsp;<img class="search" src="/images/ic-arrow-forward.svg" /></a></button>
               
             <button type="button" class="btn btn-primary close-btn" @click="closeInfoBar()"><img class="search" src="/images/ic-close.svg" /></button>
           </div>
@@ -429,7 +429,11 @@ export default {
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
-      isShowInfoBar: false,
+      isShowInfoBar: true,
+      infoBarUrl: "https://medium.com/kyberswap/kyberswap-integrates-torus-for-super-easy-wallet-creation-and-fiat-to-crypto-on-ramps-5f780e08c038#4f92",
+      infoBarMess: "Win 3,500$ in prizes with Torus Wallet on KyberSwap.",
+      infoBarTimeFrom: 1585537200000,
+      infoBarTimeTo: 1586188740000,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
