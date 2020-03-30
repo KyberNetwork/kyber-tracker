@@ -431,7 +431,7 @@ export default {
       isOpenFee: false,
       isShowInfoBar: true,
       infoBarUrl: "https://medium.com/kyberswap/kyberswap-integrates-torus-for-super-easy-wallet-creation-and-fiat-to-crypto-on-ramps-5f780e08c038#4f92",
-      infoBarMess: "Win 3,500$ in prizes with Torus Wallet on KyberSwap.",
+      infoBarMess: "Win 3,200$ in prizes with Torus Wallet on KyberSwap.",
       infoBarTimeFrom: 1585537200000,
       infoBarTimeTo: 1586188740000,
       indexShowmore: -1,
