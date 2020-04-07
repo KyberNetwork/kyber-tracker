@@ -1164,6 +1164,14 @@ module.exports = {
       "address": "0x8207c1ffc5b6804f6024322ccf34f29c3541ae26",
       "hidden": 1584018000000
     },
+
+    "BAND": {
+      "name": "Band Protocol",
+      "symbol" : "BAND",
+      "decimal": 18,
+      "address": "0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55",
+      "hidden": 1586264400000
+    },
   },
 
   "preburntAmount": 48.61873337,
