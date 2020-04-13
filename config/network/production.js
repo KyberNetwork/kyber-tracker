@@ -1172,6 +1172,21 @@ module.exports = {
       "address": "0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55",
       "hidden": 1586264400000
     },
+
+    "RSV": {
+      "name": "Reserve",
+      "symbol" : "RSV",
+      "decimal": 18,
+      "address": "0x1c5857e110cd8411054660f60b5de6a6958cfae2",
+      "hidden": 1586782800000
+    },
+    "RSR": {
+      "name": "Reserve Rights",
+      "symbol" : "RSR",
+      "decimal": 18,
+      "address": "0x8762db106b2c2a0bccb3a80d1ed41273552616e8",
+      "hidden": 1586782800000
+    },
   },
 
   "preburntAmount": 48.61873337,
