@@ -1187,6 +1187,14 @@ module.exports = {
       "address": "0x8762db106b2c2a0bccb3a80d1ed41273552616e8",
       "hidden": 1586782800000
     },
+
+    "PNK": {
+      "name": "Kleros",
+      "symbol" : "PNK",
+      "decimal": 18,
+      "address": "0x93ed3fbe21207ec2e8f2d3c3de6e058cb73bc04d",
+      "hidden": 1587646800000
+    },
   },
 
   "preburntAmount": 48.61873337,
