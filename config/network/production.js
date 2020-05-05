@@ -1195,6 +1195,14 @@ module.exports = {
       "address": "0x93ed3fbe21207ec2e8f2d3c3de6e058cb73bc04d",
       "hidden": 1587646800000
     },
+
+    "GHT": {
+      "name": "Global Human Trust",
+      "symbol" : "GHT",
+      "decimal": 18,
+      "address": "0xbe30f684d62c9f7883a75a29c162c332c0d98f23",
+      "hidden": 1588683600000
+    },
   },
 
   "preburntAmount": 48.61873337,
