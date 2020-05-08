@@ -466,7 +466,7 @@ module.exports = BaseService.extends({
     async.parallel({
       currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
       tradedListTokens: _next => this._tradedList(options, _next),
-      burnnedFee: _next => this._burnedFee(options, _next)
+      collectedFee: _next => this._collectedFee(options, _next)
     }, (err, results) => {
       if (err) {
         return callback(err);
@@ -479,10 +479,10 @@ module.exports = BaseService.extends({
         // allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
       })
 
-
       return callback(null, {
         tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'eth' ], ['asc', 'desc']),
-        burned: results.burnnedFee
+        burned: results.burnnedFee,
+        collectedFee: results.collectedFee,
       })
     })
   },
@@ -548,6 +548,36 @@ module.exports = BaseService.extends({
       where: `block_timestamp > ? AND block_timestamp <= ? AND reserve_contract = ?`,
       params: [options.fromDate, options.toDate, options.reserveAddr],
     }, callback);
+  },
+  _collectedFee: function(options, callback){
+    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+
+    const makeSql = (side, rside, callback) => {
+      const sql = `select 
+        IFNULL(sum(${rside}_burn_fee),0) as burnFee,
+        IFNULL(sum(${rside}_wallet_fee),0) as walletFee
+      from kyber_trade
+      where block_timestamp > ${options.fromDate} AND block_timestamp < ${options.toDate}
+      and ${rside}_reserve = '${options.reserveAddr.toLowerCase()}'
+      ${UtilsHelper.ignoreETH(side)}`;
+      return adapter.execRaw(sql, [], callback);
+    };
+
+    async.parallel({
+      maker: _next => makeSql('maker', 'dest', _next),
+      taker: _next => makeSql('taker', 'source', _next)
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+
+      console.log("+++++++++ ret ++++", ret)
+
+      return callback(null, {
+        dest: ret.maker[0],
+        source: ret.taker[0]
+      }) 
+    })
   },
   // Use for token list page & top token chart
   getTopTokensList: function (options, callback) {
