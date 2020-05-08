@@ -54,10 +54,10 @@
             </div>
             <div class="col">
               <div class="pb-2">
-                {{$t('wallet_detail.burned_fee')}}
+                {{$t('wallet_detail.collected_fees')}}
               </div>
               <div class="font-semi-bold">
-                <span v-if="!isLoading">{{formatTokenAmount(burnedFee.toString(), 18)}}</span>
+                <span v-if="!isLoading">{{formatTokenAmount(collectedFees.toString(), 18)}}</span>
                 <img v-else src="/images/waiting.svg" />
                 KNC
                 <!-- {{round(collectedFees)}} KNC -->
@@ -201,6 +201,8 @@ export default {
 
       reserveTokens: [],
       burnedFee: 0,
+      burnFee: 0,
+      walletFee: 0,
 
       isShowLoadmore: false,
       isOpenlLoadmore: false,
@@ -320,6 +322,14 @@ export default {
        AppRequest.getReserveDetail({reserveAddr: this.getFilterReserveAddress(), fromDate: fromDate, toDate: toDate}).then(data => {
           this.reserveTokens = data.tokens
           this.burnedFee = data.burned
+
+          const collectedFeeDest = data.collectedFee.dest
+          const collectedFeeSource = data.collectedFee.source
+
+          const tolalFeeToBurn = new BigNumber(collectedFeeDest.burnFee.toString()).plus(new BigNumber(collectedFeeSource.burnFee.toString()))
+          const tolalCollectedFee = new BigNumber(collectedFeeDest.walletFee.toString()).plus(new BigNumber(collectedFeeSource.walletFee.toString()))
+
+          this.collectedFees = tolalFeeToBurn.plus(tolalCollectedFee).toString()
           this.isLoading = false
           if(data && data.tokens && data.tokens.length > 10) {
             this.isShowLoadmore = true

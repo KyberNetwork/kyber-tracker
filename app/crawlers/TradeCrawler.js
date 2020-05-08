@@ -193,27 +193,34 @@ class TradeCrawler {
       switch (topic) {
         case networkConfig.logTopics.feeToWallet:
           const rAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          const rEventFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)))
           if (!record.commissionReserveAddress || record.commissionReserveAddress == rAddr) {
             record.commissionReserveAddress = rAddr;
+            record.sourceWalletFee = rEventFee
           } else {
             record.commissionReserveAddress += ";" + rAddr;
+            record.destWalletFee = rEventFee
           }
 
           if(!record.commissionReserveArray) record.commissionReserveArray = []
           record.commissionReserveArray.push(rAddr)
           
           record.commissionReceiveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          record.commission = new BigNumber((record.commission || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)))).toString();
+          record.commission = new BigNumber((record.commission || 0)).plus(rEventFee).toString();
           break;
         case networkConfig.logTopics.burnFee:
           // For token-token, burns twice, MIGHT from 2 reserves
           const bAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          const bEventFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))
+
           if (!record.burnReserveAddress || record.burnReserveAddress == bAddr) {
             record.burnReserveAddress = bAddr;
             record.sourceReserve = bAddr
+            record.sourceBurnFee = bEventFee
           } else {
             record.burnReserveAddress += ";" + bAddr;
             record.destReserve = bAddr
+            record.destBurnFee = bEventFee
           }
 
           if(!record.numberBurnEvent){
@@ -226,7 +233,7 @@ class TradeCrawler {
           record.burnReserveArray.push(bAddr)
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
           // Note for token-token, burnFees twich
-          record.burnFees = new BigNumber((record.burnFees || 0)).plus(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))).toString();
+          record.burnFees = new BigNumber((record.burnFees || 0)).plus(bEventFee).toString();
           break;
         case networkConfig.logTopics.etherReceival:
           record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
