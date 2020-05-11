@@ -175,7 +175,11 @@ class TradeCrawler {
     const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
     
-    var record = {}
+    const initRecord = {
+      burnFeeReserve: {},
+      walletFeeReserve: {}
+    }
+    let record = {...initRecord}
     _.each(logs, (log, logIndex) => {
       
       const txid = log.transactionHash;
@@ -194,12 +198,13 @@ class TradeCrawler {
         case networkConfig.logTopics.feeToWallet:
           const rAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           const rEventFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)))
+          record.walletFeeReserve[rAddr.toLowerCase()] = rEventFee
           if (!record.commissionReserveAddress || record.commissionReserveAddress == rAddr) {
             record.commissionReserveAddress = rAddr;
-            record.sourceWalletFee = rEventFee
+            // record.sourceWalletFee = rEventFee
           } else {
             record.commissionReserveAddress += ";" + rAddr;
-            record.destWalletFee = rEventFee
+            // record.destWalletFee = rEventFee
           }
 
           if(!record.commissionReserveArray) record.commissionReserveArray = []
@@ -212,15 +217,15 @@ class TradeCrawler {
           // For token-token, burns twice, MIGHT from 2 reserves
           const bAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           const bEventFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))
-
+          record.burnFeeReserve[bAddr.toLowerCase()] = bEventFee
           if (!record.burnReserveAddress || record.burnReserveAddress == bAddr) {
             record.burnReserveAddress = bAddr;
             record.sourceReserve = bAddr
-            record.sourceBurnFee = bEventFee
+            // record.sourceBurnFee = bEventFee
           } else {
             record.burnReserveAddress += ";" + bAddr;
             record.destReserve = bAddr
-            record.destBurnFee = bEventFee
+            // record.destBurnFee = bEventFee
           }
 
           if(!record.numberBurnEvent){
@@ -289,7 +294,7 @@ class TradeCrawler {
           record.tx= log.transactionHash
 
           records.push(record)
-          record = {}
+          record = {...initRecord}
           break;
       }
     });
@@ -471,6 +476,24 @@ class TradeCrawler {
         }
         if(numberMultipleVol > 1){
           record.volumeEth = record.volumeEth * numberMultipleVol
+        }
+      }
+
+      if(record.burnFeeReserve){
+        if(record.sourceReserve && record.burnFeeReserve[record.sourceReserve]){
+          record.sourceBurnFee = record.burnFeeReserve[record.sourceReserve]
+        }
+        if(record.destReserve && record.burnFeeReserve[record.destReserve]){
+          record.destBurnFee = record.burnFeeReserve[record.destReserve]
+        }
+      }
+
+      if(record.walletFeeReserve){
+        if(record.sourceReserve && record.walletFeeReserve[record.sourceReserve]){
+          record.sourceWalletFee = record.walletFeeReserve[record.sourceReserve]
+        }
+        if(record.destReserve && record.walletFeeReserve[record.destReserve]){
+          record.destWalletFee = record.walletFeeReserve[record.destReserve]
         }
       }
 
