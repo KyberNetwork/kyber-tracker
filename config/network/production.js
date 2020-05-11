@@ -1203,6 +1203,14 @@ module.exports = {
       "address": "0xbe30f684d62c9f7883a75a29c162c332c0d98f23",
       "hidden": 1588683600000
     },
+
+    "TRYB": {
+      "name": "BiLira",
+      "symbol" : "TRYB",
+      "decimal": 6,
+      "address": "0x2c537e5624e4af88a7ae4060c022609376c8d0eb",
+      "hidden": 1589203200000
+    },
   },
 
   "preburntAmount": 48.61873337,
