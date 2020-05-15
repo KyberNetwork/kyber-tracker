@@ -665,7 +665,8 @@ module.exports = {
       "address": "0x865ec58b06bf6305b886793aa20a2da31d034e68",
       "symbol": "MOC",
       "decimal": 18,
-      "hidden": 1534417200000
+      // "hidden": 1534417200000
+      "delisted": true 
     },
     "BITX": {
       "name": "BitScreenerToken",

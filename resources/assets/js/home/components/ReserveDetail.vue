@@ -330,6 +330,7 @@ export default {
           const tolalCollectedFee = new BigNumber(collectedFeeDest.walletFee.toString()).plus(new BigNumber(collectedFeeSource.walletFee.toString()))
 
           this.collectedFees = tolalFeeToBurn.plus(tolalCollectedFee).toString()
+          console.log("++++++++++++++++++++", this.collectedFees)
           this.isLoading = false
           if(data && data.tokens && data.tokens.length > 10) {
             this.isShowLoadmore = true
