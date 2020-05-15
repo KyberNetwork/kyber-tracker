@@ -179,7 +179,7 @@ class TradeCrawler {
       burnFeeReserve: {},
       walletFeeReserve: {}
     }
-    let record = {...initRecord}
+    let record = JSON.parse(JSON.stringify(initRecord))
     _.each(logs, (log, logIndex) => {
       
       const txid = log.transactionHash;
@@ -268,7 +268,7 @@ class TradeCrawler {
           }
           
           records.push(record)
-          record = {}
+          record = JSON.parse(JSON.stringify(initRecord))
           break;
         case networkConfig.logTopics.kyberTrade:
           if(log.blockNumber < networkConfig.startPermissionlessReserveBlock) break;
@@ -292,9 +292,8 @@ class TradeCrawler {
           record.blockHash= log.blockHash
           record.blockTimestamp= timestamp
           record.tx= log.transactionHash
-
           records.push(record)
-          record = {...initRecord}
+          record = JSON.parse(JSON.stringify(initRecord))
           break;
       }
     });
@@ -502,6 +501,7 @@ class TradeCrawler {
       
       logger.info(`Add new trade: ${JSON.stringify(record)}`);
 
+      // console.log("&&&&&&&&&&&&&&&& ", record)
       KyberTradeModel.add(record, {
         isInsertIgnore: true
       }, callback);
