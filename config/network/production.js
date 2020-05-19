@@ -1211,6 +1211,13 @@ module.exports = {
       "address": "0x2c537e5624e4af88a7ae4060c022609376c8d0eb",
       "hidden": 1589203200000
     },
+    "2KEY": {
+      "name": "TwoKeyEconomy",
+      "symbol" : "2KEY",
+      "decimal": 18,
+      "address": "0xE48972fCd82a274411c01834e2f031D4377Fa2c0",
+      "hidden": 1589893200000
+    }
   },
 
   "preburntAmount": 48.61873337,
