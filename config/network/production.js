@@ -1218,6 +1218,14 @@ module.exports = {
       "decimal": 18,
       "address": "0xE48972fCd82a274411c01834e2f031D4377Fa2c0",
       "hidden": 1589893200000
+    },
+
+    "PLR": {
+      "name": "Pillar",
+      "symbol" : "PLR",
+      "decimal": 18,
+      "address": "0xe3818504c1b32bf1557b16c238b2e01fd3149c17",
+      "hidden": 1589979600000
     }
   },
 
