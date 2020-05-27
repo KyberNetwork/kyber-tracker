@@ -1226,7 +1226,15 @@ module.exports = {
       "decimal": 18,
       "address": "0xe3818504c1b32bf1557b16c238b2e01fd3149c17",
       "hidden": 1589979600000
-    }
+    },
+
+    "BUSD": {
+      "name": "Binance USD",
+      "symbol" : "BUSD",
+      "decimal": 18,
+      "address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+      "hidden": 1590584400000
+    },
   },
 
   "preburntAmount": 48.61873337,
