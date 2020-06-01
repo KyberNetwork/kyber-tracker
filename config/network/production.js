@@ -1235,6 +1235,14 @@ module.exports = {
       "address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
       "hidden": 1590584400000
     },
+
+    "QNT": {
+      "name": "Quant",
+      "symbol" : "QNT",
+      "decimal": 18,
+      "address": "0x4a220e6096b25eadb88358cb44068a3248254675",
+      "hidden": 1591016400000
+    },
   },
 
   "preburntAmount": 48.61873337,
