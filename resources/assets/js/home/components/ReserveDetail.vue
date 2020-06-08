@@ -254,9 +254,9 @@ export default {
     },
     reloadView(){
       this.totalTrade = this.$refs.datatable ? this.$refs.datatable.totalTrade : 0
-      this.volumeEth = this.$refs.datatable ? this.$refs.datatable.volumeEth : 0,
-      this.volumeUsd = this.$refs.datatable ? this.$refs.datatable.volumeUsd : 0,
-      this.collectedFees = this.$refs.datatable ? this.$refs.datatable.collectedFees : 0
+      this.volumeEth = this.$refs.datatable ? this.$refs.datatable.volumeEth : 0
+      this.volumeUsd = this.$refs.datatable ? this.$refs.datatable.volumeUsd : 0
+      // this.collectedFees = this.$refs.datatable ? this.$refs.datatable.collectedFees : 0
     },
 
     toggleLoadMore(){
