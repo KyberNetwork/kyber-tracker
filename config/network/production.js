@@ -204,13 +204,15 @@ module.exports = {
       "name": "Raiden Network",
       "address": "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6",
       "symbol": "RDN",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "APPC": {
       "name": "AppCoins",
       "address": "0x1a7a8bd9106f2b8d977e08582dc7d24c723ab0db",
       "symbol": "APPC",
-      "decimal": 18
+      "decimal": 18,
+      "delisted": true
     },
     "ENG": {
       "name": "Enigma",
@@ -244,7 +246,8 @@ module.exports = {
       "name": "AirSwap",
       "decimal": 4,
       "address": "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
-      "symbol": "AST"
+      "symbol": "AST",
+      "delisted": true
     },
     "RCN": {
       "name": "Ripio Credit Network",
@@ -405,7 +408,8 @@ module.exports = {
       "address": "0xd0a4b8946cb52f0661273bfbc6fd0e0c75fc6433",
       "symbol": "STORM",
       "decimal": 18,
-      "hidden": 1583499600000
+      // "hidden": 1583499600000
+      "delisted": true
     },
 
     "LOOM": {
@@ -575,7 +579,8 @@ module.exports = {
       "address": "0x69b148395ce0015c13e36bffbad63f49ef874e03",
       "symbol": "DTA",
       "decimal": 18,
-      "hidden": 1531486800000
+      // "hidden": 1531486800000
+      "delisted": true
     },
     "BNT": {
       "name": "Bancor",
