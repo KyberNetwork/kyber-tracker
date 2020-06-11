@@ -96,7 +96,9 @@ module.exports = {
 
     "0x1e158c0e93c30d24e918ef83d1e0be23595c3c0f": "Oasis bridge v3",
     "0x4f32bbe8dfc9efd54345fc936f9fef1048746fcf": "OneBit Quant",
-    "0xfe06bc8bc12595c1c871ff7c2ea9cadc42735d7d": "UniBright"
+    "0xfe06bc8bc12595c1c871ff7c2ea9cadc42735d7d": "UniBright",
+
+    "0x00cd2388c86c960a646d640be44fc8f83b78cec9": "2Key APR"
   },
 
   "ETH": {
