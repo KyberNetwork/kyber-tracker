@@ -3,7 +3,7 @@ import jQuery from 'jquery';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import network from '../../../../../config/network/production';
-const iconEndpont = 'https://files.kyber.network/DesignAssets/tokens'
+const iconEndpont = 'https://files.kyberswap.com/DesignAssets/tokens'
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
