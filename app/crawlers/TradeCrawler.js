@@ -12,6 +12,7 @@ const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const logger                      = require('sota-core').getLogger('TradeCrawler');
 const configFetcher               = require('./configFetcher')
+const { KyberTradeModel } = require('../databaseModel');
 
 
 let LATEST_PROCESSED_BLOCK = 0;
@@ -172,7 +173,6 @@ class TradeCrawler {
   _processLogData (logs, blockTimestamps, callback) {
     const records = [];
     const exSession = new ExSession();
-    const KyberTradeModel = exSession.getModel('KyberTradeModel');
     const CMCService = exSession.getService('CMCService');
     
     const initRecord = {
@@ -200,17 +200,17 @@ class TradeCrawler {
           const rEventFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)))
           record.walletFeeReserve[rAddr.toLowerCase()] = rEventFee
           if (!record.commissionReserveAddress || record.commissionReserveAddress == rAddr) {
-            record.commissionReserveAddress = rAddr;
+            record.commission_reserve_address = rAddr;
             // record.sourceWalletFee = rEventFee
           } else {
-            record.commissionReserveAddress += ";" + rAddr;
+            record.commission_reserve_address += ";" + rAddr;
             // record.destWalletFee = rEventFee
           }
 
           if(!record.commissionReserveArray) record.commissionReserveArray = []
           record.commissionReserveArray.push(rAddr)
           
-          record.commissionReceiveAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          record.commission_receive_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
           record.commission = new BigNumber((record.commission || 0)).plus(rEventFee).toString();
           break;
         case networkConfig.logTopics.burnFee:
@@ -218,13 +218,13 @@ class TradeCrawler {
           const bAddr = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           const bEventFee = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(32, 64)))
           record.burnFeeReserve[bAddr.toLowerCase()] = bEventFee
-          if (!record.burnReserveAddress || record.burnReserveAddress == bAddr) {
-            record.burnReserveAddress = bAddr;
-            record.sourceReserve = bAddr
+          if (!record.burn_reserve_address || record.burn_reserve_address == bAddr) {
+            record.burn_reserve_address = bAddr;
+            record.source_reserve = bAddr
             // record.sourceBurnFee = bEventFee
           } else {
-            record.burnReserveAddress += ";" + bAddr;
-            record.destReserve = bAddr
+            record.burn_reserve_address += ";" + bAddr;
+            record.dest_reserve = bAddr
             // record.destBurnFee = bEventFee
           }
 
@@ -238,63 +238,106 @@ class TradeCrawler {
           record.burnReserveArray.push(bAddr)
           // This is the fee kyber collects from reserve (tax + burn, not include partner commission)
           // Note for token-token, burnFees twich
-          record.burnFees = new BigNumber((record.burnFees || 0)).plus(bEventFee).toString();
+          record.burn_fees = new BigNumber((record.burn_fees || 0)).plus(bEventFee).toString();
           break;
         case networkConfig.logTopics.etherReceival:
-          record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
+          record.volume_eth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
           break;
         case networkConfig.logTopics.exchange:
           if(log.blockNumber >= networkConfig.startPermissionlessReserveBlock) break;
-          record.makerAddress = log.address;
-          record.takerAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
-          record.takerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          record.makerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          record.takerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
-          record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
-          record.uniqueTag = log.transactionHash + "_" + log.id
+          record.maker_address = log.address;
+          record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
+          record.taker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          record.maker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          record.taker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.maker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
+          record.unique_tag = log.transactionHash + "_" + log.id
 
 
-          record.blockNumber= log.blockNumber,
-          record.blockHash= log.blockHash,
-          record.blockTimestamp= timestamp,
+          record.block_number= log.blockNumber,
+          record.block_hash= log.blockHash,
+          record.block_timestamp= timestamp,
           record.tx= log.transactionHash
 
-          const reserveObj = this.processReserveAddrOldTx(record.takerTokenAddress, record.makerTokenAddress, record.burnReserveArray, record.commissionReserveArray)
-          record.sourceReserve = reserveObj.sourceReserve
-          record.destReserve = reserveObj.destReserve
+          const reserveObj = this.processReserveAddrOldTx(record.taker_token_address, record.maker_token_address, record.burn_reserve_array, record.commission_reserve_array)
+          record.source_reserve = reserveObj.source_reserve
+          record.dest_reserve = reserveObj.dest_reserve
 
           if(reserveObj.getFromEmiterExecute){
-            record.sourceReserve = log.address
+            record.source_reserve = log.address
           }
           
           records.push(record)
           record = JSON.parse(JSON.stringify(initRecord))
           break;
+        case networkConfig.logTopics.feeDistributed:
+          record.feeToken = web3.eth.abi.decodeParameter('address', log.topics[1]);
+          record.feePlatformWallet = web3.eth.abi.decodeParameter('address', log.topics[2]);
+          record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          record.feeRewardWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          record.feeRebateWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.arrayFeeRebateWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
+          record.arrayRebatePercentBpsPerWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+          ecord.feeBurnAmtWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+
+          break;
         case networkConfig.logTopics.kyberTrade:
           if(log.blockNumber < networkConfig.startPermissionlessReserveBlock) break;
 
-          record.takerAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
+          if(log.blockNumber < networkConfig.startKataLystBlock) {
+            record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
 
-          record.takerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          record.makerTokenAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          
-          record.takerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
-          record.makerTokenAmount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
-          
-          record.makerAddress = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-          record.volumeEth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(160, 192))));
-          
-          record.sourceReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
-          record.destReserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
-          
-          record.uniqueTag = log.transactionHash + "_" + log.id
-          record.blockNumber= log.blockNumber
-          record.blockHash= log.blockHash
-          record.blockTimestamp= timestamp
-          record.tx= log.transactionHash
-          records.push(record)
-          record = JSON.parse(JSON.stringify(initRecord))
+            record.taker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+            record.maker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+            
+            record.taker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
+            record.maker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
+            
+            record.maker_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+            record.volume_eth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(160, 192))));
+            
+            record.source_reserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
+            record.dest_reserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
+            
+            record.unique_tag = log.transactionHash + "_" + log.id
+            record.block_number= log.blockNumber
+            record.block_hash= log.blockHash
+            record.block_timestamp= timestamp
+            record.tx= log.transactionHash
+            records.push(record)
+            record = JSON.parse(JSON.stringify(initRecord))
+            break;
+          } else {
+            record.katalyst = true
+            record.blockNumber= log.blockNumber,
+            record.blockHash= log.blockHash,
+            record.blockTimestamp= timestamp,
+            record.tx= log.transactionHash
+            /// todo new kyber trade handle katalyst
+            record.uniqueTag = log.transactionHash + "_" + log.id
+            
+            record.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
+            record.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
+            record.ethWeiValue = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+            record.networkFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+            record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
+            record.arrayT2eReserveIds = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
+            record.arrayE2tReserveIds = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+
+            record.arrayT2eSrcAmounts = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(160, 192)));
+            record.arrayE2tSrcAmounts = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
+
+            record.arrayT2eRates = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
+            record.arrayE2tRates = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(256, 288)));
+
+            records.push(record)
+            record = JSON.parse(JSON.stringify(initRecord))
+            break;
+          }
+
           break;
+
+  
       }
     });
     async.waterfall([
@@ -325,30 +368,30 @@ class TradeCrawler {
     if(Utils.isBurnableToken(srcAddress)){
       if(Utils.isBurnableToken(destAddress)){
         if(burnReserveArray.length == 2){
-          returnObj.sourceReserve = burnReserveArray[0]
-          returnObj.destReserve = burnReserveArray[1]
+          returnObj.source_reserve = burnReserveArray[0]
+          returnObj.dest_reserve = burnReserveArray[1]
         } else {
           logger.warn(`unexpected burn fees, need 2 burn fees (src-dst)`)
         }
       } else {
         if(burnReserveArray.length == 1){
-          returnObj.sourceReserve = burnReserveArray[0]
+          returnObj.source_reserve = burnReserveArray[0]
         } else {
           logger.warn(`unexpected burn fees, need 1 burn fees (src)`)
         }
       }
     } else if (Utils.isBurnableToken(destAddress)){
       if(burnReserveArray.length == 1){
-        returnObj.destReserve = burnReserveArray[0]
+        returnObj.dest_reserve = burnReserveArray[0]
       } else {
         logger.warn(`unexpected burn fees, need 1 burn fees (dst)`)
       }
     } else if (commissionReserveArray.length != 0){
       if(commissionReserveArray.length == 1){
-        returnObj.sourceReserve = commissionReserveArray[0]
+        returnObj.source_reserve = commissionReserveArray[0]
       } else {
-        returnObj.sourceReserve = commissionReserveArray[0]
-        returnObj.destReserve = commissionReserveArray[1]
+        returnObj.source_reserve = commissionReserveArray[0]
+        returnObj.dest_reserve = commissionReserveArray[1]
       }
     } else {
       // need to get from tx receipt
@@ -370,22 +413,22 @@ class TradeCrawler {
 
     async.auto({
       checkSourceToken: (asyncCallback) => {
-        if(!global.TOKENS_BY_ADDR[record.takerTokenAddress.toLowerCase()]){
+        if(!global.TOKENS_BY_ADDR[record.taker_token_address.toLowerCase()]){
           // fetch token and its reserve
           async.parallel({
-            info: (_next) => (getTokenInfo(record.takerTokenAddress, '2', _next)),
-            reserves: (_next) => getTokenReserve(record.takerTokenAddress, 'source', record.blockNumber, _next)
+            info: (_next) => (getTokenInfo(record.taker_token_address, '2', _next)),
+            reserves: (_next) => getTokenReserve(record.taker_token_address, 'source', record.block_number, _next)
           }, (err, results) => asyncCallback(err, results))
         } else {
           return asyncCallback(null)
         }
       },
       checkDestToken: (asyncCallback) => {
-        if(!global.TOKENS_BY_ADDR[record.makerTokenAddress.toLowerCase()]){
+        if(!global.TOKENS_BY_ADDR[record.maker_token_address.toLowerCase()]){
           // fetch token and its reserve
           async.parallel({
-            info: (_next) => (getTokenInfo(record.makerTokenAddress, '2', _next)),
-            reserves: (_next) => getTokenReserve(record.makerTokenAddress, 'source', record.blockNumber, _next)
+            info: (_next) => (getTokenInfo(record.maker_token_address, '2', _next)),
+            reserves: (_next) => getTokenReserve(record.maker_token_address, 'source', record.block_number, _next)
           }, (err, results) => asyncCallback(err, results))
         } else {
           return asyncCallback(null)
@@ -411,61 +454,61 @@ class TradeCrawler {
         }
       }]
     }, (err, results) => {
-      const KyberTradeModel = exSession.getModel('KyberTradeModel');
+      // const KyberTradeModel = exSession.getModel('KyberTradeModel');
+      // const ReserveTradeModel = exSession.getModel('ReserveTradeModel');
+      // const FeeDistributedModel = exSession.getModel('FeeDistributedModel');
 
 
       if(record.sourceReserve) {
-        record.sourceReserve = record.sourceReserve.toLowerCase()
+        record.source_reserve = record.source_reserve.toLowerCase()
       }
       if(record.destReserve) {
-        record.destReserve = record.destReserve.toLowerCase()
+        record.dest_reserve = record.dest_reserve.toLowerCase()
       }
 
-      if(record.makerTokenAddress) {
-        record.makerTokenAddress = record.makerTokenAddress.toLowerCase()
-        const makerTokenInfo = global.TOKENS_BY_ADDR[record.makerTokenAddress]
-        record.makerTokenSymbol = global.TOKENS_BY_ADDR[record.makerTokenAddress].symbol
-        record.makerTokenDecimal = global.TOKENS_BY_ADDR[record.makerTokenAddress].decimal
+      if(record.maker_token_address) {
+        record.maker_token_address = record.maker_token_address.toLowerCase()
+        record.maker_token_symbol = global.TOKENS_BY_ADDR[record.maker_token_address].symbol
+        record.maker_token_decimal = global.TOKENS_BY_ADDR[record.maker_token_address].decimal
       }
 
-      if(record.takerTokenAddress) {
-        record.takerTokenAddress = record.takerTokenAddress.toLowerCase()
-        const takerTokenInfo = global.TOKENS_BY_ADDR[record.takerTokenAddress]
-        record.takerTokenSymbol = global.TOKENS_BY_ADDR[record.takerTokenAddress].symbol
-        record.takerTokenDecimal = global.TOKENS_BY_ADDR[record.takerTokenAddress].decimal 
+      if(record.taker_token_address) {
+        record.taker_token_address = record.taker_token_address.toLowerCase()
+        record.taker_token_symbol = global.TOKENS_BY_ADDR[record.taker_token_address].symbol
+        record.taker_token_decimal = global.TOKENS_BY_ADDR[record.taker_token_address].decimal 
       } 
 
 
       const ethAddress = networkConfig.ETH.address.toLowerCase();
-      if (record.takerTokenAddress === ethAddress) {
-        record.volumeEth = Utils.fromWei(record.takerTokenAmount);
-        record.sourceReserve = null
-        record.sourceOfficial = 1
+      if (record.taker_token_address === ethAddress) {
+        record.volume_eth = Utils.fromWei(record.taker_token_amount);
+        record.source_reserve = null
+        record.source_official = 1
       } else {
-        if(!record.sourceReserve || (record.sourceReserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.sourceReserve] == '1')){
-          record.sourceOfficial = 1
+        if(!record.source_reserve || (record.source_reserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.source_reserve] == '1')){
+          record.source_official = 1
         } else {
-          record.sourceOfficial = 0
+          record.source_official = 0
         }
 
       }
       
-      if (record.makerTokenAddress === ethAddress) {
-        record.volumeEth = Utils.fromWei(record.makerTokenAmount);
-        record.destReserve = null
-        record.destOfficial = 1
+      if (record.maker_token_address === ethAddress) {
+        record.volume_eth = Utils.fromWei(record.maker_token_amount);
+        record.dest_reserve = null
+        record.dest_official = 1
       } else {
-        if(!record.destReserve ||  (record.destReserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.destReserve] == '1')){
-          record.destOfficial = 1
+        if(!record.dest_reserve ||  (record.dest_reserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.dest_reserve] == '1')){
+          record.dest_official = 1
         } else {
-          record.destOfficial = 0
+          record.dest_official = 0
         }
       }
 
-      record.txValueEth = record.volumeEth
+      record.tx_value_eth = record.volume_eth
       if(record.numberBurnEvent > 1){
-        record.volumeEth = record.volumeEth * record.numberBurnEvent
-      } else if( record.blockNumber >= networkConfig.startPermissionlessReserveBlock ) {
+        record.volume_eth = record.volume_eth * record.numberBurnEvent
+      } else if( record.block_number >= networkConfig.startPermissionlessReserveBlock ) {
         let numberMultipleVol = 0
         if(record.sourceReserve && !networkConfig.ignoreReserveVolume[record.sourceReserve]){
           numberMultipleVol = numberMultipleVol + 1
@@ -474,37 +517,100 @@ class TradeCrawler {
           numberMultipleVol = numberMultipleVol + 1
         }
         if(numberMultipleVol > 1){
-          record.volumeEth = record.volumeEth * numberMultipleVol
+          record.volume_eth = record.volume_eth * numberMultipleVol
         }
       }
 
       if(record.burnFeeReserve){
         if(record.sourceReserve && record.burnFeeReserve[record.sourceReserve]){
-          record.sourceBurnFee = record.burnFeeReserve[record.sourceReserve]
+          record.source_burn_fee = record.burnFeeReserve[record.sourceReserve]
         }
         if(record.destReserve && record.burnFeeReserve[record.destReserve]){
-          record.destBurnFee = record.burnFeeReserve[record.destReserve]
+          record.dest_burn_fee = record.burnFeeReserve[record.destReserve]
         }
       }
 
       if(record.walletFeeReserve){
         if(record.sourceReserve && record.walletFeeReserve[record.sourceReserve]){
-          record.sourceWalletFee = record.walletFeeReserve[record.sourceReserve]
+          record.source_wallet_Fee = record.walletFeeReserve[record.sourceReserve]
         }
         if(record.destReserve && record.walletFeeReserve[record.destReserve]){
-          record.destWalletFee = record.walletFeeReserve[record.destReserve]
+          record.dest_wallet_fee = record.walletFeeReserve[record.destReserve]
         }
       }
+
+      // maker, reserve, dest
+      // taker, user, source
+
+      //// make katalyst works with old database
+      if(record.katalyst){
+        //todo handle new Kyber Trade data
+        if(record.sourceAddress){
+          record.takerTokenAddress = record.sourceAddress.toLowerCase()
+          record.takerTokenSymbol = global.TOKENS_BY_ADDR[record.takerTokenAddress].symbol
+          record.takerTokenDecimal = global.TOKENS_BY_ADDR[record.takerTokenAddress].decimal 
+        }
+
+        if(record.destAddress){
+          record.makerTokenAddress = record.destAddress.toLowerCase()
+          record.makerTokenSymbol = global.TOKENS_BY_ADDR[record.makerTokenAddress].symbol
+          record.makerTokenDecimal = global.TOKENS_BY_ADDR[record.makerTokenAddress].decimal
+        }
+        record.volumeEth
+        record.txValueEth = record.ethWeiValue
+        record.volumeEth = record.ethWeiValue
+
+        // collectedFee, source, dest reserrve ....
+      }
+
+
+
+
 
 
       // console.log("_________________", record.sourceReserve, record.sourceOfficial, record.destReserve,  record.destOfficial)
       
-      logger.info(`Add new trade: ${JSON.stringify(record)}`);
+      // logger.info(`Add new trade: ${JSON.stringify(record)}`);
 
-      // console.log("&&&&&&&&&&&&&&&& ", record)
-      KyberTradeModel.add(record, {
-        isInsertIgnore: true
-      }, callback);
+      console.log("&&&&&&&&&&&&&&&& ", record)
+      // KyberTradeModel.add(record, {
+      //   isInsertIgnore: true
+      // }, callback);
+      KyberTradeModel
+      .findOne({
+        where: {
+          unique_tag: record.unique_tag
+        }
+      })
+      .then(data => {
+        if(data) return data.update(record)
+        else return KyberTradeModel.create(record)
+      })
+      .then((result) => {
+        // console.log("_______________ ", err, result)
+        return callback(null)
+      })
+      .catch(err => {
+        return callback(err)
+      })
+
+      if(record.katalyst){
+        //todo save to reserve trade 
+
+
+        ReserveTradeModel.add(record, {
+          isInsertIgnore: true
+        }, callback);
+
+
+
+
+        //todo save to fee distributed
+        FeeDistributedModel.add(record, {
+          isInsertIgnore: true
+        }, callback);
+
+      }
 
     }) 
   }

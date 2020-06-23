@@ -19,7 +19,8 @@ module.exports = {
       "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
       "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
       "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
-      "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
+      "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
+      "feeDistributed": "0xe57b2c3b4e44730805358131a6fc244c57178da7"
     },
 
     "ignoreReserveVolume": { 
@@ -919,6 +920,7 @@ module.exports = {
     "newTokenDuration": 3 * 24 * 60 * 60 * 1000,
     
     "startPermissionlessReserveBlock": 6997111,
+    "startKataLystBlock": 10319959,
   
     "partners": {
       "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
