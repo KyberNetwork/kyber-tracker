@@ -35,6 +35,7 @@ class TradeCrawler {
   start () {
     async.auto({
       config: (next) => {
+        
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
           
@@ -117,6 +118,7 @@ class TradeCrawler {
 
   _processBlocksOnce (fromBlockNumber, toBlockNumber, callback) {
     logger.info(`_processBlocksOnce: ${fromBlockNumber} → ${toBlockNumber}`);
+    console.log('========================', networkConfig.contractAddresses.networks, networkConfig.logTopics.katalystKyberTrade, networkConfig.logTopics.feeDistributed)
 
     async.auto({
       logs: (next) => {
@@ -133,7 +135,9 @@ class TradeCrawler {
               networkConfig.logTopics.feeToWallet,
               networkConfig.logTopics.burnFee,
               networkConfig.logTopics.etherReceival,
-              networkConfig.logTopics.kyberTrade
+              networkConfig.logTopics.kyberTrade,
+              networkConfig.logTopics.katalystKyberTrade,
+              networkConfig.logTopics.feeDistributed
             ]
           ]
         }, (err, ret) => {
@@ -271,6 +275,7 @@ class TradeCrawler {
           record = JSON.parse(JSON.stringify(initRecord))
           break;
         case networkConfig.logTopics.feeDistributed:
+          console.log("=================== run to fee distributed ")
           record.feeToken = web3.eth.abi.decodeParameter('address', log.topics[1]);
           record.feePlatformWallet = web3.eth.abi.decodeParameter('address', log.topics[2]);
           record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
@@ -285,6 +290,7 @@ class TradeCrawler {
           if(log.blockNumber < networkConfig.startPermissionlessReserveBlock) break;
 
           if(log.blockNumber < networkConfig.startKataLystBlock) {
+            
             record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
 
             record.taker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
@@ -308,6 +314,7 @@ class TradeCrawler {
             record = JSON.parse(JSON.stringify(initRecord))
             break;
           } else {
+            console.log("=================== run to new katalist ")
             record.katalyst = true
             record.blockNumber= log.blockNumber,
             record.blockHash= log.blockHash,

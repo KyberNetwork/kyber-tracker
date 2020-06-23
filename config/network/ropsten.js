@@ -8,10 +8,10 @@ module.exports = {
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
-    "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
+    "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755", "0xc4684f4fbfc3db0a24cffe35821b12e55beaef7a"],
     "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x81ae4de9a3aec67a35c05c889052260e39bc42a4"],
     "workers": [],
-    "internal": "0x3f9a8e219Ab1aD42f96b22C294E564B2b48fE636"
+    "internal": ["0x3f9a8e219Ab1aD42f96b22C294E564B2b48fE636", "0x9EC49C41Fdc4C79fDb042AF37659f2E3220ad0a4"]
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -21,7 +21,8 @@ module.exports = {
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
     "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
     "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
-    "feeDistributed": "0xe57b2c3b4e44730805358131a6fc244c57178da7"
+    "feeDistributed": "0x53e2e1b5ab64e0a76fcc6a932558eba265d4e58c512401a7d776ae0f8fc08994",
+    "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d"
   },
 
   "ignoreReserveVolume": { 
@@ -281,7 +282,7 @@ module.exports = {
   "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
 
   "startPermissionlessReserveBlock": 4759402,
-  "startKataLystBlock": 10319959,
+  "startKataLystBlock": 8107297,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
