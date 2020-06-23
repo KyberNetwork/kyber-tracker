@@ -1250,6 +1250,14 @@ module.exports = {
       "address": "0x4a220e6096b25eadb88358cb44068a3248254675",
       "hidden": 1591016400000
     },
+
+    "PNT": {
+      "name": "pNetwork Token",
+      "symbol" : "PNT",
+      "decimal": 18,
+      "address": "0x89Ab32156e46F46D02ade3FEcbe5Fc4243B9AAeD",
+      "hidden": 1592917200000
+    },
   },
 
   "preburntAmount": 48.61873337,
