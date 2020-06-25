@@ -58,7 +58,7 @@ const standardizeReserveTokenType = (tokens) => {
     t.address = t.address.toLowerCase()
     if(t.reservesAddr){
       t.reservesAddr.map(r => {
-        if(global.NETWORK_RESERVES[r.toLowerCase()] == '1') {
+        if(global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] == '1') {
           reserveObj[r.toLowerCase()] = '1'
           t.type = '1'
         }
@@ -105,10 +105,13 @@ const getTokensFromApis = callback => {
     }).then(currencies => {
       const tokens = standardizeTokens(currencies)
 
-      fetchReserveListFromNetwork((err) => {
-        if(err) return callback(err)
-        return callback(null, standardizeReserveTokenType(tokens))
-      })
+      return callback(null, standardizeReserveTokenType(tokens))
+
+      // fetchReserveListFromNetwork((err) => {
+      //   if(err) return callback(err)
+      //   return callback(null, standardizeReserveTokenType(tokens))
+      // })
+
     })
     .catch(err => callback(err));
   } catch (error) {

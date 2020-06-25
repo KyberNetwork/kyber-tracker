@@ -86,6 +86,64 @@ module.exports = {
     .toString()
   },
 
+  timesBig(arrayParams) {
+    return arrayParams.reduce((a, b) => 
+      new BigNumber(a || 0).multipliedBy(new BigNumber(b || 0))
+    , 1)
+    .toString()
+  },
+
+  divBig(divisor, dividend){
+    if(!divisor) return 0
+    if(!dividend) return "NaN"
+  
+    let bigDivisor = new BigNumber(divisor)
+    return bigDivisor.dividedBy(dividend).toFixed()
+  },
+
+  toT(number, decimal, round, reverse) {
+    if(!number) return 0
+    var bigNumber = new BigNumber(number.toString())
+    var result
+    if (bigNumber == 'NaN' || bigNumber == 'Infinity') {
+      return number
+    } else if (this.acceptableTyping(number)) {
+      return number
+    }
+    if (decimal) {
+      result = bigNumber.dividedBy(Math.pow(10, decimal));
+    }
+    else {
+      result = bigNumber.dividedBy(1000000000000000000)
+    }
+    if(reverse){
+      result = result.pow(-1)
+    }
+    if (round !== undefined) {
+      return result.decimalPlaces(round).toString()
+    } else {
+      return result.toString()
+    }
+  },
+
+  acceptableTyping(number) {
+    // ends with a dot
+    if (number.length > 0 && number[number.length - 1] == ".") {
+      return true
+    }
+  
+    // TODO refactor format
+    // zero suffixed with real number
+    // if (number.length > 0 && number[number.length - 1] == "0") {
+    //   for (var i = 0; i < number.length; i++) {
+    //     if (number[i] == ".") {
+    //       return true
+    //     }
+    //   }
+    // }
+    return false
+  },
+
   numberToHex: function(number) {
     return "0x" + (new BigNumber(number)).toString(16)
   },

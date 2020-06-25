@@ -10,6 +10,7 @@ const logger    = require('sota-core').getLogger('leveldbCache');
 const web3      = Utils.getWeb3Instance();
 
 const internalAbi = require('../../config/abi/internal');
+const katalystStorageAbi = require('../../config/abi/katalyst_storage');
 const reserveAbi = require('../../config/abi/reserve');
 const bancorOrderbookAbi = require('../../config/abi/bancor_orderbook')
 const permisionlessReserveAbi = require('../../config/abi/permissionless_reserve');
@@ -24,6 +25,7 @@ const MAXIMUN_RESERVES = 1000;
 const currentInternalAddr = network.contractAddresses.internal && network.contractAddresses.internal.length ? network.contractAddresses.internal[network.contractAddresses.internal.length - 1] : network.contractAddresses.internal
 
 const internalContract = new web3.eth.Contract(internalAbi, currentInternalAddr)
+const storageContract = new web3.eth.Contract(katalystStorageAbi, network.contractAddresses.storage)
 
 function getBlockTimestamp (blockNumber, callback) {
   const key = getBlockTimestampKey(blockNumber);

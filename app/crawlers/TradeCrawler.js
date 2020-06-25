@@ -35,7 +35,6 @@ class TradeCrawler {
   start () {
     async.auto({
       config: (next) => {
-        
         configFetcher.fetchConfigTokens((err, tokens) => {
           if(err) return next(err)
           
@@ -118,8 +117,7 @@ class TradeCrawler {
 
   _processBlocksOnce (fromBlockNumber, toBlockNumber, callback) {
     logger.info(`_processBlocksOnce: ${fromBlockNumber} → ${toBlockNumber}`);
-    console.log('========================', networkConfig.contractAddresses.networks, networkConfig.logTopics.katalystKyberTrade, networkConfig.logTopics.feeDistributed)
-
+    // console.log('================ ', networkConfig.contractAddresses.internal, networkConfig.logTopics.katalystKyberTrade)
     async.auto({
       logs: (next) => {
         web3.getLogs({
@@ -313,39 +311,97 @@ class TradeCrawler {
             records.push(record)
             record = JSON.parse(JSON.stringify(initRecord))
             break;
-          } else {
-            console.log("=================== run to new katalist ")
-            record.katalyst = true
-            record.blockNumber= log.blockNumber,
-            record.blockHash= log.blockHash,
-            record.blockTimestamp= timestamp,
-            record.tx= log.transactionHash
-            /// todo new kyber trade handle katalyst
-            record.uniqueTag = log.transactionHash + "_" + log.id
-            
-            record.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
-            record.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
-            record.ethWeiValue = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-            record.networkFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-            record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
-            record.arrayT2eReserveIds = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
-            record.arrayE2tReserveIds = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-
-            record.arrayT2eSrcAmounts = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(160, 192)));
-            record.arrayE2tSrcAmounts = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
-
-            record.arrayT2eRates = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
-            record.arrayE2tRates = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(256, 288)));
-
-            records.push(record)
-            record = JSON.parse(JSON.stringify(initRecord))
-            break;
-          }
+          } 
 
           break;
+        case networkConfig.logTopics.katalystKyberTrade:
+          console.log("=================== run to new katalist ")
+          record.katalyst = true
+          record.blockNumber= log.blockNumber,
+          record.blockHash= log.blockHash,
+          record.blockTimestamp= timestamp,
+          record.tx= log.transactionHash
+          /// todo new kyber trade handle katalyst
+          record.uniqueTag = log.transactionHash + "_" + log.id
+          
+          record.decodedKatalystTrade = web3.eth.abi.decodeParameters([
+            {
+              type: 'uint256',
+              name: 'ethWeiValue'
+            },
+            {
+              type: 'uint256',
+              name: 'networkFeeWei'
+            },
+            {
+              type: 'uint256',
+              name: 'platformFeeWei'
+            },
+            {
+              type: 'bytes32[]',
+              name: 'arrayT2eReserveIds'
+            },
+            {
+              type: 'bytes32[]',
+              name: 'arrayE2tReserveIds'
+            },
+            {
+              type: 'uint256[]',
+              name: 'arrayT2eSrcAmounts'
+            },
+            {
+              type: 'uint256[]',
+              name: 'arrayE2tSrcAmounts'
+            },
+            {
+              type: 'uint256[]',
+              name: 'arrayT2eRates'
+            },
+            {
+              type: 'uint256[]',
+              name: 'arrayE2tRates'
+            }
+        ], web3.utils.bytesToHex(data));
 
-  
+        record.decodedKatalystTrade.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
+        record.decodedKatalystTrade.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
+
+        
+        // maker, reserve, dest
+        // taker, user, source
+        record.taker_token_address = record.decodedKatalystTrade.sourceAddress
+        record.maker_token_address = record.decodedKatalystTrade.destAddress
+        // caculate sourceAmount and destAmount
+        // if token -> eth: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayT2eSrcAmounts * arrayT2eRates
+        // if eth -> token: sourceAmount = sum arrayE2tSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
+        // if token -> token: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
+        if(record.taker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
+          // eth -> token
+          record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts, 0)
+          record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((a,i) => {
+            const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayE2tRates[i]])
+            return Utils.toT(amountAndRate, 18, 0)
+          }), 0)
+        } else if(record.maker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
+          // token -> eth
+          record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
+          record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts.map((a,i) => {
+            const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayE2tRates[i]])
+            return Utils.toT(amountAndRate, 18, 0)
+          }), 0)
+
+        } else {
+          // token -> token
+        }
+
+        console.log("+++++++++++++++++++", record)
+
+        records.push(record)
+        record = JSON.parse(JSON.stringify(initRecord))
+        break;
       }
+      
+
     });
     async.waterfall([
       (next) => {
@@ -546,8 +602,7 @@ class TradeCrawler {
         }
       }
 
-      // maker, reserve, dest
-      // taker, user, source
+      
 
       //// make katalyst works with old database
       if(record.katalyst){

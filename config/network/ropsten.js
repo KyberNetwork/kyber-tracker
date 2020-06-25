@@ -11,6 +11,7 @@ module.exports = {
     "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755", "0xc4684f4fbfc3db0a24cffe35821b12e55beaef7a"],
     "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x81ae4de9a3aec67a35c05c889052260e39bc42a4"],
     "workers": [],
+    "storage": "0xa4ead31a6c8e047e01ce1128e268c101ad391959",
     "internal": ["0x3f9a8e219Ab1aD42f96b22C294E564B2b48fE636", "0x9EC49C41Fdc4C79fDb042AF37659f2E3220ad0a4"]
   },
   "logTopics": {
