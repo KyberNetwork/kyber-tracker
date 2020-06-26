@@ -86,6 +86,12 @@ module.exports = {
     .toString()
   },
 
+  async asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  },
+  
   timesBig(arrayParams) {
     return arrayParams.reduce((a, b) => 
       new BigNumber(a || 0).multipliedBy(new BigNumber(b || 0))

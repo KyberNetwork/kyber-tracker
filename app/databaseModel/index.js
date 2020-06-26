@@ -98,8 +98,18 @@ ReserveTradeModel.init({
     source_amount: DataTypes.NUMBER,
     dest_amount: DataTypes.NUMBER,
     rate: DataTypes.NUMBER,
-    rebate_fee: DataTypes.NUMBER,
 }, { sequelize, modelName: 'reserve_trade', freezeTableName:  true, underscored: true, });
+
+class Rebate extends Model {} 
+Rebate.init({
+    reserve_id: DataTypes.NUMBER,
+    reserve_address: DataTypes.STRING,
+    tx: DataTypes.STRING,
+    unique_tag: DataTypes.STRING,
+    block_number: DataTypes.NUMBER,
+    block_timestamp: DataTypes.NUMBER,
+    rebate: DataTypes.NUMBER
+}, { sequelize, modelName: 'rebate', freezeTableName:  true, underscored: true, });
 
 class FeeDistributedModel extends Model { }
 FeeDistributedModel.init({
@@ -114,4 +124,4 @@ FeeDistributedModel.init({
 
 
 
-module.exports = {KyberTradeModel, ReserveTradeModel, FeeDistributedModel}
+module.exports = {KyberTradeModel, ReserveTradeModel, FeeDistributedModel, sequelize}

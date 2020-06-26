@@ -3,12 +3,12 @@ module.exports = {
     "web3Provider":"https://ropsten.infura.io",
     "ethScan": "https://ropsten.etherscan.io/",
     "getRate": "https://ropsten-cache.knstats.com/getRate",
-    "apis": "https://ropsten-api.kyber.network"
+    "apis": "https://dev-api.knstats.com/"
     // "apis": "https://api.kyber.network"
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
-    "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755", "0xc4684f4fbfc3db0a24cffe35821b12e55beaef7a"],
+    "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755", "0xa16Fc6e9b5D359797999adA576F7f4a4d57E8F75", "0xc4684f4fbfc3db0a24cffe35821b12e55beaef7a"],
     "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x81ae4de9a3aec67a35c05c889052260e39bc42a4"],
     "workers": [],
     "storage": "0xa4ead31a6c8e047e01ce1128e268c101ad391959",
@@ -23,7 +23,8 @@ module.exports = {
     "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
     "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
     "feeDistributed": "0x53e2e1b5ab64e0a76fcc6a932558eba265d4e58c512401a7d776ae0f8fc08994",
-    "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d"
+    "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d",
+    "katalystExecuteTrade": "0xf724b4df6617473612b53d7f88ecc6ea983074b30960a049fcd0657ffe808083"
   },
 
   "ignoreReserveVolume": { 

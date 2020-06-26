@@ -12,7 +12,7 @@ const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const logger                      = require('sota-core').getLogger('TradeCrawler');
 const configFetcher               = require('./configFetcher')
-const { KyberTradeModel } = require('../databaseModel');
+const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
 
 
 let LATEST_PROCESSED_BLOCK = 0;
@@ -135,7 +135,8 @@ class TradeCrawler {
               networkConfig.logTopics.etherReceival,
               networkConfig.logTopics.kyberTrade,
               networkConfig.logTopics.katalystKyberTrade,
-              networkConfig.logTopics.feeDistributed
+              networkConfig.logTopics.feeDistributed,
+              networkConfig.logTopics.katalystExecuteTrade
             ]
           ]
         }, (err, ret) => {
@@ -272,18 +273,6 @@ class TradeCrawler {
           records.push(record)
           record = JSON.parse(JSON.stringify(initRecord))
           break;
-        case networkConfig.logTopics.feeDistributed:
-          console.log("=================== run to fee distributed ")
-          record.feeToken = web3.eth.abi.decodeParameter('address', log.topics[1]);
-          record.feePlatformWallet = web3.eth.abi.decodeParameter('address', log.topics[2]);
-          record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          record.feeRewardWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          record.feeRebateWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
-          record.arrayFeeRebateWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
-          record.arrayRebatePercentBpsPerWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-          ecord.feeBurnAmtWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-
-          break;
         case networkConfig.logTopics.kyberTrade:
           if(log.blockNumber < networkConfig.startPermissionlessReserveBlock) break;
 
@@ -314,16 +303,29 @@ class TradeCrawler {
           } 
 
           break;
+
+        case networkConfig.logTopics.feeDistributed:
+          // console.log("=================== run to fee distributed ")
+          record.feeToken = web3.eth.abi.decodeParameter('address', log.topics[1]);
+          record.feePlatformWallet = web3.eth.abi.decodeParameter('address', log.topics[2]);
+          record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          record.feeRewardWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          record.feeRebateWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.arrayFeeRebateWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
+          record.arrayRebatePercentBpsPerWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+          ecord.feeBurnAmtWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+
+          break;
         case networkConfig.logTopics.katalystKyberTrade:
           console.log("=================== run to new katalist ")
           record.katalyst = true
-          record.blockNumber= log.blockNumber,
-          record.blockHash= log.blockHash,
-          record.blockTimestamp= timestamp,
+          record.block_number= log.blockNumber,
+          record.block_hash= log.blockHash,
+          record.block_timestamp= timestamp,
           record.tx= log.transactionHash
           /// todo new kyber trade handle katalyst
-          record.uniqueTag = log.transactionHash + "_" + log.id
-          
+          record.unique_tag = log.transactionHash + "_" + log.id
+
           record.decodedKatalystTrade = web3.eth.abi.decodeParameters([
             {
               type: 'uint256',
@@ -363,14 +365,15 @@ class TradeCrawler {
             }
         ], web3.utils.bytesToHex(data));
 
+        record.volume_eth = record.decodedKatalystTrade.ethWeiValue
         record.decodedKatalystTrade.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
         record.decodedKatalystTrade.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
 
         
         // maker, reserve, dest
         // taker, user, source
-        record.taker_token_address = record.decodedKatalystTrade.sourceAddress
-        record.maker_token_address = record.decodedKatalystTrade.destAddress
+        record.taker_token_address = record.decodedKatalystTrade.sourceAddress.toLowerCase()
+        record.maker_token_address = record.decodedKatalystTrade.destAddress.toLowerCase()
         // caculate sourceAmount and destAmount
         // if token -> eth: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayT2eSrcAmounts * arrayT2eRates
         // if eth -> token: sourceAmount = sum arrayE2tSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
@@ -386,15 +389,23 @@ class TradeCrawler {
           // token -> eth
           record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
           record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts.map((a,i) => {
+            const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayT2eRates[i]])
+            return Utils.toT(amountAndRate, 18, 0)
+          }), 0)
+        } else {
+          // token -> token
+          record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
+          record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((a,i) => {
             const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayE2tRates[i]])
             return Utils.toT(amountAndRate, 18, 0)
           }), 0)
-
-        } else {
-          // token -> token
         }
+        break;
 
-        console.log("+++++++++++++++++++", record)
+      case networkConfig.logTopics.katalystExecuteTrade:
+        console.log("------------- run to katalyst execute trade")
+        record.maker_address = log.address;
+        record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
 
         records.push(record)
         record = JSON.parse(JSON.stringify(initRecord))
@@ -403,6 +414,8 @@ class TradeCrawler {
       
 
     });
+
+
     async.waterfall([
       (next) => {
         async.eachLimit(records, PARALLEL_INSERT_LIMIT, (record, _next) => {
@@ -471,7 +484,7 @@ class TradeCrawler {
 
   }
 
-  _addNewTrade (exSession, record, callback) {
+  _addNewTrade (transaction, record, callback) {
     // check token exist
 
     async.auto({
@@ -529,13 +542,13 @@ class TradeCrawler {
         record.dest_reserve = record.dest_reserve.toLowerCase()
       }
 
-      if(record.maker_token_address) {
+      if(record.maker_token_address && global.TOKENS_BY_ADDR[record.maker_token_address]) {
         record.maker_token_address = record.maker_token_address.toLowerCase()
         record.maker_token_symbol = global.TOKENS_BY_ADDR[record.maker_token_address].symbol
         record.maker_token_decimal = global.TOKENS_BY_ADDR[record.maker_token_address].decimal
       }
 
-      if(record.taker_token_address) {
+      if(record.taker_token_address && global.TOKENS_BY_ADDR[record.taker_token_address]) {
         record.taker_token_address = record.taker_token_address.toLowerCase()
         record.taker_token_symbol = global.TOKENS_BY_ADDR[record.taker_token_address].symbol
         record.taker_token_decimal = global.TOKENS_BY_ADDR[record.taker_token_address].decimal 
@@ -626,55 +639,106 @@ class TradeCrawler {
       }
 
 
+      const arrayReserveTrades = []
+      if(record.katalyst){
+        //todo save to reserve trade 
+        const initReserveTrade = {
+          tx: record.tx,
+          unique_tag: record.unique_tag,
+          block_number: record.block_number,
+          block_timestamp: record.block_timestamp,
+        }
+
+        if(record.decodedKatalystTrade.arrayT2eReserveIds && record.decodedKatalystTrade.arrayT2eReserveIds.length){
+          // token -> eth
+          record.decodedKatalystTrade.arrayT2eReserveIds.map((r, i) => {
+            const newReserveTrade = JSON.parse(JSON.stringify(initReserveTrade))
+            newReserveTrade.reserve_id = r
+            newReserveTrade.source_address = record.taker_token_address.toLowerCase()
+            newReserveTrade.dest_address = networkConfig.ETH.address.toLowerCase()
+            newReserveTrade.source_amount = record.decodedKatalystTrade.arrayT2eSrcAmounts[i]
+            newReserveTrade.rate = record.decodedKatalystTrade.arrayT2eRates[i]
+            newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
+
+            arrayReserveTrades.push(newReserveTrade)
+          })
+        }
+
+        if(record.decodedKatalystTrade.arrayE2tReserveIds && record.decodedKatalystTrade.arrayE2tReserveIds.length){
+          // token -> eth
+          record.decodedKatalystTrade.arrayE2tReserveIds.map((r, i) => {
+            const newReserveTrade = JSON.parse(JSON.stringify(initReserveTrade))
+            newReserveTrade.reserve_id = r
+            newReserveTrade.source_address = networkConfig.ETH.address.toLowerCase() 
+            newReserveTrade.dest_address = record.maker_token_address.toLowerCase()
+            newReserveTrade.source_amount = record.decodedKatalystTrade.arrayE2tSrcAmounts[i]
+            newReserveTrade.rate = record.decodedKatalystTrade.arrayE2tRates[i]
+            newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
+
+            arrayReserveTrades.push(newReserveTrade)
+          })
+        }
+
+      
+
+      
+      }
 
 
 
-
-      // console.log("_________________", record.sourceReserve, record.sourceOfficial, record.destReserve,  record.destOfficial)
+      console.log("_________________", record)
       
       // logger.info(`Add new trade: ${JSON.stringify(record)}`);
 
-      console.log("&&&&&&&&&&&&&&&& ", record)
-      // KyberTradeModel.add(record, {
-      //   isInsertIgnore: true
-      // }, callback);
-      KyberTradeModel
-      .findOne({
-        where: {
-          unique_tag: record.unique_tag
-        }
+      sequelize.transaction(transaction => {
+        KyberTradeModel.findOne({
+          where: {
+            unique_tag: record.unique_tag
+          }
+        }, transaction)
+        .then(existKyberTrade => {
+          if(existKyberTrade) return existKyberTrade.update(record, transaction)
+          else return KyberTradeModel.create(record, transaction)
+        })
       })
-      .then(data => {
-        if(data) return data.update(record)
-        else return KyberTradeModel.create(record)
-      })
-      .then((result) => {
-        // console.log("_______________ ", err, result)
+      .then(result => {
         return callback(null)
       })
       .catch(err => {
+        console.log("-------------- transaction rollback ", err)
         return callback(err)
       })
+      
 
-      if(record.katalyst){
-        //todo save to reserve trade 
+      // console.log("&&&&&&&&&&&&&&&& ", record)
+      // // KyberTradeModel.add(record, {
+      // //   isInsertIgnore: true
+      // // }, callback);
+      // KyberTradeModel
+      // .findOne({
+      //   where: {
+      //     unique_tag: record.unique_tag
+      //   }
+      // })
+      // .then(data => {
+      //   if(data) return data.update(record, { transaction: t })
+      //   else return KyberTradeModel.create(record, { transaction: t })
+      // })
+      // .then((result) => {
+      //   // console.log("_______________ ", err, result)
+      //   return callback(null)
+      // })
+      // .catch(err => {
+      //   return callback(err)
+      // })
 
-
-        ReserveTradeModel.add(record, {
-          isInsertIgnore: true
-        }, callback);
-
-
-
-
-        //todo save to fee distributed
-        FeeDistributedModel.add(record, {
-          isInsertIgnore: true
-        }, callback);
-
-      }
+      
 
     }) 
+  }
+
+  async _processSave(){
+
   }
 
 };
