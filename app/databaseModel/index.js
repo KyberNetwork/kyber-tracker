@@ -69,24 +69,24 @@ KyberTradeModel.init({
 class BurnedFeeModel extends Model { }
 BurnedFeeModel.init({
     block_number: DataTypes.NUMBER,
-     block_hash: DataTypes.STRING,
-     block_timestamp: DataTypes.NUMBER,
-     tx: DataTypes.STRING,
-     burner_address: DataTypes.STRING,
-     burner_contract: DataTypes.STRING,
-     reserve_contract: DataTypes.STRING,
-     reserve_wallet: DataTypes.STRING,
-     amount: DataTypes.STRING,
-     year: DataTypes.NUMBER,
-     month: DataTypes.NUMBER,
-     day_seq: DataTypes.NUMBER,
-     hour_seq: DataTypes.NUMBER,
-     minute_seq: DataTypes.NUMBER 
-}, { sequelize, modelName: 'burned_fee', freezeTableName:  true, underscored: true, });
+    block_hash: DataTypes.STRING,
+    block_timestamp: DataTypes.NUMBER,
+    tx: DataTypes.STRING,
+    burner_address: DataTypes.STRING,
+    burner_contract: DataTypes.STRING,
+    reserve_contract: DataTypes.STRING,
+    reserve_wallet: DataTypes.STRING,
+    amount: DataTypes.STRING,
+    year: DataTypes.NUMBER,
+    month: DataTypes.NUMBER,
+    day_seq: DataTypes.NUMBER,
+    hour_seq: DataTypes.NUMBER,
+    minute_seq: DataTypes.NUMBER 
+}, { sequelize, modelName: 'burned_fee', freezeTableName:  true, underscored: true, timestamps: false});
 
 class ReserveTradeModel extends Model { }
 ReserveTradeModel.init({
-    reserve_id: DataTypes.NUMBER,
+    reserve_id: DataTypes.STRING,
     reserve_address: DataTypes.STRING,
     tx: DataTypes.STRING,
     unique_tag: DataTypes.STRING,
@@ -98,7 +98,18 @@ ReserveTradeModel.init({
     source_amount: DataTypes.NUMBER,
     dest_amount: DataTypes.NUMBER,
     rate: DataTypes.NUMBER,
-}, { sequelize, modelName: 'reserve_trade', freezeTableName:  true, underscored: true, });
+}, { sequelize, modelName: 'reserve_trade', freezeTableName:  true, underscored: true, timestamps: false});
+
+class ReserveInfoModel extends Model {}
+ReserveInfoModel.init({
+    reserve_id: DataTypes.STRING,
+    reserve_address: DataTypes.STRING,
+    action: DataTypes.NUMBER,           // 1: list, 2: remove, 3: change wallet
+    unique_tag: DataTypes.STRING,
+    block_number: DataTypes.NUMBER,
+    block_timestamp: DataTypes.NUMBER,
+    type: DataTypes.NUMBER,             // reserve type
+}, { sequelize, modelName: 'reserve_info', freezeTableName:  true, underscored: true, timestamps: false});
 
 class Rebate extends Model {} 
 Rebate.init({
@@ -109,7 +120,7 @@ Rebate.init({
     block_number: DataTypes.NUMBER,
     block_timestamp: DataTypes.NUMBER,
     rebate: DataTypes.NUMBER
-}, { sequelize, modelName: 'rebate', freezeTableName:  true, underscored: true, });
+}, { sequelize, modelName: 'rebate', freezeTableName:  true, underscored: true, timestamps: false});
 
 class FeeDistributedModel extends Model { }
 FeeDistributedModel.init({
@@ -120,8 +131,8 @@ FeeDistributedModel.init({
     token_address: DataTypes.STRING,
     fee_wei: DataTypes.NUMBER,
     fee_wallet: DataTypes.STRING,
-}, { sequelize, modelName: 'fee_distributed', freezeTableName:  true,  underscored: true, });
+}, { sequelize, modelName: 'fee_distributed', freezeTableName:  true,  underscored: true, timestamps: false});
 
 
 
-module.exports = {KyberTradeModel, ReserveTradeModel, FeeDistributedModel, sequelize}
+module.exports = {KyberTradeModel, ReserveTradeModel, FeeDistributedModel, ReserveInfoModel, sequelize}

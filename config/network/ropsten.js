@@ -12,6 +12,7 @@ module.exports = {
     "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x81ae4de9a3aec67a35c05c889052260e39bc42a4"],
     "workers": [],
     "storage": "0xa4ead31a6c8e047e01ce1128e268c101ad391959",
+    "katalystStorage": "0x688bf5EeC43E0799c5B9c1612F625F7b93FE5434",
     "internal": ["0x3f9a8e219Ab1aD42f96b22C294E564B2b48fE636", "0x9EC49C41Fdc4C79fDb042AF37659f2E3220ad0a4"]
   },
   "logTopics": {
@@ -24,7 +25,10 @@ module.exports = {
     "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
     "feeDistributed": "0x53e2e1b5ab64e0a76fcc6a932558eba265d4e58c512401a7d776ae0f8fc08994",
     "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d",
-    "katalystExecuteTrade": "0xf724b4df6617473612b53d7f88ecc6ea983074b30960a049fcd0657ffe808083"
+    "katalystExecuteTrade": "0xf724b4df6617473612b53d7f88ecc6ea983074b30960a049fcd0657ffe808083",
+    "katalystAddReserve": "0x50b2ce9e8f1a63ceaed262cc854dbf741b216e6429f7ba38403afbcdddc7f1ea",
+    "kataLystRemoveReserve": "0xa5cd88a226efb041d6bdc0ac32964affd749b8a7c4d9e0c4ffba575e7180b1c9",
+    "kataLystSetReserveWallet": "0x42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b3"
   },
 
   "ignoreReserveVolume": { 

@@ -305,9 +305,38 @@ class TradeCrawler {
           break;
 
         case networkConfig.logTopics.feeDistributed:
-          // console.log("=================== run to fee distributed ")
           record.feeToken = web3.eth.abi.decodeParameter('address', log.topics[1]);
           record.feePlatformWallet = web3.eth.abi.decodeParameter('address', log.topics[2]);
+
+
+          record.decodedFeeDistributed = web3.eth.abi.decodeParameters([
+            {
+              type: 'uint256',
+              name: 'platformFeeWei'
+            },
+            {
+              type: 'uint256',
+              name: 'rewardWei'
+            },
+            {
+              type: 'uint256',
+              name: 'rebateWei'
+            },
+            {
+              type: 'address[]',
+              name: 'rebateWallets'
+            },
+            {
+              type: 'uint256[]',
+              name: 'rebatePercentBpsPerWallet'
+            },
+            {
+              type: 'uint256',
+              name: 'burnAmtWei'
+            },
+        ], web3.utils.bytesToHex(data));
+
+
           record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
           record.feeRewardWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
           record.feeRebateWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
@@ -325,7 +354,6 @@ class TradeCrawler {
           record.tx= log.transactionHash
           /// todo new kyber trade handle katalyst
           record.unique_tag = log.transactionHash + "_" + log.id
-
           record.decodedKatalystTrade = web3.eth.abi.decodeParameters([
             {
               type: 'uint256',
@@ -640,11 +668,11 @@ class TradeCrawler {
 
 
       const arrayReserveTrades = []
+      const feeDistributed = []
       if(record.katalyst){
         //todo save to reserve trade 
         const initReserveTrade = {
           tx: record.tx,
-          unique_tag: record.unique_tag,
           block_number: record.block_number,
           block_timestamp: record.block_timestamp,
         }
@@ -659,7 +687,8 @@ class TradeCrawler {
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayT2eSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayT2eRates[i]
             newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
-
+            newReserveTrade.eth_wei_value = newReserveTrade.dest_amount
+            newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_t2e"
             arrayReserveTrades.push(newReserveTrade)
           })
         }
@@ -674,32 +703,46 @@ class TradeCrawler {
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayE2tSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayE2tRates[i]
             newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
-
+            newReserveTrade.eth_wei_value = newReserveTrade.source_amount
+            newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_e2t"
             arrayReserveTrades.push(newReserveTrade)
           })
         }
 
-      
 
-      
+        const initFeeDistributed = {
+          tx: record.tx,
+          block_number: record.block_number,
+          block_timestamp: record.block_timestamp,
+        }
+
+
       }
 
-
-
-      console.log("_________________", record)
-      
-      // logger.info(`Add new trade: ${JSON.stringify(record)}`);
-
-      sequelize.transaction(transaction => {
-        KyberTradeModel.findOne({
+      const insertReserveTrade = (record) => {
+        return ReserveTradeModel.findOne({
           where: {
             unique_tag: record.unique_tag
           }
         }, transaction)
-        .then(existKyberTrade => {
-          if(existKyberTrade) return existKyberTrade.update(record, transaction)
-          else return KyberTradeModel.create(record, transaction)
+        .then(existReserveTrade => {
+          if(existReserveTrade) return existReserveTrade.update(record, transaction)
+          else return ReserveTradeModel.create(record)
         })
+      }
+      
+      // logger.info(`Add new trade: ${JSON.stringify(record)}`);
+      KyberTradeModel.findOne({
+        where: {
+          unique_tag: record.unique_tag
+        }
+      })
+      .then(existKyberTrade => {
+        if(existKyberTrade) return existKyberTrade.update(record)
+        else return KyberTradeModel.create(record)
+      })
+      .then(result => {
+        return Promise.all(arrayReserveTrades.map(rTrade => (insertReserveTrade(rTrade).bind(rTrade))))
       })
       .then(result => {
         return callback(null)
@@ -708,6 +751,34 @@ class TradeCrawler {
         console.log("-------------- transaction rollback ", err)
         return callback(err)
       })
+      // sequelize.transaction(transaction => {
+      //   KyberTradeModel.findOne({
+      //     where: {
+      //       unique_tag: record.unique_tag
+      //     }
+      //   }, transaction)
+      //   .then(existKyberTrade => {
+      //     if(existKyberTrade) return existKyberTrade.update(record, transaction)
+      //     else return KyberTradeModel.create(record, transaction)
+      //   })
+      //   .then(result => {
+      //     if(arrayReserveTrades.length){
+      //       return insertReserveTrade(transaction, arrayReserveTrades[0])
+      //     }
+      //     else return Promise.resolve()
+      //     // return Promise.all(arrayReserveTrades.map(rTrade => (insertReserveTrade(transaction, rTrade).bind(rTrade))))
+      //   })
+      //   .then(result => {
+      //     console.log("--------result----", result)
+      //   })
+      // })
+      // .then(result => {
+      //   return callback(null)
+      // })
+      // .catch(err => {
+      //   console.log("-------------- transaction rollback ", err)
+      //   return callback(err)
+      // })
       
 
       // console.log("&&&&&&&&&&&&&&&& ", record)
