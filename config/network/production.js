@@ -311,10 +311,10 @@ module.exports = {
     },
     "CND": {
       "name": "Cindicator",
-      "address": "0xd4c435f5b09f855c3317c8524cb1f586e42795fa",
+      "address": "0xd4c435F5B09F855C3317c8524Cb1F586E42795fa",
       "symbol": "CND",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1593522000000
     },
     "KIN": {
       "name": "Kin",
