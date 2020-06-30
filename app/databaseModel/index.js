@@ -94,10 +94,11 @@ ReserveTradeModel.init({
     block_timestamp: DataTypes.NUMBER,
     source_address: DataTypes.STRING,
     dest_address: DataTypes.STRING,
-    eth_wei_value: DataTypes.NUMBER,
     source_amount: DataTypes.NUMBER,
     dest_amount: DataTypes.NUMBER,
     rate: DataTypes.NUMBER,
+    value_eth: DataTypes.NUMBER,
+    value_usd: DataTypes.NUMBER,
 }, { sequelize, modelName: 'reserve_trade', freezeTableName:  true, underscored: true, timestamps: false});
 
 class ReserveInfoModel extends Model {}

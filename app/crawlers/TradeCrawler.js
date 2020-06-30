@@ -14,7 +14,6 @@ const logger                      = require('sota-core').getLogger('TradeCrawler
 const configFetcher               = require('./configFetcher')
 const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
 
-
 let LATEST_PROCESSED_BLOCK = 0;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 3000);
 const REQUIRED_CONFIRMATION = parseInt(process.env.REQUIRED_CONFIRMATION || 7);
@@ -126,6 +125,7 @@ class TradeCrawler {
           address: networkConfig.contractAddresses.networks
             .concat(networkConfig.contractAddresses.internal)
             .concat(networkConfig.contractAddresses.feeBurners)
+            .concat(networkConfig.contractAddresses.feeHandler)
             .concat(networkConfig.contractAddresses.workers),
           topics: [
             [
@@ -307,8 +307,6 @@ class TradeCrawler {
         case networkConfig.logTopics.feeDistributed:
           record.feeToken = web3.eth.abi.decodeParameter('address', log.topics[1]);
           record.feePlatformWallet = web3.eth.abi.decodeParameter('address', log.topics[2]);
-
-
           record.decodedFeeDistributed = web3.eth.abi.decodeParameters([
             {
               type: 'uint256',
@@ -335,18 +333,20 @@ class TradeCrawler {
               name: 'burnAmtWei'
             },
         ], web3.utils.bytesToHex(data));
+          record.collected_fees=Utils.sumBig([record.decodedFeeDistributed.platformFeeWei, record.decodedFeeDistributed.rewardWei,
+            record.decodedFeeDistributed.rebateWei, record.decodedFeeDistributed.burnAmtWei
+          ], 0)
+          record.burn_fees = record.decodedFeeDistributed.burnAmtWei
+          // record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          // record.feeRewardWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          // record.feeRebateWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
+          // record.arrayFeeRebateWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
+          // record.arrayRebatePercentBpsPerWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+          // record.feeBurnAmtWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
 
-
-          record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          record.feeRewardWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          record.feeRebateWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
-          record.arrayFeeRebateWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
-          record.arrayRebatePercentBpsPerWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-          ecord.feeBurnAmtWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-
+          
           break;
         case networkConfig.logTopics.katalystKyberTrade:
-          console.log("=================== run to new katalist ")
           record.katalyst = true
           record.block_number= log.blockNumber,
           record.block_hash= log.blockHash,
@@ -688,6 +688,7 @@ class TradeCrawler {
             newReserveTrade.rate = record.decodedKatalystTrade.arrayT2eRates[i]
             newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.dest_amount
+            newReserveTrade.value_eth = Utils.toT(newReserveTrade.eth_wei_value, 18)
             newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_t2e"
             arrayReserveTrades.push(newReserveTrade)
           })
@@ -704,19 +705,28 @@ class TradeCrawler {
             newReserveTrade.rate = record.decodedKatalystTrade.arrayE2tRates[i]
             newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.source_amount
+            newReserveTrade.value_eth = Utils.toT(newReserveTrade.eth_wei_value, 18)
             newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_e2t"
             arrayReserveTrades.push(newReserveTrade)
           })
-        }
+        } 
 
-
-        const initFeeDistributed = {
+      } else {
+        // save old tx to reserve trade 
+        const newReserveTrade = {
           tx: record.tx,
           block_number: record.block_number,
           block_timestamp: record.block_timestamp,
+          source_address: record.taker_token_address.toLowerCase(),
+          dest_address: record.maker_token_address.toLowerCase(),
+          source_amount: record.taker_token_amount,
+          rate: record.decodedKatalystTrade.arrayT2eRates[i],
+          dest_amount: record.maker_token_amount,
+          value_eth: record.tx_value_eth,
+          unique_tag: record.unique_tag + "_" + r + "_t2t",
         }
-
-
+        
+        arrayReserveTrades.push(newReserveTrade)
       }
 
       const insertReserveTrade = (record) => {

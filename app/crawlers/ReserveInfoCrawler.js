@@ -267,8 +267,9 @@ class ReserveInfoCrawler {
     ReserveTradeModel.findAll({
         limit: RESERVE_TRADES_LIMIT,
         where: {
-            reserve_id: {[Op.not]: null},
-            reserve_address: {[Op.is]: null},
+          block_number:  {[Op.gt]: network.startKataLystBlock},
+          reserve_id: {[Op.not]: null},
+          reserve_address: {[Op.is]: null},
         }
     })
     .then(results => {
