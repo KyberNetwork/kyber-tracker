@@ -1,4 +1,4 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
+const { Sequelize, Model, DataTypes, Op } = require('sequelize');
 const BigNumber       = require('bignumber.js');
 
 const sequelize = new Sequelize(process.env.MYSQL_DBNAME, process.env.MYSQL_USERNAME, process.env.MYSQL_PASSWORD, {
@@ -93,9 +93,13 @@ ReserveTradeModel.init({
     block_number: DataTypes.NUMBER,
     block_timestamp: DataTypes.NUMBER,
     source_address: DataTypes.STRING,
-    dest_address: DataTypes.STRING,
     source_token_address: DataTypes.STRING,
+    source_token_symbol: DataTypes.STRING,
+    source_token_decimal: DataTypes.NUMBER,
+    dest_address: DataTypes.STRING,
     dest_token_address: DataTypes.STRING,
+    dest_token_symbol: DataTypes.STRING,
+    dest_token_decimal: DataTypes.NUMBER,
     source_amount: DataTypes.NUMBER,
     dest_amount: DataTypes.NUMBER,
     rate: DataTypes.NUMBER,
@@ -113,6 +117,16 @@ ReserveInfoModel.init({
     block_timestamp: DataTypes.NUMBER,
     type: DataTypes.NUMBER,             // reserve type
 }, { sequelize, modelName: 'reserve_info', freezeTableName:  true, underscored: true, timestamps: false});
+
+class TokenInfoModel extends Model {}
+TokenInfoModel.init({
+    address: DataTypes.STRING,
+    name: DataTypes.STRING,
+    symbol: DataTypes.STRING,
+    decimal: DataTypes.NUMBER,           // 1: list, 2: remove, 3: change wallet
+    hidden: DataTypes.NUMBER,
+    delisted: DataTypes.NUMBER,             // reserve type
+}, { sequelize, modelName: 'token_info', freezeTableName:  true, underscored: true, timestamps: false});
 
 class Rebate extends Model {} 
 Rebate.init({
@@ -138,4 +152,4 @@ FeeDistributedModel.init({
 
 
 
-module.exports = {KyberTradeModel, ReserveTradeModel, FeeDistributedModel, ReserveInfoModel, sequelize}
+module.exports = { sequelize, Op, KyberTradeModel, ReserveTradeModel, FeeDistributedModel, ReserveInfoModel, TokenInfoModel, }

@@ -12,7 +12,7 @@ const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const logger                      = require('sota-core').getLogger('TradeCrawler');
 const configFetcher               = require('./configFetcher')
-const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
+const { Op, KyberTradeModel, ReserveTradeModel, TokenInfoModel } = require('../databaseModel');
 
 let LATEST_PROCESSED_BLOCK = 0;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 3000);
@@ -571,14 +571,14 @@ class TradeCrawler {
 
       if(record.maker_token_address && global.TOKENS_BY_ADDR[record.maker_token_address]) {
         record.maker_token_address = record.maker_token_address.toLowerCase()
-        record.maker_token_symbol = global.TOKENS_BY_ADDR[record.maker_token_address].symbol
-        record.maker_token_decimal = global.TOKENS_BY_ADDR[record.maker_token_address].decimal
+        // record.maker_token_symbol = global.TOKENS_BY_ADDR[record.maker_token_address].symbol
+        // record.maker_token_decimal = global.TOKENS_BY_ADDR[record.maker_token_address].decimal
       }
 
       if(record.taker_token_address && global.TOKENS_BY_ADDR[record.taker_token_address]) {
         record.taker_token_address = record.taker_token_address.toLowerCase()
-        record.taker_token_symbol = global.TOKENS_BY_ADDR[record.taker_token_address].symbol
-        record.taker_token_decimal = global.TOKENS_BY_ADDR[record.taker_token_address].decimal 
+        // record.taker_token_symbol = global.TOKENS_BY_ADDR[record.taker_token_address].symbol
+        // record.taker_token_decimal = global.TOKENS_BY_ADDR[record.taker_token_address].decimal 
       } 
 
 
@@ -734,7 +734,15 @@ class TradeCrawler {
         arrayReserveTrades.push(newReserveTrade)
       }
 
-      const insertReserveTrade = (record) => {
+      const insertReserveTrade = (record, tokenObj) => {
+        if(tokenObj[record.source_token_address]){
+          record.source_token_symbol = tokenObj[record.source_token_address].symbol
+          record.source_token_decimal = tokenObj[record.source_token_address].decimal
+        }
+        if(tokenObj[record.dest_token_address]){
+          record.dest_token_symbol = tokenObj[record.dest_token_address].symbol
+          record.dest_token_decimal = tokenObj[record.dest_token_address].decimal
+        }
         return ReserveTradeModel.findOne({
           where: {
             unique_tag: record.unique_tag
@@ -747,79 +755,50 @@ class TradeCrawler {
       }
       
       // logger.info(`Add new trade: ${JSON.stringify(record)}`);
-      KyberTradeModel.findOne({
+      TokenInfoModel.findAll({
         where: {
-          unique_tag: record.unique_tag
+          [Op.or]: [
+            {address: record.taker_token_address},
+            {address: record.maker_token_address},
+            {address: networkConfig.ETH.address},
+          ]
+        },
+        raw: true
+      })
+      .then(founds => {
+        const tokenObj = _.keyBy(founds, 'address')
+        if(tokenObj[record.taker_token_address.toLowerCase()]){
+          record.taker_token_symbol = tokenObj[record.taker_token_address.toLowerCase()].symbol
+          record.taker_token_decimal = tokenObj[record.taker_token_address.toLowerCase()].decimal 
         }
+        if(tokenObj[record.maker_token_address.toLowerCase()]){
+          record.maker_token_symbol = tokenObj[record.maker_token_address.toLowerCase()].symbol
+          record.maker_token_decimal = tokenObj[record.maker_token_address.toLowerCase()].decimal
+        }
+
+        KyberTradeModel.findOne({
+          where: {
+            unique_tag: record.unique_tag
+          }
+        })
+        .then(existKyberTrade => {
+          if(existKyberTrade) return existKyberTrade.update(record)
+          else return KyberTradeModel.create(record)
+        })
+        .then(result => {
+          return Promise.all(arrayReserveTrades.map(rTrade => (insertReserveTrade(rTrade, tokenObj).bind(rTrade))))
+        })
+        .then(result => {
+          return callback(null)
+        })
+        .catch(err => {
+          console.log("-------------- transaction rollback ", err)
+          return callback(err)
+        })
+
+
       })
-      .then(existKyberTrade => {
-        if(existKyberTrade) return existKyberTrade.update(record)
-        else return KyberTradeModel.create(record)
-      })
-      .then(result => {
-        return Promise.all(arrayReserveTrades.map(rTrade => (insertReserveTrade(rTrade).bind(rTrade))))
-      })
-      .then(result => {
-        return callback(null)
-      })
-      .catch(err => {
-        console.log("-------------- transaction rollback ", err)
-        return callback(err)
-      })
-      // sequelize.transaction(transaction => {
-      //   KyberTradeModel.findOne({
-      //     where: {
-      //       unique_tag: record.unique_tag
-      //     }
-      //   }, transaction)
-      //   .then(existKyberTrade => {
-      //     if(existKyberTrade) return existKyberTrade.update(record, transaction)
-      //     else return KyberTradeModel.create(record, transaction)
-      //   })
-      //   .then(result => {
-      //     if(arrayReserveTrades.length){
-      //       return insertReserveTrade(transaction, arrayReserveTrades[0])
-      //     }
-      //     else return Promise.resolve()
-      //     // return Promise.all(arrayReserveTrades.map(rTrade => (insertReserveTrade(transaction, rTrade).bind(rTrade))))
-      //   })
-      //   .then(result => {
-      //     console.log("--------result----", result)
-      //   })
-      // })
-      // .then(result => {
-      //   return callback(null)
-      // })
-      // .catch(err => {
-      //   console.log("-------------- transaction rollback ", err)
-      //   return callback(err)
-      // })
       
-
-      // console.log("&&&&&&&&&&&&&&&& ", record)
-      // // KyberTradeModel.add(record, {
-      // //   isInsertIgnore: true
-      // // }, callback);
-      // KyberTradeModel
-      // .findOne({
-      //   where: {
-      //     unique_tag: record.unique_tag
-      //   }
-      // })
-      // .then(data => {
-      //   if(data) return data.update(record, { transaction: t })
-      //   else return KyberTradeModel.create(record, { transaction: t })
-      // })
-      // .then((result) => {
-      //   // console.log("_______________ ", err, result)
-      //   return callback(null)
-      // })
-      // .catch(err => {
-      //   return callback(err)
-      // })
-
-      
-
     }) 
   }
 

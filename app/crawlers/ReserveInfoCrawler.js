@@ -277,7 +277,7 @@ class ReserveInfoCrawler {
             ReserveInfoModel.findAll({
                 limit: 1,
                 where: {
-                  // block_number:  {[Op.lt]: item.block_number},
+                  block_number:  {[Op.lt]: item.block_number},
                   reserve_id: item.reserve_id,
                   action: 1
                 },

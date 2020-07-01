@@ -168,7 +168,7 @@ module.exports = BaseService.extends({
     async.auto({
       list: (_next) => {
         // KyberTradeModel.find(this.makeReserveSql(null, options, true, true), next);
-        ReserveTradeModel.findAll(this.makeReserveTradeQueryParams( options, false, true))
+        ReserveTradeModel.findAll(this.makeReserveTradeQueryParams( options, true, true))
         .then(result => _next(null, result))
         .catch(err => _next(err))
       },
@@ -205,8 +205,15 @@ module.exports = BaseService.extends({
           blockTimestamp: trade.block_timestamp,
           takerAddress: trade.source_address,
           makerAddress: trade.dest_address,
+
           takerTokenAddress: trade.source_token_address,
+          takerTokenSymbol: trade.source_token_symbol,
+          takerTokenDecimal: trade.source_token_decimal,
+
           makerTokenAddress: trade.dest_token_address,
+          makerTokenSymbol: trade.dest_token_symbol,
+          makerTokenDecimal: trade.dest_token_decimal,
+
           takerTokenAmount: trade.source_amount,
           makerTokenAmount: trade.dest_amount,
           valueEth: trade.value_eth,
@@ -419,6 +426,9 @@ module.exports = BaseService.extends({
         ['reserve_address', 'address'], 
         [sequelize.fn('sum', sequelize.col('value_eth')), 'volumeETH']
       ], 
+      where: {
+        reserve_address:  {[Op.not]: null}
+      },
       group: ['reserve_address'],
       raw: true,
     })
