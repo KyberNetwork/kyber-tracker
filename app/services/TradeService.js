@@ -11,6 +11,8 @@ const BaseService = require('sota-core').load('service/BaseService');
 const logger = require('sota-core').getLogger('TradeService');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
+const { Op } = require("sequelize");
+
 const UtilsHelper = require('../common/Utils');
 
 const CacheInfo = require('../../config/cache/info');
@@ -145,56 +147,83 @@ module.exports = BaseService.extends({
     return queryOptions
   },
 
+  makeReserveTradeQueryParams: function(options, isOrder, isLimit){
+    return {
+      ...(options.limit && isLimit && {limit: options.limit}),
+      ...(options.limit && isLimit && options.page && {offset: options.page * options.limit}),
+      ...(isOrder && {order: [ ['block_timestamp', 'DESC'] ]}),
+      where: {
+        reserve_address: options.reserve.toLowerCase(),
+        ...(options.toDate && {block_timestamp: {[Op.lt]: options.toDate}}),
+        ...(options.fromDate && {block_timestamp: {[Op.gt]: options.fromDate}})
+      },
+      raw: true,
+    }
+  },
+
   getReserveTradeList: function(options, callback){
-    const KyberTradeModel = this.getModel('KyberTradeModel');
+    // const KyberTradeModel = this.getModel('KyberTradeModel');
     let params = [];
 
     async.auto({
-      list: (next) => {
-        KyberTradeModel.find(this.makeReserveSql(null, options, true, true), next);
+      list: (_next) => {
+        // KyberTradeModel.find(this.makeReserveSql(null, options, true, true), next);
+        ReserveTradeModel.findAll(this.makeReserveTradeQueryParams( options, false, true))
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      count: (next) => {
-        KyberTradeModel.count(this.makeReserveSql(null, options, false), next);
+      count: (_next) => {
+        // KyberTradeModel.count(this.makeReserveSql(null, options, false), next);
+        ReserveTradeModel.count(this.makeReserveTradeQueryParams( options, false, false))
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      volumeUsdSource: (next) => {
-        KyberTradeModel.sum('tx_value_usd', this.makeReserveSql('source', options, false), next);
+      volume: (_next) => {
+        const volumeQueryParams = {
+          ...this.makeReserveTradeQueryParams( options, false, false),
+          attributes: [
+            ['reserve_address', 'address'], 
+            [sequelize.fn('sum', sequelize.col('value_eth')), 'volumeEth'],
+            [sequelize.fn('sum', sequelize.col('value_usd')), 'volumeUsd']
+          ], 
+          group: ['reserve_address'],
+        }
+        ReserveTradeModel.findAll(volumeQueryParams)
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      volumeUsdDest: (next) => {
-        KyberTradeModel.sum('tx_value_usd', this.makeReserveSql('dest', options, false), next);
-      },
-      volumeEthSource: (next) => {
-        KyberTradeModel.sum('tx_value_eth', this.makeReserveSql('source', options, false), next);
-      },
-      volumeEthDest: (next) => {
-        KyberTradeModel.sum('tx_value_eth', this.makeReserveSql('dest', options, false), next);
-      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
 
-      const bigVolumeUsdSource = new BigNumber(ret.volumeUsdSource ? ret.volumeUsdSource.toString() : 0)
-      const bigVolumeUsdDest = new BigNumber(ret.volumeUsdDest ? ret.volumeUsdDest.toString() : 0)
-
-      const bigVolumeEthSource = new BigNumber(ret.volumeEthSource ? ret.volumeEthSource.toString() : 0)
-      const bigVolumeEthDest = new BigNumber(ret.volumeEthDest ? ret.volumeEthDest.toString() : 0)
-
-
-      const volumeUsd = bigVolumeUsdSource.plus(bigVolumeUsdDest).toString()
-      const volumeEth = bigVolumeEthSource.plus(bigVolumeEthDest).toString()
-
       return callback(null, {
-        data: ret.list,
+        data: ret.list && ret.list.map(trade => ({
+          id: trade.id,
+          tx: trade.tx,
+          blockNumber: trade.block_number,
+          blockTimestamp: trade.block_timestamp,
+          takerAddress: trade.source_address,
+          makerAddress: trade.dest_address,
+          takerTokenAddress: trade.source_token_address,
+          makerTokenAddress: trade.dest_token_address,
+          takerTokenAmount: trade.source_amount,
+          makerTokenAmount: trade.dest_amount,
+          valueEth: trade.value_eth,
+          valueUsd: trade.value_usd,
+          rate: trade.rate
+        })),
         pagination: {
           page: options.page,
           limit: options.limit,
           totalCount: ret.count,
-          volumeUsd: volumeUsd,
-          volumeEth: volumeEth,
+          volumeUsd: ret.volume[0] ? ret.volume[0].volumeUsd : 0, 
+          volumeEth: ret.volume[0] ? ret.volume[0].volumeEth : 0,
           collectedFees: ret.collectedFees,
           maxPage: Math.ceil(ret.count / options.limit)
         }
       });
+      // return callback(null, ret)
     });
   },
 

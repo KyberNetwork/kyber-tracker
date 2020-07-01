@@ -9,6 +9,8 @@ const Utils_Common = require('../common/Utils');
 const logger = log4js.getLogger('TradeController');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
+const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
+
 module.exports = AppController.extends({
   classname: 'TradeController',
 

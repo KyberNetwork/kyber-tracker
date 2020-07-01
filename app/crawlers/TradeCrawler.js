@@ -348,10 +348,6 @@ class TradeCrawler {
           break;
         case networkConfig.logTopics.katalystKyberTrade:
           record.katalyst = true
-          record.block_number= log.blockNumber,
-          record.block_hash= log.blockHash,
-          record.block_timestamp= timestamp,
-          record.tx= log.transactionHash
           /// todo new kyber trade handle katalyst
           record.unique_tag = log.transactionHash + "_" + log.id
           record.decodedKatalystTrade = web3.eth.abi.decodeParameters([
@@ -431,9 +427,12 @@ class TradeCrawler {
         break;
 
       case networkConfig.logTopics.katalystExecuteTrade:
-        console.log("------------- run to katalyst execute trade")
-        record.maker_address = log.address;
-        record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
+        record.block_number= log.blockNumber
+        record.block_hash= log.blockHash
+        record.block_timestamp= timestamp
+        record.tx= log.transactionHash
+        record.maker_address = log.address.toLowerCase();
+        record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
 
         records.push(record)
         record = JSON.parse(JSON.stringify(initRecord))
@@ -682,13 +681,15 @@ class TradeCrawler {
           record.decodedKatalystTrade.arrayT2eReserveIds.map((r, i) => {
             const newReserveTrade = JSON.parse(JSON.stringify(initReserveTrade))
             newReserveTrade.reserve_id = r
-            newReserveTrade.source_address = record.taker_token_address.toLowerCase()
-            newReserveTrade.dest_address = networkConfig.ETH.address.toLowerCase()
+            newReserveTrade.source_address = record.taker_address.toLowerCase()
+            newReserveTrade.dest_address = record.maker_address.toLowerCase()
+            newReserveTrade.source_token_address = record.taker_token_address.toLowerCase()
+            newReserveTrade.dest_token_address = networkConfig.ETH.address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayT2eSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayT2eRates[i]
             newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.dest_amount
-            newReserveTrade.value_eth = Utils.toT(newReserveTrade.eth_wei_value, 18)
+            newReserveTrade.value_eth = Utils.toT(newReserveTrade.dest_amount, 18)
             newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_t2e"
             arrayReserveTrades.push(newReserveTrade)
           })
@@ -699,13 +700,15 @@ class TradeCrawler {
           record.decodedKatalystTrade.arrayE2tReserveIds.map((r, i) => {
             const newReserveTrade = JSON.parse(JSON.stringify(initReserveTrade))
             newReserveTrade.reserve_id = r
-            newReserveTrade.source_address = networkConfig.ETH.address.toLowerCase() 
-            newReserveTrade.dest_address = record.maker_token_address.toLowerCase()
+            newReserveTrade.source_address = record.taker_address.toLowerCase()
+            newReserveTrade.dest_address = record.maker_address.toLowerCase()
+            newReserveTrade.source_token_address = networkConfig.ETH.address.toLowerCase() 
+            newReserveTrade.dest_token_address = record.maker_token_address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayE2tSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayE2tRates[i]
             newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.source_amount
-            newReserveTrade.value_eth = Utils.toT(newReserveTrade.eth_wei_value, 18)
+            newReserveTrade.value_eth = Utils.toT(newReserveTrade.source_amount, 18)
             newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_e2t"
             arrayReserveTrades.push(newReserveTrade)
           })
@@ -717,8 +720,10 @@ class TradeCrawler {
           tx: record.tx,
           block_number: record.block_number,
           block_timestamp: record.block_timestamp,
-          source_address: record.taker_token_address.toLowerCase(),
-          dest_address: record.maker_token_address.toLowerCase(),
+          source_address: record.taker_address.toLowerCase(),
+          dest_address: record.maker_address.toLowerCase(),
+          source_token_address: record.taker_token_address.toLowerCase(),
+          dest_token_address: record.maker_token_address.toLowerCase(),
           source_amount: record.taker_token_amount,
           rate: record.decodedKatalystTrade.arrayT2eRates[i],
           dest_amount: record.maker_token_amount,

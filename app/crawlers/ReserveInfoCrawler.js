@@ -186,9 +186,9 @@ class ReserveInfoCrawler {
                     },
                 ], web3.utils.bytesToHex(data));
 
-                record.reserve_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
+                record.reserve_address = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
                 record.reserve_id = web3.eth.abi.decodeParameter('bytes32', log.topics[2]);
-                record.reserve_wallet = web3.eth.abi.decodeParameter('address', log.topics[3]);
+                record.reserve_wallet = web3.eth.abi.decodeParameter('address', log.topics[3]).toLowerCase();
                 record.reserve_type = addReserveData.reserveType
                 record.unique_tag = log.transactionHash + "_" + log.id
                 record.action = 1
@@ -200,7 +200,7 @@ class ReserveInfoCrawler {
             case network.logTopics.kataLystRemoveReserve:
                 // console.log("_____________ remove reserve")
                 record = {}
-                record.reserve_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
+                record.reserve_address = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
                 record.reserve_id = web3.eth.abi.decodeParameter('bytes32', log.topics[2]);
                 record.unique_tag = log.transactionHash + "_" + log.id
                 record.action = 2
@@ -213,7 +213,7 @@ class ReserveInfoCrawler {
                 // console.log("_____________ set reserve wallet")
                 record = {}
                 record.reserve_id = web3.eth.abi.decodeParameter('bytes32', log.topics[1]);
-                record.reserve_address = web3.eth.abi.decodeParameter('address', log.topics[2]);
+                record.reserve_wallet = web3.eth.abi.decodeParameter('address', log.topics[2]).toLowerCase();
                 record.unique_tag = log.transactionHash + "_" + log.id
                 record.action = 3
                 record.block_number= log.blockNumber
@@ -277,6 +277,7 @@ class ReserveInfoCrawler {
             ReserveInfoModel.findAll({
                 limit: 1,
                 where: {
+                  // block_number:  {[Op.lt]: item.block_number},
                   reserve_id: item.reserve_id,
                   action: 1
                 },
@@ -285,7 +286,7 @@ class ReserveInfoCrawler {
             .then(founds => {
                 if(founds && founds[0]){
                     item.reserve_address = founds[0].reserve_address
-                    return item.update({reserve_address: founds[0].reserve_address})
+                    return item.update({reserve_address: founds[0].reserve_address.toLowerCase()})
                 } else {
                     return null
                 }

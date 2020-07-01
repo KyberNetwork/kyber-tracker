@@ -94,6 +94,8 @@ ReserveTradeModel.init({
     block_timestamp: DataTypes.NUMBER,
     source_address: DataTypes.STRING,
     dest_address: DataTypes.STRING,
+    source_token_address: DataTypes.STRING,
+    dest_token_address: DataTypes.STRING,
     source_amount: DataTypes.NUMBER,
     dest_amount: DataTypes.NUMBER,
     rate: DataTypes.NUMBER,
