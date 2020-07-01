@@ -1258,6 +1258,14 @@ module.exports = {
       "address": "0x89Ab32156e46F46D02ade3FEcbe5Fc4243B9AAeD",
       "hidden": 1592917200000
     },
+
+    "COMP": {
+      "name": "Compound",
+      "symbol" : "COMP",
+      "decimal": 18,
+      "address": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+      "hidden": 1593608400000
+    },
   },
 
   "preburntAmount": 48.61873337,
