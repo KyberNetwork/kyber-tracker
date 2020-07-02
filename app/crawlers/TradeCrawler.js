@@ -247,6 +247,19 @@ class TradeCrawler {
           record.volume_eth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(0, 32))));
           break;
         case networkConfig.logTopics.exchange:
+          if(record.katalyst) {
+            record.block_number= log.blockNumber
+            record.block_hash= log.blockHash
+            record.block_timestamp= timestamp
+            record.tx= log.transactionHash
+            record.maker_address = log.address.toLowerCase();
+            record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
+
+            records.push(record)
+            record = JSON.parse(JSON.stringify(initRecord))
+            break;
+          }
+
           if(log.blockNumber >= networkConfig.startPermissionlessReserveBlock) break;
           record.maker_address = log.address;
           record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
@@ -389,7 +402,7 @@ class TradeCrawler {
             }
         ], web3.utils.bytesToHex(data));
 
-        record.volume_eth = record.decodedKatalystTrade.ethWeiValue
+        record.volume_eth = Utils.fromWei(record.decodedKatalystTrade.ethWeiValue)
         record.decodedKatalystTrade.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
         record.decodedKatalystTrade.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
 
@@ -436,13 +449,9 @@ class TradeCrawler {
 
         records.push(record)
         record = JSON.parse(JSON.stringify(initRecord))
-        break;
+        break;      
       }
-      
-
     });
-
-
     async.waterfall([
       (next) => {
         async.eachLimit(records, PARALLEL_INSERT_LIMIT, (record, _next) => {
