@@ -216,16 +216,16 @@ module.exports = BaseService.extends({
 
           takerTokenAmount: trade.source_amount,
           makerTokenAmount: trade.dest_amount,
-          valueEth: trade.value_eth,
-          valueUsd: trade.value_usd,
+          valueEth: trade.value_eth ? trade.value_eth : 0,
+          valueUsd: trade.value_usd ? trade.value_usd : 0,
           rate: trade.rate
         })),
         pagination: {
           page: options.page,
           limit: options.limit,
           totalCount: ret.count,
-          volumeUsd: ret.volume[0] ? ret.volume[0].volumeUsd : 0, 
-          volumeEth: ret.volume[0] ? ret.volume[0].volumeEth : 0,
+          volumeUsd: ret.volume[0] && ret.volume[0].volumeUsd ? ret.volume[0].volumeUsd : 0, 
+          volumeEth: ret.volume[0] && ret.volume[0].volumeEth ? ret.volume[0].volumeEth : 0,
           collectedFees: ret.collectedFees,
           maxPage: Math.ceil(ret.count / options.limit)
         }
@@ -552,7 +552,6 @@ module.exports = BaseService.extends({
 
   _currentList: function(reserveAddr){
     const returnObj = {}
-
     Object.keys(global.TOKENS_BY_ADDR).map(tokenAddr => {
       if(global.TOKENS_BY_ADDR[tokenAddr].reserves){
         if(UtilsHelper.shouldShowToken(tokenAddr) &&
@@ -562,29 +561,27 @@ module.exports = BaseService.extends({
         }
       }
     })
-
     return returnObj
   },
 
   _tradedList: function(options, callback){
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
-
     const makeSql = (side, rside, callback) => {
       const sql = `select ${side}_token_address as address,
-        IFNULL(sum(${side}_token_amount), 0) as token,
-        IFNULL(sum(tx_value_eth),0) as eth,
-        IFNULL(sum(tx_value_usd),0) as usd
-      from kyber_trade
+        IFNULL(sum(${side}_amount), 0) as token,
+        IFNULL(sum(value_eth),0) as eth,
+        IFNULL(sum(value_usd),0) as usd
+      from reserve_trade
       where block_timestamp > ${options.fromDate} AND block_timestamp < ${options.toDate}
-      and ${rside}_reserve = '${options.reserveAddr.toLowerCase()}'
+      and reserve_address = '${options.reserveAddr.toLowerCase()}'
       ${UtilsHelper.ignoreETH(side)}
       group by ${side}_token_address`;
       return adapter.execRaw(sql, [], callback);
     };
 
     async.parallel({
-      maker: _next => makeSql('maker', 'dest', _next),
-      taker: _next => makeSql('taker', 'source', _next)
+      maker: _next => makeSql('dest', 'dest', _next),
+      taker: _next => makeSql('source', 'source', _next)
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -596,8 +593,8 @@ module.exports = BaseService.extends({
         return _.chain(array).groupBy('address')
               .map((v,i) => ({
                 address: i.toLowerCase(),
-                eth: _.sumBy(v, 'eth'),
-                usd: _.sumBy(v, 'usd')
+                volumeETH: _.sumBy(v, 'eth'),
+                volumeUSD: _.sumBy(v, 'usd')
               })).value()
       }
       
