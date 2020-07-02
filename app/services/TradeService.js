@@ -976,34 +976,14 @@ module.exports = BaseService.extends({
       kncMarketData: (next) => {
         CMCService.getKyberTokenMarketData(network.KNC.symbol, next);
       },
-      /*
-      volumeEth: (next) => {
-        KyberTradeModel.sum('volume_eth', {
-          where: 'block_timestamp > ?',
-          params: [nowInSeconds - DAY_IN_SECONDS],
-        }, next);
-      },
-      ethPrice: (next) => {
-        CMCService.getCurrentPrice('ETH', next);
-      },
-      kncPrice: (next) => {
-        CMCService.getCurrentPrice('KNC', next);
-      },
-      kncInfo: (next) => {
-        CMCService.getCMCTokenInfo('KNC', next);
-      },
-      tradeCount: (next) => {
-        KyberTradeModel.count({
-          where: 'block_timestamp > ?',
-          params: [nowInSeconds - DAY_IN_SECONDS]
-        }, next);
-      },
-      */
       collectedFees: (next) => {
         KyberTradeModel.sum('collected_fees', {
           where: '1=1'
-          //where: 'block_timestamp > ?',
-          //params: [nowInSeconds - DAY_IN_SECONDS]
+        }, next);
+      },
+      feeKatalystCollected: (next) => {
+        KyberTradeModel.sum('fee_total_collected', {
+          where: '1=1'
         }, next);
       },
       totalBurnedFee: (next) => {
@@ -1043,10 +1023,13 @@ module.exports = BaseService.extends({
       const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
       //const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
       const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
+
+      const feeKatalystCollected = new BigNumber(ret.feeKatalystCollected.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
         //networkVolumeEth:  volumeInETH.toFormat(2).toString() + " ETH",
         collectedFees: collectedFees.toFormat(2).toString(),
+        feeKatalystCollected: feeKatalystCollected.toFormat(2).toString(),
         //tradeCount: ret.tradeCount,
         //kncInfo: ret.kncInfo,
         totalBurnedFee: actualBurnedFee.toFormat(2).toString(),

@@ -88,9 +88,14 @@
               </div>
 
               <div ref="slide_3" class="slide-item">
-                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
-                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ kncCollected }}</span>
               </div>
+              <div ref="slide_3" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.fee_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ feeCollected }}</span>
+              </div>
+
               <div ref="slide_4" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
                 <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
@@ -124,8 +129,12 @@
               </div>
 
               <div v-if="isLoopSumary" class="slide-item">
-                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
-                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ kncCollected }}</span>
+              </div>
+              <div v-if="isLoopSumary" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.fee_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ feeCollected }}</span>
               </div>
               <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
@@ -425,7 +434,8 @@ export default {
       totalBurnedFee: "",
       searchString: "",
       pageTitle: "",
-      collectedFees: "",
+      kncCollected: "",
+      feeCollected: "",
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
@@ -628,7 +638,9 @@ export default {
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
         this.totalBurnedFee = stats.totalBurnedFee + " KNC";
-        this.collectedFees = stats.collectedFees + " KNC";
+      
+        this.kncCollected = stats.collectedFees + " KNC";
+        this.feeCollected = stats.feeKatalystCollected + " ETH";
 
         this.kncPrice = "$" + stats.kncPrice;
         this.kncPriceChange24h = stats.kncChange24h;

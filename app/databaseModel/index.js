@@ -45,7 +45,13 @@ KyberTradeModel.init({
     volume_eth: DataTypes.NUMBER,
     volume_usd: DataTypes.NUMBER,
     tx_value_eth: DataTypes.NUMBER,
-    tx_value_usd: DataTypes.NUMBER
+    tx_value_usd: DataTypes.NUMBER,
+
+    fee_token: DataTypes.STRING,
+    fee_platform_wallet: DataTypes.STRING,
+    fee_rebate: DataTypes.STRING,
+    fee_burn_atm: DataTypes.STRING,
+    fee_total_collected: DataTypes.STRING,
 }, { sequelize, modelName: 'kyber_trade', freezeTableName:  true, timestamps: false,
     hooks:{
         beforeCreate: function(instance){

@@ -318,8 +318,8 @@ class TradeCrawler {
           break;
 
         case networkConfig.logTopics.feeDistributed:
-          record.feeToken = web3.eth.abi.decodeParameter('address', log.topics[1]);
-          record.feePlatformWallet = web3.eth.abi.decodeParameter('address', log.topics[2]);
+          record.fee_token = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
+          record.fee_platform_wallet = web3.eth.abi.decodeParameter('address', log.topics[2]).toLowerCase();
           record.decodedFeeDistributed = web3.eth.abi.decodeParameters([
             {
               type: 'uint256',
@@ -346,17 +346,12 @@ class TradeCrawler {
               name: 'burnAmtWei'
             },
         ], web3.utils.bytesToHex(data));
-          record.collected_fees=Utils.sumBig([record.decodedFeeDistributed.platformFeeWei, record.decodedFeeDistributed.rewardWei,
+          record.fee_total_collected=Utils.sumBig([record.decodedFeeDistributed.platformFeeWei, record.decodedFeeDistributed.rewardWei,
             record.decodedFeeDistributed.rebateWei, record.decodedFeeDistributed.burnAmtWei
           ], 0)
           record.burn_fees = record.decodedFeeDistributed.burnAmtWei
-          // record.platformFeeWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-          // record.feeRewardWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-          // record.feeRebateWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(64, 96)));
-          // record.arrayFeeRebateWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(96, 128)));
-          // record.arrayRebatePercentBpsPerWallet = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-          // record.feeBurnAmtWei = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-
+          record.fee_rebate = record.decodedFeeDistributed.rebateWei
+          record.fee_burn_atm = record.decodedFeeDistributed.burnAmtWei
           
           break;
         case networkConfig.logTopics.katalystKyberTrade:

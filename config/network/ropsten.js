@@ -10,7 +10,7 @@ module.exports = {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
     "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755", "0xc4684f4fbfc3db0a24cffe35821b12e55beaef7a", "0xd719c34261e099fdb33030ac8909d5788d3039c4"],
     "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x81ae4de9a3aec67a35c05c889052260e39bc42a4"],
-    "feeHandler": ["0xe57B2c3b4E44730805358131a6Fc244C57178Da7"],
+    "feeHandler": ["0xff456d9a8cbb5352ef77dec2337bac8dec63beac"],
     "workers": [],
     "storage": "0xa4ead31a6c8e047e01ce1128e268c101ad391959",
     "katalystStorage": "0x688bf5EeC43E0799c5B9c1612F625F7b93FE5434",

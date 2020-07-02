@@ -74,7 +74,8 @@
     "fees_burned": "Đã đốt",
     "knc_price": "Giá KNC",
     "eth_price": "Giá ETH",
-    "collected_fees": "Tổng phí"
+    "knc_collected": "KNC Collected",
+    "fee_collected": "Fee Collected"
   },
 
   "tooltip": {
