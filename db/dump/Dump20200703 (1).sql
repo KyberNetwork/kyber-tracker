@@ -287,7 +287,7 @@ CREATE TABLE `reserve_trade` (
   `source_token_address` varchar(255) NOT NULL,
   `dest_token_address` varchar(255) NOT NULL,
   `rate` varchar(100) DEFAULT NULL,
-  `value_eth` varchar(100) NOT NULL,
+  `value_eth` varchar(100) DEFAULT NULL,
   `value_usd` varchar(100) DEFAULT NULL,
   `source_token_symbol` varchar(45) DEFAULT NULL,
   `source_token_decimal` int DEFAULT NULL,
