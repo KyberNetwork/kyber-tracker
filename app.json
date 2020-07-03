@@ -21,8 +21,8 @@
       "watch"             : false
     },
     {
-      "name"              : "reserveTradeVollumeUsd",
-      "script"            : "reserveTradeVollumeUsd.js",
+      "name"              : "reserveTradeVolumeUsd",
+      "script"            : "reserveTradeVolumeUsd.js",
       "watch"             : false
     },
     {
