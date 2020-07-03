@@ -14,8 +14,8 @@ module.exports = (callback, modelName = 'KyberTradeModel', startId, tableName="k
   const exSession = new ExSession();
   const adapter = exSession.getModel(modelName).getSlaveAdapter();
   const sql = `
-    SELECT id, volume_eth, tx_value_eth, FROM_UNIXTIME(block_timestamp, "%d-%m-%Y") as date, block_timestamp FROM kyber_tracker.${tableName}
-    where volume_usd is null and volume_eth is not null 
+    SELECT id, value_eth, FROM_UNIXTIME(block_timestamp, "%d-%m-%Y") as date, block_timestamp FROM kyber_tracker.${tableName}
+    where value_usd is null and value_eth is not null 
     ORDER BY id DESC
     limit ${LIMIT_TRADES_SIZE}
   `

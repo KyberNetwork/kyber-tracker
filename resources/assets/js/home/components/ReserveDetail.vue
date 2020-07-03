@@ -162,6 +162,7 @@
       :isShowExport="false"
       v-on:fetchDone="reloadView"
       :isParentLoading="isLoading"
+      :isReserveTrade="true"
     >
     </mini-trade-list>
   </div>

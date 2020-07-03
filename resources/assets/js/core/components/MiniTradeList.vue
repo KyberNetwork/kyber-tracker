@@ -274,6 +274,10 @@ export default {
       type: Boolean,
       default: false
     },
+    isReserveTrade: {
+      type: Boolean,
+      default: false
+    },
     hideTable: {
       type: Boolean,
       default: false
@@ -453,7 +457,8 @@ export default {
           id: row.id
         },
         query: { 
-          partner: this.partner 
+          partner: this.partner,
+          reserve: this.isReserveTrade
         }
       });
     },

@@ -141,10 +141,11 @@ export default {
   methods: {
     refresh() {
       const id = this.$route.params.id;
+      const reserve = this.$route.query.reserve;
       if (!id) {
         return;
       }
-      AppRequest.getTradeDetails(id).then(data => {
+      AppRequest.getTradeDetails(id, {reserve}).then(data => {
         this.record = data;
       });
     },

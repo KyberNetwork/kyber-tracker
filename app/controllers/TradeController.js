@@ -233,6 +233,7 @@ module.exports = AppController.extends({
   getTradeDetails: function (req, res) {
     const [err, params] = new Checkit({
       tradeId: ['required', 'naturalNonZero'],
+      reserve: ['string'],
     }).validateSync(req.allParams);
 
     if (err) {
@@ -241,7 +242,7 @@ module.exports = AppController.extends({
     }
 
     const TradeService = req.getService('TradeService');
-    TradeService.getTradeDetails(params.tradeId, this.ok.bind(this, req, res));
+    TradeService.getTradeDetails(params.tradeId, params.reserve, this.ok.bind(this, req, res));
   },
 
   getTopTokensList: function (req, res) {

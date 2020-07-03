@@ -209,6 +209,7 @@ class AppRequest extends BaseRequest {
     if(this.isOfficial()) params.official = true
     else params.official = false
 
+    console.log("---------------- ", id, params)
     return this.get(url, params);
   }
 

@@ -409,9 +409,56 @@ module.exports = BaseService.extends({
     
   },
 
-  getTradeDetails: function (tradeId, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
-    KyberTradeModel.findOne(tradeId, callback);
+  getTradeDetails: function (tradeId, reserve, callback) {
+    if(!reserve){
+      KyberTradeModel.findOne({
+        where: {
+          id: tradeId
+        },
+        raw: true
+      })
+      .then(result => {
+        callback(null, result)
+      })
+      .catch(err => callback(err))
+    }
+    else {
+      ReserveTradeModel.findOne({
+        where: {
+          id: tradeId
+        },
+        raw: true
+      })
+      .then(result => {
+        const reserveTrade = {
+          "id": result.id,
+          "blockNumber": result.block_number,
+          "blockHash": result.blockHash,
+          "blockTimestamp": result.block_timestamp,
+          "tx": result.tx,
+          "makerAddress": result.dest_address,
+          "makerTokenAddress": result.dest_token_address,
+          "makerTokenDecimal": result.dest_token_decimal,
+          "makerTokenSymbol": result.dest_token_symbol,
+          "makerTokenAmount": result.dest_amount,
+
+          "takerTokenAddress": result.source_token_address,
+          "takerTokenDecimal": result.source_token_decimal,
+          "takerTokenSymbol": result.source_token_symbol,
+          "takerTokenAmount": result.source_amount,
+
+          "collectedFees": 0,
+          "commission": 0,
+          
+          "volumeEth": result.value_eth ? result.value_eth : 0,
+          "volumeUsd": result.value_usd ? result.value_usd : 0,
+          "txValueEth": result.value_eth ? result.value_eth : 0,
+          "txValueUsd": result.value_usd ? result.value_usd : 0
+        }
+        callback(null, reserveTrade)
+      })
+      .catch(err => callback(err))
+    }
   },
 
   getReservesList: function (options, callback){
