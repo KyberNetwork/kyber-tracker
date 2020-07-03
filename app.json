@@ -21,6 +21,16 @@
       "watch"             : false
     },
     {
+      "name"              : "reserveTradeVollumeUsd",
+      "script"            : "reserveTradeVollumeUsd.js",
+      "watch"             : false
+    },
+    {
+      "name"              : "tokenInfo",
+      "script"            : "tokenInfo.js",
+      "watch"             : false
+    },
+    {
       "name"              : "rate",
       "script"            : "rate.js",
       "watch"             : false
