@@ -9,6 +9,8 @@ declare -A scripts=([web]=server.js
 		    [trade]=trade.js
 		    [eth-volume]=ethVolume.js
 		    [rate]=rate.js
+		    [reserve-volume]=reserveTradeVolumeUsd.js
+		    [token-info]=tokenInfo.js
 		    [schedule]=schedule.js)
 
 usage(){
