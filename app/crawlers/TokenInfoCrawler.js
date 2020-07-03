@@ -70,7 +70,7 @@ class ReserveInfoCrawler {
       logger.info(`Crawler will be restart in 20 blocks...`);
       setTimeout(() => {
         this.start();
-      }, 1000);
+      }, 15000);
     });
   }
 
