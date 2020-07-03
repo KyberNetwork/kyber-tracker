@@ -26,6 +26,11 @@
       "watch"             : false
     },
     {
+      "name"              : "reserveInfo",
+      "script"            : "reserveInfo.js",
+      "watch"             : false
+    },
+    {
       "name"              : "tokenInfo",
       "script"            : "tokenInfo.js",
       "watch"             : false
