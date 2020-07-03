@@ -336,7 +336,7 @@ function getTokenInfo (tokenAddr, type, callback){
     symbol: tokenContract.methods.symbol().call,
     type: asyncCb => asyncCb(null, type)
   }, (err, info) => {
-    // console.log("-----------", err, info)
+    console.log("-----------", err, info)
     if(err) return callback(null, {
       address: tokenAddr,
       type: type

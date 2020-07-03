@@ -58,7 +58,7 @@ class ReserveInfoCrawler {
         .catch(err => next(err))
       },
       processTx: ['txDontHaveTokenInfo', (ret, next) => {
-          async.eachLimit(ret.txDontHaveTokenInfo, 1 , (tx, _next) => this.processTx(tx, _next), next)
+        async.eachLimit(ret.txDontHaveTokenInfo, 1 , (tx, _next) => this.processTx(tx, _next), next)
       }],
     }, (err, ret) => {
       if (err) {
@@ -94,13 +94,15 @@ class ReserveInfoCrawler {
         else return next(null)
       }],
       saveTx: ['saveTaker', 'saveMaker', (ret, next) => {
-        return next(null)
+        // return next(null)
+        this.saveTx(tx, ret.saveTaker, ret.saveMaker, next)
       }]
     }, callback);
   }
 
   saveTokenData(tokenData, callback){
     if(!tokenData.decimal) return callback(null)
+
     TokenInfoModel.findOne({
         where: {
           address: tokenData.address
@@ -110,7 +112,7 @@ class ReserveInfoCrawler {
         if(existToken) return null
         else return TokenInfoModel.create(tokenData)
       })
-      .then(result => callback(null, result))
+      .then(result => callback(null, tokenData))
       .catch(err => callback(err))
   }
 
@@ -118,7 +120,25 @@ class ReserveInfoCrawler {
     if(address.toLowerCase() == network.ETH.address.toLowerCase()){
         return callback(null, network.ETH)
     }
+
     return getTokenInfo(address, null, callback);
+  }
+
+  saveTx(tx, takerToken, makerToken, callback) { 
+    const updateData = {
+      ...(takerToken && {
+        taker_token_symbol: takerToken.symbol,
+        taker_token_decimal: takerToken.decimal,
+      }),
+      ...(makerToken && {
+        maker_token_symbol: makerToken.symbol,
+        maker_token_decimal: makerToken.decimal,
+      })
+    }
+
+    tx.update(updateData)
+    .then(result => callback(null))
+    .catch(err => callback(err))
   }
 
 }
