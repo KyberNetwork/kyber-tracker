@@ -100,6 +100,7 @@ class ReserveInfoCrawler {
   }
 
   saveTokenData(tokenData, callback){
+    if(!tokenData.decimal) return callback(null)
     TokenInfoModel.findOne({
         where: {
           address: tokenData.address

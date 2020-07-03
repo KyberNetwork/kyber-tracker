@@ -720,22 +720,43 @@ class TradeCrawler {
 
       } else {
         // save old tx to reserve trade 
-        const newReserveTrade = {
-          tx: record.tx,
-          block_number: record.block_number,
-          block_timestamp: record.block_timestamp,
-          source_address: record.taker_address.toLowerCase(),
-          dest_address: record.maker_address.toLowerCase(),
-          source_token_address: record.taker_token_address.toLowerCase(),
-          dest_token_address: record.maker_token_address.toLowerCase(),
-          source_amount: record.taker_token_amount,
-          rate: record.decodedKatalystTrade.arrayT2eRates[i],
-          dest_amount: record.maker_token_amount,
-          value_eth: record.tx_value_eth,
-          unique_tag: record.unique_tag + "_" + r + "_t2t",
+        if(record.source_reserve){
+          const newSourceReserveTrade = {
+            tx: record.tx,
+            block_number: record.block_number,
+            block_timestamp: record.block_timestamp,
+            source_address: record.taker_address.toLowerCase(),
+            dest_address: record.maker_address.toLowerCase(),
+            source_token_address: record.taker_token_address.toLowerCase(),
+            dest_token_address: record.maker_token_address.toLowerCase(),
+            source_amount: record.taker_token_amount,
+            // rate: record.decodedKatalystTrade.arrayT2eRates[i],
+            dest_amount: record.maker_token_amount,
+            value_eth: record.tx_value_eth,
+            unique_tag: record.unique_tag + "_" + record.source_reserve + "_s",
+          }
+          
+          arrayReserveTrades.push(newSourceReserveTrade)
+        }
+        if(record.dest_reserve){
+          const newDestReserveTrade = {
+            tx: record.tx,
+            block_number: record.block_number,
+            block_timestamp: record.block_timestamp,
+            source_address: record.taker_address.toLowerCase(),
+            dest_address: record.maker_address.toLowerCase(),
+            source_token_address: record.taker_token_address.toLowerCase(),
+            dest_token_address: record.maker_token_address.toLowerCase(),
+            source_amount: record.taker_token_amount,
+            // rate: record.decodedKatalystTrade.arrayT2eRates[i],
+            dest_amount: record.maker_token_amount,
+            value_eth: record.tx_value_eth,
+            unique_tag: record.unique_tag + "_" + record.dest_reserve + "_d",
+          }
+          
+          arrayReserveTrades.push(newDestReserveTrade)
         }
         
-        arrayReserveTrades.push(newReserveTrade)
       }
 
       const insertReserveTrade = (record, tokenObj) => {

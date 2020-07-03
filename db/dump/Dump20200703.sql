@@ -274,7 +274,7 @@ DROP TABLE IF EXISTS `reserve_trade`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reserve_trade` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `reserve_id` varchar(255) NOT NULL,
+  `reserve_id` varchar(255) DEFAULT NULL,
   `reserve_address` varchar(100) DEFAULT NULL,
   `tx` varchar(255) NOT NULL,
   `unique_tag` varchar(255) NOT NULL,
@@ -286,7 +286,7 @@ CREATE TABLE `reserve_trade` (
   `dest_amount` varchar(100) NOT NULL,
   `source_token_address` varchar(255) NOT NULL,
   `dest_token_address` varchar(255) NOT NULL,
-  `rate` varchar(100) NOT NULL,
+  `rate` varchar(100) DEFAULT NULL,
   `value_eth` varchar(100) NOT NULL,
   `value_usd` varchar(100) DEFAULT NULL,
   `source_token_symbol` varchar(45) DEFAULT NULL,
