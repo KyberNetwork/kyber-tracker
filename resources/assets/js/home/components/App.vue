@@ -16,7 +16,9 @@
               <vue-autosuggest
                 ref="seatchInputRef"
                 :suggestions="[{
-                  data: [...this.addressesMetamask, ...this.searchData]
+                  data: [
+                  ...this.addressesMetamask, 
+                  ...this.searchData]
                 }]"
                 @keyup.enter="doSearch"
                 @focus="onfocus"
@@ -153,7 +155,9 @@
                 <vue-autosuggest
                   ref="seatchInputRef"
                   :suggestions="[{
-                    data: [...this.addressesMetamask, ...this.searchData]
+                    data: [
+                    ...this.addressesMetamask, 
+                    ...this.searchData]
                   }]"
                   @keyup.enter="doSearch"
                   @focus="onfocus"
@@ -604,12 +608,15 @@ export default {
 
       try {
         let address = web3.eth.accounts[0];
-        this.addressesMetamask = [
-          {
-            type: "metamask",
-            addr: address
-          }
-        ];
+        if(address){
+          this.addressesMetamask = [
+            {
+              type: "metamask",
+              addr: address
+            }
+          ];
+        }
+        
       } catch (e) {
         console.log(e);
       }
@@ -711,7 +718,7 @@ export default {
           });
         }
       }
-      this.searchData = this.searchData.slice(0, 5);
+      this.searchData = this.searchData ? this.searchData.slice(0, 5) : [];
       store.set("searchData", this.searchData);
 
       window.setTimeout(() => {

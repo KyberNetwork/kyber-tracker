@@ -145,7 +145,7 @@ export default {
       if (!id) {
         return;
       }
-      AppRequest.getTradeDetails(id, {reserve}).then(data => {
+      AppRequest.getTradeDetails(id, {reserve: reserve}).then(data => {
         this.record = data;
       });
     },

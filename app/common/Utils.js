@@ -99,6 +99,21 @@ module.exports = {
     .toString()
   },
 
+  snakeToCamel(obj={}) {
+    const snakeToCamel = (str) => str.replace(
+      /([-_][a-z])/g,
+      (group) => group.toUpperCase()
+                      .replace('-', '')
+                      .replace('_', '')
+    );
+    const returnObj = {}
+    Object.keys(obj).map(k => {
+      returnObj[snakeToCamel(k)] = obj[k]
+    })
+
+    return returnObj
+  },
+
   divBig(divisor, dividend){
     if(!divisor) return 0
     if(!dividend) return "NaN"

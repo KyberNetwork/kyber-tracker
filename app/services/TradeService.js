@@ -418,7 +418,7 @@ module.exports = BaseService.extends({
         raw: true
       })
       .then(result => {
-        callback(null, result)
+        callback(null, UtilsHelper.snakeToCamel(result))
       })
       .catch(err => callback(err))
     }
