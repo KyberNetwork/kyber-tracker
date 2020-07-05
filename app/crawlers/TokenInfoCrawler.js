@@ -60,6 +60,28 @@ class ReserveInfoCrawler {
       processTx: ['txDontHaveTokenInfo', (ret, next) => {
         async.eachLimit(ret.txDontHaveTokenInfo, 1 , (tx, _next) => this.processTx(tx, _next), next)
       }],
+      reserveTradeDontHaveTokenInfo: ['processTx', (ret, next) => {
+        ReserveTradeModel.findAll({
+          limit: TOKEN_INFO_LIMIT,
+          where: {
+              [Op.or]: [
+                  {
+                      source_token_address: {[Op.not]: null},
+                      source_token_symbol: {[Op.is]: null},
+                  },
+                  {
+                      dest_token_address: {[Op.not]: null},
+                      dest_token_symbol: {[Op.is]: null},
+                  }
+              ]
+          }
+      })
+      .then(founds => next(null, founds))
+      .catch(err => next(err))
+      }],
+      processReserveTradeTx: ['reserveTradeDontHaveTokenInfo', (ret, next) => {
+        async.eachLimit(ret.reserveTradeDontHaveTokenInfo, 1 , (tx, _next) => this.processReserveTradeTx(tx, _next), next)
+      }],
     }, (err, ret) => {
       if (err) {
         logger.error(err);
@@ -100,6 +122,32 @@ class ReserveInfoCrawler {
     }, callback);
   }
 
+  processReserveTradeTx(tx, callback){
+    const dataValue = tx.dataValues
+    async.auto({
+      processSource: (next) => {
+        if(!tx.source_token_symbol) this.getTokenData(dataValue.source_token_address, next)
+        else next(null)
+      },
+      saveSource: ['processSource', (ret, next) => {
+        if(ret.processSource) return this.saveTokenData(ret.processSource, next)
+        else return next(null)
+      }],
+      processDest: (next) => {
+        if(!tx.dest_token_symbol) this.getTokenData(dataValue.dest_token_address, next)
+        else return next(null)
+      },
+      saveDest: ['processDest', (ret, next) => {
+        if(ret.processDest) return this.saveTokenData(ret.processDest, next)
+        else return next(null)
+      }],
+      saveTx: ['saveSource', 'saveDest', (ret, next) => {
+        // return next(null)
+        this.saveReserveTx(tx, ret.saveSource, ret.saveDest, next)
+      }]
+    }, callback);
+  }
+
   saveTokenData(tokenData, callback){
     if(!tokenData.decimal) return callback(null)
 
@@ -133,6 +181,23 @@ class ReserveInfoCrawler {
       ...(makerToken && {
         maker_token_symbol: makerToken.symbol,
         maker_token_decimal: makerToken.decimal,
+      })
+    }
+
+    tx.update(updateData)
+    .then(result => callback(null))
+    .catch(err => callback(err))
+  }
+
+  saveReserveTx(tx, sourceToken, destToken, callback) { 
+    const updateData = {
+      ...(sourceToken && {
+        source_token_symbol: sourceToken.symbol,
+        source_token_decimal: sourceToken.decimal,
+      }),
+      ...(destToken && {
+        dest_token_symbol: destToken.symbol,
+        dest_token_decimal: destToken.decimal,
       })
     }
 
