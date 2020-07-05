@@ -802,6 +802,7 @@ class TradeCrawler {
         if(record.source_reserve){
           const newSourceReserveTrade = {
             tx: record.tx,
+            reserve_address: record.source_reserve,
             block_number: record.block_number,
             block_timestamp: record.block_timestamp,
             source_address: record.taker_address.toLowerCase(),
@@ -820,6 +821,7 @@ class TradeCrawler {
         if(record.dest_reserve){
           const newDestReserveTrade = {
             tx: record.tx,
+            reserve_address: record.dest_reserve,
             block_number: record.block_number,
             block_timestamp: record.block_timestamp,
             source_address: record.taker_address.toLowerCase(),
