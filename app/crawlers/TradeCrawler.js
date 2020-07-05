@@ -255,6 +255,29 @@ class TradeCrawler {
             record.maker_address = log.address.toLowerCase();
             record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
 
+            record.decodedExecuteTrade = web3.eth.abi.decodeParameters([
+              {
+                type: 'address',
+                name: 'src'
+              },
+              {
+                type: 'address',
+                name: 'dest'
+              },
+              {
+                type: 'uint256',
+                name: 'actualSrcAmount'
+              },
+              {
+                type: 'uint256',
+                name: 'actualDestAmount'
+              }
+          ], web3.utils.bytesToHex(data));
+    
+            record.taker_token_amount = record.decodedExecuteTrade.actualSrcAmount.toString()
+            record.maker_token_amount = record.decodedExecuteTrade.actualDestAmount.toString()
+
+          
             records.push(record)
             record = JSON.parse(JSON.stringify(initRecord))
             break;
@@ -406,32 +429,7 @@ class TradeCrawler {
         // taker, user, source
         record.taker_token_address = record.decodedKatalystTrade.sourceAddress.toLowerCase()
         record.maker_token_address = record.decodedKatalystTrade.destAddress.toLowerCase()
-        // caculate sourceAmount and destAmount
-        // if token -> eth: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayT2eSrcAmounts * arrayT2eRates
-        // if eth -> token: sourceAmount = sum arrayE2tSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
-        // if token -> token: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
-        if(record.taker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
-          // eth -> token
-          record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts, 0)
-          record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((a,i) => {
-            const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayE2tRates[i]])
-            return Utils.toT(amountAndRate, 18, 0)
-          }), 0)
-        } else if(record.maker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
-          // token -> eth
-          record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
-          record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts.map((a,i) => {
-            const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayT2eRates[i]])
-            return Utils.toT(amountAndRate, 18, 0)
-          }), 0)
-        } else {
-          // token -> token
-          record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
-          record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((a,i) => {
-            const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayE2tRates[i]])
-            return Utils.toT(amountAndRate, 18, 0)
-          }), 0)
-        }
+        
         break;
 
       case networkConfig.logTopics.katalystExecuteTrade:
@@ -441,6 +439,40 @@ class TradeCrawler {
         record.tx= log.transactionHash
         record.maker_address = log.address.toLowerCase();
         record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
+
+        record.decodedExecuteTrade = web3.eth.abi.decodeParameters([
+          {
+            type: 'address',
+            name: 'src'
+          },
+          {
+            type: 'address',
+            name: 'dest'
+          },
+          {
+            type: 'address',
+            name: 'destAddress'
+          },
+          {
+            type: 'uint256',
+            name: 'actualSrcAmount'
+          },
+          {
+            type: 'uint256',
+            name: 'actualDestAmount'
+          },
+          {
+            type: 'address',
+            name: 'platformWallet'
+          },
+          {
+            type: 'uint256',
+            name: 'platformFeeBps'
+          }
+      ], web3.utils.bytesToHex(data));
+
+        record.taker_token_amount = record.decodedExecuteTrade.actualSrcAmount.toString()
+        record.maker_token_amount = record.decodedExecuteTrade.actualDestAmount.toString()
 
         records.push(record)
         record = JSON.parse(JSON.stringify(initRecord))
@@ -519,6 +551,12 @@ class TradeCrawler {
     // check token exist
 
     async.auto({
+      sourceToken: asyncCallback => {
+        this.getTokenData(record.taker_token_address, asyncCallback)
+      },
+      destToken: ['sourceToken', (ret, asyncCallback) => {
+        this.getTokenData(record.maker_token_address, asyncCallback)
+      }],
       checkSourceToken: (asyncCallback) => {
         if(!global.TOKENS_BY_ADDR[record.taker_token_address.toLowerCase()]){
           // fetch token and its reserve
@@ -559,12 +597,11 @@ class TradeCrawler {
         } else {
           return next(null, null)
         }
-      }]
+      }],
     }, (err, results) => {
       // const KyberTradeModel = exSession.getModel('KyberTradeModel');
       // const ReserveTradeModel = exSession.getModel('ReserveTradeModel');
       // const FeeDistributedModel = exSession.getModel('FeeDistributedModel');
-
 
       if(record.sourceReserve) {
         record.source_reserve = record.source_reserve.toLowerCase()
@@ -584,69 +621,6 @@ class TradeCrawler {
         // record.taker_token_symbol = global.TOKENS_BY_ADDR[record.taker_token_address].symbol
         // record.taker_token_decimal = global.TOKENS_BY_ADDR[record.taker_token_address].decimal 
       } 
-
-
-      const ethAddress = networkConfig.ETH.address.toLowerCase();
-      if (record.taker_token_address === ethAddress) {
-        record.volume_eth = Utils.fromWei(record.taker_token_amount);
-        record.source_reserve = null
-        record.source_official = 1
-      } else {
-        if(!record.source_reserve || (record.source_reserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.source_reserve] == '1')){
-          record.source_official = 1
-        } else {
-          record.source_official = 0
-        }
-
-      }
-      
-      if (record.maker_token_address === ethAddress) {
-        record.volume_eth = Utils.fromWei(record.maker_token_amount);
-        record.dest_reserve = null
-        record.dest_official = 1
-      } else {
-        if(!record.dest_reserve ||  (record.dest_reserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.dest_reserve] == '1')){
-          record.dest_official = 1
-        } else {
-          record.dest_official = 0
-        }
-      }
-
-      record.tx_value_eth = record.volume_eth
-      if(record.numberBurnEvent > 1){
-        record.volume_eth = record.volume_eth * record.numberBurnEvent
-      } else if( record.block_number >= networkConfig.startPermissionlessReserveBlock ) {
-        let numberMultipleVol = 0
-        if(record.sourceReserve && !networkConfig.ignoreReserveVolume[record.sourceReserve]){
-          numberMultipleVol = numberMultipleVol + 1
-        }
-        if(record.destReserve && !networkConfig.ignoreReserveVolume[record.destReserve]){
-          numberMultipleVol = numberMultipleVol + 1
-        }
-        if(numberMultipleVol > 1){
-          record.volume_eth = record.volume_eth * numberMultipleVol
-        }
-      }
-
-      if(record.burnFeeReserve){
-        if(record.sourceReserve && record.burnFeeReserve[record.sourceReserve]){
-          record.source_burn_fee = record.burnFeeReserve[record.sourceReserve]
-        }
-        if(record.destReserve && record.burnFeeReserve[record.destReserve]){
-          record.dest_burn_fee = record.burnFeeReserve[record.destReserve]
-        }
-      }
-
-      if(record.walletFeeReserve){
-        if(record.sourceReserve && record.walletFeeReserve[record.sourceReserve]){
-          record.source_wallet_Fee = record.walletFeeReserve[record.sourceReserve]
-        }
-        if(record.destReserve && record.walletFeeReserve[record.destReserve]){
-          record.dest_wallet_fee = record.walletFeeReserve[record.destReserve]
-        }
-      }
-
-      
 
       //// make katalyst works with old database
       if(record.katalyst){
@@ -673,6 +647,46 @@ class TradeCrawler {
       const arrayReserveTrades = []
       const feeDistributed = []
       if(record.katalyst){
+        // caculate sourceAmount and destAmount
+        // if token -> eth: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayT2eSrcAmounts * arrayT2eRates
+        // if eth -> token: sourceAmount = sum arrayE2tSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
+        // if token -> token: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
+
+
+        // if(record.taker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
+        //   // eth -> token
+        //   record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts, 0)
+        //   if(results.sourceToken && results.destToken){
+        //     record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((amount,i) => {
+        //       // const amountAndRate = Utils.timesBig([amount, record.decodedKatalystTrade.arrayE2tRates[i]])
+        //       // return Utils.toT(amountAndRate, 18, 0)
+        //       return Utils.caculateDestAmount(amount, record.decodedKatalystTrade.arrayE2tRates[i], results.destToken.decimal, results.sourceToken.decimal)
+        //     }), 0)
+        //   }
+        // } else if(record.maker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
+        //   // token -> eth
+        //   record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
+        //   if(results.sourceToken && results.destToken){
+        //     record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts.map((amount,i) => {
+        //       // const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayT2eRates[i]])
+        //       // return Utils.toT(amountAndRate, 18, 0)
+        //       return Utils.caculateDestAmount(amount, record.decodedKatalystTrade.arrayT2eRates[i], results.destToken.decimal, results.sourceToken.decimal)
+        //     }), 0)
+        //   }
+        // } else {
+        //   // token -> token
+        //   record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
+        //   if(results.sourceToken && results.destToken){
+        //     record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((amount,i) => {
+        //       // const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayE2tRates[i]])
+        //       // return Utils.toT(amountAndRate, 18, 0)
+        //       return Utils.caculateDestAmount(amount, record.decodedKatalystTrade.arrayE2tRates[i], results.destToken.decimal, results.sourceToken.decimal)
+        //     }), 0)
+        //   }
+        // }
+
+
+
         //todo save to reserve trade 
         const initReserveTrade = {
           tx: record.tx,
@@ -691,7 +705,8 @@ class TradeCrawler {
             newReserveTrade.dest_token_address = networkConfig.ETH.address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayT2eSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayT2eRates[i]
-            newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
+            newReserveTrade.dest_amount =  Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i], results.destToken.decimal, 18)
+            // Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.dest_amount
             newReserveTrade.value_eth = Utils.toT(newReserveTrade.dest_amount, 18)
             newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_t2e"
@@ -700,7 +715,7 @@ class TradeCrawler {
         }
 
         if(record.decodedKatalystTrade.arrayE2tReserveIds && record.decodedKatalystTrade.arrayE2tReserveIds.length){
-          // token -> eth
+          // eth -> token
           record.decodedKatalystTrade.arrayE2tReserveIds.map((r, i) => {
             const newReserveTrade = JSON.parse(JSON.stringify(initReserveTrade))
             newReserveTrade.reserve_id = r
@@ -710,7 +725,8 @@ class TradeCrawler {
             newReserveTrade.dest_token_address = record.maker_token_address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayE2tSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayE2tRates[i]
-            newReserveTrade.dest_amount = Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
+            newReserveTrade.dest_amount = Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i], 18, results.sourceToken.decimal)
+            // Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.source_amount
             newReserveTrade.value_eth = Utils.toT(newReserveTrade.source_amount, 18)
             newReserveTrade.unique_tag = record.unique_tag + "_" + r + "_e2t"
@@ -719,6 +735,69 @@ class TradeCrawler {
         } 
 
       } else {
+
+        const ethAddress = networkConfig.ETH.address.toLowerCase();
+        if (record.taker_token_address === ethAddress) {
+          record.volume_eth = Utils.fromWei(record.taker_token_amount);
+          record.source_reserve = null
+          record.source_official = 1
+        } else {
+          if(!record.source_reserve || (record.source_reserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.source_reserve] == '1')){
+            record.source_official = 1
+          } else {
+            record.source_official = 0
+          }
+
+        }
+        
+        if (record.maker_token_address === ethAddress) {
+          record.volume_eth = Utils.fromWei(record.maker_token_amount);
+          record.dest_reserve = null
+          record.dest_official = 1
+        } else {
+          if(!record.dest_reserve ||  (record.dest_reserve && global.NETWORK_RESERVES && global.NETWORK_RESERVES[record.dest_reserve] == '1')){
+            record.dest_official = 1
+          } else {
+            record.dest_official = 0
+          }
+        }
+
+        record.tx_value_eth = record.volume_eth
+        if(record.numberBurnEvent > 1){
+          record.volume_eth = record.volume_eth * record.numberBurnEvent
+        } else if( record.block_number >= networkConfig.startPermissionlessReserveBlock ) {
+          let numberMultipleVol = 0
+          if(record.sourceReserve && !networkConfig.ignoreReserveVolume[record.sourceReserve]){
+            numberMultipleVol = numberMultipleVol + 1
+          }
+          if(record.destReserve && !networkConfig.ignoreReserveVolume[record.destReserve]){
+            numberMultipleVol = numberMultipleVol + 1
+          }
+          if(numberMultipleVol > 1){
+            record.volume_eth = record.volume_eth * numberMultipleVol
+          }
+        }
+
+        if(record.burnFeeReserve){
+          if(record.sourceReserve && record.burnFeeReserve[record.sourceReserve]){
+            record.source_burn_fee = record.burnFeeReserve[record.sourceReserve]
+          }
+          if(record.destReserve && record.burnFeeReserve[record.destReserve]){
+            record.dest_burn_fee = record.burnFeeReserve[record.destReserve]
+          }
+        }
+
+        if(record.walletFeeReserve){
+          if(record.sourceReserve && record.walletFeeReserve[record.sourceReserve]){
+            record.source_wallet_Fee = record.walletFeeReserve[record.sourceReserve]
+          }
+          if(record.destReserve && record.walletFeeReserve[record.destReserve]){
+            record.dest_wallet_fee = record.walletFeeReserve[record.destReserve]
+          }
+        }
+
+
+
         // save old tx to reserve trade 
         if(record.source_reserve){
           const newSourceReserveTrade = {
@@ -817,7 +896,7 @@ class TradeCrawler {
           return callback(null)
         })
         .catch(err => {
-          console.log("-------------- transaction rollback ", err)
+          console.log("-------------- transaction rollback ", record)
           return callback(err)
         })
 
@@ -827,8 +906,42 @@ class TradeCrawler {
     }) 
   }
 
-  async _processSave(){
+  getTokenData(address, callback){
+    TokenInfoModel.findOne({
+      where: {
+        address: address
+      }
+    })
+    .then(existToken => {
+      if(existToken) return Promise.resolve(existToken.dataValues)
+      else {
+        return this.getAndSaveTokenInfo(address)
+      }
+    })
+    .then(tokenData => callback(null, tokenData))
+    .catch(err => callback(null))
+  }
 
+  getAndSaveTokenInfo(address){
+    return new Promise((resolve, reject) => {
+      getTokenInfo(address, null, (err, tokenData) => {
+        if(err) {
+          reject(err)
+          return
+        }
+        
+        if(address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
+          tokenData = networkConfig.ETH
+        }
+
+        if(!tokenData.decimal) resolve(null)
+        else {
+          TokenInfoModel.create(tokenData)
+          .then(result => resolve(tokenData))
+          .catch(err => reject(err))
+        }
+      })
+    })
   }
 
 };

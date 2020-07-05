@@ -99,6 +99,21 @@ module.exports = {
     .toString()
   },
 
+  caculateDestAmount(srcQty=0, rate=0, dstDecimals=18, srcDecimals=18, PRECISION=Math.pow(10, 18)){
+    if (dstDecimals >= srcDecimals) {
+      // (srcQty * rate * (10**(dstDecimals - srcDecimals))) / PRECISION
+      const bigAmountAndRate = new BigNumber(srcQty.toString()).multipliedBy(rate.toString())
+      const multiplier = Math.pow(10, (dstDecimals - srcDecimals))
+      return bigAmountAndRate.multipliedBy(multiplier).dividedBy(PRECISION).toFixed(0).toString();
+    } else {
+      // (srcQty * rate) / (PRECISION * (10**(srcDecimals - dstDecimals)));
+
+      const bigAmountAndRate = new BigNumber(srcQty.toString()).multipliedBy(rate.toString())
+      const divisor = new BigNumber(PRECISION).multipliedBy(Math.pow(10, (srcDecimals - dstDecimals)))
+      return bigAmountAndRate.dividedBy(divisor).toFixed(0).toString()
+    }
+  },
+
   snakeToCamel(obj={}) {
     const snakeToCamel = (str) => str.replace(
       /([-_][a-z])/g,
