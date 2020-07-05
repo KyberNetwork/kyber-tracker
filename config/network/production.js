@@ -9,6 +9,8 @@ module.exports = {
     "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
     "networks": ["0x964f35fae36d75b1e72770e244f6595b68508cf5", "0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
     "feeBurners": ["0x4e89bc8484b2c454f2f7b25b612b648c45e14a8e", "0x07f6e905f2a1559cd9fd43cb92f8a1062a3ca706", "0xed4f53268bfdFF39B36E8786247bA3A02Cf34B04", "0x52166528FCC12681aF996e409Ee3a421a4e128A3", "0x8007aa43792a392b221dc091bdb2191e5ff626d1"],
+    "feeHandler": ["0xEc30037C9A8A6A3f42734c30Dfa0a208aF71b40C"],
+    "katalystStorage": "0xB18D90bE9ADD2a6c9F2c3943B264c3dC86E30cF5",
     "workers": ["0x91a502C678605fbCe581eae053319747482276b9"],
     "internal": ["0x9ae49C0d7F8F9EF4B864e004FE86Ac8294E20950", "0x65bf64ff5f51272f729bdcd7acfb00677ced86cd"]
   },
@@ -20,7 +22,14 @@ module.exports = {
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
     "burned": ["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
     "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
-    "feeDistributed": "0xe57b2c3b4e44730805358131a6fc244c57178da7"
+    "feeDistributed": "0xe57b2c3b4e44730805358131a6fc244c57178da7",
+
+    "feeDistributed": "0x53e2e1b5ab64e0a76fcc6a932558eba265d4e58c512401a7d776ae0f8fc08994",
+    "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d",
+    "katalystExecuteTrade": "0xf724b4df6617473612b53d7f88ecc6ea983074b30960a049fcd0657ffe808083",
+    "katalystAddReserve": "0x50b2ce9e8f1a63ceaed262cc854dbf741b216e6429f7ba38403afbcdddc7f1ea",
+    "kataLystRemoveReserve": "0xa5cd88a226efb041d6bdc0ac32964affd749b8a7c4d9e0c4ffba575e7180b1c9",
+    "kataLystSetReserveWallet": "0x42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b3"
   },
 
   "ignoreReserveVolume": { 
