@@ -91,7 +91,7 @@ CREATE TABLE `kyber_trade` (
   `maker_address` varchar(255) NOT NULL,
   `maker_token_address` varchar(255) NOT NULL,
   `maker_token_symbol` varchar(10) DEFAULT NULL,
-  `maker_token_amount` varchar(100) NOT NULL,
+  `maker_token_amount` varchar(100) DEFAULT NULL,
   `maker_token_decimal` tinyint DEFAULT NULL,
   `taker_address` varchar(255) NOT NULL,
   `taker_token_address` varchar(255) NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE `kyber_trade` (
   KEY `kyber_trade_taker_address_index` (`taker_address`),
   KEY `kyber_trade_taker_token_address_index` (`taker_token_address`),
   KEY `kyber_trade_taker_token_symbol_index` (`taker_token_symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +262,7 @@ CREATE TABLE `reserve_info` (
   `type` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_tag_UNIQUE` (`unique_tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -299,7 +299,7 @@ CREATE TABLE `reserve_trade` (
   `updated_by` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_tag_UNIQUE` (`unique_tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=301 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -318,8 +318,9 @@ CREATE TABLE `token_info` (
   `hidden` int DEFAULT NULL,
   `delisted` tinyint DEFAULT NULL,
   `type` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `address_UNIQUE` (`address`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -364,4 +365,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-03 15:57:45
+-- Dump completed on 2020-07-05 17:40:35
