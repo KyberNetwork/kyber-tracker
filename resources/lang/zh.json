@@ -139,6 +139,7 @@
     "maker_amount": "数量",
     "rate": "{0}/{1} 汇率",
     "collected_fees": "总费用",
+    "knc_collected": "KNC Collected",
     "fee_to_wallet": "合伙人佣金费用",
     "commission": "佣金",
     "fee_to_burn": "以销毁的费用",

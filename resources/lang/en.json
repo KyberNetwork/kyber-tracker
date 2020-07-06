@@ -144,6 +144,7 @@
     "maker_amount": "Amount",
     "rate": "{0}/{1} RATE",
     "collected_fees": "COLLECTED FEES",
+    "knc_collected": "KNC Collected",
     "fee_to_wallet": "Partner Commission",
     "commission": "COMMISSION",
     "fee_to_burn": "Fees To Burn",

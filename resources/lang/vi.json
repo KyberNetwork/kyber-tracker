@@ -144,6 +144,7 @@
     "maker_amount": "Số lượng",
     "rate": "TỈ GIÁ {0}/{1}",
     "collected_fees": "TỔNG PHÍ",
+    "knc_collected": "KNC Collected",
     "fee_to_wallet": "Phí tích hợp",
     "commission": "Phí tích hợp",
     "fee_to_burn": "Phí sẽ đốt",
