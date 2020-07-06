@@ -72,7 +72,7 @@ CREATE TABLE `fee_distributed` (
   `fee_wallet` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_tag_UNIQUE` (`unique_tag`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,7 +263,7 @@ CREATE TABLE `rebate_fee` (
   `block_timestamp` bigint NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_tag_UNIQUE` (`unique_tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +285,7 @@ CREATE TABLE `reserve_info` (
   `type` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_tag_UNIQUE` (`unique_tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +322,7 @@ CREATE TABLE `reserve_trade` (
   `updated_by` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_tag_UNIQUE` (`unique_tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=349 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=349 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -343,7 +343,7 @@ CREATE TABLE `token_info` (
   `type` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `address_UNIQUE` (`address`)
-) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,7 +368,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `user_username_unique` (`username`),
   UNIQUE KEY `user_email_unique` (`email`),
   KEY `user_full_name_index` (`full_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
