@@ -156,6 +156,7 @@
     "address": "Address",
     "trades": "Trades",
     "collected_fees": "Collected Fees",
+    "knc_collected": "KNC Collected",
     "total_trading_volune": "Total Trading Volume",
     "value_in_eth": "Value in ETH",
     "value_in_usd": "Value in USD",
