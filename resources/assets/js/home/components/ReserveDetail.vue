@@ -121,7 +121,7 @@
                   <span v-else><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">({{getShortedAddr(item.address)}})</a></span>
                 </div>
                 <div class="col-8 font-semi-bold">
-                  {{(item.usd && round(item.usd)) || 0}} USD
+                  {{(item.volumeUSD && round(item.volumeUSD)) || 0}} USD
                 </div>
               </div> 
             </div>

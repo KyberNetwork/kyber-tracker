@@ -645,7 +645,7 @@ module.exports = BaseService.extends({
       })
 
       return callback(null, {
-        tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'eth' ], ['asc', 'desc']),
+        tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'volumeETH' ], ['asc', 'desc']),
         burned: results.burnnedFee,
         collectedFee: results.collectedFee,
       })
