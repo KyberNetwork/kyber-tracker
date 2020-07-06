@@ -739,7 +739,7 @@ class TradeCrawler {
         if(record.decodedFeeDistributed && record.decodedFeeDistributed.rebateWallets && record.decodedFeeDistributed.rebateWallets.length){
           const totalRebate = record.decodedFeeDistributed.rebateWei
           record.decodedFeeDistributed.rebateWallets.map((rWallet, i) => {
-            const rebateBps = record.decodedFeeDistributed.rebatePercentBpsPerWallet
+            const rebateBps = record.decodedFeeDistributed.rebatePercentBpsPerWallet[i]
             const rebateWei = Utils.caculateRebateFee(totalRebate, rebateBps)
             arrayRebate.push({
               tx: record.tx,
@@ -747,7 +747,7 @@ class TradeCrawler {
               rebate_wallet: rWallet.toLowerCase(),
               rebate_bps: rebateBps,
               rebate_fee: rebateWei,
-              unique_tag: record.unique_tag + "_" + rWallet,
+              unique_tag: record.unique_tag + "_" + i + "_" + rWallet,
               block_number: record.block_number,
               block_timestamp: record.block_timestamp
             })
@@ -958,15 +958,23 @@ class TradeCrawler {
       }
     })
     .then(tokenData => callback(null, tokenData))
-    .catch(err => callback(null))
+    .catch(err => {
+      console.log("---------------- err ----------", err)
+      callback(null)
+    })
   }
 
   getAndSaveTokenInfo(address){
     return new Promise((resolve, reject) => {
       getTokenInfo(address, null, (err, tokenData) => {
-        if(err) {
-          reject(err)
-          return
+        if(err || !tokenData.decimal) {
+          if(tokenConfig[address.toLowerCase()]) {
+            // return callback(null, tokenConfig[address.toLowerCase()])
+            console.log("========================= run to get token from config file")
+            tokenData = tokenConfig[address.toLowerCase()]
+          } else {
+            return reject(err || `token info not found for address ${address}`)
+          }
         }
         
         if(address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
