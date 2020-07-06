@@ -472,8 +472,8 @@ module.exports = BaseService.extends({
       list: _next => {
         ReserveTradeModel.aggregate('reserve_address', 'DISTINCT', { plain: false })
         .then(results => {
-          const arrayReserveAddr = results.map(r => r.DISTINCT.toLowerCase())
-          .filter(r => (r !== '0x0000000000000000000000000000000000000000' && r !==  "0x964f35fae36d75b1e72770e244f6595b68508cf5" && r !== "0x818e6fecd516ecc3849daf6845e3ec868087b755" ))
+          const arrayReserveAddr = results.map(r => r.DISTINCT && r.DISTINCT.toLowerCase())
+          .filter(r => (r !== null && r !== '0x0000000000000000000000000000000000000000' && r !==  "0x964f35fae36d75b1e72770e244f6595b68508cf5" && r !== "0x818e6fecd516ecc3849daf6845e3ec868087b755" ))
           return _next(null, arrayReserveAddr)
         })
         .catch(err => _next(err))
@@ -526,8 +526,8 @@ module.exports = BaseService.extends({
         } else {
           reserves.push({
             address: r,
-            volumeUSD: ret.vol[r.toLowerCase()].volumeUSD,
-            volumeETH: ret.vol[r.toLowerCase()].volumeETH,
+            volumeUSD: ret.vol[r.toLowerCase()].volumeUSD || 0,
+            volumeETH: ret.vol[r.toLowerCase()].volumeETH || 0,
             // type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[r.toLowerCase()] : null,
             // isDelisted: global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] ? false : true
             isDelisted: false
@@ -822,10 +822,11 @@ module.exports = BaseService.extends({
 
     const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
-    const officialSql = options.official ? 
-    ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`
-    :
-    ''
+    // const officialSql = options.official ? 
+    // ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`
+    // :
+    // ''
+    const officialSql = ''
 
     const makeSql = (side, obj) => {
       obj = obj || {};

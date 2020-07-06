@@ -114,6 +114,11 @@ module.exports = {
     }
   },
 
+  caculateRebateFee(total, bps=10000){
+    const bigTotal = new BigNumber(total.toString())
+    return bigTotal.multipliedBy(bps).dividedBy(10000).toFixed(0).toString()
+  },
+
   snakeToCamel(obj={}) {
     const snakeToCamel = (str) => str.replace(
       /([-_][a-z])/g,

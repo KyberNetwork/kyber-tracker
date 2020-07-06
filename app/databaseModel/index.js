@@ -49,6 +49,7 @@ KyberTradeModel.init({
 
     fee_token: DataTypes.STRING,
     fee_platform_wallet: DataTypes.STRING,
+    fee_platform: DataTypes.STRING,
     fee_rebate: DataTypes.STRING,
     fee_burn_atm: DataTypes.STRING,
     fee_total_collected: DataTypes.STRING,
@@ -117,12 +118,26 @@ class ReserveInfoModel extends Model {}
 ReserveInfoModel.init({
     reserve_id: DataTypes.STRING,
     reserve_address: DataTypes.STRING,
+    reserve_wallet: DataTypes.STRING,
     action: DataTypes.NUMBER,           // 1: list, 2: remove, 3: change wallet
     unique_tag: DataTypes.STRING,
     block_number: DataTypes.NUMBER,
     block_timestamp: DataTypes.NUMBER,
     type: DataTypes.NUMBER,             // reserve type
 }, { sequelize, modelName: 'reserve_info', freezeTableName:  true, underscored: true, timestamps: false});
+
+
+class RebateFeeModel extends Model {}
+RebateFeeModel.init({
+    tx: DataTypes.STRING,
+    token: DataTypes.STRING,
+    rebate_wallet: DataTypes.STRING,
+    rebate_bps: DataTypes.NUMBER,
+    rebate_fee: DataTypes.NUMBER,
+    unique_tag: DataTypes.STRING,
+    block_number: DataTypes.NUMBER,
+    block_timestamp: DataTypes.NUMBER,            // reserve type
+}, { sequelize, modelName: 'rebate_fee', freezeTableName:  true, underscored: true, timestamps: false});
 
 class TokenInfoModel extends Model {}
 TokenInfoModel.init({
@@ -158,4 +173,4 @@ FeeDistributedModel.init({
 
 
 
-module.exports = { sequelize, Op, KyberTradeModel, ReserveTradeModel, FeeDistributedModel, ReserveInfoModel, TokenInfoModel, }
+module.exports = { sequelize, Op, KyberTradeModel, ReserveTradeModel, FeeDistributedModel, ReserveInfoModel, TokenInfoModel, RebateFeeModel}

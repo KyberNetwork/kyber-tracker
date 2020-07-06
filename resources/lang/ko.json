@@ -149,6 +149,7 @@
     "address": "주소",
     "trades": "거래",
     "collected_fees": "총비용",
+    "knc_collected": "KNC Collected",
     "total_trading_volune": "모든 거래량",
     "value_in_eth": "가치 (ETH)",
     "value_in_usd": "가치 (USD)",

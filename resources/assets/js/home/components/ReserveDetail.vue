@@ -54,7 +54,7 @@
             </div>
             <div class="col">
               <div class="pb-2">
-                {{$t('wallet_detail.collected_fees')}}
+                {{$t('wallet_detail.knc_collected')}}
               </div>
               <div class="font-semi-bold">
                 <span v-if="!isLoading">{{formatTokenAmount(collectedFees.toString(), 18)}}</span>

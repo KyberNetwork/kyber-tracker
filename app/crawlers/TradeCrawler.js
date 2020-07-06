@@ -12,7 +12,7 @@ const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const logger                      = require('sota-core').getLogger('TradeCrawler');
 const configFetcher               = require('./configFetcher')
-const { Op, KyberTradeModel, ReserveTradeModel, TokenInfoModel } = require('../databaseModel');
+const { Op, KyberTradeModel, ReserveTradeModel, TokenInfoModel, RebateFeeModel } = require('../databaseModel');
 
 let LATEST_PROCESSED_BLOCK = 0;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 3000);
@@ -372,10 +372,10 @@ class TradeCrawler {
           record.fee_total_collected=Utils.sumBig([record.decodedFeeDistributed.platformFeeWei, record.decodedFeeDistributed.rewardWei,
             record.decodedFeeDistributed.rebateWei, record.decodedFeeDistributed.burnAmtWei
           ], 0)
+          record.fee_platform = record.decodedFeeDistributed.platformFeeWei
           record.burn_fees = record.decodedFeeDistributed.burnAmtWei
           record.fee_rebate = record.decodedFeeDistributed.rebateWei
-          record.fee_burn_atm = record.decodedFeeDistributed.burnAmtWei
-          
+          record.fee_burn_atm = record.decodedFeeDistributed.burnAmtWei         
           break;
         case networkConfig.logTopics.katalystKyberTrade:
           record.katalyst = true
@@ -421,6 +421,7 @@ class TradeCrawler {
         ], web3.utils.bytesToHex(data));
 
         record.volume_eth = Utils.fromWei(record.decodedKatalystTrade.ethWeiValue)
+        record.tx_value_eth = record.volume_eth
         record.decodedKatalystTrade.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
         record.decodedKatalystTrade.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
 
@@ -645,7 +646,7 @@ class TradeCrawler {
 
 
       const arrayReserveTrades = []
-      const feeDistributed = []
+      const arrayRebate = []
       if(record.katalyst){
         // caculate sourceAmount and destAmount
         // if token -> eth: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayT2eSrcAmounts * arrayT2eRates
@@ -705,7 +706,7 @@ class TradeCrawler {
             newReserveTrade.dest_token_address = networkConfig.ETH.address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayT2eSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayT2eRates[i]
-            newReserveTrade.dest_amount =  Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i], results.destToken.decimal, 18)
+            newReserveTrade.dest_amount =  Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i], 18, results.sourceToken.decimal)
             // Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.dest_amount
             newReserveTrade.value_eth = Utils.toT(newReserveTrade.dest_amount, 18)
@@ -725,7 +726,7 @@ class TradeCrawler {
             newReserveTrade.dest_token_address = record.maker_token_address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayE2tSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayE2tRates[i]
-            newReserveTrade.dest_amount = Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i], 18, results.sourceToken.decimal)
+            newReserveTrade.dest_amount = Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i], results.destToken.decimal, 18)
             // Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.source_amount
             newReserveTrade.value_eth = Utils.toT(newReserveTrade.source_amount, 18)
@@ -733,6 +734,26 @@ class TradeCrawler {
             arrayReserveTrades.push(newReserveTrade)
           })
         } 
+
+
+        if(record.decodedFeeDistributed && record.decodedFeeDistributed.rebateWallets && record.decodedFeeDistributed.rebateWallets.length){
+          const totalRebate = record.decodedFeeDistributed.rebateWei
+          record.decodedFeeDistributed.rebateWallets.map((rWallet, i) => {
+            const rebateBps = record.decodedFeeDistributed.rebatePercentBpsPerWallet
+            const rebateWei = Utils.caculateRebateFee(totalRebate, rebateBps)
+            arrayRebate.push({
+              tx: record.tx,
+              token: record.fee_token,
+              rebate_wallet: rWallet.toLowerCase(),
+              rebate_bps: rebateBps,
+              rebate_fee: rebateWei,
+              unique_tag: record.unique_tag + "_" + rWallet,
+              block_number: record.block_number,
+              block_timestamp: record.block_timestamp
+            })
+          })
+
+        }
 
       } else {
 
@@ -837,8 +858,9 @@ class TradeCrawler {
           
           arrayReserveTrades.push(newDestReserveTrade)
         }
-        
       }
+
+
 
       const insertReserveTrade = (record, tokenObj) => {
         if(tokenObj[record.source_token_address]){
@@ -857,6 +879,18 @@ class TradeCrawler {
         .then(existReserveTrade => {
           if(existReserveTrade) return existReserveTrade.update(record, transaction)
           else return ReserveTradeModel.create(record)
+        })
+      }
+
+      const insertRebateFee = (record) => {
+        return RebateFeeModel.findOne({
+          where: {
+            unique_tag: record.unique_tag
+          }
+        }, transaction)
+        .then(existRebate => {
+          if(existRebate) return existRebate.update(record, transaction)
+          else return RebateFeeModel.create(record)
         })
       }
       
@@ -893,6 +927,9 @@ class TradeCrawler {
         })
         .then(result => {
           return Promise.all(arrayReserveTrades.map(rTrade => (insertReserveTrade(rTrade, tokenObj).bind(rTrade))))
+        })
+        .then(result => {
+          return Promise.all(arrayRebate.map(rebateFee => (insertRebateFee(rebateFee).bind(rebateFee))))
         })
         .then(result => {
           return callback(null)
