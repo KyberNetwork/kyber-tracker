@@ -372,6 +372,7 @@ class TradeCrawler {
           record.fee_total_collected=Utils.sumBig([record.decodedFeeDistributed.platformFeeWei, record.decodedFeeDistributed.rewardWei,
             record.decodedFeeDistributed.rebateWei, record.decodedFeeDistributed.burnAmtWei
           ], 0)
+          record.fee_platform = record.decodedFeeDistributed.platformFeeWei
           record.burn_fees = record.decodedFeeDistributed.burnAmtWei
           record.fee_rebate = record.decodedFeeDistributed.rebateWei
           record.fee_burn_atm = record.decodedFeeDistributed.burnAmtWei
@@ -421,6 +422,7 @@ class TradeCrawler {
         ], web3.utils.bytesToHex(data));
 
         record.volume_eth = Utils.fromWei(record.decodedKatalystTrade.ethWeiValue)
+        record.tx_value_eth = record.volume_eth
         record.decodedKatalystTrade.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
         record.decodedKatalystTrade.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
 
@@ -705,7 +707,7 @@ class TradeCrawler {
             newReserveTrade.dest_token_address = networkConfig.ETH.address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayT2eSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayT2eRates[i]
-            newReserveTrade.dest_amount =  Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i], results.destToken.decimal, 18)
+            newReserveTrade.dest_amount =  Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i], 18, results.sourceToken.decimal)
             // Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayT2eRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.dest_amount
             newReserveTrade.value_eth = Utils.toT(newReserveTrade.dest_amount, 18)
@@ -725,7 +727,7 @@ class TradeCrawler {
             newReserveTrade.dest_token_address = record.maker_token_address.toLowerCase()
             newReserveTrade.source_amount = record.decodedKatalystTrade.arrayE2tSrcAmounts[i]
             newReserveTrade.rate = record.decodedKatalystTrade.arrayE2tRates[i]
-            newReserveTrade.dest_amount = Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i], 18, results.sourceToken.decimal)
+            newReserveTrade.dest_amount = Utils.caculateDestAmount(newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i], results.destToken.decimal, 18)
             // Utils.toT(   Utils.timesBig([newReserveTrade.source_amount, record.decodedKatalystTrade.arrayE2tRates[i]])   , 18, 0)
             newReserveTrade.eth_wei_value = newReserveTrade.source_amount
             newReserveTrade.value_eth = Utils.toT(newReserveTrade.source_amount, 18)

@@ -49,6 +49,7 @@ KyberTradeModel.init({
 
     fee_token: DataTypes.STRING,
     fee_platform_wallet: DataTypes.STRING,
+    fee_platform: DataTypes.STRING,
     fee_rebate: DataTypes.STRING,
     fee_burn_atm: DataTypes.STRING,
     fee_total_collected: DataTypes.STRING,
