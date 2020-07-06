@@ -153,12 +153,15 @@ class ReserveInfoCrawler {
 
     TokenInfoModel.findOne({
         where: {
-          address: tokenData.address
+          address: tokenData.address.toLowerCase()
         }
       })
       .then(existToken => {
         if(existToken) return null
-        else return TokenInfoModel.create(tokenData)
+        else {
+          tokenData.address = tokenData.address.toLowerCase()
+          return TokenInfoModel.create(tokenData)
+        }
       })
       .then(result => callback(null, tokenData))
       .catch(err => callback(err))
