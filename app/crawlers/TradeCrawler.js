@@ -948,7 +948,7 @@ class TradeCrawler {
   getTokenData(address, callback){
     TokenInfoModel.findOne({
       where: {
-        address: address
+        address: address.toLowerCase()
       }
     })
     .then(existToken => {
@@ -983,6 +983,8 @@ class TradeCrawler {
 
         if(!tokenData.decimal) resolve(null)
         else {
+          tokenData.address = tokenData.address.toLowerCase()
+
           TokenInfoModel.create(tokenData)
           .then(result => resolve(tokenData))
           .catch(err => reject(err))
