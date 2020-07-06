@@ -169,7 +169,17 @@ class ReserveInfoCrawler {
         return callback(null, network.ETH)
     }
 
-    return getTokenInfo(address, null, callback);
+    return getTokenInfo(address, null, (err, tokenInfo) => {
+      if(err || !tokenInfo.decimal) {
+        if(tokenConfig[address.toLowerCase()]) {
+          return callback(null, tokenConfig[address.toLowerCase()])
+        }
+
+        return callback(err)
+      }
+
+      return callback(null, tokenInfo)
+    });
   }
 
   saveTx(tx, takerToken, makerToken, callback) { 

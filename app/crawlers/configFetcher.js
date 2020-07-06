@@ -4,7 +4,7 @@ const network = require('../../config/network');
 const async     = require('async');
 const _         = require('lodash');
 const apisEndpint = network.endpoints.apis + "/currencies?only_official_reserve=false"
-
+const reserveApiEndpoint = network.endpoints.apis + "/all_reserves"
 const getAllReserve                     = require('./leveldbCache').getAllReserve;
 const getReserveType                    = require('./leveldbCache').getReserveType;
 
@@ -95,6 +95,21 @@ const fetchReserveListFromNetwork = (callback) => {
       return callback(null)
     })
   })
+}
+
+const fetchReserveListFromApi = (callback) => {
+  fetchData({
+    url: reserveApiEndpoint,
+    method: "get"
+  }).then(arrayReserve => {
+    const reserveType = {}
+    arrayReserve.map(rData => {
+      reserveType[rData.address.toLowerCase()] = rData
+    })
+    global.API_RESERVES = reserveType
+    return callback(null)
+  })
+  .catch(err => callback(null));
 }
 
 const getTokensFromApis = callback => {
@@ -265,6 +280,7 @@ module.exports.fetchConfigTokens = (callback) => {
 }
 
 module.exports.fetchReserveListFromNetwork = fetchReserveListFromNetwork
+module.exports.fetchReserveListFromApi = fetchReserveListFromApi
 module.exports.standardizeReserveTokenType = standardizeReserveTokenType
 
 module.exports.fetchTokenAndItsReserve = (tokenAddress, blockNo, callback) => {

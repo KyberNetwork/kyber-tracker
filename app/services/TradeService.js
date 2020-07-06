@@ -468,32 +468,87 @@ module.exports = BaseService.extends({
     const DAY_IN_SECONDS = 24 * 60 * 60;
     const dayAgo = nowInSeconds - DAY_IN_SECONDS;
 
-    ReserveTradeModel.findAll({
-      attributes: [
-        ['reserve_address', 'address'], 
-        [sequelize.fn('sum', sequelize.col('value_eth')), 'volumeETH']
-      ], 
-      where: {
-        reserve_address:  {[Op.not]: null}
-      },
-      group: ['reserve_address'],
-      raw: true,
-    })
-    .then(results => {
-      const reserves = [];
-      results.map(rItem => {
-        reserves.push({
-          ...rItem,
-          volumeUSD: 0,
-          type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[rItem.address.toLowerCase()] : null,
-          isDelisted: global.NETWORK_RESERVES &&  global.NETWORK_RESERVES[rItem.address.toLowerCase()] ? false : true
+    async.parallel({
+      list: _next => {
+        ReserveTradeModel.aggregate('reserve_address', 'DISTINCT', { plain: false })
+        .then(results => {
+          const arrayReserveAddr = results.map(r => r.DISTINCT.toLowerCase())
+          .filter(r => (r !== '0x0000000000000000000000000000000000000000' && r !==  "0x964f35fae36d75b1e72770e244f6595b68508cf5" && r !== "0x818e6fecd516ecc3849daf6845e3ec868087b755" ))
+          return _next(null, arrayReserveAddr)
         })
+        .catch(err => _next(err))
+      },
+      vol: _next => {
+        ReserveTradeModel.findAll({
+          attributes: [
+            ['reserve_address', 'address'], 
+            [sequelize.fn('sum', sequelize.col('value_eth')), 'volumeETH'],
+            [sequelize.fn('sum', sequelize.col('value_usd')), 'volumeUSD']
+          ], 
+          where: {
+            reserve_address:  {
+              [Op.not]: null,
+              [Op.notLike]: '0x0000000000000000000000000000000000000000',
+              [Op.notLike]: '0x964f35fae36d75b1e72770e244f6595b68508cf5',
+              [Op.notLike]: '0x818e6fecd516ecc3849daf6845e3ec868087b755'
+            },
+            block_timestamp: {
+              [Op.gt]: dayAgo,
+              [Op.lt]: nowInSeconds
+            },
+          },
+          group: ['reserve_address'],
+          raw: true,
+        })
+        .then(results => {
+          const reserveVolByAddr = _.keyBy(results, 'address');
+          return _next(null, reserveVolByAddr)
+        })
+        .catch(err => {
+          _next(err)
+        })
+      },
+    }, (err, ret) => {
+      if (err) {
+        return callback(err);
+      }
+      const reserves = [];
+      ret.list.map(r => {
+        if(!ret.vol[r.toLowerCase()]) {
+          reserves.push({
+            address: r,
+            volumeUSD: 0,
+            volumeETH: 0,
+            // type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[r.toLowerCase()] : null ,
+            // isDelisted: global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] ? false : true
+            isDelisted: false
+          })
+        } else {
+          reserves.push({
+            address: r,
+            volumeUSD: ret.vol[r.toLowerCase()].volumeUSD,
+            volumeETH: ret.vol[r.toLowerCase()].volumeETH,
+            // type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[r.toLowerCase()] : null,
+            // isDelisted: global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] ? false : true
+            isDelisted: false
+          })
+        }
       })
-      return callback(null, reserves);
+      // results.map(rItem => {
+      //   reserves.push({
+      //     ...rItem,
+      //     type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[rItem.address.toLowerCase()] : null,
+      //     isDelisted: global.NETWORK_RESERVES &&  global.NETWORK_RESERVES[rItem.address.toLowerCase()] ? false : true
+      //   })
+      // })
+      return callback(null, _.orderBy(reserves, ['isDelisted', 'volumeETH' ], ['esc', 'desc']));
     })
-    .catch(err => {
-      return callback(err);
-    })
+
+
+      
+    
+
+    
 
 
     // const makeSql = (side, callback) => {
