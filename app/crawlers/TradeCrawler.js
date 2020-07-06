@@ -12,7 +12,7 @@ const networkConfig               = require('../../config/network');
 const ExSession                   = require('sota-core').load('common/ExSession');
 const logger                      = require('sota-core').getLogger('TradeCrawler');
 const configFetcher               = require('./configFetcher')
-const { Op, KyberTradeModel, ReserveTradeModel, TokenInfoModel } = require('../databaseModel');
+const { Op, KyberTradeModel, ReserveTradeModel, TokenInfoModel, RebateFeeModel } = require('../databaseModel');
 
 let LATEST_PROCESSED_BLOCK = 0;
 const BATCH_BLOCK_SIZE = parseInt(process.env.BATCH_BLOCK_SIZE || 3000);
@@ -375,8 +375,7 @@ class TradeCrawler {
           record.fee_platform = record.decodedFeeDistributed.platformFeeWei
           record.burn_fees = record.decodedFeeDistributed.burnAmtWei
           record.fee_rebate = record.decodedFeeDistributed.rebateWei
-          record.fee_burn_atm = record.decodedFeeDistributed.burnAmtWei
-          
+          record.fee_burn_atm = record.decodedFeeDistributed.burnAmtWei         
           break;
         case networkConfig.logTopics.katalystKyberTrade:
           record.katalyst = true
@@ -647,7 +646,7 @@ class TradeCrawler {
 
 
       const arrayReserveTrades = []
-      const feeDistributed = []
+      const arrayRebate = []
       if(record.katalyst){
         // caculate sourceAmount and destAmount
         // if token -> eth: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayT2eSrcAmounts * arrayT2eRates
@@ -735,6 +734,26 @@ class TradeCrawler {
             arrayReserveTrades.push(newReserveTrade)
           })
         } 
+
+
+        if(record.decodedFeeDistributed && record.decodedFeeDistributed.rebateWallets && record.decodedFeeDistributed.rebateWallets.length){
+          const totalRebate = record.decodedFeeDistributed.rebateWei
+          record.decodedFeeDistributed.rebateWallets.map((rWallet, i) => {
+            const rebateBps = record.decodedFeeDistributed.rebatePercentBpsPerWallet
+            const rebateWei = Utils.caculateRebateFee(totalRebate, rebateBps)
+            arrayRebate.push({
+              tx: record.tx,
+              token: record.fee_token,
+              rebate_wallet: rWallet.toLowerCase(),
+              rebate_bps: rebateBps,
+              rebate_fee: rebateWei,
+              unique_tag: record.unique_tag + "_" + rWallet,
+              block_number: record.block_number,
+              block_timestamp: record.block_timestamp
+            })
+          })
+
+        }
 
       } else {
 
@@ -839,8 +858,9 @@ class TradeCrawler {
           
           arrayReserveTrades.push(newDestReserveTrade)
         }
-        
       }
+
+
 
       const insertReserveTrade = (record, tokenObj) => {
         if(tokenObj[record.source_token_address]){
@@ -859,6 +879,18 @@ class TradeCrawler {
         .then(existReserveTrade => {
           if(existReserveTrade) return existReserveTrade.update(record, transaction)
           else return ReserveTradeModel.create(record)
+        })
+      }
+
+      const insertRebateFee = (record) => {
+        return RebateFeeModel.findOne({
+          where: {
+            unique_tag: record.unique_tag
+          }
+        }, transaction)
+        .then(existRebate => {
+          if(existRebate) return existRebate.update(record, transaction)
+          else return RebateFeeModel.create(record)
         })
       }
       
@@ -895,6 +927,9 @@ class TradeCrawler {
         })
         .then(result => {
           return Promise.all(arrayReserveTrades.map(rTrade => (insertReserveTrade(rTrade, tokenObj).bind(rTrade))))
+        })
+        .then(result => {
+          return Promise.all(arrayRebate.map(rebateFee => (insertRebateFee(rebateFee).bind(rebateFee))))
         })
         .then(result => {
           return callback(null)
