@@ -779,8 +779,22 @@ module.exports = BaseService.extends({
           return callback(err);
         }
 
-        const takers = _.keyBy(ret.taker, 'address');
-        const makers = _.keyBy(ret.maker, 'address');
+        const takers = {}
+        const makers = {}
+        ret.taker.map(tData => {
+          if(tData.address){
+            takers[tData.address.toLowerCase()] = tData
+          }
+        })
+        ret.maker.map(tData => {
+          if(tData.address){
+            makers[tData.address.toLowerCase()] = tData
+          }
+        })
+
+
+        // const takers = _.keyBy(ret.taker, 'address');
+        // const makers = _.keyBy(ret.maker, 'address');
 
         const sumProp = (address, prop, decimals) => {
           let val = new BigNumber(0);
