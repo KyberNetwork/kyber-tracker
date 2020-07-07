@@ -373,7 +373,7 @@ module.exports = BaseService.extends({
 
   getOldStatsData: function(callback){
     // const trackerEndpoint = "https://tracker.kyber.network"
-    const trackerEndpoint = "10.148.15.228"
+    const trackerEndpoint = "10.148.15.228:9009"
     request
       .get(trackerEndpoint + `/api/stats24h?official=false`)
       .timeout({

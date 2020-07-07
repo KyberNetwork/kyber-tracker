@@ -312,33 +312,29 @@ class TradeCrawler {
         case networkConfig.logTopics.kyberTrade:
           if(log.blockNumber < networkConfig.startPermissionlessReserveBlock) break;
 
-          if(log.blockNumber < networkConfig.startKataLystBlock) {
-            
-            record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
+          record.taker_address = web3.eth.abi.decodeParameter('address', log.topics[1]);
 
-            record.taker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
-            record.maker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
-            
-            record.taker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
-            record.maker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
-            
-            record.maker_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
-            record.volume_eth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(160, 192))));
-            
-            record.source_reserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
-            record.dest_reserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
-            
-            record.unique_tag = log.transactionHash + "_" + log.id
-            record.block_number= log.blockNumber
-            record.block_hash= log.blockHash
-            record.block_timestamp= timestamp
-            record.tx= log.transactionHash
-            records.push(record)
-            record = JSON.parse(JSON.stringify(initRecord))
-            break;
-          } 
-
+          record.taker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(0, 32)));
+          record.maker_token_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(32, 64)));
+          
+          record.taker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(64, 96)));
+          record.maker_token_amount = web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(96, 128)));
+          
+          record.maker_address = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(128, 160)));
+          record.volume_eth = Utils.fromWei(web3.eth.abi.decodeParameter('uint256', web3.utils.bytesToHex(data.slice(160, 192))));
+          
+          record.source_reserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(192, 224)));
+          record.dest_reserve = web3.eth.abi.decodeParameter('address', web3.utils.bytesToHex(data.slice(224, 256)));
+          
+          record.unique_tag = log.transactionHash + "_" + log.id
+          record.block_number= log.blockNumber
+          record.block_hash= log.blockHash
+          record.block_timestamp= timestamp
+          record.tx= log.transactionHash
+          records.push(record)
+          record = JSON.parse(JSON.stringify(initRecord))
           break;
+          
 
         case networkConfig.logTopics.feeDistributed:
           record.fee_token = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
