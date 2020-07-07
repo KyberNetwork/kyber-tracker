@@ -55,8 +55,8 @@ KyberTradeModel.init({
     fee_total_collected: DataTypes.STRING,
 }, { sequelize, modelName: 'kyber_trade', freezeTableName:  true, timestamps: false,
     hooks:{
-        beforeCreate: function(instance){
-            if (!instance.burnFees) instance.burn_fees = 0;
+        beforeSave: function(instance){
+            if (!instance.burn_fees) instance.burn_fees = 0;
             if (!instance.commission) instance.commission = 0;
             instance.collected_fees = ((new BigNumber(instance.burn_fees)).plus(new BigNumber(instance.commission))).toString();
 
