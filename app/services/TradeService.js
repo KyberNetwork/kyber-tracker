@@ -501,7 +501,13 @@ module.exports = BaseService.extends({
           raw: true,
         })
         .then(results => {
-          const reserveVolByAddr = _.keyBy(results, 'address');
+          const reserveVolByAddr = {}
+          results.map(rData => {
+            if(rData.address){
+              reserveVolByAddr[rData.address.toLowerCase()] = rData
+            }
+          })
+          // const reserveVolByAddr = _.keyBy(results, 'address');
           return _next(null, reserveVolByAddr)
         })
         .catch(err => {
