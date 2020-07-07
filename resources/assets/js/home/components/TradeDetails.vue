@@ -60,14 +60,14 @@
                 </div>
                 
               </div>
-              <div class="collected">
+              <!-- <div class="collected">
                 <div class="rate-detail-title">
                   {{$t("trade_detail.knc_collected")}}
                 </div>
                 <div class="rate-detail-value">
                   {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
                 </div>     
-              </div>
+              </div> -->
               <div class="commision">
                 <div class="rate-detail-title">
                   {{$t("trade_detail.collected_fees")}}
