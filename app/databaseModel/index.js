@@ -56,7 +56,6 @@ KyberTradeModel.init({
 }, { sequelize, modelName: 'kyber_trade', freezeTableName:  true, timestamps: false,
     hooks:{
         beforeSave: function(instance){
-            console.log("=============== before save")
             if (!instance.burn_fees) instance.burn_fees = 0;
             if (!instance.commission) instance.commission = 0;
             instance.collected_fees = ((new BigNumber(instance.burn_fees)).plus(new BigNumber(instance.commission))).toString();
