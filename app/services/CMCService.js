@@ -371,6 +371,25 @@ module.exports = BaseService.extends({
       });
   },
 
+  getOldStatsData: function(callback){
+    const trackerEndpoint = "https://tracker.kyber.network"
+    request
+      .get(trackerEndpoint + `/api/stats24h?official=false`)
+      .timeout({
+        response: 10000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+        const data = response.body;
+      
+        return callback(null, data);
+      });
+  },
+
+
   getKyberTokenMarketData: function(symbol, callback){
     const key = CacheInfo.CGTokenMaketData.key + symbol;
     RedisCache.getAsync(key, (err, ret) => {

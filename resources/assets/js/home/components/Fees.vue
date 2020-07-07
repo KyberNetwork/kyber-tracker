@@ -56,16 +56,11 @@
           </b-button-group>
         </div>
 
-        <!-- <b-tab @click="onSelectTab('chartVolume')" :title="$t('chart.title.network_volume')" active>
-          <chart-volume ref="chartVolume"
-            :elementId="'chart-volume'">
-          </chart-volume>
-        </b-tab> -->
-        <b-tab @click="onSelectTab('chartFee', 'getCollectedFeeList')" :title="$t('chart.title.collected_fees')">
+        <!-- <b-tab @click="onSelectTab('chartFee', 'getCollectedFeeList')" :title="$t('chart.title.collected_fees')">
           <chart-fee ref="chartFee"
             :elementId="'chart-fee'">
           </chart-fee>
-        </b-tab>
+        </b-tab> -->
         <b-tab @click="onSelectTab('chartBurned', 'getBuntTransaction')" :title="$t('chart.title.fees_burned')">
           <chart-fee ref="chartBurned"
             :elementId="'chart-burned'">
@@ -161,7 +156,7 @@
         tokens: TOKENS_BY_ADDR,
         selectedPeriod: 'D30',
         selectedInterval: 'D1',
-        selectedTab: 'chartFee',
+        selectedTab: 'chartBurned',
         fetchFunc: 'getTrades',
         volumeChart: undefined,
         feeToBurnChart: undefined,

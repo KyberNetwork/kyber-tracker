@@ -1064,6 +1064,9 @@ module.exports = BaseService.extends({
       whereOffcial += ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`;
     }
     async.auto({
+      oldStatsData: (next) => {
+        CMCService.getOldStatsData(next);
+      },
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
           where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])} ${whereOffcial}`,
@@ -1105,6 +1108,8 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
+      const oldCollectedFee = ret.oldStatsData.data.collectedFees
+
       const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
       const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPrice.toString() : 0)
       const KNCchange24h = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24h.toString() : 0)
@@ -1114,26 +1119,23 @@ module.exports = BaseService.extends({
 
       const ETHprice = new BigNumber(ret.ethMarketData && ret.ethMarketData.currentPrice ? ret.ethMarketData.currentPrice.toString() : 0)
       const ETHchange24h = new BigNumber(ret.ethMarketData && ret.ethMarketData.priceChangePercentage24h ? ret.ethMarketData.priceChangePercentage24h.toString() : 0)
-      //const volumeInETH = new BigNumber(ret.volumeEth.toString());
-      //const feeInKNC = new BigNumber(ret.partnerFee.toString()).div(Math.pow(10, 18));
-      //const feeInUSD = feeInKNC.times(ret.kncPrice);
 
       const burnedNoContract = network.preburntAmount || 0;
       const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
       const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
-      //const feeToBurn = new BigNumber(ret.feeToBurn.toString()).div(Math.pow(10, 18));
+    
       const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
 
       const feeKatalystCollected = new BigNumber(ret.feeKatalystCollected.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
-        //networkVolumeEth:  volumeInETH.toFormat(2).toString() + " ETH",
-        collectedFees: collectedFees.toFormat(2).toString(),
+
+        // collectedFees: collectedFees.toFormat(2).toString(),
+        collectedFees: oldCollectedFee,
         feeKatalystCollected: feeKatalystCollected.toFormat(2).toString(),
-        //tradeCount: ret.tradeCount,
-        //kncInfo: ret.kncInfo,
+
         totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
-        // feeToBurn: feeToBurn.toFormat(2).toString()
+
         kncPrice: KNCprice.toFormat(4).toString(),
         kncChange24h: KNCchange24h.toFormat(2).toString(),
 
