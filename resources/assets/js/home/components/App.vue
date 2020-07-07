@@ -447,7 +447,7 @@ export default {
       infoBarUrl: "https://kyberswap.com/promo/pbtc?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=pbtc-contest",
       infoBarMess: "1.15 BTC to be won in pBTC trading contest on KyberSwap!",
       infoBarTimeFrom: 1590066000000,
-      infoBarTimeTo: 1591372800000,
+      infoBarTimeTo: 1594094498000,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
