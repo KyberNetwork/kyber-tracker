@@ -1272,7 +1272,7 @@ module.exports = {
   "newTokenDuration": 3 * 24 * 60 * 60 * 1000,
 
   "startPermissionlessReserveBlock": 7024980,
-  "startKataLystBlock": 10319959,
+  "startKataLystBlock": 10403237,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",
