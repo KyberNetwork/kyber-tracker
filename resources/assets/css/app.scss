@@ -1097,7 +1097,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   // }
 
   @media(min-width: $md){
-    width: calc(100% - 215px - 225px);
+    width: calc(100% - 225px);
   }
   // &.header-expand{
   //   height: auto !important;

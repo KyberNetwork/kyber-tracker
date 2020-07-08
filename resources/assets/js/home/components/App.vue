@@ -48,7 +48,7 @@
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
         <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="() => onClickOutside()">
 
-          <b-dropdown class="change-official h-100" @shown="clickHeading()" >
+          <!-- <b-dropdown class="change-official h-100" @shown="clickHeading()" >
             <template slot="button-content">
               {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
             </template>
@@ -58,7 +58,7 @@
             <b-dropdown-item @click="onChangeOfficial('official')">
               <span>{{ $t('navigator.verified_reserves_network') }}</span>
             </b-dropdown-item>
-          </b-dropdown> 
+          </b-dropdown>  -->
 
           <carousel  
           ref="headingSum" class="heading-summary position-relative" 
