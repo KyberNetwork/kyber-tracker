@@ -284,7 +284,7 @@
               <span class="source col-5 text-right no-padding">
                 {{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
               
-                <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
+                <span v-if="isOfficial(row.takerTokenAddress, row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
               </span>
               <span class="angle col-2 text-center no-padding color-green">
@@ -293,17 +293,17 @@
               </span>
               <span class="dest col-5 text-left no-padding">
                 {{ formatTokenNumber(row.makerTokenAddress, row.makerTokenAmount,row.makerTokenDecimal) }} 
-                <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
+                <span v-if="isOfficial(row.makerTokenAddress, row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </span>
             </div>
             <div class="rate"  @click="onClickRow(row)">1
               <span>
-                <span v-if="isOfficial(row.takerTokenAddress)">{{ row.takerTokenSymbol }}</span>
+                <span v-if="isOfficial(row.takerTokenAddress, row.takerTokenSymbol)">{{ row.takerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.takerTokenAddress)" target="_blank">({{getShortedAddr(row.takerTokenAddress)}})</a></span>
               </span> = {{ getRate(row) }} 
               <span>
-                <span v-if="isOfficial(row.makerTokenAddress)">{{ row.makerTokenSymbol }}</span>
+                <span v-if="isOfficial(row.makerTokenAddress, row.makerTokenSymbol)">{{ row.makerTokenSymbol }}</span>
                 <span v-else><a class="address-link" :href="getAddressLink(row.makerTokenAddress)" target="_blank">({{getShortedAddr(row.makerTokenAddress)}})</a></span>
               </span>
             </div>
@@ -547,7 +547,8 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 4, 4)
     },
-    isOfficial(address){
+    isOfficial(address, symbol){
+      if(symbol) return true
       return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     getAddressEtherscanLink(tx) {

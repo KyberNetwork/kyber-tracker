@@ -71,7 +71,8 @@
     "fees_burned": "소각된 비용",
     "knc_price": "KNC 가격",
     "eth_price": "ETH 가격",
-    "collected_fees": "총비용"
+    "knc_collected": "KNC Collected",
+    "fee_collected": "Fee Collected"
   },
   "tooltip": {
     "network_volume": " 최근 24시간 동안 거래량",
@@ -136,6 +137,7 @@
     "maker_amount": "수량",
     "rate": "환율 {0}/{1}",
     "collected_fees": "총비용",
+    "knc_collected": "KNC Collected",
     "fee_to_wallet": "파트너 비용",
     "commission": "파트너 비용",
     "fee_to_burn": "소각될 비용",
@@ -147,6 +149,7 @@
     "address": "주소",
     "trades": "거래",
     "collected_fees": "총비용",
+    "knc_collected": "KNC Collected",
     "total_trading_volune": "모든 거래량",
     "value_in_eth": "가치 (ETH)",
     "value_in_usd": "가치 (USD)",

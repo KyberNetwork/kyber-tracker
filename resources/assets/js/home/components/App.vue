@@ -16,7 +16,9 @@
               <vue-autosuggest
                 ref="seatchInputRef"
                 :suggestions="[{
-                  data: [...this.addressesMetamask, ...this.searchData]
+                  data: [
+                  ...this.addressesMetamask, 
+                  ...this.searchData]
                 }]"
                 @keyup.enter="doSearch"
                 @focus="onfocus"
@@ -46,7 +48,7 @@
       <b-navbar toggleable="md" type="dark" class="heading-bar  col-12 col-sm-12 no-padding">
         <div class="heading-wrapper no-padding col-12 col-sm-12 d-flex" v-click-outside="() => onClickOutside()">
 
-          <b-dropdown class="change-official h-100" @shown="clickHeading()" >
+          <!-- <b-dropdown class="change-official h-100" @shown="clickHeading()" >
             <template slot="button-content">
               {{isAllTokens() ? $t('navigator.all_network') : $t('navigator.verified_reserves_network')}}
             </template>
@@ -56,7 +58,7 @@
             <b-dropdown-item @click="onChangeOfficial('official')">
               <span>{{ $t('navigator.verified_reserves_network') }}</span>
             </b-dropdown-item>
-          </b-dropdown> 
+          </b-dropdown>  -->
 
           <carousel  
           ref="headingSum" class="heading-summary position-relative" 
@@ -88,9 +90,14 @@
               </div>
 
               <div ref="slide_3" class="slide-item">
-                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
-                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ kncCollected }}</span>
               </div>
+              <div ref="slide_3" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.fee_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ feeCollected }}</span>
+              </div>
+
               <div ref="slide_4" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
                 <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
@@ -124,8 +131,12 @@
               </div>
 
               <div v-if="isLoopSumary" class="slide-item">
-                <span class="text-nowrap d-block">{{ $t('status_bar.collected_fees') }}</span>
-                <span class="topbar-value text-nowrap">{{ collectedFees }}</span>
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ kncCollected }}</span>
+              </div>
+              <div v-if="isLoopSumary" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.fee_collected') }}</span>
+                <span class="topbar-value text-nowrap">{{ feeCollected }}</span>
               </div>
               <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
@@ -144,7 +155,9 @@
                 <vue-autosuggest
                   ref="seatchInputRef"
                   :suggestions="[{
-                    data: [...this.addressesMetamask, ...this.searchData]
+                    data: [
+                    ...this.addressesMetamask, 
+                    ...this.searchData]
                   }]"
                   @keyup.enter="doSearch"
                   @focus="onfocus"
@@ -425,15 +438,16 @@ export default {
       totalBurnedFee: "",
       searchString: "",
       pageTitle: "",
-      collectedFees: "",
+      kncCollected: "",
+      feeCollected: "",
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
       isShowInfoBar: true,
-      infoBarUrl: "https://kyberswap.com/promo/katalyst?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=katalyst-contest",
-      infoBarMess: "$10,000 to be won in KNC Katalyst trading contest on KyberSwap!",
-      infoBarTimeFrom: 1593262800000,
-      infoBarTimeTo: 1594137600000,
+      infoBarUrl: "https://kyberswap.com/promo/pbtc?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=pbtc-contest",
+      infoBarMess: "1.15 BTC to be won in pBTC trading contest on KyberSwap!",
+      infoBarTimeFrom: 1590066000000,
+      infoBarTimeTo: 1594094498000,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
@@ -594,12 +608,15 @@ export default {
 
       try {
         let address = web3.eth.accounts[0];
-        this.addressesMetamask = [
-          {
-            type: "metamask",
-            addr: address
-          }
-        ];
+        if(address){
+          this.addressesMetamask = [
+            {
+              type: "metamask",
+              addr: address
+            }
+          ];
+        }
+        
       } catch (e) {
         console.log(e);
       }
@@ -628,7 +645,9 @@ export default {
         this.networkFee = stats.networkFee;
         this.tradeCount = stats.tradeCount;
         this.totalBurnedFee = stats.totalBurnedFee + " KNC";
-        this.collectedFees = stats.collectedFees + " KNC";
+      
+        this.kncCollected = stats.collectedFees + " KNC";
+        this.feeCollected = stats.feeKatalystCollected + " ETH";
 
         this.kncPrice = "$" + stats.kncPrice;
         this.kncPriceChange24h = stats.kncChange24h;
@@ -699,7 +718,7 @@ export default {
           });
         }
       }
-      this.searchData = this.searchData.slice(0, 5);
+      this.searchData = this.searchData ? this.searchData.slice(0, 5) : [];
       store.set("searchData", this.searchData);
 
       window.setTimeout(() => {

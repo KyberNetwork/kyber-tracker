@@ -71,7 +71,8 @@
     "fees_burned": "已销毁的费用",
     "knc_price": "KNC 价格",
     "eth_price": "ETH 价格",
-    "collected_fees": "总费用"
+    "knc_collected": "KNC Collected",
+    "fee_collected": "Fee Collected"
   },
   "tooltip": {
     "network_volume": "最近24小时的交易量",
@@ -138,6 +139,7 @@
     "maker_amount": "数量",
     "rate": "{0}/{1} 汇率",
     "collected_fees": "总费用",
+    "knc_collected": "KNC Collected",
     "fee_to_wallet": "合伙人佣金费用",
     "commission": "佣金",
     "fee_to_burn": "以销毁的费用",
@@ -148,6 +150,7 @@
     "address": "地址",
     "trades": "交易次数",
     "collected_fees": "总费用",
+    "knc_collected": "KNC Collected",
     "total_trading_volune": "交易总量",
     "value_in_eth": "价值（ETH)",
     "value_in_usd": "价值（USD)",

@@ -4,7 +4,7 @@ const network = require('../../config/network');
 const async     = require('async');
 const _         = require('lodash');
 const apisEndpint = network.endpoints.apis + "/currencies?only_official_reserve=false"
-
+const reserveApiEndpoint = network.endpoints.apis + "/all_reserves"
 const getAllReserve                     = require('./leveldbCache').getAllReserve;
 const getReserveType                    = require('./leveldbCache').getReserveType;
 
@@ -58,7 +58,7 @@ const standardizeReserveTokenType = (tokens) => {
     t.address = t.address.toLowerCase()
     if(t.reservesAddr){
       t.reservesAddr.map(r => {
-        if(global.NETWORK_RESERVES[r.toLowerCase()] == '1') {
+        if(global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] == '1') {
           reserveObj[r.toLowerCase()] = '1'
           t.type = '1'
         }
@@ -97,6 +97,21 @@ const fetchReserveListFromNetwork = (callback) => {
   })
 }
 
+const fetchReserveListFromApi = (callback) => {
+  fetchData({
+    url: reserveApiEndpoint,
+    method: "get"
+  }).then(arrayReserve => {
+    const reserveType = {}
+    arrayReserve.map(rData => {
+      reserveType[rData.address.toLowerCase()] = rData
+    })
+    global.API_RESERVES = reserveType
+    return callback(null)
+  })
+  .catch(err => callback(null));
+}
+
 const getTokensFromApis = callback => {
   try {
     fetchData({
@@ -105,10 +120,13 @@ const getTokensFromApis = callback => {
     }).then(currencies => {
       const tokens = standardizeTokens(currencies)
 
-      fetchReserveListFromNetwork((err) => {
-        if(err) return callback(err)
-        return callback(null, standardizeReserveTokenType(tokens))
-      })
+      return callback(null, standardizeReserveTokenType(tokens))
+
+      // fetchReserveListFromNetwork((err) => {
+      //   if(err) return callback(err)
+      //   return callback(null, standardizeReserveTokenType(tokens))
+      // })
+
     })
     .catch(err => callback(err));
   } catch (error) {
@@ -262,6 +280,7 @@ module.exports.fetchConfigTokens = (callback) => {
 }
 
 module.exports.fetchReserveListFromNetwork = fetchReserveListFromNetwork
+module.exports.fetchReserveListFromApi = fetchReserveListFromApi
 module.exports.standardizeReserveTokenType = standardizeReserveTokenType
 
 module.exports.fetchTokenAndItsReserve = (tokenAddress, blockNo, callback) => {

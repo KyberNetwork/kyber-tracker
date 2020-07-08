@@ -60,16 +60,25 @@
                 </div>
                 
               </div>
-              <div class="collected">
+              <!-- <div class="collected">
+                <div class="rate-detail-title">
+                  {{$t("trade_detail.knc_collected")}}
+                </div>
+                <div class="rate-detail-value">
+                  {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
+                </div>     
+              </div> -->
+              <div class="commision">
                 <div class="rate-detail-title">
                   {{$t("trade_detail.collected_fees")}}
                 </div>
                 <div class="rate-detail-value">
-                  {{ getTokenAmount(record.collectedFees, KNCAddr() ) }} KNC
+                  {{ getTokenAmount(record.feeTotalCollected, ETHAddr() ) }} ETH
                 </div>
                 
               </div>
-              <div v-if="$route.query.partner" class="commision">
+
+              <!-- <div v-if="$route.query.partner" class="commision">
                 <div class="rate-detail-title">
                   {{$t("trade_detail.commission")}}
                 </div>
@@ -77,7 +86,7 @@
                   {{ getTokenAmount(record.commission, KNCAddr() ) }} KNC
                 </div>
                 
-              </div>
+              </div> -->
             </div>
 
             <div class="trade-wallet pb-4">
@@ -141,10 +150,11 @@ export default {
   methods: {
     refresh() {
       const id = this.$route.params.id;
+      const reserve = this.$route.query.reserve;
       if (!id) {
         return;
       }
-      AppRequest.getTradeDetails(id).then(data => {
+      AppRequest.getTradeDetails(id, {reserve: reserve}).then(data => {
         this.record = data;
       });
     },
@@ -237,6 +247,9 @@ export default {
     },
     KNCAddr(){
       return network.KNC.address
+    },
+    ETHAddr(){
+      return network.ETH.address
     }
   },
 

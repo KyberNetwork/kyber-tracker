@@ -3,15 +3,18 @@ module.exports = {
     "web3Provider":"https://ropsten.infura.io",
     "ethScan": "https://ropsten.etherscan.io/",
     "getRate": "https://ropsten-cache.knstats.com/getRate",
-    "apis": "https://ropsten-api.kyber.network"
+    "apis": "https://dev-api.knstats.com/"
     // "apis": "https://api.kyber.network"
   },
   "contractAddresses": {
     "wrapper": "0x9de0a60F4A489e350cD8E3F249f4080858Af41d3",
-    "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755"],
+    "networks": ["0x818E6FECD516Ecc3849DAf6845e3EC868087B755", "0xc4684f4fbfc3db0a24cffe35821b12e55beaef7a", "0xd719c34261e099fdb33030ac8909d5788d3039c4"],
     "feeBurners": ["0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x89B5c470559b80e541E53eF78244edD112c7C58A", "0x81ae4de9a3aec67a35c05c889052260e39bc42a4"],
+    "feeHandler": ["0xff456d9a8cbb5352ef77dec2337bac8dec63beac"],
     "workers": [],
-    "internal": "0x3f9a8e219Ab1aD42f96b22C294E564B2b48fE636"
+    "storage": "0xa4ead31a6c8e047e01ce1128e268c101ad391959",
+    "katalystStorage": "0x688bf5EeC43E0799c5B9c1612F625F7b93FE5434",
+    "internal": ["0x3f9a8e219Ab1aD42f96b22C294E564B2b48fE636", "0x920B322D4B8BAB34fb6233646F5c87F87e79952b"]
   },
   "logTopics": {
     "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -20,7 +23,13 @@ module.exports = {
     "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
     "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
     "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
-    "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
+    "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
+    "feeDistributed": "0x53e2e1b5ab64e0a76fcc6a932558eba265d4e58c512401a7d776ae0f8fc08994",
+    "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d",
+    "katalystExecuteTrade": "0xf724b4df6617473612b53d7f88ecc6ea983074b30960a049fcd0657ffe808083",
+    "katalystAddReserve": "0x50b2ce9e8f1a63ceaed262cc854dbf741b216e6429f7ba38403afbcdddc7f1ea",
+    "kataLystRemoveReserve": "0xa5cd88a226efb041d6bdc0ac32964affd749b8a7c4d9e0c4ffba575e7180b1c9",
+    "kataLystSetReserveWallet": "0x42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b3"
   },
 
   "ignoreReserveVolume": { 
@@ -280,6 +289,7 @@ module.exports = {
   "startBlockNumberV2": 10000000, // TODO: kyber 2.0 start block
 
   "startPermissionlessReserveBlock": 4759402,
+  "startKataLystBlock": 8111008,
 
   "partners": {
     "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

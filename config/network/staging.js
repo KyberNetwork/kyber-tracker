@@ -7,10 +7,12 @@ module.exports = {
     },
     "contractAddresses": {
       "wrapper": "0x6172AFC8c00c46E0D07ce3AF203828198194620a",
-      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D", "0x6326dd73e368c036d4c4997053a021cbc52c7367"],
+      "networks": ["0xD2D21FdeF0D054D2864ce328cc56D1238d6b239e", "0xC14f34233071543E979F6A79AA272b0AB1B4947D", "0x6326dd73e368c036d4c4997053a021cbc52c7367", "0xc153eeAD19e0DBbDb3462Dcc2B703cC6D738A37c"],
       "feeBurners": ["0xB2cB365D803Ad914e63EA49c95eC663715c2F673", "0xd6703974Dc30155d768c058189A2936Cf7C62Da6"],
+      "feeHandler": ["0xEc30037C9A8A6A3f42734c30Dfa0a208aF71b40C"],
+      "katalystStorage": "0xB18D90bE9ADD2a6c9F2c3943B264c3dC86E30cF5",
       "workers": ["0x706aBcE058DB29eB36578c463cf295F180a1Fe9C", "0x91a502C678605fbCe581eae053319747482276b9"],
-      "internal": ["0x65897aDCBa42dcCA5DD162c647b1cC3E31238490", "0xafbf0d08269a7eee8d587121f3b0616c8cef5077"]
+      "internal": ["0x65897aDCBa42dcCA5DD162c647b1cC3E31238490", "0xafbf0d08269a7eee8d587121f3b0616c8cef5077", "0x9CB7bB6D4795A281860b9Bfb7B1441361Cc9A794"]
     },
     "logTopics": {
       "exchange": "0x1849bd6a030a1bca28b83437fd3de96f3d27a5d172fa7e9c78e7b61468928a39",
@@ -19,7 +21,15 @@ module.exports = {
       "etherReceival": "0x75f33ed68675112c77094e7c5b073890598be1d23e27cd7f6907b4a7d98ac619",
       "erc20Transfer": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
       "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
-      "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c"
+      "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
+      "feeDistributed": "0xe57b2c3b4e44730805358131a6fc244c57178da7",
+
+      "feeDistributed": "0x53e2e1b5ab64e0a76fcc6a932558eba265d4e58c512401a7d776ae0f8fc08994",
+      "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d",
+      "katalystExecuteTrade": "0xf724b4df6617473612b53d7f88ecc6ea983074b30960a049fcd0657ffe808083",
+      "katalystAddReserve": "0x50b2ce9e8f1a63ceaed262cc854dbf741b216e6429f7ba38403afbcdddc7f1ea",
+      "kataLystRemoveReserve": "0xa5cd88a226efb041d6bdc0ac32964affd749b8a7c4d9e0c4ffba575e7180b1c9",
+      "kataLystSetReserveWallet": "0x42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b3"
     },
 
     "ignoreReserveVolume": { 
@@ -919,6 +929,7 @@ module.exports = {
     "newTokenDuration": 3 * 24 * 60 * 60 * 1000,
     
     "startPermissionlessReserveBlock": 6997111,
+    "startKataLystBlock": 10377352,
   
     "partners": {
       "olympus": "0x09227deaeE08a5Ba9D6Eb057F922aDfAd191c36c",

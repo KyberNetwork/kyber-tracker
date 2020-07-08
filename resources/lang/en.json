@@ -72,7 +72,8 @@
     "fees_burned": "Burnt Fees",
     "knc_price": "KNC Price",
     "eth_price": "ETH Price",
-    "collected_fees": "Collected Fees"
+    "knc_collected": "KNC Collected",
+    "fee_collected": "Fee Collected"
   },
 
   "tooltip": {
@@ -143,6 +144,7 @@
     "maker_amount": "Amount",
     "rate": "{0}/{1} RATE",
     "collected_fees": "COLLECTED FEES",
+    "knc_collected": "KNC Collected",
     "fee_to_wallet": "Partner Commission",
     "commission": "COMMISSION",
     "fee_to_burn": "Fees To Burn",
@@ -154,6 +156,7 @@
     "address": "Address",
     "trades": "Trades",
     "collected_fees": "Collected Fees",
+    "knc_collected": "KNC Collected",
     "total_trading_volune": "Total Trading Volume",
     "value_in_eth": "Value in ETH",
     "value_in_usd": "Value in USD",

@@ -9,6 +9,8 @@ const Utils_Common = require('../common/Utils');
 const logger = log4js.getLogger('TradeController');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
 const CacheInfo = require('../../config/cache/info');
+const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
+
 module.exports = AppController.extends({
   classname: 'TradeController',
 
@@ -231,6 +233,7 @@ module.exports = AppController.extends({
   getTradeDetails: function (req, res) {
     const [err, params] = new Checkit({
       tradeId: ['required', 'naturalNonZero'],
+      reserve: ['string'],
     }).validateSync(req.allParams);
 
     if (err) {
@@ -239,7 +242,7 @@ module.exports = AppController.extends({
     }
 
     const TradeService = req.getService('TradeService');
-    TradeService.getTradeDetails(params.tradeId, this.ok.bind(this, req, res));
+    TradeService.getTradeDetails(params.tradeId, params.reserve, this.ok.bind(this, req, res));
   },
 
   getTopTokensList: function (req, res) {
@@ -459,23 +462,23 @@ module.exports = AppController.extends({
   getStats24h: function (req, res) {
     Utils_Common.cors(res);
 
-    const [err, params] = new Checkit({
-      official: ['string']
-    }).validateSync(req.allParams);
+    // const [err, params] = new Checkit({
+    //   official: ['string']
+    // }).validateSync(req.allParams);
 
-    if (err) {
-      res.badRequest(err.toString());
-      return;
-    }
+    // if (err) {
+    //   res.badRequest(err.toString());
+    //   return;
+    // }
 
-    if(!params.official || params.official == 'true'){
-      params.official = true
-    } else {
-      params.official = false
-    }
+    // if(!params.official || params.official == 'true'){
+    //   params.official = true
+    // } else {
+    //   params.official = false
+    // }
 
     const TradeService = req.getService('TradeService');
-    TradeService.getStats24h(params, this.ok.bind(this, req, res));
+    TradeService.getStats24h(this.ok.bind(this, req, res));
   },
 
   getVolumes: function (req, res) {

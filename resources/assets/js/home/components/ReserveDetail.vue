@@ -54,7 +54,7 @@
             </div>
             <div class="col">
               <div class="pb-2">
-                {{$t('wallet_detail.collected_fees')}}
+                {{$t('wallet_detail.knc_collected')}}
               </div>
               <div class="font-semi-bold">
                 <span v-if="!isLoading">{{formatTokenAmount(collectedFees.toString(), 18)}}</span>
@@ -117,11 +117,11 @@
             <div class="col-12 col-sm-6" v-for="item in reserveTokens">
               <div class="row pb-2">
                 <div class="col-4 ">
-                  <span v-if="isOfficial(item.address)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
+                  <span v-if="isOfficial(item.address, item.symbol)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
                   <span v-else><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">({{getShortedAddr(item.address)}})</a></span>
                 </div>
                 <div class="col-8 font-semi-bold">
-                  {{(item.usd && round(item.usd)) || 0}} USD
+                  {{(item.volumeUSD && round(item.volumeUSD)) || 0}} USD
                 </div>
               </div> 
             </div>
@@ -162,6 +162,7 @@
       :isShowExport="false"
       v-on:fetchDone="reloadView"
       :isParentLoading="isLoading"
+      :isReserveTrade="true"
     >
     </mini-trade-list>
   </div>
@@ -234,7 +235,8 @@ export default {
     getFilterTokenAddress(){
       return undefined
     },
-    isOfficial(address){
+    isOfficial(address, symbol){
+      if(symbol) return true
       return util.isOfficial(TOKENS_BY_ADDR[address.toLowerCase()])
     },
     getShortedAddr(addr){
@@ -330,7 +332,6 @@ export default {
           const tolalCollectedFee = new BigNumber(collectedFeeDest.walletFee.toString()).plus(new BigNumber(collectedFeeSource.walletFee.toString()))
 
           this.collectedFees = tolalFeeToBurn.plus(tolalCollectedFee).toString()
-          console.log("++++++++++++++++++++", this.collectedFees)
           this.isLoading = false
           if(data && data.tokens && data.tokens.length > 10) {
             this.isShowLoadmore = true

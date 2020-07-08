@@ -86,6 +86,105 @@ module.exports = {
     .toString()
   },
 
+  async asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  },
+  
+  timesBig(arrayParams) {
+    return arrayParams.reduce((a, b) => 
+      new BigNumber(a || 0).multipliedBy(new BigNumber(b || 0))
+    , 1)
+    .toString()
+  },
+
+  caculateDestAmount(srcQty=0, rate=0, dstDecimals=18, srcDecimals=18, PRECISION=Math.pow(10, 18)){
+    if (dstDecimals >= srcDecimals) {
+      // (srcQty * rate * (10**(dstDecimals - srcDecimals))) / PRECISION
+      const bigAmountAndRate = new BigNumber(srcQty.toString()).multipliedBy(rate.toString())
+      const multiplier = Math.pow(10, (dstDecimals - srcDecimals))
+      return bigAmountAndRate.multipliedBy(multiplier).dividedBy(PRECISION).toFixed(0).toString();
+    } else {
+      // (srcQty * rate) / (PRECISION * (10**(srcDecimals - dstDecimals)));
+
+      const bigAmountAndRate = new BigNumber(srcQty.toString()).multipliedBy(rate.toString())
+      const divisor = new BigNumber(PRECISION).multipliedBy(Math.pow(10, (srcDecimals - dstDecimals)))
+      return bigAmountAndRate.dividedBy(divisor).toFixed(0).toString()
+    }
+  },
+
+  caculateRebateFee(total, bps=10000){
+    const bigTotal = new BigNumber(total.toString())
+    return bigTotal.multipliedBy(bps).dividedBy(10000).toFixed(0).toString()
+  },
+
+  snakeToCamel(obj={}) {
+    const snakeToCamel = (str) => str.replace(
+      /([-_][a-z])/g,
+      (group) => group.toUpperCase()
+                      .replace('-', '')
+                      .replace('_', '')
+    );
+    const returnObj = {}
+    Object.keys(obj).map(k => {
+      returnObj[snakeToCamel(k)] = obj[k]
+    })
+
+    return returnObj
+  },
+
+  divBig(divisor, dividend){
+    if(!divisor) return 0
+    if(!dividend) return "NaN"
+  
+    let bigDivisor = new BigNumber(divisor)
+    return bigDivisor.dividedBy(dividend).toFixed()
+  },
+
+  toT(number, decimal, round, reverse) {
+    if(!number) return 0
+    var bigNumber = new BigNumber(number.toString())
+    var result
+    if (bigNumber == 'NaN' || bigNumber == 'Infinity') {
+      return number
+    } else if (this.acceptableTyping(number)) {
+      return number
+    }
+    if (decimal) {
+      result = bigNumber.dividedBy(Math.pow(10, decimal));
+    }
+    else {
+      result = bigNumber.dividedBy(1000000000000000000)
+    }
+    if(reverse){
+      result = result.pow(-1)
+    }
+    if (round !== undefined) {
+      return result.decimalPlaces(round).toString()
+    } else {
+      return result.toString()
+    }
+  },
+
+  acceptableTyping(number) {
+    // ends with a dot
+    if (number.length > 0 && number[number.length - 1] == ".") {
+      return true
+    }
+  
+    // TODO refactor format
+    // zero suffixed with real number
+    // if (number.length > 0 && number[number.length - 1] == "0") {
+    //   for (var i = 0; i < number.length; i++) {
+    //     if (number[i] == ".") {
+    //       return true
+    //     }
+    //   }
+    // }
+    return false
+  },
+
   numberToHex: function(number) {
     return "0x" + (new BigNumber(number)).toString(16)
   },
