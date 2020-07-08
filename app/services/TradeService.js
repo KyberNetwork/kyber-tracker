@@ -1056,11 +1056,12 @@ module.exports = BaseService.extends({
   },
 
   // Use for topbar items
-  getStats24h: function (params, callback) {
+  getStats24h: function (callback) {
+    const params={}
     let key = CacheInfo.Stats24h.key;
-    if(params.official){
-      key = 'official-' + key
-    }
+    // if(params.official){
+    //   key = 'official-' + key
+    // }
 
     const time_exprire = CacheInfo.Stats24h.TTL;
     // let params = {};
@@ -1092,9 +1093,9 @@ module.exports = BaseService.extends({
     const DAY_IN_SECONDS = 24 * 60 * 60;
 
     let whereOffcial = ''
-    if(options.official){
-      whereOffcial += ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`;
-    }
+    // if(options.official){
+    //   whereOffcial += ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`;
+    // }
     async.auto({
       oldStatsData: (next) => {
         CMCService.getOldStatsData(next);

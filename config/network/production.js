@@ -321,10 +321,10 @@ module.exports = {
     },
     "CND": {
       "name": "Cindicator",
-      "address": "0xd4c435f5b09f855c3317c8524cb1f586e42795fa",
+      "address": "0xd4c435F5B09F855C3317c8524Cb1F586E42795fa",
       "symbol": "CND",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1593522000000
     },
     "KIN": {
       "name": "Kin",
@@ -1259,6 +1259,22 @@ module.exports = {
       "decimal": 18,
       "address": "0x4a220e6096b25eadb88358cb44068a3248254675",
       "hidden": 1591016400000
+    },
+
+    "PNT": {
+      "name": "pNetwork Token",
+      "symbol" : "PNT",
+      "decimal": 18,
+      "address": "0x89Ab32156e46F46D02ade3FEcbe5Fc4243B9AAeD",
+      "hidden": 1592917200000
+    },
+
+    "COMP": {
+      "name": "Compound",
+      "symbol" : "COMP",
+      "decimal": 18,
+      "address": "0xc00e94cb662c3520282e6f5717214004a7f26888",
+      "hidden": 1593608400000
     },
   },
 
