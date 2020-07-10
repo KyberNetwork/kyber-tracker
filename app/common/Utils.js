@@ -28,6 +28,15 @@ module.exports = {
     return true
   },
 
+  isBurnableAddressToken: function(address){
+    if(address.toLowerCase() == network.ETH.address.toLowerCase() 
+    || address.toLowerCase() == network.WETH.address.toLowerCase()
+    || address.toLowerCase() == network.PT.address.toLowerCase()){
+      return false
+    }
+    else return  true
+  },
+
   getKyberABIDecoder: function() {
     return abiDecoder;
   },
