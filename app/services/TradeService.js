@@ -1615,6 +1615,21 @@ module.exports = BaseService.extends({
     });
   },
 
+  getTotalBurnedFees: function (options, callback) {
+    const BurnedFeeModel = this.getModel('BurnedFeeModel');
+
+    BurnedFeeModel.sum('amount', {
+      where: 'block_timestamp > ? AND block_timestamp < ?',
+      params: [options.fromDate, options.toDate]
+    }, (err, result) => {
+      if (err) {
+        return callback(err);
+      }
+      const totalBurnt = new BigNumber((result || 0).toString()).div(Math.pow(10, 18)).toString();
+      return callback(null, {totalBurnt});
+    });
+  },
+
   // Use for "Fees Burned" chart
   getBurnedFees: function (options, callback) {
     const BurnedFeeModel = this.getModel('BurnedFeeModel');

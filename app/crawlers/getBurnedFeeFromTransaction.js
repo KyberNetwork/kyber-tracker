@@ -7,6 +7,7 @@ const logger          = require('sota-core').getLogger('getBurnedFeeFromTransact
 const request         = require('superagent');
 const BigNumber       = require('bignumber.js');
 const Twitter         = require('twitter-lite');
+const network               = require('../../config/network');
 
 const web3            = Utils.getWeb3Instance();
 const abiDecoder      = Utils.getKyberABIDecoder();
@@ -37,8 +38,9 @@ module.exports = (block, tx, callback) => {
     }
 
     const inputData = abiDecoder.decodeMethod(tx.input);
-    if (!inputData || inputData.name !== 'burnReserveFees') {
-      logger.info(`Transaction is not burnReserveFees transaction: ${tx.hash}`);
+
+    if (!inputData || (inputData.name !== 'burnReserveFees' && inputData.name !== 'burnKnc')) {
+      logger.info(`Transaction is not burnReserveFees transaction: ${tx.hash} `);
       return callback(null, null);
     }
 
@@ -63,14 +65,32 @@ module.exports = (block, tx, callback) => {
     record.burnerAddress = tx.from;
     record.burnerContract = tx.to;
 
-    record.reserveContract = _.find(inputData.params, (param) => param.name === 'reserve').value;
+    const foundReserve = _.find(inputData.params, (param) => param.name === 'reserve')
+    record.reserveContract = foundReserve ?  foundReserve.value : null;
 
     _.forEach(receipt.logs, (log) => {
-      if (log.address.toLowerCase() === Utils.getKNCTokenAddress() &&
-          log.topics[0].toLowerCase() === Utils.getERC20TransferTopicHash()) {
-        const senderAddr = web3.eth.abi.decodeParameter('address', log.topics[1]);
-        const receiverAddr = web3.eth.abi.decodeParameter('address', log.topics[2]);
-        const amount = web3.eth.abi.decodeParameter('uint256', log.data);
+      
+
+      if (_.find(network.contractAddresses.feeHandler, (feeContract) => feeContract.toLowerCase() === log.address.toLowerCase()) &&
+          log.topics[0].toLowerCase() === network.logTopics.katalystBurned.toLowerCase()) {
+          let tokenAddr = web3.eth.abi.decodeParameter('address', log.topics[1]);
+
+          let eventData = web3.eth.abi.decodeParameters([
+            {
+              type: 'uint256',
+              name: 'kncTWei'
+            },
+            {
+              type: 'uint256',
+              name: 'amount'
+            },
+          ], log.data);
+
+          record.amount = eventData.kncTWei;
+      } else if (log.address.toLowerCase() === Utils.getKNCTokenAddress() && log.topics[0].toLowerCase() === Utils.getERC20TransferTopicHash()) {
+        let senderAddr = web3.eth.abi.decodeParameter('address', log.topics[1]);
+        let receiverAddr = web3.eth.abi.decodeParameter('address', log.topics[2]);
+        let amount = web3.eth.abi.decodeParameter('uint256', log.data);
 
         if (receiverAddr.toLowerCase() === tx.to.toLowerCase()) {
           record.reserveWallet = senderAddr;

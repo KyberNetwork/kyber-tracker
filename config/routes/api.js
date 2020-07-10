@@ -13,6 +13,7 @@ module.exports = {
     '/fees/to_burn'                 : ['TradeController.getToBurnFees'],
     '/fees/collected'               : ['TradeController.getCollectedFees'],
     '/fees/burned'                  : ['TradeController.getBurnedFees'],
+    '/fees/total-burned'            : ['TradeController.getTotalBurnedFees'],
     '/fees/burned-list'             : ['TradeController.getBurnedList'],
 
     '/search'                       : ['TradeController.search'],

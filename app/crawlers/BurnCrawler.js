@@ -117,9 +117,13 @@ class BurnCrawler {
         web3.getLogs({
           fromBlock: web3.utils.toHex(fromBlockNumber),
           toBlock: web3.utils.toHex(toBlockNumber),
-          address: [network.KNC.address],
+          address: [network.KNC.address]
+          .concat(network.contractAddresses.feeHandler),
           topics: [
-              network.logTopics.burned
+              [
+                network.logTopics.burned,
+                network.logTopics.katalystBurned
+              ]
           ]
         }, (err, ret) => {
           if (err) {

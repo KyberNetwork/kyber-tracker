@@ -6,9 +6,11 @@ const getWeb3Instance = require('./getWeb3Instance');
 const kyberABI = require('../../config/abi/kyber');
 const burnedFeeABI = require('../../config/abi/burned_fee');
 const wrapperABI = require('../../config/abi/wrapper');
+const katalystFeeHandleABI = require('../../config/abi/katalyst_fee_handle')
 abiDecoder.addABI(kyberABI);
 abiDecoder.addABI(burnedFeeABI);
 abiDecoder.addABI(wrapperABI);
+abiDecoder.addABI(katalystFeeHandleABI);
 
 const network = require('../../config/network');
 const ethConfig = network.ETH
@@ -74,7 +76,7 @@ module.exports = {
     if (!addr) {
       return false;
     }
-    return this.containNoCase(contractAddresses.feeBurners, addr);
+    return this.containNoCase(contractAddresses.feeBurners, addr) || this.containNoCase(contractAddresses.feeHandler, addr);
   },
 
   sumBig(arrayParams, initState) {

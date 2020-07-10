@@ -572,6 +572,21 @@ module.exports = AppController.extends({
     TradeService.getBurnedFees(params, this.ok.bind(this, req, res));
   },
 
+  getTotalBurnedFees: function (req, res) {
+    const [err, params] = new Checkit({
+      fromDate: ['required', 'natural'],
+      toDate: ['required', 'natural']
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err && err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getTotalBurnedFees(params, this.ok.bind(this, req, res));
+  },
+
   getCollectedFees: function (req, res) {
     const [err, params] = new Checkit({
       address: ['string'],
