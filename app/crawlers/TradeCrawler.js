@@ -416,16 +416,21 @@ class TradeCrawler {
             }
         ], web3.utils.bytesToHex(data));
 
-        record.volume_eth = Utils.fromWei(record.decodedKatalystTrade.ethWeiValue)
-        record.tx_value_eth = record.volume_eth
+        record.tx_value_eth = Utils.fromWei(record.decodedKatalystTrade.ethWeiValue)
         record.decodedKatalystTrade.sourceAddress = web3.eth.abi.decodeParameter('address', log.topics[1]);
         record.decodedKatalystTrade.destAddress = web3.eth.abi.decodeParameter('address', log.topics[2]);
-
         
+
         // maker, reserve, dest
         // taker, user, source
         record.taker_token_address = record.decodedKatalystTrade.sourceAddress.toLowerCase()
         record.maker_token_address = record.decodedKatalystTrade.destAddress.toLowerCase()
+
+        if(Utils.isBurnableAddressToken(record.taker_token_address) && Utils.isBurnableAddressToken(record.maker_token_address)){
+          record.volume_eth = 2 * record.tx_value_eth
+        } else {
+          record.volume_eth = record.tx_value_eth
+        }
         
         break;
 
@@ -622,6 +627,7 @@ class TradeCrawler {
       //// make katalyst works with old database
       if(record.katalyst){
         //todo handle new Kyber Trade data
+
         if(record.sourceAddress){
           record.takerTokenAddress = record.sourceAddress.toLowerCase()
           record.takerTokenSymbol = global.TOKENS_BY_ADDR[record.takerTokenAddress].symbol
@@ -649,42 +655,6 @@ class TradeCrawler {
         // if eth -> token: sourceAmount = sum arrayE2tSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
         // if token -> token: sourceAmount = sum arrayT2eSrcAmounts, destAmount = arrayE2tSrcAmounts * arrayE2tRates
 
-
-        // if(record.taker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
-        //   // eth -> token
-        //   record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts, 0)
-        //   if(results.sourceToken && results.destToken){
-        //     record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((amount,i) => {
-        //       // const amountAndRate = Utils.timesBig([amount, record.decodedKatalystTrade.arrayE2tRates[i]])
-        //       // return Utils.toT(amountAndRate, 18, 0)
-        //       return Utils.caculateDestAmount(amount, record.decodedKatalystTrade.arrayE2tRates[i], results.destToken.decimal, results.sourceToken.decimal)
-        //     }), 0)
-        //   }
-        // } else if(record.maker_token_address.toLowerCase() == networkConfig.ETH.address.toLowerCase()){
-        //   // token -> eth
-        //   record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
-        //   if(results.sourceToken && results.destToken){
-        //     record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts.map((amount,i) => {
-        //       // const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayT2eRates[i]])
-        //       // return Utils.toT(amountAndRate, 18, 0)
-        //       return Utils.caculateDestAmount(amount, record.decodedKatalystTrade.arrayT2eRates[i], results.destToken.decimal, results.sourceToken.decimal)
-        //     }), 0)
-        //   }
-        // } else {
-        //   // token -> token
-        //   record.taker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayT2eSrcAmounts, 0)
-        //   if(results.sourceToken && results.destToken){
-        //     record.maker_token_amount = Utils.sumBig(record.decodedKatalystTrade.arrayE2tSrcAmounts.map((amount,i) => {
-        //       // const amountAndRate = Utils.timesBig([a, record.decodedKatalystTrade.arrayE2tRates[i]])
-        //       // return Utils.toT(amountAndRate, 18, 0)
-        //       return Utils.caculateDestAmount(amount, record.decodedKatalystTrade.arrayE2tRates[i], results.destToken.decimal, results.sourceToken.decimal)
-        //     }), 0)
-        //   }
-        // }
-
-
-
-        //todo save to reserve trade 
         const initReserveTrade = {
           tx: record.tx,
           block_number: record.block_number,
