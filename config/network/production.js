@@ -108,7 +108,8 @@ module.exports = {
     "0x4f32bbe8dfc9efd54345fc936f9fef1048746fcf": "OneBit Quant",
     "0xfe06bc8bc12595c1c871ff7c2ea9cadc42735d7d": "UniBright",
 
-    "0x00cd2388c86c960a646d640be44fc8f83b78cec9": "2Key APR"
+    "0x00cd2388c86c960a646d640be44fc8f83b78cec9": "2Key APR",
+    "0x9149c59f087e891b659481ed665768a57247c79e": "WBTC APR2"
   },
 
   "ETH": {
