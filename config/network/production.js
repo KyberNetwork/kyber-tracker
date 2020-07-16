@@ -1285,6 +1285,13 @@ module.exports = {
       "address": "0xc00e94cb662c3520282e6f5717214004a7f26888",
       "hidden": 1593608400000
     },
+
+    "BZRX": {
+      "name": "bZx Protocol Token",
+      "symbol" : "BZRX",
+      "decimal": 18,
+      "address": "0x56d811088235f11c8920698a204a5010a788f4b3",
+    },
   },
 
   "preburntAmount": 48.61873337,
