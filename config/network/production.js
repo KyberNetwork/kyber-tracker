@@ -1292,6 +1292,13 @@ module.exports = {
       "decimal": 18,
       "address": "0x56d811088235f11c8920698a204a5010a788f4b3",
     },
+
+    "RENBTC": {
+      "name": "renBTC",
+      "symbol" : "RENBTC",
+      "decimal": 8,
+      "address": "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
+    },
   },
 
   "preburntAmount": 48.61873337,
