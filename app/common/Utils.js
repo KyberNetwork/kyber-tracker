@@ -5,9 +5,11 @@ const BigNumber = require('bignumber.js');
 const getWeb3Instance = require('./getWeb3Instance');
 const kyberABI = require('../../config/abi/kyber');
 const burnedFeeABI = require('../../config/abi/burned_fee');
+const feeHandleABI = require('../../config/abi/katalyst_fee_handle');
 const wrapperABI = require('../../config/abi/wrapper');
 abiDecoder.addABI(kyberABI);
 abiDecoder.addABI(burnedFeeABI);
+abiDecoder.addABI(feeHandleABI);
 abiDecoder.addABI(wrapperABI);
 
 const network = require('../../config/network');
@@ -83,7 +85,7 @@ module.exports = {
     if (!addr) {
       return false;
     }
-    return this.containNoCase(contractAddresses.feeBurners, addr);
+    return this.containNoCase([...contractAddresses.feeBurners, ...contractAddresses.feeHandler], addr);
   },
 
   sumBig(arrayParams, initState) {

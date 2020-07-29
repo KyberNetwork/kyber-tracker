@@ -119,7 +119,9 @@ class BurnCrawler {
           toBlock: web3.utils.toHex(toBlockNumber),
           address: [network.KNC.address],
           topics: [
+            [
               network.logTopics.burned
+            ] 
           ]
         }, (err, ret) => {
           if (err) {

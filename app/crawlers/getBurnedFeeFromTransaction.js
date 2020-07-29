@@ -37,8 +37,8 @@ module.exports = (block, tx, callback) => {
     }
 
     const inputData = abiDecoder.decodeMethod(tx.input);
-    if (!inputData || inputData.name !== 'burnReserveFees') {
-      logger.info(`Transaction is not burnReserveFees transaction: ${tx.hash}`);
+    if (!inputData || (inputData.name !== 'burnReserveFees' && inputData.name !== 'burnKnc')) {
+      logger.info(`Transaction is not burnReserveFees or burnKnc transaction: ${tx.hash}`);
       return callback(null, null);
     }
 
@@ -63,8 +63,10 @@ module.exports = (block, tx, callback) => {
     record.burnerAddress = tx.from;
     record.burnerContract = tx.to;
 
-    record.reserveContract = _.find(inputData.params, (param) => param.name === 'reserve').value;
-
+    if(inputData.name == 'burnReserveFees'){
+      record.reserveContract = _.find(inputData.params, (param) => param.name === 'reserve').value;
+    }
+    
     _.forEach(receipt.logs, (log) => {
       if (log.address.toLowerCase() === Utils.getKNCTokenAddress() &&
           log.topics[0].toLowerCase() === Utils.getERC20TransferTopicHash()) {
@@ -73,7 +75,9 @@ module.exports = (block, tx, callback) => {
         const amount = web3.eth.abi.decodeParameter('uint256', log.data);
 
         if (receiverAddr.toLowerCase() === tx.to.toLowerCase()) {
-          record.reserveWallet = senderAddr;
+          if(inputData.name == 'burnReserveFees'){
+            record.reserveWallet = senderAddr;
+          } 
           record.amount = amount;
         }
       }
