@@ -1298,6 +1298,14 @@ module.exports = {
       "decimal": 8,
       "address": "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
     },
+
+    "VIDT": {
+      "name": "V-ID blockchain",
+      "symbol" : "VIDT",
+      "decimal": 18,
+      "address": "0x445f51299ef3307dbd75036dd896565f5b4bf7a5",
+      "hidden": 1596114000000
+    },
   },
 
   "preburntAmount": 48.61873337,
