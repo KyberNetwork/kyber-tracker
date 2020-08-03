@@ -1306,6 +1306,14 @@ module.exports = {
       "address": "0x445f51299ef3307dbd75036dd896565f5b4bf7a5",
       "hidden": 1596114000000
     },
+
+    "PLTC": {
+      "name": "pTokens LTC",
+      "symbol" : "PLTC",
+      "decimal": 18,
+      "address": "0x5979F50f1D4c08f9A53863C2f39A7B0492C38d0f",
+      "hidden": 1596459600000
+    },
   },
 
   "preburntAmount": 48.61873337,
