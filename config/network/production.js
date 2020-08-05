@@ -1315,6 +1315,14 @@ module.exports = {
       "address": "0x5979F50f1D4c08f9A53863C2f39A7B0492C38d0f",
       "hidden": 1596459600000
     },
+
+    "KAI": {
+      "name": "KardiaChain",
+      "symbol" : "KAI",
+      "decimal": 18,
+      "address": "0xbd6467a31899590474ce1e84f70594c53d628e46",
+      "hidden": 1596632400000
+    },
   },
 
   "preburntAmount": 48.61873337,
