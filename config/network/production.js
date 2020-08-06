@@ -1323,6 +1323,22 @@ module.exports = {
       "address": "0xbd6467a31899590474ce1e84f70594c53d628e46",
       "hidden": 1596632400000
     },
+
+    "REPv2": {
+      "name": "Reputation",
+      "symbol" : "REPv2",
+      "decimal": 18,
+      "address": "0x221657776846890989a759ba2973e427dff5c9bb",
+      "hidden": 1596718800000
+    },
+
+    "STMX": {
+      "name": "StormX",
+      "symbol" : "STMX",
+      "decimal": 18,
+      "address": "0xbe9375c6a420d2eeb258962efb95551a5b722803",
+      "hidden": 1596718800000
+    },
   },
 
   "preburntAmount": 48.61873337,
