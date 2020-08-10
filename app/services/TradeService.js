@@ -148,17 +148,23 @@ module.exports = BaseService.extends({
   },
 
   makeReserveTradeQueryParams: function(options, isOrder, isLimit){
-    return {
+    const whereAnd = [{reserve_address: options.reserve.toLowerCase()}]
+    if(options.toDate){
+      whereAnd.push({block_timestamp: {[Op.lt]: options.toDate}})
+    }
+    if(options.fromDate){
+      whereAnd.push({block_timestamp: {[Op.gt]: options.fromDate}})
+    }
+    const queryParams =  {
       ...(options.limit && isLimit && {limit: options.limit}),
       ...(options.limit && isLimit && options.page && {offset: options.page * options.limit}),
       ...(isOrder && {order: [ ['block_timestamp', 'DESC'] ]}),
       where: {
-        reserve_address: options.reserve.toLowerCase(),
-        ...(options.toDate && {block_timestamp: {[Op.lt]: options.toDate}}),
-        ...(options.fromDate && {block_timestamp: {[Op.gt]: options.fromDate}})
+        [Op.and]: whereAnd
       },
       raw: true,
     }
+    return queryParams
   },
 
   getReserveTradeList: function(options, callback){

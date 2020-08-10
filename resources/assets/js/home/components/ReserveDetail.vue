@@ -52,7 +52,7 @@
               </div>
               
             </div>
-            <div class="col">
+            <!-- <div class="col">
               <div class="pb-2">
                 {{$t('wallet_detail.knc_collected')}}
               </div>
@@ -60,9 +60,8 @@
                 <span v-if="!isLoading">{{formatTokenAmount(collectedFees.toString(), 18)}}</span>
                 <img v-else src="/images/waiting.svg" />
                 KNC
-                <!-- {{round(collectedFees)}} KNC -->
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         
