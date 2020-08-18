@@ -1251,8 +1251,8 @@ module.exports = BaseService.extends({
     let params = [];
 
     if (option && option.partner) {
-      whereClauses = 'LOWER(commission_receive_address) = ?';
-      params = [address];
+      whereClauses = '(LOWER(fee_platform_wallet) = ? OR LOWER(commission_receive_address) = ?)';
+      params = [address, address];
     } else {
       whereClauses = '(LOWER(maker_address) = ? OR LOWER(taker_address) = ?)';
       params = [address, address];
@@ -1321,6 +1321,7 @@ module.exports = BaseService.extends({
       commission: (next) => {
         if (!option || !option.partner) return next(null, 0)
 
+        console.log("******************** get commision*********")
         KyberTradeModel.sum('fee_platform', {
           where: whereClauses,
           params: params,
