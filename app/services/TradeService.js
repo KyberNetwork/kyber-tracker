@@ -1321,7 +1321,7 @@ module.exports = BaseService.extends({
       commission: (next) => {
         if (!option || !option.partner) return next(null, 0)
 
-        KyberTradeModel.sum('commission', {
+        KyberTradeModel.sum('fee_platform', {
           where: whereClauses,
           params: params,
         }, next);

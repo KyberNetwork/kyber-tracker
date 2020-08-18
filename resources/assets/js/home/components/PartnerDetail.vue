@@ -82,19 +82,19 @@
 
                 <div class="col">
                   <div class="value-label">
-                    {{$t('wallet_detail.collected_fees')}}
+                    {{$t('wallet_detail.knc_collected')}}
                   </div>
                   <div class="font-semi-bold pt-2">
                     {{searchResult.data.totalCollectedFees || '0'}} KNC
                   </div>
                 </div>
 
-                <div v-if="partner" class="col">
+                <div class="col">
                   <div class="value-label">
-                    {{$t('wallet_detail.commission')}}
+                    {{$t('wallet_detail.platform_fees')}}
                   </div>
                   <div class="font-semi-bold pt-2">
-                    {{searchResult.data.commission || '0'}} KNC
+                    {{searchResult.data.commission || '0'}} ETH
                   </div>
                 </div>
               </div>
