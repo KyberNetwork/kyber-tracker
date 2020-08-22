@@ -150,6 +150,7 @@
     "address": "地址",
     "trades": "交易次数",
     "collected_fees": "总费用",
+    "platform_fees": "Platform Fees",
     "knc_collected": "KNC Collected",
     "total_trading_volune": "交易总量",
     "value_in_eth": "价值（ETH)",

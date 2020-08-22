@@ -37,7 +37,7 @@
           <span v-else class="no-margin panel-title">{{$t('wallet_detail.partner_details')}} </span>
 
 
-          <div v-if="!isHideDatepicker" class="datepicker-container pb-16 ">
+          <div v-if="!isHideDatepicker" class="datepicker-container pb-16 " v-bind:class="timeRangeError ? 'date-error' : ''">
             <!-- <span>{{ $t('filter.from') }}</span> -->
             <datepicker v-model="searchFromDate" name="searchFromDate" class="calendar-icon from"
               :language="locale"
@@ -58,6 +58,9 @@
               :placeholder="$t('filter.to')"
               >
             </datepicker>
+            <div v-if="timeRangeError" class="picker-error color-red pt-2">
+              <i>{{timeRangeError}}</i>
+            </div>
           </div>
         </div>
 
@@ -82,19 +85,19 @@
 
                 <div class="col">
                   <div class="value-label">
-                    {{$t('wallet_detail.collected_fees')}}
+                    {{$t('wallet_detail.knc_collected')}}
                   </div>
                   <div class="font-semi-bold pt-2">
                     {{searchResult.data.totalCollectedFees || '0'}} KNC
                   </div>
                 </div>
 
-                <div v-if="partner" class="col">
+                <div class="col">
                   <div class="value-label">
-                    {{$t('wallet_detail.commission')}}
+                    {{$t('wallet_detail.platform_fees')}}
                   </div>
                   <div class="font-semi-bold pt-2">
-                    {{searchResult.data.commission || '0'}} KNC
+                    {{searchResult.data.commission || '0'}} ETH
                   </div>
                 </div>
               </div>
@@ -172,7 +175,7 @@
         <div class="wallet-detail-title panel-heading pt-56 pb-20 d-flex justify-content-between">
           <div class="no-margin panel-title">{{$t('wallet_detail.history')}} </div>
 
-          <button type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
+          <button :disabled="timeRangeError" type="button" class="btn btn-default btn-export pointer" @click="exportData()">{{ $t("trade_list.export_csv") }}</button>
         </div>
 
         
@@ -215,6 +218,9 @@ import util from '../../core/helper/util';
 import network from '../../../../../config/network';
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 const partners = network.partners;
+
+const TREE_MONTH = 60 * 60 * 24 * 90
+const ONE_MONTH = 60 * 60 * 24 * 30
 // const tokens = network.tokens;
 import Chart from 'chart.js';
 
@@ -240,7 +246,8 @@ export default {
       },
       disabledToDates: {
         //
-      }
+      },
+      timeRangeError: null
     };
   },
 
@@ -344,12 +351,25 @@ export default {
           });
     },
 
+    reloadView(){
+    },
+
     exportData (){
       const currentPage = this.$refs.datatable.currentPage;
       const pageSize = this.$refs.datatable.pageSize || 20;
       const partnerId = this.$route.params.partnerId;
       const fromDate = this.$refs.datatable.searchFromDate ? moment(this.$refs.datatable.searchFromDate).startOf('day').unix() : undefined
       const toDate = this.$refs.datatable.searchToDate ? moment(this.$refs.datatable.searchToDate).endOf('day').unix() : undefined
+
+      if(!fromDate || !toDate){
+        this.timeRangeError = 'Please select time range to export'
+        return
+      }
+
+      if(toDate - fromDate > TREE_MONTH){
+        this.timeRangeError = 'Max time range is 90 days'
+        return
+      }
 
       AppRequest
           .getPartnerDetail(partnerId, currentPage, pageSize, fromDate, toDate, true, (err, res) => {
@@ -398,6 +418,14 @@ export default {
   watch: {
     '$route' () {
       this.refresh();
+    },
+    searchFromDate (val) {
+      this.timeRangeError = null
+      this.disabledToDates = { to: this.searchFromDate };
+    },
+    searchToDate (val) {
+      this.timeRangeError = null
+      this.disabledFromDates = { from: this.searchToDate };
     }
   },
 
