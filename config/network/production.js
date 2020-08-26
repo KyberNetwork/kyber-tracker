@@ -1338,6 +1338,14 @@ module.exports = {
       "address": "0xbe9375c6a420d2eeb258962efb95551a5b722803",
       "hidden": 1596718800000
     },
+
+    "MATIC": {
+      "name": "MATIC Token",
+      "symbol" : "MATIC",
+      "decimal": 18,
+      "address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
+      "hidden": 1598446800000
+    },
   },
 
   "preburntAmount": 48.61873337,
