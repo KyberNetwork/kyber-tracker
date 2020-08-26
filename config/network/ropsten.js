@@ -64,6 +64,14 @@ module.exports = {
     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     "hidden": true
   },
+
+  "PT":{
+    "name": "Promotion Token",
+    "symbol" : "PT",
+    "decimal": 18,
+    "address": "0x094c875704c14783049ddf8136e298b3a099c446",
+    "hidden": 1543938161000       
+  },
   
   "tokens": {
     "ETH": {
