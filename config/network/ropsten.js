@@ -287,14 +287,6 @@ module.exports = {
       "address": "0x3dff0dce5fc4b367ec91d31de3837cf3840c8284",
       "hidden": 1548853200000       
     },
-
-    "WBTC":{
-      "name": "	Wrapped BTC",
-      "symbol" : "WBTC",
-      "decimal": 8,
-      "address": "0x3dff0dce5fc4b367ec91d31de3837cf3840c8284",
-      "hidden": 1548853200000       
-    },
     
     "VIDT": {
       "name": "V-ID",
