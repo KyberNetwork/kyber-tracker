@@ -459,7 +459,7 @@ module.exports = {
       "address": "0x103c3A209da59d3E7C4A89307e66521e081CFDF0",
       "symbol": "GVT",
       "decimal": 18,
-      "hidden": true
+      "hidden": 1599570000000
     },
     "SRN": {
       "name": "SIRIN LABS Token",

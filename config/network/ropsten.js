@@ -51,7 +51,7 @@ module.exports = {
   "KNC": {
     "name": "Kyber Network",
     "symbol": "KNC",
-    "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
+    "address": "0x7b2810576aa1cce68f2b118cef1f36467c648f92",
     "decimal": 18,
     "cmcIdv2": "1982",
     "cgId": "kyber-network",
@@ -61,7 +61,7 @@ module.exports = {
     "name": "Wrapped Ether",
     "symbol" : "WETH",
     "decimal": 18,
-    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "address": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d",
     "hidden": true
   },
 
@@ -87,7 +87,7 @@ module.exports = {
     "KNC": {
       "name": "Kyber Network",
       "symbol": "KNC",
-      "address": "0x4E470dc7321E84CA96FcAEDD0C8aBCebbAEB68C6",
+      "address": "0x7b2810576aa1cce68f2b118cef1f36467c648f92",
       "decimal": 18,
       "cmcIdv2": "1982",
       "cgId": "kyber-network",
@@ -97,20 +97,20 @@ module.exports = {
     "OMG": {
       "name": "OmiseGO",
       "symbol": "OMG",
-      "address": "0x4BFBa4a8F28755Cb2061c413459EE562c6B9c51b",
+      "address": "0x4bfba4a8f28755cb2061c413459ee562c6b9c51b",
       "decimal": 18,
       "hidden": true
     },
     "EOS": {
       "name": "EOS",
       "symbol": "EOS",
-      "address": "0xd5b4218B950A53fF07985E2d88346925c335EAe7",
+      "address": "0xd5b4218b950a53ff07985e2d88346925c335eae7",
       "decimal": 18,
       "delisted": true,
     },
     "SNT": {
       "name": "Status Network",
-      "address": "0xbF5d8683b9BE6C43fcA607eb2a6f2626A18837a6",
+      "address": "0xbf5d8683b9be6c43fca607eb2a6f2626a18837a6",
       "symbol": "SNT",
       "decimal": 18,
       "hidden": true
@@ -277,15 +277,22 @@ module.exports = {
       "name": "Wrapped Ether",
       "symbol" : "WETH",
       "decimal": 18,
-      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      "hidden": true
+      "address": "0xbca556c912754bc8e7d4aad20ad69a1b1444f42d"
+    },
+
+    "WBTC":{
+      "name": "	Wrapped BTC",
+      "symbol" : "WBTC",
+      "decimal": 8,
+      "address": "0x3dff0dce5fc4b367ec91d31de3837cf3840c8284",
+      "hidden": 1548853200000       
     },
     
-    "BITX": {
-      "name": "BitScreenerToken",
+    "VIDT": {
+      "name": "V-ID",
       "decimal": 18,
       "symbol" : "BITX",
-      "address": "0x7a17267576318efb728bc4a0833e489a46ba138f",
+      "address": "0x0ad0ba55133fd13cfd29ca687d85a15edcca611e",
       "icon": "bitx.png",
       "hidden": true
     }
