@@ -108,7 +108,26 @@ module.exports = {
     "0xfe06bc8bc12595c1c871ff7c2ea9cadc42735d7d": "UniBright",
 
     "0x00cd2388c86c960a646d640be44fc8f83b78cec9": "2Key APR",
-    "0x9149c59f087e891b659481ed665768a57247c79e": "WBTC APR2"
+    "0x9149c59f087e891b659481ed665768a57247c79e": "WBTC APR2",
+
+
+    "0x10908c875d865c66f271f5d3949848971c9595c9": "Katalyst Uniswap v2",
+    "0xcf76b605484cd4bd46237c05b7de98d538ff44ae": "BZRX APR",
+    "0x0b798b89155ea31f1312791b9fdfaae7c5f48460": "RSR APR",
+    "0xb89f41cd2c8b6cba8b851289198b06be8b4dec65": "Origin Protocol APR",
+    "0x773a58c0ae122f56d6747bc1264f00174b3144c3": "Quant APR",
+    "0x10db2a136ee3e0c963d82af4c86ca483199f2816": "Kleros APR",
+    "0x89b3f60a17789aa7c7061af6f5e9efa407153c03": "pNetwork PNT FPR",
+    "0xbfd3b2330b55a149de2440701948e6194fb8df2c": "V-ID VIDT APR",
+    "0x0ce59e811024c4aa040389fb8917dd9edaef1693": "Provable FPR",
+    "0x4c75da685109945d235c42151f9ec21162ee07be": "MATIC APR",
+    "0xdd69d118a3c491e83dac93e751076c9f9b2a2c3f": "Genesis Vision GVT APR",
+    "0x3e59c69952a4cfeaf653eedf8ff907d4b6b8762d": "Selfkey APR",
+    "0xf0ca95b4fd623b0903f51f67d34b68186b31f706": "renBTC APR",
+    "0x23fe3c603be19d3a1155766358071cacefe14537": "Request Network APR",
+    "0xad84a44a673be4fdcd5e39ebd15ebc404e87f314": "Cindicator CND APR",
+    "0x977c9abb01ed3e99e9953fd1f472ae9f459e7e70": "AMPL APR",
+    "0x2ed6f2bc006da5897a0c3cd2686283c05e50c573": "Metronome APR"
   },
 
   "ETH": {
