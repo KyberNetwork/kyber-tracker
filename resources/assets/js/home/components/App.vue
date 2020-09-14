@@ -70,7 +70,7 @@
                 <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
                 <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
               </div>
-              <div ref="slide_1" class="slide-item">
+              <!-- <div ref="slide_1" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.knc_price') }}</span>
                 <div class="d-inline-flex">
                   <span class="topbar-value text-nowrap">
@@ -79,29 +79,29 @@
                   <span class="topbar-value" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
                 </div>
                 
-              </div>
+              </div> -->
 
-              <div ref="slide_2" class="slide-item">
+              <!-- <div ref="slide_2" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.eth_price') }}</span>
                 <div class="d-inline-flex">
                   <span class="topbar-value" >{{ ethPrice }} </span>
                   <span class="topbar-value" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
                 </div>
-              </div>
+              </div> -->
 
-              <div ref="slide_3" class="slide-item">
+              <!-- <div ref="slide_3" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.knc_collected') }}</span>
                 <span class="topbar-value text-nowrap">{{ kncCollected }}</span>
-              </div>
+              </div> -->
               <div ref="slide_3" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fee_collected') }}</span>
                 <span class="topbar-value text-nowrap">{{ feeCollected }}</span>
               </div>
 
-              <div ref="slide_4" class="slide-item">
+              <!-- <div ref="slide_4" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
                 <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
-              </div> 
+              </div>  -->
             
             
 
@@ -225,13 +225,6 @@
           </div>
           <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.volume') }}</div>
         </router-link>
-        <router-link to="/trades" class="nav-line highlight-hover">
-          <div class="icon-side">
-            <img src="/images/trade-icon.svg" />
-          </div>
-          
-          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.trade_history') }}</div>
-        </router-link>
         <router-link to="/tokens" class="nav-line highlight-hover">
           <div class="icon-side">
             <img class="nav-logo icon-token" src="/images/token-icon.svg" />
@@ -246,17 +239,66 @@
           
           <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.reserves') }}</div>
         </router-link>
-        <router-link to="/fees" class="nav-line highlight-hover">
+        <router-link to="/trades" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img src="/images/trade-icon.svg" />
+          </div>
+          
+          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']">{{ $t('navigator.trade_history') }}</div>
+        </router-link>
+        <!-- <router-link to="/fees" class="nav-line highlight-hover">
           <div class="icon-side">
             <img class="nav-logo icon-reserve" src="/images/fees.svg" />
           </div>
           
           <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.fees') }}</div>
+        </router-link> -->
+        <router-link to="/defi" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img class="nav-logo icon-reserve" src="/images/defi.svg" />
+          </div>
+          
+          <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.defi') }}</div>
         </router-link>
+        <router-link to="/updates" class="nav-line highlight-hover">
+          <div class="icon-side">
+            <img class="nav-logo icon-reserve" src="/images/updates.svg" />
+          </div>
+          <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >{{ $t('navigator.updates') }}</div>
+        </router-link>
+
+        <!-- <div class="nav-line">
+          <div class="icon-side">
+           
+          </div>
+          <div v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']" >
+              
+          </div>
+        </div> -->
+
         <div class="nav-line h-100">
           <div class="icon-side h-100">
           </div>
-          <div  v-bind:class="[isNavOpen ? 'nav-text font-semi-bold' : 'nav-text w-0 font-semi-bold']"></div>
+          <div  v-bind:class="[isNavOpen ? 'nav-text ' : 'nav-text w-0']">
+            <div ref="slide_1" class="slide-item">
+                <span class="text-nowrap d-block price-label">{{ $t('status_bar.knc_price') }}</span>
+                <div class="d-inline-flex">
+                  <span class="topbar-value price-value">
+                    {{ kncPrice }} 
+                    </span>
+                  <span class="topbar-value price-percent" :class="getPriceChangeClass(this.kncPriceChange24h)">({{ formatedKNCPriceChange24h }})</span>
+                </div>
+                
+              </div>
+
+              <div ref="slide_2" class="slide-item">
+                <span class="text-nowrap d-block price-label">{{ $t('status_bar.eth_price') }}</span>
+                <div class="d-inline-flex ">
+                  <span class="topbar-value price-value" >{{ ethPrice }} </span>
+                  <span class="topbar-value price-percent" :class="getPriceChangeClass(this.ethPriceChange24h)">({{ formatedETHPriceChange24h }})</span>
+                </div>
+              </div>
+          </div>
         </div>
       </div>
 

@@ -1103,9 +1103,9 @@ module.exports = BaseService.extends({
     //   whereOffcial += ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`;
     // }
     async.auto({
-      oldStatsData: (next) => {
-        CMCService.getOldStatsData(next);
-      },
+      // oldStatsData: (next) => {
+      //   CMCService.getOldStatsData(next);
+      // },
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
           where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])} ${whereOffcial}`,
@@ -1118,21 +1118,21 @@ module.exports = BaseService.extends({
       kncMarketData: (next) => {
         CMCService.getKyberTokenMarketData(network.KNC.symbol, next);
       },
-      collectedFees: (next) => {
-        KyberTradeModel.sum('collected_fees', {
-          where: '1=1'
-        }, next);
-      },
+      // collectedFees: (next) => {
+      //   KyberTradeModel.sum('collected_fees', {
+      //     where: '1=1'
+      //   }, next);
+      // },
       feeKatalystCollected: (next) => {
         KyberTradeModel.sum('fee_total_collected', {
           where: '1=1'
         }, next);
       },
-      totalBurnedFee: (next) => {
-        BurnedFeeModel.sum('amount', {
-          where: '1=1'
-        }, next);
-      },
+      // totalBurnedFee: (next) => {
+      //   BurnedFeeModel.sum('amount', {
+      //     where: '1=1'
+      //   }, next);
+      // },
       /*
       feeToBurn: (next) => {
         KyberTradeModel.sum('burn_fees', {
@@ -1147,39 +1147,39 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      const oldCollectedFee = ret.oldStatsData.data.collectedFees
+      // const oldCollectedFee = ret.oldStatsData.data.collectedFees
 
       const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
       const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPrice.toString() : 0)
       const KNCchange24h = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24h.toString() : 0)
 
-      const KNCpriceWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPriceWithETH.toString() : 0)
-      const KNCchange24hWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24hWithETH.toString() : 0)
+      // const KNCpriceWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPriceWithETH.toString() : 0)
+      // const KNCchange24hWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24hWithETH.toString() : 0)
 
       const ETHprice = new BigNumber(ret.ethMarketData && ret.ethMarketData.currentPrice ? ret.ethMarketData.currentPrice.toString() : 0)
       const ETHchange24h = new BigNumber(ret.ethMarketData && ret.ethMarketData.priceChangePercentage24h ? ret.ethMarketData.priceChangePercentage24h.toString() : 0)
 
-      const burnedNoContract = network.preburntAmount || 0;
-      const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
-      const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
+      // const burnedNoContract = network.preburntAmount || 0;
+      // const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
+      // const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
     
-      const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
+      // const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
 
       const feeKatalystCollected = new BigNumber(ret.feeKatalystCollected.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
 
         // collectedFees: collectedFees.toFormat(2).toString(),
-        collectedFees: oldCollectedFee,
+        // collectedFees: oldCollectedFee,
         feeKatalystCollected: feeKatalystCollected.toFormat(2).toString(),
 
-        totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
+        // totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
 
         kncPrice: KNCprice.toFormat(4).toString(),
         kncChange24h: KNCchange24h.toFormat(2).toString(),
 
-        kncPriceWithEth: KNCpriceWithETH.toFormat(6).toString(),
-        kncChange24hWithEth: KNCchange24hWithETH.toFormat(2).toString(),
+        // kncPriceWithEth: KNCpriceWithETH.toFormat(6).toString(),
+        // kncChange24hWithEth: KNCchange24hWithETH.toFormat(2).toString(),
 
         ethPrice: ETHprice.toFormat(2).toString(),
         ethChange24h: ETHchange24h.toFormat(2).toString(),

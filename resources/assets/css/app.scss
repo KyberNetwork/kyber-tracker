@@ -2052,6 +2052,16 @@ html {
   color: #215bb2;
 }
 
+.price-label, .price-percent{
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.price-value{
+  font-size: 14px;
+  font-weight: 600;
+}
+
 
 .tooltip {
   display: block !important;
