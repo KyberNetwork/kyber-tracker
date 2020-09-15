@@ -150,7 +150,7 @@
             
           
           <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
-            <div ref="searchComponent" :class="openSearchInput ? 'search-expand' : 'search-colapse'"  >
+            <div ref="searchComponent" class="search-expand"  >
               <b-input-group-append class="btn-search d-flex justify-content-between h-100">
                 <vue-autosuggest
                   ref="seatchInputRef"

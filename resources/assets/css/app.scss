@@ -192,7 +192,7 @@ a {
     #autosuggest{
       input{
         text-indent: 16px;
-        border-left: solid 2px #d2d3d4 !important;
+        // border-left: solid 2px #d2d3d4 !important;
         @media (max-width: $sm) {
           // width: 50vw;
           width: calc(100vw - 55px - 44px - 16px - 16px - 15px);
@@ -206,8 +206,8 @@ a {
 }
 
 .btn-search{
-  border-left: solid 1px #e3e5eb;
-  border-right: solid 1px #e3e5eb;
+  // border-left: solid 1px #e3e5eb;
+  // border-right: solid 1px #e3e5eb;
 
   .search-button {
     border-radius: 0px;
@@ -2176,7 +2176,7 @@ html {
   width: 350px;
   // height: 40px;
   border-radius: 0;
-  background-color: #f6f7fa;
+  // background-color: #f6f7fa;
   border-style: none;
   color: #3d464d;
 
