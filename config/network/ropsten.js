@@ -298,6 +298,9 @@ module.exports = {
     }
   },
 
+  "dapps": {
+  },
+
   "averageBlockTime": 15000,
   "startBlockNumber": 5060595,
   "rateStartBlockNumber": 5500000,

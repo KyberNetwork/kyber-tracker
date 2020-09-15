@@ -398,16 +398,12 @@
 
       <div class="container" v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'footer-container' : ''">
         <div class="row m-0">
-          <div class="col footer-menu">
-            Copyright 2018 @ Kyber Network 
-          </div>
-          <div class="col footer-menu text-right footer-link" >
-            <div class="d-inline-block footer-ul " v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'container' : ''">
-              <!-- Developed with <span class="emoji"> ❤️ </span> and <span class="emoji"> ☕ </span><br> -->
+          <div class="col-7 footer-menu text-left footer-link" >
+            <div class="d-flex flex-row footer-ul " v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'container' : ''">
               <ul class="links">
                 <li>
                   <a href="https://t.me/KyberTrackerBot" target="_blank">
-                    <img class="footer-icon" src="/images/telegram.svg" />
+                    <img class="footer-icon ml-0" src="/images/telegram.svg" />
                   </a>
                 </li>
                 <li>
@@ -417,38 +413,71 @@
                 </li>
                 <li>
                   <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                    <img class="footer-icon" src="/images/dircord.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
                     <img class="footer-icon" src="/images/github.svg" />
                   </a>
                 </li>
-                <li class="select-lang-box">
-                  <b-dropdown class="change-language-button" right>
-                    <template slot="button-content">
-                      <span class="footer-icon">
-                        <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
-                        {{this.getLanguageText()}}
-                      </span>
-                    </template>
-                    <b-dropdown-item @click="changeLanguage('en')">
-                      <img src="images/locales/en.svg" /> 
-                      English
-                    </b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('vi')">
-                      <img src="images/locales/vi.svg" /> 
-                      Tiếng Việt
-                    </b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('ko')">
-                      <img src="images/locales/ko.svg" /> 
-                      한국어
-                    </b-dropdown-item>
-                    <b-dropdown-item @click="changeLanguage('zh')">
-                      <img src="images/locales/zh.svg" /> 
-                      中文
-                    </b-dropdown-item>
-                  </b-dropdown> 
-              </li>
               </ul>
+              <span class="pl-4">
+                <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                  Contract data
+                </a>
+              </span>
+              <span class="pl-4">
+                <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                  Transaction debugger
+                </a>
+              </span>
+              <span class="select-lang-box">
+                <b-dropdown class="change-language-button" right>
+                  <template slot="button-content">
+                    <span class="footer-icon">
+                      <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
+                      {{this.getLanguageText()}}
+                    </span>
+                  </template>
+                  <b-dropdown-item @click="changeLanguage('en')">
+                    <img src="images/locales/en.svg" /> 
+                    English
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="changeLanguage('vi')">
+                    <img src="images/locales/vi.svg" /> 
+                    Tiếng Việt
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="changeLanguage('ko')">
+                    <img src="images/locales/ko.svg" /> 
+                    한국어
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="changeLanguage('zh')">
+                    <img src="images/locales/zh.svg" /> 
+                    中文
+                  </b-dropdown-item>
+                </b-dropdown> 
+              </span>
+              <!-- <div class="col">
+                
+              </div>
+              <div class="col">
+                
+              </div> -->
             </div>
           </div>
+          <div class="col footer-menu text-right">
+             <span class="pl-2">
+                Kyber Network
+              </span>
+              <span class="pl-2">
+                Kyber DAO
+              </span>
+              <span class="pl-2">
+                Copyright 2018 @ Kyber Network 
+              </span>
+          </div>
+          
         </div>
       </div>
     </div>

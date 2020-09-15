@@ -919,6 +919,10 @@ module.exports = {
         "address": "0xced4e93198734ddaff8492d525bd258d49eb388e"    
       },
     },
+
+    "dapps": {
+    },
+    
     "averageBlockTime": 15000,
     "averageCGQuery": 13000,
     "startBlockNumber": 5700000,
