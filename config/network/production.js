@@ -1365,6 +1365,27 @@ module.exports = {
       "address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
       "hidden": 1598446800000
     },
+
+    "HUSD": {
+      "name": "HUSD",
+      "symbol" : "HUSD",
+      "decimal": 8,
+      "address": "0xdf574c24545e5ffecb9a659c229253d4111d87e1",
+    },
+
+    "KEY": {
+      "name": "SelfKey",
+      "symbol" : "KEY",
+      "decimal": 18,
+      "address": "0x4cc19356f2d37338b9802aa8e8fc58b0373296e7",
+    },
+
+    "RSV": {
+      "name": "Reserve",
+      "symbol" : "RSV",
+      "decimal": 18,
+      "address": "0x196f4727526ea7fb1e17b2071b3d8eaa38486988",
+    },
   },
 
   "preburntAmount": 48.61873337,
