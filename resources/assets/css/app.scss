@@ -1845,6 +1845,47 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.news-container{
+  .card{
+    .card-body{
+      padding: 1.5rem 0 0 0;
+      a {
+        color: #3d464d;
+        text-decoration: none;
+        fill: #3d464d;
+      }
+      a:hover, a:active, a:focus {
+        color: #2ed573;
+        fill: #2ed573;
+      }
+      .card-title{
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .card-text{
+        font-size: 16px;
+        font-weight: normal;
+      }
+
+      .author{
+        .author-logo{
+          img {
+            width: 16px;
+          }
+        }
+        .author-info{
+          .name{
+            font-size: 14px;
+          }
+          .time{
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
 .no-border{
   border: none !important;
 }

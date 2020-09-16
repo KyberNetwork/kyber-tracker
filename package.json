@@ -40,6 +40,7 @@
     "dotenv": "4.0.0",
     "express-rate-limit": "^2.12.2",
     "hooper": "^0.1.2",
+    "html-to-text": "^5.1.1",
     "http-signatures": "^1.0.0",
     "level": "3.0.0",
     "localStorage": "^1.0.3",
