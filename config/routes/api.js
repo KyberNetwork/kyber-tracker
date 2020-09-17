@@ -16,6 +16,7 @@ module.exports = {
     '/fees/burned-list'             : ['TradeController.getBurnedList'],
 
     '/search'                       : ['TradeController.search'],
+    '/partners'                     : ['TradeController.getPartnerList'],
     '/partner/:partnerId'           : ['TradeController.getPartnerDetail'],
 
 

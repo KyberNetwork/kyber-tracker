@@ -9,6 +9,7 @@ import ReserveDetails   from './components/ReserveDetail.vue';
 import SearchResult   from './components/SearchResultPage.vue';
 import PartnerDetail  from './components/PartnerDetail.vue';
 import News from './components/News.vue'
+import PartnerList from './components/PartnerList.vue'
 import NotFound   from './components/NotFound.vue';
 
 export default {
@@ -24,7 +25,8 @@ export default {
 
     { path: '/fees',              name: 'fees',           component: Fees },
 
-    { path: '/updates',              name: 'fees',           component: News },
+    { path: '/updates',              name: 'updates',           component: News },
+    { path: '/defi',              name: 'defi',           component: PartnerList },
 
     { path: '/search',            name: 'search',         component: SearchResult },
     { path: '/partner/:partnerId',name: 'partner-detail', component: PartnerDetail },

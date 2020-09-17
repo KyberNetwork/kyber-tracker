@@ -730,6 +730,21 @@ module.exports = AppController.extends({
 
   },
 
+  getPartnerList: function(req, res){
+    const [err, params] = new Checkit({
+      fromDate: ['natural'],
+      toDate: ['natural'],
+    }).validateSync(req.allParams);
+
+    if (err) {
+      res.badRequest(err.toString());
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getPartnerList(params, this.ok.bind(this, req, res));
+  },
+
   search: function (req, res) {
     const [err, params] = new Checkit({
       exportData: ['string'],

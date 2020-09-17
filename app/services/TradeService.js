@@ -1237,6 +1237,41 @@ module.exports = BaseService.extends({
     }, callback);
   },
 
+  getPartnerList: function(options, callback){
+    const fromDate = options.fromDate
+    const toDate = options.toDate
+
+    console.log("-------------- run to get partner list ", fromDate, toDate)
+    KyberTradeModel.findAll({
+      attributes: [
+        ['fee_platform_wallet', 'partnerAddress'],
+        [sequelize.fn('SUM', sequelize.col('volume_usd')), 'volumeUSD'],
+        [sequelize.fn('SUM', sequelize.col('volume_eth')), 'volumeETH'],
+        [sequelize.fn('COUNT', sequelize.col('unique_tag')), 'trades'],
+      ],
+      where: {
+        'block_timestamp': {
+          [Op.and]: {
+            [Op.lt]: toDate,
+            [Op.gt]: fromDate
+          }
+        }, 
+        'fee_platform_wallet': {
+          [Op.notLike]: '0x0000000000000000000000000000000000000000',
+        }
+      },
+      group: ['fee_platform_wallet'],
+      raw: true,
+    })
+    .then(results => {
+      return callback(null, _.orderBy(results, ['volumeETH'], ['desc']))
+    })
+    .catch(err => {
+      console.log("----------- err ------------", err)
+      return callback(err)
+    })
+  },
+
   _searchByTxid: function (txid, callback) {
     const KyberTradeModel = this.getModel('KyberTradeModel');
     KyberTradeModel.findOne({
