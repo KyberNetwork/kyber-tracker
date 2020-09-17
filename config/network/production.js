@@ -1386,6 +1386,13 @@ module.exports = {
       "decimal": 18,
       "address": "0x196f4727526ea7fb1e17b2071b3d8eaa38486988",
     },
+
+    "UNI": {
+      "name": "UNI",
+      "symbol" : "UNI",
+      "decimal": 18,
+      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+    },
   },
 
   "preburntAmount": 48.61873337,
