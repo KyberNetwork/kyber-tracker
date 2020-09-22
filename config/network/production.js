@@ -1393,6 +1393,50 @@ module.exports = {
       "decimal": 18,
       "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
     },
+
+
+    "YFI": {
+      "name": "yearn.finance",
+      "symbol" : "YFI",
+      "decimal": 18,
+      "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e"
+    },
+    "CREAM": {
+      "name": "Cream",
+      "symbol" : "CREAM",
+      "decimal": 18,
+      "address": "0x2ba592F78dB6436527729929AAf6c908497cB200"
+    },
+    "UNI": {
+      "name": "Uniswap",
+      "symbol" : "UNI",
+      "decimal": 18,
+      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+    },
+    "YFV": {
+      "name": "YFValue",
+      "symbol" : "YFV",
+      "decimal": 18,
+      "address": "0x45f24BaEef268BB6d63AEe5129015d69702BCDfa"
+    },
+    "SWRV": {
+      "name": "Swerve DAO Token",
+      "symbol" : "SWRV",
+      "decimal": 18,
+      "address": "0xB8BAa0e4287890a5F79863aB62b7F175ceCbD433"
+    },
+    "CRV": {
+      "name": "Curve DAO Token",
+      "symbol" : "CRV",
+      "decimal": 18,
+      "address": "0xD533a949740bb3306d119CC777fa900bA034cd52"
+    },
+    "SUSHI": {
+      "name": "SushiToken",
+      "symbol" : "SUSHI",
+      "decimal": 18,
+      "address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2"
+    },
   },
 
   "preburntAmount": 48.61873337,
