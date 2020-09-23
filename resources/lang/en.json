@@ -6,6 +6,8 @@
     "name": "NAME",
     "address": "ADDRESS",
     "symbol": "SYMBOL",
+    "source": "Source",
+    "trades": "Trades",
     "volume_24h_usd": "24H VOLUME (USD)",
     "volume_24h_eth": "24H VOLUME (ETH)",
     "volume_24h_token": "24H VOLUME (TOKEN)",
@@ -13,6 +15,7 @@
     "network_activity": "Latest Trade",
     "searchbox_placeholder" : "Tx Hash/ Wallet Address/ MetaMask",
     "all_token": "All Tokens",
+    "defi": "DeFi",
     "see_all": "See All",
     "token_trade_history": "Token Trading History"
   },

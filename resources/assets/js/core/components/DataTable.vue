@@ -66,6 +66,7 @@
       fetch () {
         this.getData().then(data => {
           this.rows = data;
+          console.log("---------------- rows in data table -----------", this.rows)
         });
       },
       fetchPrevious () {

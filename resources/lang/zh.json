@@ -5,6 +5,8 @@
     "name": "名称",
     "address": "地址",
     "symbol": "符号",
+    "source": "Source",
+    "trades": "Trades",
     "volume_24h_usd": "24小时 交易量 (USD)",
     "volume_24h_eth": "24小时 交易量 (ETH)",
     "volume_24h_token": "24小时 交易量 (Token)",
@@ -12,6 +14,7 @@
     "network_activity": "最近交易",
     "searchbox_placeholder": "交易哈希/ 钱包地址/ MetaMask",
     "all_token": "代币名单",
+    "defi": "DeFi",
     "see_all": "查看全部",
     "token_trade_history": "代币交易历史"
   },

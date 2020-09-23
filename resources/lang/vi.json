@@ -6,6 +6,8 @@
     "name": "TÊN",
     "address": "ĐỊA CHỈ",
     "symbol": "MÃ",
+    "source": "Source",
+    "trades": "Trades",
     "volume_24h_usd": "Giao dịch 24H (USD)",
     "volume_24h_eth": "Giao dịch 24H (ETH)",
     "volume_24h_token": "Giao dịch 24H (Token)",
@@ -13,6 +15,7 @@
     "network_activity": "Giao dịch gần nhất",
     "searchbox_placeholder" : "Mã giao dịch/Địa chỉ ví / Metamask",
     "all_token": "Danh sách token",
+    "defi": "DeFi",
     "see_all": "Xem Tất Cả",
     "token_trade_history": "Lịch sử giao dịch token"
   },

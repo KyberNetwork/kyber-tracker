@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-12">
-    <div class="panel-heading pb-20">
+    <!-- <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.top_token')}} </span>
     </div>
 
@@ -65,10 +65,10 @@
           </chart-token>
         </b-tab>
       </b-tabs>
-    </b-card>
+    </b-card> -->
 
     <div class="panel-heading pt-56 pb-20">
-      <span class="no-margin panel-title">{{ $t("common.all_token") }}</span>
+      <span class="no-margin panel-title">{{ $t("common.defi") }}</span>
     </div>
 
 
@@ -76,12 +76,11 @@
         :title="getListTitle()"
         :getData="getList">
       <template slot="header">
-        <!-- <th class="text-center">{{ $t("token_list.no") }}</th> -->
+        <th class="text-center">{{ $t("token_list.no") }}</th>
         <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
-        <th class="text-left pl-5">{{ $t("common.name") }}</th>
-        
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th class="text-left pl-4">{{ $t("common.trades") }}</th>
         <th ></th>
         <!-- <th class="text-right">{{ $t("common.volume_24h_token") }}</th> -->
         <!-- <th></th> -->
@@ -91,12 +90,10 @@
         <tr class="pointer" @click="toTokenDetails(slot.item.address)">
           <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
           <td  class="text-left pl-3">
-            <img class="image-inline-td mr-1" :src="tokenIcons[slot.item.symbol] || getTokenImageLink(slot.item)" />
-            {{ slot.item.official ? slot.item.symbol : ''}}
-            
+            <img class="image-inline-td mr-1" :src="partnerIcon[slot.item.symbol] || getPartnerImageLink(slot.item)" />            
           </td>
-
-          <td class="pl-5">
+          <td class="text-left pl-5">{{ getpartnerName(slot.item) }}</td>
+          <!-- <td class="pl-5">
               <div class="token-name">
                   
                   <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
@@ -104,10 +101,11 @@
                   <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
               </div>
-          </td>
+          </td> -->
           
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
+          <td class="text-left pl-5">{{ slot.item.trades }}</td>
 
 
           <!-- <td class="pointer text-right pr-5" >
@@ -121,9 +119,10 @@
         :title="getListTitle()"
         :getData="getList">
       <template slot="header">
-        <th class="text-left pl-4">{{ $t("common.symbol") }}</th>
+        <th class="text-left pl-4">{{ $t("common.source") }}</th>
         <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
         <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th class="text-left pl-4">{{ $t("common.trades") }}</th>
       </template>
 
       <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
@@ -170,7 +169,7 @@ export default {
       tokens: TOKENS_BY_ADDR,
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
-      tokenIcons: {}
+      partnerIcon: {}
     };
   },
 
@@ -199,11 +198,11 @@ export default {
       const timeStamp = this.$route.query.timeStamp
       
       const requestParams = {
-        fromDate: now - 24 * 60 * 60,
+        fromDate: now - 24 * 60 * 60 * 30 * 2,
         toDate: now,
       }
       if(timeStamp) requestParams.timeStamp = timeStamp
-      return AppRequest.getTokens(requestParams);
+      return AppRequest.getPartnersList(requestParams);
     },
 
     shouldShowToken (item) {
@@ -215,26 +214,38 @@ export default {
     //   return util.isNewToken(item.symbol);
     // },
     formatVolumn(number){
+      if (!number) return 0
       return (new BigNumber(number.toString())).toFormat(2)
     },
-    getTokenImageLink (token) {
+    getpartnerName(partner){
+      const partnerAddress = partner.partnerAddress.toLowerCase()
+      const partnerName = network.dapps[partnerAddress]
+      if(partnerName) return partnerName
+
+      return util.shortenAddress(partnerAddress, 9, 8)
+    },
+    getPartnerImageLink (partner) {
       // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
       // // if (!this.tokens[symbol].hidden) {
       // //   return 'images/tokens/' + icon;
       // // }
       // return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
       //    icon + "?sanitize=true";
-      if(!this.tokenIcons[token.address]){
-        if(!this.tokens[token.address.toLowerCase()] || !this.tokens[token.address.toLowerCase()].symbol) {
-          this.tokenIcons[token.address] = "/images/tokens/unknown-token.svg"
+      const partnerAddress = partner.partnerAddress.toLowerCase()
+
+      if(!this.partnerIcon[partner.address]){
+        if(!network.dapps[partnerAddress]) {
+          this.partnerIcon[partnerAddress] = "/images/tokens/unknown-token.svg"
         } else {
-          this.tokenIcons[token.address] = util.getTokenIcon(this.tokens[token.address.toLowerCase()].symbol, (replaceUrl) => {
-            this.tokenIcons[token.address] = replaceUrl
+          
+          const partnerName = network.dapps[partnerAddress]
+          this.partnerIcon[partnerAddress] = util.getTokenIcon(partnerName, (replaceUrl) => {
+            this.partnerIcon[partnerAddress] = replaceUrl
           })
         }
       }
        
-      return this.tokenIcons[token.address]
+      return this.partnerIcon[partnerAddress]
 
     },
     

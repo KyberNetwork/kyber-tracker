@@ -237,6 +237,11 @@ class AppRequest extends BaseRequest {
     return this.get(url, params);
   }
 
+  getPartnersList(params={}){
+    const url = `/api/partners`;
+    return this.get(url, params);
+  }
+
   getReserveList(params={}){
     const url = `/api/reserves`;
     if(this.isOfficial()) params.official = true
