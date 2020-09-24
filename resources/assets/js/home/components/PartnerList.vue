@@ -71,6 +71,12 @@
       <span class="no-margin panel-title">{{ $t("common.defi") }}</span>
     </div>
 
+    <chart-token
+      ref="chartPartner"
+      :elementId="'chart-partner'"
+      >
+    </chart-token>
+
 
     <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
         :title="getListTitle()"
