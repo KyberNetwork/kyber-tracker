@@ -54,7 +54,7 @@ module.exports = {
     "0xa9312cb86d1e532b7c21881ce03a1a9d52f6adb1": "TTC",
     "0x8463fDa3567D9228D6Bc2A9b6219fC85a19b89aa": "Oasis hybrid 3",
     "0x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10": "PT",
-    "0x63825c174ab367968ec60f061753d3bbd36a0d8f": "Kyber",
+    "0x63825c174ab367968ec60f061753d3bbd36a0d8f": "Kyber Reserve v1",
     "0x35183769bbbf63d2b4cac32ef593f4ad08104fba": "KCC",
     "0x21433dec9cb634a23c6a4bbcce08c83f5ac2ec18": "Prycto",
     "0xfe4474d73be9307ebb5b5519dca19e8109286acb": "Tomo",
@@ -110,8 +110,7 @@ module.exports = {
     "0x00cd2388c86c960a646d640be44fc8f83b78cec9": "2Key APR",
     "0x9149c59f087e891b659481ed665768a57247c79e": "WBTC APR2",
 
-
-    "0x10908c875d865c66f271f5d3949848971c9595c9": "Katalyst Uniswap v2",
+    "0x10908c875d865c66f271f5d3949848971c9595c9": "Uniswap Bridge v2",
     "0xcf76b605484cd4bd46237c05b7de98d538ff44ae": "BZRX APR",
     "0x0b798b89155ea31f1312791b9fdfaae7c5f48460": "RSR APR",
     "0xb89f41cd2c8b6cba8b851289198b06be8b4dec65": "Origin Protocol APR",
@@ -127,7 +126,12 @@ module.exports = {
     "0x23fe3c603be19d3a1155766358071cacefe14537": "Request Network APR",
     "0xad84a44a673be4fdcd5e39ebd15ebc404e87f314": "Cindicator CND APR",
     "0x977c9abb01ed3e99e9953fd1f472ae9f459e7e70": "AMPL APR",
-    "0x2ed6f2bc006da5897a0c3cd2686283c05e50c573": "Metronome APR"
+    
+    "0x2ed6f2bc006da5897a0c3cd2686283c05e50c573": "Metronome APR",
+    "0xfef329057b5a7084250ef98c6514f18897cbf858": "KAI APR",
+    "0x5772f169ce6882c27dccab6bd632bc759e0c5525": "RSV APR",
+    "0x84609cf708a82f97661db37f5f4d2a257d401d8e": "Mooniswap bridge reserve",
+    "0x55a8fda671a257b80258d2a03abd6e0e1e3dbe79": "SyncFab APR"
   },
 
   "ETH": {
