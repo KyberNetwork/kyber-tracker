@@ -93,6 +93,8 @@
   "chart": {
     "title": {
       "network_volume": "交易量",
+      "unique_traders": "Unique Traders",
+      "total_trades": "Total Trades",
       "collected_fees": "总费用",
       "fees_burned": "已销毁 (累计)",
       "fee_to_burn": "以销毁的费用",

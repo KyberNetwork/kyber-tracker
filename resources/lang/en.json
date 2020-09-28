@@ -96,6 +96,8 @@
   "chart": {
     "title": {
       "network_volume": "Volume",
+      "unique_traders": "Unique Traders",
+      "total_trades": "Total Trades",
       "collected_fees": "Collected Fees",
       "fees_burned": "Burnt (Accumulated)",
       "fee_to_burn": "Fees To Burn",

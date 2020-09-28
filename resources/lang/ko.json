@@ -93,6 +93,8 @@
   "chart": {
     "title": {
       "network_volume": "거래량",
+      "unique_traders": "Unique Traders",
+      "total_trades": "Total Trades",
       "collected_fees": "비용",
       "fees_burned": "누적 소각 비용",
       "fee_to_burn": "소각될 비용",

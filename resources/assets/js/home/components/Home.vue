@@ -61,16 +61,16 @@
             :elementId="'chart-volume'">
           </chart-volume>
         </b-tab>
-        <!-- <b-tab @click="onSelectTab('chartFee')" :title="$t('chart.title.collected_fees')">
-          <chart-fee ref="chartFee"
-            :elementId="'chart-fee'">
-          </chart-fee>
+        <b-tab @click="onSelectTab('chartUniqueTraders')" :title="$t('chart.title.unique_traders')">
+          <chart-unique-traders ref="chartUniqueTraders"
+            :elementId="'chart-unique-traders'">
+          </chart-unique-traders>
         </b-tab>
-        <b-tab @click="onSelectTab('chartBurned')" :title="$t('chart.title.fees_burned')">
-          <chart-fee ref="chartBurned"
-            :elementId="'chart-burned'">
-          </chart-fee>
-        </b-tab> -->
+        <b-tab @click="onSelectTab('chartNumberTrades')" :title="$t('chart.title.total_trades')">
+          <chart-number-trades ref="chartNumberTrades"
+            :elementId="'chart-number-trades'">
+          </chart-number-trades>
+        </b-tab>
       </b-tabs>
     </b-card>
     <trade-list ref="datatable"
@@ -179,12 +179,24 @@
           this.$refs.chartToken.refresh(period);
         }
       },
+      _refreshUniqueTradersChart(period, interval){
+        if (this.$refs.chartUniqueTraders) {
+          this.$refs.chartUniqueTraders.refresh(period, interval, 'getUniqueTraders');
+        }
+      },
+      _refreshNumberTradesChart(period, interval){
+        if (this.$refs.chartNumberTrades) {
+          this.$refs.chartNumberTrades.refresh(period, interval, 'getTotalTrades');
+        }
+      },
       _refeshChart() {
         const map = {
           chartVolume: this._refreshNetworkVolumeChart,
           chartFee: this._refreshFeeChart,
           chartBurned: this._refreshFeeBurnedChart,
-          chartToken: this._refreshTopTopkensChart
+          chartToken: this._refreshTopTopkensChart,
+          chartUniqueTraders: this._refreshUniqueTradersChart,
+          chartNumberTrades: this._refreshNumberTradesChart
         }
 
         map[this.selectedTab].call(this, this.selectedPeriod, this.selectedInterval);

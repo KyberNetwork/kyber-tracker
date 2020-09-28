@@ -170,6 +170,44 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
+  getUniqueTraders(period, interval, address, callback) {
+    if (typeof address === 'function') {
+      callback = address;
+      address = null;
+    }
+    let queryParams = { period, interval, address }
+    if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
+    const url = `/api/unique_traders`;
+    return request
+            .get(url)
+            .query(queryParams)
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
+  getTotalTrades(period, interval, address, callback) {
+    if (typeof address === 'function') {
+      callback = address;
+      address = null;
+    }
+    let queryParams = { period, interval, address }
+    if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
+    const url = `/api/total_trades`;
+    return request
+            .get(url)
+            .query(queryParams)
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
   getFeeToBurn(period, interval, symbol, callback) {
     if (typeof symbol === 'function') {
       callback = symbol;

@@ -98,6 +98,8 @@
   "chart": {
     "title": {
       "network_volume": "KL giao dịch",
+      "unique_traders": "Unique Traders",
+      "total_trades": "Total Trades",
       "collected_fees": "Phí",
       "fees_burned": "Đã đốt (luỹ kế)",
       "fee_to_burn": "Phí sẽ đốt",
