@@ -125,6 +125,7 @@
     "exchange_to": "换至",
     "trade" : "交易",
     "view_on": "查看",
+    "source": "SOURCE",
     "pair": "交易对",
     "export_csv": "导出(CSV文件)",
     "no_row": "查无记录",

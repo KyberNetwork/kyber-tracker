@@ -508,6 +508,44 @@ module.exports = AppController.extends({
     TradeService.getNetworkVolumes(params, this.ok.bind(this, req, res));
   },
 
+  getUniqueNumberTraders: function (req, res) {
+    const [err, params] = new Checkit({
+      address: ['string'],
+      period: ['string'],
+      interval: ['string'],
+      fromDate: ['natural'],
+      toDate: ['natural'],
+      pair: ['string']
+    }).validateSync(req.allParams);
+
+    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getUniqueNumberTraders(params, this.ok.bind(this, req, res));
+  },
+  
+  getTotalNumberTrades: function (req, res) {
+    const [err, params] = new Checkit({
+      address: ['string'],
+      period: ['string'],
+      interval: ['string'],
+      fromDate: ['natural'],
+      toDate: ['natural'],
+      pair: ['string']
+    }).validateSync(req.allParams);
+
+    if (err || (params.interval && !Const.INTERVAL.includes(params.interval))) {
+      res.badRequest(err && err.toString() || "Interval is not support");
+      return;
+    }
+
+    const TradeService = req.getService('TradeService');
+    TradeService.getTotalNumberTrades(params, this.ok.bind(this, req, res));
+  },
+
   getVolumesTokenPairs5m: function (req, res) {
     const [err, params] = new Checkit({
       base: ['required', 'string'],

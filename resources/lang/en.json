@@ -129,6 +129,7 @@
     "exchange_to" : "To",
     "trade" : "TRADE",
     "view_on": "VIEW ON",
+    "source": "SOURCE",
     "pair": "Pair",
     "export_csv": "Export (CSV)",
     "no_row": "No record found",

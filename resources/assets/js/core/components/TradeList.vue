@@ -176,6 +176,7 @@
               <th v-bind:colspan="partner ? 1 : 1" class="text-left rate" style="width: 30%;">{{ $t("trade_list.rate") }}</th>
               <th v-if="partner" class="pl-4" >{{ $t("trade_list.commission") }}</th>
               <th class="text-left" style="width: 10%;">{{ $t("trade_list.view_on") }}</th>
+              <th class="text-left" style="width: 10%;">{{ $t("trade_list.source") }}</th>
               <!-- <th></th> -->
             </tr>
           </thead>
@@ -215,9 +216,9 @@
                 <a :href="getTxEtherscanLink(row.tx)" target="_blank"><img class="etherscan" src="/images/etherscan-logo.png" /></a>
                 <a :href="getEnjinxLink(row.tx)" target="_blank"><img class="enj" src="/images/kyber-enj-logo.png" /></a>
               </td>
-              <div class="col-3 text-center">
+              <td class="text-left">
                 {{getDappName(row)}}
-              </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -564,6 +565,9 @@ export default {
       }
 
       return params;
+    },
+    getDappName(tx){
+      return "Trust"
     },
     getDateInfo (trade, isShort) {
       return util.getDateInfo(trade.blockTimestamp * 1000, isShort);

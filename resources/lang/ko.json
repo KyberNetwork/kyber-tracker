@@ -123,6 +123,7 @@
     "exchange_to": "받는 곳",
     "trade" : "거래",
     "view_on": "보기",
+    "source": "SOURCE",
     "pair": "거래쌍",
     "export_csv": "출력(CSV파일)",
     "no_row": "기록이 없습니다",

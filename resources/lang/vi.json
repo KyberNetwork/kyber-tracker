@@ -129,6 +129,7 @@
     "exchange_to" : "Đổi sang",
     "trade" : "TRAO ĐỔI",
     "view_on": "XEM TRÊN",
+    "source": "SOURCE",
     "pair": "Cặp",
     "export_csv": "Xuất dữ liệu (CSV)",
     "no_row": "Không tìm thấy giao dịch nào",

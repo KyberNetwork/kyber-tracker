@@ -1550,6 +1550,201 @@ module.exports = BaseService.extends({
     });
   },
 
+  getUniqueNumberTraders: function (options, callback){
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+    const time_exprire = CacheInfo.UniqueTrader.TTL;
+    let key = `${CacheInfo.UniqueTrader.key + period}-${interval}`;
+    if (options.address) {
+      key = options.address + '-' + key;
+    }
+    if (options.pair) {
+      key = options.pair + '-' + key;
+    }
+    if (options.fromDate) {
+      key = options.fromDate + '-' + key;
+    }
+    if (options.toDate) {
+      key = options.toDate + '-' + key;
+    }
+    if(options.official){
+      key = 'official-' + key
+    }
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      options.interval = interval;
+      options.period = period;
+      options.key = key;
+      this._getUniqueNumberTraders(options, (err, ret_1)=>{
+        if(err){
+          logger.info(err);
+          return callback(err);
+        }
+        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        callback(null,ret_1)
+      });
+    });
+  },
+
+  _getUniqueNumberTraders: function (options, callback) {
+    const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
+
+
+    const whereAnd = []
+    if(toDate){
+      whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
+    }
+    if(fromDate){
+      whereAnd.push({block_timestamp: {[Op.gt]: fromDate}})
+    }
+
+    if(options.address){
+      whereAnd.push({
+        [Op.or]: [
+          {taker_token_address: options.address.toLowerCase()},
+          {maker_token_address: options.address.toLowerCase()},
+        ]
+      })
+    } else if (options.pair) {
+      const pairTokens = options.pair.toLowerCase().split('_')
+      whereAnd.push({
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[0]},
+              {maker_token_address: pairTokens[1]},
+            ]
+          },
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[1]},
+              {maker_token_address: pairTokens[0]},
+            ]
+          }
+        ]
+      })
+    }
+
+
+    KyberTradeModel.count({
+      where: {
+        [Op.and]: whereAnd
+      },
+      group: [groupColumn],
+      distinct: 'maker_address, taker_address',
+      raw: true,
+    })
+    .then(result => callback(null, result))
+    .catch(err => callback(err))
+
+  
+  },
+
+  getTotalNumberTrades: function (options, callback){
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+    const time_exprire = CacheInfo.NumberTrades.TTL;
+    let key = `${CacheInfo.NumberTrades.key + period}-${interval}`;
+    if (options.address) {
+      key = options.address + '-' + key;
+    }
+    if (options.pair) {
+      key = options.pair + '-' + key;
+    }
+    if (options.fromDate) {
+      key = options.fromDate + '-' + key;
+    }
+    if (options.toDate) {
+      key = options.toDate + '-' + key;
+    }
+    if(options.official){
+      key = 'official-' + key
+    }
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      options.interval = interval;
+      options.period = period;
+      options.key = key;
+      this._getTotalNumberTrades(options, (err, ret_1)=>{
+        if(err){
+          logger.info(err);
+          return callback(err);
+        }
+        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        callback(null,ret_1)
+      });
+
+    });
+  },
+
+  _getTotalNumberTrades: function (options, callback) {
+    const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
+
+
+    const whereAnd = []
+    if(toDate){
+      whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
+    }
+    if(fromDate){
+      whereAnd.push({block_timestamp: {[Op.gt]: fromDate}})
+    }
+
+    if(options.address){
+      whereAnd.push({
+        [Op.or]: [
+          {taker_token_address: options.address.toLowerCase()},
+          {maker_token_address: options.address.toLowerCase()},
+        ]
+      })
+    } else if (options.pair) {
+      const pairTokens = options.pair.toLowerCase().split('_')
+      whereAnd.push({
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[0]},
+              {maker_token_address: pairTokens[1]},
+            ]
+          },
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[1]},
+              {maker_token_address: pairTokens[0]},
+            ]
+          }
+        ]
+      })
+    }
+
+
+    KyberTradeModel.count({
+      where: {
+        [Op.and]: whereAnd
+      },
+      group: [groupColumn],
+      // distinct: 'unique_tag',
+      raw: true,
+    })
+    .then(result => callback(null, result))
+    .catch(err => callback(err))
+
+  },
+
+
   getPairsVolumes: function (options, callback) {
     let key = `${CacheInfo.NetworkVolumes.key}${options.pairs}`;
 
