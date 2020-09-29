@@ -84,6 +84,42 @@ a {
   background-color: transparent;
 }
 
+.chart-summary{
+  .chart-summary-icon{
+    width: 70px;
+    height: 70px;
+    
+    border-radius: 50%;
+
+    &.volume{
+      background-color: #e1fbf3;
+    }
+    &.unique-traders{
+      background-color: #e4f6ff;
+    }
+    &.total-trades{
+      background-color: #fff3e3;
+    }
+
+    img{
+      display: block;
+      margin-left: auto;
+      margin-top: auto;
+      margin-right: auto;
+      margin-bottom: auto;
+      width: 50%;
+      height: 100%;
+    }
+  }
+  .chart-summary-info{
+    .info-label{
+      font-size: 12px;
+      font-weight: 800;
+      color: #949394;
+    }
+  }
+}
+
 
 .change-language-button {
 

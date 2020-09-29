@@ -1,7 +1,24 @@
 <template>
   <div>
-    <canvas :id="elementId" height="300px" class="mt-20"></canvas>
+    <div class="chart-summary d-flex flex-row">
+      <div class="chart-summary-icon total-trades ml-3">
+        <img src="/images/total-trades.svg">
+      </div>
+      <div class="chart-summary-info ml-3">
+        <div class="info-label pt-2">
+          TRADES
+        </div>
+        <div class="info-number font-weight-bold pt-2">
+          34,870
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <canvas :id="elementId" height="300px" class="mt-20"></canvas>
+    </div>
   </div>
+  
 </template>
 
 <script>

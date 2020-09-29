@@ -1,6 +1,21 @@
 <template>
   <div>
-    <canvas :id="elementId" height="300px" class="mt-20"></canvas>
+    <div class="chart-summary d-flex flex-row">
+      <div class="chart-summary-icon volume ml-3">
+        <img src="/images/volume-summary.svg">
+      </div>
+      <div class="chart-summary-info ml-3">
+        <div class="info-label pt-2">
+          VOLUME
+        </div>
+        <div class="info-number font-weight-bold pt-2">
+          6,688,709.63 USD
+        </div>
+      </div>
+    </div>
+    <div>
+      <canvas :id="elementId" height="300px" class="mt-20"></canvas>
+    </div>
   </div>
 </template>
 
