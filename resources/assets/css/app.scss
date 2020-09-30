@@ -1805,6 +1805,26 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   }
 }
 
+.reserve-list-container{
+  .reserve-type{
+    font-size: 12px;
+    font-weight: 600;
+    .br{
+      padding: 2px 10px;
+      color: #94741e;
+      background-color: #f9f0d8;
+    }
+    .apr{
+      padding: 2px 10px;
+      color: #348456;
+      background-color: #cefae1;
+    }
+    .fpr{
+      padding: 2px 10px;
+    }
+  }
+}
+
 .reserve-detail-container{
   color: #3d464d;
   letter-spacing: normal;

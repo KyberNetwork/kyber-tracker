@@ -4,6 +4,7 @@
     "exchange": "交易",
     "name": "名称",
     "address": "地址",
+    "type": "TYPE",
     "symbol": "符号",
     "source": "Source",
     "trades": "Trades",

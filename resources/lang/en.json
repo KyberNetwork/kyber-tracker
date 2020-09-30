@@ -5,6 +5,7 @@
     "exchange": "Exchange",
     "name": "NAME",
     "address": "ADDRESS",
+    "type": "TYPE",
     "symbol": "SYMBOL",
     "source": "Source",
     "trades": "Trades",

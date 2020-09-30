@@ -4,6 +4,7 @@
     "exchange": "거래",
     "name": "이름",
     "address": "주소",
+    "type": "TYPE",
     "symbol": "심볼",
     "source": "Source",
     "trades": "Trades",

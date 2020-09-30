@@ -520,6 +520,13 @@ module.exports = BaseService.extends({
           _next(err)
         })
       },
+      aprStatus: _next => {
+        const CMCService = this.getService('CMCService');
+        CMCService.getAprReserveStatus((err, result) => {
+          if(err) console.log("======== Error get apr status: ", err)
+          return _next(null, result || {})
+        })
+      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -531,112 +538,21 @@ module.exports = BaseService.extends({
             address: r,
             volumeUSD: 0,
             volumeETH: 0,
-            // type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[r.toLowerCase()] : null ,
-            // isDelisted: global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] ? false : true
-            isDelisted: false
+            isDelisted: false,
+            status: ret.aprStatus[r.toLowerCase()],
           })
         } else {
           reserves.push({
             address: r,
             volumeUSD: ret.vol[r.toLowerCase()].volumeUSD || 0,
             volumeETH: ret.vol[r.toLowerCase()].volumeETH || 0,
-            // type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[r.toLowerCase()] : null,
-            // isDelisted: global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] ? false : true
-            isDelisted: false
+            isDelisted: false,
+            status: ret.aprStatus[r.toLowerCase()],
           })
         }
       })
-      // results.map(rItem => {
-      //   reserves.push({
-      //     ...rItem,
-      //     type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[rItem.address.toLowerCase()] : null,
-      //     isDelisted: global.NETWORK_RESERVES &&  global.NETWORK_RESERVES[rItem.address.toLowerCase()] ? false : true
-      //   })
-      // })
       return callback(null, _.orderBy(reserves, ['isDelisted', 'volumeETH' ], ['esc', 'desc']));
     })
-
-
-      
-    
-
-    
-
-
-    // const makeSql = (side, callback) => {
-    //   const sql = `select ${side}_reserve as address,
-    //     IFNULL(sum(tx_value_eth),0) as eth,
-    //     IFNULL(sum(tx_value_usd),0) as usd,
-    //     '${side}' as type
-    //   from kyber_trade
-    //   where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
-    //   group by ${side}_reserve`;
-    //   return adapter.execRaw(sql, [dayAgo, nowInSeconds], callback);
-    // };
-
-    // const totalReserveList = (side, callback) => {
-    //   const sql = `
-    //     SELECT DISTINCT ${side}_reserve as address
-    //     FROM kyber_trade
-    //     WHERE ${side}_reserve IS NOT NULL
-    //   `
-    //   return adapter.execRaw(sql, [], callback);
-    // } 
-
-    // async.parallel({
-    //   source: _next => makeSql('source', _next),
-    //   dest: _next => makeSql('dest', _next),
-    //   listSource: _next => totalReserveList('source', _next),
-    //   listDest: _next => totalReserveList('dest', _next),
-    // }, (err, ret) => {
-    //   if (err) {
-    //     return callback(err);
-    //   }
-
-    //   const takers = _.groupBy(ret.source, 'address');
-    //   const makers = _.groupBy(ret.dest, 'address');
-
-
-    //   function customizer(objValue, srcValue) {
-    //     if (_.isArray(objValue)) {
-    //       return objValue.concat(srcValue);
-    //     }
-    //   }
-    //   const totalReserveVol = _.mergeWith(takers, makers, customizer)
-    //   const arrayTotalReserve = _.uniq([...ret.listSource.map(r=> r.address), ...ret.listDest.map(r=> r.address)])
-    //   const reserves = [];
-
-    //   arrayTotalReserve
-    //   .filter(r => (r !== '0x0000000000000000000000000000000000000000' && r !==  "0x964f35fae36d75b1e72770e244f6595b68508cf5" && r !== "0x818e6fecd516ecc3849daf6845e3ec868087b755" ))
-    //   .map(r => {
-    //     if(!totalReserveVol[r]) {
-    //       reserves.push({
-    //         address: r,
-    //         volumeUSD: 0,
-    //         volumeETH: 0,
-    //         type: global.NETWORK_RESERVES[r],
-    //         isDelisted: global.NETWORK_RESERVES[r] ? false : true
-    //       })
-    //     } else {
-    //       const takerAndMaker = totalReserveVol[r]
-    //       let valEth = new BigNumber(0);
-    //       let valUsd = new BigNumber(0);
-    //       takerAndMaker.map(i => {
-    //         valEth = valEth.plus(i.eth ? i.eth.toString() : 0)
-    //         valUsd = valUsd.plus(i.usd ? i.usd.toString() : 0)
-    //       })
-    //       reserves.push({
-    //         address: r,
-    //         volumeUSD: valUsd.toNumber(),
-    //         volumeETH: valEth.toNumber(),
-    //         type: global.NETWORK_RESERVES[r],
-    //         isDelisted: global.NETWORK_RESERVES[r] ? false : true
-    //       })
-    //     }
-    //   })
-
-    //   return callback(null, _.orderBy(reserves, ['isDelisted', 'volumeUSD' ], ['esc', 'desc']));
-    // })
   },
 
   getReserveDetails: function (options, callback){

@@ -5,6 +5,7 @@
     "exchange": "Exchange",
     "name": "TÊN",
     "address": "ĐỊA CHỈ",
+    "type": "TYPE",
     "symbol": "MÃ",
     "source": "Source",
     "trades": "Trades",

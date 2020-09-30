@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-12">
+  <div class="col-sm-12 reserve-list-container">
     <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.reserves')}} </span>
     </div>
@@ -7,8 +7,10 @@
     <data-table v-if="isAllTokens()" :rows="getReserveByType('all')">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.address") }}</th>
+        <th class="text-left pl-4">{{ $t("common.type") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th class="text-left pl-4"></th>
       </template>
 
       <template slot="body" scope="slot">
@@ -18,8 +20,14 @@
               <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
               <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
+          <td class="reserve-type text-center">
+            <span v-bind:class="getReserveType(slot.item.address).toLowerCase()">
+              {{ getReserveType(slot.item.address) }}
+            </span>
+            </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
+          <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left">{{ slot.item.status=='maintenance' ? slot.item.status : '' }}</td>
         </tr>
       </template>
     </data-table>
@@ -27,8 +35,10 @@
     <data-table v-else :rows="getReserveByType('offical')">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.address") }}</th>
+        <th class="text-left pl-4">{{ $t("common.type") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th class="text-left pl-4"></th>
       </template>
 
       <template slot="body" scope="slot">
@@ -38,9 +48,15 @@
               <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
               <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
+          <td class="reserve-type text-center" >
+            <span v-bind:class=" getReserveType(slot.item.address).toLowerCase()">
+              {{ getReserveType(slot.item.address) }}
+            </span>
+            
+            </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
-          
+          <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left">{{ slot.item.status=='maintenance' ? slot.item.status : '' }}</td>
         </tr>
       </template>
     </data-table>
@@ -177,7 +193,31 @@ export default {
       return util.shortenAddress(addr, 9, 8)
     },
     getReservename(addr){
-      return reserveName[addr.toLowerCase()] ||  util.shortenAddress(addr, 9, 8)
+      const reserveAddrLower = addr.toLowerCase()
+      const reserveData = reserveName[addr.toLowerCase()]
+      if(!reserveData) return util.shortenAddress(addr, 9, 8)
+
+      return reserveData[0]
+    },
+    getReserveType(addr){
+      const reserveAddrLower = addr.toLowerCase()
+      const reserveData = reserveName[addr.toLowerCase()]
+      if(!reserveData || !reserveData[1]) return "-/-"
+
+      return reserveData[1]
+    },
+
+    getReserveTypeStyleClass(addr){
+      const reserveType = this.getReserveType(addr)
+
+      if(reserveType == "BR") return ""
+      else if (reserveType == "APR") return ""
+      else if (reserveType == "FPR")  return ""
+
+
+
+      return ""
+
     },
     selectPeriod(period, interval) {
       this.selectedPeriod = period;
