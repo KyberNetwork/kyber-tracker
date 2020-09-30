@@ -1403,6 +1403,13 @@ module.exports = BaseService.extends({
           groupBy: [groupColumn],
         }, next);
       },
+      total: (next) => {
+        KyberTradeModel.sumGroupBy('volume_usd', {
+          where: whereClauses,
+          params: params,
+          // groupBy: [groupColumn],
+        }, next);
+      },
       sumEth: (next) => {
         KyberTradeModel.sumGroupBy('volume_eth', {
           where: whereClauses,
@@ -1410,13 +1417,13 @@ module.exports = BaseService.extends({
           groupBy: [groupColumn],
         }, next);
       },
-      count: (next) => {
-        KyberTradeModel.countGroupBy(groupColumn, {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn]
-        }, next);
-      }
+      // count: (next) => {
+      //   KyberTradeModel.countGroupBy(groupColumn, {
+      //     where: whereClauses,
+      //     params: params,
+      //     groupBy: [groupColumn]
+      //   }, next);
+      // }
     }, (err, ret) => {
       if (err) {
         return callback(err);
@@ -1548,17 +1555,33 @@ module.exports = BaseService.extends({
       })
     }
 
-
-    KyberTradeModel.count({
-      where: {
-        [Op.and]: whereAnd
+    async.auto({
+      count: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          group: [groupColumn],
+          distinct: 'maker_address, taker_address',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      group: [groupColumn],
-      distinct: 'maker_address, taker_address',
-      raw: true,
-    })
-    .then(result => callback(null, result))
-    .catch(err => callback(err))
+      total: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          distinct: 'maker_address, taker_address',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      }
+    }, callback)
+
+    
 
   
   },
@@ -1645,19 +1668,32 @@ module.exports = BaseService.extends({
         ]
       })
     }
-
-
-    KyberTradeModel.count({
-      where: {
-        [Op.and]: whereAnd
+    async.auto({
+      count: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          group: [groupColumn],
+          // distinct: 'unique_tag',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      group: [groupColumn],
-      // distinct: 'unique_tag',
-      raw: true,
-    })
-    .then(result => callback(null, result))
-    .catch(err => callback(err))
-
+      total: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          // group: [groupColumn],
+          // distinct: 'unique_tag',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      }
+    }, callback)
   },
 
 

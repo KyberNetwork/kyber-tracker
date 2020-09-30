@@ -9,7 +9,7 @@
           TRADES
         </div>
         <div class="info-number font-weight-bold pt-2">
-          34,870
+          {{total}}
         </div>
       </div>
     </div>
@@ -37,11 +37,15 @@
     },
     data() {
       return {
-        chartInstance: undefined
+        chartInstance: undefined,
+        total: 0
       };
     },
     methods: {
-      _buildChartData(feeData, interval, accumulated) {
+      _buildChartData(chartData, interval, accumulated) {
+        if (!chartData) return 
+        const feeData = chartData.count
+
         if(!feeData || !feeData.length) return 
         const labels = [];
         const dataset = [];
@@ -117,6 +121,9 @@
           
           const accumulated = (method === "getBurnedFees");
           const data = this._buildChartData(feeData, interval, accumulated);
+          if(feeData.total){
+            this.total = feeData.total
+          }
           const options = this._getChartOptions(interval, accumulated);
 
           if (this.chartInstance) {
