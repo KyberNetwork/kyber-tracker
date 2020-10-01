@@ -567,6 +567,7 @@ export default {
       return params;
     },
     getDappName(tx){
+      console.log("============== tx ", tx)
       return "Trust"
     },
     getDateInfo (trade, isShort) {

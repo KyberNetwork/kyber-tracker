@@ -71,87 +71,93 @@
       <span class="no-margin panel-title">{{ $t("common.defi") }}</span>
     </div>
 
-    <chart-token
-      ref="chartPartner"
-      :elementId="'chart-partner'"
-      >
-    </chart-token>
+    <div class="flex flex-row pb-3" height="400px">
+      <chart-partner
+        ref="chartPartner"
+        :elementId="'chart-partner'"
+        :volumeData="data"
+        >
+      </chart-partner>
+    </div>
+    
+
+    <div>
+      <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
+          :title="getListTitle()"
+          :rows="data"
+          >
+        <template slot="header">
+          <th class="text-center">{{ $t("token_list.no") }}</th>
+          <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
+          <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
+          <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+          <th class="text-left pl-4">{{ $t("common.trades") }}</th>
+          <th ></th>
+          <!-- <th class="text-right">{{ $t("common.volume_24h_token") }}</th> -->
+          <!-- <th></th> -->
+        </template>
+
+        <template slot="body" scope="slot">
+          <tr class="pointer" @click="toTokenDetails(slot.item.address)">
+            <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
+            <td  class="text-left pl-3">
+              <img class="image-inline-td mr-1" :src="partnerIcon[slot.item.symbol] || getPartnerImageLink(slot.item)" />            
+            </td>
+            <td class="text-left pl-5">{{ getpartnerName(slot.item) }}</td>
+            <!-- <td class="pl-5">
+                <div class="token-name">
+                    
+                    <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
+                    <span v-if="!slot.item.official || !slot.item.name"><a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a></span>
+                    <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
+                    <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
+                </div>
+            </td> -->
+            
+            <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+            <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
+            <td class="text-left pl-5">{{ slot.item.trades }}</td>
 
 
-    <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
-        :title="getListTitle()"
-        :getData="getList">
-      <template slot="header">
-        <th class="text-center">{{ $t("token_list.no") }}</th>
-        <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
-        <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
-        <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
-        <th class="text-left pl-4">{{ $t("common.trades") }}</th>
-        <th ></th>
-        <!-- <th class="text-right">{{ $t("common.volume_24h_token") }}</th> -->
-        <!-- <th></th> -->
-      </template>
+            <!-- <td class="pointer text-right pr-5" >
+              <span class="entypo-dot-3 table-more"></span>
+            </td> -->
+          </tr>
+        </template>
+      </data-table>
 
-      <template slot="body" scope="slot">
-        <tr class="pointer" @click="toTokenDetails(slot.item.address)">
-          <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
-          <td  class="text-left pl-3">
-            <img class="image-inline-td mr-1" :src="partnerIcon[slot.item.symbol] || getPartnerImageLink(slot.item)" />            
-          </td>
-          <td class="text-left pl-5">{{ getpartnerName(slot.item) }}</td>
-          <!-- <td class="pl-5">
-              <div class="token-name">
-                  
-                  <span v-if="slot.item.official && slot.item.name">{{ slot.item.name }}</span>
-                  <span v-if="!slot.item.official || !slot.item.name"><a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a></span>
-                  <span v-bind:class="{ fresher: slot.item.isNewToken, delised: slot.item.isDelisted }"></span>
-                  <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
-              </div>
-          </td> -->
-          
-          <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
-          <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
-          <td class="text-left pl-5">{{ slot.item.trades }}</td>
+      <data-table v-if="($mq !== 'md' && $mq !== 'lg')" ref="datatable" class="small-table table-hover"
+          :title="getListTitle()"
+          :rows="data"
+          >
+        <template slot="header">
+          <th class="text-left pl-4">{{ $t("common.source") }}</th>
+          <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
+          <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th>
+          <th class="text-left pl-4">{{ $t("common.trades") }}</th>
+        </template>
 
-
-          <!-- <td class="pointer text-right pr-5" >
-            <span class="entypo-dot-3 table-more"></span>
-          </td> -->
-        </tr>
-      </template>
-    </data-table>
-
-    <data-table v-if="($mq !== 'md' && $mq !== 'lg')" ref="datatable" class="small-table table-hover"
-        :title="getListTitle()"
-        :getData="getList">
-      <template slot="header">
-        <th class="text-left pl-4">{{ $t("common.source") }}</th>
-        <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
-        <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th>
-        <th class="text-left pl-4">{{ $t("common.trades") }}</th>
-      </template>
-
-      <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
-        <tr @click="toTokenDetails(slot.item.address)">
-          <td  class="text-left pl-4" style="white-space:nowrap !important">
-              <div class="token-name">
-                  <span>
-                    <span v-if="slot.item.official && slot.item.symbol">{{ slot.item.symbol }}</span>
-                    <span v-else>
-                      <a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
+        <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
+          <tr @click="toTokenDetails(slot.item.address)">
+            <td  class="text-left pl-4" style="white-space:nowrap !important">
+                <div class="token-name">
+                    <span>
+                      <span v-if="slot.item.official && slot.item.symbol">{{ slot.item.symbol }}</span>
+                      <span v-else>
+                        <a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
+                      </span>
                     </span>
-                  </span>
-                  
-                  <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
-                  <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
-              </div>
-          </td>
-          <td class="text-right pr-4">{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
-          <td class="text-right pr-4">{{ formatVolumn(slot.item.volumeETH) }}</td>
-        </tr>
-      </template>
-    </data-table>
-
+                    
+                    <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
+                    <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
+                </div>
+            </td>
+            <td class="text-right pr-4">{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
+            <td class="text-right pr-4">{{ formatVolumn(slot.item.volumeETH) }}</td>
+          </tr>
+        </template>
+      </data-table>
+    </div>
 
   </div>
 </template>
@@ -175,14 +181,16 @@ export default {
       tokens: TOKENS_BY_ADDR,
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
-      partnerIcon: {}
+      partnerIcon: {},
+      data: []
     };
   },
 
   methods: {
     refresh () {
-      this.$refs.datatable.fetch();
-      this.refreshTopTopkensChart(this.selectedPeriod);
+      // this.$refs.datatable.fetch();
+      // this.refreshTopTopkensChart(this.selectedPeriod);
+      this.getList()
     },
     getListTitle () {
       return '';
@@ -196,10 +204,11 @@ export default {
     selectPeriod(period, interval) {
       this.selectedPeriod = period;
       this.selectedInterval = interval;
-      this.refreshTopTopkensChart(this.selectedPeriod);
+      // this.refreshTopTopkensChart(this.selectedPeriod);
+      this.getList()
     },
 
-    getList () {
+    getList() {
       const now = Date.now() / 1000 | 0;
       const timeStamp = this.$route.query.timeStamp
       
@@ -208,7 +217,9 @@ export default {
         toDate: now,
       }
       if(timeStamp) requestParams.timeStamp = timeStamp
-      return AppRequest.getPartnersList(requestParams);
+      AppRequest.getPartnersList(requestParams).then(data => {
+        this.data = data
+      })
     },
 
     shouldShowToken (item) {
@@ -268,11 +279,15 @@ export default {
         }
       });
     },
-    refreshTopTopkensChart(period) {
-      if (this.$refs.chartToken) {
-        this.$refs.chartToken.refresh(period);
-      }
-    },
+    // refreshTopTopkensChart(period) {
+    //   console.log("----------- run to refresh -----------")
+    //   if (this.$refs.chartPartner) {
+        
+    //     // this.$refs.chartPartner.refresh(period);
+
+    //     console.log("++++++++++++++++", this.$refs.datatable)
+    //   }
+    // },
 
     beforeDestroy() {
       window.clearInterval(this._refreshInterval);
@@ -284,9 +299,9 @@ export default {
   },
 
   mounted() {
-    this._refreshInterval = window.setInterval(() => {
-        this.refresh();
-      }, 10000);
+    // this._refreshInterval = window.setInterval(() => {
+    //     this.refresh();
+    //   }, 10000);
     this.refresh();
   },
 

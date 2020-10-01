@@ -1177,6 +1177,7 @@ module.exports = BaseService.extends({
         }
       },
       group: ['fee_platform_wallet'],
+      order: ['volumeETH', 'DESC'],
       raw: true,
     })
     .then(results => {
