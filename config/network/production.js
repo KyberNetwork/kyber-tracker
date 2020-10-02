@@ -1423,7 +1423,7 @@ module.exports = {
     "0x7284a8451d9a0e7dc62b3a71c0593ea2ec5c5638": "Instadapp",
     "0x71c7656ec7ab88b098defb751b7401b5f6d8976f": "Etherscan",
     "0x673d26360af6688fdd9d788677fd06f58aad5b4d": "Midas",
-    "0x440bbd6a888a36de6e2f6a25f65bc4e16874faa9": "KyberSwap EU",
+    "0x440bbd6a888a36de6e2f6a25f65bc4e16874faa9": "KyberSwap",
     "0x4247951c2eb6d0ba38d233fe7d542c8c80c9d46a": "MEW",
     "0x398d297bab517770fec4d8bb7a4127b486c244bb": "Dex wallet",
     "0x332d87209f7c8296389c307eae170c2440830a47": "Betoken",

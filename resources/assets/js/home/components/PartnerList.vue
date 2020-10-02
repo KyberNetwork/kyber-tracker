@@ -82,6 +82,31 @@
     
 
     <div>
+      <div class="chart-period-picker text-right pt-2">
+        <b-button-group class="cus-pagination full-width-btn-group">
+          <b-button
+            :variant="selectedPeriod === 'H24' ? 'active' : ''"
+            @click="selectPeriod('H24', 'H1')">24H
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'D7' ? 'active' : ''"
+            @click="selectPeriod('D7', 'H1')">7D
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'D30' ? 'active' : ''"
+            @click="selectPeriod('D30', 'D1')">1M
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'Y1' ? 'active' : ''"
+            @click="selectPeriod('Y1', 'D1')">1Y
+          </b-button>
+          <b-button
+            :variant="selectedPeriod === 'ALL' ? 'active' : ''"
+            @click="selectPeriod('ALL', 'D1')">ALL
+          </b-button>
+        </b-button-group>
+      </div>
+
       <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
           :title="getListTitle()"
           :rows="data"
@@ -98,10 +123,10 @@
         </template>
 
         <template slot="body" scope="slot">
-          <tr class="pointer" @click="toTokenDetails(slot.item.address)">
+          <tr class="pointer" @click="toTokenDetails(slot.item.partnerAddress.toLowerCase())">
             <!-- <td class="text-center">{{ (slot.index + 1) }}</td> -->
             <td  class="text-left pl-3">
-              <img class="image-inline-td mr-1" :src="partnerIcon[slot.item.symbol] || getPartnerImageLink(slot.item)" />            
+              <img class="image-inline-td mr-1" :src="partnerIcons[slot.item.partnerAddress.toLowerCase()] || getPartnerImageLink(slot.item)" />            
             </td>
             <td class="text-left pl-5">{{ getpartnerName(slot.item) }}</td>
             <!-- <td class="pl-5">
@@ -181,7 +206,7 @@ export default {
       tokens: TOKENS_BY_ADDR,
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
-      partnerIcon: {},
+      partnerIcons: {},
       data: []
     };
   },
@@ -250,34 +275,35 @@ export default {
       //    icon + "?sanitize=true";
       const partnerAddress = partner.partnerAddress.toLowerCase()
 
-      if(!this.partnerIcon[partner.address]){
+      if(!this.partnerIcons[partner.address]){
         if(!network.dapps[partnerAddress]) {
-          this.partnerIcon[partnerAddress] = "/images/tokens/unknown-token.svg"
+          this.partnerIcons[partnerAddress] = "/images/tokens/unknown-token.svg"
         } else {
           
           const partnerName = network.dapps[partnerAddress]
-          this.partnerIcon[partnerAddress] = util.getTokenIcon(partnerName, (replaceUrl) => {
-            this.partnerIcon[partnerAddress] = replaceUrl
+          this.partnerIcons[partnerAddress] = util.getPartnerLogo(partnerName, (replaceUrl) => {
+            this.partnerIcons[partnerAddress] = replaceUrl
           })
         }
       }
        
-      return this.partnerIcon[partnerAddress]
+      return this.partnerIcons[partnerAddress]
 
     },
     
-    toTokenDetails (symbol) {
-      const tokenInfo = this.tokens[symbol];
-      if (!tokenInfo) {
-        return;
-      }
+    toTokenDetails (partnerAddress) {
+      console.log("---------------- address", partnerAddress, this.partnerIcons, this.partnerIcons[partnerAddress])
+      // const tokenInfo = this.tokens[symbol];
+      // if (!tokenInfo) {
+      //   return;
+      // }
 
-      this.$router.push({
-        name: 'token-details',
-        params: {
-          tokenAddr: tokenInfo.address
-        }
-      });
+      // this.$router.push({
+      //   name: 'token-details',
+      //   params: {
+      //     tokenAddr: tokenInfo.address
+      //   }
+      // });
     },
     // refreshTopTopkensChart(period) {
     //   console.log("----------- run to refresh -----------")
@@ -299,9 +325,9 @@ export default {
   },
 
   mounted() {
-    // this._refreshInterval = window.setInterval(() => {
-    //     this.refresh();
-    //   }, 10000);
+    this._refreshInterval = window.setInterval(() => {
+        this.refresh();
+      }, 10000);
     this.refresh();
   },
 
