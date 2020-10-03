@@ -131,7 +131,8 @@ module.exports = {
     "0xfef329057b5a7084250ef98c6514f18897cbf858": "KAI APR",
     "0x5772f169ce6882c27dccab6bd632bc759e0c5525": "RSV APR",
     "0x84609cf708a82f97661db37f5f4d2a257d401d8e": "Mooniswap bridge reserve",
-    "0x55a8fda671a257b80258d2a03abd6e0e1e3dbe79": "SyncFab APR"
+    "0x55a8fda671a257b80258d2a03abd6e0e1e3dbe79": "SyncFab APR",
+    "0x248eaed12d307ef68a964fdfc4531637276fec14": "Balancer Bridge V1"
   },
 
   "ETH": {
@@ -1440,6 +1441,12 @@ module.exports = {
       "symbol" : "SUSHI",
       "decimal": 18,
       "address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2"
+    },
+    "KAI": {
+      "name": "KardiaChain",
+      "symbol" : "KAI",
+      "decimal": 18,
+      "address": "0xd9ec3ff1f8be459bb9369b4e79e9ebcf7141c093"
     },
   },
 
