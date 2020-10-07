@@ -1455,6 +1455,12 @@ module.exports = {
       "decimal": 18,
       "address": "0x3845badade8e6dff049820680d1f14bd3903a5d0"
     },
+    "VALOR": {
+      "name": "Smart Valor",
+      "symbol" : "VALOR",
+      "decimal": 18,
+      "address": "0x297e4e5e59ad72b1b0a2fd446929e76117be0e0a"
+    },
   },
 
   "preburntAmount": 48.61873337,
