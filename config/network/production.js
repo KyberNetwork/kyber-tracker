@@ -127,7 +127,12 @@ module.exports = {
     "0x23fe3c603be19d3a1155766358071cacefe14537": ["Request Network APR", "APR"],
     "0xad84a44a673be4fdcd5e39ebd15ebc404e87f314": ["Cindicator CND APR", "APR"],
     "0x977c9abb01ed3e99e9953fd1f472ae9f459e7e70": ["AMPL APR", "APR"],
-    "0x2ed6f2bc006da5897a0c3cd2686283c05e50c573": ["Metronome APR", "APR"]
+    "0x2ed6f2bc006da5897a0c3cd2686283c05e50c573": ["Metronome APR", "APR"],
+    "0xfef329057b5a7084250ef98c6514f18897cbf858": ["KAI APR", "APR"],
+    "0x5772f169ce6882c27dccab6bd632bc759e0c5525": ["RSV APR", "APR"],
+    "0x84609cf708a82f97661db37f5f4d2a257d401d8e": ["Mooniswap bridge reserve", "BR"],
+    "0x55a8fda671a257b80258d2a03abd6e0e1e3dbe79": ["SyncFab APR", "APR"],
+    "0x248eaed12d307ef68a964fdfc4531637276fec14": ["Balancer Bridge V1", "BR"]
   },
 
   "ETH": {
@@ -633,7 +638,8 @@ module.exports = {
     },
     "TUSD": {
       "name": "TrueUSD",
-      "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
+      // "address": "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e",
+      "address": "0x0000000000085d4780b73119b644ae5ecd22b376",
       "symbol": "TUSD",
       "decimal": 18,
       "hidden": 1531486800000
@@ -1364,6 +1370,90 @@ module.exports = {
       "decimal": 18,
       "address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
       "hidden": 1598446800000
+    },
+
+    "HUSD": {
+      "name": "HUSD",
+      "symbol" : "HUSD",
+      "decimal": 8,
+      "address": "0xdf574c24545e5ffecb9a659c229253d4111d87e1",
+    },
+
+    "KEY": {
+      "name": "SelfKey",
+      "symbol" : "KEY",
+      "decimal": 18,
+      "address": "0x4cc19356f2d37338b9802aa8e8fc58b0373296e7",
+    },
+
+    "RSV": {
+      "name": "Reserve",
+      "symbol" : "RSV",
+      "decimal": 18,
+      "address": "0x196f4727526ea7fb1e17b2071b3d8eaa38486988",
+    },
+
+    "UNI": {
+      "name": "UNI",
+      "symbol" : "UNI",
+      "decimal": 18,
+      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+    },
+
+
+    "YFI": {
+      "name": "yearn.finance",
+      "symbol" : "YFI",
+      "decimal": 18,
+      "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e"
+    },
+    "CREAM": {
+      "name": "Cream",
+      "symbol" : "CREAM",
+      "decimal": 18,
+      "address": "0x2ba592F78dB6436527729929AAf6c908497cB200"
+    },
+    "UNI": {
+      "name": "Uniswap",
+      "symbol" : "UNI",
+      "decimal": 18,
+      "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+    },
+    "YFV": {
+      "name": "YFValue",
+      "symbol" : "YFV",
+      "decimal": 18,
+      "address": "0x45f24BaEef268BB6d63AEe5129015d69702BCDfa"
+    },
+    "SWRV": {
+      "name": "Swerve DAO Token",
+      "symbol" : "SWRV",
+      "decimal": 18,
+      "address": "0xB8BAa0e4287890a5F79863aB62b7F175ceCbD433"
+    },
+    "CRV": {
+      "name": "Curve DAO Token",
+      "symbol" : "CRV",
+      "decimal": 18,
+      "address": "0xD533a949740bb3306d119CC777fa900bA034cd52"
+    },
+    "SUSHI": {
+      "name": "SushiToken",
+      "symbol" : "SUSHI",
+      "decimal": 18,
+      "address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2"
+    },
+    "KAI": {
+      "name": "KardiaChain",
+      "symbol" : "KAI",
+      "decimal": 18,
+      "address": "0xd9ec3ff1f8be459bb9369b4e79e9ebcf7141c093"
+    },
+    "SAND": {
+      "name": "The Sandbox",
+      "symbol" : "SAND",
+      "decimal": 18,
+      "address": "0x3845badade8e6dff049820680d1f14bd3903a5d0"
     },
   },
 
