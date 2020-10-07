@@ -1449,6 +1449,12 @@ module.exports = {
       "decimal": 18,
       "address": "0xd9ec3ff1f8be459bb9369b4e79e9ebcf7141c093"
     },
+    "SAND": {
+      "name": "The Sandbox",
+      "symbol" : "SAND",
+      "decimal": 18,
+      "address": "0x3845badade8e6dff049820680d1f14bd3903a5d0"
+    },
   },
 
   "preburntAmount": 48.61873337,
