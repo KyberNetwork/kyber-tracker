@@ -178,6 +178,12 @@ export default {
     return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
   },
 
+  getTokenUsdalue: function(amount, usdPrice, decimal=18, decimalFormat = 2){
+    const bigNumber = new BigNumber(amount.toString());
+    let result = bigNumber.div(Math.pow(10, decimal)).multipliedBy(usdPrice.toString())
+    return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
+  },
+
   roundingNumber: function (number) {
     // return kyberRoundingNumber(number);
     return newRoundingNumber(number, 6)

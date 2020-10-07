@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import request from 'superagent';
 import BaseRequest from '../foundation/BaseRequest';
-
+import network from '../../../../../config/network';
 import store from "../../core/helper/store";
 
 class AppRequest extends BaseRequest {
@@ -277,6 +277,15 @@ class AppRequest extends BaseRequest {
 
   getPartnersList(params={}){
     const url = `/api/partners`;
+    return this.get(url, params);
+  }
+
+  getAprStatus(params={}){
+    const url = network.endpoints.apis + '/apr_status'
+    return this.get(url, params);
+  }
+  getTokenPrices(params={}){
+    const url = network.endpoints.apis + '/prices'
     return this.get(url, params);
   }
 

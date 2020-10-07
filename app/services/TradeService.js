@@ -557,24 +557,24 @@ module.exports = BaseService.extends({
 
   getReserveDetails: function (options, callback){
     async.parallel({
-      currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
-      tradedListTokens: _next => this._tradedList(options, _next),
+      // currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
+      // tradedListTokens: _next => this._tradedList(options, _next),
       collectedFee: _next => this._collectedFee(options, _next)
     }, (err, results) => {
       if (err) {
         return callback(err);
       }
-      const allReserveTokens = results.currentListingTokens
-      results.tradedListTokens.map(t => {
-        if(allReserveTokens[t.address]){
-          allReserveTokens[t.address] = {...allReserveTokens[t.address], ...t}
-        }
-        // allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
-      })
+      // const allReserveTokens = results.currentListingTokens
+      // results.tradedListTokens.map(t => {
+      //   if(allReserveTokens[t.address]){
+      //     allReserveTokens[t.address] = {...allReserveTokens[t.address], ...t}
+      //   }
+      //   // allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
+      // })
 
       return callback(null, {
-        tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'volumeETH' ], ['asc', 'desc']),
-        burned: results.burnnedFee,
+        // tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'volumeETH' ], ['asc', 'desc']),
+        // burned: results.burnnedFee,
         collectedFee: results.collectedFee,
       })
     })

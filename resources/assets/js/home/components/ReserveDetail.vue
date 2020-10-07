@@ -104,7 +104,7 @@
       
      
 
-      <div class="reserve-tokens-list reserve-column vdivide no-border col ml-xl-2">
+      <div class="reserve-tokens-list reserve-column vdivide no-border col ml-xl-2" v-if="tokenAprData">
         <div class="reserve-value">
           <div class="reserve-title pb-4">
             {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
@@ -113,14 +113,13 @@
             <img src="/images/waiting.svg" />
           </div>
           <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
-            <div class="col-12 col-sm-6" v-for="item in reserveTokens">
+            <div class="col-12">
               <div class="row pb-2">
-                <div class="col-4 ">
-                  <span v-if="isOfficial(item.address, item.symbol)"><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">{{ item.symbol || getShortedAddr(item.address)}}</a></span>
-                  <span v-else><a class="address-link" :href="getAddressEtherscanLink(item.address)" target="_blank">({{getShortedAddr(item.address)}})</a></span>
+                <div class="col-5 ">
+                  <a class="address-link" :href="getAddressEtherscanLink(tokenAprData.address)" target="_blank">{{ tokenAprData.symbol }}</a>
                 </div>
-                <div class="col-8 font-semi-bold">
-                  {{(item.volumeUSD && round(item.volumeUSD)) || 0}} USD
+                <div class="col-7 font-semi-bold">
+                 {{tokenAprAmount}} <span v-if="tokenAprUSDValue">({{tokenAprUSDValue}} USD)</span>
                 </div>
               </div> 
             </div>
@@ -206,7 +205,9 @@ export default {
 
       isShowLoadmore: false,
       isOpenlLoadmore: false,
-
+      tokenAprAmount: 0,
+      tokenAprUSDValue: 0,
+      tokenAprData: null,
       isLoading: true,
       highlightedToday: {
         dates: [new Date()]
@@ -227,6 +228,7 @@ export default {
       }
       this.$refs.datatable.fetch();
       this.fetchReserveDetail()
+      this.fetchAprStatus()
     },
     getFilterReserveAddress() {
       return this.$route.params.reserveAddr;
@@ -242,7 +244,10 @@ export default {
       return util.shortenAddress(addr, 4, 4)
     },
     getReservename(addr){
-      return reserveName[addr.toLowerCase()] ||  this.$t('wallet_detail.reserve_detail')
+      const reserveData = reserveName[addr.toLowerCase()]
+      if(!reserveData) return this.$t('wallet_detail.reserve_detail')
+
+      return reserveName[addr.toLowerCase()][0]
     },
     getAddressEtherscanLink(address) {
       return network.endpoints.ethScan + "address/" + address;
@@ -332,10 +337,44 @@ export default {
 
           this.collectedFees = tolalFeeToBurn.plus(tolalCollectedFee).toString()
           this.isLoading = false
-          if(data && data.tokens && data.tokens.length > 10) {
-            this.isShowLoadmore = true
-          }
+          // if(data && data.tokens && data.tokens.length > 10) {
+          //   this.isShowLoadmore = true
+          // }
        })
+    },
+
+    fetchAprStatus(){
+      AppRequest.getAprStatus().then(data => {
+        if(!data || !data.length) return
+        const reserveAddress = this.getFilterReserveAddress()
+        if(!reserveAddress) return 
+        const reserveData = data.find(d => d.reserve.toLowerCase() == reserveAddress.toLowerCase())
+        if(!reserveData) return
+
+        let tokenAmount = 0
+        let tokenAddress
+        if(reserveData.token_a.toLowerCase() == network.ETH.address.toLowerCase()){
+          tokenAmount = reserveData.amount_b
+          tokenAddress = reserveData.token_b.toLowerCase()
+        } else if (reserveData.token_b.toLowerCase() == network.ETH.address.toLowerCase()){
+          tokenAmount = reserveData.amount_a
+          tokenAddress = reserveData.token_a.toLowerCase()
+        }
+
+        this.tokenAprData = TOKENS_BY_ADDR[tokenAddress]
+        if(!this.tokenAprData) return
+        this.tokenAprAmount = util.formatTokenAmount(tokenAmount, this.tokenAprData.decimal, 4);
+
+
+        AppRequest.getTokenPrices().then(tokenPrices => {
+          if(!tokenPrices) return
+          
+          const foundTokenPrice = tokenPrices[this.tokenAprData.symbol]
+          if(!foundTokenPrice) return
+
+          this.tokenAprUSDValue = util.getTokenUsdalue(tokenAmount, foundTokenPrice.price_USD, this.tokenAprData.decimal, 4)
+        })
+      })
     },
 
     formatDatepicker (date) {
