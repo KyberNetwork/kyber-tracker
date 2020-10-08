@@ -443,7 +443,7 @@ export default {
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
-      isShowInfoBar: true,
+      isShowInfoBar: false,
       infoBarUrl: "https://kyberswap.com/promo/fulcrum?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=bzrx-contest",
       infoBarMess: "$12,000 to be won in BZRX trading contest on KyberSwap!",
       infoBarTimeFrom: 1602162000000,
