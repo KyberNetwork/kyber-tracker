@@ -166,6 +166,7 @@
     "value_in_usd": "价值（USD)",
     "notice": "USD 汇率在交易时间点计算",
     "wallet_detail": "钱包详情",
+    "tokens_balance": "Tokens Balance",
     "reserve_detail": "Reserve detail",
     "partner_details": "合作伙伴详情",
     "history": "交易历史",

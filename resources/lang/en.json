@@ -172,6 +172,7 @@
     "value_in_usd": "Value in USD",
     "notice": "USD Rates are calculated at transaction time",
     "wallet_detail": "Wallet Details",
+    "tokens_balance": "Tokens Balance",
     "reserve_detail": "Reserve detail",
     "partner_details": "Partner Details",
     "history": "History",

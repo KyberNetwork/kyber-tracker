@@ -1173,7 +1173,11 @@ module.exports = BaseService.extends({
           }
         }, 
         'fee_platform_wallet': {
-          [Op.notLike]: '0x0000000000000000000000000000000000000000',
+          [Op.and]: {
+            [Op.notLike]: '0x0000000000000000000000000000000000000000',
+            [Op.not]: null,
+          }
+          
         }
       },
       group: ['fee_platform_wallet'],

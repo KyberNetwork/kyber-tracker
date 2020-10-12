@@ -71,17 +71,7 @@
       <span class="no-margin panel-title">{{ $t("common.defi") }}</span>
     </div>
 
-    <div class="flex flex-row pb-3" height="400px">
-      <chart-partner
-        ref="chartPartner"
-        :elementId="'chart-partner'"
-        :volumeData="data"
-        >
-      </chart-partner>
-    </div>
-    
-
-    <div>
+    <div class="table-responsive-wraper">
       <div class="chart-period-picker text-right pt-2">
         <b-button-group class="cus-pagination full-width-btn-group">
           <b-button
@@ -107,10 +97,26 @@
         </b-button-group>
       </div>
 
+      <div class="pb-3" height="400px">
+        <chart-partner
+          ref="chartPartner"
+          :elementId="'chart-partner'"
+          :volumeData="data"
+          >
+        </chart-partner>
+      </div>
+    
+
+    
+      
+
       <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
           :title="getListTitle()"
           :rows="data"
           >
+
+
+          
         <template slot="header">
           <th class="text-center">{{ $t("token_list.no") }}</th>
           <th class="text-left pl-3">{{ $t("common.symbol") }}</th>

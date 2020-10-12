@@ -107,7 +107,7 @@
       <div class="reserve-tokens-list reserve-column vdivide no-border col ml-xl-2" v-if="tokenAprData">
         <div class="reserve-value">
           <div class="reserve-title pb-4">
-            {{$t('wallet_detail.tokens')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
+            {{$t('wallet_detail.tokens_balance')}} {{reserveTokens && reserveTokens.length ? `(${reserveTokens.length})` : ''}}
           </div>
           <div v-if="isLoading">
             <img src="/images/waiting.svg" />
