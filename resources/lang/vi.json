@@ -9,6 +9,8 @@
     "symbol": "MÃ",
     "source": "Source",
     "trades": "Trades",
+    "usd_volume": "USD VOLUME",
+    "eth_volume": "ETH VOLUME",
     "volume_24h_usd": "Giao dịch 24H (USD)",
     "volume_24h_eth": "Giao dịch 24H (ETH)",
     "volume_24h_token": "Giao dịch 24H (Token)",

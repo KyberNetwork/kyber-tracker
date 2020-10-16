@@ -118,10 +118,10 @@
 
           
         <template slot="header">
-          <th class="text-center">{{ $t("token_list.no") }}</th>
-          <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
-          <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
-          <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+          <th class="text-center"></th>
+          <th class="text-left pl-3">{{ $t("common.source") }}</th>
+          <th class="text-left pl-4">{{ $t("common.usd_volume") }}</th>
+          <th class="text-left pl-4">{{ $t("common.eth_volume") }}</th>
           <th class="text-left pl-4">{{ $t("common.trades") }}</th>
           <th ></th>
           <!-- <th class="text-right">{{ $t("common.volume_24h_token") }}</th> -->

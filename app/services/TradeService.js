@@ -1157,7 +1157,6 @@ module.exports = BaseService.extends({
     const fromDate = options.fromDate
     const toDate = options.toDate
 
-    console.log("-------------- run to get partner list ", fromDate, toDate)
     KyberTradeModel.findAll({
       attributes: [
         ['fee_platform_wallet', 'partnerAddress'],
