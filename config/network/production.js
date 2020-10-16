@@ -132,7 +132,12 @@ module.exports = {
     "0x5772f169ce6882c27dccab6bd632bc759e0c5525": "RSV APR",
     "0x84609cf708a82f97661db37f5f4d2a257d401d8e": "Mooniswap bridge reserve",
     "0x55a8fda671a257b80258d2a03abd6e0e1e3dbe79": "SyncFab APR",
-    "0x248eaed12d307ef68a964fdfc4531637276fec14": "Balancer Bridge V1"
+    "0x248eaed12d307ef68a964fdfc4531637276fec14": "Balancer Bridge V1",
+
+    "0x6d39cff1ef97c8f1e70d711e526e858a201315cd": "OneBit FPR",
+    "0x12ba0823f29d674fbfe844e40f6ba54a07af44d7": "SushiSwap Bridge",
+    "0x0994c18ed0c328f38d2c451b2a2e1ceb1ae6a812": "ANT APR",
+    "0x69b87a139f3976912c1db7d0808a9fc7e3ca453f": "Prycto FPR"
   },
 
   "ETH": {
@@ -1328,7 +1333,7 @@ module.exports = {
       "name": "V-ID blockchain",
       "symbol" : "VIDT",
       "decimal": 18,
-      "address": "0x445f51299ef3307dbd75036dd896565f5b4bf7a5",
+      "address": "0xfef4185594457050cc9c23980d301908fe057bb1",
       "hidden": 1596114000000
     },
 
