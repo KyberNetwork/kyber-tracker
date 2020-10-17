@@ -139,7 +139,7 @@ module.exports = {
     "0x0994c18ed0c328f38d2c451b2a2e1ceb1ae6a812": "ANT APR",
     "0x69b87a139f3976912c1db7d0808a9fc7e3ca453f": "Prycto FPR",
     "0xd01ae36a911912a106445cc350be327344fbfefa": "Uniswap-Sushiswap Bridge Reserve",
-    "0xeb74c8b319515593a26dab10a13f19872c2ecb02": "Annonymous Reserve"
+    "0xeb74c8b319515593a26dab10a13f19872c2ecb02": "Anonymous Reserve"
   },
 
   "ETH": {
