@@ -41,7 +41,7 @@ module.exports = BaseService.extends({
     }
 
     if (options.fromDate) {
-      whereClauses += ' AND block_timestamp >= ?';
+      whereClauses += ' AND block_timestamp > ?';
       params.push(options.fromDate);
     }
 
