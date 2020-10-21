@@ -1468,6 +1468,20 @@ module.exports = {
       "decimal": 18,
       "address": "0x297e4e5e59ad72b1b0a2fd446929e76117be0e0a"
     },
+    "AAVE": {
+      "name": "Aave",
+      "symbol" : "AAVE",
+      "decimal": 18,
+      "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+      "hidden": 1603285200000
+    },
+    "OCEAN": {
+      "name": "Ocean Protocol",
+      "symbol" : "OCEAN",
+      "decimal": 18,
+      "address": "0x967da4048cd07ab37855c090aaf366e4ce1b9f48",
+      "hidden": 1603285200000
+    },
   },
 
   "preburntAmount": 48.61873337,
