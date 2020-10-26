@@ -1482,6 +1482,14 @@ module.exports = {
       "address": "0x967da4048cd07ab37855c090aaf366e4ce1b9f48",
       "hidden": 1603285200000
     },
+
+    "IND": {
+      "name": "Indorse Token",
+      "symbol" : "IND",
+      "decimal": 18,
+      "address": "0xf8e386eda857484f5a12e4b5daa9984e06e73705",
+      "hidden": 1603717200000
+    },
   },
 
   "preburntAmount": 48.61873337,
