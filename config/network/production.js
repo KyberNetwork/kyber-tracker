@@ -1490,6 +1490,14 @@ module.exports = {
       "address": "0xf8e386eda857484f5a12e4b5daa9984e06e73705",
       "hidden": 1603717200000
     },
+
+    "FUSE": {
+      "name": "Fuse Network Token",
+      "symbol" : "FUSE",
+      "decimal": 18,
+      "address": "0x970B9bB2C0444F5E81e9d0eFb84C8ccdcdcAf84d",
+      "hidden": 1603803600000
+    },
   },
 
   "preburntAmount": 48.61873337,
