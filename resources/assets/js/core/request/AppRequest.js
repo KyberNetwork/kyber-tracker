@@ -306,7 +306,7 @@ class AppRequest extends BaseRequest {
   }
 
   _handleError(err) {
-    window.EventBus.$emit('EVENT_COMMON_ERROR', err);
+    // window.EventBus.$emit('EVENT_COMMON_ERROR', err);
   }
 
 }

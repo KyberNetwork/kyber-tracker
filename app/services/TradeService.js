@@ -1373,7 +1373,8 @@ module.exports = BaseService.extends({
           logger.info(err);
           return callback(err);
         }
-        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+
+        // RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
         callback(null,ret_1)
       });
 
@@ -1381,102 +1382,161 @@ module.exports = BaseService.extends({
   },
 
   _getNetworkVolumes: function (options, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
+    // const KyberTradeModel = this.getModel('KyberTradeModel');
+    // const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
+    // console.log("------groupColumn------------", groupColumn)
+    // const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
+
+    // let whereClauses = `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`;
+    // let params = [fromDate, toDate];
+    // if (options.address) {
+    //   whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
+    //   params.push(options.address.toLowerCase());
+    //   params.push(options.address.toLowerCase());
+    // } else if(options.pair){
+    //   const pairTokens = options.pair.split('_')
+    //   whereClauses += ` AND ((taker_token_address = "${pairTokens[0].toLowerCase()}" AND maker_token_address = "${pairTokens[1].toLowerCase()}") OR (taker_token_address = "${pairTokens[1]}" AND maker_token_address = "${pairTokens[0]}"))`;
+    // }
+
+    // if(options.official){
+    //   whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+    //   params.push(network.startPermissionlessReserveBlock);
+    // }
+
+    // console.log("--=======================", whereClauses, params, groupColumn)
+
+    // async.auto({
+    //   sum: (next) => {
+    //     KyberTradeModel.sumGroupBy('volume_usd', {
+    //       where: whereClauses,
+    //       params: params,
+    //       groupBy: [groupColumn],
+    //     }, next);
+    //   },
+    //   total: (next) => {
+    //     KyberTradeModel.sumGroupBy('volume_usd', {
+    //       where: whereClauses,
+    //       params: params,
+    //       // groupBy: [groupColumn],
+    //     }, next);
+    //   },
+    //   sumEth: (next) => {
+    //     KyberTradeModel.sumGroupBy('volume_eth', {
+    //       where: whereClauses,
+    //       params: params,
+    //       groupBy: [groupColumn],
+    //     }, next);
+    //   },
+    //   // count: (next) => {
+    //   //   KyberTradeModel.countGroupBy(groupColumn, {
+    //   //     where: whereClauses,
+    //   //     params: params,
+    //   //     groupBy: [groupColumn]
+    //   //   }, next);
+    //   // }
+    // }, (err, ret) => {
+    //   if (err) {
+    //     return callback(err);
+    //   }
+
+    //   const returnData = [];
+    //   if (ret.sum.length) {
+
+    //     for (let i = 0; i < ret.sum.length; i++) {
+    //       returnData.push({
+    //         daySeq: ret.sum[i].daySeq,
+    //         hourSeq: ret.sum[i].hourSeq,
+    //         sum: ret.sum[i].sum,
+    //         sumEth: ret.sumEth[i].sum,
+    //         count: ret.count[i].count
+    //       })
+    //     }
+    //     const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+    //     const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[options.interval]);
+    //     if (nowSeq > lastSeq) {
+    //       const nullData = {
+    //         [this._convertSeqColumnName(groupColumn)]: nowSeq,
+    //         sum: 0,
+    //         sumEth: 0,
+    //         count: 0
+    //       };
+    //       returnData.push(nullData);
+    //     }
+
+    //   } else {
+    //     const firstSeq = fromDate / Const.CHART_INTERVAL[options.interval];
+    //     const nowSeq = toDate / Const.CHART_INTERVAL[options.interval];
+    //     returnData.push({
+    //       [this._convertSeqColumnName(groupColumn)]: firstSeq,
+    //       sum: 0,
+    //       sumEth: 0,
+    //       count: 0
+    //     });
+    //     returnData.push({
+    //       [this._convertSeqColumnName(groupColumn)]: nowSeq,
+    //       sum: 0,
+    //       sumEth: 0,
+    //       count: 0
+    //     });
+    //   }
+    //   return callback(null, returnData);
+    // });
+
+
+
     const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
-    let whereClauses = `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`;
-    let params = [fromDate, toDate];
-    if (options.address) {
-      whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
-      params.push(options.address.toLowerCase());
-      params.push(options.address.toLowerCase());
-    } else if(options.pair){
-      const pairTokens = options.pair.split('_')
-      whereClauses += ` AND ((taker_token_address = "${pairTokens[0].toLowerCase()}" AND maker_token_address = "${pairTokens[1].toLowerCase()}") OR (taker_token_address = "${pairTokens[1]}" AND maker_token_address = "${pairTokens[0]}"))`;
+
+    const whereAnd = []
+    if(toDate){
+      whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
+    }
+    if(fromDate){
+      whereAnd.push({block_timestamp: {[Op.gt]: fromDate}})
     }
 
-    if(options.official){
-      whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
-      params.push(network.startPermissionlessReserveBlock);
+    if(options.address){
+      whereAnd.push({
+        [Op.or]: [
+          {taker_token_address: options.address.toLowerCase()},
+          {maker_token_address: options.address.toLowerCase()},
+        ]
+      })
+    } else if (options.pair) {
+      const pairTokens = options.pair.toLowerCase().split('_')
+      whereAnd.push({
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[0]},
+              {maker_token_address: pairTokens[1]},
+            ]
+          },
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[1]},
+              {maker_token_address: pairTokens[0]},
+            ]
+          }
+        ]
+      })
     }
 
-    async.auto({
-      sum: (next) => {
-        KyberTradeModel.sumGroupBy('volume_usd', {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn],
-        }, next);
+    KyberTradeModel.findAll({
+      attributes: [
+        [groupColumn, this._convertSeqColumnName(groupColumn)],
+        [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
+        [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
+      ], 
+      where: {
+        [Op.and]: whereAnd
       },
-      total: (next) => {
-        KyberTradeModel.sumGroupBy('volume_usd', {
-          where: whereClauses,
-          params: params,
-          // groupBy: [groupColumn],
-        }, next);
-      },
-      sumEth: (next) => {
-        KyberTradeModel.sumGroupBy('volume_eth', {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn],
-        }, next);
-      },
-      // count: (next) => {
-      //   KyberTradeModel.countGroupBy(groupColumn, {
-      //     where: whereClauses,
-      //     params: params,
-      //     groupBy: [groupColumn]
-      //   }, next);
-      // }
-    }, (err, ret) => {
-      if (err) {
-        return callback(err);
-      }
-
-      const returnData = [];
-      if (ret.sum.length) {
-
-        for (let i = 0; i < ret.sum.length; i++) {
-          returnData.push({
-            daySeq: ret.sum[i].daySeq,
-            hourSeq: ret.sum[i].hourSeq,
-            sum: ret.sum[i].sum,
-            sumEth: ret.sumEth[i].sum,
-            count: ret.count[i].count
-          })
-        }
-        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[options.interval]);
-        if (nowSeq > lastSeq) {
-          const nullData = {
-            [this._convertSeqColumnName(groupColumn)]: nowSeq,
-            sum: 0,
-            sumEth: 0,
-            count: 0
-          };
-          returnData.push(nullData);
-        }
-
-      } else {
-        const firstSeq = fromDate / Const.CHART_INTERVAL[options.interval];
-        const nowSeq = toDate / Const.CHART_INTERVAL[options.interval];
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: firstSeq,
-          sum: 0,
-          sumEth: 0,
-          count: 0
-        });
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: nowSeq,
-          sum: 0,
-          sumEth: 0,
-          count: 0
-        });
-      }
-      return callback(null, returnData);
-    });
+      group: [groupColumn],
+      raw: true,
+    })
+    .then(result => callback(null, result))
+    .catch(err => callback(err))
   },
 
   getUniqueNumberTraders: function (options, callback){
