@@ -1498,6 +1498,14 @@ module.exports = {
       "address": "0x970B9bB2C0444F5E81e9d0eFb84C8ccdcdcAf84d",
       "hidden": 1603803600000
     },
+
+    "ALEPH": {
+      "name": "Aleph",
+      "symbol" : "ALEPH",
+      "decimal": 18,
+      "address": "0x27702a26126e0b3702af63ee09ac4d1a084ef628",
+      "hidden": 1603976400000
+    },
   },
 
   "preburntAmount": 48.61873337,
