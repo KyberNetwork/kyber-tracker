@@ -79,7 +79,8 @@
         <!-- <th class="text-center">{{ $t("token_list.no") }}</th> -->
         <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
         <th class="text-left pl-5">{{ $t("common.name") }}</th>
-        
+        <th class="text-left pl-4">{{ $t("common.price") }}</th>
+        <th class="text-left pl-4">{{ $t("common.24h_change") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
         <th ></th>
@@ -105,6 +106,10 @@
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
               </div>
           </td>
+
+          <td class="text-center">{{ tokenPrice[slot.item.symbol] ? displayTokenPrice(tokenPrice[slot.item.symbol].price_USD) : "-/-" }}</td>
+          <td class="text-center" :class="getPriceChangeClass(tokenChange24h[slot.item.symbol])">{{tokenChange24h[slot.item.symbol] ? displayTokenChange24h(tokenChange24h[slot.item.symbol]) : "-/-"}}</td>
+                  
           
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
@@ -136,7 +141,6 @@
                       <a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                     </span>
                   </span>
-                  
                   <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
               </div>
@@ -170,7 +174,9 @@ export default {
       tokens: TOKENS_BY_ADDR,
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
-      tokenIcons: {}
+      tokenIcons: {},
+      tokenPrice: {},
+      tokenChange24h: {},
     };
   },
 
@@ -178,6 +184,8 @@ export default {
     refresh () {
       this.$refs.datatable.fetch();
       this.refreshTopTopkensChart(this.selectedPeriod);
+      this.getTokenPrice()
+      this.getTokenChange24h()
     },
     getListTitle () {
       return '';
@@ -256,6 +264,42 @@ export default {
         this.$refs.chartToken.refresh(period);
       }
     },
+
+    getTokenPrice(){
+      AppRequest.getTokenPrices().then(data => {
+          if(!data) return
+          this.tokenPrice = data
+        })
+    },
+    getTokenChange24h(){
+      AppRequest.getTokenChange24h().then(data => {
+          if(!data) return
+          const change24hData = {}
+          Object.keys(data).map(pairs => {
+            const tokenSymbol = pairs.split("_")[1]
+            change24hData[tokenSymbol] = data[pairs].change_usd_24h
+          })
+          this.tokenChange24h = change24hData
+        })
+    },
+
+    displayTokenPrice(price){
+      if(!price) return "-/-"
+
+      return price.toFixed(3)
+    },
+    displayTokenChange24h(value){
+      if (value > 0) {
+        return "+" + value + "%";
+      } else {
+        return value + "%";
+      }
+    },
+
+    getPriceChangeClass(price) {
+      if (price === 0) return "";
+      return price < 0 ? "neg-value" : "pos-value";
+    }, 
 
     beforeDestroy() {
       window.clearInterval(this._refreshInterval);

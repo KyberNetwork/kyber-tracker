@@ -10,6 +10,8 @@
     "trades": "Trades",
     "usd_volume": "USD VOLUME",
     "eth_volume": "ETH VOLUME",
+    "price": "PRICE",
+    "24h_change": "24H CHANGE",
     "volume_24h_usd": "24H (USD) 거래량",
     "volume_24h_eth": "24H (ETH) 거래량",
     "volume_24h_token": "24H 거래량(토큰)",

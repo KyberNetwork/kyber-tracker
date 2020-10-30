@@ -289,6 +289,11 @@ class AppRequest extends BaseRequest {
     return this.get(url, params);
   }
 
+  getTokenChange24h(params={}){
+    const url = network.endpoints.apis + '/change24h'
+    return this.get(url, params);
+  }
+
   getReserveList(params={}){
     const url = `/api/reserves`;
     if(this.isOfficial()) params.official = true
