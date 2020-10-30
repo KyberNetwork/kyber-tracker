@@ -567,8 +567,12 @@ export default {
       return params;
     },
     getDappName(tx){
-      console.log("============== tx ", tx)
-      return "Trust"
+      const platformWallet = tx.feePlatformWallet
+
+      if(platformWallet && network.dapps[platformWallet.toLowerCase()]){
+        return network.dapps[platformWallet.toLowerCase()]
+      }
+      return null
     },
     getDateInfo (trade, isShort) {
       return util.getDateInfo(trade.blockTimestamp * 1000, isShort);
