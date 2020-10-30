@@ -1165,12 +1165,14 @@ module.exports = BaseService.extends({
         [sequelize.fn('COUNT', sequelize.col('unique_tag')), 'trades'],
       ],
       where: {
-        'block_timestamp': {
-          [Op.and]: {
-            [Op.lt]: toDate,
-            [Op.gt]: fromDate
-          }
-        }, 
+        ...(fromDate && {
+          'block_timestamp': {
+            [Op.and]: {
+              [Op.lt]: toDate,
+              [Op.gt]: fromDate
+            }
+          }, 
+        }),
         'fee_platform_wallet': {
           [Op.and]: {
             [Op.notLike]: '0x0000000000000000000000000000000000000000',
