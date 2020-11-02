@@ -1,8 +1,8 @@
 /* jscs:disable */
 const path = require('path');
 const Dotenv_webpack = require('dotenv-webpack');
-const dotenv = require('dotenv').config('./.env');
-const webpack = require('webpack');
+// const dotenv = require('dotenv').config('./.env');
+// const webpack = require('webpack');
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
@@ -14,9 +14,9 @@ module.exports = () => {
       new Dotenv_webpack({
         path: './.env', // Path to .env file (this is the default)
       }),
-      new MinifyPlugin({}, {
-        include: /\.js$/
-      }),
+      // new MinifyPlugin({}, {
+      //   include: /\.js$/
+      // }),
       new SWPrecacheWebpackPlugin({
         cacheId: 'kyber-tracker',
         filename: 'service-worker.js',

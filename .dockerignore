@@ -1,5 +1,5 @@
 .git/
 .dockerignore
 .gitignore
-.env
+# .env
 public/js

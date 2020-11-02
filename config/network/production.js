@@ -1467,6 +1467,44 @@ module.exports = {
       "decimal": 18,
       "address": "0x297e4e5e59ad72b1b0a2fd446929e76117be0e0a"
     },
+    "AAVE": {
+      "name": "Aave",
+      "symbol" : "AAVE",
+      "decimal": 18,
+      "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+      "hidden": 1603285200000
+    },
+    "OCEAN": {
+      "name": "Ocean Protocol",
+      "symbol" : "OCEAN",
+      "decimal": 18,
+      "address": "0x967da4048cd07ab37855c090aaf366e4ce1b9f48",
+      "hidden": 1603285200000
+    },
+
+    "IND": {
+      "name": "Indorse Token",
+      "symbol" : "IND",
+      "decimal": 18,
+      "address": "0xf8e386eda857484f5a12e4b5daa9984e06e73705",
+      "hidden": 1603717200000
+    },
+
+    "FUSE": {
+      "name": "Fuse Network Token",
+      "symbol" : "FUSE",
+      "decimal": 18,
+      "address": "0x970B9bB2C0444F5E81e9d0eFb84C8ccdcdcAf84d",
+      "hidden": 1603803600000
+    },
+
+    "ALEPH": {
+      "name": "Aleph",
+      "symbol" : "ALEPH",
+      "decimal": 18,
+      "address": "0x27702a26126e0b3702af63ee09ac4d1a084ef628",
+      "hidden": 1603976400000
+    },
   },
 
   "preburntAmount": 48.61873337,
