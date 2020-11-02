@@ -1,4 +1,5 @@
 .git/
 .dockerignore
 .gitignore
+package-lock.json
 public/js
