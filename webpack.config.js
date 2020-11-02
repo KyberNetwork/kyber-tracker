@@ -14,9 +14,9 @@ module.exports = () => {
       new Dotenv_webpack({
         path: './.env', // Path to .env file (this is the default)
       }),
-      new MinifyPlugin({}, {
-        include: /\.js$/
-      }),
+      // new MinifyPlugin({}, {
+      //   include: /\.js$/
+      // }),
       new SWPrecacheWebpackPlugin({
         cacheId: 'kyber-tracker',
         filename: 'service-worker.js',
