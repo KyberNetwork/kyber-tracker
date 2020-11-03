@@ -9,7 +9,7 @@
           VOLUME
         </div>
         <div class="info-number font-weight-bold pt-2">
-          6,688,709.63 USD
+          {{totalVolume}} USD
         </div>
       </div>
     </div>
@@ -39,7 +39,8 @@ export default {
   },
   data() {
     return {
-      chartInstance: undefined
+      chartInstance: undefined,
+      totalVolume: 0
     };
   },
   methods: {
@@ -104,13 +105,17 @@ export default {
       };
     },
     refresh (period, interval, tokenAddress=null) {
-      AppRequest.getNetworkVolume(period, interval, tokenAddress, (err, volumeData) => {
+      AppRequest.getNetworkVolume(period, interval, tokenAddress, (err, results) => {
         const ctx = document.getElementById(this.elementId);
 
         // Ignore render chart if the page has been changed and the chart element is omitted
         if (!ctx) {
           return;
         }
+
+        if(!results.count || !results.total) return
+
+        const volumeData = results.count
 
         const data = this._buildChartData(volumeData, interval);
         const options = this._getChartOptions(interval);
@@ -126,6 +131,10 @@ export default {
             options: options,
           });
         }
+
+
+        if(!results.total[0] || !results.total[0].sum) return
+        this.totalVolume = util.numberWithCommas(results.total[0].sum.toFixed(2))
       });
     },
     _getChartOptions (interval) {

@@ -1525,20 +1525,40 @@ module.exports = BaseService.extends({
       })
     }
 
-    KyberTradeModel.findAll({
-      attributes: [
-        [groupColumn, this._convertSeqColumnName(groupColumn)],
-        [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
-        [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
-      ], 
-      where: {
-        [Op.and]: whereAnd
+    async.auto({
+      count: _next => {
+        KyberTradeModel.findAll({
+          attributes: [
+            [groupColumn, this._convertSeqColumnName(groupColumn)],
+            [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
+            [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
+          ], 
+          where: {
+            [Op.and]: whereAnd
+          },
+          group: [groupColumn],
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      group: [groupColumn],
-      raw: true,
-    })
-    .then(result => callback(null, result))
-    .catch(err => callback(err))
+      total: _next => {
+        KyberTradeModel.findAll({
+          attributes: [
+            [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
+            [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
+          ], 
+          where: {
+            [Op.and]: whereAnd
+          },
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      }
+    }, callback)
+
+   
   },
 
   getUniqueNumberTraders: function (options, callback){
