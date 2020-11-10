@@ -17,6 +17,15 @@ const ethConfig = network.ETH
 // const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
 
+const hexToAscii = function (hex) {
+  let result = '';
+  for (var i = 0; i < hex.length; i += 2) {
+    result += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+  }
+
+  return result;
+};
+
 module.exports = {
   isBurnableToken: function(tokenAddr){
     const tokenData = global.TOKENS_BY_ADDR[tokenAddr.toLowerCase()]
@@ -289,5 +298,42 @@ module.exports = {
   },
   ignoreETH: (side) => {
     return ` AND ${side}_token_address <> "${network.ETH.address}"`
-  }
+  },
+  reserveIdToAscii: function (reserveId, reserveAddr){
+
+    if(network.blackListReserves.indexOf(reserveAddr) >= 0) return null
+
+    let hex = reserveId
+      .toString()
+      .substr(2, reserveId.length)
+      .replace(/0+$/, '');
+    let reserveType = hex.substr(0, 2);
+  
+    if (hex.length % 2 !== 0) hex += '0';
+  
+    switch (hex.substr(0, 2)) {
+      case 'ff':
+        reserveType = 'FPR';
+        break;
+      case 'aa':
+        reserveType = 'APR';
+        break;
+      case 'bb':
+        reserveType = 'BR';
+        break;
+      case '00':
+        reserveType = 'UTILITY';
+        break;
+      default:
+        reserveType = '-/-';
+        break;
+    }
+  
+    hex = hex.substr(2, reserveId.length);
+  
+    return {
+      type: reserveType,
+      name: hexToAscii(hex)
+    }
+  },
 };

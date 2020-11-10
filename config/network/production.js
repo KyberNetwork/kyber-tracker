@@ -36,6 +36,16 @@ module.exports = {
     "0x2295fc6bc32cd12fdbb852cff4014ceac6d79c10": "PT"
   },
 
+  "blackListReserves": [
+    "0x00cd2388c86c960a646d640be44fc8f83b78cec9",
+    "0xbcedf929cdcb0858731ea8637c07efe6075b6138",
+    "0x7a3370075a54b187d7bd5dcebf0ff2b5552d4f7d",
+    "0x3480e12b6c2438e02319e34b4c23770679169190",
+    "0x977c9abb01ed3e99e9953fd1f472ae9f459e7e70",
+    "0x8ea5cf9f61824e8a3ca8aa370ab37e0202b2cc7d",
+    "0x2c5a182d280eeb5824377b98cd74871f78d6b8bc"
+  ],
+
   "reserves": {
     "0x9d27a2d71ac44e075f764d5612581e9afc1964fd": ["Orderbook"],
     "0xba92981e049a79de1b79c2396d48063e02f47239": ["Bancor hybrid"],
