@@ -1,7 +1,6 @@
 /* eslint no-multi-spaces: ["error", { exceptions: { "VariableDeclarator": true } }] */
 const _ = require('lodash');
 const async = require('async');
-const util = require('util');
 const BigNumber = require('bignumber.js');
 const network = require('../../config/network');
 const partners = network.partners
@@ -10,7 +9,7 @@ const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
 const logger = require('sota-core').getLogger('TradeService');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
-const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
+const { sequelize, KyberTradeModel, ReserveTradeModel, ReserveInfoModel } = require('../databaseModel');
 const { Op } = require("sequelize");
 
 const UtilsHelper = require('../common/Utils');
@@ -484,6 +483,36 @@ module.exports = BaseService.extends({
         })
         .catch(err => _next(err))
       },
+      info: _next => {
+        ReserveInfoModel.findAll({
+          attributes: [
+            ['reserve_id', 'reserveId'], 
+            ['reserve_address', 'reserveAddress']
+          ],
+          where: {
+            "action": 1
+          },
+          raw: true
+        })
+        .then(results => {
+          const returnObj = {}
+          if(results && results.length){
+            results.map(item => {
+              console.log("_______item", item)
+              const reserveId = item.reserveId
+              const reserveaddr = item.reserveAddress
+              if(reserveaddr){
+                const parsedData = UtilsHelper.reserveIdToAscii(reserveId, reserveaddr)
+                returnObj[reserveaddr.toLowerCase()] = parsedData
+              }
+            })
+          }
+          return _next(null, returnObj)
+        })
+        .catch(err => {
+          _next(err)
+        })
+      },
       vol: _next => {
         ReserveTradeModel.findAll({
           attributes: [
@@ -532,6 +561,7 @@ module.exports = BaseService.extends({
         return callback(err);
       }
       const reserves = [];
+
       ret.list.map(r => {
         if(!ret.vol[r.toLowerCase()]) {
           reserves.push({
@@ -540,6 +570,7 @@ module.exports = BaseService.extends({
             volumeETH: 0,
             isDelisted: false,
             status: ret.aprStatus[r.toLowerCase()],
+            info: ret.info[r.toLowerCase()]
           })
         } else {
           reserves.push({
@@ -548,6 +579,7 @@ module.exports = BaseService.extends({
             volumeETH: ret.vol[r.toLowerCase()].volumeETH || 0,
             isDelisted: false,
             status: ret.aprStatus[r.toLowerCase()],
+            info: ret.info[r.toLowerCase()]
           })
         }
       })
@@ -1525,20 +1557,40 @@ module.exports = BaseService.extends({
       })
     }
 
-    KyberTradeModel.findAll({
-      attributes: [
-        [groupColumn, this._convertSeqColumnName(groupColumn)],
-        [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
-        [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
-      ], 
-      where: {
-        [Op.and]: whereAnd
+    async.auto({
+      count: _next => {
+        KyberTradeModel.findAll({
+          attributes: [
+            [groupColumn, this._convertSeqColumnName(groupColumn)],
+            [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
+            [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
+          ], 
+          where: {
+            [Op.and]: whereAnd
+          },
+          group: [groupColumn],
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      group: [groupColumn],
-      raw: true,
-    })
-    .then(result => callback(null, result))
-    .catch(err => callback(err))
+      total: _next => {
+        KyberTradeModel.findAll({
+          attributes: [
+            [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
+            [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
+          ], 
+          where: {
+            [Op.and]: whereAnd
+          },
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      }
+    }, callback)
+
+   
   },
 
   getUniqueNumberTraders: function (options, callback){

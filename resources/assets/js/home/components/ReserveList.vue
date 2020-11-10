@@ -16,13 +16,13 @@
       <template slot="body" scope="slot">
         <tr  @click="toReserveDetails(slot.item.address)" class="pointer">
             <td class="pl-4 reserve-name" >
-              <a class="address-link" >{{getReservename(slot.item.address)}}</a>
+              <a class="address-link" >{{getReservename(slot.item)}}</a>
               <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
               <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
           <td class="reserve-type text-center">
-            <span v-bind:class="getReserveType(slot.item.address).toLowerCase()">
-              {{ getReserveType(slot.item.address) }}
+            <span v-bind:class="getReserveType(slot.item).toLowerCase()">
+              {{ getReserveType(slot.item) }}
             </span>
             </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
@@ -49,8 +49,8 @@
               <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
           <td class="reserve-type text-center" >
-            <span v-bind:class=" getReserveType(slot.item.address).toLowerCase()">
-              {{ getReserveType(slot.item.address) }}
+            <span v-bind:class=" getReserveType(slot.item).toLowerCase()">
+              {{ getReserveType(slot.item) }}
             </span>
             
             </td>
@@ -192,23 +192,28 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 9, 8)
     },
-    getReservename(addr){
-      const reserveAddrLower = addr.toLowerCase()
-      const reserveData = reserveName[addr.toLowerCase()]
-      if(!reserveData) return util.shortenAddress(addr, 9, 8)
+    getReservename(item){
+      if(item.info) return item.info.name.toUpperCase()
 
-      return reserveData[0]
+
+      const reserveAddrLower = item.address.toLowerCase()
+      const reserveData = reserveName[reserveAddrLower]
+      if(!reserveData) return util.shortenAddress(reserveAddrLower, 9, 8)
+
+      return reserveData[0].toUpperCase()
     },
-    getReserveType(addr){
-      const reserveAddrLower = addr.toLowerCase()
-      const reserveData = reserveName[addr.toLowerCase()]
+    getReserveType(item){
+      if(item.info) return item.info.type
+
+      const reserveAddrLower = item.address.toLowerCase()
+      const reserveData = reserveName[reserveAddrLower]
       if(!reserveData || !reserveData[1]) return "-/-"
 
       return reserveData[1]
     },
 
-    getReserveTypeStyleClass(addr){
-      const reserveType = this.getReserveType(addr)
+    getReserveTypeStyleClass(item){
+      const reserveType = this.getReserveType(item)
 
       if(reserveType == "BR") return ""
       else if (reserveType == "APR") return ""
