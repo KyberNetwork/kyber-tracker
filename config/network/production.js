@@ -55,6 +55,7 @@ module.exports = {
     "0x8463fDa3567D9228D6Bc2A9b6219fC85a19b89aa": "Oasis hybrid 3",
     "0x2295fc6BC32cD12fdBb852cFf4014cEAc6d79C10": "PT",
     "0x63825c174ab367968ec60f061753d3bbd36a0d8f": "Kyber Reserve v1",
+    "0xaa448eff88b1e752d50b87220b543d79eac15a0e": "Kyber Reserve v2",
     "0x35183769bbbf63d2b4cac32ef593f4ad08104fba": "KCC",
     "0x21433dec9cb634a23c6a4bbcce08c83f5ac2ec18": "Prycto",
     "0xfe4474d73be9307ebb5b5519dca19e8109286acb": "Tomo",
