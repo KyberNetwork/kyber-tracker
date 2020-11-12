@@ -193,14 +193,17 @@ export default {
       return util.shortenAddress(addr, 9, 8)
     },
     getReservename(item){
-      if(item.info) return item.info.name.toUpperCase()
-
-
       const reserveAddrLower = item.address.toLowerCase()
       const reserveData = reserveName[reserveAddrLower]
-      if(!reserveData) return util.shortenAddress(reserveAddrLower, 9, 8)
+      if(reserveData){
+        return reserveData[0].toUpperCase()
+      }
 
-      return reserveData[0].toUpperCase()
+      if(item.info) return item.info.name.toUpperCase()
+
+      return util.shortenAddress(reserveAddrLower, 9, 8)
+
+      
     },
     getReserveType(item){
       if(item.info) return item.info.type
