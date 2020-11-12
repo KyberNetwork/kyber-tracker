@@ -55,8 +55,8 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
 .env.save
+.env
 
 .logs
 test.js

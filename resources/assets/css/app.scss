@@ -122,7 +122,10 @@ a {
 
 
 .change-language-button {
-
+  .btn {
+    padding: 0 !important;
+    font-size: 12px !important;
+  }
   button:first-child, button:first-child:hover, button:first-child:active {
     background: transparent !important;
     outline: none !important;
@@ -144,7 +147,7 @@ a {
   .dropdown-menu {
     padding: 0;
     // background-color: #fcfcfc;
-    font-size: 0.9rem;
+    // font-size: 0.9rem;
   }
 
   // .dropdown-item {
@@ -583,7 +586,7 @@ a {
   color: #5a5e67;
   // background-color: #f4f5f4;
   background-color: #f0f1f4;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 2.46;
   .footer-container{
     max-width: initial;
@@ -1917,7 +1920,7 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
         fill: #2ed573;
       }
       .card-title{
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 600;
       }
       .card-text{
@@ -2094,10 +2097,6 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
 //   // right: 15px;
 //   // top: 7px;
 // }
-
-.change-language-button > .btn {
-  padding: 0 !important;
-}
 
 .tracker-logo {
   // min-width: 140px;

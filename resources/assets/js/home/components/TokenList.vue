@@ -74,7 +74,7 @@
 
     <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
         :title="getListTitle()"
-        :getData="getList">
+        :rows="displayArrayToken">
       <template slot="header">
         <!-- <th class="text-center">{{ $t("token_list.no") }}</th> -->
         <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
@@ -124,7 +124,7 @@
 
     <data-table v-if="($mq !== 'md' && $mq !== 'lg')" ref="datatable" class="small-table table-hover"
         :title="getListTitle()"
-        :getData="getList">
+        :rows="displayArrayToken">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.symbol") }}</th>
         <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
@@ -151,6 +151,9 @@
       </template>
     </data-table>
 
+    <div class="text-center">
+      <button type="button" class="btn btn-default see-all-trade mx-auto" @click="toggleSeeAll()">{{seeAll ? $t("common.see_less") : $t("common.see_all") }}</button>
+    </div>
 
   </div>
 </template>
@@ -177,18 +180,30 @@ export default {
       tokenIcons: {},
       tokenPrice: {},
       tokenChange24h: {},
+      arrayTokenData: [],
+      displayArrayToken: [],
+      seeAll: true
     };
   },
 
   methods: {
     refresh () {
-      this.$refs.datatable.fetch();
+      // this.$refs.datatable.fetch();
+      this.getList()
       this.refreshTopTopkensChart(this.selectedPeriod);
       this.getTokenPrice()
       this.getTokenChange24h()
     },
     getListTitle () {
       return '';
+    },
+    toggleSeeAll(){
+      this.seeAll = !this.seeAll
+      if(this.seeAll){
+        this.displayArrayToken = this.arrayTokenData
+      } else {
+        this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+      }
     },
     getAddressLink(addr){
       return network.endpoints.ethScan + "address/" + addr;
@@ -211,7 +226,14 @@ export default {
         toDate: now,
       }
       if(timeStamp) requestParams.timeStamp = timeStamp
-      return AppRequest.getTokens(requestParams);
+      return AppRequest.getTokens(requestParams)
+      .then(results => {
+        this.arrayTokenData = results
+        this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+      })
+      .catch(err => {
+        console.log("______________", err)
+      })
     },
 
     shouldShowToken (item) {
