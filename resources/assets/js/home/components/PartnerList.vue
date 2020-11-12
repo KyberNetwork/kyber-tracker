@@ -67,7 +67,7 @@
       </b-tabs>
     </b-card> -->
 
-    <div class="panel-heading pt-56 pb-20">
+    <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{ $t("common.defi") }}</span>
     </div>
 

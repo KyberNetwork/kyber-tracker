@@ -6,7 +6,7 @@
       </div>
       <div class="chart-summary-info ml-3">
         <div class="info-label pt-2">
-          TRADERS
+          ADDRESSES
         </div>
         <div class="info-number font-weight-bold pt-2">
           {{total}}

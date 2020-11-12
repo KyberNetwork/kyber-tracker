@@ -168,7 +168,7 @@
 
   "wallet_detail": {
     "address": "Địa chỉ",
-    "trades": "Giao dịch",
+    "trades": "Total Trades",
     "collected_fees": "Tổng phí",
     "platform_fees": "Platform Fees",
     "knc_collected": "KNC Collected",

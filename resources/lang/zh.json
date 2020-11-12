@@ -162,7 +162,7 @@
   },
   "wallet_detail": {
     "address": "地址",
-    "trades": "交易次数",
+    "trades": "Total Trades",
     "collected_fees": "总费用",
     "platform_fees": "Platform Fees",
     "knc_collected": "KNC Collected",

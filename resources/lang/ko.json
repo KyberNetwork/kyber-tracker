@@ -161,7 +161,7 @@
 
   "wallet_detail": {
     "address": "주소",
-    "trades": "거래",
+    "trades": "Total Trades",
     "collected_fees": "총비용",
     "platform_fees": "Platform Fees",
     "knc_collected": "KNC Collected",

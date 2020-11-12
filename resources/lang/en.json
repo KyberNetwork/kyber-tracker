@@ -102,7 +102,7 @@
   "chart": {
     "title": {
       "network_volume": "Volume",
-      "unique_traders": "Unique Traders",
+      "unique_traders": "Unique Address",
       "total_trades": "Total Trades",
       "collected_fees": "Collected Fees",
       "fees_burned": "Burnt (Accumulated)",
@@ -168,7 +168,7 @@
 
   "wallet_detail": {
     "address": "Address",
-    "trades": "Trades",
+    "trades": "Total Trades",
     "collected_fees": "Collected Fees",
     "platform_fees": "Platform Fees",
     "knc_collected": "KNC Collected",
