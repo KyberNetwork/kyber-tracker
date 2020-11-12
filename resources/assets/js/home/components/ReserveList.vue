@@ -4,7 +4,7 @@
       <span class="no-margin panel-title">{{$t('navigator.reserves')}} </span>
     </div>
 
-    <data-table v-if="isAllTokens()" :rows="getReserveByType('all')">
+    <data-table v-if="isAllTokens()" :rows="displayReserveList">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.address") }}</th>
         <th class="text-left pl-4">{{ $t("common.type") }}</th>
@@ -32,7 +32,7 @@
       </template>
     </data-table>
 
-    <data-table v-else :rows="getReserveByType('offical')">
+    <data-table v-else :rows="displayReserveList">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.address") }}</th>
         <th class="text-left pl-4">{{ $t("common.type") }}</th>
@@ -60,6 +60,10 @@
         </tr>
       </template>
     </data-table>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-default see-all-trade mx-auto" @click="toggleSeeAll()">{{seeAll ? $t("common.see_less") : $t("common.see_all") }}</button>
+    </div>
 
 
     <!-- <b-tabs>
@@ -154,7 +158,9 @@ export default {
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
       tokenIcons: {},
-      reserveList: []
+      reserveList: [],
+      displayReserveList: [],
+      seeAll: true
     };
   },
 
@@ -164,7 +170,17 @@ export default {
       // this.refreshTopTopkensChart(this.selectedPeriod);
       this.getList().then(data => {
         this.reserveList = data
+        this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
       })
+    },
+
+    toggleSeeAll(){
+      this.seeAll = !this.seeAll
+      if(this.seeAll){
+        this.displayReserveList = this.reserveList
+      } else {
+        this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
+      }
     },
     getListTitle () {
       return '';
