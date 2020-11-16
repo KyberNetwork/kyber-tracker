@@ -159,8 +159,8 @@ export default {
           const index = tooltipItem[0].index;
           const label = this.$t('chart.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
           const eth = this.$t('chart.title.label_volume') + ' (ETH): ' + util.numberWithCommas(data.eths[index]);
-          const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
-          return [label, eth, count];
+          // const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
+          return [label, eth];
         }
       };
 
