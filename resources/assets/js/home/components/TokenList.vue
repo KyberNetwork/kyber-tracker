@@ -67,8 +67,9 @@
       </b-tabs>
     </b-card>
 
-    <div class="panel-heading pt-56 pb-20">
-      <span class="no-margin panel-title">{{ $t("common.all_token") }}</span>
+    <div class="pt-40 pb-20">
+      <span class="panel-heading no-margin panel-title">{{ $t("common.all_token") }} </span>
+      <span>({{activeTokens.length}} active tokens)</span>
     </div>
 
 
@@ -182,6 +183,7 @@ export default {
       tokenChange24h: {},
       arrayTokenData: [],
       displayArrayToken: [],
+      activeTokens: [],
       seeAll: false
     };
   },
@@ -202,7 +204,7 @@ export default {
       if(this.seeAll){
         this.displayArrayToken = this.arrayTokenData
       } else {
-        this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+        this.displayArrayToken = this.activeTokens
       }
     },
     getAddressLink(addr){
@@ -229,10 +231,11 @@ export default {
       return AppRequest.getTokens(requestParams)
       .then(results => {
         this.arrayTokenData = results
+        this.activeTokens = this.arrayTokenData.filter(x => x.volumeETH)
         if(this.seeAll){
           this.displayArrayToken = this.arrayTokenData
         } else {
-          this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+          this.displayArrayToken = this.activeTokens
         }
       })
       .catch(err => {
@@ -312,7 +315,7 @@ export default {
     displayTokenPrice(price){
       if(!price) return "-/-"
 
-      return price.toFixed(3)
+      return "$" + price.toFixed(3)
     },
     displayTokenChange24h(value){
       if (value > 0) {

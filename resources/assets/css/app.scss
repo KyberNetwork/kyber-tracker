@@ -396,6 +396,7 @@ a {
     border-radius: 5px;
     background-color: #fda04f;
     align-items: center;
+    text-decoration: none;
     .icon-go{
       font-size: 20px;
       vertical-align: middle;
@@ -588,6 +589,16 @@ a {
   background-color: #f0f1f4;
   font-size: 12px;
   line-height: 2.46;
+  .remove-link-style{
+    color: #5a5e67;
+    text-decoration: inherit; /* no underline */
+  }
+  .color-blue{
+    color: #1752f0
+  }
+  .color-green{
+    color: #31cb9e
+  }
   .footer-container{
     max-width: initial;
   }
@@ -2693,6 +2704,9 @@ table.table-round {
       overflow-y:hidden;
       padding-left: 12px;
       // transition: width 0.5s;
+    }
+    .token-prive-nav{
+      margin-bottom: 50px;
     }
   }
 

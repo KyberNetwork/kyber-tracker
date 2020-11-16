@@ -314,7 +314,7 @@
 
         <div class="nav-line h-100">
           <div class="icon-side h-100"></div>
-          <div v-bind:class="[isNavOpen ? 'nav-text ' : 'nav-text w-0']">
+          <div v-bind:class="[isNavOpen ? 'nav-text token-prive-nav' : 'nav-text w-0']">
             <div ref="slide_1" class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.knc_price') }}</span>
               <div class="d-inline-flex">
@@ -444,12 +444,12 @@
     <div id="footer">
       <div class="container" v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'footer-container' : ''">
         <div class="row m-0">
-          <div class="col-12 col-xl-6">
-            <div class="row">
+          <div class="col-12 col-xl-6 pr-xl-4">
+            <div class="row d-xl-fex d-xl-flex-column-reverse">
               <div class="col-12 col-md-4">
                 <div class="row">
                   <div class="col p-0">
-                    <a href="https://t.me/KyberTrackerBot" target="_blank">
+                    <a href="https://t.me/kybernetwork" target="_blank">
                       <img class="footer-icon ml-0" src="/images/telegram.svg" />
                     </a>
                   </div>
@@ -459,12 +459,12 @@
                     </a>
                   </div>
                   <div class="col p-0 pt-1">
-                    <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                    <a href="https://discord.gg/NfFMVz6" target="_blank">
                       <img class="footer-icon" src="/images/dircord.svg" />
                     </a>
                   </div>
                   <div class="col p-0">
-                    <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                    <a href="https://github.com/kybernetwork" target="_blank">
                       <img class="footer-icon" src="/images/github.svg" />
                     </a>
                   </div>
@@ -474,14 +474,16 @@
                 <div class="row">
                   <div class="col-4">
                     <a
-                      href="https://github.com/kyberNetwork/kyber-tracker/"
+                      href="https://developer.kyber.network/docs/Addresses-Intro/"
                       target="_blank"
+                      class="remove-link-style"
                     >Contract data</a>
                   </div>
                   <div class="col-5 p-0">
                     <a
-                      href="https://github.com/kyberNetwork/kyber-tracker/"
+                      href=" https://developer.kyber.network/tx-diagnose/"
                       target="_blank"
+                      class="remove-link-style"
                     >Transaction debugger</a>
                   </div>
                   <div class="col-3 pt-1">
@@ -514,15 +516,19 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-xl-6">
+          <div class="col-12 col-xl-6 pl-xl-4">
             <div class="row">
               <div class="col-12 col-md-6">
                 <div class="row">
                   <div class="col">
-                    <span class="pl-2">Kyber Network</span>
+                    <a href="https://kyber.network/" target="_blank" class="remove-link-style color-green">
+                      Kyber Network
+                    </a>
                   </div>
                   <div class="col">
-                    <span class="pl-2">Kyber DAO</span>
+                    <a href="https://kyber.org/" target="_blank" class="remove-link-style color-blue">
+                      Kyber DAO
+                    </a>
                   </div>
                 </div>
               </div>

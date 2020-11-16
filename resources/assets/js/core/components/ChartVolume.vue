@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="chart-summary d-flex flex-row">
+    <div v-if="!hideSumary" class="chart-summary d-flex flex-row">
       <div class="chart-summary-icon volume ml-3">
         <img src="/images/volume-summary.svg">
       </div>
@@ -36,6 +36,10 @@ export default {
       type: String,
       default: null,
     },
+    hideSumary: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
