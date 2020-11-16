@@ -30,7 +30,7 @@
         </b-button-group>
       </div>
       <b-tabs card>
-        <b-tab :title="$t('chart.title.top_token')">
+        <b-tab :title="$t('chart.title.label_volume')">
 
 
           <div class="chart-period-picker text-right pt-2" v-if="$mq == 'sm' || $mq == 'ml'">
