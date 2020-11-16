@@ -182,7 +182,7 @@ export default {
       tokenChange24h: {},
       arrayTokenData: [],
       displayArrayToken: [],
-      seeAll: true
+      seeAll: false
     };
   },
 
@@ -229,7 +229,11 @@ export default {
       return AppRequest.getTokens(requestParams)
       .then(results => {
         this.arrayTokenData = results
-        this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+        if(this.seeAll){
+          this.displayArrayToken = this.arrayTokenData
+        } else {
+          this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+        }
       })
       .catch(err => {
         console.log("______________", err)

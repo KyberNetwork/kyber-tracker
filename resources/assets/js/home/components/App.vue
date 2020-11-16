@@ -621,6 +621,7 @@ import bowser from "bowser";
 import store from "../../core/helper/store";
 import ClickOutside from "vue-click-outside";
 import _ from "lodash";
+const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens;
 
 export default {
   data() {
@@ -900,6 +901,16 @@ export default {
         return;
       }
       this.searchString = this.searchString.trim();
+
+      const foundToken =  Object.values(TOKENS_BY_ADDR).find(t => (t.symbol && t.symbol.toLowerCase() == this.searchString.toLowerCase()))
+      if(foundToken){
+        const foundTokenAddr = foundToken.address
+        this.$router.push({
+          path: `/tokens/${foundTokenAddr}`,
+        });
+
+        return
+      }
 
       this.$router.push({
         name: "search",
