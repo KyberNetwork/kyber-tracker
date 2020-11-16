@@ -298,6 +298,8 @@ export default {
     
     toTokenDetails (partnerAddress) {
       console.log("---------------- address", partnerAddress, this.partnerIcons, this.partnerIcons[partnerAddress])
+      const partnerUrl = network.endpoints.ethScan + "address/" + partnerAddress
+      window.open(partnerUrl, '_blank');
       // const tokenInfo = this.tokens[symbol];
       // if (!tokenInfo) {
       //   return;

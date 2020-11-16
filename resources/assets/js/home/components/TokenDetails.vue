@@ -14,7 +14,9 @@
       <b-tab no-body active>
         <chart-volume ref="chartVolume"
           :elementId="'chart-volume'"
-          :tokenSymbol="getFilterTokenAddress()">
+          :tokenSymbol="getFilterTokenAddress()"
+          :hideSumary="true"
+          >
         </chart-volume>
       </b-tab>
     </b-card>

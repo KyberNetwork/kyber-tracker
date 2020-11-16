@@ -157,7 +157,7 @@
           },
           afterBody: (tooltipItem, data) => {
             const index = tooltipItem[0].index;
-            const label = util.numberWithCommas(data.datasets[0].data[index]) + ' Traders';
+            const label = util.numberWithCommas(data.datasets[0].data[index]) + ' Addresses';
             return [label];
           }
         };

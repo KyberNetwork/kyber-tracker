@@ -160,7 +160,7 @@ export default {
       tokenIcons: {},
       reserveList: [],
       displayReserveList: [],
-      seeAll: true
+      seeAll: false
     };
   },
 
@@ -170,7 +170,12 @@ export default {
       // this.refreshTopTopkensChart(this.selectedPeriod);
       this.getList().then(data => {
         this.reserveList = data
-        this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
+        // this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
+        if(this.seeAll){
+          this.displayReserveList = this.reserveList
+        } else {
+          this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
+        }
       })
     },
 

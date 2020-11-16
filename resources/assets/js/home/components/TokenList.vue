@@ -30,7 +30,7 @@
         </b-button-group>
       </div>
       <b-tabs card>
-        <b-tab :title="$t('chart.title.top_token')">
+        <b-tab :title="$t('chart.title.label_volume')">
 
 
           <div class="chart-period-picker text-right pt-2" v-if="$mq == 'sm' || $mq == 'ml'">
@@ -67,8 +67,9 @@
       </b-tabs>
     </b-card>
 
-    <div class="panel-heading pt-56 pb-20">
-      <span class="no-margin panel-title">{{ $t("common.all_token") }}</span>
+    <div class="pt-40 pb-20">
+      <span class="panel-heading no-margin panel-title">{{ $t("common.all_token") }} </span>
+      <span>({{activeTokens.length}} active tokens)</span>
     </div>
 
 
@@ -182,7 +183,8 @@ export default {
       tokenChange24h: {},
       arrayTokenData: [],
       displayArrayToken: [],
-      seeAll: true
+      activeTokens: [],
+      seeAll: false
     };
   },
 
@@ -202,7 +204,7 @@ export default {
       if(this.seeAll){
         this.displayArrayToken = this.arrayTokenData
       } else {
-        this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+        this.displayArrayToken = this.activeTokens
       }
     },
     getAddressLink(addr){
@@ -229,7 +231,12 @@ export default {
       return AppRequest.getTokens(requestParams)
       .then(results => {
         this.arrayTokenData = results
-        this.displayArrayToken = this.arrayTokenData.filter(x => x.volumeETH)
+        this.activeTokens = this.arrayTokenData.filter(x => x.volumeETH)
+        if(this.seeAll){
+          this.displayArrayToken = this.arrayTokenData
+        } else {
+          this.displayArrayToken = this.activeTokens
+        }
       })
       .catch(err => {
         console.log("______________", err)
@@ -308,7 +315,7 @@ export default {
     displayTokenPrice(price){
       if(!price) return "-/-"
 
-      return price.toFixed(3)
+      return "$" + price.toFixed(3)
     },
     displayTokenChange24h(value){
       if (value > 0) {
