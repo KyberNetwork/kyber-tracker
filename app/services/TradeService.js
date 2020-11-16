@@ -1682,7 +1682,8 @@ module.exports = BaseService.extends({
             [Op.and]: whereAnd
           },
           group: [groupColumn],
-          distinct: 'maker_address, taker_address',
+          distinct: true,
+          col: 'taker_address',
           raw: true,
         })
         .then(result => _next(null, result))
@@ -1693,7 +1694,8 @@ module.exports = BaseService.extends({
           where: {
             [Op.and]: whereAnd
           },
-          distinct: 'maker_address, taker_address',
+          distinct: true,
+          col: 'taker_address',
           raw: true,
         })
         .then(result => _next(null, result))
