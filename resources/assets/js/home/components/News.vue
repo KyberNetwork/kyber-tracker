@@ -27,6 +27,13 @@
         </div>
       </div>
     </div>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-default see-all-trade mx-auto" >
+        <a href="https://medium.com/@kyberteam" target="_blank">See All</a>
+      </button>
+    </div>
+
   </div>
 </template>
 
@@ -67,14 +74,15 @@ export default {
       )
         .then(response => response.json())
         .then(data => {
-          if (data.status == "ok") {
-              console.log("------------- ", data.items)
-            this.posts = data.items;
+          if (data.status == "ok" && data.items && data.items.length) {
+            this.posts = data.items.slice(0,9);
           }
         });
     },
     getTextFromHtml(htmlString){
-        return htmlToText.fromString(htmlString)
+      const textString = htmlToText.fromString(htmlString)
+      const removedLink = textString.replace(/\[(.*?)\]/g, '')
+      return removedLink
     },
     truncate(str, n){
         return (str.length > n) ? str.substr(0, n-1) + '&hellip;' : str;

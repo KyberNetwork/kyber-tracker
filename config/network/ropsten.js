@@ -36,7 +36,13 @@ module.exports = {
     
   },
   "reserves": {
-
+    "0x9d27a2d71ac44e075f764d5612581e9afc1964fd": ["Orderbook"],
+    "0xba92981e049a79de1b79c2396d48063e02f47239": ["Bancor hybrid"],
+    "0x44aef3101432a64d1aa16388f4b9b352b09f42a9": ["Oasis hybrid"],
+    "0x5d154c145db2ca90b8ab5e8fe3e716afa4ab7ff0": ["Uniswap hybrid"],
+    "0x6f50e41885fdc44dbdf7797df0393779a9c0a3a6": ["Olympus"],
+    "0x04A487aFd662c4F9DEAcC07A7B10cFb686B682A4": ["Oasis hybrid 2"],
+    "0xcb57809435c66006d16db062c285be9e890c96fc": ["Virgil Capital"],
   },
   "ETH": {
     "name": "Ethereum",
