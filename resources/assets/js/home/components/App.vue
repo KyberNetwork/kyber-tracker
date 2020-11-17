@@ -447,7 +447,7 @@ export default {
       infoBarUrl: "https://kyberswap.com/promo/smart_valor?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=valor-contest",
       infoBarMess: "$12,000 to be won in Double Trading Contest with VALOR on KyberSwap!",
       infoBarTimeFrom: 1605532607000,
-      infoBarTimeTo: 1605743940000,
+      infoBarTimeTo: 1606409999000,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
