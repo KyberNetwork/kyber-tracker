@@ -143,11 +143,11 @@ module.exports = {
     "0x84609cf708a82f97661db37f5f4d2a257d401d8e": ["Mooniswap bridge reserve", "BR"],
     "0x55a8fda671a257b80258d2a03abd6e0e1e3dbe79": ["SyncFab APR", "APR"],
     "0x248eaed12d307ef68a964fdfc4531637276fec14": ["Balancer Bridge V1", "BR"],
-    "0x6d39cff1ef97c8f1e70d711e526e858a201315cd": ["OneBit FPR"],
-    "0x12ba0823f29d674fbfe844e40f6ba54a07af44d7": ["SushiSwap Bridge"],
-    "0x0994c18ed0c328f38d2c451b2a2e1ceb1ae6a812": ["ANT APR"],
-    "0x69b87a139f3976912c1db7d0808a9fc7e3ca453f": ["Prycto FPR"],
-    "0xd01ae36a911912a106445cc350be327344fbfefa": ["Uniswap-Sushiswap Bridge Reserve"],
+    "0x6d39cff1ef97c8f1e70d711e526e858a201315cd": ["OneBit FPR", "FPR"],
+    "0x12ba0823f29d674fbfe844e40f6ba54a07af44d7": ["SushiSwap Bridge", "BR"],
+    "0x0994c18ed0c328f38d2c451b2a2e1ceb1ae6a812": ["ANT APR", "APR"],
+    "0x69b87a139f3976912c1db7d0808a9fc7e3ca453f": ["Prycto FPR", "FPR"],
+    "0xd01ae36a911912a106445cc350be327344fbfefa": ["Uniswap-Sushiswap Bridge Reserve", "BR"],
     "0xeb74c8b319515593a26dab10a13f19872c2ecb02": ["Anonymous Reserve"]
   },
 
