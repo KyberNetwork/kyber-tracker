@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :id="elementId" width="500px" height="200px" class="mt-20"></canvas>
+    <canvas :id="elementId" width="600px" height="130px" class="mt-20"></canvas>
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
           position: 'right',
           labels: {
             fontStyle: '400',
-            fontSize: 11
+            fontSize: 12
           }
         },
         tooltips: {
