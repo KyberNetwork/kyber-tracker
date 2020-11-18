@@ -43,8 +43,15 @@ module.exports = {
     "0x6f50e41885fdc44dbdf7797df0393779a9c0a3a6": ["Olympus"],
     "0x04A487aFd662c4F9DEAcC07A7B10cFb686B682A4": ["Oasis hybrid 2"],
     "0xcb57809435c66006d16db062c285be9e890c96fc": ["Virgil Capital"],
+    "0xeb52ce516a8d054a574905bdc3d4a176d3a2d51a": ["Kyber FPR", "FPR"],
+    "0xfed79b3715982f1c812eb2d44695d73dbb1d86dd": ["KNC APR", "APR"],
+    "0xb03fa646f3c030fc49e2602caac2befd8e8eff4e": ["WETH APR", "APR"],
+    "0xa862548fb379c5c9e3047cae68b68e1cf5577dd5": ["Uniswap-Sushiswap Bridge Reserve", "BR"]
   },
   "blackListReserves": [
+    "0xe140ad73a09342e927dbb184c397038432206c63",
+    "0x072bfe95e2b8050221de8ab324ab11cc7d66d75b",
+    "0x00f910607cc18b875d2ea0f14243957c3a7a634f"
   ],
   "ETH": {
     "name": "Ethereum",
