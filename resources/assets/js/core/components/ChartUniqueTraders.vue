@@ -100,8 +100,8 @@
           datasets: [{
             data: dataset,
             pointRadius: 0,
-            backgroundColor: (accumulated ? 'rgba(255, 165, 2,.3)' : 'rgba(0,173,168,.3)'),
-            borderColor: (accumulated ? 'rgba(255, 165, 2,.3)' : 'rgba(0,173,168,.3)'),
+            backgroundColor: 'rgba(139, 206, 241, 0.6)',
+            borderColor: 'rgba(139, 206, 241, 0.6)',
             // borderWidth: 2,
             // showLine: true,
             // spanGaps: true,
