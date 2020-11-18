@@ -161,7 +161,7 @@
 
           <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
             <div ref="searchComponent" class="search-expand">
-              <b-input-group-append class="btn-search d-flex justify-content-between h-100">
+              <b-input-group-append class="btn-search d-flex justify-content-between h-100 position-relative">
                 <vue-autosuggest
                   ref="seatchInputRef"
                   :suggestions="[{
@@ -185,7 +185,7 @@
 
                 <b-btn
                   type="submit"
-                  class="search-button"
+                  class="search-button expand-btn-search"
                   variant="default cursor-pointer"
                   @click="doSearch()"
                 >
