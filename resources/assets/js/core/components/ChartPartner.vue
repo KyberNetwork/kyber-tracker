@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas :id="elementId" width="500px" height="200px" class="mt-20"></canvas>
+    <canvas :id="elementId" width="600px" height="130px" class="mt-20"></canvas>
   </div>
 </template>
 
@@ -33,6 +33,30 @@ export default {
     };
   },
   methods: {
+    _getChartOptions(){
+      return {
+        responsive: false,
+        legend: {
+          position: 'right',
+          labels: {
+            fontStyle: '400',
+            fontSize: 12
+          }
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              return data.labels[tooltipItem.index] + ': ' + data.datasets[0].data[tooltipItem.index] + " USD";
+            }
+          }
+        },
+        plugins: {
+            datalabels: {
+                display: false,
+            },
+        }
+      }
+    },
     _buildChartData (volumeData) {
       if(!volumeData || !volumeData.length) return 
       console.log("-------- volume data ----------", volumeData)
@@ -111,46 +135,23 @@ export default {
   watch: {
       volumeData(val){
           const newChartData = this._buildChartData(val)
-          console.log("=========== new chart data", newChartData)
           const ctx = document.getElementById(this.elementId);
           if (!ctx) {
             return;
           }
-          if (this.chartInstance) {
-            console.log("---------- chart instance =============",  this.chartInstance)
-            this.chartInstance.config.data = newChartData;
-            }
-            else {
-                this.chartInstance = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: newChartData,
-                    options: {
-                      responsive: false,
-                      legend: {
-                        position: 'right',
-                        labels: {
-                          // fontColor: `${this.props.theme === 'dark' ? 'white' : 'black'}`,
-                          fontStyle: '400',
-                          fontSize: 11
-                        }
-                      },
-                      tooltips: {
-                        callbacks: {
-                          label: function(tooltipItem, data) {
-                            return data.labels[tooltipItem.index] + ': ' + data.datasets[0].data[tooltipItem.index] + " USD";
-                          }
-                        }
-                      },
-                      plugins: {
-                          datalabels: {
-                              display: false,
-                          },
-                      }
-                    },
 
-                });
-            }
-            
+          const options = this._getChartOptions()
+          if (this.chartInstance) {
+            this.chartInstance.config.data = newChartData;
+            this.chartInstance.options = options
+            this.chartInstance.update(0);
+          } else {
+            this.chartInstance = new Chart(ctx, {
+              type: 'doughnut',
+              data: newChartData,
+              options: options,
+            });
+          }
         }
   },
   mounted() {

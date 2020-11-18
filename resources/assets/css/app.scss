@@ -265,6 +265,13 @@ a {
       margin-bottom: -3px;
     }
   }
+  .expand-btn-search{
+    position: absolute;
+    top: 25px;
+    right: 0px;
+    width: auto;
+    height: auto;
+  }
 }
 
 
@@ -2706,7 +2713,8 @@ table.table-round {
       // transition: width 0.5s;
     }
     .token-prive-nav{
-      margin-bottom: 50px;
+      bottom: 60px;
+      margin-left: 52px;
     }
   }
 

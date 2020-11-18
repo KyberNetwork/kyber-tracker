@@ -161,7 +161,7 @@
 
           <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
             <div ref="searchComponent" class="search-expand">
-              <b-input-group-append class="btn-search d-flex justify-content-between h-100">
+              <b-input-group-append class="btn-search d-flex justify-content-between h-100 position-relative">
                 <vue-autosuggest
                   ref="seatchInputRef"
                   :suggestions="[{
@@ -185,7 +185,7 @@
 
                 <b-btn
                   type="submit"
-                  class="search-button"
+                  class="search-button expand-btn-search"
                   variant="default cursor-pointer"
                   @click="doSearch()"
                 >
@@ -312,9 +312,9 @@
           </div>
         </div>-->
 
-        <div class="nav-line h-100">
+        <div class="nav-line h-100 position-relative">
           <div class="icon-side h-100"></div>
-          <div v-bind:class="[isNavOpen ? 'nav-text token-prive-nav' : 'nav-text w-0']">
+          <div v-bind:class="[isNavOpen ? 'nav-text token-prive-nav position-fixed' : 'nav-text w-0']">
             <div ref="slide_1" class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.knc_price') }}</span>
               <div class="d-inline-flex">
