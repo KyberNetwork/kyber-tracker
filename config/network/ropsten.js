@@ -3,7 +3,7 @@ module.exports = {
     "web3Provider":"https://ropsten.infura.io",
     "ethScan": "https://ropsten.etherscan.io/",
     "getRate": "https://ropsten-cache.knstats.com/getRate",
-    "apis": "https://dev-api.knstats.com/"
+    "apis": "https://ropsten-api.kyber.network"
     // "apis": "https://api.kyber.network"
   },
   "contractAddresses": {
@@ -44,6 +44,8 @@ module.exports = {
     "0x04A487aFd662c4F9DEAcC07A7B10cFb686B682A4": ["Oasis hybrid 2"],
     "0xcb57809435c66006d16db062c285be9e890c96fc": ["Virgil Capital"],
   },
+  "blackListReserves": [
+  ],
   "ETH": {
     "name": "Ethereum",
     "symbol": "ETH",

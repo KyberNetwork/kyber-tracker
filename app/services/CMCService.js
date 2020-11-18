@@ -330,7 +330,7 @@ module.exports = BaseService.extends({
 
   getKyberCurrentPrice: function(symbol, callback){
     request
-      .get(`https://api.kyber.network/prices`)
+      .get(`${network.endpoints.apis}/prices`)
       .timeout({
         response: 10000,  // Wait 5 seconds for the server to start sending,
         deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -352,7 +352,7 @@ module.exports = BaseService.extends({
 
   getAprReserveStatus: function(callback){
     request
-      .get(`https://api.kyber.network/apr_status`)
+      .get(`${network.endpoints.apis}/apr_status`)
       .timeout({
         response: 10000,  // Wait 5 seconds for the server to start sending,
         deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -384,7 +384,7 @@ module.exports = BaseService.extends({
 
   getKyberChange24hPrice: function(symbol, callback){
     request
-      .get(`https://api.kyber.network/change24h`)
+      .get(`${network.endpoints.apis}/change24h`)
       .timeout({
         response: 10000,  // Wait 5 seconds for the server to start sending,
         deadline: 60000, // but allow 1 minute for the file to finish loading.
