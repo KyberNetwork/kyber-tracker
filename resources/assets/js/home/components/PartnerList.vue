@@ -68,7 +68,7 @@
     </b-card> -->
 
     <div class="panel-heading pb-20">
-      <span class="no-margin panel-title">{{ $t("common.defi") }}</span>
+      <span class="no-margin panel-title">{{ $t("common.defi") }} {{data && data.length ? `(${data.length})` : null}}</span>
     </div>
 
     <div class="table-responsive-wraper">
