@@ -402,6 +402,9 @@ a {
     height: 42px;
     border-radius: 5px;
     background-color: #fda04f;
+    &:hover{
+      background-color: #fb9236;
+    }
     align-items: center;
     text-decoration: none;
     .icon-go{
