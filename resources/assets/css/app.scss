@@ -590,6 +590,7 @@ a {
   width: 100%;
   clear: both;
   bottom: 0;
+  background-color: #f0f1f4;
   //padding: 0;
   // height: 56px;
   padding: 15px 0px;
@@ -1478,13 +1479,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   // }
   #footer{
     height: auto !important;
-    background-color: #f6f7fa;
+    // background-color: #f6f7fa;
     padding-bottom: 0;
    
     .row{
-      display: flex;
-      height: 120px;
-      flex-direction: column-reverse;
+      // display: flex;
+      // height: 120px;
+      // flex-direction: column-reverse;
       .footer-menu,.footer-menu{
         text-align: center !important;
         padding-bottom: 10px;
@@ -2152,7 +2153,7 @@ html {
 
 #page-content {
   min-width: 330px;
-  padding-bottom: 145px;
+  padding-bottom: 180px;
   overflow-x: hidden;
 }
 
@@ -2652,6 +2653,7 @@ table.table-round {
 .sidenav {
   z-index: 100;
   height: 100%;
+  // min-height: 450px;
   width: 200px;
   position: fixed;
   top: 0;
@@ -2659,6 +2661,7 @@ table.table-round {
   background-color: #111;
   overflow-x: hidden;
   overflow-y:hidden;
+
   transition: 0.5s;
   box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.05);
   border: solid 1px #e3e5eb;
@@ -2716,9 +2719,13 @@ table.table-round {
       // transition: width 0.5s;
     }
     .token-prive-nav{
-      bottom: 60px;
-      margin-left: 52px;
+      padding-bottom: 60px;
     }
+  }
+
+  .token-price-container{
+    height: calc(100% - 385px);
+    min-height: 200px;
   }
 
   .nav-logo{
