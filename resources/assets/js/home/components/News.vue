@@ -1,6 +1,8 @@
 <template>
   <div class="news-container container-fluid mt-4">
     <div class="row justify-content-center">
+      <div v-if="!posts || !posts.length" class="trade-loading"><div></div><div></div><div></div></div>
+
       <div class="col-auto mb-3" v-for="(row, index) in posts" :item="row" :index="index">
         <div class="card" style="width: 20rem;" >
           <img class="card-img-top" :src="row.thumbnail" :alt="row.title" />
