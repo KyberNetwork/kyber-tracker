@@ -170,7 +170,7 @@
             fontSize: 12,
             maxTicksLimit: 5,
             callback: (label, index, labels) => {
-              return accumulated ? util.numberWithCommas(label/1000) + 'k KNC' :  util.numberWithCommas(label) + ' KNC';
+              return util.numberWithCommas(label)
             }
           }
         };
