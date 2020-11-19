@@ -51,10 +51,11 @@
         const dataset = [];
         let lastSum = feeData[0].count;
         const momentNow = moment.utc()
+        console.log("________- fee data", feeData)
         if (interval === 'H1') {
           const keyedVolumeData = _.keyBy(feeData, 'hour_seq');
           const lastHour = momentNow.subtract(1, 'hours').endOf('hour')
-          for (let seq = feeData[0].hourSeq; seq <= feeData[feeData.length - 1].hourSeq; seq++) {
+          for (let seq = feeData[0].hour_seq; seq <= feeData[feeData.length - 1].hour_seq; seq++) {
             const seqMs = seq * 3600 * 1000
             const thisTime = moment(seqMs)
             if(thisTime.isAfter(lastHour)){
@@ -93,7 +94,7 @@
           }
         }
 
-        console.log("%%%%%%%%%%%%%%%%%%%%%% dataset %%%%%%%%%%%%%%%%% ", dataset)
+        console.log("%%%%%%%%%%%%%%%%%%%%%% dataset %%%%%%%%%%%%%%%%% ", dataset, interval)
 
         return {
           labels,
