@@ -162,7 +162,7 @@
           <th class="text-left pl-4">{{ $t("common.source") }}</th>
           <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
           <!-- <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th> -->
-          <th class="text-left pl-4">{{ $t("common.trades") }}</th>
+          <!-- <th class="text-left pl-4">{{ $t("common.trades") }}</th> -->
         </template>
 
         <template slot="body" scope="slot">
@@ -172,7 +172,7 @@
             </td>
             <td class="text-right pr-4">{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
             <!-- <td class="text-right pr-4">{{ formatVolumn(slot.item.volumeETH) }}</td> -->
-            <td class="text-right pr-4">{{ slot.item.trades }}</td>
+            <!-- <td class="text-right pr-4">{{ slot.item.trades }}</td> -->
           </tr>
         </template>
       </data-table>

@@ -1,6 +1,16 @@
 <template>
   <div>
-    <canvas :id="elementId" width="600px" height="130px" class="mt-20"></canvas>
+    <canvas  v-if="($mq == 'md' || $mq == 'lg')" :id="elementId" 
+      width="600px" 
+      height="130px" 
+      class="mt-20"
+    ></canvas>
+
+    <canvas  v-if="($mq !== 'md' && $mq !== 'lg')" :id="elementId" 
+      width="350px" 
+      height="170px" 
+      class="mt-20 ml-20"
+    ></canvas>
   </div>
 </template>
 
