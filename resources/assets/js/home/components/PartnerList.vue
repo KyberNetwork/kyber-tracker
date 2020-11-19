@@ -114,9 +114,6 @@
           :title="getListTitle()"
           :rows="data"
           >
-
-
-          
         <template slot="header">
           <th class="text-center"></th>
           <th class="text-left pl-3">{{ $t("common.source") }}</th>
@@ -164,27 +161,18 @@
         <template slot="header">
           <th class="text-left pl-4">{{ $t("common.source") }}</th>
           <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
-          <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th>
+          <!-- <th class="text-right pr-4">{{ $t("common.volume_24h_eth") }}</th> -->
           <th class="text-left pl-4">{{ $t("common.trades") }}</th>
         </template>
 
-        <template slot="body" scope="slot" v-if="shouldShowToken(slot.item)">
-          <tr @click="toTokenDetails(slot.item.address)">
-            <td  class="text-left pl-4" style="white-space:nowrap !important">
-                <div class="token-name">
-                    <span>
-                      <span v-if="slot.item.official && slot.item.symbol">{{ slot.item.symbol }}</span>
-                      <span v-else>
-                        <a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
-                      </span>
-                    </span>
-                    
-                    <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
-                    <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
-                </div>
+        <template slot="body" scope="slot">
+          <tr @click="toTokenDetails(slot.item.partnerAddress.toLowerCase())">
+            <td  class="text-left pl-4">
+                {{getpartnerName(slot.item)}}
             </td>
             <td class="text-right pr-4">{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
-            <td class="text-right pr-4">{{ formatVolumn(slot.item.volumeETH) }}</td>
+            <!-- <td class="text-right pr-4">{{ formatVolumn(slot.item.volumeETH) }}</td> -->
+            <td class="text-right pr-4">{{ slot.item.trades }}</td>
           </tr>
         </template>
       </data-table>
