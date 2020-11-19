@@ -1588,7 +1588,7 @@ module.exports = {
     "0x03e0635a77ca3dbc23748af10a568663964f4bad": "Fulcrum",
     "0x3ffff2f4f6c0831fac59534694acd14ac2ea501b": "KyberSwap Android",
     "0x4d37f28d2db99e8d35a6c725a5f1749a085850a3": "1inch.exchange",
-    "0x68a17b587caf4f9329f0e372e3a78d23a46de6b5": " 1inch Wallet"
+    "0x68a17b587caf4f9329f0e372e3a78d23a46de6b5": "1inch Wallet"
   },
 
   "supportedLanguage": ["en", "vi", "ko", "zh"],
