@@ -448,45 +448,45 @@
             <div class="row d-xl-fex d-xl-flex-column-reverse">
               <div class="col-12 col-md-4">
                 <div class="row">
-                  <div class="col p-0">
+                  <div class="col p-md-0 d-flex justify-content-center">
                     <a href="https://t.me/kybernetwork" target="_blank">
                       <img class="footer-icon ml-0" src="/images/telegram.svg" />
                     </a>
                   </div>
-                  <div class="col p-0">
+                  <div class="col p-md-0 d-flex justify-content-center">
                     <a href="https://twitter.com/KyberNetwork" target="_blank">
                       <img class="footer-icon" src="/images/twitter.svg" />
                     </a>
                   </div>
-                  <div class="col p-0 pt-1">
+                  <div class="col p-md-0 pt-md-1 d-flex justify-content-center">
                     <a href="https://discord.gg/NfFMVz6" target="_blank">
                       <img class="footer-icon" src="/images/dircord.svg" />
                     </a>
                   </div>
-                  <div class="col p-0">
+                  <div class="col p-md-0 d-flex justify-content-center">
                     <a href="https://github.com/kybernetwork" target="_blank">
                       <img class="footer-icon" src="/images/github.svg" />
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-md-8">
-                <div class="row">
-                  <div class="col-4">
+              <div class="col-12 col-md-8 d-flex justify-content-center pt-2 pt-md-0">
+                <div class="row w-100 justify-content-around justify-content-md-center">
+                  <div class="col-4 d-flex justify-content-center p-0">
                     <a
                       href="https://developer.kyber.network/docs/Addresses-Intro/"
                       target="_blank"
                       class="remove-link-style"
                     >Contract data</a>
                   </div>
-                  <div class="col-5 p-0">
+                  <div class="col-5 p-md-0 d-flex justify-content-center p-0">
                     <a
                       href=" https://developer.kyber.network/tx-diagnose/"
                       target="_blank"
                       class="remove-link-style"
                     >Transaction debugger</a>
                   </div>
-                  <div class="col-3 pt-1">
+                  <div class="col-3 d-flex justify-content-center p-0">
                     <b-dropdown class="change-language-button" right>
                       <template slot="button-content">
                         <span class="footer-icon">
@@ -520,19 +520,19 @@
             <div class="row">
               <div class="col-12 col-md-6">
                 <div class="row">
-                  <div class="col">
+                  <div class="col d-flex justify-content-around">
                     <a href="https://kyber.network/" target="_blank" class="remove-link-style color-green">
                       Kyber Network
                     </a>
                   </div>
-                  <div class="col">
+                  <div class="col d-flex justify-content-around">
                     <a href="https://kyber.org/" target="_blank" class="remove-link-style color-blue">
                       Kyber DAO
                     </a>
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-md-6 text-center">
                 <span class="pl-2">Copyright 2018 @ Kyber Network</span>
               </div>
             </div>

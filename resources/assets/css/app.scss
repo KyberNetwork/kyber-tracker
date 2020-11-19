@@ -590,6 +590,7 @@ a {
   width: 100%;
   clear: both;
   bottom: 0;
+  background-color: #f0f1f4;
   //padding: 0;
   // height: 56px;
   padding: 15px 0px;
@@ -1478,13 +1479,13 @@ a:hover, .second-heading-bar a:active, .second-heading-bar a:focus {
   // }
   #footer{
     height: auto !important;
-    background-color: #f6f7fa;
+    // background-color: #f6f7fa;
     padding-bottom: 0;
    
     .row{
-      display: flex;
-      height: 120px;
-      flex-direction: column-reverse;
+      // display: flex;
+      // height: 120px;
+      // flex-direction: column-reverse;
       .footer-menu,.footer-menu{
         text-align: center !important;
         padding-bottom: 10px;
@@ -2152,7 +2153,7 @@ html {
 
 #page-content {
   min-width: 330px;
-  padding-bottom: 145px;
+  padding-bottom: 180px;
   overflow-x: hidden;
 }
 
