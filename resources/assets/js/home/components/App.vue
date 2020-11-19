@@ -312,9 +312,9 @@
           </div>
         </div>-->
 
-        <div class="nav-line h-100 position-relative">
+        <div class="nav-line token-price-container">
           <div class="icon-side h-100"></div>
-          <div v-bind:class="[isNavOpen ? 'nav-text token-prive-nav position-fixed' : 'nav-text w-0']">
+          <div v-bind:class="[isNavOpen ? 'nav-text token-prive-nav d-flex flex-column justify-content-end h-100' : 'nav-text w-0']">
             <div ref="slide_1" class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.knc_price') }}</span>
               <div class="d-inline-flex">
