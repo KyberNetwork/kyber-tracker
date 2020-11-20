@@ -322,7 +322,9 @@ module.exports = {
       })
     })
 
-    return queryCondition
+    return {
+      [Op.or]: queryCondition 
+    }
   },
 
   ignoreETH: (side) => {

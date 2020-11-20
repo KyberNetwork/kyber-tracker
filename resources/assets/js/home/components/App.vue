@@ -161,7 +161,9 @@
 
           <div v-if="$mq == 'md' || $mq == 'lg'" class="search-and-swap d-flex ml-auto">
             <div ref="searchComponent" class="search-expand">
-              <b-input-group-append class="btn-search d-flex justify-content-between h-100 position-relative">
+              <b-input-group-append
+                class="btn-search d-flex justify-content-between h-100 position-relative"
+              >
                 <vue-autosuggest
                   ref="seatchInputRef"
                   :suggestions="[{
@@ -314,7 +316,9 @@
 
         <div class="nav-line token-price-container">
           <div class="icon-side h-100"></div>
-          <div v-bind:class="[isNavOpen ? 'nav-text token-prive-nav d-flex flex-column justify-content-end h-100' : 'nav-text w-0']">
+          <div
+            v-bind:class="[isNavOpen ? 'nav-text token-prive-nav d-flex flex-column justify-content-end h-100' : 'nav-text w-0']"
+          >
             <div ref="slide_1" class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.knc_price') }}</span>
               <div class="d-inline-flex">
@@ -452,12 +456,12 @@
                     <div class="row">
                       <div class="col p-0 d-flex justify-content-center">
                         <a href="https://t.me/kybernetwork" target="_blank">
-                          <img class=" ml-0" src="/images/telegram.svg" />
+                          <img class="ml-0" src="/images/telegram.svg" />
                         </a>
                       </div>
                       <div class="col p-0 d-flex justify-content-center">
                         <a href="https://twitter.com/KyberNetwork" target="_blank">
-                          <img class="" src="/images/twitter.svg" />
+                          <img class src="/images/twitter.svg" />
                         </a>
                       </div>
                       <div class="col p-0 pt-md-1 d-flex justify-content-center">
@@ -467,7 +471,7 @@
                       </div>
                       <div class="col p-0 d-flex justify-content-center">
                         <a href="https://github.com/kybernetwork" target="_blank">
-                          <img class="" src="/images/github.svg" />
+                          <img class src="/images/github.svg" />
                         </a>
                       </div>
                     </div>
@@ -476,22 +480,21 @@
                   <div class="col-7">
                     <div class="row">
                       <div class="col p-0 d-flex justify-content-center">
-                        <a href="https://kyber.network/" target="_blank" class="remove-link-style color-green">
-                          Kyber Network
-                        </a>
+                        <a
+                          href="https://kyber.network/"
+                          target="_blank"
+                          class="remove-link-style color-green"
+                        >Kyber Network</a>
                       </div>
                       <div class="col p-0 d-flex justify-content-center">
-                        <a href="https://kyber.org/" target="_blank" class="remove-link-style color-blue">
-                          Kyber DAO
-                        </a>
+                        <a
+                          href="https://kyber.org/"
+                          target="_blank"
+                          class="remove-link-style color-blue"
+                        >Kyber DAO</a>
                       </div>
                     </div>
                   </div>
-
-                  
-
-                  
-
                 </div>
               </div>
               <div class="col-12 col-md-8 d-flex justify-content-center pt-2 pt-md-0">
@@ -555,9 +558,9 @@
                     </a>
                   </div>
                 </div>
-              </div> -->
+              </div>-->
               <div class="col-12 col-md-6 text-center">
-                <span class="pl-2">Copyright 2018 @ Kyber Network</span>
+                <span class="pl-2">Copyright 2020 @ Kyber Network</span>
               </div>
             </div>
           </div>
@@ -717,19 +720,23 @@
               <div class="col-12 col-md-6">
                 <div class="row">
                   <div class="col d-flex justify-content-around">
-                    <a href="https://kyber.network/" target="_blank" class="remove-link-style color-green">
-                      Kyber Network
-                    </a>
+                    <a
+                      href="https://kyber.network/"
+                      target="_blank"
+                      class="remove-link-style color-green"
+                    >Kyber Network</a>
                   </div>
                   <div class="col d-flex justify-content-around">
-                    <a href="https://kyber.org/" target="_blank" class="remove-link-style color-blue">
-                      Kyber DAO
-                    </a>
+                    <a
+                      href="https://kyber.org/"
+                      target="_blank"
+                      class="remove-link-style color-blue"
+                    >Kyber DAO</a>
                   </div>
                 </div>
               </div>
               <div class="col-12 col-md-6 text-center">
-                <span class="pl-2">Copyright 2018 @ Kyber Network</span>
+                <span class="pl-2">Copyright 2020 @ Kyber Network</span>
               </div>
             </div>
           </div>
@@ -770,8 +777,10 @@ export default {
       addressesMetamask: [],
       isOpenFee: false,
       isShowInfoBar: true,
-      infoBarUrl: "https://kyberswap.com/promo/smart_valor?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=valor-contest",
-      infoBarMess: "$12,000 to be won in Double Trading Contest with VALOR on KyberSwap!",
+      infoBarUrl:
+        "https://kyberswap.com/promo/smart_valor?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=valor-contest",
+      infoBarMess:
+        "$12,000 to be won in Double Trading Contest with VALOR on KyberSwap!",
       infoBarTimeFrom: 1605532607000,
       infoBarTimeTo: 1606409999000,
       indexShowmore: -1,
@@ -1029,14 +1038,17 @@ export default {
       }
       this.searchString = this.searchString.trim();
 
-      const foundToken =  Object.values(TOKENS_BY_ADDR).find(t => (t.symbol && t.symbol.toLowerCase() == this.searchString.toLowerCase()))
-      if(foundToken){
-        const foundTokenAddr = foundToken.address
+      const foundToken = Object.values(TOKENS_BY_ADDR).find(
+        t =>
+          t.symbol && t.symbol.toLowerCase() == this.searchString.toLowerCase()
+      );
+      if (foundToken) {
+        const foundTokenAddr = foundToken.address;
         this.$router.push({
-          path: `/tokens/${foundTokenAddr}`,
+          path: `/tokens/${foundTokenAddr}`
         });
 
-        return
+        return;
       }
 
       this.$router.push({

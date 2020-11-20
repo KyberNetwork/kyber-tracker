@@ -1521,10 +1521,9 @@ module.exports = BaseService.extends({
     const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
-
-    const whereAnd = [{
-      [Op.not]: UtilsHelper.ignoreTokenSequelize(['WETH'])
-    }]
+    const ignoreWETH = UtilsHelper.ignoreTokenSequelize(['WETH'])
+    console.log("________ignoreWETH_________", ignoreWETH)
+    const whereAnd = []
     if(toDate){
       whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
     }
@@ -1568,7 +1567,26 @@ module.exports = BaseService.extends({
             [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
           ], 
           where: {
-            [Op.and]: whereAnd
+            [Op.and]: whereAnd,
+            [Op.not]: [ ignoreWETH
+              // { [Op.or]: [
+              //   {
+              //     [Op.and] : [
+              //       { taker_token_address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"},
+              //       { maker_token_address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+              //     ] 
+              //   },
+
+              //   {
+              //     [Op.and] : [
+              //       { taker_token_address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+              //       { maker_token_address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"},
+              //     ] 
+              //   }
+              // ]
+                
+              // },
+            ],
           },
           group: [groupColumn],
           raw: true,
@@ -1583,7 +1601,8 @@ module.exports = BaseService.extends({
             [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
           ], 
           where: {
-            [Op.and]: whereAnd
+            [Op.and]: whereAnd,
+            [Op.not]: [ignoreWETH]
           },
           raw: true,
         })
