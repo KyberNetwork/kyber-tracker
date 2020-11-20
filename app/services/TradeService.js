@@ -1522,7 +1522,9 @@ module.exports = BaseService.extends({
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
 
-    const whereAnd = []
+    const whereAnd = [{
+      [Op.not]: UtilsHelper.ignoreTokenSequelize(['WETH'])
+    }]
     if(toDate){
       whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
     }

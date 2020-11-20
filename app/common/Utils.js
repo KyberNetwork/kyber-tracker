@@ -7,6 +7,7 @@ const kyberABI = require('../../config/abi/kyber');
 const burnedFeeABI = require('../../config/abi/burned_fee');
 const feeHandleABI = require('../../config/abi/katalyst_fee_handle');
 const wrapperABI = require('../../config/abi/wrapper');
+const { Op } = require("sequelize");
 abiDecoder.addABI(kyberABI);
 abiDecoder.addABI(burnedFeeABI);
 abiDecoder.addABI(feeHandleABI);
@@ -296,6 +297,34 @@ module.exports = {
 
     return ` AND (${queryString})`
   },
+
+  ignoreTokenSequelize: (arraySymbol) => {
+    let queryCondition = []
+    if(!arraySymbol) return queryCondition
+    let arrayAddress = []
+    arraySymbol.map(s => {
+      if(network.tokens[s]) arrayAddress.push(network.tokens[s].address)
+    })
+
+    arrayAddress.map(s => {
+      queryCondition.push({
+        [Op.and]: [
+          {maker_token_address: ethConfig.address},
+          {taker_token_address: s},
+        ]
+      })
+
+      queryCondition.push({
+        [Op.and]: [
+          {maker_token_address: s},
+          {taker_token_address: ethConfig.address},
+        ]
+      })
+    })
+
+    return queryCondition
+  },
+
   ignoreETH: (side) => {
     return ` AND ${side}_token_address <> "${network.ETH.address}"`
   },
