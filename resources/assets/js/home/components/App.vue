@@ -442,7 +442,203 @@
     </div>
 
     <div id="footer">
-      <div class="container" v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'footer-container' : ''">
+      <div class="container footer-container" v-if="$mq == 'sm' || $mq == 'ml'">
+        <div class="row m-0">
+          <div class="col-12 col-xl-6 pr-xl-4">
+            <div class="row d-xl-fex d-xl-flex-column-reverse">
+              <div class="col-12 col-md-4">
+                <div class="row">
+                  <div class="col-5">
+                    <div class="row">
+                      <div class="col p-0 d-flex justify-content-center">
+                        <a href="https://t.me/kybernetwork" target="_blank">
+                          <img class=" ml-0" src="/images/telegram.svg" />
+                        </a>
+                      </div>
+                      <div class="col p-0 d-flex justify-content-center">
+                        <a href="https://twitter.com/KyberNetwork" target="_blank">
+                          <img class="" src="/images/twitter.svg" />
+                        </a>
+                      </div>
+                      <div class="col p-0 pt-md-1 d-flex justify-content-center">
+                        <a href="https://discord.gg/NfFMVz6" target="_blank">
+                          <img class="pt-1" src="/images/dircord.svg" />
+                        </a>
+                      </div>
+                      <div class="col p-0 d-flex justify-content-center">
+                        <a href="https://github.com/kybernetwork" target="_blank">
+                          <img class="" src="/images/github.svg" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-7">
+                    <div class="row">
+                      <div class="col p-0 d-flex justify-content-center">
+                        <a href="https://kyber.network/" target="_blank" class="remove-link-style color-green">
+                          Kyber Network
+                        </a>
+                      </div>
+                      <div class="col p-0 d-flex justify-content-center">
+                        <a href="https://kyber.org/" target="_blank" class="remove-link-style color-blue">
+                          Kyber DAO
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+
+                  
+
+                </div>
+              </div>
+              <div class="col-12 col-md-8 d-flex justify-content-center pt-2 pt-md-0">
+                <div class="row w-100 justify-content-around justify-content-md-center">
+                  <div class="col-4 d-flex justify-content-center p-0">
+                    <a
+                      href="https://developer.kyber.network/docs/Addresses-Intro/"
+                      target="_blank"
+                      class="remove-link-style"
+                    >Contract data</a>
+                  </div>
+                  <div class="col-5 p-md-0 d-flex justify-content-center p-0">
+                    <a
+                      href=" https://developer.kyber.network/tx-diagnose/"
+                      target="_blank"
+                      class="remove-link-style"
+                    >Transaction debugger</a>
+                  </div>
+                  <div class="col-3 d-flex justify-content-center p-0">
+                    <b-dropdown class="change-language-button" right>
+                      <template slot="button-content">
+                        <span class="footer-icon">
+                          <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
+                          {{this.getLanguageText()}}
+                        </span>
+                      </template>
+                      <b-dropdown-item @click="changeLanguage('en')">
+                        <img src="images/locales/en.svg" />
+                        English
+                      </b-dropdown-item>
+                      <b-dropdown-item @click="changeLanguage('vi')">
+                        <img src="images/locales/vi.svg" />
+                        Tiếng Việt
+                      </b-dropdown-item>
+                      <b-dropdown-item @click="changeLanguage('ko')">
+                        <img src="images/locales/ko.svg" />
+                        한국어
+                      </b-dropdown-item>
+                      <b-dropdown-item @click="changeLanguage('zh')">
+                        <img src="images/locales/zh.svg" />
+                        中文
+                      </b-dropdown-item>
+                    </b-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-xl-6 pl-xl-4">
+            <div class="row">
+              <!-- <div class="col-12 col-md-6">
+                <div class="row">
+                  <div class="col d-flex justify-content-around">
+                    <a href="https://kyber.network/" target="_blank" class="remove-link-style color-green">
+                      Kyber Network
+                    </a>
+                  </div>
+                  <div class="col d-flex justify-content-around">
+                    <a href="https://kyber.org/" target="_blank" class="remove-link-style color-blue">
+                      Kyber DAO
+                    </a>
+                  </div>
+                </div>
+              </div> -->
+              <div class="col-12 col-md-6 text-center">
+                <span class="pl-2">Copyright 2018 @ Kyber Network</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-7 footer-menu text-left footer-link" >
+            <div class="d-flex flex-row footer-ul " v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'container' : ''">
+              <ul class="links">
+                <li>
+                  <a href="https://t.me/KyberTrackerBot" target="_blank">
+                    <img class="footer-icon ml-0" src="/images/telegram.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://twitter.com/KyberNetwork" target="_blank">
+                    <img class="footer-icon" src="/images/twitter.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                    <img class="footer-icon" src="/images/dircord.svg" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                    <img class="footer-icon" src="/images/github.svg" />
+                  </a>
+                </li>
+              </ul>
+              <span class="pl-4">
+                <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                  Contract data
+                </a>
+              </span>
+              <span class="pl-4">
+                <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
+                  Transaction debugger
+                </a>
+              </span>
+              <span class="select-lang-box">
+                <b-dropdown class="change-language-button" right>
+                  <template slot="button-content">
+                    <span class="footer-icon">
+                      {{this.getLanguageText()}}
+                    </span>
+                  </template>
+                  <b-dropdown-item @click="changeLanguage('en')">
+                    <img src="images/locales/en.svg" /> 
+                    English
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="changeLanguage('vi')">
+                    <img src="images/locales/vi.svg" /> 
+                    Tiếng Việt
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="changeLanguage('ko')">
+                    <img src="images/locales/ko.svg" /> 
+                    한국어
+                  </b-dropdown-item>
+                  <b-dropdown-item @click="changeLanguage('zh')">
+                    <img src="images/locales/zh.svg" /> 
+                    中文
+                  </b-dropdown-item>
+                </b-dropdown> 
+              </span>
+            </div>
+          </div>
+          <div class="col footer-menu text-right">
+             <span class="pl-2">
+                Kyber Network
+              </span>
+              <span class="pl-2">
+                Kyber DAO
+              </span>
+              <span class="pl-2">
+                Copyright 2018 @ Kyber Network 
+              </span>
+          </div>
+          -->
+        </div>
+      </div>
+
+      <div class="container" v-if="$mq !== 'sm' && $mq !== 'ml'">
         <div class="row m-0">
           <div class="col-12 col-xl-6 pr-xl-4">
             <div class="row d-xl-fex d-xl-flex-column-reverse">
@@ -537,80 +733,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="col-7 footer-menu text-left footer-link" >
-            <div class="d-flex flex-row footer-ul " v-bind:class="$mq == 'sm' || $mq == 'ml' ? 'container' : ''">
-              <ul class="links">
-                <li>
-                  <a href="https://t.me/KyberTrackerBot" target="_blank">
-                    <img class="footer-icon ml-0" src="/images/telegram.svg" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://twitter.com/KyberNetwork" target="_blank">
-                    <img class="footer-icon" src="/images/twitter.svg" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
-                    <img class="footer-icon" src="/images/dircord.svg" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
-                    <img class="footer-icon" src="/images/github.svg" />
-                  </a>
-                </li>
-              </ul>
-              <span class="pl-4">
-                <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
-                  Contract data
-                </a>
-              </span>
-              <span class="pl-4">
-                <a href="https://github.com/kyberNetwork/kyber-tracker/" target="_blank">
-                  Transaction debugger
-                </a>
-              </span>
-              <span class="select-lang-box">
-                <b-dropdown class="change-language-button" right>
-                  <template slot="button-content">
-                    <span class="footer-icon">
-                      {{this.getLanguageText()}}
-                    </span>
-                  </template>
-                  <b-dropdown-item @click="changeLanguage('en')">
-                    <img src="images/locales/en.svg" /> 
-                    English
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="changeLanguage('vi')">
-                    <img src="images/locales/vi.svg" /> 
-                    Tiếng Việt
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="changeLanguage('ko')">
-                    <img src="images/locales/ko.svg" /> 
-                    한국어
-                  </b-dropdown-item>
-                  <b-dropdown-item @click="changeLanguage('zh')">
-                    <img src="images/locales/zh.svg" /> 
-                    中文
-                  </b-dropdown-item>
-                </b-dropdown> 
-              </span>
-            </div>
-          </div>
-          <div class="col footer-menu text-right">
-             <span class="pl-2">
-                Kyber Network
-              </span>
-              <span class="pl-2">
-                Kyber DAO
-              </span>
-              <span class="pl-2">
-                Copyright 2018 @ Kyber Network 
-              </span>
-          </div>
-          -->
         </div>
       </div>
     </div>
