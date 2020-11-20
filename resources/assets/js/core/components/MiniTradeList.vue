@@ -451,15 +451,16 @@ export default {
       return `/trades/${id}`;
     },
     onClickRow (row) {
+      const query = {}
+      if(this.partner) query.partner = this.partner
+      if(this.isReserveTrade) query.reserve = this.isReserveTrade
+
       this.$router.push({
         name: 'trade-details',
         params: {
           id: row.id
         },
-        query: { 
-          partner: this.partner,
-          reserve: this.isReserveTrade
-        }
+        query: query
       });
     },
     clickToPage (page) {
