@@ -736,7 +736,7 @@
                 </div>
               </div>
               <div class="col-12 col-md-6 text-center">
-                <span class="pl-2">Copyright 2018 @ Kyber Network</span>
+                <span class="pl-2">Copyright 2020 @ Kyber Network</span>
               </div>
             </div>
           </div>
