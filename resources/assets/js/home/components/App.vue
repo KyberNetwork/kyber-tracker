@@ -499,25 +499,25 @@
               </div>
               <div class="col-12 col-md-8 d-flex justify-content-center pt-2 pt-md-0">
                 <div class="row w-100 justify-content-around justify-content-md-center">
-                  <div class="col-4 d-flex justify-content-center p-0">
+                  <div class="col d-flex justify-content-center p-0">
                     <a
                       href="https://developer.kyber.network/docs/Addresses-Intro/"
                       target="_blank"
                       class="remove-link-style"
                     >Contract data</a>
                   </div>
-                  <div class="col-5 p-md-0 d-flex justify-content-center p-0">
+                  <div class="col p-md-0 d-flex justify-content-center p-0">
                     <a
                       href=" https://developer.kyber.network/tx-diagnose/"
                       target="_blank"
                       class="remove-link-style"
                     >Transaction debugger</a>
                   </div>
-                  <div class="col-3 d-flex justify-content-center p-0">
+
+                  <!-- <div class="col-3 d-flex justify-content-center p-0">
                     <b-dropdown class="change-language-button" right>
                       <template slot="button-content">
                         <span class="footer-icon">
-                          <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
                           {{this.getLanguageText()}}
                         </span>
                       </template>
@@ -538,7 +538,7 @@
                         中文
                       </b-dropdown-item>
                     </b-dropdown>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -671,25 +671,24 @@
               </div>
               <div class="col-12 col-md-8 d-flex justify-content-center pt-2 pt-md-0">
                 <div class="row w-100 justify-content-around justify-content-md-center">
-                  <div class="col-4 d-flex justify-content-center p-0">
+                  <div class="col d-flex justify-content-center p-0">
                     <a
                       href="https://developer.kyber.network/docs/Addresses-Intro/"
                       target="_blank"
                       class="remove-link-style"
                     >Contract data</a>
                   </div>
-                  <div class="col-5 p-md-0 d-flex justify-content-center p-0">
+                  <div class="col p-md-0 d-flex justify-content-center p-0">
                     <a
                       href=" https://developer.kyber.network/tx-diagnose/"
                       target="_blank"
                       class="remove-link-style"
                     >Transaction debugger</a>
                   </div>
-                  <div class="col-3 d-flex justify-content-center p-0">
+                  <!-- <div class="col-3 d-flex justify-content-center p-0">
                     <b-dropdown class="change-language-button" right>
                       <template slot="button-content">
                         <span class="footer-icon">
-                          <!-- <img class="footer-icon" :src="'images/locales/' + this.getLanguage() + '.svg'" /> -->
                           {{this.getLanguageText()}}
                         </span>
                       </template>
@@ -710,7 +709,7 @@
                         中文
                       </b-dropdown-item>
                     </b-dropdown>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
