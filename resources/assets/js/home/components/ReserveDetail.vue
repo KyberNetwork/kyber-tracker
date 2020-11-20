@@ -115,13 +115,15 @@
           <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
             <div class="col-12">
               <div class="row pb-2">
-                <div class="col-5 ">
+                <div class="col-4 ">
                   <a class="address-link" :href="getAddressEtherscanLink(tokenAprData.address)" target="_blank">{{ tokenAprData.symbol }}</a>
                 </div>
-                <div class="col-7 font-semi-bold">
-                 {{tokenAprAmount}} <span v-if="tokenAprUSDValue">({{tokenAprUSDValue}} USD)</span>
+                <div class="col-8 font-semi-bold">
+                 {{tokenAprAmount}} 
+                 <!-- <span v-if="tokenAprUSDValue">({{tokenAprUSDValue}} USD)</span> -->
+                 <div v-if="tokenAprETHValue && tokenAprUSDValue">(~{{tokenAprETHValue}} ETH / {{tokenAprUSDValue}} USD)</div>
                 </div>
-              </div> 
+              </div>
             </div>
 
             <!-- <div v-if="!isOpenlLoadmore && isShowLoadmore" class="gradient-trans row"></div> -->
@@ -207,6 +209,7 @@ export default {
       isOpenlLoadmore: false,
       tokenAprAmount: 0,
       tokenAprUSDValue: 0,
+      tokenAprETHValue: 0,
       tokenAprData: null,
       isLoading: true,
       highlightedToday: {
@@ -373,6 +376,7 @@ export default {
           if(!foundTokenPrice) return
 
           this.tokenAprUSDValue = util.getTokenUsdalue(tokenAmount, foundTokenPrice.price_USD, this.tokenAprData.decimal, 4)
+          this.tokenAprETHValue = util.getTokenUsdalue(tokenAmount, foundTokenPrice.price_ETH, this.tokenAprData.decimal, 4)
         })
       })
     },
