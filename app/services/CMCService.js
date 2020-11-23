@@ -371,7 +371,9 @@ module.exports = BaseService.extends({
         aprData.map(rInfo => {
           if(!rInfo.error){
             if(rInfo.rate_a_b == "0" && rInfo.rate_b_a == "0"){
-              returnData[rInfo.reserve.toLowerCase()] = "maintenance"
+              if(returnData[rInfo.reserve.toLowerCase()] != "ok"){
+                returnData[rInfo.reserve.toLowerCase()] = "maintenance"
+              }
             } else {
               returnData[rInfo.reserve.toLowerCase()] = "ok"
             }
