@@ -112,7 +112,7 @@
           <div v-if="isLoading">
             <img src="/images/waiting.svg" />
           </div>
-          <div class="row" v-bind:class="{ 'reserve-tokens': !isOpenlLoadmore}">
+          <div class="row">
             <div class="col-12">
               <div class="row pb-2">
                 <div class="col-4 ">
@@ -124,8 +124,16 @@
                  <div v-if="tokenAprETHValue && tokenAprUSDValue">(~{{tokenAprETHValue}} ETH / {{tokenAprUSDValue}} USD)</div>
                 </div>
               </div>
-            </div>
 
+              <div class="row pb-2" v-if="balanceEth">
+                <div class="col-4 ">
+                  <a class="address-link" :href="getAddressEtherscanLink(ethAddress)" target="_blank">ETH</a>
+                </div>
+                <div class="col-8 font-semi-bold">
+                 {{balanceEth}} 
+                </div>
+              </div>
+            </div>
             <!-- <div v-if="!isOpenlLoadmore && isShowLoadmore" class="gradient-trans row"></div> -->
           </div>
           
@@ -194,6 +202,7 @@ export default {
       searchFromDate: null,
       searchToDate: null,
       tokens: TOKENS_BY_ADDR,
+      ethAddress: network.ETH.address,
 
       totalTrade: 0,
       volumeEth: 0,
@@ -210,6 +219,7 @@ export default {
       tokenAprAmount: 0,
       tokenAprUSDValue: 0,
       tokenAprETHValue: 0,
+      balanceEth: 0,
       tokenAprData: null,
       isLoading: true,
       highlightedToday: {
@@ -357,10 +367,12 @@ export default {
         let tokenAmount = 0
         let tokenAddress
         if(reserveData.token_a.toLowerCase() == network.ETH.address.toLowerCase()){
+          this.balanceEth = util.formatTokenAmount(reserveData.amount_a, 18, 4);
           tokenAmount = reserveData.amount_b
           tokenAddress = reserveData.token_b.toLowerCase()
         } else if (reserveData.token_b.toLowerCase() == network.ETH.address.toLowerCase()){
-          tokenAmount = reserveData.amount_a
+          this.balanceEth = util.formatTokenAmount(reserveData.amount_b, 18, 4);
+          tokenAmount = reserveData.amount_a 
           tokenAddress = reserveData.token_a.toLowerCase()
         }
 
