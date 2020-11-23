@@ -476,6 +476,10 @@ class TradeCrawler {
         record.taker_token_amount = record.decodedExecuteTrade.actualSrcAmount.toString()
         record.maker_token_amount = record.decodedExecuteTrade.actualDestAmount.toString()
 
+        if(!record.fee_platform_wallet){
+          record.fee_platform_wallet = record.decodedExecuteTrade.platformWallet.toLowerCase()
+        }
+
         records.push(record)
         record = JSON.parse(JSON.stringify(initRecord))
         break;      
