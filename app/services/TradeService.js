@@ -498,7 +498,6 @@ module.exports = BaseService.extends({
           const returnObj = {}
           if(results && results.length){
             results.map(item => {
-              console.log("_______item", item)
               const reserveId = item.reserveId
               const reserveaddr = item.reserveAddress
               if(reserveaddr){
@@ -1188,6 +1187,7 @@ module.exports = BaseService.extends({
   getPartnerList: function(options, callback){
     const fromDate = options.fromDate
     const toDate = options.toDate
+    const ignoreWETH = UtilsHelper.ignoreTokenSequelize(['WETH'])
 
     KyberTradeModel.findAll({
       attributes: [
@@ -1197,6 +1197,7 @@ module.exports = BaseService.extends({
         [sequelize.fn('COUNT', sequelize.col('unique_tag')), 'trades'],
       ],
       where: {
+        [Op.not]: [ignoreWETH],
         ...(fromDate && {
           'block_timestamp': {
             [Op.and]: {
