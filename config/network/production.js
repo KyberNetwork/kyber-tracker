@@ -1577,7 +1577,7 @@ module.exports = {
     "0x4247951c2eb6d0ba38d233fe7d542c8c80c9d46a": "MEW",
     "0x398d297bab517770fec4d8bb7a4127b486c244bb": "Dex wallet",
     "0x332d87209f7c8296389c307eae170c2440830a47": "Betoken",
-    "0x322d58b9e75a6918f7e7849aee0ff09369977e08": "CDP saver",
+    "0x322d58b9e75a6918f7e7849aee0ff09369977e08": "DeFi Saver",
     "0x25e3d9b98a4dea9809b65045d1f007335032edd4": "Infinito (IBL)",
     "0x21357b3dcb7ae07da23a708dbbd9a2340001a3f4": "LinkTime",
     "0x1bf3e7ede31dbb93826c2af8686f80ac53f9ed93": "ipfswap.com",

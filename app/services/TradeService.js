@@ -2257,6 +2257,7 @@ module.exports = BaseService.extends({
 
     // it is neccessary to get from begining of interval
     fromDate -= fromDate % Const.CHART_INTERVAL[interval];
+    toDate -= toDate % Const.CHART_INTERVAL[interval];
 
     return [fromDate, toDate];
   },
