@@ -126,7 +126,8 @@ export default {
   },
 
   getLocale: function(defaultVal) {
-    return localStorage.getItem('locale') || defaultVal || 'en';
+    // return localStorage.getItem('locale') || defaultVal || 'en';
+    return 'en'
   },
 
   getBrowserLanguage: function(){

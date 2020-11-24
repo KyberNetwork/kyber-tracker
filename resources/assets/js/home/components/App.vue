@@ -903,27 +903,29 @@ export default {
     },
 
     getLanguageText() {
-      if (
-        typeof window.i18n != "undefined" &&
-        typeof window.i18n.locale != "undefined"
-      ) {
-        // return window.i18n.locale;
-        switch (window.i18n.locale) {
-          case "en":
-            return "English";
-          case "vi":
-            return "Tiếng Việt";
-          case "ko":
-            return "한국어";
-          case "zh":
-            return "中文";
-          default:
-            return "English";
-        }
-      } else {
-        moment.locale("en");
-        return "English";
-      }
+      moment.locale("en");
+      return "English";
+      // if (
+      //   typeof window.i18n != "undefined" &&
+      //   typeof window.i18n.locale != "undefined"
+      // ) {
+      //   // return window.i18n.locale;
+      //   switch (window.i18n.locale) {
+      //     case "en":
+      //       return "English";
+      //     case "vi":
+      //       return "Tiếng Việt";
+      //     case "ko":
+      //       return "한국어";
+      //     case "zh":
+      //       return "中文";
+      //     default:
+      //       return "English";
+      //   }
+      // } else {
+      //   moment.locale("en");
+      //   return "English";
+      // }
     },
 
     onToggleFee() {

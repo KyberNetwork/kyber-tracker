@@ -18,7 +18,7 @@
     "volume_24h_token": "24H VOLUME (TOKEN)",
     "search": "Search",
     "network_activity": "Latest Trade",
-    "searchbox_placeholder" : "Tx Hash / Wallet Address / Token Symbol",
+    "searchbox_placeholder" : "Tx Hash/Wallet Address/Token Symbol",
     "all_token": "All Tokens",
     "defi": "DeFi Dapp Volume",
     "see_all": "See All",
