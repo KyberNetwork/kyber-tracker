@@ -770,8 +770,9 @@ module.exports = AppController.extends({
 
   getPartnerList: function(req, res){
     const [err, params] = new Checkit({
-      fromDate: ['natural'],
-      toDate: ['natural'],
+      period: ['string'],
+      // fromDate: ['natural'],
+      // toDate: ['natural'],
     }).validateSync(req.allParams);
 
     if (err) {
@@ -779,8 +780,45 @@ module.exports = AppController.extends({
       return;
     }
 
-    const TradeService = req.getService('TradeService');
-    TradeService.getPartnerList(params, this.ok.bind(this, req, res));
+    let key = `${CacheInfo.PartnerList.key}-${params.period}`;
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        res.send(JSON.parse(ret));
+        return;
+      }
+      const TradeService = req.getService('TradeService');
+
+      params.toDate = Date.now() / 1000
+      const ONE_DAY = 24 * 60 * 60
+      if(params.period == "24H"){
+        params.fromDate = params.toDate - ONE_DAY
+      } else if (params.period == "7D") {
+        params.fromDate = params.toDate - 7 * ONE_DAY
+      } else if (params.period == "1M") {
+        params.fromDate = params.toDate - 30 * ONE_DAY
+      } else if (params.period == "1Y") {
+        params.fromDate = params.toDate - 365 * ONE_DAY
+      } else if (params.period == "ALL") {
+        params.fromDate = null
+      } 
+      TradeService.getPartnerList(params, (err, ret) => {
+        if (err) {
+          logger.error(err)
+          res.badRequest(err.toString());
+          return;
+        }
+
+        RedisCache.setAsync(key, JSON.stringify(ret), CacheInfo.PartnerList.TTL);
+        return res.send(ret)
+      });
+    });
+
+
+    
   },
 
   search: function (req, res) {
