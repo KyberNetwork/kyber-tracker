@@ -1059,6 +1059,12 @@ module.exports = BaseService.extends({
           params: [nowInSeconds - DAY_IN_SECONDS],
         }, next);
       },
+      volumeETH: (next) => {
+        KyberTradeModel.sum('volume_eth', {
+          where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])} ${whereOffcial}`,
+          params: [nowInSeconds - DAY_IN_SECONDS],
+        }, next);
+      },
       ethMarketData: (next) => {
         CMCService.getKyberTokenMarketData(network.ETH.symbol, next);
       },
@@ -1096,7 +1102,7 @@ module.exports = BaseService.extends({
 
       // const oldCollectedFee = ret.oldStatsData.data.collectedFees
 
-      const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
+      const volumeInUSD = new BigNumber(ret.volumeUsd ? ret.volumeUsd.toString() : 0);
       const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPrice.toString() : 0)
       const KNCchange24h = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24h.toString() : 0)
 
@@ -1113,9 +1119,10 @@ module.exports = BaseService.extends({
       // const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
 
       const feeKatalystCollected = new BigNumber(ret.feeKatalystCollected.toString()).div(Math.pow(10, 18));
+      const volumeEth = new BigNumber(ret.volumeETH ? ret.volumeETH.toString() : 0).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
-
+        volumeEth: volumeEth,
         // collectedFees: collectedFees.toFormat(2).toString(),
         // collectedFees: oldCollectedFee,
         feeKatalystCollected: feeKatalystCollected.toFormat(2).toString(),
