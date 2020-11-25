@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import request from 'superagent';
 import BaseRequest from '../foundation/BaseRequest';
-
+import network from '../../../../../config/network';
 import store from "../../core/helper/store";
 
 class AppRequest extends BaseRequest {
@@ -170,6 +170,44 @@ class AppRequest extends BaseRequest {
             .catch(this._handleError)
   }
 
+  getUniqueTraders(period, interval, address, callback) {
+    if (typeof address === 'function') {
+      callback = address;
+      address = null;
+    }
+    let queryParams = { period, interval, address }
+    if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
+    const url = `/api/unique_traders`;
+    return request
+            .get(url)
+            .query(queryParams)
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
+  getTotalTrades(period, interval, address, callback) {
+    if (typeof address === 'function') {
+      callback = address;
+      address = null;
+    }
+    let queryParams = { period, interval, address }
+    if(this.isOfficial()) queryParams.official = true
+    else queryParams.official = false
+
+    const url = `/api/total_trades`;
+    return request
+            .get(url)
+            .query(queryParams)
+            .then((res) => {
+              return callback(null, res.body.data);
+            })
+            .catch(this._handleError)
+  }
+
   getFeeToBurn(period, interval, symbol, callback) {
     if (typeof symbol === 'function') {
       callback = symbol;
@@ -237,6 +275,25 @@ class AppRequest extends BaseRequest {
     return this.get(url, params);
   }
 
+  getPartnersList(params={}){
+    const url = `/api/partners`;
+    return this.get(url, params);
+  }
+
+  getAprStatus(params={}){
+    const url = network.endpoints.apis + '/apr_status'
+    return this.get(url, params);
+  }
+  getTokenPrices(params={}){
+    const url = network.endpoints.apis + '/prices'
+    return this.get(url, params);
+  }
+
+  getTokenChange24h(params={}){
+    const url = network.endpoints.apis + '/change24h'
+    return this.get(url, params);
+  }
+
   getReserveList(params={}){
     const url = `/api/reserves`;
     if(this.isOfficial()) params.official = true
@@ -254,7 +311,7 @@ class AppRequest extends BaseRequest {
   }
 
   _handleError(err) {
-    window.EventBus.$emit('EVENT_COMMON_ERROR', err);
+    // window.EventBus.$emit('EVENT_COMMON_ERROR', err);
   }
 
 }

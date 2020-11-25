@@ -1,34 +1,44 @@
 <template>
-  <div class="col-sm-12">
+  <div class="col-sm-12 reserve-list-container">
     <div class="panel-heading pb-20">
       <span class="no-margin panel-title">{{$t('navigator.reserves')}} </span>
     </div>
 
-    <data-table v-if="isAllTokens()" :rows="getReserveByType('all')">
+    <data-table v-if="isAllTokens()" :rows="displayReserveList">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.address") }}</th>
+        <th class="text-left pl-4">{{ $t("common.type") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th class="text-left pl-4"></th>
       </template>
 
       <template slot="body" scope="slot">
         <tr  @click="toReserveDetails(slot.item.address)" class="pointer">
             <td class="pl-4 reserve-name" >
-              <a class="address-link" >{{getReservename(slot.item.address)}}</a>
+              <a class="address-link" >{{getReservename(slot.item)}}</a>
               <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
               <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
+          <td class="reserve-type text-center">
+            <span v-bind:class="getReserveType(slot.item).toLowerCase()">
+              {{ getReserveType(slot.item) }}
+            </span>
+            </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
+          <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left">{{ slot.item.status=='maintenance' ? slot.item.status : '' }}</td>
         </tr>
       </template>
     </data-table>
 
-    <data-table v-else :rows="getReserveByType('offical')">
+    <data-table v-else :rows="displayReserveList">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.address") }}</th>
+        <th class="text-left pl-4">{{ $t("common.type") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
+        <th class="text-left pl-4"></th>
       </template>
 
       <template slot="body" scope="slot">
@@ -38,12 +48,22 @@
               <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
               <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
             </td>
+          <td class="reserve-type text-center" >
+            <span v-bind:class=" getReserveType(slot.item).toLowerCase()">
+              {{ getReserveType(slot.item) }}
+            </span>
+            
+            </td>
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td v-if="$mq !== 'sm' && $mq !== 'ml'" class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
-          
+          <td v-if="$mq !== 'sm' && $mq !== 'ml'"  class="text-left">{{ slot.item.status=='maintenance' ? slot.item.status : '' }}</td>
         </tr>
       </template>
     </data-table>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-default see-all-trade mx-auto" @click="toggleSeeAll()">{{seeAll ? $t("common.see_less") : $t("common.see_all") }}</button>
+    </div>
 
 
     <!-- <b-tabs>
@@ -138,7 +158,9 @@ export default {
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
       tokenIcons: {},
-      reserveList: []
+      reserveList: [],
+      displayReserveList: [],
+      seeAll: false
     };
   },
 
@@ -148,7 +170,22 @@ export default {
       // this.refreshTopTopkensChart(this.selectedPeriod);
       this.getList().then(data => {
         this.reserveList = data
+        // this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
+        if(this.seeAll){
+          this.displayReserveList = this.reserveList
+        } else {
+          this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
+        }
       })
+    },
+
+    toggleSeeAll(){
+      this.seeAll = !this.seeAll
+      if(this.seeAll){
+        this.displayReserveList = this.reserveList
+      } else {
+        this.displayReserveList = this.reserveList.filter(x => x.volumeETH)
+      }
     },
     getListTitle () {
       return '';
@@ -176,8 +213,40 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 9, 8)
     },
-    getReservename(addr){
-      return reserveName[addr.toLowerCase()] ||  util.shortenAddress(addr, 9, 8)
+    getReservename(item){
+      const reserveAddrLower = item.address.toLowerCase()
+      const reserveData = reserveName[reserveAddrLower]
+      if(reserveData){
+        return reserveData[0].toUpperCase()
+      }
+
+      if(item.info) return item.info.name.toUpperCase()
+
+      return util.shortenAddress(reserveAddrLower, 9, 8)
+
+      
+    },
+    getReserveType(item){
+      if(item.info) return item.info.type
+
+      const reserveAddrLower = item.address.toLowerCase()
+      const reserveData = reserveName[reserveAddrLower]
+      if(!reserveData || !reserveData[1]) return "-/-"
+
+      return reserveData[1]
+    },
+
+    getReserveTypeStyleClass(item){
+      const reserveType = this.getReserveType(item)
+
+      if(reserveType == "BR") return ""
+      else if (reserveType == "APR") return ""
+      else if (reserveType == "FPR")  return ""
+
+
+
+      return ""
+
     },
     selectPeriod(period, interval) {
       this.selectedPeriod = period;

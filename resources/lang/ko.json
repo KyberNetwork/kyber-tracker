@@ -4,7 +4,14 @@
     "exchange": "거래",
     "name": "이름",
     "address": "주소",
+    "type": "TYPE",
     "symbol": "심볼",
+    "source": "Source",
+    "trades": "Trades",
+    "usd_volume": "USD VOLUME",
+    "eth_volume": "ETH VOLUME",
+    "price": "PRICE",
+    "24h_change": "24H CHANGE",
     "volume_24h_usd": "24H (USD) 거래량",
     "volume_24h_eth": "24H (ETH) 거래량",
     "volume_24h_token": "24H 거래량(토큰)",
@@ -12,7 +19,9 @@
     "network_activity": "최근 거래",
     "searchbox_placeholder": "트랜잭션 해시/지갑 주소 / Metamask",
     "all_token": "모든 토큰",
+    "defi": "DeFi Dapp Volume",
     "see_all": "모두 보기",
+    "see_less": "See Less",
     "token_trade_history": "토큰 거래 기록"
   },
 
@@ -39,6 +48,8 @@
     "home": "홈",
     "trades": "거래",
     "trade_history": "거래 기록",
+    "defi": "DeFi",
+    "updates": "Updates",
     "tokens": "토큰",
     "reserves": "리저브",
     "top_token": "상위 거래 토큰",
@@ -88,6 +99,8 @@
   "chart": {
     "title": {
       "network_volume": "거래량",
+      "unique_traders": "Unique Traders",
+      "total_trades": "Total Trades",
       "collected_fees": "비용",
       "fees_burned": "누적 소각 비용",
       "fee_to_burn": "소각될 비용",
@@ -118,6 +131,7 @@
     "exchange_to": "받는 곳",
     "trade" : "거래",
     "view_on": "보기",
+    "source": "SOURCE",
     "pair": "거래쌍",
     "export_csv": "출력(CSV파일)",
     "no_row": "기록이 없습니다",
@@ -147,7 +161,7 @@
 
   "wallet_detail": {
     "address": "주소",
-    "trades": "거래",
+    "trades": "Total Trades",
     "collected_fees": "총비용",
     "platform_fees": "Platform Fees",
     "knc_collected": "KNC Collected",
@@ -156,6 +170,7 @@
     "value_in_usd": "가치 (USD)",
     "notice": "USD 환율은 거래 당시 기준입니다",
     "wallet_detail": "지갑 정보",
+    "tokens_balance": "Tokens Balance",
     "reserve_detail": "Reserve detail",
     "partner_details": "파트너 세부 정보",
     "history": "최근 거래",

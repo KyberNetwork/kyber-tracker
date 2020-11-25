@@ -3,7 +3,8 @@ import jQuery from 'jquery';
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
 import network from '../../../../../config/network/production';
-const iconEndpont = 'https://files.kyberswap.com/DesignAssets/tokens'
+const iconEndpont = 'https://files.kyberswap.com/DesignAssets/tokens/'
+const partnersEndpont = 'https://files.kyberswap.com/DesignAssets/partners/'
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens
 
 BigNumber.config({ DECIMAL_PLACES: 6 });
@@ -93,6 +94,7 @@ export default {
   },
 
   numberWithCommas: function (x) {
+    if(!x) return 0
     //return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     var parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -124,7 +126,8 @@ export default {
   },
 
   getLocale: function(defaultVal) {
-    return localStorage.getItem('locale') || defaultVal || 'en';
+    // return localStorage.getItem('locale') || defaultVal || 'en';
+    return 'en'
   },
 
   getBrowserLanguage: function(){
@@ -177,6 +180,12 @@ export default {
     return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
   },
 
+  getTokenUsdalue: function(amount, usdPrice, decimal=18, decimalFormat = 2){
+    const bigNumber = new BigNumber(amount.toString());
+    let result = bigNumber.div(Math.pow(10, decimal)).multipliedBy(usdPrice.toString())
+    return this.numberWithCommas(parseFloat(result.toFixed(decimalFormat).toString()));
+  },
+
   roundingNumber: function (number) {
     // return kyberRoundingNumber(number);
     return newRoundingNumber(number, 6)
@@ -194,8 +203,8 @@ export default {
   getTokenIcon: (symbol, callback) => {
     if(!symbol) return '/images/tokens/token-unknown.svg'
     
-    let iconName = symbol.toLowerCase() + '.svg'
-    let urlIcon = iconEndpont + '/' + iconName
+    let iconName = symbol.replace(/\./g, "_").replace(/ /g, "_").toLowerCase() + '.svg'
+    let urlIcon = iconEndpont + iconName
 
     let img = new Image(); 
     img.onerror = () => {
@@ -208,6 +217,34 @@ export default {
     // let icon = typeof this.tokens[symbol].icon !== 'undefined' ? this.tokens[symbol].icon : (symbol.toLowerCase() + ".svg");
     // return "https://raw.githubusercontent.com/KyberNetwork/KyberWallet/master/src/assets/img/tokens/" +
     //      icon + "?sanitize=true";
+  },
+
+  getPartnerLogo: (symbol, callback) => {
+    if(!symbol) return '/images/tokens/token-unknown.svg'
+    
+    let iconName = symbol.replace(/\./g, "_").replace(/ /g, "_").toLowerCase()
+    let svgImageName = iconName + '.svg'
+    let svgUrl = partnersEndpont + svgImageName
+
+    let svgImg = new Image(); 
+    svgImg.onerror = () => {
+      console.log("------------sgv image load error", svgUrl)
+      let pngImageName = iconName + '.png'
+      let pngUrl = partnersEndpont + pngImageName
+      let pngImg = new Image()
+      pngImg.onerror = () => {
+        return callback('/images/tokens/token-unknown.svg')
+      }
+      pngImg.onload = () => {
+        console.log("-_______________ png image onload _________", pngUrl)
+        return callback(pngUrl)
+      }
+      pngImg.src = pngUrl
+    };
+    svgImg.src = svgUrl;
+
+    return svgUrl
+  
   },
   shortenAddress(address, startNum, endNum){
     if(!address) return ''

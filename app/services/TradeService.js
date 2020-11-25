@@ -1,7 +1,6 @@
 /* eslint no-multi-spaces: ["error", { exceptions: { "VariableDeclarator": true } }] */
 const _ = require('lodash');
 const async = require('async');
-const util = require('util');
 const BigNumber = require('bignumber.js');
 const network = require('../../config/network');
 const partners = network.partners
@@ -10,7 +9,7 @@ const Utils = require('sota-core').load('util/Utils');
 const BaseService = require('sota-core').load('service/BaseService');
 const logger = require('sota-core').getLogger('TradeService');
 const RedisCache = require('sota-core').load('cache/foundation/RedisCache');
-const { sequelize, KyberTradeModel, ReserveTradeModel } = require('../databaseModel');
+const { sequelize, KyberTradeModel, ReserveTradeModel, ReserveInfoModel } = require('../databaseModel');
 const { Op } = require("sequelize");
 
 const UtilsHelper = require('../common/Utils');
@@ -484,6 +483,35 @@ module.exports = BaseService.extends({
         })
         .catch(err => _next(err))
       },
+      info: _next => {
+        ReserveInfoModel.findAll({
+          attributes: [
+            ['reserve_id', 'reserveId'], 
+            ['reserve_address', 'reserveAddress']
+          ],
+          where: {
+            "action": 1
+          },
+          raw: true
+        })
+        .then(results => {
+          const returnObj = {}
+          if(results && results.length){
+            results.map(item => {
+              const reserveId = item.reserveId
+              const reserveaddr = item.reserveAddress
+              if(reserveaddr){
+                const parsedData = UtilsHelper.reserveIdToAscii(reserveId, reserveaddr)
+                returnObj[reserveaddr.toLowerCase()] = parsedData
+              }
+            })
+          }
+          return _next(null, returnObj)
+        })
+        .catch(err => {
+          _next(err)
+        })
+      },
       vol: _next => {
         ReserveTradeModel.findAll({
           attributes: [
@@ -520,145 +548,64 @@ module.exports = BaseService.extends({
           _next(err)
         })
       },
+      aprStatus: _next => {
+        const CMCService = this.getService('CMCService');
+        CMCService.getAprReserveStatus((err, result) => {
+          if(err) console.log("======== Error get apr status: ", err)
+          return _next(null, result || {})
+        })
+      }
     }, (err, ret) => {
       if (err) {
         return callback(err);
       }
       const reserves = [];
+
       ret.list.map(r => {
         if(!ret.vol[r.toLowerCase()]) {
           reserves.push({
             address: r,
             volumeUSD: 0,
             volumeETH: 0,
-            // type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[r.toLowerCase()] : null ,
-            // isDelisted: global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] ? false : true
-            isDelisted: false
+            isDelisted: false,
+            status: ret.aprStatus[r.toLowerCase()],
+            info: ret.info[r.toLowerCase()]
           })
         } else {
           reserves.push({
             address: r,
             volumeUSD: ret.vol[r.toLowerCase()].volumeUSD || 0,
             volumeETH: ret.vol[r.toLowerCase()].volumeETH || 0,
-            // type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[r.toLowerCase()] : null,
-            // isDelisted: global.NETWORK_RESERVES && global.NETWORK_RESERVES[r.toLowerCase()] ? false : true
-            isDelisted: false
+            isDelisted: false,
+            status: ret.aprStatus[r.toLowerCase()],
+            info: ret.info[r.toLowerCase()]
           })
         }
       })
-      // results.map(rItem => {
-      //   reserves.push({
-      //     ...rItem,
-      //     type: global.NETWORK_RESERVES ? global.NETWORK_RESERVES[rItem.address.toLowerCase()] : null,
-      //     isDelisted: global.NETWORK_RESERVES &&  global.NETWORK_RESERVES[rItem.address.toLowerCase()] ? false : true
-      //   })
-      // })
       return callback(null, _.orderBy(reserves, ['isDelisted', 'volumeETH' ], ['esc', 'desc']));
     })
-
-
-      
-    
-
-    
-
-
-    // const makeSql = (side, callback) => {
-    //   const sql = `select ${side}_reserve as address,
-    //     IFNULL(sum(tx_value_eth),0) as eth,
-    //     IFNULL(sum(tx_value_usd),0) as usd,
-    //     '${side}' as type
-    //   from kyber_trade
-    //   where block_timestamp > ? AND block_timestamp < ? ${UtilsHelper.ignoreToken(['WETH'])}
-    //   group by ${side}_reserve`;
-    //   return adapter.execRaw(sql, [dayAgo, nowInSeconds], callback);
-    // };
-
-    // const totalReserveList = (side, callback) => {
-    //   const sql = `
-    //     SELECT DISTINCT ${side}_reserve as address
-    //     FROM kyber_trade
-    //     WHERE ${side}_reserve IS NOT NULL
-    //   `
-    //   return adapter.execRaw(sql, [], callback);
-    // } 
-
-    // async.parallel({
-    //   source: _next => makeSql('source', _next),
-    //   dest: _next => makeSql('dest', _next),
-    //   listSource: _next => totalReserveList('source', _next),
-    //   listDest: _next => totalReserveList('dest', _next),
-    // }, (err, ret) => {
-    //   if (err) {
-    //     return callback(err);
-    //   }
-
-    //   const takers = _.groupBy(ret.source, 'address');
-    //   const makers = _.groupBy(ret.dest, 'address');
-
-
-    //   function customizer(objValue, srcValue) {
-    //     if (_.isArray(objValue)) {
-    //       return objValue.concat(srcValue);
-    //     }
-    //   }
-    //   const totalReserveVol = _.mergeWith(takers, makers, customizer)
-    //   const arrayTotalReserve = _.uniq([...ret.listSource.map(r=> r.address), ...ret.listDest.map(r=> r.address)])
-    //   const reserves = [];
-
-    //   arrayTotalReserve
-    //   .filter(r => (r !== '0x0000000000000000000000000000000000000000' && r !==  "0x964f35fae36d75b1e72770e244f6595b68508cf5" && r !== "0x818e6fecd516ecc3849daf6845e3ec868087b755" ))
-    //   .map(r => {
-    //     if(!totalReserveVol[r]) {
-    //       reserves.push({
-    //         address: r,
-    //         volumeUSD: 0,
-    //         volumeETH: 0,
-    //         type: global.NETWORK_RESERVES[r],
-    //         isDelisted: global.NETWORK_RESERVES[r] ? false : true
-    //       })
-    //     } else {
-    //       const takerAndMaker = totalReserveVol[r]
-    //       let valEth = new BigNumber(0);
-    //       let valUsd = new BigNumber(0);
-    //       takerAndMaker.map(i => {
-    //         valEth = valEth.plus(i.eth ? i.eth.toString() : 0)
-    //         valUsd = valUsd.plus(i.usd ? i.usd.toString() : 0)
-    //       })
-    //       reserves.push({
-    //         address: r,
-    //         volumeUSD: valUsd.toNumber(),
-    //         volumeETH: valEth.toNumber(),
-    //         type: global.NETWORK_RESERVES[r],
-    //         isDelisted: global.NETWORK_RESERVES[r] ? false : true
-    //       })
-    //     }
-    //   })
-
-    //   return callback(null, _.orderBy(reserves, ['isDelisted', 'volumeUSD' ], ['esc', 'desc']));
-    // })
   },
 
   getReserveDetails: function (options, callback){
     async.parallel({
-      currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
-      tradedListTokens: _next => this._tradedList(options, _next),
+      // currentListingTokens: _next => _next(null, this._currentList(options.reserveAddr)),
+      // tradedListTokens: _next => this._tradedList(options, _next),
       collectedFee: _next => this._collectedFee(options, _next)
     }, (err, results) => {
       if (err) {
         return callback(err);
       }
-      const allReserveTokens = results.currentListingTokens
-      results.tradedListTokens.map(t => {
-        if(allReserveTokens[t.address]){
-          allReserveTokens[t.address] = {...allReserveTokens[t.address], ...t}
-        }
-        // allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
-      })
+      // const allReserveTokens = results.currentListingTokens
+      // results.tradedListTokens.map(t => {
+      //   if(allReserveTokens[t.address]){
+      //     allReserveTokens[t.address] = {...allReserveTokens[t.address], ...t}
+      //   }
+      //   // allReserveTokens[t.address] = {...(allReserveTokens[t.address] || global.TOKENS_BY_ADDR[t.address]), ...t}
+      // })
 
       return callback(null, {
-        tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'volumeETH' ], ['asc', 'desc']),
-        burned: results.burnnedFee,
+        // tokens: _.orderBy(Object.values(allReserveTokens), ['listed', 'volumeETH' ], ['asc', 'desc']),
+        // burned: results.burnnedFee,
         collectedFee: results.collectedFee,
       })
     })
@@ -1103,9 +1050,9 @@ module.exports = BaseService.extends({
     //   whereOffcial += ` AND ( block_number < ${network.startPermissionlessReserveBlock} OR (source_official = 1 AND dest_official = 1))`;
     // }
     async.auto({
-      oldStatsData: (next) => {
-        CMCService.getOldStatsData(next);
-      },
+      // oldStatsData: (next) => {
+      //   CMCService.getOldStatsData(next);
+      // },
       volumeUsd: (next) => {
         KyberTradeModel.sum('volume_usd', {
           where: `block_timestamp > ? ${UtilsHelper.ignoreToken(['WETH'])} ${whereOffcial}`,
@@ -1118,21 +1065,21 @@ module.exports = BaseService.extends({
       kncMarketData: (next) => {
         CMCService.getKyberTokenMarketData(network.KNC.symbol, next);
       },
-      collectedFees: (next) => {
-        KyberTradeModel.sum('collected_fees', {
-          where: '1=1'
-        }, next);
-      },
+      // collectedFees: (next) => {
+      //   KyberTradeModel.sum('collected_fees', {
+      //     where: '1=1'
+      //   }, next);
+      // },
       feeKatalystCollected: (next) => {
         KyberTradeModel.sum('fee_total_collected', {
           where: '1=1'
         }, next);
       },
-      totalBurnedFee: (next) => {
-        BurnedFeeModel.sum('amount', {
-          where: '1=1'
-        }, next);
-      },
+      // totalBurnedFee: (next) => {
+      //   BurnedFeeModel.sum('amount', {
+      //     where: '1=1'
+      //   }, next);
+      // },
       /*
       feeToBurn: (next) => {
         KyberTradeModel.sum('burn_fees', {
@@ -1147,39 +1094,39 @@ module.exports = BaseService.extends({
         return callback(err);
       }
 
-      const oldCollectedFee = ret.oldStatsData.data.collectedFees
+      // const oldCollectedFee = ret.oldStatsData.data.collectedFees
 
       const volumeInUSD = new BigNumber(ret.volumeUsd.toString());
       const KNCprice = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPrice.toString() : 0)
       const KNCchange24h = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24h.toString() : 0)
 
-      const KNCpriceWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPriceWithETH.toString() : 0)
-      const KNCchange24hWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24hWithETH.toString() : 0)
+      // const KNCpriceWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.currentPrice ? ret.kncMarketData.currentPriceWithETH.toString() : 0)
+      // const KNCchange24hWithETH = new BigNumber(ret.kncMarketData && ret.kncMarketData.priceChangePercentage24h ? ret.kncMarketData.priceChangePercentage24hWithETH.toString() : 0)
 
       const ETHprice = new BigNumber(ret.ethMarketData && ret.ethMarketData.currentPrice ? ret.ethMarketData.currentPrice.toString() : 0)
       const ETHchange24h = new BigNumber(ret.ethMarketData && ret.ethMarketData.priceChangePercentage24h ? ret.ethMarketData.priceChangePercentage24h.toString() : 0)
 
-      const burnedNoContract = network.preburntAmount || 0;
-      const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
-      const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
+      // const burnedNoContract = network.preburntAmount || 0;
+      // const burnedWithContract = new BigNumber(ret.totalBurnedFee.toString()).div(Math.pow(10, 18));
+      // const actualBurnedFee = burnedWithContract.plus(burnedNoContract);
     
-      const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
+      // const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
 
       const feeKatalystCollected = new BigNumber(ret.feeKatalystCollected.toString()).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
 
         // collectedFees: collectedFees.toFormat(2).toString(),
-        collectedFees: oldCollectedFee,
+        // collectedFees: oldCollectedFee,
         feeKatalystCollected: feeKatalystCollected.toFormat(2).toString(),
 
-        totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
+        // totalBurnedFee: actualBurnedFee.toFormat(2).toString(),
 
         kncPrice: KNCprice.toFormat(4).toString(),
         kncChange24h: KNCchange24h.toFormat(2).toString(),
 
-        kncPriceWithEth: KNCpriceWithETH.toFormat(6).toString(),
-        kncChange24hWithEth: KNCchange24hWithETH.toFormat(2).toString(),
+        // kncPriceWithEth: KNCpriceWithETH.toFormat(6).toString(),
+        // kncChange24hWithEth: KNCchange24hWithETH.toFormat(2).toString(),
 
         ethPrice: ETHprice.toFormat(2).toString(),
         ethChange24h: ETHchange24h.toFormat(2).toString(),
@@ -1235,6 +1182,51 @@ module.exports = BaseService.extends({
       exportData: exportData,
       partner: true
     }, callback);
+  },
+
+  getPartnerList: function(options, callback){
+    const fromDate = options.fromDate
+    const toDate = options.toDate
+    const ignoreWETH = UtilsHelper.ignoreTokenSequelize(['WETH'])
+
+    KyberTradeModel.findAll({
+      attributes: [
+        ['fee_platform_wallet', 'partnerAddress'],
+        [sequelize.fn('SUM', sequelize.col('volume_usd')), 'volumeUSD'],
+        [sequelize.fn('SUM', sequelize.col('volume_eth')), 'volumeETH'],
+        [sequelize.fn('COUNT', sequelize.col('unique_tag')), 'trades'],
+      ],
+      where: {
+        [Op.not]: [ignoreWETH],
+        ...(fromDate && {
+          'block_timestamp': {
+            [Op.and]: {
+              [Op.lt]: toDate,
+              [Op.gt]: fromDate
+            }
+          }, 
+        }),
+        'fee_platform_wallet': {
+          [Op.and]: {
+            [Op.notLike]: '0x0000000000000000000000000000000000000000',
+            [Op.not]: null,
+          }
+          
+        }
+      },
+      group: ['fee_platform_wallet'],
+      // order: [
+      //   ['volume_eth', 'DESC']
+      // ],
+      raw: true,
+    })
+    .then(results => {
+      return callback(null, _.orderBy(results, ['volumeETH'], ['desc']))
+    })
+    .catch(err => {
+      console.log("----------- err ------------", err)
+      return callback(err)
+    })
   },
 
   _searchByTxid: function (txid, callback) {
@@ -1416,7 +1408,8 @@ module.exports = BaseService.extends({
           logger.info(err);
           return callback(err);
         }
-        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+
+        // RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
         callback(null,ret_1)
       });
 
@@ -1424,96 +1417,429 @@ module.exports = BaseService.extends({
   },
 
   _getNetworkVolumes: function (options, callback) {
-    const KyberTradeModel = this.getModel('KyberTradeModel');
+    // const KyberTradeModel = this.getModel('KyberTradeModel');
+    // const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
+    // console.log("------groupColumn------------", groupColumn)
+    // const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
+
+    // let whereClauses = `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`;
+    // let params = [fromDate, toDate];
+    // if (options.address) {
+    //   whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
+    //   params.push(options.address.toLowerCase());
+    //   params.push(options.address.toLowerCase());
+    // } else if(options.pair){
+    //   const pairTokens = options.pair.split('_')
+    //   whereClauses += ` AND ((taker_token_address = "${pairTokens[0].toLowerCase()}" AND maker_token_address = "${pairTokens[1].toLowerCase()}") OR (taker_token_address = "${pairTokens[1]}" AND maker_token_address = "${pairTokens[0]}"))`;
+    // }
+
+    // if(options.official){
+    //   whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
+    //   params.push(network.startPermissionlessReserveBlock);
+    // }
+
+    // console.log("--=======================", whereClauses, params, groupColumn)
+
+    // async.auto({
+    //   sum: (next) => {
+    //     KyberTradeModel.sumGroupBy('volume_usd', {
+    //       where: whereClauses,
+    //       params: params,
+    //       groupBy: [groupColumn],
+    //     }, next);
+    //   },
+    //   total: (next) => {
+    //     KyberTradeModel.sumGroupBy('volume_usd', {
+    //       where: whereClauses,
+    //       params: params,
+    //       // groupBy: [groupColumn],
+    //     }, next);
+    //   },
+    //   sumEth: (next) => {
+    //     KyberTradeModel.sumGroupBy('volume_eth', {
+    //       where: whereClauses,
+    //       params: params,
+    //       groupBy: [groupColumn],
+    //     }, next);
+    //   },
+    //   // count: (next) => {
+    //   //   KyberTradeModel.countGroupBy(groupColumn, {
+    //   //     where: whereClauses,
+    //   //     params: params,
+    //   //     groupBy: [groupColumn]
+    //   //   }, next);
+    //   // }
+    // }, (err, ret) => {
+    //   if (err) {
+    //     return callback(err);
+    //   }
+
+    //   const returnData = [];
+    //   if (ret.sum.length) {
+
+    //     for (let i = 0; i < ret.sum.length; i++) {
+    //       returnData.push({
+    //         daySeq: ret.sum[i].daySeq,
+    //         hourSeq: ret.sum[i].hourSeq,
+    //         sum: ret.sum[i].sum,
+    //         sumEth: ret.sumEth[i].sum,
+    //         count: ret.count[i].count
+    //       })
+    //     }
+    //     const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
+    //     const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[options.interval]);
+    //     if (nowSeq > lastSeq) {
+    //       const nullData = {
+    //         [this._convertSeqColumnName(groupColumn)]: nowSeq,
+    //         sum: 0,
+    //         sumEth: 0,
+    //         count: 0
+    //       };
+    //       returnData.push(nullData);
+    //     }
+
+    //   } else {
+    //     const firstSeq = fromDate / Const.CHART_INTERVAL[options.interval];
+    //     const nowSeq = toDate / Const.CHART_INTERVAL[options.interval];
+    //     returnData.push({
+    //       [this._convertSeqColumnName(groupColumn)]: firstSeq,
+    //       sum: 0,
+    //       sumEth: 0,
+    //       count: 0
+    //     });
+    //     returnData.push({
+    //       [this._convertSeqColumnName(groupColumn)]: nowSeq,
+    //       sum: 0,
+    //       sumEth: 0,
+    //       count: 0
+    //     });
+    //   }
+    //   return callback(null, returnData);
+    // });
+
+
+
     const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
     const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
 
-    let whereClauses = `block_timestamp > ? AND block_timestamp <= ? ${UtilsHelper.ignoreToken(['WETH'])}`;
-    let params = [fromDate, toDate];
-    if (options.address) {
-      whereClauses += ' AND (taker_token_address = ? OR maker_token_address = ?)';
-      params.push(options.address.toLowerCase());
-      params.push(options.address.toLowerCase());
-    } else if(options.pair){
-      const pairTokens = options.pair.split('_')
-      whereClauses += ` AND ((taker_token_address = "${pairTokens[0].toLowerCase()}" AND maker_token_address = "${pairTokens[1].toLowerCase()}") OR (taker_token_address = "${pairTokens[1]}" AND maker_token_address = "${pairTokens[0]}"))`;
+    const ignoreWETH = UtilsHelper.ignoreTokenSequelize(['WETH'])
+    console.log("________ignoreWETH_________", ignoreWETH)
+    const whereAnd = []
+    if(toDate){
+      whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
+    }
+    if(fromDate){
+      whereAnd.push({block_timestamp: {[Op.gt]: fromDate}})
     }
 
-    if(options.official){
-      whereClauses += ` AND ( block_number < ? OR (source_official = 1 AND dest_official = 1))`;
-      params.push(network.startPermissionlessReserveBlock);
+    if(options.address){
+      whereAnd.push({
+        [Op.or]: [
+          {taker_token_address: options.address.toLowerCase()},
+          {maker_token_address: options.address.toLowerCase()},
+        ]
+      })
+    } else if (options.pair) {
+      const pairTokens = options.pair.toLowerCase().split('_')
+      whereAnd.push({
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[0]},
+              {maker_token_address: pairTokens[1]},
+            ]
+          },
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[1]},
+              {maker_token_address: pairTokens[0]},
+            ]
+          }
+        ]
+      })
     }
 
     async.auto({
-      sum: (next) => {
-        KyberTradeModel.sumGroupBy('volume_usd', {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn],
-        }, next);
+      count: _next => {
+        KyberTradeModel.findAll({
+          attributes: [
+            [groupColumn, this._convertSeqColumnName(groupColumn)],
+            [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
+            [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
+          ], 
+          where: {
+            [Op.and]: whereAnd,
+            [Op.not]: [ ignoreWETH
+              // { [Op.or]: [
+              //   {
+              //     [Op.and] : [
+              //       { taker_token_address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"},
+              //       { maker_token_address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+              //     ] 
+              //   },
+
+              //   {
+              //     [Op.and] : [
+              //       { taker_token_address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+              //       { maker_token_address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"},
+              //     ] 
+              //   }
+              // ]
+                
+              // },
+            ],
+          },
+          group: [groupColumn],
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       },
-      sumEth: (next) => {
-        KyberTradeModel.sumGroupBy('volume_eth', {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn],
-        }, next);
-      },
-      count: (next) => {
-        KyberTradeModel.countGroupBy(groupColumn, {
-          where: whereClauses,
-          params: params,
-          groupBy: [groupColumn]
-        }, next);
+      total: _next => {
+        KyberTradeModel.findAll({
+          attributes: [
+            [sequelize.fn('sum', sequelize.col('volume_usd')), 'sum'],
+            [sequelize.fn('sum', sequelize.col('volume_eth')), 'sumEth']
+          ], 
+          where: {
+            [Op.and]: whereAnd,
+            [Op.not]: [ignoreWETH]
+          },
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
       }
-    }, (err, ret) => {
+    }, callback)
+
+   
+  },
+
+  getUniqueNumberTraders: function (options, callback){
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+    const time_exprire = CacheInfo.UniqueTrader.TTL;
+    let key = `${CacheInfo.UniqueTrader.key + period}-${interval}`;
+    if (options.address) {
+      key = options.address + '-' + key;
+    }
+    if (options.pair) {
+      key = options.pair + '-' + key;
+    }
+    if (options.fromDate) {
+      key = options.fromDate + '-' + key;
+    }
+    if (options.toDate) {
+      key = options.toDate + '-' + key;
+    }
+    if(options.official){
+      key = 'official-' + key
+    }
+
+    RedisCache.getAsync(key, (err, ret) => {
       if (err) {
-        return callback(err);
+        logger.error(err)
       }
-
-      const returnData = [];
-      if (ret.sum.length) {
-
-        for (let i = 0; i < ret.sum.length; i++) {
-          returnData.push({
-            daySeq: ret.sum[i].daySeq,
-            hourSeq: ret.sum[i].hourSeq,
-            sum: ret.sum[i].sum,
-            sumEth: ret.sumEth[i].sum,
-            count: ret.count[i].count
-          })
-        }
-        const lastSeq = returnData[returnData.length - 1][this._convertSeqColumnName(groupColumn)];
-        const nowSeq = parseInt(toDate / Const.CHART_INTERVAL[options.interval]);
-        if (nowSeq > lastSeq) {
-          const nullData = {
-            [this._convertSeqColumnName(groupColumn)]: nowSeq,
-            sum: 0,
-            sumEth: 0,
-            count: 0
-          };
-          returnData.push(nullData);
-        }
-
-      } else {
-        const firstSeq = fromDate / Const.CHART_INTERVAL[options.interval];
-        const nowSeq = toDate / Const.CHART_INTERVAL[options.interval];
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: firstSeq,
-          sum: 0,
-          sumEth: 0,
-          count: 0
-        });
-        returnData.push({
-          [this._convertSeqColumnName(groupColumn)]: nowSeq,
-          sum: 0,
-          sumEth: 0,
-          count: 0
-        });
+      if (ret) {
+        return callback(null, JSON.parse(ret));
       }
-      return callback(null, returnData);
+      options.interval = interval;
+      options.period = period;
+      options.key = key;
+      this._getUniqueNumberTraders(options, (err, ret_1)=>{
+        if(err){
+          logger.info(err);
+          return callback(err);
+        }
+        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        callback(null,ret_1)
+      });
     });
   },
+
+  _getUniqueNumberTraders: function (options, callback) {
+    const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
+
+
+    const whereAnd = []
+    if(toDate){
+      whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
+    }
+    if(fromDate){
+      whereAnd.push({block_timestamp: {[Op.gt]: fromDate}})
+    }
+
+    if(options.address){
+      whereAnd.push({
+        [Op.or]: [
+          {taker_token_address: options.address.toLowerCase()},
+          {maker_token_address: options.address.toLowerCase()},
+        ]
+      })
+    } else if (options.pair) {
+      const pairTokens = options.pair.toLowerCase().split('_')
+      whereAnd.push({
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[0]},
+              {maker_token_address: pairTokens[1]},
+            ]
+          },
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[1]},
+              {maker_token_address: pairTokens[0]},
+            ]
+          }
+        ]
+      })
+    }
+
+    async.auto({
+      count: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          group: [groupColumn],
+          distinct: true,
+          col: 'taker_address',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      },
+      total: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          distinct: true,
+          col: 'taker_address',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      }
+    }, callback)
+
+    
+
+  
+  },
+
+  getTotalNumberTrades: function (options, callback){
+    const interval = options.interval || 'H1';
+    const period = options.period || 'D7';
+    const time_exprire = CacheInfo.NumberTrades.TTL;
+    let key = `${CacheInfo.NumberTrades.key + period}-${interval}`;
+    if (options.address) {
+      key = options.address + '-' + key;
+    }
+    if (options.pair) {
+      key = options.pair + '-' + key;
+    }
+    if (options.fromDate) {
+      key = options.fromDate + '-' + key;
+    }
+    if (options.toDate) {
+      key = options.toDate + '-' + key;
+    }
+    if(options.official){
+      key = 'official-' + key
+    }
+
+    RedisCache.getAsync(key, (err, ret) => {
+      if (err) {
+        logger.error(err)
+      }
+      if (ret) {
+        return callback(null, JSON.parse(ret));
+      }
+      options.interval = interval;
+      options.period = period;
+      options.key = key;
+      this._getTotalNumberTrades(options, (err, ret_1)=>{
+        if(err){
+          logger.info(err);
+          return callback(err);
+        }
+        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        callback(null,ret_1)
+      });
+
+    });
+  },
+
+  _getTotalNumberTrades: function (options, callback) {
+    const groupColumn = this._getGroupColumnByIntervalParam(options.interval);
+    const [fromDate, toDate] = this._getRequestDatePeriods(options, options.period, options.interval);
+
+
+    const whereAnd = []
+    if(toDate){
+      whereAnd.push({block_timestamp: {[Op.lt]: toDate}})
+    }
+    if(fromDate){
+      whereAnd.push({block_timestamp: {[Op.gt]: fromDate}})
+    }
+
+    if(options.address){
+      whereAnd.push({
+        [Op.or]: [
+          {taker_token_address: options.address.toLowerCase()},
+          {maker_token_address: options.address.toLowerCase()},
+        ]
+      })
+    } else if (options.pair) {
+      const pairTokens = options.pair.toLowerCase().split('_')
+      whereAnd.push({
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[0]},
+              {maker_token_address: pairTokens[1]},
+            ]
+          },
+          {
+            [Op.and]: [
+              {taker_token_address: pairTokens[1]},
+              {maker_token_address: pairTokens[0]},
+            ]
+          }
+        ]
+      })
+    }
+    async.auto({
+      count: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          group: [groupColumn],
+          // distinct: 'unique_tag',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      },
+      total: _next => {
+        KyberTradeModel.count({
+          where: {
+            [Op.and]: whereAnd
+          },
+          // group: [groupColumn],
+          // distinct: 'unique_tag',
+          raw: true,
+        })
+        .then(result => _next(null, result))
+        .catch(err => _next(err))
+      }
+    }, callback)
+  },
+
 
   getPairsVolumes: function (options, callback) {
     let key = `${CacheInfo.NetworkVolumes.key}${options.pairs}`;
@@ -1932,6 +2258,7 @@ module.exports = BaseService.extends({
 
     // it is neccessary to get from begining of interval
     fromDate -= fromDate % Const.CHART_INTERVAL[interval];
+    toDate -= toDate % Const.CHART_INTERVAL[interval];
 
     return [fromDate, toDate];
   },

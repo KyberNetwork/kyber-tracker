@@ -330,7 +330,7 @@ module.exports = BaseService.extends({
 
   getKyberCurrentPrice: function(symbol, callback){
     request
-      .get(`https://api.kyber.network/prices`)
+      .get(`${network.endpoints.apis}/prices`)
       .timeout({
         response: 10000,  // Wait 5 seconds for the server to start sending,
         deadline: 60000, // but allow 1 minute for the file to finish loading.
@@ -350,9 +350,43 @@ module.exports = BaseService.extends({
       });
   },
 
+  getAprReserveStatus: function(callback){
+    request
+      .get(`${network.endpoints.apis}/apr_status`)
+      .timeout({
+        response: 10000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
+      .end((err, response) => {
+        if (err) {
+          return callback(err);
+        }
+        const aprData = response.body;
+        // const aprData = result.data;
+        
+        if(!aprData || !aprData.length) return callback('Response no apr data')
+
+
+        const returnData = {}
+        aprData.map(rInfo => {
+          if(!rInfo.error){
+            if(rInfo.rate_a_b == "0" && rInfo.rate_b_a == "0"){
+              if(returnData[rInfo.reserve.toLowerCase()] != "ok"){
+                returnData[rInfo.reserve.toLowerCase()] = "maintenance"
+              }
+            } else {
+              returnData[rInfo.reserve.toLowerCase()] = "ok"
+            }
+          }
+        })
+        
+        return callback(null, returnData);
+      });
+  },
+
   getKyberChange24hPrice: function(symbol, callback){
     request
-      .get(`https://api.kyber.network/change24h`)
+      .get(`${network.endpoints.apis}/change24h`)
       .timeout({
         response: 10000,  // Wait 5 seconds for the server to start sending,
         deadline: 60000, // but allow 1 minute for the file to finish loading.

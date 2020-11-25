@@ -7,6 +7,7 @@ const kyberABI = require('../../config/abi/kyber');
 const burnedFeeABI = require('../../config/abi/burned_fee');
 const feeHandleABI = require('../../config/abi/katalyst_fee_handle');
 const wrapperABI = require('../../config/abi/wrapper');
+const { Op } = require("sequelize");
 abiDecoder.addABI(kyberABI);
 abiDecoder.addABI(burnedFeeABI);
 abiDecoder.addABI(feeHandleABI);
@@ -16,6 +17,15 @@ const network = require('../../config/network');
 const ethConfig = network.ETH
 // const tokens = network.tokens;
 const contractAddresses = network.contractAddresses;
+
+const hexToAscii = function (hex) {
+  let result = '';
+  for (var i = 0; i < hex.length; i += 2) {
+    result += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+  }
+
+  return result;
+};
 
 module.exports = {
   isBurnableToken: function(tokenAddr){
@@ -287,7 +297,74 @@ module.exports = {
 
     return ` AND (${queryString})`
   },
+
+  ignoreTokenSequelize: (arraySymbol) => {
+    let queryCondition = []
+    if(!arraySymbol) return queryCondition
+    let arrayAddress = []
+    arraySymbol.map(s => {
+      if(network.tokens[s]) arrayAddress.push(network.tokens[s].address)
+    })
+
+    arrayAddress.map(s => {
+      queryCondition.push({
+        [Op.and]: [
+          {maker_token_address: ethConfig.address},
+          {taker_token_address: s},
+        ]
+      })
+
+      queryCondition.push({
+        [Op.and]: [
+          {maker_token_address: s},
+          {taker_token_address: ethConfig.address},
+        ]
+      })
+    })
+
+    return {
+      [Op.or]: queryCondition 
+    }
+  },
+
   ignoreETH: (side) => {
     return ` AND ${side}_token_address <> "${network.ETH.address}"`
-  }
+  },
+  reserveIdToAscii: function (reserveId, reserveAddr){
+
+    if(network.blackListReserves.indexOf(reserveAddr) >= 0) return null
+
+    let hex = reserveId
+      .toString()
+      .substr(2, reserveId.length)
+      .replace(/0+$/, '');
+    let reserveType = hex.substr(0, 2);
+  
+    if (hex.length % 2 !== 0) hex += '0';
+  
+    switch (hex.substr(0, 2)) {
+      case 'ff':
+        reserveType = 'FPR';
+        break;
+      case 'aa':
+        reserveType = 'APR';
+        break;
+      case 'bb':
+        reserveType = 'BR';
+        break;
+      case '00':
+        reserveType = 'UTILITY';
+        break;
+      default:
+        reserveType = '-/-';
+        break;
+    }
+  
+    hex = hex.substr(2, reserveId.length);
+  
+    return {
+      type: reserveType,
+      name: hexToAscii(hex)
+    }
+  },
 };

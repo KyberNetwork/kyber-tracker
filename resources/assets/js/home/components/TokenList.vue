@@ -30,7 +30,7 @@
         </b-button-group>
       </div>
       <b-tabs card>
-        <b-tab :title="$t('chart.title.top_token')">
+        <b-tab :title="$t('chart.title.label_volume')">
 
 
           <div class="chart-period-picker text-right pt-2" v-if="$mq == 'sm' || $mq == 'ml'">
@@ -67,19 +67,21 @@
       </b-tabs>
     </b-card>
 
-    <div class="panel-heading pt-56 pb-20">
-      <span class="no-margin panel-title">{{ $t("common.all_token") }}</span>
+    <div class="pt-40 pb-20">
+      <span class="panel-heading no-margin panel-title">{{ $t("common.all_token") }} </span>
+      <span>({{activeTokens.length}} active tokens)</span>
     </div>
 
 
     <data-table v-if="($mq == 'md' || $mq == 'lg')" ref="datatable"
         :title="getListTitle()"
-        :getData="getList">
+        :rows="displayArrayToken">
       <template slot="header">
         <!-- <th class="text-center">{{ $t("token_list.no") }}</th> -->
         <th class="text-left pl-3">{{ $t("common.symbol") }}</th>
         <th class="text-left pl-5">{{ $t("common.name") }}</th>
-        
+        <th class="text-left pl-4">{{ $t("common.price") }}</th>
+        <th class="text-left pl-4">{{ $t("common.24h_change") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_usd") }}</th>
         <th class="text-left pl-4">{{ $t("common.volume_24h_eth") }}</th>
         <th ></th>
@@ -105,6 +107,10 @@
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? $t("tooltip.new_coin") : $t("tooltip.delisted")  :"" }}</span>
               </div>
           </td>
+
+          <td class="text-center">{{ tokenPrice[slot.item.symbol] ? displayTokenPrice(tokenPrice[slot.item.symbol].price_USD) : "-/-" }}</td>
+          <td class="text-center" :class="getPriceChangeClass(tokenChange24h[slot.item.symbol])">{{tokenChange24h[slot.item.symbol] ? displayTokenChange24h(tokenChange24h[slot.item.symbol]) : "-/-"}}</td>
+                  
           
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
           <td class="text-left pl-5">{{ formatVolumn(slot.item.volumeETH) }}</td>
@@ -119,7 +125,7 @@
 
     <data-table v-if="($mq !== 'md' && $mq !== 'lg')" ref="datatable" class="small-table table-hover"
         :title="getListTitle()"
-        :getData="getList">
+        :rows="displayArrayToken">
       <template slot="header">
         <th class="text-left pl-4">{{ $t("common.symbol") }}</th>
         <th class="text-right pr-4">{{ $t("common.volume_24h_usd") }}</th>
@@ -136,7 +142,6 @@
                       <a class="address-link indicator" @click="toTokenDetails(slot.item.address)">{{getShortedAddr(slot.item.address)}}</a>
                     </span>
                   </span>
-                  
                   <span v-bind:class="{ fresher: slot.item.isNewToken , delised: slot.item.isDelisted }"></span>
                   <span v-bind:class="{ tooltiptext: slot.item.isNewToken || slot.item.isDelisted }">{{ slot.item.isNewToken || slot.item.isDelisted ? slot.item.isNewToken ? "New Token List" : "Token is Delisted" :"" }}</span>
               </div>
@@ -147,6 +152,9 @@
       </template>
     </data-table>
 
+    <div class="text-center">
+      <button type="button" class="btn btn-default see-all-trade mx-auto" @click="toggleSeeAll()">{{seeAll ? $t("common.see_less") : $t("common.see_all") }}</button>
+    </div>
 
   </div>
 </template>
@@ -170,17 +178,34 @@ export default {
       tokens: TOKENS_BY_ADDR,
       selectedPeriod: 'D30',
       selectedInterval: 'D1',
-      tokenIcons: {}
+      tokenIcons: {},
+      tokenPrice: {},
+      tokenChange24h: {},
+      arrayTokenData: [],
+      displayArrayToken: [],
+      activeTokens: [],
+      seeAll: false
     };
   },
 
   methods: {
     refresh () {
-      this.$refs.datatable.fetch();
+      // this.$refs.datatable.fetch();
+      this.getList()
       this.refreshTopTopkensChart(this.selectedPeriod);
+      this.getTokenPrice()
+      this.getTokenChange24h()
     },
     getListTitle () {
       return '';
+    },
+    toggleSeeAll(){
+      this.seeAll = !this.seeAll
+      if(this.seeAll){
+        this.displayArrayToken = this.arrayTokenData
+      } else {
+        this.displayArrayToken = this.activeTokens
+      }
     },
     getAddressLink(addr){
       return network.endpoints.ethScan + "address/" + addr;
@@ -203,7 +228,19 @@ export default {
         toDate: now,
       }
       if(timeStamp) requestParams.timeStamp = timeStamp
-      return AppRequest.getTokens(requestParams);
+      return AppRequest.getTokens(requestParams)
+      .then(results => {
+        this.arrayTokenData = results
+        this.activeTokens = this.arrayTokenData.filter(x => x.volumeETH)
+        if(this.seeAll){
+          this.displayArrayToken = this.arrayTokenData
+        } else {
+          this.displayArrayToken = this.activeTokens
+        }
+      })
+      .catch(err => {
+        console.log("______________", err)
+      })
     },
 
     shouldShowToken (item) {
@@ -256,6 +293,42 @@ export default {
         this.$refs.chartToken.refresh(period);
       }
     },
+
+    getTokenPrice(){
+      AppRequest.getTokenPrices().then(data => {
+          if(!data) return
+          this.tokenPrice = data
+        })
+    },
+    getTokenChange24h(){
+      AppRequest.getTokenChange24h().then(data => {
+          if(!data) return
+          const change24hData = {}
+          Object.keys(data).map(pairs => {
+            const tokenSymbol = pairs.split("_")[1]
+            change24hData[tokenSymbol] = data[pairs].change_usd_24h
+          })
+          this.tokenChange24h = change24hData
+        })
+    },
+
+    displayTokenPrice(price){
+      if(!price) return "-/-"
+
+      return "$" + price.toFixed(3)
+    },
+    displayTokenChange24h(value){
+      if (value > 0) {
+        return "+" + value + "%";
+      } else {
+        return value + "%";
+      }
+    },
+
+    getPriceChangeClass(price) {
+      if (price === 0) return "";
+      return price < 0 ? "neg-value" : "pos-value";
+    }, 
 
     beforeDestroy() {
       window.clearInterval(this._refreshInterval);

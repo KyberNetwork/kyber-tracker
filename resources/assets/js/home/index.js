@@ -24,7 +24,10 @@ import FeeList from '../core/components/FeeList.vue';
 import TokenLink from '../core/components/TokenLink.vue';
 import ChartVolume from '../core/components/ChartVolume.vue';
 import ChartFee from '../core/components/ChartFee.vue';
+import ChartUniqueTraders from '../core/components/ChartUniqueTraders.vue';
+import ChartNumberTrades from '../core/components/ChartNumberTrades.vue';
 import ChartToken from '../core/components/ChartToken.vue';
+import ChartPartner from '../core/components/ChartPartner.vue'
 import NotFound from './components/NotFound.vue';
 import Oop from '../core/components/Oop.vue';
 // import ImportAcount from '../core/components/ImportAccount.vue';
@@ -74,6 +77,9 @@ Vue.component('token-link', TokenLink);
 Vue.component('chart-volume', ChartVolume);
 Vue.component('chart-fee', ChartFee);
 Vue.component('chart-token', ChartToken);
+Vue.component('chart-partner', ChartPartner)
+Vue.component('chart-unique-traders', ChartUniqueTraders);
+Vue.component('chart-number-trades', ChartNumberTrades);
 Vue.component('not-found', NotFound);
 Vue.component('oop', Oop);
 

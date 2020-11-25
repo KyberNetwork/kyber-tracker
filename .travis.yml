@@ -24,8 +24,8 @@ services:
 install:
   - NODE_ENV=production npm ci
 
-# before_script:
-#   - cp .env.ci .env
+before_script:
+  - cp .env.ci .env
 #   - mysql -u kyber_tracker --password=kyber_tracker kyber_tracker < ./db/dump/kyber_tracker_2018-07-24.sql
 
 script:

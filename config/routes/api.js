@@ -8,6 +8,8 @@ module.exports = {
     '/tokens/top'                   : ['TradeController.getTopTokensList'],
     '/stats24h'                     : ['TradeController.getStats24h'],
     '/volumes'                      : ['TradeController.getVolumes'],
+    '/unique_traders'               : ['TradeController.getUniqueNumberTraders'],
+    '/total_trades'                 : ['TradeController.getTotalNumberTrades'],
     '/volumes_token_pairs_5m'       : ['TradeController.getVolumesTokenPairs5m'],
     '/volume_pairs'                 : ['TradeController.getVolumesPairToken'],
     '/fees/to_burn'                 : ['TradeController.getToBurnFees'],
@@ -16,6 +18,7 @@ module.exports = {
     '/fees/burned-list'             : ['TradeController.getBurnedList'],
 
     '/search'                       : ['TradeController.search'],
+    '/partners'                     : ['TradeController.getPartnerList'],
     '/partner/:partnerId'           : ['TradeController.getPartnerDetail'],
 
 

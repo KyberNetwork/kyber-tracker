@@ -176,13 +176,14 @@
               <th v-bind:colspan="partner ? 1 : 1" class="text-left rate" style="width: 30%;">{{ $t("trade_list.rate") }}</th>
               <th v-if="partner" class="pl-4" >{{ $t("trade_list.commission") }}</th>
               <th class="text-left" style="width: 10%;">{{ $t("trade_list.view_on") }}</th>
+              <th class="text-left" style="width: 10%;">{{ $t("trade_list.source") }}</th>
               <!-- <th></th> -->
             </tr>
           </thead>
           <tbody v-if="rows.length > 0">
             <tr v-for="(row, index) in rows" :item="row" :index="index" class="pointer">
               <td class="pl-4"   @click="onClickRow(row)">{{ getDateInfo(row) }}</td>
-              <td class="font-semi-bold row"  @click="onClickRow(row)">
+              <td class="row"  @click="onClickRow(row)">
                 <div class="source col-5 text-right no-padding d-inline-block">
                   {{ formatTokenNumber(row.takerTokenAddress, row.takerTokenAmount, row.takerTokenDecimal) }} 
                 
@@ -212,20 +213,11 @@
               </td>
               <td v-if="partner" class="text-left pl-4"  @click="onClickRow(row)">{{ formatTokenNumber(network.KNC.address, row.commission, network.KNC.decimal) }} KNC</td>
               <td class="text-center view-on d-flex" >
-                <!-- <img src="/images/more.svg" /> -->
-                <!-- <span class="entypo-dot-3 table-more"></span> -->
                 <a :href="getTxEtherscanLink(row.tx)" target="_blank"><img class="etherscan" src="/images/etherscan-logo.png" /></a>
                 <a :href="getEnjinxLink(row.tx)" target="_blank"><img class="enj" src="/images/kyber-enj-logo.png" /></a>
-
-                <!-- <b-dropdown class="trade-view-on" no-caret right>
-                  <template slot="button-content">
-                    <span class="entypo-dot-3 table-more" data-toggle="dropdown"></span>
-                  </template>
-                  <b-dropdown-item :href="getTxEtherscanLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_etherscan") }}</b-dropdown-item>
-                  <b-dropdown-item :href="getEnjinxLink(row.tx)" target="_blank">{{ $t("trade_list.view_on_enjinx") }}</b-dropdown-item>
-                  
-                </b-dropdown> -->
-
+              </td>
+              <td class="text-left">
+                {{getDappName(row)}}
               </td>
             </tr>
           </tbody>
@@ -573,6 +565,14 @@ export default {
       }
 
       return params;
+    },
+    getDappName(tx){
+      const platformWallet = tx.feePlatformWallet
+
+      if(platformWallet && network.dapps[platformWallet.toLowerCase()]){
+        return network.dapps[platformWallet.toLowerCase()]
+      }
+      return null
     },
     getDateInfo (trade, isShort) {
       return util.getDateInfo(trade.blockTimestamp * 1000, isShort);

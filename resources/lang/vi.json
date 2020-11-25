@@ -5,7 +5,14 @@
     "exchange": "Exchange",
     "name": "TÊN",
     "address": "ĐỊA CHỈ",
+    "type": "TYPE",
     "symbol": "MÃ",
+    "source": "Source",
+    "trades": "Trades",
+    "usd_volume": "USD VOLUME",
+    "eth_volume": "ETH VOLUME",
+    "price": "PRICE",
+    "24h_change": "24H CHANGE",
     "volume_24h_usd": "Giao dịch 24H (USD)",
     "volume_24h_eth": "Giao dịch 24H (ETH)",
     "volume_24h_token": "Giao dịch 24H (Token)",
@@ -13,7 +20,9 @@
     "network_activity": "Giao dịch gần nhất",
     "searchbox_placeholder" : "Mã giao dịch/Địa chỉ ví / Metamask",
     "all_token": "Danh sách token",
+    "defi": "DeFi Dapp Volume",
     "see_all": "Xem Tất Cả",
+    "see_less": "See Less",
     "token_trade_history": "Lịch sử giao dịch token"
   },
   
@@ -41,6 +50,8 @@
     "home": "Trang chính",
     "trades": "Giao dịch",
     "trade_history": "Lịch sử",
+    "defi": "DeFi",
+    "updates": "Updates",
     "tokens": "Tokens",
     "reserves": "Quỹ",
     "top_token": "Top token",
@@ -93,6 +104,8 @@
   "chart": {
     "title": {
       "network_volume": "KL giao dịch",
+      "unique_traders": "Unique Traders",
+      "total_trades": "Total Trades",
       "collected_fees": "Phí",
       "fees_burned": "Đã đốt (luỹ kế)",
       "fee_to_burn": "Phí sẽ đốt",
@@ -124,6 +137,7 @@
     "exchange_to" : "Đổi sang",
     "trade" : "TRAO ĐỔI",
     "view_on": "XEM TRÊN",
+    "source": "SOURCE",
     "pair": "Cặp",
     "export_csv": "Xuất dữ liệu (CSV)",
     "no_row": "Không tìm thấy giao dịch nào",
@@ -154,7 +168,7 @@
 
   "wallet_detail": {
     "address": "Địa chỉ",
-    "trades": "Giao dịch",
+    "trades": "Total Trades",
     "collected_fees": "Tổng phí",
     "platform_fees": "Platform Fees",
     "knc_collected": "KNC Collected",
@@ -163,6 +177,7 @@
     "value_in_usd": "Giá trị theo USD",
     "notice": "Tỷ giá USD được tính tại thời điểm giao dịch",
     "wallet_detail": "Thông tin ví",
+    "tokens_balance": "Tokens Balance",
     "reserve_detail": "Thông tin quỹ",
     "partner_details": "Thông tin đối tác",
     "history": "Lịch sử giao dịch",

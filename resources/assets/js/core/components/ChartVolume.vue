@@ -1,6 +1,21 @@
 <template>
   <div>
-    <canvas :id="elementId" height="300px" class="mt-20"></canvas>
+    <div v-if="!hideSumary" class="chart-summary d-flex flex-row">
+      <div class="chart-summary-icon volume ml-3">
+        <img src="/images/volume-summary.svg">
+      </div>
+      <div class="chart-summary-info ml-3">
+        <div class="info-label pt-2">
+          VOLUME
+        </div>
+        <div class="info-number font-weight-bold pt-2">
+          {{totalVolume}} USD
+        </div>
+      </div>
+    </div>
+    <div>
+      <canvas :id="elementId" height="300px" class="mt-20"></canvas>
+    </div>
   </div>
 </template>
 
@@ -21,10 +36,15 @@ export default {
       type: String,
       default: null,
     },
+    hideSumary: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
-      chartInstance: undefined
+      chartInstance: undefined,
+      totalVolume: 0
     };
   },
   methods: {
@@ -79,8 +99,8 @@ export default {
         datasets: [{
           data: dataset,
           pointRadius: 0,
-          backgroundColor: 'rgba(139, 206, 241, 0.6)',
-          borderColor: 'rgba(139, 206, 241, 0.6)',
+          backgroundColor: 'rgba(0,173,168,.3)',
+          borderColor: 'rgba(0,173,168,.3)',
           // barRadius: '3px',
           // borderWidth: 2,
           // showLine: true,
@@ -89,13 +109,17 @@ export default {
       };
     },
     refresh (period, interval, tokenAddress=null) {
-      AppRequest.getNetworkVolume(period, interval, tokenAddress, (err, volumeData) => {
+      AppRequest.getNetworkVolume(period, interval, tokenAddress, (err, results) => {
         const ctx = document.getElementById(this.elementId);
 
         // Ignore render chart if the page has been changed and the chart element is omitted
         if (!ctx) {
           return;
         }
+
+        if(!results.count || !results.total) return
+
+        const volumeData = results.count
 
         const data = this._buildChartData(volumeData, interval);
         const options = this._getChartOptions(interval);
@@ -111,6 +135,10 @@ export default {
             options: options,
           });
         }
+
+
+        if(!results.total[0] || !results.total[0].sum) return
+        this.totalVolume = util.numberWithCommas(results.total[0].sum.toFixed(2))
       });
     },
     _getChartOptions (interval) {
@@ -131,8 +159,8 @@ export default {
           const index = tooltipItem[0].index;
           const label = this.$t('chart.title.label_volume') + ' (USD): $' + util.numberWithCommas(data.datasets[0].data[index]);
           const eth = this.$t('chart.title.label_volume') + ' (ETH): ' + util.numberWithCommas(data.eths[index]);
-          const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
-          return [label, eth, count];
+          // const count = this.$t('chart.title.label_count') + ': ' + util.numberWithCommas(data.counts[index]);
+          return [label, eth];
         }
       };
 
@@ -182,7 +210,7 @@ export default {
           axis: 'x',
           intersect: false,
           fontFamily: "Montserrat, My-Montserrat, sans-serif",
-          backgroundColor: 'rgba(25, 46, 59, 0.8)',
+          backgroundColor: 'rgba(, 46, 59, 0.8)',
           titleFontSize: 13,
           titleFontColor: "#f8f8f8",
           bodyFontSize: 14,
