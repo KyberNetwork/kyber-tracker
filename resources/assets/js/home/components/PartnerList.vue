@@ -75,24 +75,24 @@
       <div class="chart-period-picker text-right pt-2">
         <b-button-group class="cus-pagination full-width-btn-group">
           <b-button
-            :variant="periodDay === 1 ? 'active' : ''"
-            @click="selectPeriod(1)">24H
+            :variant="period === '24H' ? 'active' : ''"
+            @click="selectPeriod('24H')">24H
           </b-button>
           <b-button
-            :variant="periodDay ===  7? 'active' : ''"
-            @click="selectPeriod(7)">7D
+            :variant="period === '7D' ? 'active' : ''"
+            @click="selectPeriod('7D')">7D
           </b-button>
           <b-button
-            :variant="periodDay === 30 ? 'active' : ''"
-            @click="selectPeriod(30)">1M
+            :variant="period === '1M' ? 'active' : ''"
+            @click="selectPeriod('1M')">1M
           </b-button>
           <b-button
-            :variant="selectedPeriod === 365 ? 'active' : ''"
-            @click="selectPeriod(365)">1Y
+            :variant="period === '1Y' ? 'active' : ''"
+            @click="selectPeriod('1Y')">1Y
           </b-button>
           <b-button
-            :variant="selectedPeriod === null ? 'active' : ''"
-            @click="selectPeriod(null)">ALL
+            :variant="period === 'ALL' ? 'active' : ''"
+            @click="selectPeriod('ALL')">ALL
           </b-button>
         </b-button-group>
       </div>
@@ -202,7 +202,8 @@ export default {
       selectedInterval: 'D1',
       partnerIcons: {},
       data: [],
-      periodDay: 30
+      periodDay: 30,
+      period: '7D'
     };
   },
 
@@ -221,20 +222,21 @@ export default {
     getShortedAddr(addr){
       return util.shortenAddress(addr, 9, 8)
     },
-    selectPeriod(periodDay) {
-      this.periodDay = periodDay
+    selectPeriod(period) {
+      this.period = period
       this.getList()
     },
 
     getList() {
-      const now = Date.now() / 1000 | 0;
-      const timeStamp = this.$route.query.timeStamp
-      console.log("+==================", this.selectedPeriod, this.selectedInterval)
+      // const now = Date.now() / 1000 | 0;
+      // const timeStamp = this.$route.query.timeStamp
+      // console.log("+==================", this.selectedPeriod, this.selectedInterval)
       const requestParams = {
-        fromDate: this.periodDay ? now - 24 * 60 * 60 * this.periodDay : null,
-        toDate: now,
+        // fromDate: this.periodDay ? now - 24 * 60 * 60 * this.periodDay : null,
+        // toDate: now,
+        period: this.period
       }
-      if(timeStamp) requestParams.timeStamp = timeStamp
+      // if(timeStamp) requestParams.timeStamp = timeStamp
       AppRequest.getPartnersList(requestParams).then(data => {
         this.data = data
       })
