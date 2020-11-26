@@ -1119,10 +1119,9 @@ module.exports = BaseService.extends({
       // const collectedFees = new BigNumber(ret.collectedFees.toString()).div(Math.pow(10, 18));
 
       const feeKatalystCollected = new BigNumber(ret.feeKatalystCollected.toString()).div(Math.pow(10, 18));
-      const volumeEth = new BigNumber(ret.volumeETH ? ret.volumeETH.toString() : 0).div(Math.pow(10, 18));
       const result = {
         networkVolume: '$' + volumeInUSD.toFormat(2).toString(),
-        volumeEth: volumeEth,
+        volumeEth: ret.volumeETH,
         // collectedFees: collectedFees.toFormat(2).toString(),
         // collectedFees: oldCollectedFee,
         feeKatalystCollected: feeKatalystCollected.toFormat(2).toString(),

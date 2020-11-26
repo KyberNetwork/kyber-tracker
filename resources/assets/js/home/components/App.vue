@@ -419,11 +419,11 @@
       <div class="container">
         <div
           v-if="isShowInfoBar && Date.now() > infoBarTimeFrom && Date.now() < infoBarTimeTo"
-          class="info-bar d-flex justify-content-center"
+          class="info-bar d-flex justify-content-center pt-3"
         >
         <div class="alert alert-primary" role="alert">
           <img class="pb-1" src="/images/info-infobar.svg" />
-          {{ infoBarMess }} &nbsp; &nbsp;
+          &nbsp;{{ infoBarMess }} &nbsp; &nbsp;
           <button type="button" class="btn btn-primary btn-sm mr-2">
             <a :href="infoBarUrl" target="_blank">
               {{ $t('info_bar.join') }} 
