@@ -419,9 +419,20 @@
       <div class="container">
         <div
           v-if="isShowInfoBar && Date.now() > infoBarTimeFrom && Date.now() < infoBarTimeTo"
-          class="info-bar d-flex justify-content-center"
+          class="info-bar d-flex justify-content-center pt-3"
         >
-          <div class="btn-group">
+        <div class="alert alert-primary" role="alert">
+          <img class="pb-1" src="/images/info-infobar.svg" />
+          &nbsp;{{ infoBarMess }} &nbsp; &nbsp;
+          <button type="button" class="btn btn-primary btn-sm mr-2">
+            <a :href="infoBarUrl" target="_blank">
+              {{ $t('info_bar.join') }} 
+            </a>
+          </button>
+          <a class="cursor-pointer" @click="closeInfoBar()"><img  src="/images/close.svg" /></a>
+          
+        </div>
+          <!-- <div class="btn-group">
             <button type="button" class="btn btn-primary border-right-white">{{ infoBarMess }}</button>
             <button type="button" class="btn btn-primary clearfix">
               <a :href="infoBarUrl" target="_blank">
@@ -436,7 +447,7 @@
             <button type="button" class="btn btn-primary close-btn" @click="closeInfoBar()">
               <img class="search" src="/images/ic-close.svg" />
             </button>
-          </div>
+          </div> -->
           <!-- <span class="label label-primary">KNC trading contest goes live with $5,000 prize to be won&nbsp;<a href="https://kyberswap.com/promo/knc?utm_source=ks-web&amp;utm_medium=notibar&amp;utm_campaign=knc-contest"><button type="button" class="btn btn-primary">Join Now</button></a></span> -->
         </div>
         <div class="row pt-40">
