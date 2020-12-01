@@ -76,6 +76,7 @@
           <carousel
             ref="headingSum"
             class="heading-summary position-relative"
+            @click="moveSumarySlide(true)"
             @mouseover="isHoverSumary = true"
             @mouseleave="isHoverSumary = false"
           >
@@ -107,18 +108,18 @@
                 <span class="text-nowrap d-block">{{ $t('status_bar.knc_collected') }}</span>
                 <span class="topbar-value text-nowrap">{{ kncCollected }}</span>
               </div>-->
-              <div ref="slide_3" class="slide-item">
+              <div ref="slide_1" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fee_collected') }}</span>
                 <span class="topbar-value text-nowrap">{{ feeCollected }}</span>
               </div>
 
-              <!-- <div ref="slide_4" class="slide-item">
-                <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
-                <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
-              </div>-->
+              <div v-if="kncSupply" ref="slide_2" class="slide-item">
+                <span class="text-nowrap d-block">{{ $t('status_bar.knc_supply') }}</span>
+                <span class="topbar-value text-nowrap">{{ kncSupply }}</span>
+              </div>
 
               <!-- ============================== -->
-              <div v-if="isLoopSumary" class="slide-item">
+              <!-- <div v-if="isLoopSumary" class="slide-item">
                 <div class="text-nowrap d-block">{{ $t('status_bar.network_volume') }}</div>
                 <div class="topbar-value text-nowrap">{{ networkVolume }}</div>
               </div>
@@ -142,9 +143,9 @@
                     :class="getPriceChangeClass(this.ethPriceChange24h)"
                   >({{ formatedETHPriceChange24h }})</span>
                 </div>
-              </div>
+              </div> -->
 
-              <div v-if="isLoopSumary" class="slide-item">
+              <!-- <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.knc_collected') }}</span>
                 <span class="topbar-value text-nowrap">{{ kncCollected }}</span>
               </div>
@@ -155,7 +156,7 @@
               <div v-if="isLoopSumary" class="slide-item">
                 <span class="text-nowrap d-block">{{ $t('status_bar.fees_burned') }}</span>
                 <span class="topbar-value text-nowrap">{{ totalBurnedFee }}</span>
-              </div>
+              </div> -->
             </div>
           </carousel>
 
@@ -319,7 +320,7 @@
           <div
             v-bind:class="[isNavOpen ? 'nav-text token-prive-nav d-flex flex-column justify-content-end h-100' : 'nav-text w-0']"
           >
-            <div ref="slide_1" class="slide-item">
+            <div class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.knc_price') }}</span>
               <div class="d-inline-flex">
                 <span class="topbar-value price-value">{{ kncPrice }}</span>
@@ -330,7 +331,7 @@
               </div>
             </div>
 
-            <div ref="slide_2" class="slide-item">
+            <div class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.eth_price') }}</span>
               <div class="d-inline-flex">
                 <span class="topbar-value price-value">{{ ethPrice }}</span>
@@ -765,9 +766,17 @@ import Web3Service from "../../core/helper/web3";
 import bowser from "bowser";
 import store from "../../core/helper/store";
 import ClickOutside from "vue-click-outside";
+import BigNumber from 'bignumber.js';
 import _ from "lodash";
 const TOKENS_BY_ADDR = window["GLOBAL_STATE"].tokens;
 
+const fmt = {
+  prefix: '=> ',
+  decimalSeparator: ',',
+  groupSeparator: '.',
+  groupSize: 3,
+  secondaryGroupSize: 2
+}
 export default {
   data() {
     return {
@@ -783,6 +792,7 @@ export default {
       pageTitle: "",
       kncCollected: "",
       feeCollected: "",
+      kncSupply: '',
       searchData: [],
       addressesMetamask: [],
       isOpenFee: false,
@@ -880,14 +890,14 @@ export default {
         !this.$refs.slide_0 ||
         !this.$refs.slide_1 ||
         !this.$refs.slide_2 ||
-        !this.$refs.slide_3 ||
-        !this.$refs.slide_4 ||
+        // !this.$refs.slide_3 ||
+        // !this.$refs.slide_4 ||
         !this.$refs.headingSum
       ) {
         return false;
       } else {
         let sumaryWidth = 0;
-        for (let i = 0; i <= 4; i++) {
+        for (let i = 0; i <= 2; i++) {
           sumaryWidth = sumaryWidth + this.$refs[`slide_${i}`].clientWidth;
         }
         const headingSumWidth = this.$refs.headingSum.clientWidth;
@@ -896,21 +906,24 @@ export default {
       }
     },
 
+    moveSumarySlide(skipHover){
+      if (!skipHover && this.isHoverSumary) return;
+
+      if (!this.isLoopSumary) {
+        this.$refs.headingInner.style.transform = `translate(-0px)`;
+        return;
+      }
+      this.slideNavigate = this.slideNavigate + 1;
+      if (this.slideNavigate >= 3) this.slideNavigate = 0;
+      let scrollWidth = 0;
+      for (let i = 0; i < this.slideNavigate; i++) {
+        scrollWidth = scrollWidth + this.$refs[`slide_${i}`].clientWidth;
+      }
+      this.$refs.headingInner.style.transform = `translate(-${scrollWidth}px)`;
+    },
+
     intervalSlideSumary() {
-      this.intervalSlide = setInterval(() => {
-        if (this.isHoverSumary) return;
-        if (!this.isLoopSumary) {
-          this.$refs.headingInner.style.transform = `translate(-0px)`;
-          return;
-        }
-        this.slideNavigate = this.slideNavigate + 1;
-        if (this.slideNavigate >= 5) this.slideNavigate = 0;
-        let scrollWidth = 0;
-        for (let i = 0; i < this.slideNavigate; i++) {
-          scrollWidth = scrollWidth + this.$refs[`slide_${i}`].clientWidth;
-        }
-        this.$refs.headingInner.style.transform = `translate(-${scrollWidth}px)`;
-      }, 5000);
+      this.intervalSlide = setInterval(this.moveSumarySlide, 5000);
     },
 
     getLanguageText() {
@@ -1008,16 +1021,23 @@ export default {
         this.ethPriceChange24h = stats.ethChange24h;
       });
 
-      // request
-      //   .get("https://api.coinmarketcap.com/v1/ticker/kyber-network/")
-      //   .then(res => {
-      //     const data = res.body && res.body[0];
-      //     if (!data || !data.id || !data.price_usd || !data.percent_change_24h) {
-      //       return;
-      //     }
-      //     this.kncPrice = "$" + parseFloat(data.price_usd).toFixed(4);
-      //     this.kncPriceChange24h = parseFloat(data.percent_change_24h);
-      //   });
+      request
+        .get("https://api.coingecko.com/api/v3/coins/kyber-network")
+        .then(res => {
+          const data = res.body;
+          if (!data || !data.market_data) {
+            return;
+          }
+          const marketData = data.market_data
+          
+
+          if(marketData.circulating_supply && marketData.total_supply){
+            const circulatingSupply = new BigNumber(marketData.circulating_supply.toString()).toFormat(0)
+            const totalSuplply =new BigNumber(marketData.total_supply.toString()).toFormat(0)
+            this.kncSupply = circulatingSupply + ' / ' + totalSuplply
+          }
+          
+        });
 
       // request
       //   .get("https://api.coinmarketcap.com/v1/ticker/ethereum/")

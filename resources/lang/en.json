@@ -84,7 +84,8 @@
     "knc_price": "KNC Price",
     "eth_price": "ETH Price",
     "knc_collected": "KNC Collected",
-    "fee_collected": "Fee Collected"
+    "fee_collected": "Fee Collected",
+    "knc_supply": "KNC Circulating Supply"
   },
 
   "tooltip": {

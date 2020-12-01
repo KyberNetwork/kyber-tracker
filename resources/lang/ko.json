@@ -83,7 +83,8 @@
     "knc_price": "KNC 가격",
     "eth_price": "ETH 가격",
     "knc_collected": "KNC Collected",
-    "fee_collected": "Fee Collected"
+    "fee_collected": "Fee Collected",
+    "knc_supply": "KNC Circulating Supply"
   },
   "tooltip": {
     "network_volume": " 최근 24시간 동안 거래량",
