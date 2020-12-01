@@ -76,6 +76,7 @@
           <carousel
             ref="headingSum"
             class="heading-summary position-relative"
+            @click="moveSumarySlide(true)"
             @mouseover="isHoverSumary = true"
             @mouseleave="isHoverSumary = false"
           >
@@ -319,7 +320,7 @@
           <div
             v-bind:class="[isNavOpen ? 'nav-text token-prive-nav d-flex flex-column justify-content-end h-100' : 'nav-text w-0']"
           >
-            <div ref="slide_1" class="slide-item">
+            <div class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.knc_price') }}</span>
               <div class="d-inline-flex">
                 <span class="topbar-value price-value">{{ kncPrice }}</span>
@@ -330,7 +331,7 @@
               </div>
             </div>
 
-            <div ref="slide_2" class="slide-item">
+            <div class="slide-item">
               <span class="text-nowrap d-block price-label">{{ $t('status_bar.eth_price') }}</span>
               <div class="d-inline-flex">
                 <span class="topbar-value price-value">{{ ethPrice }}</span>
@@ -905,21 +906,24 @@ export default {
       }
     },
 
+    moveSumarySlide(skipHover){
+      if (!skipHover && this.isHoverSumary) return;
+
+      if (!this.isLoopSumary) {
+        this.$refs.headingInner.style.transform = `translate(-0px)`;
+        return;
+      }
+      this.slideNavigate = this.slideNavigate + 1;
+      if (this.slideNavigate >= 3) this.slideNavigate = 0;
+      let scrollWidth = 0;
+      for (let i = 0; i < this.slideNavigate; i++) {
+        scrollWidth = scrollWidth + this.$refs[`slide_${i}`].clientWidth;
+      }
+      this.$refs.headingInner.style.transform = `translate(-${scrollWidth}px)`;
+    },
+
     intervalSlideSumary() {
-      this.intervalSlide = setInterval(() => {
-        if (this.isHoverSumary) return;
-        if (!this.isLoopSumary) {
-          this.$refs.headingInner.style.transform = `translate(-0px)`;
-          return;
-        }
-        this.slideNavigate = this.slideNavigate + 1;
-        if (this.slideNavigate >= 3) this.slideNavigate = 0;
-        let scrollWidth = 0;
-        for (let i = 0; i < this.slideNavigate; i++) {
-          scrollWidth = scrollWidth + this.$refs[`slide_${i}`].clientWidth;
-        }
-        this.$refs.headingInner.style.transform = `translate(-${scrollWidth}px)`;
-      }, 5000);
+      this.intervalSlide = setInterval(this.moveSumarySlide, 5000);
     },
 
     getLanguageText() {
