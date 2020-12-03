@@ -104,6 +104,19 @@ module.exports = [
       official: true
     },
     setCache: false
+  },
+  {
+    when: "*/11 * * * *",
+    run: 'ReserveListCacheRefresher',
+    service: 'TradeService',
+    functionName: 'getReservesList',
+    cache: {
+      name: CacheInfo.ReservesList.key,
+      time_exprire: CacheInfo.ReservesList.TTLTool
+    },
+    params: {
+    },
+    setCache: true
   }
   ];
 

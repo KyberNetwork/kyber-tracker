@@ -64,8 +64,8 @@ module.exports = {
 
   "ReservesList": {
     key: "reserves-list-",
-    TTL: {ttl: 5 * Const.MINUTE_IN_MILLISECONDS},
-    TTLTool: {ttl: 5 * Const.MINUTE_IN_MILLISECONDS}
+    TTL: {ttl: 15 * Const.MINUTE_IN_MILLISECONDS},
+    TTLTool: {ttl: 15 * Const.MINUTE_IN_MILLISECONDS}
   },
   "ReserveDetail": {
     key: "reserve-detail-",

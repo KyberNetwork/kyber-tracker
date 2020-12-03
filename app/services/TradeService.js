@@ -467,7 +467,7 @@ module.exports = BaseService.extends({
   },
 
   getReservesList: function (options, callback){
-    const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
+    // const adapter = this.getModel('KyberTradeModel').getSlaveAdapter();
 
     const nowInSeconds = Utils.nowInSeconds();
     const DAY_IN_SECONDS = 24 * 60 * 60;
