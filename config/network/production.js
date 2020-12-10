@@ -149,7 +149,8 @@ module.exports = {
     "0x69b87a139f3976912c1db7d0808a9fc7e3ca453f": ["Prycto FPR", "FPR"],
     "0xd01ae36a911912a106445cc350be327344fbfefa": ["Uniswap-Sushiswap Curve Bridge Reserve", "BR"],
     "0xeb74c8b319515593a26dab10a13f19872c2ecb02": ["Anonymous Reserve"],
-    "0x50465b1c610ac860d468842c58c3c660fa15edfe": ["Uniswap-Curve", "BR"]
+    "0x50465b1c610ac860d468842c58c3c660fa15edfe": ["Uniswap-Curve", "BR"],
+    "0xc035eadee5ef76575b6191e760ae9fdd5ad30ef3": ["Anonymous Reserve"],
   },
 
   "ETH": {
