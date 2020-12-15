@@ -19,6 +19,7 @@
               <a class="address-link" >{{getReservename(slot.item)}}</a>
               <span v-bind:class="{ delised: slot.item.isDelisted }"></span>
               <span v-bind:class="{ tooltiptext: slot.item.isDelisted }">{{ slot.item.isDelisted ? $t("tooltip.delisted")  :"" }}</span>
+              <button v-if="($mq == 'sm' || $mq == 'ml') && slot.item.status=='maintenance'" type="button" class="btn btn-outline-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Maintenance">M</button>
             </td>
           <td class="reserve-type text-center">
             <span v-bind:class="getReserveType(slot.item).toLowerCase()">
