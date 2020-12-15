@@ -798,11 +798,11 @@ export default {
       isOpenFee: false,
       isShowInfoBar: true,
       infoBarUrl:
-        "https://kyberswap.com/promo/smart_valor?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=valor-contest",
+        "https://kyberswap.com/promo/fulcrum?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=bzrx-contest",
       infoBarMess:
-        "$12,000 to be won in Double Trading Contest with VALOR on KyberSwap!",
-      infoBarTimeFrom: 1605532607000,
-      infoBarTimeTo: 1606409999000,
+        "$12,000 to be won in BZRX trading contest on KyberSwap!",
+      infoBarTimeFrom: 1607907600000,
+      infoBarTimeTo: 1608739200000,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
