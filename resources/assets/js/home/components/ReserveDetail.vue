@@ -32,6 +32,7 @@
       <span>{{$t('wallet_detail.address')}}:</span>
       <span>
         <a class="wallet-address" target="_blank" :href="getAddressEtherscanLink(getFilterReserveAddress())">{{ getFilterReserveAddress() }}</a>
+        <button v-if="isMaintenance" type="button" class="btn btn-outline-warning btn-sm">Maintenance</button>
       </span>
       
     </div>
@@ -216,6 +217,7 @@ export default {
 
       isShowLoadmore: false,
       isOpenlLoadmore: false,
+      isMaintenance: false,
       tokenAprAmount: 0,
       tokenAprUSDValue: 0,
       tokenAprETHValue: 0,
@@ -374,6 +376,10 @@ export default {
           this.balanceEth = util.formatTokenAmount(reserveData.amount_b, 18, 4);
           tokenAmount = reserveData.amount_a 
           tokenAddress = reserveData.token_a.toLowerCase()
+        }
+
+        if(reserveData.rate_a_b == "0" && reserveData.rate_b_a == 0){
+          this.isMaintenance = true
         }
 
         this.tokenAprData = TOKENS_BY_ADDR[tokenAddress]
