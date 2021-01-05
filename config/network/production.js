@@ -1517,6 +1517,13 @@ module.exports = {
       "address": "0x27702a26126e0b3702af63ee09ac4d1a084ef628",
       "hidden": 1603976400000
     },
+
+    "NTB": {
+      "name": "Token Asset",
+      "symbol" : "NTB",
+      "decimal": 18,
+      "address": "0xbe393aa534f82c0ffac31bf06a23e283acb3352b"
+    }
   },
 
   "preburntAmount": 48.61873337,
