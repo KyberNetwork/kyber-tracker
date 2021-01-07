@@ -478,7 +478,7 @@
                         </a>
                       </div>
                       <div class="col p-0 pt-md-1 d-flex justify-content-center">
-                        <a href="https://discord.gg/NfFMVz6" target="_blank">
+                        <a href="https://discord.com/invite/HdXWUb2pQM" target="_blank">
                           <img class="pt-1" src="/images/dircord.svg" />
                         </a>
                       </div>
@@ -671,7 +671,7 @@
                     </a>
                   </div>
                   <div class="col p-md-0 pt-md-1 d-flex justify-content-center">
-                    <a href="https://discord.gg/NfFMVz6" target="_blank">
+                    <a href="https://discord.com/invite/HdXWUb2pQM" target="_blank">
                       <img class="footer-icon" src="/images/dircord.svg" />
                     </a>
                   </div>
