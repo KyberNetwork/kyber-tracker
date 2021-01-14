@@ -32,7 +32,7 @@
 
     <div class="text-center">
       <button type="button" class="btn btn-default see-all-trade mx-auto" >
-        <a href="https://medium.com/@kyberteam" target="_blank">See All</a>
+        <a href="https://blog.kyber.network/" target="_blank">See All</a>
       </button>
     </div>
 
@@ -72,7 +72,7 @@ export default {
   methods: {
     refresh() {
       fetch(
-        "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@kyberteam"
+        "https://api.rss2json.com/v1/api.json?rss_url=https://blog.kyber.network/feed/tagged/featured"
       )
         .then(response => response.json())
         .then(data => {
