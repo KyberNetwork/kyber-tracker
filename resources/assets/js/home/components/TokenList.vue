@@ -108,8 +108,8 @@
               </div>
           </td>
 
-          <td class="text-center">{{ tokenPrice[slot.item.symbol] ? displayTokenPrice(tokenPrice[slot.item.symbol].price_USD) : "-/-" }}</td>
-          <td class="text-center" :class="getPriceChangeClass(tokenChange24h[slot.item.symbol])">{{tokenChange24h[slot.item.symbol] ? displayTokenChange24h(tokenChange24h[slot.item.symbol]) : "-/-"}}</td>
+          <td class="text-center">{{ tokenPrice[slot.item.symbol.toLowerCase()] ? displayTokenPrice(tokenPrice[slot.item.symbol.toLowerCase()].price_USD) : "-/-" }}</td>
+          <td class="text-center" :class="getPriceChangeClass(tokenChange24h[slot.item.symbol.toLowerCase()])">{{tokenChange24h[slot.item.symbol.toLowerCase()] ? displayTokenChange24h(tokenChange24h[slot.item.symbol.toLowerCase()]) : "-/-"}}</td>
                   
           
           <td class="text-left pl-5" >{{ '$' + formatVolumn(slot.item.volumeUSD) }}</td>
@@ -297,7 +297,11 @@ export default {
     getTokenPrice(){
       AppRequest.getTokenPrices().then(data => {
           if(!data) return
-          this.tokenPrice = data
+          const tokenPrice = {}
+          Object.keys(data).map(symbol => {
+            tokenPrice[symbol.toLowerCase()] = data[symbol]
+          })
+          this.tokenPrice = tokenPrice
         })
     },
     getTokenChange24h(){
@@ -306,7 +310,7 @@ export default {
           const change24hData = {}
           Object.keys(data).map(pairs => {
             const tokenSymbol = pairs.split("_")[1]
-            change24hData[tokenSymbol] = data[pairs].change_usd_24h
+            change24hData[tokenSymbol.toLowerCase()] = data[pairs].change_usd_24h
           })
           this.tokenChange24h = change24hData
         })
