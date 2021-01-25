@@ -33,6 +33,126 @@ module.exports = [
     },
     setCache: true
   },
+
+  {
+    // cache volume 1Y
+    when: "*/30 * * * *",
+    run: 'VolumesCacheRefresher',
+    service: 'TradeService',
+    functionName: '_getNetworkVolumes',
+    cache: {
+      name: CacheInfo.NetworkVolumes.key,
+      time_exprire: CacheInfo.NetworkVolumes.LongTTLTool
+    },
+    params: {
+      symbol: '',
+      period: 'Y1',
+      interval: 'D1',
+      fromDate: '',
+      toDate: ''
+    },
+    setCache: true
+  },
+  {
+    // cache volume ALL
+    when: "*/35 * * * *",
+    run: 'VolumesCacheRefresher',
+    service: 'TradeService',
+    functionName: '_getNetworkVolumes',
+    cache: {
+      name: CacheInfo.NetworkVolumes.key,
+      time_exprire: CacheInfo.NetworkVolumes.LongTTLTool
+    },
+    params: {
+      symbol: '',
+      period: 'ALL',
+      interval: 'D1',
+      fromDate: '',
+      toDate: ''
+    },
+    setCache: true
+  },
+
+  {
+    // cache unique address 1Y
+    when: "*/40 * * * *",
+    run: 'UniqueAddressCacheRefresher',
+    service: 'TradeService',
+    functionName: '_getUniqueNumberTraders',
+    cache: {
+      name: CacheInfo.UniqueTrader.key,
+      time_exprire: CacheInfo.UniqueTrader.LongTTLTool
+    },
+    params: {
+      symbol: '',
+      period: 'Y1',
+      interval: 'D1',
+      fromDate: '',
+      toDate: ''
+    },
+    setCache: true
+  },
+  {
+    // cache unique address ALL
+    when: "*/45 * * * *",
+    run: 'UniqueAddressCacheRefresher',
+    service: 'TradeService',
+    functionName: '_getUniqueNumberTraders',
+    cache: {
+      name: CacheInfo.UniqueTrader.key,
+      time_exprire: CacheInfo.UniqueTrader.LongTTLTool
+    },
+    params: {
+      symbol: '',
+      period: 'ALL',
+      interval: 'D1',
+      fromDate: '',
+      toDate: ''
+    },
+    setCache: true
+  },
+
+  {
+    // cache total trades 1Y
+    when: "*/50 * * * *",
+    run: 'TotalTradesCacheRefresher',
+    service: 'TradeService',
+    functionName: '_getTotalNumberTrades',
+    cache: {
+      name: CacheInfo.NumberTrades.key,
+      time_exprire: CacheInfo.NumberTrades.LongTTLTool
+    },
+    params: {
+      symbol: '',
+      period: 'Y1',
+      interval: 'D1',
+      fromDate: '',
+      toDate: ''
+    },
+    setCache: true
+  },
+  {
+    // cache total trades ALL
+    when: "*/55 * * * *",
+    run: 'TotalTradesCacheRefresher',
+    service: 'TradeService',
+    functionName: '_getTotalNumberTrades',
+    cache: {
+      name: CacheInfo.NumberTrades.key,
+      time_exprire: CacheInfo.NumberTrades.LongTTLTool
+    },
+    params: {
+      symbol: '',
+      period: 'ALL',
+      interval: 'D1',
+      fromDate: '',
+      toDate: ''
+    },
+    setCache: true
+  },
+
+
+
   {
     when: "*/1 * * * *",
     run: 'TradesListCacheRefresher',

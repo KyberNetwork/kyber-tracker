@@ -1383,6 +1383,7 @@ module.exports = BaseService.extends({
     const period = options.period || 'D7';
     const time_exprire = CacheInfo.NetworkVolumes.TTL;
     let key = `${CacheInfo.NetworkVolumes.key + period}-${interval}`;
+    console.log("++++++++++ get network volume +++++++++", key)
     if (options.address) {
       key = options.address + '-' + key;
     }
@@ -1415,7 +1416,7 @@ module.exports = BaseService.extends({
           return callback(err);
         }
 
-        // RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
+        RedisCache.setAsync(key, JSON.stringify(ret_1), time_exprire);
         callback(null,ret_1)
       });
 
@@ -1762,6 +1763,7 @@ module.exports = BaseService.extends({
         logger.error(err)
       }
       if (ret) {
+        console.log("_________ we got data from cache ______________");
         return callback(null, JSON.parse(ret));
       }
       options.interval = interval;
