@@ -87,19 +87,19 @@ module.exports = {
     key: "vol-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS},
-    LongTTLTool: {ttl: 5 * Const.HOUR_IN_MILISECONDS}
+    LongTTLTool: {ttl: 5 * HOUR_IN_MILISECONDS}
   },
   "UniqueTrader": {
     key: "unique-trader-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS},
-    LongTTLTool: {ttl: 5 * Const.HOUR_IN_MILISECONDS}
+    LongTTLTool: {ttl: 5 * HOUR_IN_MILISECONDS}
   },
   "NumberTrades": {
     key: "number-trades-",
     TTL: {ttl: Const.MINUTE_IN_MILLISECONDS},
     TTLTool: {ttl: 1.5 * Const.MINUTE_IN_MILLISECONDS},
-    LongTTLTool: {ttl: 5 * Const.HOUR_IN_MILISECONDS}
+    LongTTLTool: {ttl: 5 * HOUR_IN_MILISECONDS}
   },
   "PairsVolumes": {
     key: "pairs-vol-",
