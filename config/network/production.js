@@ -1523,6 +1523,14 @@ module.exports = {
       "symbol" : "NTB",
       "decimal": 18,
       "address": "0xbe393aa534f82c0ffac31bf06a23e283acb3352b"
+    },
+
+    "1INCH": {
+      "name": "1INCH",
+      "symbol" : "1INCH",
+      "decimal": 18,
+      "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+      "hidden": 1611718840000
     }
   },
 
