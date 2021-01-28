@@ -1531,6 +1531,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x111111111117dc0aa78b770fa6a738034120c302",
       "hidden": 1611718840000
+    },
+
+    "DFM": {
+      "name": "DeFi on MCW",
+      "symbol" : "DFM",
+      "decimal": 18,
+      "address": "0x0ccd5dd52dee42b171a623478e5261c1eaae092a",
+      "hidden": 1611838800000
     }
   },
 
