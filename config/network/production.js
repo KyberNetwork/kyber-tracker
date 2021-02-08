@@ -1539,6 +1539,14 @@ module.exports = {
       "decimal": 18,
       "address": "0x0ccd5dd52dee42b171a623478e5261c1eaae092a",
       "hidden": 1611838800000
+    },
+
+    "ID": {
+      "name": "Everest",
+      "symbol" : "ID",
+      "decimal": 18,
+      "address": "0xebd9d99a3982d547c5bb4db7e3b1f9f14b67eb83",
+      "hidden": 1612789200000
     }
   },
 
