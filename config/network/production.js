@@ -151,6 +151,7 @@ module.exports = {
     "0xeb74c8b319515593a26dab10a13f19872c2ecb02": ["Anonymous Reserve"],
     "0x50465b1c610ac860d468842c58c3c660fa15edfe": ["Uniswap-Curve", "BR"],
     "0xc035eadee5ef76575b6191e760ae9fdd5ad30ef3": ["Anonymous Reserve"],
+    "0x621813a947ece697197c54386f833fdd1a4d7617": ["Everest ID", "APR"]
   },
 
   "ETH": {
