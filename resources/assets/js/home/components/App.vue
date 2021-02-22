@@ -427,8 +427,8 @@
           &nbsp;{{ infoBarMess }} &nbsp; &nbsp;
           <button type="button" class="btn btn-primary btn-sm mr-2">
             <a :href="infoBarUrl" target="_blank">
-              <!-- {{ $t('info_bar.join') }}  -->
-              {{ $t('info_bar.check_ranking') }} 
+              {{ $t('info_bar.join') }} 
+              <!-- {{ $t('info_bar.check_ranking') }}  -->
             </a>
           </button>
           <a class="cursor-pointer" @click="closeInfoBar()"><img  src="/images/close.svg" /></a>
@@ -799,11 +799,11 @@ export default {
       isOpenFee: false,
       isShowInfoBar: true,
       infoBarUrl:
-        "https://kyberswap.com/promo/fulcrum?utm_source=ks-main&utm_medium=check-result&utm_campaign=bzrx-contest",
+        "https://kyberswap.com/promo/everest?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=everest-contest",
       infoBarMess:
-        "BZRX Trading Contest has finished! Check you ranking & rewards now!",
-      infoBarTimeFrom: 1607907600000,
-      infoBarTimeTo: 1609243200000,
+        "$11,000 to be won in ID trading contest on KyberSwap!",
+      infoBarTimeFrom: 1613998800000,
+      infoBarTimeTo: 1614787200000,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
