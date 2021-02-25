@@ -6,8 +6,8 @@
         class="mobile-header"
         v-click-outside="() => onClickOutside(true)"
       >
-        <b-nav-item @click="toggleNav()" class="nav-burger-wrapper" id="nav-burger-wrapper">
-          <img class="nav-burger ml-0" src="/images/hamburger.svg" />
+        <b-nav-item href="javascript:void(0)" class="nav-burger-wrapper p-0" id="nav-burger-wrapper">
+          <img class="nav-burger pt-4 pr-4 pb-4 pl-4 mt-1" src="/images/hamburger.svg" v-on:click="toggleNav"/>
         </b-nav-item>
         <b-nav-item :class="openSearchInput ? 'transform-0 w-0 nav-item-logo' : 'nav-item-logo'">
           <router-link to="/">
@@ -1157,8 +1157,6 @@ export default {
     },
 
     onClickOutside(isMobile) {
-      // this.$refs.seatchInputRef.$el.className = "";
-      // this.$refs.headingSum.className = "heading-summary p-relative";
       if (isMobile) {
         if (this.$mq !== "md" && this.$mq !== "lg") {
           this.openSearchInput = false;
@@ -1168,11 +1166,9 @@ export default {
           this.openSearchInput = false;
         }
       }
-      // this.handleResize();
     },
 
     onClickOutsideNav(e) {
-      // check contain 'nav-burger-wrapper
       if (!e || !e.path) return;
       let isClickBurger = false;
       e.path.map(el => {
@@ -1239,6 +1235,7 @@ export default {
     },
 
     toggleNav() {
+      console.log("__________-----toggleNav", this.initSideNav)
       this.initSideNav = false;
 
       if (this.$mq !== "md" && this.$mq !== "lg") {
@@ -1254,7 +1251,7 @@ export default {
 
       if (this.initSideNav) {
         if (this.$mq == "sm") {
-          return { width: "0px" };
+          return { width: "0px", zIndex: "0" };
         } else if (this.$mq == "ml") {
           return { width: "50px" };
         }
@@ -1264,7 +1261,7 @@ export default {
         return { width: "200px" };
       } else {
         if (this.$mq == "sm") {
-          return { width: "0px" };
+          return { width: "0px", zIndex: "0" };
         } else if (this.$mq == "ml") {
           return { width: "50px" };
         }
