@@ -799,11 +799,11 @@ export default {
       isOpenFee: false,
       isShowInfoBar: true,
       infoBarUrl:
-        "https://kyberswap.com/promo/everest?utm_source=kn-tracker&utm_medium=notibar&utm_campaign=everest-contest",
+        "https://krystal.app/campaign.html",
       infoBarMess:
-        "$11,000 to be won in ID trading contest on KyberSwap!",
+        "Our friends at Krystal are running a 20,000 BUSD trading campaign!",
       infoBarTimeFrom: 1613998800000,
-      infoBarTimeTo: 1614787200000,
+      infoBarTimeTo: 1624201200000,
       indexShowmore: -1,
       showColapseBtn: false,
       dropdownText: this.$t("navigator.volume"),
