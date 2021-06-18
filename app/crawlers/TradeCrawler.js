@@ -136,6 +136,7 @@ class TradeCrawler {
               networkConfig.logTopics.kyberTrade,
               networkConfig.logTopics.katalystKyberTrade,
               networkConfig.logTopics.feeDistributed,
+              networkConfig.logTopics.feeDistributedKatana,
               networkConfig.logTopics.katalystExecuteTrade
             ]
           ]
@@ -337,6 +338,43 @@ class TradeCrawler {
           
 
         case networkConfig.logTopics.feeDistributed:
+          record.fee_token = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
+          record.fee_platform_wallet = web3.eth.abi.decodeParameter('address', log.topics[2]).toLowerCase();
+          record.decodedFeeDistributed = web3.eth.abi.decodeParameters([
+            {
+              type: 'uint256',
+              name: 'platformFeeWei'
+            },
+            {
+              type: 'uint256',
+              name: 'rewardWei'
+            },
+            {
+              type: 'uint256',
+              name: 'rebateWei'
+            },
+            {
+              type: 'address[]',
+              name: 'rebateWallets'
+            },
+            {
+              type: 'uint256[]',
+              name: 'rebatePercentBpsPerWallet'
+            },
+            {
+              type: 'uint256',
+              name: 'burnAmtWei'
+            },
+        ], web3.utils.bytesToHex(data));
+          record.fee_total_collected=Utils.sumBig([record.decodedFeeDistributed.platformFeeWei, record.decodedFeeDistributed.rewardWei,
+            record.decodedFeeDistributed.rebateWei, record.decodedFeeDistributed.burnAmtWei
+          ], 0)
+          record.fee_platform = record.decodedFeeDistributed.platformFeeWei
+          record.burn_fees = record.decodedFeeDistributed.burnAmtWei
+          record.fee_rebate = record.decodedFeeDistributed.rebateWei
+          record.fee_burn_atm = record.decodedFeeDistributed.burnAmtWei         
+          break;
+        case networkConfig.logTopics.feeDistributedKatana:
           record.fee_token = web3.eth.abi.decodeParameter('address', log.topics[1]).toLowerCase();
           record.fee_platform_wallet = web3.eth.abi.decodeParameter('address', log.topics[2]).toLowerCase();
           record.decodedFeeDistributed = web3.eth.abi.decodeParameters([

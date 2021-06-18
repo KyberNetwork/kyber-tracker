@@ -23,7 +23,7 @@ module.exports = {
       "burned":["0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5"],
       "kyberTrade": "0xd30ca399cb43507ecec6a629a35cf45eb98cda550c27696dcb0d8c4a3873ce6c",
       "feeDistributed": "0xe57b2c3b4e44730805358131a6fc244c57178da7",
-
+      "feeDistributedKatana": "0xc207a63c18c4070ce1e33e5fcc02efb09ac984caa6a2046e2b1d2811723846f1",
       "feeDistributed": "0x53e2e1b5ab64e0a76fcc6a932558eba265d4e58c512401a7d776ae0f8fc08994",
       "katalystKyberTrade": "0x30bbea603a7b36858fe5e3ec6ba5ff59dde039d02120d758eacfaed01520577d",
       "katalystExecuteTrade": "0xf724b4df6617473612b53d7f88ecc6ea983074b30960a049fcd0657ffe808083",
