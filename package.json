@@ -72,7 +72,7 @@
     "vue-owl-carousel": "^2.0.3",
     "web3": "^1.0.0-beta.30",
     "web3-core-helpers": "1.0.0-beta.33",
-    "ws": "3.2.0"
+    "ws": "5.2.3"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
