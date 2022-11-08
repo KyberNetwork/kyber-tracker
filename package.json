@@ -30,7 +30,7 @@
   "homepage": "https://github.com/sotatek-dev/KyberTracker#readme",
   "dependencies": {
     "@chenfengyuan/vue-carousel": "^1.0.1",
-    "abi-decoder": "1.0.9",
+    "abi-decoder": "1.2.0",
     "async": "2.6.0",
     "axios": "0.17.1",
     "babel-polyfill": "^6.26.0",
